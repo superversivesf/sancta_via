@@ -1,154 +1,58 @@
-import 'dart:convert';
-
-import '../models/liturgical_calendar_data.dart';
 import '../models/liturgical_day_data.dart';
-import '../models/liturgical_index.dart';
-import '../exceptions/liturgical_calendar_exception.dart';
-import 'data_loader.dart';
+import '../data/generated/generated_liturgical_data.dart';
 
-/// Main service for liturgical calendar operations
+/// High-performance liturgical calendar service using embedded Dart data
 /// 
-/// This service provides methods to load, cache, and query liturgical calendar data.
-/// It requires a [LiturgicalDataLoader] implementation to load the actual data.
+/// This service provides zero-overhead access to liturgical calendar data
+/// by using pre-generated Dart objects directly, with no external dependencies.
 class LiturgicalCalendarService {
-  static LiturgicalIndex? _index;
-  static final Map<int, LiturgicalCalendarData> _cachedYears = {};
-  static LiturgicalDataLoader? _dataLoader;
+  /// Check if the service has data available
+  static bool get isInitialized => true; // Always ready - data is embedded
 
-  /// Initialize the service with a data loader
-  static Future<void> initialize(LiturgicalDataLoader dataLoader) async {
-    _dataLoader = dataLoader;
-    
-    try {
-      final indexJson = await dataLoader.loadIndexData();
-      final indexData = json.decode(indexJson);
-      _index = LiturgicalIndex.fromJson(indexData);
-    } catch (e) {
-      throw LiturgicalCalendarException(
-        'Failed to initialize liturgical calendar service: $e',
-        type: LiturgicalCalendarExceptionType.initialization,
-      );
-    }
-  }
-
-  /// Get the index information
-  static LiturgicalIndex? get index => _index;
-
-  /// Check if the service is initialized
-  static bool get isInitialized => _index != null && _dataLoader != null;
-
-  /// Load liturgical data for a specific year
-  static Future<LiturgicalCalendarData> loadYear(int year) async {
-    if (!isInitialized) {
-      throw LiturgicalCalendarException(
-        'Liturgical calendar service not initialized. Call initialize() first.',
-        type: LiturgicalCalendarExceptionType.notInitialized,
-      );
-    }
-
-    // Check cache first
-    if (_cachedYears.containsKey(year)) {
-      return _cachedYears[year]!;
-    }
-
-    final yearInfo = _index!.getYearInfo(year);
-    if (yearInfo == null) {
-      throw LiturgicalCalendarException(
-        'Year $year not available in liturgical data',
-        type: LiturgicalCalendarExceptionType.yearNotAvailable,
-      );
-    }
-
-    try {
-      final yearJson = await _dataLoader!.loadYearData(yearInfo.file);
-      final yearData = json.decode(yearJson);
-      final liturgicalYear = LiturgicalCalendarData.fromJson(yearData);
-      
-      // Cache the loaded data
-      _cachedYears[year] = liturgicalYear;
-      
-      return liturgicalYear;
-    } catch (e) {
-      throw LiturgicalCalendarException(
-        'Failed to load liturgical data for year $year: $e',
-        type: LiturgicalCalendarExceptionType.dataLoading,
-      );
-    }
-  }
+  /// Get the total number of available years
+  static int get totalYears => GeneratedLiturgicalData.getAvailableYears().length;
 
   /// Get liturgical day for a specific date
-  static Future<LiturgicalDayData?> getDayForDate(DateTime date) async {
-    if (!isInitialized) {
-      return null; // Gracefully handle uninitialized state
-    }
-
-    final year = date.year;
-    
-    try {
-      final yearData = await loadYear(year);
-      return yearData.getDayForDate(date);
-    } catch (e) {
-      // Return null instead of throwing for day lookups
-      return null;
-    }
+  /// 
+  /// Returns null if the date is outside the available range.
+  /// This is the fastest possible liturgical data access.
+  static LiturgicalDayData? getDayForDate(DateTime date) {
+    return GeneratedLiturgicalData.getDayForDate(date);
   }
 
   /// Get current liturgical day
-  static Future<LiturgicalDayData?> getCurrentDay() async {
+  static LiturgicalDayData? getCurrentDay() {
     return getDayForDate(DateTime.now());
   }
 
   /// Get liturgical days for a date range
-  static Future<List<LiturgicalDayData>> getDaysInRange(
+  static List<LiturgicalDayData> getDaysInRange(
     DateTime startDate,
     DateTime endDate,
-  ) async {
-    if (!isInitialized) {
-      return [];
-    }
-
+  ) {
     final days = <LiturgicalDayData>[];
     
-    // Determine which years we need to load
-    final yearsToLoad = <int>{};
     for (var date = startDate; 
          date.isBefore(endDate.add(const Duration(days: 1))); 
          date = date.add(const Duration(days: 1))) {
-      yearsToLoad.add(date.year);
-    }
-
-    // Load all required years
-    for (final year in yearsToLoad) {
-      try {
-        await loadYear(year);
-      } catch (e) {
-        // Skip years that can't be loaded
-        continue;
-      }
-    }
-
-    // Collect days in range
-    for (var date = startDate; 
-         date.isBefore(endDate.add(const Duration(days: 1))); 
-         date = date.add(const Duration(days: 1))) {
-      final day = await getDayForDate(date);
+      final day = getDayForDate(date);
       if (day != null) {
         days.add(day);
       }
     }
-
+    
     return days;
   }
 
   /// Get upcoming feasts and solemnities
-  static Future<List<LiturgicalDayData>> getUpcomingFeasts({
+  static List<LiturgicalDayData> getUpcomingFeasts({
     int daysAhead = 30,
     DateTime? fromDate,
-  }) async {
+  }) {
     final start = fromDate ?? DateTime.now();
     final end = start.add(Duration(days: daysAhead));
     
-    final days = await getDaysInRange(start, end);
+    final days = getDaysInRange(start, end);
     
     return days.where((day) => 
       day.celebration.prioritized ||
@@ -158,30 +62,133 @@ class LiturgicalCalendarService {
     ).toList();
   }
 
-  /// Clear cached data
-  static void clearCache() {
-    _cachedYears.clear();
+  /// Get all prioritized celebrations in a year
+  static List<LiturgicalDayData> getPrioritizedCelebrationsForYear(int year) {
+    final yearData = GeneratedLiturgicalData.getYearData(year);
+    if (yearData == null) return [];
+    
+    return yearData.values
+        .where((day) => day.celebration.prioritized)
+        .toList();
   }
 
-  /// Get available years
+  /// Get all available years
   static List<int> getAvailableYears() {
-    return _index?.availableYears ?? [];
+    return GeneratedLiturgicalData.getAvailableYears();
   }
 
   /// Check if a year is available
   static bool isYearAvailable(int year) {
-    return _index?.isYearAvailable(year) ?? false;
+    return GeneratedLiturgicalData.isYearAvailable(year);
   }
 
   /// Get year range of available data
   static ({int start, int end}) getYearRange() {
-    return _index?.yearRange ?? (start: 0, end: 0);
+    return GeneratedLiturgicalData.yearRange;
   }
 
-  /// Reset the service (useful for testing)
-  static void reset() {
-    _index = null;
-    _cachedYears.clear();
-    _dataLoader = null;
+  /// Get all liturgical days for a specific year
+  static List<LiturgicalDayData> getAllDaysForYear(int year) {
+    final yearData = GeneratedLiturgicalData.getYearData(year);
+    if (yearData == null) return [];
+    
+    return yearData.values.toList()..sort((a, b) => a.date.compareTo(b.date));
+  }
+
+  /// Get liturgical days for a specific season in a year
+  static List<LiturgicalDayData> getDaysForSeason(int year, String season) {
+    final yearData = GeneratedLiturgicalData.getYearData(year);
+    if (yearData == null) return [];
+    
+    return yearData.values
+        .where((day) => day.season.toLowerCase() == season.toLowerCase())
+        .toList()
+        ..sort((a, b) => a.date.compareTo(b.date));
+  }
+
+  /// Get liturgical days by rank
+  static List<LiturgicalDayData> getDaysByRank(
+    int year, 
+    String rank,
+  ) {
+    final yearData = GeneratedLiturgicalData.getYearData(year);
+    if (yearData == null) return [];
+    
+    return yearData.values
+        .where((day) => day.celebration.rank == rank)
+        .toList()
+        ..sort((a, b) => a.date.compareTo(b.date));
+  }
+
+  /// Get total statistics across all years
+  static Map<String, int> getGlobalStatistics() {
+    return {
+      'totalYears': GeneratedLiturgicalData.getAvailableYears().length,
+      'totalDays': GeneratedLiturgicalData.getTotalDays(),
+      'totalPrioritizedCelebrations': GeneratedLiturgicalData.getTotalPrioritizedCelebrations(),
+      'yearStart': GeneratedLiturgicalData.yearRange.start,
+      'yearEnd': GeneratedLiturgicalData.yearRange.end,
+    };
+  }
+
+  /// Search for celebrations by name (case-insensitive)
+  static List<LiturgicalDayData> searchCelebrations(String query, {int? year}) {
+    final searchQuery = query.toLowerCase();
+    final results = <LiturgicalDayData>[];
+    
+    if (year != null) {
+      // Search in specific year
+      final yearData = GeneratedLiturgicalData.getYearData(year);
+      if (yearData != null) {
+        results.addAll(
+          yearData.values.where((day) => 
+            day.celebration.name.toLowerCase().contains(searchQuery)
+          )
+        );
+      }
+    } else {
+      // Search across all years
+      for (final searchYear in GeneratedLiturgicalData.getAvailableYears()) {
+        final yearData = GeneratedLiturgicalData.getYearData(searchYear);
+        if (yearData != null) {
+          results.addAll(
+            yearData.values.where((day) => 
+              day.celebration.name.toLowerCase().contains(searchQuery)
+            )
+          );
+        }
+      }
+    }
+    
+    return results..sort((a, b) => a.date.compareTo(b.date));
+  }
+
+  /// Get next occurrence of a specific celebration
+  static LiturgicalDayData? getNextOccurrence(
+    String celebrationName, {
+    DateTime? fromDate,
+  }) {
+    final start = fromDate ?? DateTime.now();
+    final searchQuery = celebrationName.toLowerCase();
+    
+    // Search in the current year and next year
+    for (var year = start.year; year <= start.year + 1; year++) {
+      final yearData = GeneratedLiturgicalData.getYearData(year);
+      if (yearData == null) continue;
+      
+      final matches = yearData.values
+          .where((day) => 
+            day.celebration.name.toLowerCase().contains(searchQuery) &&
+            day.dateTime.isAfter(start)
+          )
+          .toList()
+          ..sort((a, b) => a.date.compareTo(b.date));
+      
+      if (matches.isNotEmpty) {
+        return matches.first;
+      }
+    }
+    
+    return null;
   }
 }

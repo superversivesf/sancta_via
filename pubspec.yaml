@@ -1,6 +1,6 @@
 name: liturgical_calendar
-description: Catholic liturgical calendar calculations and data with feast detection, liturgical seasons, and date calculations
-version: 1.0.0
+description: High-performance Catholic liturgical calendar with embedded Dart data for zero-overhead access to 12 years of complete liturgical information
+version: 2.0.0
 repository: https://github.com/YOUR_USERNAME/sancta-via
 
 environment:

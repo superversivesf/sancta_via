@@ -1,115 +1,77 @@
 import 'package:liturgical_calendar/liturgical_calendar.dart';
 
-/// Example implementation of LiturgicalDataLoader for demonstration
-class ExampleDataLoader implements LiturgicalDataLoader {
-  @override
-  Future<bool> hasData(String filename) async => filename == '2025.json';
-
-  @override
-  Future<String> loadIndexData() async {
-    // This would normally load from assets, files, or network
-    // For this example, we return minimal valid JSON
-    return '''
-{
-  "generatedAt": "2025-06-18T00:00:00.000Z",
-  "dataVersion": "1.0.0",
-  "romcalVersion": "1.3.0",
-  "years": [
-    {
-      "year": 2025,
-      "totalDays": 365,
-      "prioritizedCelebrations": 72,
-      "file": "2025.json"
-    }
-  ],
-  "totalYears": 1
-}
-''';
-  }
-
-  @override
-  Future<String> loadYearData(String filename) async {
-    // This would normally load the actual year data
-    // For this example, we return minimal valid JSON
-    return '''
-{
-  "metadata": {
-    "year": 2025,
-    "totalDays": 365,
-    "seasons": {},
-    "colors": {},
-    "types": {},
-    "prioritizedCelebrations": 72,
-    "generatedAt": "2025-06-18T00:00:00.000Z",
-    "dataVersion": "1.0.0",
-    "romcalVersion": "1.3.0"
-  },
-  "calendar": {
-    "2025-12-25": {
-      "date": "2025-12-25",
-      "season": "Christmas",
-      "seasonKey": "christmas",
-      "celebration": {
-        "key": "christmas",
-        "name": "The Nativity of the Lord",
-        "type": "SOLEMNITY",
-        "rank": "SOLEMNITY",
-        "color": "WHITE",
-        "colorName": "White",
-        "source": "GENERAL",
-        "prioritized": true,
-        "titles": ["Christmas Day"]
-      },
-      "liturgicalYear": {
-        "year": 2025,
-        "cycle": {"key": 1, "value": "C"},
-        "week": 52,
-        "day": 4,
-        "weekOfSeason": 1
-      },
-      "psalterWeek": {
-        "key": 1,
-        "value": "Week I"
-      }
-    }
-  }
-}
-''';
-  }
-}
-
 void main() async {
-  print('Liturgical Calendar Library Example');
-  print('===================================');
+  print('Liturgical Calendar Library Example - Embedded Data');
+  print('==================================================');
 
-  // Initialize the service with our example data loader
-  final dataLoader = ExampleDataLoader();
-  await LiturgicalCalendarService.initialize(dataLoader);
-
-  print('Service initialized successfully!');
+  // No initialization needed - data is embedded!
+  print('✅ Service ready immediately - no initialization required!');
   print('Available years: ${LiturgicalCalendarService.getAvailableYears()}');
 
+  // Show the performance benefits
+  final yearRange = LiturgicalCalendarService.getYearRange();
+  print('Year range: ${yearRange.start} - ${yearRange.end}');
+  print('Total days in dataset: ${GeneratedLiturgicalData.getTotalDays()}');
+  print('Total prioritized celebrations: ${GeneratedLiturgicalData.getTotalPrioritizedCelebrations()}');
+
   // Example: Get Christmas Day 2025
-  final christmas = await LiturgicalCalendarService.getDayForDate(
+  final christmas = LiturgicalCalendarService.getDayForDate(
     DateTime(2025, 12, 25),
   );
 
   if (christmas != null) {
-    print('\nChristmas Day 2025:');
+    print('\n🎄 Christmas Day 2025:');
     print('  Celebration: ${christmas.celebration.name}');
     print('  Rank: ${christmas.celebration.rank}');
     print('  Color: ${christmas.celebration.color}');
     print('  Season: ${christmas.season}');
+    print('  Prioritized: ${christmas.celebration.prioritized}');
   }
 
-  // Example: Check if service can handle current date gracefully
-  final today = await LiturgicalCalendarService.getCurrentDay();
+  // Example: Get today's liturgical information
+  final today = LiturgicalCalendarService.getCurrentDay();
   if (today != null) {
-    print('\nToday (${today.date}):');
+    print('\n📅 Today (${today.date}):');
     print('  ${today.displayName}');
+    print('  Season: ${today.season}');
+    print('  Color: ${today.celebration.color}');
+    print('  Rank: ${today.celebration.rank}');
   } else {
-    print('\nNo data available for today\'s date.');
+    print('\n❌ No data available for today\'s date (outside 2024-2035 range).');
   }
 
-  print('\nExample completed successfully!');
+  // Example: Get upcoming feasts and solemnities
+  print('\n⭐ Upcoming major celebrations (next 30 days):');
+  final upcomingFeasts = LiturgicalCalendarService.getUpcomingFeasts();
+  for (final feast in upcomingFeasts.take(5)) {
+    print('  ${feast.date}: ${feast.celebration.name} (${feast.celebration.rank})');
+  }
+
+  // Example: Search for specific celebrations
+  print('\n🔍 Search for "Mary" celebrations in 2025:');
+  final maryFeasts = LiturgicalCalendarService.searchCelebrations('Mary', year: 2025);
+  for (final feast in maryFeasts.take(3)) {
+    print('  ${feast.date}: ${feast.celebration.name}');
+  }
+
+  // Example: Get seasonal data
+  print('\n🕯️ Advent days in 2025:');
+  final adventDays = LiturgicalCalendarService.getDaysForSeason(2025, 'Advent');
+  print('  Found ${adventDays.length} days in Advent');
+  if (adventDays.isNotEmpty) {
+    print('  First day: ${adventDays.first.date}');
+    print('  Last day: ${adventDays.last.date}');
+  }
+
+  // Performance comparison
+  print('\n⚡ Performance Benefits:');
+  print('  ✅ Zero initialization time');
+  print('  ✅ No JSON parsing overhead');
+  print('  ✅ Compile-time data validation');
+  print('  ✅ Better tree-shaking (only used data included)');
+  print('  ✅ Type safety at compile time');
+  print('  ✅ Instant data access');
+
+  print('\n🎉 Example completed successfully!');
+  print('The liturgical calendar data is embedded as native Dart objects for maximum performance.');
 }

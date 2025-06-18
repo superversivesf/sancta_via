@@ -1,25 +1,27 @@
-/// Catholic liturgical calendar library with date calculations, feast detection, and liturgical data.
+/// High-performance Catholic liturgical calendar library with embedded Dart data.
 ///
-/// This library provides a comprehensive set of tools for working with the Catholic liturgical calendar,
-/// including date calculations, feast detection, liturgical seasons, and detailed daily liturgical information.
+/// This library provides zero-overhead access to Catholic liturgical calendar data
+/// by embedding all data directly as Dart objects, eliminating JSON parsing and 
+/// providing unprecedented performance.
 ///
 /// ## Basic Usage
 ///
 /// ```dart
 /// import 'package:liturgical_calendar/liturgical_calendar.dart';
 ///
-/// // Initialize with a data loader (implementation depends on platform)
-/// await LiturgicalCalendarService.initialize(myDataLoader);
-///
-/// // Get today's liturgical information
-/// final today = await LiturgicalCalendarService.getCurrentDay();
+/// // No initialization needed - data is embedded!
+/// final today = LiturgicalCalendarService.getCurrentDay();
 /// print('Today is ${today?.season}: ${today?.celebration.name}');
 ///
 /// // Get upcoming feasts
-/// final feasts = await LiturgicalCalendarService.getUpcomingFeasts();
+/// final feasts = LiturgicalCalendarService.getUpcomingFeasts();
 /// for (final feast in feasts) {
 ///   print('${feast.date}: ${feast.celebration.name}');
 /// }
+///
+/// // Advanced queries
+/// final maryFeasts = LiturgicalCalendarService.searchCelebrations('Mary');
+/// final adventDays = LiturgicalCalendarService.getDaysForSeason(2025, 'Advent');
 /// ```
 library;
 
@@ -37,7 +39,9 @@ export 'src/enums/celebration_rank.dart';
 
 // Services
 export 'src/services/liturgical_calendar_service.dart';
-export 'src/services/data_loader.dart';
+
+// Generated data (embedded Dart objects)
+export 'src/data/generated/generated_liturgical_data.dart';
 
 // Exceptions
 export 'src/exceptions/liturgical_calendar_exception.dart';
