@@ -1,0 +1,40 @@
+name: liturgical_calendar_riverpod
+description: Riverpod providers for liturgical_calendar with reactive state management, automatic date updates, and Flutter integration.
+version: 2.0.0
+repository: https://github.com/superversive-ca/sancta-via
+homepage: https://sancta-via.net
+
+# Package metadata for pub.dev
+topics:
+  - catholic
+  - liturgical
+  - calendar
+  - riverpod
+  - flutter
+
+# Funding information
+funding:
+  - https://github.com/sponsors/superversive-ca
+
+environment:
+  sdk: ^3.7.2
+  flutter: ">=3.7.2"
+
+dependencies:
+  flutter: 
+    sdk: flutter
+  liturgical_calendar:
+    path: ../liturgical_calendar
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  riverpod_generator: ^2.4.0
+  build_runner: ^2.4.7
+  test: ^1.24.0
+
+flutter:
+  # No assets needed - liturgical data is embedded!
