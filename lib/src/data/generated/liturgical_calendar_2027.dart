@@ -4,7 +4,10 @@
 // Data version: 1.0.0
 // RomCal version: 1.3.0
 
-import '../../../liturgical_calendar.dart';
+import '../../models/liturgical_day_data.dart';
+import '../../models/liturgical_celebration.dart';
+import '../../models/liturgical_cycle.dart';
+import '../../models/liturgical_year_info.dart';
 
 /// Liturgical calendar data for the year 2027
 /// 
