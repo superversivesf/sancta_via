@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:liturgical_calendar/liturgical_calendar.dart';
 import 'liturgical_providers.dart';
 
 /// Provider for liturgical color as Flutter Color
