@@ -6,7 +6,6 @@
 /// Run with: dart run example/current_day_example.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:liturgical_calendar_riverpod/liturgical_calendar_riverpod.dart';
 
 void main() {
@@ -59,14 +58,14 @@ class CurrentDayDemo extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(8),
                       gradient: LinearGradient(
                         colors: [
-                          liturgicalColor.withOpacity(0.1),
-                          liturgicalColor.withOpacity(0.05),
+                          liturgicalColor.withValues(alpha: 0.1),
+                          liturgicalColor.withValues(alpha: 0.05),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
                       border: Border.all(
-                        color: liturgicalColor.withOpacity(0.3),
+                        color: liturgicalColor.withValues(alpha: 0.3),
                         width: 2,
                       ),
                     ),

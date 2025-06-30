@@ -114,7 +114,7 @@ class CurrentDayCard extends ConsumerWidget {
                   margin: const EdgeInsets.only(top: 8),
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.2),
+                    color: color.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: const Text(
@@ -253,7 +253,7 @@ class ThisWeekCard extends ConsumerWidget {
                 margin: const EdgeInsets.symmetric(vertical: 2),
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: isToday ? color.withOpacity(0.2) : null,
+                  color: isToday ? color.withValues(alpha: 0.2) : null,
                   borderRadius: BorderRadius.circular(4),
                   border: isToday ? Border.all(color: color) : null,
                 ),
@@ -281,7 +281,7 @@ class ThisWeekCard extends ConsumerWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.3),
+                        color: color.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(3),
                       ),
                       child: Text(
@@ -363,7 +363,7 @@ class _SearchCardState extends ConsumerState<SearchCard> {
                   label: Text(result.celebration.rank),
                   backgroundColor: ref.watch(liturgicalColorByDateProvider(
                     DateTime.parse(result.date)
-                  )).withOpacity(0.3),
+                  )).withValues(alpha: 0.3),
                 ),
               )),
               
@@ -415,7 +415,7 @@ class AnalyticsCard extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withOpacity(0.1),
+                color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
