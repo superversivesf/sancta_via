@@ -1,6 +1,6 @@
-# Sancta Via Calendar App
+# Sancta Via Liturgical Calendar App
 
-A focused Catholic liturgical calendar application with beautiful interface and detailed feast information.
+A focused Catholic liturgical calendar application with beautiful interface and detailed feast information. This is a standalone Flutter app that utilizes the Sancta Via ecosystem packages hosted on GitHub.
 
 ## 🎯 Features
 
@@ -21,10 +21,11 @@ A focused Catholic liturgical calendar application with beautiful interface and 
 
 ## 🏗️ Architecture
 
-This app is built using the Sancta Via ecosystem packages:
+This app is built using the Sancta Via ecosystem packages hosted on GitHub:
 
-- `liturgical_calendar` - Core liturgical calendar engine
-- `liturgical_calendar_riverpod` - Reactive state management
+- [`sancta_via_liturgical_calendar`](https://github.com/superversivesf/sancta_via_liturgical_calendar) - Core liturgical calendar engine
+- [`sancta_via_liturgical_calendar_riverpod`](https://github.com/superversivesf/sancta_via_liturgical_calendar_riverpod) - Reactive state management
+- [`sancta_via_shared_ui`](https://github.com/superversivesf/sancta_via_shared_ui) - Shared UI components
 - Flutter with Material 3 design
 
 ## 🚀 Building and Running
@@ -35,11 +36,14 @@ This app is built using the Sancta Via ecosystem packages:
 
 ### Setup
 ```bash
-# From the monorepo root
-melos bootstrap
+# Clone the repository
+git clone https://github.com/superversivesf/sancta_via_liturgical_calendar_app.git
+cd sancta_via_liturgical_calendar_app
+
+# Get dependencies (this will fetch packages from GitHub)
+flutter pub get
 
 # Run the app
-cd apps/liturgical_calendar_app
 flutter run
 ```
 
@@ -97,9 +101,16 @@ lib/
 
 ### Package Dependencies
 ```yaml
-# Local packages
-liturgical_calendar: (path)
-liturgical_calendar_riverpod: (path)
+# Sancta Via packages (from GitHub)
+liturgical_calendar:
+  git:
+    url: https://github.com/superversivesf/sancta_via_liturgical_calendar.git
+liturgical_calendar_riverpod:
+  git:
+    url: https://github.com/superversivesf/sancta_via_liturgical_calendar_riverpod.git
+shared_ui:
+  git:
+    url: https://github.com/superversivesf/sancta_via_shared_ui.git
 
 # External packages  
 flutter_riverpod: ^2.6.1
@@ -112,6 +123,10 @@ flutter_staggered_animations: ^1.1.1
 - **Providers** - Riverpod state management
 - **Widgets** - Reusable UI components
 - **Config** - App-wide configuration
+
+## 🏗️ Building from Source
+
+This app was extracted from the [Sancta Via monorepo](https://github.com/superversive-ca/sancta-via) and configured to use the individual packages as Git dependencies. The packages are maintained separately to allow for modular development and reuse across different applications.
 
 ## 📄 License
 
