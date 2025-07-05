@@ -1,0 +1,743 @@
+{
+  "version": "2.0.0",
+  "generatedAt": "2025-06-20T10:30:00.000000",
+  "categoryGroups": [
+    {
+      "id": "essential",
+      "title": "Essential Prayers",
+      "description": "Core prayers every Catholic should know",
+      "icon": "auto_awesome",
+      "order": 1
+    },
+    {
+      "id": "daily",
+      "title": "Daily Prayers",
+      "description": "Prayers for different times of day",
+      "icon": "schedule",
+      "order": 2
+    },
+    {
+      "id": "liturgical",
+      "title": "Liturgical Prayers",
+      "description": "Prayers from the Mass and liturgy",
+      "icon": "church",
+      "order": 3
+    },
+    {
+      "id": "marian",
+      "title": "Marian Prayers",
+      "description": "Prayers to the Blessed Virgin Mary",
+      "icon": "favorite",
+      "order": 4
+    },
+    {
+      "id": "saints",
+      "title": "Saints & Devotions",
+      "description": "Prayers to saints and devotional prayers",
+      "icon": "stars",
+      "order": 5
+    },
+    {
+      "id": "sacramental",
+      "title": "Sacramental Prayers",
+      "description": "Prayers for the sacraments",
+      "icon": "water_drop",
+      "order": 6
+    }
+  ],
+  "categories": [
+    {
+      "id": "essential",
+      "title": "Essential Prayers",
+      "description": "Core prayers every Catholic should know",
+      "groupId": "essential"
+    },
+    {
+      "id": "morning",
+      "title": "Morning Prayers",
+      "description": "Prayers to start your day",
+      "groupId": "daily"
+    },
+    {
+      "id": "evening",
+      "title": "Evening Prayers",
+      "description": "Prayers to end your day",
+      "groupId": "daily"
+    },
+    {
+      "id": "mass",
+      "title": "Mass Prayers",
+      "description": "Prayers from the liturgy of the Mass",
+      "groupId": "liturgical"
+    },
+    {
+      "id": "marian",
+      "title": "Marian Prayers",
+      "description": "Prayers to the Blessed Virgin Mary",
+      "groupId": "marian"
+    },
+    {
+      "id": "saints",
+      "title": "Prayers to Saints",
+      "description": "Prayers to various saints",
+      "groupId": "saints"
+    },
+    {
+      "id": "confession",
+      "title": "Confession Prayers",
+      "description": "Prayers for the sacrament of reconciliation",
+      "groupId": "sacramental"
+    }
+  ],
+  "prayers": [
+    {
+      "id": "sign_of_the_cross",
+      "title": "Sign of the Cross",
+      "categories": ["essential"],
+      "description": "The Sign of the Cross is the most fundamental Catholic prayer and gesture, invoking the Trinity",
+      "tags": ["essential", "daily", "liturgical"],
+      "fileName": "sign_of_the_cross.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 10,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "our_father",
+      "title": "Our Father",
+      "categories": ["essential", "mass"],
+      "description": "The Lord's Prayer, taught by Jesus to his disciples",
+      "tags": ["daily", "essential", "liturgical"],
+      "fileName": "our_father.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 10,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "hail_mary",
+      "title": "Hail Mary",
+      "categories": ["essential", "marian"],
+      "description": "The Hail Mary combines the greeting of the Archangel Gabriel to Mary at the Annunciation with Elizabeth's greeting at the Visitation, followed by a prayer for Mary's intercession",
+      "tags": ["marian", "essential"],
+      "fileName": "hail_mary.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 9,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "glory_be",
+      "title": "Glory Be",
+      "categories": ["essential", "mass"],
+      "description": "The Glory Be (Gloria Patri) is a doxology, a short hymn of praise to the Trinity",
+      "tags": ["essential", "daily", "liturgical"],
+      "fileName": "glory_be.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 8,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "apostles_creed",
+      "title": "Apostles' Creed",
+      "categories": ["essential", "mass"],
+      "description": "The Apostles' Creed is a summary of the apostles' teachings and one of the oldest and most widely used statements of Christian faith",
+      "tags": ["essential", "creed", "liturgical"],
+      "fileName": "apostles_creed.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "nicene_creed",
+      "title": "Nicene Creed",
+      "categories": ["essential", "mass"],
+      "description": "The Nicene Creed is the most widely accepted statement of faith among Christian churches",
+      "tags": ["essential", "creed", "liturgical"],
+      "fileName": "nicene_creed.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 9,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "act_of_contrition",
+      "title": "Act of Contrition",
+      "categories": ["essential", "confession"],
+      "description": "The Act of Contrition is a prayer expressing sorrow for sin and is commonly recited during the Sacrament of Reconciliation (Confession)",
+      "tags": ["essential", "confession"],
+      "fileName": "act_of_contrition.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": "lent"
+    },
+    {
+      "id": "guardian_angel_prayer",
+      "title": "Guardian Angel Prayer",
+      "categories": ["essential"],
+      "description": "A simple prayer taught to children to invoke the protection and guidance of their guardian angel",
+      "tags": ["protection", "daily", "essential"],
+      "fileName": "guardian_angel_prayer.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "act_of_faith_hope_charity",
+      "title": "Act of Faith, Hope, and Charity",
+      "categories": ["essential"],
+      "description": "These three acts correspond to the theological virtues of faith, hope, and charity (love)",
+      "tags": ["essential", "virtues"],
+      "fileName": "act_of_faith_hope_charity.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "eternal_rest",
+      "title": "Eternal Rest (Prayer for the Dead)",
+      "categories": ["essential"],
+      "description": "This prayer is offered for the souls of the deceased, asking God to grant them eternal rest and the light of His presence",
+      "tags": ["essential", "deceased", "mercy"],
+      "fileName": "eternal_rest.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 4,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "morning_offering",
+      "title": "Morning Offering",
+      "categories": ["morning"],
+      "description": "The Morning Offering is a prayer said at the beginning of the day to dedicate all thoughts, words, and actions to God",
+      "tags": ["morning", "daily"],
+      "fileName": "morning_offering.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "morning_thanksgiving",
+      "title": "Morning Thanksgiving Prayer",
+      "categories": ["morning"],
+      "description": "A prayer of gratitude for safe rest and the gift of a new day",
+      "tags": ["morning", "thanksgiving", "traditional", "daily"],
+      "fileName": "morning_thanksgiving.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "morning_offering_mary",
+      "title": "Morning Offering Through Mary",
+      "categories": ["morning", "marian"],
+      "description": "Offering the day through the Immaculate Heart of Mary",
+      "tags": ["morning", "offering", "mary", "sacred_heart"],
+      "fileName": "morning_offering_mary.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "morning_offering_simple",
+      "title": "Simple Morning Offering",
+      "categories": ["morning"],
+      "description": "A simple, child-friendly morning offering",
+      "tags": ["morning", "offering", "simple", "children"],
+      "fileName": "morning_offering_simple.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 4,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "grace_before_meals",
+      "title": "Grace Before Meals",
+      "categories": ["morning", "evening"],
+      "description": "A traditional prayer said before meals to thank God for His provision and to ask His blessing on the food and those who will eat it",
+      "tags": ["daily", "meals", "thanksgiving"],
+      "fileName": "grace_before_meals.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 3,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "grace_after_meals",
+      "title": "Grace After Meals",
+      "categories": ["morning", "evening"],
+      "description": "This prayer of thanksgiving is said after meals to thank God for His providence and care",
+      "tags": ["daily", "meals", "thanksgiving"],
+      "fileName": "grace_after_meals.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 3,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "evening_thanksgiving",
+      "title": "Evening Thanksgiving Prayer",
+      "categories": ["evening"],
+      "description": "Formal evening prayer with thanksgiving, forgiveness, and intercession",
+      "tags": ["evening", "thanksgiving", "forgiveness", "intercession"],
+      "fileName": "evening_thanksgiving.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "evening_protection",
+      "title": "Evening Prayer for Protection",
+      "categories": ["evening"],
+      "description": "Prayer asking for God's protection during the night hours",
+      "tags": ["evening", "protection", "angels", "blessing"],
+      "fileName": "evening_protection.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 4,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_before_sleep",
+      "title": "Prayer Before Sleep",
+      "categories": ["evening"],
+      "description": "A simple evening prayer entrusting oneself to God's care during sleep",
+      "tags": ["evening", "sleep", "protection"],
+      "fileName": "prayer_before_sleep.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 4,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "children_bedtime_prayer",
+      "title": "Children's Bedtime Prayer (Four Angels)",
+      "categories": ["evening"],
+      "description": "Traditional children's prayer asking for angelic protection during sleep",
+      "tags": ["children", "bedtime", "angels", "protection"],
+      "fileName": "children_bedtime_prayer.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 3,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "bedtime_examination",
+      "title": "Bedtime Examination of Conscience",
+      "categories": ["evening"],
+      "description": "Bedtime prayer combining examination of conscience with thanksgiving",
+      "tags": ["bedtime", "examination", "forgiveness", "thanksgiving"],
+      "fileName": "bedtime_examination.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 4,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "away_in_manger_bedtime",
+      "title": "Be Near Me Lord Jesus (Bedtime Prayer)",
+      "categories": ["evening"],
+      "description": "Beloved bedtime prayer from the Christmas carol 'Away in a Manger'",
+      "tags": ["bedtime", "jesus", "children", "christmas"],
+      "fileName": "away_in_manger_bedtime.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 3,
+      "liturgicalSeason": "christmas"
+    },
+    {
+      "id": "compline_commendation",
+      "title": "Compline Commendation (Into Your Hands)",
+      "categories": ["evening"],
+      "description": "Traditional responsory from Compline echoing Christ's final words",
+      "tags": ["compline", "night", "commendation", "liturgical"],
+      "fileName": "compline_commendation.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "compline_protection",
+      "title": "Compline Prayer for Protection",
+      "categories": ["evening"],
+      "description": "Compline antiphon asking for protection during waking and sleeping",
+      "tags": ["compline", "protection", "watching", "peace"],
+      "fileName": "compline_protection.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "nunc_dimittis",
+      "title": "Nunc Dimittis (Song of Simeon)",
+      "categories": ["evening"],
+      "description": "The canticle of Simeon when he held the infant Jesus in the Temple",
+      "tags": ["nunc_dimittis", "simeon", "canticle", "peace"],
+      "fileName": "nunc_dimittis.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "compline_final_prayer",
+      "title": "Final Compline Prayer",
+      "categories": ["evening"],
+      "description": "The final prayer of Compline, balancing vigilance with peaceful rest",
+      "tags": ["compline", "final", "watching", "rest"],
+      "fileName": "compline_final_prayer.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "gloria_in_excelsis",
+      "title": "Gloria in Excelsis Deo",
+      "categories": ["mass"],
+      "description": "The Gloria is sung or recited during Mass on Sundays (except during Advent and Lent) and on solemnities and feasts",
+      "tags": ["liturgical", "mass", "praise"],
+      "fileName": "gloria_in_excelsis.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 9,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "sanctus",
+      "title": "Sanctus (Holy, Holy, Holy)",
+      "categories": ["mass"],
+      "description": "The Sanctus is sung or recited during every Mass just before the Eucharistic Prayer",
+      "tags": ["liturgical", "mass", "praise"],
+      "fileName": "sanctus.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 8,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "memorial_acclamation_1",
+      "title": "Memorial Acclamation A",
+      "categories": ["mass"],
+      "description": "We proclaim your Death, O Lord, and profess your Resurrection",
+      "tags": ["liturgical", "mass", "eucharist", "memorial"],
+      "fileName": "memorial_acclamation_1.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 8,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "memorial_acclamation_2",
+      "title": "Memorial Acclamation B",
+      "categories": ["mass"],
+      "description": "When we eat this Bread and drink this Cup",
+      "tags": ["liturgical", "mass", "eucharist", "memorial"],
+      "fileName": "memorial_acclamation_2.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 8,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "memorial_acclamation_3",
+      "title": "Memorial Acclamation C",
+      "categories": ["mass"],
+      "description": "Save us, Savior of the world",
+      "tags": ["liturgical", "mass", "eucharist", "memorial"],
+      "fileName": "memorial_acclamation_3.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 8,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "agnus_dei",
+      "title": "Lamb of God (Agnus Dei)",
+      "categories": ["mass"],
+      "description": "The Agnus Dei is sung or recited during the breaking of the bread at Mass, just before Communion",
+      "tags": ["liturgical", "mass", "communion"],
+      "fileName": "agnus_dei.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_before_mass",
+      "title": "Prayer Before Mass",
+      "categories": ["mass", "confession"],
+      "description": "This prayer helps prepare the soul for the celebration of Mass and reception of Holy Communion",
+      "tags": ["liturgical", "mass", "preparation"],
+      "fileName": "prayer_before_mass.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "anima_christi",
+      "title": "Anima Christi (Soul of Christ)",
+      "categories": ["mass"],
+      "description": "The beloved prayer asking for intimate union with Jesus after Communion",
+      "tags": ["communion", "eucharist", "thanksgiving", "union"],
+      "fileName": "anima_christi.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "suscipe_prayer",
+      "title": "Suscipe Prayer (Take and Receive)",
+      "categories": ["mass", "saints"],
+      "description": "St. Ignatius' prayer of complete surrender to God's will",
+      "tags": ["communion", "surrender", "st_ignatius", "abandonment"],
+      "fileName": "suscipe_prayer.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "memorare",
+      "title": "Memorare",
+      "categories": ["marian"],
+      "description": "The Memorare is a powerful prayer seeking the intercession of the Blessed Virgin Mary",
+      "tags": ["marian", "intercession"],
+      "fileName": "memorare.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "angelus",
+      "title": "Angelus",
+      "categories": ["marian", "morning", "evening"],
+      "description": "The Angelus is a devotional prayer commemorating the Incarnation",
+      "tags": ["marian", "daily", "morning", "noon", "evening"],
+      "fileName": "angelus.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": "ordinary"
+    },
+    {
+      "id": "regina_caeli",
+      "title": "Regina Caeli",
+      "categories": ["marian"],
+      "description": "The Regina Caeli (Queen of Heaven) is a Marian antiphon traditionally recited or sung during the Easter season (from Easter Sunday through Pentecost)",
+      "tags": ["marian", "easter", "seasonal"],
+      "fileName": "regina_caeli.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 8,
+      "liturgicalSeason": "easter"
+    },
+    {
+      "id": "hail_holy_queen",
+      "title": "Hail Holy Queen (Salve Regina)",
+      "categories": ["marian"],
+      "description": "The Salve Regina is one of the most beloved Marian antiphons, traditionally sung at the end of Compline (Night Prayer)",
+      "tags": ["marian", "intercession", "antiphon"],
+      "fileName": "hail_holy_queen.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "sub_tuum_praesidium",
+      "title": "Sub Tuum Praesidium (We Fly to Your Protection)",
+      "categories": ["marian"],
+      "description": "Sub Tuum Praesidium is believed to be the oldest known Marian prayer, with papyrus fragments dating to around 250-280 AD found in Egypt",
+      "tags": ["marian", "ancient", "protection"],
+      "fileName": "sub_tuum_praesidium.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 8,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_to_immaculate_heart",
+      "title": "Prayer to the Immaculate Heart of Mary",
+      "categories": ["marian"],
+      "description": "Devotion to the Immaculate Heart of Mary is closely linked with the Sacred Heart of Jesus",
+      "tags": ["marian", "devotion", "fatima"],
+      "fileName": "prayer_to_immaculate_heart.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_to_st_michael",
+      "title": "Prayer to St. Michael",
+      "categories": ["saints"],
+      "description": "The Prayer to St. Michael the Archangel is a powerful prayer for protection against evil",
+      "tags": ["protection", "saint", "archangel"],
+      "fileName": "prayer_to_st_michael.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 4,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_to_st_joseph",
+      "title": "Prayer to St. Joseph",
+      "categories": ["saints"],
+      "description": "St. Joseph is the patron saint of the universal Church, workers, fathers, and the dying",
+      "tags": ["saint", "patron", "protection"],
+      "fileName": "prayer_to_st_joseph.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "st_francis_peace_prayer",
+      "title": "Prayer of St. Francis (Peace Prayer)",
+      "categories": ["saints"],
+      "description": "The famous Peace Prayer capturing St. Francis' spirit of peace and service",
+      "tags": ["st_francis", "peace", "service", "love"],
+      "fileName": "st_francis_peace_prayer.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "st_francis_san_damiano",
+      "title": "Prayer of St. Francis Before the Crucifix",
+      "categories": ["saints"],
+      "description": "St. Francis' authentic prayer before the crucifix of San Damiano",
+      "tags": ["st_francis", "conversion", "san_damiano", "crucifix"],
+      "fileName": "st_francis_san_damiano.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "st_anthony_lost_things",
+      "title": "Prayer to St. Anthony for Lost Things",
+      "categories": ["saints"],
+      "description": "Traditional prayer asking St. Anthony's help in finding lost things",
+      "tags": ["st_anthony", "lost_things", "saint", "intercession"],
+      "fileName": "st_anthony_lost_things.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "st_anthony_powerful_intercession",
+      "title": "Powerful Prayer to St. Anthony",
+      "categories": ["saints"],
+      "description": "Prayer emphasizing St. Anthony's miraculous powers and relationship with the Infant Jesus",
+      "tags": ["st_anthony", "miracles", "intercession", "infant_jesus"],
+      "fileName": "st_anthony_powerful_intercession.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "st_therese_little_flower",
+      "title": "Prayer to St. Thérèse (The Little Flower)",
+      "categories": ["saints"],
+      "description": "Traditional prayer to the Little Flower asking for roses and favors",
+      "tags": ["st_therese", "little_flower", "roses", "little_way"],
+      "fileName": "st_therese_little_flower.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "st_therese_morning_offering",
+      "title": "St. Thérèse's Morning Offering",
+      "categories": ["saints", "morning"],
+      "description": "St. Thérèse's own morning offering prayer from her writings",
+      "tags": ["st_therese", "morning", "offering", "sacred_heart"],
+      "fileName": "st_therese_morning_offering.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_to_st_rita",
+      "title": "Prayer to St. Rita of Cascia",
+      "categories": ["saints"],
+      "description": "St. Rita of Cascia is known as the 'Saint of the Impossible' and patron of desperate, hopeless, and impossible causes",
+      "tags": ["saint", "impossible cases", "hope"],
+      "fileName": "prayer_to_st_rita.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "st_jude_novena",
+      "title": "Novena Prayer to St. Jude",
+      "categories": ["saints"],
+      "description": "Traditional novena prayer to St. Jude for hopeless causes",
+      "tags": ["st_jude", "hopeless_cases", "novena", "desperate"],
+      "fileName": "st_jude_novena.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "st_jude_glorious_apostle",
+      "title": "St. Jude, Glorious Apostle",
+      "categories": ["saints"],
+      "description": "Prayer acknowledging St. Jude's special privilege to help in desperate situations",
+      "tags": ["st_jude", "apostle", "forgotten", "desperate_situations"],
+      "fileName": "st_jude_glorious_apostle.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "st_teresa_bookmark_prayer",
+      "title": "St. Teresa's Bookmark Prayer",
+      "categories": ["saints"],
+      "description": "St. Teresa's famous prayer of abandonment to God's will",
+      "tags": ["st_teresa", "trust", "abandonment", "peace"],
+      "fileName": "st_teresa_bookmark_prayer.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "christ_has_no_body",
+      "title": "Christ Has No Body (Teresa of Avila Inspired)",
+      "categories": ["saints"],
+      "description": "Prayer emphasizing our role as Christ's hands, feet, and eyes in the world",
+      "tags": ["christ", "service", "body_of_christ", "mission"],
+      "fileName": "christ_has_no_body.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_to_st_teresa_intercession",
+      "title": "Prayer for St. Teresa's Intercession",
+      "categories": ["saints"],
+      "description": "Prayer asking for St. Teresa's intercession to grow in divine love",
+      "tags": ["st_teresa", "intercession", "divine_love", "mystical"],
+      "fileName": "prayer_to_st_teresa_intercession.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_to_sacred_heart",
+      "title": "Prayer to the Sacred Heart of Jesus",
+      "categories": ["saints"],
+      "description": "Devotion to the Sacred Heart of Jesus emphasizes God's boundless and passionate love for humanity",
+      "tags": ["devotion", "sacred heart", "love"],
+      "fileName": "prayer_to_sacred_heart.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "veni_creator_spiritus",
+      "title": "Veni Creator Spiritus (Come, Creator Spirit)",
+      "categories": ["saints"],
+      "description": "The Veni Creator Spiritus is one of the most ancient and revered hymns to the Holy Spirit",
+      "tags": ["holy spirit", "hymn", "ancient"],
+      "fileName": "veni_creator_spiritus.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_for_pope_formal",
+      "title": "Formal Prayer for the Pope",
+      "categories": ["saints"],
+      "description": "Formal liturgical prayer for the Pope from the Roman Missal",
+      "tags": ["pope", "church", "liturgical", "shepherd"],
+      "fileName": "prayer_for_pope_formal.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 4,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_for_pope_blessing",
+      "title": "Biblical Blessing for the Pope",
+      "categories": ["saints"],
+      "description": "Prayer combining biblical blessings for the Pope's protection and peace",
+      "tags": ["pope", "blessing", "biblical", "protection"],
+      "fileName": "prayer_for_pope_blessing.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 4,
+      "liturgicalSeason": null
+    }
+  ]
+}

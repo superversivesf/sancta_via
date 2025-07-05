@@ -1,0 +1,15 @@
+{
+  "id": "compline_final_prayer",
+  "title": "Final Compline Prayer",
+  "text": "Save us, Lord, while we are awake;\nprotect us while we sleep;\nthat we may keep watch with Christ\nand rest with him in peace.",
+  "translation": {
+    "latin": "Salva nos, Domine, vigilantes,\ncustodi nos dormientes,\nut vigilemus cum Christo,\net requiescamus in pace."
+  },
+  "attribution": "Liturgy of the Hours - Compline Conclusion",
+  "notes": "This is the final prayer of Compline, summarizing the entire night prayer service. It asks for salvation during waking hours and protection during sleep, while emphasizing our union with Christ in both states. This prayer beautifully balances active vigilance with peaceful rest.",
+  "tags": ["compline", "final", "watching", "rest", "christ"],
+  "difficulty": "simple",
+  "audience": ["adults", "teens"],
+  "liturgical_season": null,
+  "feast_day": null
+}

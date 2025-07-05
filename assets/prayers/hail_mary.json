@@ -1,0 +1,10 @@
+{
+  "id": "hail_mary",
+  "title": "Hail Mary",
+  "text": "Hail Mary, full of grace, the Lord is with thee.\nBlessed art thou among women,\nand blessed is the fruit of thy womb, Jesus.\nHoly Mary, Mother of God,\npray for us sinners,\nnow and at the hour of our death.\nAmen.",
+  "translation": {
+    "latin": "Ave Maria, gratia plena, Dominus tecum.\nBenedicta tu in mulieribus,\net benedictus fructus ventris tui, Iesus.\nSancta Maria, Mater Dei,\nora pro nobis peccatoribus,\nnunc et in hora mortis nostrae.\nAmen."
+  },
+  "attribution": "Based on Luke 1:28, 42",
+  "notes": "The Hail Mary combines the greeting of the Archangel Gabriel to Mary at the Annunciation with Elizabeth's greeting at the Visitation, followed by a prayer for Mary's intercession."
+}

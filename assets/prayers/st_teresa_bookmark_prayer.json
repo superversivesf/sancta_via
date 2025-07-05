@@ -1,0 +1,16 @@
+{
+  "id": "st_teresa_bookmark_prayer",
+  "title": "St. Teresa's Bookmark Prayer",
+  "text": "Let nothing disturb you.\nLet nothing frighten you.\nAll things are passing away:\nGod never changes.\nPatience obtains everything.\nWhoever has God lacks nothing;\nGod alone suffices.",
+  "translation": {
+    "spanish": "Nada te turbe,\nnada te espante,\ntodo se pasa,\nDios no se muda,\nla paciencia\ntodo lo alcanza;\nquien a Dios tiene\nnada le falta:\nsólo Dios basta.",
+    "latin": "Nihil te turbet,\nnihil te terreat,\nomnia transeunt:\nDeus non mutatur.\nPatientia\nomnia obtinet;\nqui Deum habet\nnihil ei deest:\nsolus Deus sufficit."
+  },
+  "attribution": "St. Teresa of Avila (1515-1582)",
+  "notes": "St. Teresa of Avila's famous bookmark prayer, found in her breviary after her death. This powerful prayer of abandonment to God's will has comforted countless souls through the centuries. St. Teresa was a Spanish Carmelite nun, mystic, and Doctor of the Church, renowned for her mystical experiences and reforms of the Carmelite order.",
+  "tags": ["st_teresa", "trust", "abandonment", "peace", "doctor_of_church"],
+  "difficulty": "simple",
+  "audience": ["adults", "teens"],
+  "liturgical_season": null,
+  "feast_day": "October 15"
+}

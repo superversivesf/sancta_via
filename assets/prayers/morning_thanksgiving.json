@@ -1,0 +1,15 @@
+{
+  "id": "morning_thanksgiving",
+  "title": "Morning Thanksgiving Prayer",
+  "text": "I give you thanks, O holy Lord,\nalmighty Father, eternal God,\nwho have brought me safely\nto the beginning of this day\nby your great goodness.\nBy that same love,\nsave me today from all sin and evil,\nthat all my words, thoughts, and actions\nmay be pleasing to you.\nI place myself, and all that I am,\ninto your most sacred hands.\nAmen.",
+  "translation": {
+    "latin": "Gratias tibi ago, Domine sancte,\nPater omnipotens, aeterne Deus,\nqui me in hunc diem\ntua magna bonitate perducere dignatus es.\nEadem caritate salva me hodie\nab omni peccato et malo,\nut omnia verba mea, cogitationes et actiones\ntibi placeant.\nMe ipsum, et omnia mea,\nin tuas sanctissimas manus commendo.\nAmen."
+  },
+  "attribution": "Traditional Catholic Morning Prayer",
+  "notes": "A prayer of gratitude for safe rest and the gift of a new day, traditionally said immediately upon waking. This prayer combines thanksgiving for God's protection through the night with a dedication of the day ahead.",
+  "tags": ["morning", "thanksgiving", "traditional", "daily", "protection"],
+  "difficulty": "simple",
+  "audience": ["adults", "teens"],
+  "liturgical_season": null,
+  "feast_day": null
+}

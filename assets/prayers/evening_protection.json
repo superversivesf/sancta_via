@@ -1,0 +1,15 @@
+{
+  "id": "evening_protection",
+  "title": "Evening Prayer for Protection",
+  "text": "Visit, we beseech you, O Lord, this dwelling,\nand drive far from it all the snares of the enemy.\nLet your holy angels dwell herein to preserve us in peace,\nand may your blessing be always upon us.\nThrough Jesus Christ our Lord.\nAmen.",
+  "translation": {
+    "latin": "Visita, quaesumus, Domine, habitationem istam,\net omnes insidias inimici ab ea longe repelle.\nAngeli tui sancti habitent in ea, qui nos in pace custodiant,\net benedictio tua sit super nos semper.\nPer Iesum Christum Dominum nostrum.\nAmen."
+  },
+  "attribution": "Traditional Catholic Prayer (from Compline)",
+  "notes": "This traditional evening prayer asks for God's protection during the night hours. It requests that angels guard the home and family, driving away all evil influences. This prayer is often used in the Liturgy of the Hours during Compline (Night Prayer).",
+  "tags": ["evening", "protection", "angels", "blessing", "compline"],
+  "difficulty": "simple",
+  "audience": ["adults", "teens", "families"],
+  "liturgical_season": null,
+  "feast_day": null
+}

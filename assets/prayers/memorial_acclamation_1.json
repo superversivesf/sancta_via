@@ -1,0 +1,15 @@
+{
+  "id": "memorial_acclamation_1",
+  "title": "Memorial Acclamation A",
+  "text": "We proclaim your Death, O Lord,\nand profess your Resurrection\nuntil you come again.",
+  "translation": {
+    "latin": "Mortem tuam annuntiamus, Domine,\net tuam resurrectionem confitemur,\ndonec venias."
+  },
+  "attribution": "Roman Missal (1970, revised 2011)",
+  "notes": "This is the first of the three Memorial Acclamations sung or recited by the congregation during the Eucharistic Prayer, immediately after the consecration. It proclaims the central mysteries of our faith: Christ's death, resurrection, and promised return (the Paschal Mystery).",
+  "tags": ["liturgical", "mass", "eucharist", "memorial", "acclamation"],
+  "difficulty": "simple",
+  "audience": ["adults", "teens", "children"],
+  "liturgical_season": null,
+  "feast_day": null
+}

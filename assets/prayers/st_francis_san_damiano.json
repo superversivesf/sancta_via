@@ -1,0 +1,15 @@
+{
+  "id": "st_francis_san_damiano",
+  "title": "Prayer of St. Francis Before the Crucifix",
+  "text": "Most high, glorious God,\nenlighten the darkness of my heart\nand give me true faith, certain hope, and perfect charity,\nsense and knowledge, Lord,\nthat I may carry out your holy and true command.\nAmen.",
+  "translation": {
+    "latin": "Altissime gloriosissime Deus,\nillumina tenebras cordis mei\net da mihi fidem rectam, spem certam et caritatem perfectam,\nsensum et cognitionem, Domine,\nut faciam sanctum et verum mandatum tuum.\nAmen."
+  },
+  "attribution": "St. Francis of Assisi (authentic prayer from his writings)",
+  "notes": "This is an authentic prayer of St. Francis, which he prayed before the crucifix of San Damiano when he heard Christ speak to him saying 'Go, Francis, and repair my house which, as you see, is falling into ruin.' This prayer led to his conversion and calling to rebuild the Church.",
+  "tags": ["st_francis", "conversion", "san_damiano", "crucifix", "calling"],
+  "difficulty": "simple",
+  "audience": ["adults", "teens"],
+  "liturgical_season": null,
+  "feast_day": "October 4"
+}
