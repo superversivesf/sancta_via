@@ -1,0 +1,59 @@
+name: liturgical_calendar_app
+description: A focused Catholic liturgical calendar app with beautiful interface and detailed feast information
+version: 1.0.0+1
+repository: https://github.com/superversivesf/sancta_via_liturgical_calendar_app
+homepage: https://sancta-via.net
+
+# Prevent accidental publishing to pub.dev - this is an app, not a package
+publish_to: 'none'
+
+environment:
+  sdk: ^3.7.2
+  flutter: ">=3.7.2"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Liturgical calendar packages
+  liturgical_calendar:
+    git:
+      url: https://github.com/superversivesf/sancta_via_liturgical_calendar.git
+  liturgical_calendar_riverpod:
+    git:
+      url: https://github.com/superversivesf/sancta_via_liturgical_calendar_riverpod.git
+  shared_ui:
+    git:
+      url: https://github.com/superversivesf/sancta_via_shared_ui.git
+
+  # State management
+  flutter_riverpod: ^2.6.1
+
+  # UI and utilities
+  cupertino_icons: ^1.0.8
+  intl: ^0.19.0
+  shared_preferences: ^2.3.2
+  
+  # Additional UI packages
+  flutter_staggered_animations: ^1.1.1
+  material_color_utilities: ^0.11.1
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+  integration_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/app_icon.png
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_icon.png"
+  min_sdk_android: 21
