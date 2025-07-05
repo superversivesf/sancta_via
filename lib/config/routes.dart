@@ -9,7 +9,7 @@ import '../features/novenas/views/novena_detail_screen.dart';
 import '../features/novenas/views/novena_configuration_screen.dart';
 import '../features/novenas/views/active_novena_dashboard.dart';
 import '../features/novenas/views/daily_novena_screen.dart';
-import '../features/settings/views/settings_screen.dart';
+import '../features/settings/views/novena_settings_screen.dart';
 import '../features/settings/views/theme_preview_screen.dart';
 import '../features/settings/views/pin_setup_screen.dart';
 import '../features/settings/views/privacy_policy_screen.dart';
@@ -44,7 +44,7 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/settings',
       name: RouteNames.settings,
-      builder: (context, state) => const SettingsScreen(),
+      builder: (context, state) => const NovenaSettingsScreen(),
       routes: [
         GoRoute(
           path: 'theme-preview',

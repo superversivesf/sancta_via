@@ -24,14 +24,18 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
     if (hasPin) {
       // Show PIN auth screen
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const PinAuthScreen()),
-      );
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const PinAuthScreen()),
+        );
+      }
     } else {
       // No PIN required, go to home
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
     }
   }
 

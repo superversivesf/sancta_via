@@ -250,7 +250,7 @@ class ActiveNovenaDashboard extends ConsumerWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -347,7 +347,7 @@ class ActiveNovenaDashboard extends ConsumerWidget {
             final dayNumber = index + 1;
             final isCompleted = activeNovena.isDayComplete(dayNumber);
             final isAccessible = activeNovena.canAccessDay(dayNumber);
-            final isCurrent = dayNumber == activeNovena.spiritualDay;
+            
             final isToday = dayNumber == activeNovena.spiritualDay && !activeNovena.isTodayComplete;
 
             return InkWell(
@@ -366,8 +366,8 @@ class ActiveNovenaDashboard extends ConsumerWidget {
                       : isToday
                           ? Theme.of(context).colorScheme.primaryContainer
                           : isAccessible
-                              ? Theme.of(context).colorScheme.surfaceVariant
-                              : Theme.of(context).colorScheme.surfaceVariant.withAlpha(128),
+                              ? Theme.of(context).colorScheme.surfaceContainerHighest
+                              : Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(128),
                   borderRadius: BorderRadius.circular(12),
                   border: isToday
                       ? Border.all(
@@ -460,7 +460,7 @@ class ActiveNovenaDashboard extends ConsumerWidget {
       decoration: BoxDecoration(
         color: notificationsReady 
             ? Theme.of(context).colorScheme.primaryContainer.withAlpha(128)
-            : Theme.of(context).colorScheme.surfaceVariant,
+            : Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withAlpha(51),

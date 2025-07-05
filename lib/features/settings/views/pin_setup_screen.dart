@@ -5,7 +5,7 @@ import '../../../widgets/pinput_modal_widget.dart';
 import '../../../services/auth_service.dart';
 import '../../../config/constants.dart';
 import '../../../utils/logger.dart';
-import '../providers/settings_providers.dart';
+import '../providers/novena_app_settings_provider.dart';
 
 class PinSetupScreen extends ConsumerStatefulWidget {
   const PinSetupScreen({super.key});
@@ -35,7 +35,9 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
 
       if (firstPin == null || !mounted) {
         // User cancelled or widget disposed
-        context.pop();
+        if (mounted) {
+          context.pop();
+        }
         return;
       }
 
@@ -50,7 +52,9 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
 
       if (confirmedPin == null || !mounted) {
         // User cancelled or widget disposed
-        context.pop();
+        if (mounted) {
+          context.pop();
+        }
         return;
       }
 
@@ -103,7 +107,7 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
       }
 
       // Update settings state
-      await ref.read(settingsProvider.notifier).refreshPinStatus();
+      await ref.read(novenaAppSettingsProvider.notifier).refreshPinStatus();
 
       // IMPORTANT: Force logout to ensure user must authenticate to access protected content
       AppLogger.debug("Forcing logout after PIN setup to clear authentication state", 'PIN_SETUP');

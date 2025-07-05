@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'config/routes.dart';
 import 'features/settings/providers/settings_providers.dart';
-import 'providers/theme_provider.dart';
+import 'providers/theme_provider.dart' as local_theme;
 import 'services/app_lifecycle_service.dart';
 import 'services/secure_storage_service.dart';
 import 'features/novenas/services/novena_notification_service.dart';
@@ -86,8 +86,9 @@ class NovenaCompanionApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(themeModeProvider);
-    final activeTheme = ref.watch(activeThemeProvider);
+    final themeMode = ref.watch(local_theme.themeModeProvider);
+    final lightTheme = ref.watch(local_theme.lightThemeProvider);
+    final darkTheme = ref.watch(local_theme.darkThemeProvider);
     final fontScale = ref.watch(settingsProvider).fontSize;
     
     // Initialize app lifecycle service for date change detection
@@ -97,7 +98,8 @@ class NovenaCompanionApp extends ConsumerWidget {
       title: 'Novena Companion',
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
-      theme: activeTheme,
+      theme: lightTheme,
+      darkTheme: darkTheme,
       routerConfig: appRouter,
       builder: (context, child) {
         return MediaQuery(

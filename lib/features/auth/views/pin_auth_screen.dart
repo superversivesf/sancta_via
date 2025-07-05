@@ -55,6 +55,8 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
     
     while (attempts < AppConstants.maxPinAttempts) {
       try {
+        if (!mounted) return;
+        
         final enteredPin = await PinputModalWidget.show(
           context: context,
           title: 'Sancta Via',
@@ -159,17 +161,23 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
       
       if (returnTo != null && returnTo.isNotEmpty) {
         AppLogger.debug("Navigating to intended destination: $returnTo", 'PIN_AUTH');
-        context.go(returnTo);
+        if (mounted) {
+          context.go(returnTo);
+        }
       } else {
         AppLogger.debug("No return destination, going to home", 'PIN_AUTH');
-        context.goNamed(RouteNames.home);
+        if (mounted) {
+          context.goNamed(RouteNames.home);
+        }
       }
       
     } catch (e, stackTrace) {
       AppLogger.error("Navigation error after PIN auth", e, stackTrace, 'PIN_AUTH');
       // Fallback to home
       try {
-        context.goNamed(RouteNames.home);
+        if (mounted) {
+          context.goNamed(RouteNames.home);
+        }
       } catch (fallbackError) {
         AppLogger.error("Fallback navigation failed", fallbackError, null, 'PIN_AUTH');
       }
@@ -199,7 +207,7 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
     );
     
     // After lockout modal is dismissed, go back to home
-    if (mounted) {
+    if (mounted && context.mounted) {
       context.go('/');
     }
   }

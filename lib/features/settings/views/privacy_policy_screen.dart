@@ -314,11 +314,13 @@ For full details, please view the complete privacy policy in the app.
       final uri = Uri.parse(url);
       // Using url_launcher which is already in pubspec.yaml
       final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
-      if (!launched) {
+      if (!launched && context.mounted) {
         _showUrlError(context, url);
       }
     } catch (e) {
-      _showUrlError(context, url);
+      if (context.mounted) {
+        _showUrlError(context, url);
+      }
     }
   }
 
