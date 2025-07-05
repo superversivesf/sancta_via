@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_ui/shared_ui.dart';
-import 'package:liturgical_calendar_riverpod/liturgical_calendar_riverpod.dart';
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'features/examination/views/examination_list_screen.dart';

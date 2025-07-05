@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:liturgical_calendar_riverpod/liturgical_calendar_riverpod.dart';
+import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import '../../features/examination/providers/examination_provider.dart';
 import '../../features/examination/providers/examination_session_provider.dart';
 import '../../config/constants.dart';

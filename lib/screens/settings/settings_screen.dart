@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_ui/shared_ui.dart';
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import '../../providers/app_settings_provider.dart';
 import '../../providers/text_scaling_provider.dart';
 import '../../widgets/font_size_slider.dart';

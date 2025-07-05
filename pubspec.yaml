@@ -32,15 +32,15 @@ dependencies:
     sdk: flutter
 
   # Sancta Via packages from GitHub
-  shared_ui:
+  sancta_via_shared_ui:
     git:
       url: https://github.com/superversivesf/sancta_via_shared_ui.git
       ref: main
-  liturgical_calendar:
+  sancta_via_liturgical_calendar:
     git:
       url: https://github.com/superversivesf/sancta_via_liturgical_calendar.git
-      ref: main
-  liturgical_calendar_riverpod:
+      ref: v2.0.0
+  sancta_via_liturgical_calendar_riverpod:
     git:
       url: https://github.com/superversivesf/sancta_via_liturgical_calendar_riverpod.git
       ref: main
