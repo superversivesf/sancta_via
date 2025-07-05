@@ -1,3 +1,5 @@
+# Flutter App .gitignore
+
 # Miscellaneous
 *.class
 *.log
@@ -18,6 +20,7 @@ migrate_working_dir/
 *.iws
 .idea/
 
+# VS Code
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
@@ -43,3 +46,113 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# iOS build artifacts
+/ios/build/
+/ios/DerivedData/
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Flutter.podspec
+/ios/Flutter/Generated.xcconfig
+/ios/Flutter/app.flx
+/ios/Flutter/app.zip
+/ios/Flutter/flutter_assets/
+/ios/Flutter/flutter_export_environment.sh
+/ios/ServiceDefinitions.json
+/ios/Runner/GeneratedPluginRegistrant.*
+
+# macOS build artifacts
+/macos/build/
+/macos/Flutter/GeneratedPluginRegistrant.swift
+
+# Windows build artifacts
+/windows/flutter/generated_plugin_registrant.cc
+/windows/flutter/generated_plugin_registrant.h
+
+# Linux build artifacts
+/linux/flutter/generated_plugin_registrant.cc
+/linux/flutter/generated_plugin_registrant.h
+
+# Web build artifacts
+/web/packages/
+
+# Coverage
+coverage/
+
+# Test related
+test/.test_coverage.dart
+test_driver/screenshots/
+
+# Firebase
+/android/app/google-services.json
+/ios/Runner/GoogleService-Info.plist
+/macos/Runner/GoogleService-Info.plist
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.staging
+.env.production
+
+# Certificates and keys
+*.p12
+*.key
+*.mobileprovision
+*.jks
+keystore.properties
+key.properties
+
+# Generated files
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+
+# Documentation output
+doc/api/
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Backup files
+*.bak
+*.backup
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Package managers
+node_modules/
+.npm
+.yarn-integrity
+
+# Editor directories and files
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+*.sublime-workspace
+*.sublime-project
+
+# Flutter version and channel override
+.flutter-version
+.fvm/
+
+# Melos generated files
+melos_*.iml
