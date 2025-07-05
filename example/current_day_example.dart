@@ -6,7 +6,7 @@
 /// Run with: dart run example/current_day_example.dart
 
 import 'package:flutter/material.dart';
-import 'package:liturgical_calendar_riverpod/liturgical_calendar_riverpod.dart';
+import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 
 void main() {
   runApp(

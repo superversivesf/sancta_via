@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:liturgical_calendar/liturgical_calendar.dart';
+import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 import 'liturgical_providers.dart';
 
 /// Provider for major feasts (Christmas, Easter, etc.)

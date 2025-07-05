@@ -1,6 +1,6 @@
-/// Riverpod providers for liturgical_calendar with reactive state management.
+/// Riverpod providers for sancta_via_liturgical_calendar with reactive state management.
 ///
-/// This library provides comprehensive Riverpod providers for the liturgical_calendar
+/// This library provides comprehensive Riverpod providers for the sancta_via_liturgical_calendar
 /// package, enabling reactive Flutter apps that automatically update when liturgical
 /// data changes. Perfect for Catholic apps that need to respond to date changes,
 /// seasonal transitions, and feast day occurrences.
@@ -19,7 +19,7 @@
 ///
 /// ```dart
 /// import 'package:flutter_riverpod/flutter_riverpod.dart';
-/// import 'package:liturgical_calendar_riverpod/liturgical_calendar_riverpod.dart';
+/// import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 ///
 /// class LiturgicalWidget extends ConsumerWidget {
 ///   @override
@@ -65,7 +65,7 @@
 /// - `nextMajorCelebrationProvider` - Next important celebration
 /// - `liturgicalRemindersProvider` - Upcoming celebration reminders
 ///
-library liturgical_calendar_riverpod;
+library sancta_via_liturgical_calendar_riverpod;
 
 // Core liturgical providers
 export 'src/providers/liturgical_providers.dart';
@@ -76,8 +76,8 @@ export 'src/providers/ui_providers.dart';
 // Utility and specialized providers
 export 'src/providers/utility_providers.dart';
 
-// Re-export the base liturgical_calendar for convenience
-export 'package:liturgical_calendar/liturgical_calendar.dart';
+// Re-export the base sancta_via_liturgical_calendar for convenience
+export 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 
 // Re-export riverpod for convenience
 export 'package:flutter_riverpod/flutter_riverpod.dart'
