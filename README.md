@@ -1,9 +1,8 @@
-# Liturgical Calendar
+# Sancta Via Liturgical Calendar
 
 A comprehensive Catholic liturgical calendar library for Dart and Flutter with **embedded data** for zero-overhead performance.
 
-[![Pub Package](https://img.shields.io/pub/v/liturgical_calendar.svg)](https://pub.dev/packages/liturgical_calendar)
-[![Dart SDK Version](https://badgen.net/pub/sdk-version/liturgical_calendar)](https://pub.dev/packages/liturgical_calendar)
+Part of the **Sancta Via Catholic Apps Ecosystem**.
 
 ## 🚀 **Zero-Overhead Performance**
 
@@ -31,7 +30,7 @@ This package provides the **fastest possible** access to liturgical calendar dat
 **Zero initialization, maximum performance:**
 
 ```dart
-import 'package:liturgical_calendar/liturgical_calendar.dart';
+import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 
 void main() {
   // Ready immediately - no initialization needed!
@@ -56,7 +55,7 @@ void main() {
 **Direct access to generated data for custom implementations:**
 
 ```dart
-import 'package:liturgical_calendar/liturgical_calendar.dart';
+import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 
 void main() {
   // Direct access to generated data structures
@@ -151,12 +150,8 @@ class LiturgicalWidget extends StatelessWidget {
 The embedded data is generated from authoritative sources:
 
 ```bash
-# Generate latest liturgical data
-cd tools/romcal_integration
-npm run generate-dart
-
-# Or using melos from project root
-melos run build:liturgical-dart
+# Generate latest liturgical data (run from package root)
+./build_data.sh
 ```
 
 **Source:** [RomCal 1.3.0](https://github.com/romcal/romcal) - Official Roman Calendar implementation
@@ -167,7 +162,15 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  liturgical_calendar: ^1.0.0
+  sancta_via_liturgical_calendar:
+    git:
+      url: https://github.com/superversivesf/sancta_via_liturgical_calendar.git
+      ref: v2.0.0  # Use specific version tag
+```
+
+Then run:
+```bash
+dart pub get
 ```
 
 **No additional setup required** - liturgical data is embedded in the package!
@@ -199,9 +202,9 @@ dart run example/liturgical_calendar_example.dart
 
 ## 📚 **Documentation**
 
-- [API Documentation](https://pub.dev/documentation/liturgical_calendar/latest/)
 - [Generated Data README](lib/src/data/generated/README.md)
 - [Examples](example/)
+- [RomCal Integration](tools/romcal_integration/)
 
 ## ⚡ **Why Embedded Data?**
 
@@ -217,9 +220,24 @@ Traditional approaches load liturgical data from JSON files or APIs, creating:
 - ✅ Zero dependencies
 - ✅ Optimal performance
 
+## 🏗️ **Part of Sancta Via Ecosystem**
+
+This package is part of the broader Sancta Via Catholic Apps ecosystem:
+
+- `sancta_via_liturgical_calendar` - Core liturgical calendar (this package)
+- `sancta_via_liturgical_calendar_riverpod` - Riverpod providers for reactive state
+- `sancta_via_shared_ui` - Shared UI components with liturgical theming
+- Various Catholic prayer and devotion apps
+
 ## 🤝 **Contributing**
 
-Contributions welcome! Please read our [Contributing Guide](../../CONTRIBUTING.md).
+Contributions welcome! Please:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
 
 ## 📄 **License**
 
@@ -228,3 +246,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ---
 
 **Building the future of Catholic apps with zero-overhead liturgical data.** 🙏✨
+*Part of the Sancta Via Catholic Apps Ecosystem*

@@ -1,7 +1,7 @@
 #!/usr/bin/env dart
 
 import 'dart:io';
-import '../lib/liturgical_calendar.dart';
+import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 
 /// Validation script for generated liturgical data
 /// 
@@ -193,7 +193,7 @@ void main() async {
     });
   });
 
-  print('\n' + '=' * 50);
+  print('\n${'=' * 50}');
   print('📊 VALIDATION RESULTS');
   print('=' * 50);
   

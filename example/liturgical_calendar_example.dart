@@ -1,4 +1,4 @@
-import 'package:liturgical_calendar/liturgical_calendar.dart';
+import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 
 void main() async {
   print('Liturgical Calendar Library Example - Embedded Data');

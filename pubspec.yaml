@@ -1,7 +1,7 @@
-name: liturgical_calendar
+name: sancta_via_liturgical_calendar
 description: High-performance Catholic liturgical calendar with embedded Dart data for zero-overhead access to 12 years of complete liturgical information
 version: 2.0.0
-repository: https://github.com/superversive-ca/sancta-via
+repository: https://github.com/superversivesf/sancta_via_liturgical_calendar
 homepage: https://sancta-via.net
 
 # Package metadata for pub.dev
@@ -11,6 +11,7 @@ topics:
   - calendar
   - romcal
   - church
+  - sancta-via
 
 # Funding information
 funding:

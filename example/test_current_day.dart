@@ -1,7 +1,7 @@
 /// Quick test to verify the liturgical calendar service is working
 /// Run with: dart run example/test_current_day.dart
 
-import '../lib/liturgical_calendar.dart';
+import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 
 void main() {
   print('🔍 Testing Liturgical Calendar Service...\n');
@@ -74,6 +74,6 @@ void main() {
   print('✅ Zero-overhead performance with embedded data');
   
   print('\n🚀 READY TO USE IN YOUR APPS!');
-  print('Import: package:liturgical_calendar_riverpod/liturgical_calendar_riverpod.dart');
+  print('Import: package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart');
   print('Provider: currentLiturgicalDayProvider');
 }
