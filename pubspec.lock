@@ -128,13 +128,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
-  liturgical_calendar:
-    dependency: "direct main"
-    description:
-      path: "../liturgical_calendar"
-      relative: true
-    source: path
-    version: "2.0.0"
   matcher:
     dependency: transitive
     description:
@@ -215,6 +208,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.1"
+  sancta_via_liturgical_calendar:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "v2.0.0"
+      resolved-ref: fc12bddf8161a01265b336cc03b0609d073ca70e
+      url: "https://github.com/superversivesf/sancta_via_liturgical_calendar.git"
+    source: git
+    version: "2.0.0"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -365,5 +367,5 @@ packages:
     source: hosted
     version: "1.1.0"
 sdks:
-  dart: ">=3.7.0 <4.0.0"
+  dart: ">=3.7.2 <4.0.0"
   flutter: ">=3.27.0"

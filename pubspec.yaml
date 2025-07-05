@@ -1,7 +1,21 @@
-name: shared_ui
-description: Shared UI components for Sancta Via ecosystem
+name: sancta_via_shared_ui
+description: Shared UI components for Sancta Via ecosystem with liturgical theming and responsive design
 version: 1.0.0
-publish_to: none
+repository: https://github.com/superversivesf/sancta_via_shared_ui
+homepage: https://sancta-via.net
+
+# Package metadata for pub.dev
+topics:
+  - catholic
+  - flutter
+  - ui
+  - theme
+  - liturgical
+  - sancta-via
+
+# Funding information
+funding:
+  - https://github.com/sponsors/superversive-ca
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -12,8 +26,10 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^2.5.1
   shared_preferences: ^2.2.2
-  liturgical_calendar:
-    path: ../liturgical_calendar
+  sancta_via_liturgical_calendar:
+    git:
+      url: https://github.com/superversivesf/sancta_via_liturgical_calendar.git
+      ref: v2.0.0
 
 dev_dependencies:
   flutter_test:

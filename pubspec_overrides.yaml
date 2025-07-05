@@ -1,4 +1,0 @@
-# melos_managed_dependency_overrides: liturgical_calendar
-dependency_overrides:
-  liturgical_calendar:
-    path: ../liturgical_calendar

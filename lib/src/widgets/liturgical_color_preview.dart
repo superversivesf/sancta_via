@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:liturgical_calendar/liturgical_calendar.dart';
+import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 import '../providers/theme_providers.dart';
 import '../extensions/liturgical_color_extensions.dart';
 import '../extensions/theme_extensions.dart';
