@@ -1,0 +1,70 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-05-22",
+  "examinations": [
+    {
+      "id": "beatitudes",
+      "title": "Examination Based on the Beatitudes",
+      "description": "A spiritual examination of conscience structured around Jesus's teachings on the Beatitudes from the Sermon on the Mount, guiding reflection on how we embody these teachings in daily life.",
+      "source": "Gospel of Matthew 5:3-10",
+      "target_audience": "All Catholics",
+      "file_name": "beatitudes.json"
+    },
+    {
+      "id": "children",
+      "title": "Examination of Conscience for Children",
+      "description": "A simple and child-friendly examination to help children prepare for confession, using language and examples they can understand.",
+      "source": "Adapted from Traditional Catholic Teaching for Children",
+      "target_audience": "Children (ages 7-12)",
+      "file_name": "children.json"
+    },
+    {
+      "id": "eucharistic",
+      "title": "Eucharistic Examination of Conscience",
+      "description": "An examination specifically focused on preparing to receive the Eucharist worthily and growing in appreciation of this Most Blessed Sacrament.",
+      "source": "Based on Catholic Teaching on the Eucharist",
+      "target_audience": "All Catholics",
+      "file_name": "eucharistic.json"
+    },
+    {
+      "id": "pope-francis",
+      "title": "Pope Francis Examination of Conscience",
+      "description": "An examination inspired by Pope Francis' teachings on mercy, care for creation, family, social justice, and the joy of the Gospel.",
+      "source": "Based on Pope Francis' Teachings and Writings",
+      "target_audience": "All Catholics",
+      "file_name": "pope-francis.json"
+    },
+    {
+      "id": "st-francis-de-sales",
+      "title": "St. Francis de Sales Examination of Conscience",
+      "description": "A gentle but thorough examination focusing on everyday virtues and habits, based on the spirituality of St. Francis de Sales and his 'Introduction to the Devout Life'.",
+      "source": "St. Francis de Sales",
+      "target_audience": "All Catholics",
+      "file_name": "st-francis-de-sales.json"
+    },
+    {
+      "id": "ten-commandments",
+      "title": "Traditional Examination Based on Ten Commandments",
+      "description": "A thorough examination of conscience based on the Ten Commandments, suitable for adults preparing for confession.",
+      "source": "Traditional Catholic Examination",
+      "target_audience": "Adults",
+      "file_name": "ten-commandments.json"
+    },
+    {
+      "id": "test-examination",
+      "title": "Test Examination of Conscience",
+      "description": "A simplified examination for testing purposes with just 3 sections and 2 questions each.",
+      "source": "Testing Purposes",
+      "target_audience": "Developers",
+      "file_name": "test-examination.json"
+    },
+    {
+      "id": "virtues-and-vices",
+      "title": "Examination Based on Seven Virtues and Vices",
+      "description": "A thorough examination of conscience structured around the seven virtues (theological and cardinal) and the seven deadly sins, helping you reflect on your internal dispositions.",
+      "source": "Traditional Catholic Teaching",
+      "target_audience": "Adults and Young Adults",
+      "file_name": "virtues-and-vices.json"
+    }
+  ]
+}

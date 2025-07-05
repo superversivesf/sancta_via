@@ -1,0 +1,241 @@
+{
+  "id": "eucharistic",
+  "title": "Eucharistic Examination of Conscience",
+  "description": "An examination specifically focused on preparing to receive the Eucharist worthily and growing in appreciation of this Most Blessed Sacrament.",
+  "source": "Based on Catholic Teaching on the Eucharist",
+  "target_audience": "All Catholics",
+  "categories": [
+    {
+      "id": "belief",
+      "title": "Faith in the Real Presence",
+      "description": "Reflecting on our belief in Christ's true presence in the Eucharist.",
+      "items": [
+        {
+          "id": "belief-1",
+          "text": "Have I doubted or denied that Jesus is truly present—Body, Blood, Soul, and Divinity—in the Eucharist?",
+          "clarification": "The Church teaches that in the Eucharist, Christ is present in a unique way that transforms the bread and wine into His Body and Blood."
+        },
+        {
+          "id": "belief-2",
+          "text": "Have I failed to acknowledge the Eucharist as the 'source and summit' of Christian life?"
+        },
+        {
+          "id": "belief-3",
+          "text": "Have I approached Communion routinely, without awareness of the sacred gift I am receiving?"
+        },
+        {
+          "id": "belief-4",
+          "text": "Have I taken time to ponder the mystery of the Eucharist and grow in my understanding of this sacrament?"
+        },
+        {
+          "id": "belief-5",
+          "text": "Have I neglected to show proper reverence to the Blessed Sacrament through genuflection, silence, or adoration?"
+        },
+        {
+          "id": "belief-6",
+          "text": "Have I spoken about the Eucharist with reverence and defended this teaching when challenged?"
+        }
+      ]
+    },
+    {
+      "id": "preparation",
+      "title": "Preparation for Receiving Communion",
+      "description": "Considering how we prepare ourselves to receive the Eucharist worthily.",
+      "items": [
+        {
+          "id": "prep-1",
+          "text": "Have I received Communion while conscious of unconfessed mortal sin?",
+          "clarification": "The Church teaches that we must be in a state of grace to receive Communion worthily (1 Cor 11:27-29)."
+        },
+        {
+          "id": "prep-2",
+          "text": "Have I observed the one-hour fast before receiving Communion (unless exempted for medical reasons)?"
+        },
+        {
+          "id": "prep-3",
+          "text": "Have I attended Mass hastily or distractedly, without preparing my heart to encounter Christ?"
+        },
+        {
+          "id": "prep-4",
+          "text": "Have I arrived late to Mass without good reason or left early before the final blessing?"
+        },
+        {
+          "id": "prep-5",
+          "text": "Have I dressed modestly and appropriately for Mass, recognizing I am entering God's house?"
+        },
+        {
+          "id": "prep-6",
+          "text": "Have I taken time for prayer before Mass to prepare my heart and mind?"
+        },
+        {
+          "id": "prep-7",
+          "text": "Have I approached the altar with reverence and received the Eucharist with attention and devotion?"
+        },
+        {
+          "id": "prep-8",
+          "text": "Have I allowed myself to be distracted during Mass by my phone, idle thoughts, or conversations?"
+        }
+      ]
+    },
+    {
+      "id": "thanksgiving",
+      "title": "Thanksgiving After Communion",
+      "description": "Reflecting on how we express gratitude for the gift of the Eucharist.",
+      "items": [
+        {
+          "id": "thanks-1",
+          "text": "Have I taken time for prayer and thanksgiving after receiving Communion?",
+          "clarification": "The moments after receiving Communion are precious for intimate prayer with Christ truly present within us."
+        },
+        {
+          "id": "thanks-2",
+          "text": "Have I left Mass immediately after Communion without grave reason?"
+        },
+        {
+          "id": "thanks-3",
+          "text": "Have I expressed gratitude to God for the gift of the Eucharist?"
+        },
+        {
+          "id": "thanks-4",
+          "text": "Have I rushed through or neglected post-Communion reflection?"
+        },
+        {
+          "id": "thanks-5",
+          "text": "Have I asked Jesus to transform me through His presence within me?"
+        }
+      ]
+    },
+    {
+      "id": "communion",
+      "title": "Communion with the Church",
+      "description": "Examining our unity with the Church that flows from the Eucharist.",
+      "items": [
+        {
+          "id": "communion-1",
+          "text": "Have I maintained communion with the Church by accepting all her teachings?",
+          "clarification": "The Eucharist both signifies and brings about the unity of the Church. Receiving Communion implies being in communion with the Church's faith."
+        },
+        {
+          "id": "communion-2",
+          "text": "Have I deliberately rejected Church teachings while still presenting myself for Communion?"
+        },
+        {
+          "id": "communion-3",
+          "text": "Have I prayed for the unity of all Christians, which the Eucharist signifies and promotes?"
+        },
+        {
+          "id": "communion-4",
+          "text": "Have I fostered division in my parish community through gossip, criticism, or factionalism?"
+        },
+        {
+          "id": "communion-5",
+          "text": "Have I prayed for the Pope, my bishop, and clergy in their ministry of uniting the Church?"
+        },
+        {
+          "id": "communion-6",
+          "text": "Have I made efforts to heal divisions and promote reconciliation in my family and community?"
+        }
+      ]
+    },
+    {
+      "id": "sunday",
+      "title": "Honoring the Lord's Day",
+      "description": "Reflecting on how we observe Sunday as a day centered on the Eucharist.",
+      "items": [
+        {
+          "id": "sunday-1",
+          "text": "Have I missed Mass on Sundays or Holy Days of Obligation without serious reason?",
+          "clarification": "The Sunday Eucharist is the foundation and confirmation of all Christian practice, which is why the Church teaches it is a grave obligation."
+        },
+        {
+          "id": "sunday-2",
+          "text": "Have I treated Sunday as a day for the Lord, centered on the Eucharist and rest?"
+        },
+        {
+          "id": "sunday-3",
+          "text": "Have I unnecessarily engaged in work or activities that hinder proper observance of Sunday?"
+        },
+        {
+          "id": "sunday-4",
+          "text": "Have I helped others, especially family members, to participate in Sunday Mass?"
+        },
+        {
+          "id": "sunday-5",
+          "text": "Have I made Sunday a day of family togetherness, joy, and renewal?"
+        },
+        {
+          "id": "sunday-6",
+          "text": "Have I extended Sunday worship into works of mercy and service to others?"
+        }
+      ]
+    },
+    {
+      "id": "living",
+      "title": "Living a Eucharistic Life",
+      "description": "Considering how we extend the grace of the Eucharist into our daily lives.",
+      "items": [
+        {
+          "id": "living-1",
+          "text": "Have I allowed the Eucharist to transform my life, becoming more giving and self-sacrificial?",
+          "clarification": "The Eucharist is not just a sacred moment during Mass, but should transform our entire lives to be more Christ-like."
+        },
+        {
+          "id": "living-2",
+          "text": "Have I lived Monday through Saturday in a way that contradicts what I profess and receive on Sunday?"
+        },
+        {
+          "id": "living-3",
+          "text": "Have I shared with others, especially the poor and needy, reflecting Christ's gift of Himself?"
+        },
+        {
+          "id": "living-4",
+          "text": "Have I recognized Christ in the poor, the suffering, and the marginalized?"
+        },
+        {
+          "id": "living-5",
+          "text": "Have I worked to build a more just society, inspired by the communion I share in the Eucharist?"
+        },
+        {
+          "id": "living-6",
+          "text": "Have I allowed the peace of Christ received in Communion to shape how I treat others?"
+        },
+        {
+          "id": "living-7",
+          "text": "Have I been a witness to others of the joy and transformation that comes from the Eucharist?"
+        }
+      ]
+    },
+    {
+      "id": "adoration",
+      "title": "Eucharistic Adoration and Devotion",
+      "description": "Reflecting on our devotion to Christ in the Blessed Sacrament outside of Mass.",
+      "items": [
+        {
+          "id": "adoration-1",
+          "text": "Have I made time to visit Jesus in the Blessed Sacrament for adoration when possible?",
+          "clarification": "Eucharistic adoration extends and intensifies the communion with Christ begun at Mass."
+        },
+        {
+          "id": "adoration-2",
+          "text": "Have I encouraged others to discover the gift of Eucharistic adoration?"
+        },
+        {
+          "id": "adoration-3",
+          "text": "Have I participated in Eucharistic processions or devotions when available?"
+        },
+        {
+          "id": "adoration-4",
+          "text": "Have I made spiritual communions when unable to receive sacramentally?"
+        },
+        {
+          "id": "adoration-5",
+          "text": "Have I taken time to simply be in Christ's presence, allowing Him to transform me through adoration?"
+        },
+        {
+          "id": "adoration-6",
+          "text": "Have I developed a personal relationship with Jesus through prayer before the Blessed Sacrament?"
+        }
+      ]
+    }
+  ]
+}

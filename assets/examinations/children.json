@@ -1,0 +1,241 @@
+{
+  "id": "children",
+  "title": "Examination of Conscience for Children",
+  "description": "A simple and child-friendly examination to help children prepare for confession, using language and examples they can understand.",
+  "source": "Adapted from Traditional Catholic Teaching for Children",
+  "target_audience": "Children (ages 7-12)",
+  "categories": [
+    {
+      "id": "my-relationship-with-god",
+      "title": "My Relationship with God",
+      "description": "How I have shown love to God through prayer and worship.",
+      "items": [
+        {
+          "id": "child-god-1",
+          "text": "Did I remember to pray to God each day?",
+          "clarification": "God loves to hear from you every day, even if it's just a short prayer."
+        },
+        {
+          "id": "child-god-2",
+          "text": "Did I pay attention during Mass, or was I distracting others?"
+        },
+        {
+          "id": "child-god-3",
+          "text": "Did I miss Sunday Mass without a good reason?"
+        },
+        {
+          "id": "child-god-4",
+          "text": "Did I use God's name or Jesus' name without respect?"
+        },
+        {
+          "id": "child-god-5",
+          "text": "Did I show respect in church by genuflecting, being quiet, and participating?"
+        },
+        {
+          "id": "child-god-6",
+          "text": "Did I forget to thank God for the good things in my life?"
+        }
+      ]
+    },
+    {
+      "id": "my-relationship-with-parents",
+      "title": "My Relationship with Parents and Family",
+      "description": "How I have shown love and respect to my parents, brothers, and sisters.",
+      "items": [
+        {
+          "id": "child-family-1",
+          "text": "Did I disobey my parents or teachers?",
+          "clarification": "Even when it's hard, obeying your parents shows love for them and for God."
+        },
+        {
+          "id": "child-family-2",
+          "text": "Did I talk back to my parents or speak to them disrespectfully?"
+        },
+        {
+          "id": "child-family-3",
+          "text": "Did I help with chores when asked?"
+        },
+        {
+          "id": "child-family-4",
+          "text": "Did I fight with my brothers or sisters?"
+        },
+        {
+          "id": "child-family-5",
+          "text": "Did I share my toys and things with others in my family?"
+        },
+        {
+          "id": "child-family-6",
+          "text": "Did I tell the truth to my parents and teachers?"
+        },
+        {
+          "id": "child-family-7",
+          "text": "Did I do my best to help when someone in my family was sad or needed help?"
+        }
+      ]
+    },
+    {
+      "id": "my-relationship-with-others",
+      "title": "My Relationship with Friends and Others",
+      "description": "How I have treated my friends and other people.",
+      "items": [
+        {
+          "id": "child-friends-1",
+          "text": "Did I say unkind things to anyone or call them mean names?",
+          "clarification": "Our words can hurt others just like actions can."
+        },
+        {
+          "id": "child-friends-2",
+          "text": "Did I refuse to play with someone or leave them out on purpose?"
+        },
+        {
+          "id": "child-friends-3",
+          "text": "Did I share with others and take turns?"
+        },
+        {
+          "id": "child-friends-4",
+          "text": "Did I say things about others that weren't true or that made them look bad?"
+        },
+        {
+          "id": "child-friends-5",
+          "text": "Did I cheat in games or schoolwork?"
+        },
+        {
+          "id": "child-friends-6",
+          "text": "Did I fight with others or try to get even when someone hurt me?"
+        },
+        {
+          "id": "child-friends-7",
+          "text": "Did I help someone who was hurt or needed help?"
+        },
+        {
+          "id": "child-friends-8",
+          "text": "Did I tell lies to keep myself out of trouble or to get what I wanted?"
+        }
+      ]
+    },
+    {
+      "id": "taking-care-of-myself",
+      "title": "Taking Care of Myself",
+      "description": "How I have taken care of the gifts God has given me.",
+      "items": [
+        {
+          "id": "child-self-1",
+          "text": "Did I take care of my body by eating healthy foods, getting enough sleep, and being active?",
+          "clarification": "God gave you your body as a gift, and He wants you to take good care of it."
+        },
+        {
+          "id": "child-self-2",
+          "text": "Did I try my best at school and with my homework?"
+        },
+        {
+          "id": "child-self-3",
+          "text": "Was I lazy about helping or doing my chores?"
+        },
+        {
+          "id": "child-self-4",
+          "text": "Did I spend too much time playing video games or watching TV?"
+        },
+        {
+          "id": "child-self-5",
+          "text": "Did I waste food or things that others could use?"
+        },
+        {
+          "id": "child-self-6",
+          "text": "Did I break things on purpose or treat my belongings carelessly?"
+        }
+      ]
+    },
+    {
+      "id": "showing-respect",
+      "title": "Showing Respect for Things",
+      "description": "How I have taken care of things that belong to me and others.",
+      "items": [
+        {
+          "id": "child-respect-1",
+          "text": "Did I take something that didn't belong to me?",
+          "clarification": "Taking things without permission is stealing, even if it's small."
+        },
+        {
+          "id": "child-respect-2",
+          "text": "Did I return things I borrowed?"
+        },
+        {
+          "id": "child-respect-3",
+          "text": "Did I take care of books, toys, and other things that belong to others?"
+        },
+        {
+          "id": "child-respect-4",
+          "text": "Did I treat holy things (like rosaries, Bibles, or things in church) with respect?"
+        },
+        {
+          "id": "child-respect-5",
+          "text": "Did I help keep our home, school, and church clean and neat?"
+        }
+      ]
+    },
+    {
+      "id": "being-honest",
+      "title": "Being Honest and Truthful",
+      "description": "How I have been truthful in what I say and do.",
+      "items": [
+        {
+          "id": "child-honest-1",
+          "text": "Did I tell lies or hide the truth?",
+          "clarification": "God wants us to be truthful even when it's difficult."
+        },
+        {
+          "id": "child-honest-2",
+          "text": "Did I make promises I didn't keep?"
+        },
+        {
+          "id": "child-honest-3",
+          "text": "Did I blame others for things I did wrong?"
+        },
+        {
+          "id": "child-honest-4",
+          "text": "Did I cheat on tests or in games?"
+        },
+        {
+          "id": "child-honest-5",
+          "text": "Did I tell the truth even when it was hard?"
+        }
+      ]
+    },
+    {
+      "id": "being-kind",
+      "title": "Being Kind and Loving",
+      "description": "How I have shown God's love to others through kindness.",
+      "items": [
+        {
+          "id": "child-kind-1",
+          "text": "Did I say 'please' and 'thank you' to others?",
+          "clarification": "Being polite is one way we show respect and kindness."
+        },
+        {
+          "id": "child-kind-2",
+          "text": "Did I help someone who was sad or hurt?"
+        },
+        {
+          "id": "child-kind-3",
+          "text": "Did I share with others who have less than I do?"
+        },
+        {
+          "id": "child-kind-4",
+          "text": "Did I say 'I'm sorry' when I hurt someone?"
+        },
+        {
+          "id": "child-kind-5",
+          "text": "Did I include others who were alone or left out?"
+        },
+        {
+          "id": "child-kind-6",
+          "text": "Did I make fun of others because they're different from me?"
+        },
+        {
+          "id": "child-kind-7",
+          "text": "Did I forgive others when they said they were sorry?"
+        }
+      ]
+    }
+  ]
+}
