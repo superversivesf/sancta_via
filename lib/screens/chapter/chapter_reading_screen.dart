@@ -35,6 +35,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
   late ScrollController _scrollController;
   late String currentBookName;
   late int currentChapter;
+  String _currentChapterText = ''; // Store for debugging
   
   @override
   void initState() {
@@ -214,7 +215,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
           ),
           const SizedBox(height: 24),
           
-          // Chapter text
+          // Chapter text with verse formatting
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -226,10 +227,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                 width: 1,
               ),
             ),
-            child: Text(
-              scripture.text,
-              style: textScaling.scaledBibleText(context, lineHeight: 1.8),
-            ),
+            child: _buildFormattedChapterText(context, scripture.text, themeColor),
           ),
           
           const SizedBox(height: 100), // Space for floating action buttons
@@ -365,41 +363,146 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     );
   }
 
+  Widget _buildFormattedChapterText(BuildContext context, String chapterText, Color? themeColor) {
+    final textScaling = ref.watch(textScaleProvider);
+    _currentChapterText = chapterText; // Store for debugging
+    final verses = _parseVersesFromChapter(chapterText);
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: verses.asMap().entries.map((entry) {
+        final verseNumber = entry.key + 1;
+        final verseText = entry.value;
+        
+        return Container(
+          key: ValueKey('verse_$verseNumber'), // For potential future scrolling improvements
+          margin: const EdgeInsets.only(bottom: 12),
+          child: RichText(
+            text: TextSpan(
+              style: textScaling.scaledBibleText(context, lineHeight: 1.8),
+              children: [
+                TextSpan(
+                  text: '$verseNumber ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.8),
+                    fontSize: textScaling.scaledBibleText(context).fontSize! * 0.9,
+                  ),
+                ),
+                TextSpan(
+                  text: verseText,
+                ),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  List<String> _parseVersesFromChapter(String chapterText) {
+    final verses = <String>[];
+    
+    // Try to split by verse numbers (pattern: number followed by space)
+    final versePattern = RegExp(r'(?:^|\s)(\d+)\s+([^0-9]*?)(?=\s\d+\s|$)', multiLine: true);
+    final matches = versePattern.allMatches(chapterText);
+    
+    if (matches.isNotEmpty) {
+      // Found verse patterns, use them
+      for (final match in matches) {
+        final verseText = match.group(2)?.trim() ?? '';
+        if (verseText.isNotEmpty) {
+          verses.add(verseText);
+        }
+      }
+    } else {
+      // Fallback: split by sentences and group them
+      final sentences = chapterText.split(RegExp(r'[.!?]+\s+'));
+      
+      // Group sentences into reasonable verse-like chunks
+      for (int i = 0; i < sentences.length; i += 2) {
+        final verseText = sentences.sublist(i, (i + 2).clamp(0, sentences.length)).join('. ').trim();
+        if (verseText.isNotEmpty) {
+          verses.add(verseText);
+        }
+      }
+    }
+    
+    // Ensure we have at least one verse
+    if (verses.isEmpty) {
+      verses.add(chapterText.isNotEmpty ? chapterText : 'Chapter text');
+    }
+    
+    return verses;
+  }
+
   void _scrollToVerse(int startVerse) {
     if (!_scrollController.hasClients) return;
     
     try {
-      // Get the viewport height to ensure target appears at top of screen
-      final viewportHeight = _scrollController.position.viewportDimension;
-      final maxScrollExtent = _scrollController.position.maxScrollExtent;
+      // Get current scroll information for debugging
+      final currentPosition = _scrollController.position;
+      final maxScrollExtent = currentPosition.maxScrollExtent;
+      final viewportHeight = currentPosition.viewportDimension;
+      final initialOffset = currentPosition.pixels;
       
-      // Skip the header (roughly 200 pixels) and estimate verse positions
-      const headerHeight = 200.0;
-      final contentHeight = maxScrollExtent - headerHeight;
+      debugLog('=== SCROLL DEBUG INFO ===', 'CHAPTER');
+      debugLog('Target verse: $startVerse', 'CHAPTER');
+      debugLog('Current scroll offset: $initialOffset', 'CHAPTER');
+      debugLog('Max scroll extent: $maxScrollExtent', 'CHAPTER');
+      debugLog('Viewport height: $viewportHeight', 'CHAPTER');
       
-      // Estimate total verses (rough calculation based on text length)
-      // Most chapters have 10-50 verses, so we'll estimate conservatively
-      const estimatedVerses = 30; // Average chapter length
+      // Let's try a different approach - use a percentage of the total content
+      // Get the total number of verses we parsed
+      final totalVerses = _parseVersesFromChapter(_getCurrentChapterText()).length;
+      debugLog('Total verses parsed: $totalVerses', 'CHAPTER');
       
-      // Calculate position for the desired verse
-      final verseProgress = (startVerse - 1) / estimatedVerses;
-      final targetPosition = headerHeight + (contentHeight * verseProgress);
+      if (totalVerses == 0 || startVerse > totalVerses) {
+        debugLog('Invalid verse number or no verses found', 'CHAPTER');
+        return;
+      }
       
-      // Adjust target position so the verse appears near the top of the viewport
-      // Subtract most of the viewport height so target appears in upper portion of screen
-      final adjustedPosition = (targetPosition - (viewportHeight * 0.8)).clamp(0.0, maxScrollExtent);
+      // Calculate what percentage through the content this verse represents
+      final verseProgress = (startVerse - 1) / totalVerses;
+      debugLog('Verse progress: $verseProgress (${(verseProgress * 100).toStringAsFixed(1)}%)', 'CHAPTER');
       
-      // Scroll to the adjusted position
+      // Apply this percentage to the scrollable content
+      // Leave some room at the top (header) - estimate 300px for header + padding
+      const estimatedHeaderHeight = 300.0;
+      final scrollableContent = maxScrollExtent - estimatedHeaderHeight;
+      final targetPosition = estimatedHeaderHeight + (scrollableContent * verseProgress);
+      
+      debugLog('Estimated header height: $estimatedHeaderHeight', 'CHAPTER');
+      debugLog('Scrollable content: $scrollableContent', 'CHAPTER');
+      debugLog('Calculated target position: $targetPosition', 'CHAPTER');
+      
+      // Clamp to valid range
+      final clampedPosition = targetPosition.clamp(0.0, maxScrollExtent);
+      debugLog('Clamped position: $clampedPosition', 'CHAPTER');
+      
+      // Scroll to the calculated position
       _scrollController.animateTo(
-        adjustedPosition,
+        clampedPosition,
         duration: const Duration(milliseconds: 800),
         curve: Curves.easeInOut,
       );
       
-      debugLog('Scrolling to verse $startVerse: target=$targetPosition, adjusted=$adjustedPosition, viewport=$viewportHeight', 'CHAPTER');
+      // Log the final position after a delay
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        if (_scrollController.hasClients) {
+          final finalPosition = _scrollController.position.pixels;
+          debugLog('Final scroll position: $finalPosition', 'CHAPTER');
+          debugLog('=== END SCROLL DEBUG ===', 'CHAPTER');
+        }
+      });
+      
     } catch (e) {
       debugLog('Error scrolling to verse: $e', 'CHAPTER');
     }
+  }
+
+  String _getCurrentChapterText() {
+    return _currentChapterText;
   }
 
   Widget? _buildNavigationButtons(BuildContext context, int maxChapters, Color? themeColor) {
