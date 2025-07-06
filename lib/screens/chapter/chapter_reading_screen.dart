@@ -6,6 +6,7 @@ import 'package:bible_data_riverpod/bible_data_riverpod.dart';
 
 import '../../providers/app_providers.dart';
 import '../../providers/text_scaling_provider.dart';
+import '../../providers/book_provider.dart';
 
 /// Debug logging utility
 void debugLog(String message, [String? tag]) {
@@ -16,11 +17,13 @@ void debugLog(String message, [String? tag]) {
 class ChapterReadingScreen extends ConsumerStatefulWidget {
   final String bookName;
   final int chapter;
+  final int? startVerse; // Optional starting verse
 
   const ChapterReadingScreen({
     super.key,
     required this.bookName,
     required this.chapter,
+    this.startVerse,
   });
 
   @override
@@ -29,6 +32,7 @@ class ChapterReadingScreen extends ConsumerStatefulWidget {
 
 class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
   late PageController _pageController;
+  late ScrollController _scrollController;
   late String currentBookName;
   late int currentChapter;
   
@@ -38,12 +42,14 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     currentBookName = widget.bookName;
     currentChapter = widget.chapter;
     _pageController = PageController();
-    debugLog('ChapterReadingScreen initialized: $currentBookName $currentChapter', 'CHAPTER');
+    _scrollController = ScrollController();
+    debugLog('ChapterReadingScreen initialized: $currentBookName $currentChapter${widget.startVerse != null ? ' (starting at verse ${widget.startVerse})' : ''}', 'CHAPTER');
   }
 
   @override
   void dispose() {
     _pageController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -73,6 +79,12 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     final colorIntensity = ref.watch(colorIntensityProvider);
     final textScaling = ref.watch(textScaleProvider);
     final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
+    
+    // Get max chapters for navigation logic
+    final maxChaptersAsync = ref.watch(chapterCountProvider((
+      bookName: currentBookName,
+      translation: selectedTranslation,
+    )));
     
     // Parse liturgical color and convert to Flutter color
     final liturgicalColor = currentColor != null 
@@ -132,29 +144,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
           ),
         ),
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Previous chapter button
-          Padding(
-            padding: const EdgeInsets.only(left: 32),
-            child: FloatingActionButton(
-              heroTag: "previous",
-              onPressed: currentChapter > 1 ? _navigateToPreviousChapter : null,
-              backgroundColor: themeColor?.withValues(alpha: 0.8) ?? 
-                             Theme.of(context).colorScheme.primary,
-              child: const Icon(Icons.chevron_left, color: Colors.white),
-            ),
-          ),
-          // Next chapter button
-          FloatingActionButton(
-            heroTag: "next",
-            onPressed: _navigateToNextChapter,
-            backgroundColor: themeColor?.withValues(alpha: 0.8) ?? 
-                           Theme.of(context).colorScheme.primary,
-            child: const Icon(Icons.chevron_right, color: Colors.white),
-          ),
-        ],
+      floatingActionButton: maxChaptersAsync.when(
+        data: (maxChapters) => _buildNavigationButtons(context, maxChapters, themeColor),
+        loading: () => null, // Don't show buttons while loading
+        error: (_, __) => null, // Don't show buttons on error
       ),
     );
   }
@@ -169,7 +162,15 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       return _buildNotFoundContent(context, scripture.errorMessage, themeColor);
     }
 
+    // Schedule scroll to starting verse after the content is built
+    if (widget.startVerse != null && widget.startVerse! > 1) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _scrollToVerse(widget.startVerse!);
+      });
+    }
+
     return SingleChildScrollView(
+      controller: _scrollController,
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -361,6 +362,83 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _scrollToVerse(int startVerse) {
+    if (!_scrollController.hasClients) return;
+    
+    try {
+      // Get the viewport height to ensure target appears at top of screen
+      final viewportHeight = _scrollController.position.viewportDimension;
+      final maxScrollExtent = _scrollController.position.maxScrollExtent;
+      
+      // Skip the header (roughly 200 pixels) and estimate verse positions
+      const headerHeight = 200.0;
+      final contentHeight = maxScrollExtent - headerHeight;
+      
+      // Estimate total verses (rough calculation based on text length)
+      // Most chapters have 10-50 verses, so we'll estimate conservatively
+      const estimatedVerses = 30; // Average chapter length
+      
+      // Calculate position for the desired verse
+      final verseProgress = (startVerse - 1) / estimatedVerses;
+      final targetPosition = headerHeight + (contentHeight * verseProgress);
+      
+      // Adjust target position so the verse appears near the top of the viewport
+      // Subtract most of the viewport height so target appears in upper portion of screen
+      final adjustedPosition = (targetPosition - (viewportHeight * 0.8)).clamp(0.0, maxScrollExtent);
+      
+      // Scroll to the adjusted position
+      _scrollController.animateTo(
+        adjustedPosition,
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.easeInOut,
+      );
+      
+      debugLog('Scrolling to verse $startVerse: target=$targetPosition, adjusted=$adjustedPosition, viewport=$viewportHeight', 'CHAPTER');
+    } catch (e) {
+      debugLog('Error scrolling to verse: $e', 'CHAPTER');
+    }
+  }
+
+  Widget? _buildNavigationButtons(BuildContext context, int maxChapters, Color? themeColor) {
+    final showPrevious = currentChapter > 1;
+    final showNext = currentChapter < maxChapters;
+    
+    // If neither button should be shown, return null
+    if (!showPrevious && !showNext) {
+      return null;
+    }
+    
+    // Always use the same layout but conditionally show buttons
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Previous chapter button (always in same position)
+        Padding(
+          padding: const EdgeInsets.only(left: 32),
+          child: showPrevious
+              ? FloatingActionButton(
+                  heroTag: "previous",
+                  onPressed: _navigateToPreviousChapter,
+                  backgroundColor: themeColor?.withValues(alpha: 0.8) ?? 
+                                 Theme.of(context).colorScheme.primary,
+                  child: const Icon(Icons.chevron_left, color: Colors.white),
+                )
+              : const SizedBox.shrink(), // Invisible placeholder
+        ),
+        // Next chapter button (always in same position)
+        showNext
+            ? FloatingActionButton(
+                heroTag: "next",
+                onPressed: _navigateToNextChapter,
+                backgroundColor: themeColor?.withValues(alpha: 0.8) ?? 
+                               Theme.of(context).colorScheme.primary,
+                child: const Icon(Icons.chevron_right, color: Colors.white),
+              )
+            : const SizedBox.shrink(), // Invisible placeholder
+      ],
     );
   }
 }

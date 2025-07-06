@@ -7,7 +7,7 @@ import 'package:bible_data_riverpod/bible_data_riverpod.dart';
 import '../../providers/app_providers.dart';
 import '../../providers/text_scaling_provider.dart';
 import '../../providers/book_provider.dart';
-import '../chapter/chapter_reading_screen.dart';
+import '../chapter_selection/chapter_selection_screen.dart';
 
 class BibleLookupScreen extends ConsumerStatefulWidget {
   const BibleLookupScreen({super.key});
@@ -18,9 +18,6 @@ class BibleLookupScreen extends ConsumerStatefulWidget {
 
 class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with TickerProviderStateMixin {
   late TabController _tabController;
-  String? selectedBook;
-  int selectedChapter = 1;
-  int selectedVerse = 1;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
@@ -164,7 +161,6 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
         ),
       ),
       body: _searchQuery.isNotEmpty ? _buildSearchResults(themeColor) : _buildTabView(themeColor),
-      bottomSheet: selectedBook != null ? _buildSelectedBookSheet(themeColor) : null,
     );
   }
 
@@ -194,13 +190,7 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
             subtitle: Text(_getBookInfo(book)),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
-              setState(() {
-                selectedBook = book;
-                selectedChapter = 1;
-                selectedVerse = 1;
-                _searchController.clear();
-                _searchQuery = '';
-              });
+              _navigateToChapterSelection(book);
             },
           ),
         );
@@ -253,29 +243,21 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
               itemCount: categoryBooks.length,
               itemBuilder: (context, bookIndex) {
                 final book = categoryBooks[bookIndex];
-                final isSelected = selectedBook == book;
                 
                 return Card(
-                  elevation: isSelected ? 4 : 1,
+                  elevation: 2,
                   child: InkWell(
                     onTap: () {
-                      setState(() {
-                        selectedBook = book;
-                        selectedChapter = 1;
-                        selectedVerse = 1;
-                      });
+                      _navigateToChapterSelection(book);
                     },
                     borderRadius: BorderRadius.circular(12),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        border: isSelected ? Border.all(
-                          color: themeColor ?? Theme.of(context).colorScheme.primary,
-                          width: 2,
-                        ) : null,
-                        color: isSelected 
-                          ? (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1)
-                          : null,
+                        border: Border.all(
+                          color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
+                          width: 1,
+                        ),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6), // Reduced padding
@@ -287,10 +269,7 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
                               child: Text(
                                 book,
                                 style: textScaling.scaledBodyMedium(context).copyWith(
-                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                                  color: isSelected 
-                                    ? (themeColor ?? Theme.of(context).colorScheme.primary)
-                                    : null,
+                                  fontWeight: FontWeight.w500,
                                   fontSize: 13, // Slightly smaller text
                                 ),
                                 textAlign: TextAlign.center,
@@ -326,220 +305,6 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
     );
   }
 
-  Widget _buildSelectedBookSheet(Color? themeColor) {
-    final textScaling = ref.watch(textScaleProvider);
-    final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
-    final maxChaptersAsync = ref.watch(chapterCountProvider((
-      bookName: selectedBook!,
-      translation: selectedTranslation,
-    )));
-    
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Row(
-              children: [
-                Icon(
-                  Icons.menu_book,
-                  color: themeColor ?? Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    selectedBook!,
-                    style: textScaling.scaledTitleLarge(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: themeColor?.withValues(alpha: 0.8) ?? Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedBook = null;
-                    });
-                  },
-                  icon: const Icon(Icons.close),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            
-            // Chapter and Verse Selection
-            Row(
-              children: [
-                // Chapter
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Chapter',
-                        style: textScaling.scaledBodyMedium(context).copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: selectedChapter > 1 ? () {
-                              setState(() {
-                                selectedChapter--;
-                                selectedVerse = 1;
-                              });
-                            } : null,
-                            icon: const Icon(Icons.remove),
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                selectedChapter.toString(),
-                                style: textScaling.scaledTitleMedium(context).copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          maxChaptersAsync.when(
-                            data: (maxChapters) => IconButton(
-                              onPressed: selectedChapter < maxChapters ? () {
-                                setState(() {
-                                  selectedChapter++;
-                                  selectedVerse = 1;
-                                });
-                              } : null,
-                              icon: const Icon(Icons.add),
-                            ),
-                            loading: () => IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  selectedChapter++;
-                                  selectedVerse = 1;
-                                });
-                              },
-                              icon: const Icon(Icons.add),
-                            ),
-                            error: (_, __) => IconButton(
-                              onPressed: null,
-                              icon: const Icon(Icons.add),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 16),
-                
-                // Verse
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Verse (optional)',
-                        style: textScaling.scaledBodyMedium(context).copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: selectedVerse > 1 ? () {
-                              setState(() {
-                                selectedVerse--;
-                              });
-                            } : null,
-                            icon: const Icon(Icons.remove),
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                selectedVerse.toString(),
-                                style: textScaling.scaledTitleMedium(context).copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                selectedVerse++;
-                              });
-                            },
-                            icon: const Icon(Icons.add),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            
-            // Read Button
-            Center(
-              child: ElevatedButton.icon(
-                onPressed: () => _navigateToChapter(),
-                icon: const Icon(Icons.play_arrow),
-                label: Text(
-                  'Read ${selectedBook!} $selectedChapter${selectedVerse > 1 ? ':$selectedVerse' : ''}',
-                  style: textScaling.scaledBodyLarge(context).copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   String _getBookInfo(String book) {
     // Simplified book info - in a real app you'd have actual chapter/verse counts
     final Map<String, String> bookInfo = {
@@ -556,12 +321,11 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
     return bookInfo[book] ?? 'Bible book';
   }
 
-  void _navigateToChapter() {
+  void _navigateToChapterSelection(String bookName) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => ChapterReadingScreen(
-          bookName: selectedBook!,
-          chapter: selectedChapter,
+        builder: (context) => ChapterSelectionScreen(
+          bookName: bookName,
         ),
       ),
     );
