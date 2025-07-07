@@ -26,9 +26,7 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^2.6.1
   bible_data:
-    git:
-      url: https://github.com/superversivesf/sancta_via_bible_data.git
-      ref: v1.0.0
+    path: ../sancta_via_bible_data
 
 dev_dependencies:
   flutter_test:
