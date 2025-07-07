@@ -76,6 +76,7 @@ class ReadingPlanNotifier extends StateNotifier<ReadingPlan?> {
       }
     } catch (e) {
       // If there's an error loading, keep null state
+      // ignore: avoid_print
       print('Error loading reading plan: $e');
     }
   }
@@ -90,6 +91,7 @@ class ReadingPlanNotifier extends StateNotifier<ReadingPlan?> {
         await prefs.remove(_storageKey);
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Error saving reading plan: $e');
     }
   }

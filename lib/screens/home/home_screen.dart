@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
-import '../../providers/app_providers.dart';
 import '../../providers/text_scaling_provider.dart';
 import '../settings/settings_screen.dart';
 import '../bible_lookup/bible_lookup_screen.dart';

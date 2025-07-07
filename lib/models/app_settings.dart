@@ -1,6 +1,12 @@
 import 'package:bible_data/bible_data.dart';
 
-/// Model for app settings
+/// DEPRECATED: Model for app settings
+/// 
+/// This class is deprecated in favor of the new unified settings system.
+/// Use BibleAppSettings from '../models/bible_app_settings.dart' instead.
+/// 
+/// This class is maintained for backward compatibility only.
+@Deprecated('Use BibleAppSettings with the unified settings system instead')
 class AppSettings {
   final double fontSize;
   final BibleTranslation selectedBibleTranslation;

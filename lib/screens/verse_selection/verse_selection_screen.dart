@@ -6,7 +6,6 @@ import 'package:bible_data_riverpod/bible_data_riverpod.dart';
 
 import '../../providers/app_providers.dart';
 import '../../providers/text_scaling_provider.dart';
-import '../../providers/book_provider.dart';
 import '../chapter/chapter_reading_screen.dart';
 
 class VerseSelectionScreen extends ConsumerWidget {
@@ -280,7 +279,6 @@ class VerseSelectionScreen extends ConsumerWidget {
     if (matches.isNotEmpty) {
       // Found verse patterns, use them
       for (final match in matches) {
-        final verseNumber = match.group(1);
         final verseText = match.group(2)?.trim() ?? '';
         if (verseText.isNotEmpty) {
           verses.add(verseText);

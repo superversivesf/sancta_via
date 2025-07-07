@@ -4,6 +4,7 @@ import 'package:bible_data_riverpod/bible_data_riverpod.dart';
 /// Debug logging utility
 void debugLog(String message, [String? tag]) {
   final timestamp = DateTime.now().toIso8601String();
+  // ignore: avoid_print
   print('[$timestamp] ${tag != null ? '[$tag] ' : ''}$message');
 }
 

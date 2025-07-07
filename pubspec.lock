@@ -28,20 +28,16 @@ packages:
   bible_data:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "v1.0.0"
-      resolved-ref: ef677a677582480ac200671ce01d6ee74ba7c040
-      url: "https://github.com/superversivesf/sancta_via_bible_data.git"
-    source: git
+      path: "../sancta_via_bible_data"
+      relative: true
+    source: path
     version: "1.0.0"
   bible_data_riverpod:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: "301e8199d4f5ff3feff55aeef6925357cda96eac"
-      url: "https://github.com/superversivesf/sancta_via_bible_data_riverpod.git"
-    source: git
+      path: "../sancta_via_bible_data_riverpod"
+      relative: true
+    source: path
     version: "1.0.0"
   boolean_selector:
     dependency: transitive
@@ -325,29 +321,23 @@ packages:
   sancta_via_liturgical_calendar:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "v2.0.0"
-      resolved-ref: fc12bddf8161a01265b336cc03b0609d073ca70e
-      url: "https://github.com/superversivesf/sancta_via_liturgical_calendar.git"
-    source: git
+      path: "../sancta_via_liturgical_calendar"
+      relative: true
+    source: path
     version: "2.0.0"
   sancta_via_liturgical_calendar_riverpod:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: ff7dd81aac97fe98b7b55de806357a38cac2543f
-      url: "https://github.com/superversivesf/sancta_via_liturgical_calendar_riverpod.git"
-    source: git
+      path: "../sancta_via_liturgical_calendar_riverpod"
+      relative: true
+    source: path
     version: "2.0.0"
   sancta_via_shared_ui:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: c6eb38be51cf6a71eeee97801bf209012ad0af55
-      url: "https://github.com/superversivesf/sancta_via_shared_ui.git"
-    source: git
+      path: "../sancta_via_shared_ui"
+      relative: true
+    source: path
     version: "1.0.0"
   shared_preferences:
     dependency: "direct main"

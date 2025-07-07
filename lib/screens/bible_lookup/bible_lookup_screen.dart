@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
-import 'package:bible_data_riverpod/bible_data_riverpod.dart';
+import 'package:bible_data/bible_data.dart';
 
 import '../../providers/app_providers.dart';
 import '../../providers/text_scaling_provider.dart';
-import '../../providers/book_provider.dart';
 import '../chapter_selection/chapter_selection_screen.dart';
 
 class BibleLookupScreen extends ConsumerStatefulWidget {
@@ -102,7 +101,7 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
                         isDense: true,
                         onChanged: (BibleTranslation? newValue) {
                           if (newValue != null) {
-                            ref.read(appSettingsProvider.notifier).setBibleTranslation(newValue);
+                            ref.read(appSettingsNotifierProvider).setBibleTranslation(newValue);
                           }
                         },
                         items: BibleTranslation.values.map((translation) {
@@ -165,7 +164,6 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
   }
 
   Widget _buildSearchResults(Color? themeColor) {
-    final textScaling = ref.watch(textScaleProvider);
     final filtered = filteredBooks;
     
     return ListView.builder(

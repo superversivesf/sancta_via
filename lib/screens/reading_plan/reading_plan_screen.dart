@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
-import '../../providers/app_providers.dart';
 import '../../providers/text_scaling_provider.dart';
 import '../../providers/reading_plan_provider.dart';
 import '../../models/reading_plan.dart';
@@ -472,7 +471,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
   String _getEstimatedTimeText() {
     final baseMinutes = chaptersPerDay * 4; // Roughly 4 minutes per chapter
     if (baseMinutes < 60) {
-      return 'Est. ${baseMinutes} minutes reading time';
+      return 'Est. $baseMinutes minutes reading time';
     } else {
       final hours = baseMinutes / 60;
       return 'Est. ${hours.toStringAsFixed(1)} hours reading time';
