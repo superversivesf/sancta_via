@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:liturgical_calendar/liturgical_calendar.dart';
-import '../../config/theme.dart';
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 import '../../config/routes.dart';
 import '../../providers/calendar_providers.dart' as local_providers;
-import '../../providers/settings_providers.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});

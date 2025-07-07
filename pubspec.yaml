@@ -15,19 +15,13 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Liturgical calendar packages
-  liturgical_calendar:
-    git:
-      url: https://github.com/superversivesf/sancta_via_liturgical_calendar.git
-      ref: v2.0.0
-  liturgical_calendar_riverpod:
-    git:
-      url: https://github.com/superversivesf/sancta_via_liturgical_calendar_riverpod.git
-      ref: v2.0.0
-  shared_ui:
-    git:
-      url: https://github.com/superversivesf/sancta_via_shared_ui.git
-      ref: v1.0.0
+  # Sancta Via packages (local development)
+  sancta_via_shared_ui:
+    path: ../sancta_via_shared_ui
+  sancta_via_liturgical_calendar:
+    path: ../sancta_via_liturgical_calendar
+  sancta_via_liturgical_calendar_riverpod:
+    path: ../sancta_via_liturgical_calendar_riverpod
 
   # State management
   flutter_riverpod: ^2.6.1

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:liturgical_calendar/liturgical_calendar.dart';
-import '../config/theme.dart';
-import '../providers/settings_providers.dart';
+import 'package:intl/intl.dart';
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 
 class UpcomingFeastsList extends ConsumerWidget {
   final List<LiturgicalDayData> feasts;
