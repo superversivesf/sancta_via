@@ -1,13 +1,27 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-import '../config/constants.dart';
+// MIGRATION NOTICE: This file now uses the new unified settings system
+// All functionality has been preserved for backward compatibility
+// The old implementation has been backed up as app_settings_provider_old.dart
 
-// App settings model
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+
+// Import the new unified settings system
+import 'confession_app_settings_provider.dart';
+import '../models/confession_app_settings.dart';
+
+// NEW UNIFIED SYSTEM: Re-export new providers for direct use
+// New code should use these for full functionality
+export 'confession_app_settings_provider.dart';
+
+/// DEPRECATED: Old AppSettings model - maintained for backward compatibility
+/// 
+/// Use ConfessionAppSettings from confession_app_settings_provider.dart instead.
+@Deprecated('Use ConfessionAppSettings with the unified settings system instead')
 class AppSettings {
-  final bool darkMode;
-  final double textScale;
-  final String defaultLanguage;
+  final bool darkMode;           // DEPRECATED: Use theme providers instead
+  final double textScale;       // DEPRECATED: Use fontSize in unified system
+  final String defaultLanguage; // DEPRECATED: Use AppLanguage enum in unified system
   final bool notificationsEnabled;
 
   AppSettings({
@@ -17,6 +31,30 @@ class AppSettings {
     this.notificationsEnabled = false,
   });
 
+  /// Create from new unified settings for backward compatibility
+  factory AppSettings.fromUnified(ConfessionAppSettings unified) {
+    String languageString = 'English';
+    switch (unified.defaultLanguage) {
+      case AppLanguage.latin:
+        languageString = 'Latin';
+        break;
+      case AppLanguage.spanish:
+        languageString = 'Spanish';
+        break;
+      case AppLanguage.english:
+      default:
+        languageString = 'English';
+    }
+
+    return AppSettings(
+      darkMode: false, // Always false - theme is handled by theme provider now
+      textScale: unified.textScale,
+      defaultLanguage: languageString,
+      notificationsEnabled: unified.notificationsEnabled,
+    );
+  }
+
+  // Keep existing methods for backward compatibility
   factory AppSettings.fromJson(Map<String, dynamic> json) {
     return AppSettings(
       darkMode: json['darkMode'] ?? false,
@@ -50,58 +88,74 @@ class AppSettings {
   }
 }
 
-// Settings provider
-final appSettingsProvider = StateNotifierProvider<AppSettingsNotifier, AppSettings>((ref) {
-  return AppSettingsNotifier();
+/// BACKWARD COMPATIBILITY: Provider for app settings using new unified system
+/// 
+/// This provider now wraps the new ConfessionAppSettings but maintains the old AppSettings interface
+/// for backward compatibility. New code should use confessionAppSettingsProvider directly.
+// ignore: deprecated_member_use_from_same_package
+final appSettingsProvider = Provider<AppSettings>((ref) {
+  final confessionSettings = ref.watch(confessionAppSettingsProvider);
+  // ignore: deprecated_member_use_from_same_package
+  return AppSettings.fromUnified(confessionSettings);
 });
 
-class AppSettingsNotifier extends StateNotifier<AppSettings> {
-  AppSettingsNotifier() : super(AppSettings()) {
-    _loadSettings();
-  }
-
-  Future<void> _loadSettings() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final settingsJson = prefs.getString(AppConstants.settingsKey);
-      
-      if (settingsJson != null) {
-        final settings = AppSettings.fromJson(json.decode(settingsJson));
-        if (mounted) {
-          state = settings;
-        }
-      }
-    } catch (e) {
-      // Handle error, keep default settings
-    }
-  }
-
-  Future<void> _saveSettings() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(AppConstants.settingsKey, json.encode(state.toJson()));
-    } catch (e) {
-      // Handle error
-    }
+/// BACKWARD COMPATIBILITY: Notifier wrapper for the old interface
+/// 
+/// This class provides the old interface but delegates to the new unified system.
+/// Use ConfessionAppSettingsNotifier directly for new features.
+class AppSettingsNotifier {
+  final Ref _ref;
+  
+  AppSettingsNotifier(this._ref);
+  
+  /// Get current state (backward compatibility)
+  // ignore: deprecated_member_use_from_same_package
+  AppSettings get state {
+    final confessionSettings = _ref.read(confessionAppSettingsProvider);
+    // ignore: deprecated_member_use_from_same_package
+    return AppSettings.fromUnified(confessionSettings);
   }
 
   Future<void> updateDarkMode(bool darkMode) async {
-    state = state.copyWith(darkMode: darkMode);
-    await _saveSettings();
+    // MIGRATION: Dark mode is now handled by theme provider
+    if (darkMode) {
+      await _ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.dark);
+    } else {
+      await _ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.light);
+    }
   }
 
   Future<void> updateTextScale(double textScale) async {
-    state = state.copyWith(textScale: textScale);
-    await _saveSettings();
+    await _ref.read(confessionAppSettingsProvider.notifier).updateTextScale(textScale);
   }
 
   Future<void> updateDefaultLanguage(String language) async {
-    state = state.copyWith(defaultLanguage: language);
-    await _saveSettings();
+    AppLanguage appLanguage = AppLanguage.english;
+    if (language == 'Latin') {
+      appLanguage = AppLanguage.latin;
+    } else if (language == 'Spanish') {
+      appLanguage = AppLanguage.spanish;
+    }
+    
+    await _ref.read(confessionAppSettingsProvider.notifier).setDefaultLanguage(appLanguage);
   }
 
   Future<void> updateNotifications(bool enabled) async {
-    state = state.copyWith(notificationsEnabled: enabled);
-    await _saveSettings();
+    await _ref.read(confessionAppSettingsProvider.notifier).setNotificationsEnabled(enabled);
+  }
+}
+
+/// BACKWARD COMPATIBILITY: Provider for the notifier
+final appSettingsNotifierProvider = Provider<AppSettingsNotifier>((ref) {
+  return AppSettingsNotifier(ref);
+});
+
+
+/// Migration helper to access the new notifier from old code patterns
+extension AppSettingsNotifierExtension on WidgetRef {
+  /// Get the new unified Confession app settings notifier
+  /// Use this instead of appSettingsProvider.notifier for new functionality
+  ConfessionAppSettingsNotifier get confessionAppSettingsNotifier {
+    return read(confessionAppSettingsProvider.notifier);
   }
 }

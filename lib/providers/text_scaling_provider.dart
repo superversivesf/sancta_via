@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'app_settings_provider.dart';
+// MIGRATION: Now uses unified settings system
+import 'confession_app_settings_provider.dart';
 
 // Provider that creates scaled text styles based on user's font size preference
+// UPDATED: Now uses the new unified settings system while maintaining the same interface
 final textScaleProvider = Provider<TextScaling>((ref) {
-  final settings = ref.watch(appSettingsProvider);
-  return TextScaling(baseFontSize: settings.textScale * 18.0);
+  final settings = ref.watch(confessionAppSettingsProvider);
+  // Use the effectiveTextScaleFactor for more accurate scaling
+  return TextScaling(baseFontSize: settings.fontSize);
 });
 
 class TextScaling {
