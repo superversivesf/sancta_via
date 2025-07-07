@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'prayer_providers.dart';
+// MIGRATION: Now uses unified settings system
+import 'prayer_app_settings_provider.dart';
 
 // Provider that creates scaled text styles based on user's font size preference
+// UPDATED: Now uses the new unified settings system while maintaining the same interface
 final textScaleProvider = Provider<TextScaling>((ref) {
-  final fontSize = ref.watch(fontSizeProvider);
-  return TextScaling(baseFontSize: fontSize);
+  final settings = ref.watch(prayerAppSettingsProvider);
+  return TextScaling(baseFontSize: settings.fontSize);
 });
 
 class TextScaling {

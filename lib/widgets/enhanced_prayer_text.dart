@@ -147,13 +147,13 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
           final verse = entry.value;
           final isHighlighted = highlightedVerseIndex == index;
           final isPreviouslyRead = highlightedVerseIndex != null && index < highlightedVerseIndex!;
-          
+
           return GestureDetector(
             onTap: () {
               setState(() {
                 highlightedVerseIndex = index;
               });
-              
+
               // Auto-advance after a delay in contemplative mode
               if (widget.readingMode == PrayerReadingMode.contemplative) {
                 Future.delayed(const Duration(seconds: 8), () {
@@ -174,7 +174,7 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
                 borderRadius: BorderRadius.circular(8),
                 border: isHighlighted
                     ? Border.all(
-                        color: widget.themeColor?.withValues(alpha: 0.5) ?? 
+                        color: widget.themeColor?.withValues(alpha: 0.5) ??
                                Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
                         width: 2,
                       )
@@ -193,7 +193,7 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
               ),
             ),
           );
-        }).toList(),
+        }),
       ],
     );
   }
@@ -203,7 +203,7 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
       return widget.themeColor?.withValues(alpha: 0.15) ?? 
              Theme.of(context).colorScheme.primary.withValues(alpha: 0.1);
     } else if (isPreviouslyRead) {
-      return Theme.of(context).colorScheme.surfaceVariant.withValues(alpha: 0.3);
+      return Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3);
     }
     return Colors.transparent;
   }

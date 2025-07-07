@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import '../../models/prayer.dart';
 import '../../models/prayer_preferences.dart';
 import '../../providers/prayer_providers.dart';
+import '../../providers/prayer_app_settings_provider.dart';
 import '../../providers/text_scaling_provider.dart';
 import '../../widgets/enhanced_prayer_text.dart';
 import '../settings/settings_screen.dart';
@@ -25,7 +25,7 @@ class PrayerDetailScreen extends ConsumerWidget {
     final preferences = ref.watch(prayerPreferencesProvider);
     final isFavorite = preferences.favoritePrayerIds.contains(prayerId);
     final textScaling = ref.watch(textScaleProvider);
-    final defaultLanguage = ref.watch(defaultLanguageProvider);
+    final defaultLanguage = ref.watch(prayerDefaultLanguageProvider);
     // Get the currently selected translation
     final selectedTranslation = ref.watch(selectedTranslationProvider(prayerId)) ?? defaultLanguage;
     
@@ -40,7 +40,7 @@ class PrayerDetailScreen extends ConsumerWidget {
     // Add to recent prayers when screen is built
     ref.listen(prayerProvider(prayerId), (previous, next) {
       if (next.hasValue && next.value != null) {
-        ref.read(prayerPreferencesProvider.notifier).addToRecent(prayerId);
+        ref.read(prayerAppSettingsProvider.notifier).addToRecent(prayerId);
       }
     });
 
@@ -60,7 +60,7 @@ class PrayerDetailScreen extends ConsumerWidget {
                     color: isFavorite ? (themeColor ?? Colors.red) : null,
                   ),
                   onPressed: () {
-                    ref.read(prayerPreferencesProvider.notifier).toggleFavorite(prayerId);
+                    ref.read(prayerAppSettingsProvider.notifier).toggleFavorite(prayerId);
                   },
                   tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
                 ),
@@ -343,7 +343,7 @@ class PrayerDetailScreen extends ConsumerWidget {
               size: 18,
             ),
             onPressed: () {
-              ref.read(prayerPreferencesProvider.notifier).toggleFavorite(prayerId);
+              ref.read(prayerAppSettingsProvider.notifier).toggleFavorite(prayerId);
             },
             tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
           ),
@@ -422,7 +422,7 @@ class PrayerDetailScreen extends ConsumerWidget {
       Color? themeColor,
       TextScaling textScaling,
       ) {
-    final selectedTranslation = ref.watch(selectedTranslationProvider(prayerId)) ?? ref.watch(defaultLanguageProvider);
+    final selectedTranslation = ref.watch(selectedTranslationProvider(prayerId)) ?? ref.watch(prayerDefaultLanguageProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

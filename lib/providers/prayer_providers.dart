@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import '../models/prayer.dart';
 import '../models/prayer_category.dart';
@@ -9,6 +10,11 @@ import '../models/prayer_preferences.dart';
 import '../repositories/prayer_repository.dart';
 import '../services/prayer_of_the_day_service.dart';
 import '../widgets/enhanced_prayer_text.dart';
+import 'prayer_app_settings_provider.dart';
+
+// NEW UNIFIED SYSTEM: Re-export new providers for direct use
+// New code should use these for full functionality
+//export 'prayer_app_settings_provider.dart';
 
 // Provider for the repository
 final prayerRepositoryProvider = Provider<PrayerRepository>((ref) {
@@ -51,57 +57,90 @@ final prayerProvider = FutureProvider.family<Prayer?, String>((ref, prayerId) as
   return await repository.getPrayer(prayerId);
 });
 
-// Provider for user preferences
-final prayerPreferencesProvider = StateNotifierProvider<PrayerPreferencesNotifier, PrayerPreferences>((ref) {
-  final repository = ref.watch(prayerRepositoryProvider);
-  return PrayerPreferencesNotifier(repository);
+// BACKWARD COMPATIBILITY: Provider for user preferences using new unified system
+// 
+// This provider now wraps the new PrayerAppSettings but maintains the old PrayerPreferences interface
+// for backward compatibility. New code should use prayerAppSettingsProvider directly.
+final prayerPreferencesProvider = Provider<PrayerPreferences>((ref) {
+  final prayerSettings = ref.watch(prayerAppSettingsProvider);
+  
+  // Convert to old PrayerPreferences format for backward compatibility
+  return PrayerPreferences(
+    favoritePrayerIds: prayerSettings.favoritePrayerIds,
+    recentPrayerIds: prayerSettings.recentPrayerIds,
+    fontSize: prayerSettings.fontSize,
+    defaultLanguage: _convertLanguageToString(prayerSettings.defaultLanguage),
+    readingMode: prayerSettings.readingMode,
+    verseHighlighting: prayerSettings.verseHighlighting,
+  );
 });
 
-// Notifier for prayer preferences
-class PrayerPreferencesNotifier extends StateNotifier<PrayerPreferences> {
-  final PrayerRepository repository;
-
-  PrayerPreferencesNotifier(this.repository) : super(PrayerPreferences()) {
-    _loadPreferences();
+/// Helper function to convert AppLanguage enum to string for backward compatibility
+String _convertLanguageToString(AppLanguage language) {
+  switch (language) {
+    case AppLanguage.latin:
+      return 'Latin';
+    case AppLanguage.spanish:
+      return 'Spanish';
+    case AppLanguage.english:
+    default:
+      return 'English';
   }
+}
 
-  Future<void> _loadPreferences() async {
-    state = await repository.getUserPreferences();
+/// BACKWARD COMPATIBILITY: Notifier wrapper for the old interface
+/// 
+/// This class provides the old interface but delegates to the new unified system.
+/// Use PrayerAppSettingsNotifier directly for new features.
+class PrayerPreferencesNotifier {
+  final Ref _ref;
+  final PrayerRepository repository; // Keep for any legacy functionality
+  
+  PrayerPreferencesNotifier(this._ref, this.repository);
+  
+  /// Get current state (backward compatibility)
+  PrayerPreferences get state {
+    final prayerSettings = _ref.read(prayerAppSettingsProvider);
+    return PrayerPreferences(
+      favoritePrayerIds: prayerSettings.favoritePrayerIds,
+      recentPrayerIds: prayerSettings.recentPrayerIds,
+      fontSize: prayerSettings.fontSize,
+      defaultLanguage: _convertLanguageToString(prayerSettings.defaultLanguage),
+      readingMode: prayerSettings.readingMode,
+      verseHighlighting: prayerSettings.verseHighlighting,
+    );
   }
 
   Future<void> toggleFavorite(String prayerId) async {
-    state = await repository.toggleFavorite(prayerId);
+    await _ref.read(prayerAppSettingsProvider.notifier).toggleFavorite(prayerId);
   }
 
   Future<void> addToRecent(String prayerId) async {
-    state = await repository.addToRecent(prayerId);
+    await _ref.read(prayerAppSettingsProvider.notifier).addToRecent(prayerId);
   }
 
   Future<void> updateFontSize(double fontSize) async {
-    final updatedPreferences = state.copyWith(fontSize: fontSize);
-    state = updatedPreferences; // Update state immediately
-    repository.saveUserPreferences(updatedPreferences); // Save asynchronously without waiting
+    await _ref.read(prayerAppSettingsProvider.notifier).updateFontSize(fontSize);
   }
 
   Future<void> updateDefaultLanguage(String language) async {
-    final updatedPreferences = state.copyWith(defaultLanguage: language);
-    state = updatedPreferences; // Update state immediately
-    repository.saveUserPreferences(updatedPreferences); // Save asynchronously without waiting
+    await _ref.read(prayerAppSettingsProvider.notifier).updateDefaultLanguage(language);
   }
 
   Future<void> updateReadingMode(PrayerReadingMode readingMode) async {
-    final updatedPreferences = state.copyWith(readingMode: readingMode);
-    state = updatedPreferences;
-    repository.saveUserPreferences(updatedPreferences);
+    await _ref.read(prayerAppSettingsProvider.notifier).updateReadingMode(readingMode);
   }
 
   Future<void> updateVerseHighlighting(bool enabled) async {
-    final updatedPreferences = state.copyWith(verseHighlighting: enabled);
-    state = updatedPreferences;
-    repository.saveUserPreferences(updatedPreferences);
+    await _ref.read(prayerAppSettingsProvider.notifier).updateVerseHighlighting(enabled);
   }
-
 }
+
+/// BACKWARD COMPATIBILITY: Provider for the notifier
+final prayerPreferencesNotifierProvider = Provider<PrayerPreferencesNotifier>((ref) {
+  final repository = ref.watch(prayerRepositoryProvider);
+  return PrayerPreferencesNotifier(ref, repository);
+});
 
 // Provider for favorite prayers
 final favoritePrayersProvider = FutureProvider<List<PrayerMetadata>>((ref) async {
@@ -152,8 +191,8 @@ final fontSizeProvider = Provider<double>((ref) {
   return preferences.fontSize;
 });
 
-// Default language provider (derived from preferences)
-final defaultLanguageProvider = Provider<String>((ref) {
+// Default language provider (derived from preferences) - backward compatibility
+final prayerDefaultLanguageProvider = Provider<String>((ref) {
   final preferences = ref.watch(prayerPreferencesProvider);
   return preferences.defaultLanguage;
 });
@@ -290,5 +329,14 @@ String _getPrayerSelectionReason(liturgicalDay) {
     return 'Selected for ${liturgicalDay.season}';
   } else {
     return 'Today\'s prayer for ${liturgicalDay.season}';
+  }
+}
+
+/// Migration helper to access the new notifier from old code patterns
+extension PrayerPreferencesNotifierExtension on WidgetRef {
+  /// Get the new unified Prayer app settings notifier
+  /// Use this instead of prayerPreferencesProvider.notifier for new functionality
+  PrayerAppSettingsNotifier get prayerAppSettingsNotifier {
+    return read(prayerAppSettingsProvider.notifier);
   }
 }

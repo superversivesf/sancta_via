@@ -1,5 +1,12 @@
 import '../widgets/enhanced_prayer_text.dart';
 
+/// DEPRECATED: Model for prayer preferences
+/// 
+/// This class is deprecated in favor of the new unified settings system.
+/// Use PrayerAppSettings from '../models/prayer_app_settings.dart' instead.
+/// 
+/// This class is maintained for backward compatibility only.
+@Deprecated('Use PrayerAppSettings with the unified settings system instead')
 class PrayerPreferences {
   final List<String> favoritePrayerIds;
   final List<String> recentPrayerIds;
