@@ -25,9 +25,7 @@ dependencies:
   flutter: 
     sdk: flutter
   sancta_via_liturgical_calendar:
-    git:
-      url: https://github.com/superversivesf/sancta_via_liturgical_calendar.git
-      ref: v2.0.0
+    path: ../sancta_via_liturgical_calendar
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1
 
