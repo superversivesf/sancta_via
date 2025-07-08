@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import '../config/routes.dart';
-import '../screens/home/home_screen.dart';
 
 class LiturgicalCalendarApp extends ConsumerWidget {
   const LiturgicalCalendarApp({super.key});
@@ -27,13 +26,12 @@ class LiturgicalCalendarApp extends ConsumerWidget {
     final lightTheme = AppTheme.lightTheme(liturgicalColor, colorIntensity);
     final darkTheme = AppTheme.darkTheme(liturgicalColor, colorIntensity);
     
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Sancta Via Calendar',
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: themeMode,
-      home: const HomeScreen(),
-      onGenerateRoute: AppRoutes.generateRoute,
+      routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
     );
   }

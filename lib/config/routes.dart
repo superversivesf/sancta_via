@@ -1,82 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
 import '../screens/home/home_screen.dart';
+import '../screens/settings/settings_screen.dart';
 import '../screens/calendar/calendar_screen.dart';
 import '../screens/day_detail/day_detail_screen.dart';
-import '../screens/settings/settings_screen.dart';
 import '../screens/search/search_screen.dart';
 
-class AppRoutes {
-  static const String home = '/';
-  static const String calendar = '/calendar';
-  static const String dayDetail = '/day-detail';
-  static const String settings = '/settings';
-  static const String search = '/search';
+final appRouter = GoRouter(
+  initialLocation: '/',
+  debugLogDiagnostics: false,
+  
+  routes: [
+    // Home route
+    GoRoute(
+      path: '/',
+      name: 'home',
+      builder: (context, state) => const HomeScreen(),
+    ),
 
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case home:
-        return MaterialPageRoute(
-          builder: (_) => const HomeScreen(),
-          settings: settings,
-        );
-      
-      case calendar:
-        return MaterialPageRoute(
-          builder: (_) => const CalendarScreen(),
-          settings: settings,
-        );
-      
-      case dayDetail:
-        final date = settings.arguments as DateTime?;
-        return MaterialPageRoute(
-          builder: (_) => DayDetailScreen(date: date ?? DateTime.now()),
-          settings: settings,
-        );
-      
-      case AppRoutes.settings:
-        return MaterialPageRoute(
-          builder: (_) => const SettingsScreen(),
-          settings: settings,
-        );
-      
-      case AppRoutes.search:
-        return MaterialPageRoute(
-          builder: (_) => const SearchScreen(),
-          settings: settings,
-        );
-      
-      default:
-        return MaterialPageRoute(
-          builder: (_) => const Scaffold(
-            body: Center(
-              child: Text('Page not found'),
-            ),
+    // Calendar features
+    GoRoute(
+      path: '/calendar',
+      name: 'calendar',
+      builder: (context, state) => const CalendarScreen(),
+    ),
+    GoRoute(
+      path: '/day/:date',
+      name: 'day-detail',
+      builder: (context, state) {
+        final date = state.pathParameters['date']!;
+        return DayDetailScreen(date: date);
+      },
+    ),
+    GoRoute(
+      path: '/search',
+      name: 'search',
+      builder: (context, state) => const SearchScreen(),
+    ),
+
+    // Settings
+    GoRoute(
+      path: '/settings',
+      name: 'settings',
+      builder: (context, state) => const SettingsScreen(),
+    ),
+  ],
+
+  // Error handling
+  errorBuilder: (context, state) => Scaffold(
+    appBar: AppBar(
+      title: const Text('Page Not Found'),
+      automaticallyImplyLeading: true,
+    ),
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.error_outline, size: 64),
+          const SizedBox(height: 16),
+          Text(
+            'Page Not Found',
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
-          settings: settings,
-        );
-    }
-  }
-}
-
-/// Navigation utilities
-class AppNavigation {
-  static void pushToCalendar(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.calendar);
-  }
-
-  static void pushToDayDetail(BuildContext context, DateTime date) {
-    Navigator.pushNamed(
-      context, 
-      AppRoutes.dayDetail,
-      arguments: date,
-    );
-  }
-
-  static void pushToSettings(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.settings);
-  }
-
-  static void pushToSearch(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.search);
-  }
-}
+          const SizedBox(height: 8),
+          Text('No route found for ${state.uri.path}'),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: () => context.go('/'),
+            child: const Text('Go Home'),
+          ),
+        ],
+      ),
+    ),
+  ),
+);
