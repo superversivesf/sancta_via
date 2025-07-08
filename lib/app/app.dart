@@ -35,5 +35,4 @@ class LiturgicalCalendarApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
     );
   }
-  
 }
