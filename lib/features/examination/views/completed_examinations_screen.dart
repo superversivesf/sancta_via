@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../models/examination_session_model.dart';
 import '../providers/examination_provider.dart';
@@ -86,14 +87,7 @@ class CompletedExaminationsScreen extends ConsumerWidget {
       child: ListTile(
         // Make the entire ListTile tappable
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CompletedExaminationDetailScreen(
-                completedExaminationId: session.id,
-              ),
-            ),
-          );
+          context.go('/completed/${session.id}');
         },
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).colorScheme.primaryContainer,

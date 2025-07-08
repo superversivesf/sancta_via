@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import '../../features/examination/providers/examination_provider.dart';
 import '../../features/examination/providers/examination_session_provider.dart';
@@ -19,7 +20,7 @@ class HomeScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () => Navigator.pushNamed(context, '/settings'),
+            onPressed: () => context.go('/settings'),
           ),
         ],
       ),
@@ -107,7 +108,7 @@ class HomeScreen extends ConsumerWidget {
                             icon: const Icon(Icons.play_arrow),
                             label: const Text('Continue'),
                             onPressed: () {
-                              Navigator.pushNamed(context, '/examinations');
+                              context.go('/examinations');
                             },
                           ),
                           const SizedBox(width: 8),
@@ -172,7 +173,7 @@ class HomeScreen extends ConsumerWidget {
                   subtitle: const Text('Your default examination'),
                   trailing: const Icon(Icons.arrow_forward_ios),
                   onTap: () {
-                    Navigator.pushNamed(context, '/examination/${defaultExamination.id}');
+                    context.go('/examination/${defaultExamination.id}');
                   },
                 ),
               ),
@@ -193,7 +194,7 @@ class HomeScreen extends ConsumerWidget {
                 subtitle: const Text('View all available examinations of conscience'),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  Navigator.pushNamed(context, '/examinations');
+                  context.go('/examinations');
                 },
               ),
             ),
@@ -214,7 +215,7 @@ class HomeScreen extends ConsumerWidget {
                 subtitle: const Text('View examinations ready for confession'),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  Navigator.pushNamed(context, '/completed-examinations');
+                  context.go('/completed-examinations');
                 },
               ),
             ),

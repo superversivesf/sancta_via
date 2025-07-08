@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../models/examination_model.dart';
 import '../models/user_preferences_model.dart';
 import '../providers/examination_provider.dart';
@@ -136,7 +137,7 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, '/examination/${examination.id}');
+          context.go('/examination/${examination.id}');
         },
         borderRadius: BorderRadius.circular(16),
         child: Padding(

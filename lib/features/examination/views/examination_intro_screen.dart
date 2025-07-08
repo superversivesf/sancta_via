@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../providers/examination_provider.dart';
 import '../providers/examination_session_provider.dart';
 import '../../../utils/logger.dart';
@@ -116,10 +117,7 @@ class ExaminationIntroScreen extends ConsumerWidget {
                         
                         // Now navigate
                         if (context.mounted) {
-                          Navigator.pushNamed(
-                            context, 
-                            '/examination/$examinationId/category/$firstCategoryId',
-                          );
+                          context.go('/examination/$examinationId/category/$firstCategoryId');
                         }
                       } else {
                         AppLogger.warning("Context is NOT mounted after starting examination", 'EXAM');

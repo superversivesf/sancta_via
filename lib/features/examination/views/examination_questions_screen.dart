@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../models/examination_response_status.dart';
 import '../providers/examination_provider.dart';
 import '../providers/examination_session_provider.dart';
@@ -365,10 +366,7 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                 Navigator.of(context).pop(); // Close dialog
                 final nextCategory = _getNextCategory(examination, category);
                 if (nextCategory != null) {
-                  Navigator.pushReplacementNamed(
-                    context,
-                    '/examination/${examination.id}/category/${nextCategory.id}',
-                  );
+                  context.go('/examination/${examination.id}/category/${nextCategory.id}');
                 }
               },
               child: const Text('Continue to Next Section'),
@@ -377,14 +375,7 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
             onPressed: () {
               Navigator.of(context).pop(); // Close dialog
               // Navigate to summary screen
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ExaminationSummaryScreen(
-                    examinationId: examination.id,
-                  ),
-                ),
-              );
+              context.go('/examination/${examination.id}/summary');
             },
             child: const Text('View Summary'),
           ),

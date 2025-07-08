@@ -34,6 +34,9 @@ dependencies:
   # State Management
   flutter_riverpod: ^2.6.1
 
+  # Navigation
+  go_router: ^15.1.2
+
   # Storage
   shared_preferences: ^2.5.3
   flutter_secure_storage: ^9.2.4
