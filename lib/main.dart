@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
-import 'screens/home/home_screen.dart';
+import 'config/routes.dart';
 
 void main() {
   runApp(const ProviderScope(child: PrayerCompanionApp()));
@@ -25,13 +25,13 @@ class PrayerCompanionApp extends ConsumerWidget {
         ? LiturgicalColor.fromString(currentLiturgicalColor)
         : null;
 
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Prayer Companion',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme(liturgicalColor, colorIntensity),
       darkTheme: AppTheme.darkTheme(liturgicalColor, colorIntensity),
       themeMode: themeMode,
-      home: const HomeScreen(),
+      routerConfig: appRouter,
     );
   }
 }
