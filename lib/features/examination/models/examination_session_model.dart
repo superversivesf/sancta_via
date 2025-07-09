@@ -18,8 +18,7 @@ class ExaminationSession {
   bool isCompleted;
 
   ExaminationSession({
-    String? id,
-    required this.examinationId,
+    required this.examinationId, String? id,
     Map<String, ExaminationResponseStatus>? itemResponses,
     Map<String, String>? notes,
     DateTime? createdAt,
@@ -34,8 +33,8 @@ class ExaminationSession {
 
   // Calculate progress as percentage
   double getProgress(ExaminationModel examination) {
-    int totalItems = examination.totalItems;
-    int reviewedItems = itemResponses.values.where((status) =>
+    final int totalItems = examination.totalItems;
+    final int reviewedItems = itemResponses.values.where((status) =>
     status == ExaminationResponseStatus.needConfess ||
         status == ExaminationResponseStatus.noIssue).length;
     return totalItems > 0 ? reviewedItems / totalItems : 0.0;
@@ -87,11 +86,11 @@ class ExaminationSession {
   // Factory method to create from JSON
   factory ExaminationSession.fromJson(Map<String, dynamic> json) {
     // Convert the old responses format if present
-    Map<String, ExaminationResponseStatus> convertedResponses = {};
+    final Map<String, ExaminationResponseStatus> convertedResponses = {};
 
     if (json.containsKey('responses')) {
       // Use Map.from for safer conversion
-      Map<String, dynamic> oldResponses = Map<String, dynamic>.from(json['responses'] as Map);
+      final Map<String, dynamic> oldResponses = Map<String, dynamic>.from(json['responses'] as Map);
       oldResponses.forEach((key, value) {
         convertedResponses[key] = (value as bool)
             ? ExaminationResponseStatus.needConfess
@@ -99,7 +98,7 @@ class ExaminationSession {
       });
     } else if (json.containsKey('itemResponses')) {
       // Use Map.from for safer conversion
-      Map<String, dynamic> savedResponses = Map<String, dynamic>.from(json['itemResponses'] as Map);
+      final Map<String, dynamic> savedResponses = Map<String, dynamic>.from(json['itemResponses'] as Map);
       savedResponses.forEach((key, value) {
         convertedResponses[key] = ExaminationResponseStatus.values[value as int];
       });
@@ -120,7 +119,7 @@ class ExaminationSession {
   // Convert to JSON
   Map<String, dynamic> toJson() {
     // Convert enum values to integers for storage
-    Map<String, int> serializedResponses = {};
+    final Map<String, int> serializedResponses = {};
     itemResponses.forEach((key, value) {
       serializedResponses[key] = value.index;
     });

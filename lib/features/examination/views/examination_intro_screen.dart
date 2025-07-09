@@ -9,8 +9,7 @@ class ExaminationIntroScreen extends ConsumerWidget {
   final String examinationId;
 
   const ExaminationIntroScreen({
-    super.key,
-    required this.examinationId,
+    required this.examinationId, super.key,
   });
 
   @override
@@ -85,7 +84,7 @@ class ExaminationIntroScreen extends ConsumerWidget {
                 Center(
                   child: ElevatedButton.icon(
                     onPressed: () async {
-                      AppLogger.examination("Begin Examination button pressed for examinationId: $examinationId");
+                      AppLogger.examination('Begin Examination button pressed for examinationId: $examinationId');
                       
                       // Before starting the examination
                       final beforeSession = ref.read(examinationSessionProvider);
@@ -104,7 +103,7 @@ class ExaminationIntroScreen extends ConsumerWidget {
                             ? examination.categories.first.id 
                             : '';
                             
-                        AppLogger.examination("Context is mounted, attempting navigation with first category: $firstCategoryId");
+                        AppLogger.examination('Context is mounted, attempting navigation with first category: $firstCategoryId');
                         
                         // Update the session with the first category
                         if (firstCategoryId.isNotEmpty) {
@@ -120,7 +119,7 @@ class ExaminationIntroScreen extends ConsumerWidget {
                           context.go('/examination/$examinationId/category/$firstCategoryId');
                         }
                       } else {
-                        AppLogger.warning("Context is NOT mounted after starting examination", 'EXAM');
+                        AppLogger.warning('Context is NOT mounted after starting examination', 'EXAM');
                       }
                     },
                     icon: const Icon(Icons.play_arrow),

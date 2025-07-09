@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../models/examination_session_model.dart';
 import '../providers/examination_provider.dart';
-import 'completed_examination_detail_screen.dart';
 
 class CompletedExaminationsScreen extends ConsumerWidget {
   const CompletedExaminationsScreen({super.key});

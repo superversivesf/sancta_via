@@ -22,7 +22,7 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
     try {
       final activeSession = await repository.getActiveSession();
       if (mounted && activeSession != null) {
-        AppLogger.examination("Loaded active session: ${activeSession.id}");
+        AppLogger.examination('Loaded active session: ${activeSession.id}');
         state = activeSession;
       }
     } catch (e) {
@@ -33,7 +33,7 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
   // Start a new examination
   Future<void> startExamination(String examinationId) async {
     try {
-      AppLogger.examination("Starting new examination session for: $examinationId");
+      AppLogger.examination('Starting new examination session for: $examinationId');
       
       final newSession = ExaminationSession(
         examinationId: examinationId,
@@ -44,7 +44,7 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
       
       if (mounted) {
         state = newSession;
-        AppLogger.examination("New session created and set as state: ${newSession.id}");
+        AppLogger.examination('New session created and set as state: ${newSession.id}');
       }
     } catch (e) {
       AppLogger.error('Failed to start examination', e, null, 'EXAM');
@@ -67,7 +67,7 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
 
       if (mounted) {
         state = updatedSession;
-        AppLogger.examination("Updated position - Category: $categoryId, Item: $itemId");
+        AppLogger.examination('Updated position - Category: $categoryId, Item: $itemId');
       }
     } catch (e) {
       AppLogger.error('Failed to update examination position', e, null, 'EXAM');
@@ -89,7 +89,7 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
 
       if (mounted) {
         state = updatedSession;
-        AppLogger.examination("Set response status for $itemId: $status");
+        AppLogger.examination('Set response status for $itemId: $status');
       }
     } catch (e) {
       AppLogger.error('Failed to set response status', e, null, 'EXAM');
@@ -115,7 +115,7 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
 
       if (mounted) {
         state = updatedSession;
-        AppLogger.examination("Updated note for $itemId");
+        AppLogger.examination('Updated note for $itemId');
       }
     } catch (e) {
       AppLogger.error('Failed to update note', e, null, 'EXAM');
@@ -127,14 +127,14 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
     if (state == null) return;
 
     try {
-      AppLogger.examination("Completing examination session: ${state!.id}");
+      AppLogger.examination('Completing examination session: ${state!.id}');
       
       // Complete and archive the session
       await repository.completeSession(state!);
 
       if (mounted) {
         state = null; // Clear current session
-        AppLogger.examination("Examination completed and session cleared");
+        AppLogger.examination('Examination completed and session cleared');
       }
     } catch (e) {
       AppLogger.error('Failed to complete examination', e, null, 'EXAM');
@@ -147,14 +147,14 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
     if (state == null) return;
 
     try {
-      AppLogger.examination("Cancelling examination session: ${state!.id}");
+      AppLogger.examination('Cancelling examination session: ${state!.id}');
       
       // Just clear the active session without archiving
       await repository.deleteSession(state!.id);
 
       if (mounted) {
         state = null;
-        AppLogger.examination("Examination cancelled and session cleared");
+        AppLogger.examination('Examination cancelled and session cleared');
       }
     } catch (e) {
       AppLogger.error('Failed to cancel examination', e, null, 'EXAM');

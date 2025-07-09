@@ -21,13 +21,13 @@ final examinationsProvider = FutureProvider<List<ExaminationModel>>((ref) async 
 
 // Provider for a specific examination by ID
 final examinationByIdProvider = FutureProvider.family<ExaminationModel?, String>((ref, id) async {
-  AppLogger.examination("examinationByIdProvider called with ID: $id");
+  AppLogger.examination('examinationByIdProvider called with ID: $id');
   final repository = ref.watch(examinationRepositoryProvider);
   final result = await repository.getExaminationById(id);
   if (result == null) {
-    AppLogger.examination("Examination with ID $id not found");
+    AppLogger.examination('Examination with ID $id not found');
   } else {
-    AppLogger.examination("Successfully loaded examination: ${result.title}");
+    AppLogger.examination('Successfully loaded examination: ${result.title}');
   }
   return result;
 });

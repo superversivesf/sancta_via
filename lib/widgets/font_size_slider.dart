@@ -18,12 +18,12 @@ class FontSizeSlider extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('A', style: TextStyle(fontSize: 12)),
-            const Text('A', style: TextStyle(fontSize: 16)),
-            const Text('A', style: TextStyle(fontSize: 20)),
+            Text('A', style: TextStyle(fontSize: 12)),
+            Text('A', style: TextStyle(fontSize: 16)),
+            Text('A', style: TextStyle(fontSize: 20)),
           ],
         ),
         Slider(

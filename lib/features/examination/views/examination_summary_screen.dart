@@ -9,33 +9,32 @@ class ExaminationSummaryScreen extends ConsumerWidget {
   final String examinationId;
   
   const ExaminationSummaryScreen({
-    super.key,
-    required this.examinationId,
+    required this.examinationId, super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    AppLogger.examination("Building ExaminationSummaryScreen");
+    AppLogger.examination('Building ExaminationSummaryScreen');
     final sessionState = ref.watch(examinationSessionProvider);
 
     if (sessionState == null) {
-      AppLogger.examination("Session state is null in summary screen");
+      AppLogger.examination('Session state is null in summary screen');
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        AppLogger.examination("Navigating back to first route due to null session");
+        AppLogger.examination('Navigating back to first route due to null session');
         Navigator.of(context).popUntil((route) => route.isFirst);
       });
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    AppLogger.examination("Session ID: ${sessionState.id}, Examination ID: ${sessionState.examinationId}");
-    AppLogger.examination("Response count: ${sessionState.itemResponses.length}, Notes count: ${sessionState.notes.length}");
+    AppLogger.examination('Session ID: ${sessionState.id}, Examination ID: ${sessionState.examinationId}');
+    AppLogger.examination('Response count: ${sessionState.itemResponses.length}, Notes count: ${sessionState.notes.length}');
 
     final examinationAsync = ref.watch(
       examinationByIdProvider(sessionState.examinationId),
     );
     final confessionItems = ref.watch(confessionItemsProvider);
 
-    AppLogger.examination("Confession items count: ${confessionItems.length}");
+    AppLogger.examination('Confession items count: ${confessionItems.length}');
 
     return Scaffold(
       appBar: AppBar(title: const Text('Summary for Confession')),
@@ -237,7 +236,7 @@ class ExaminationSummaryScreen extends ConsumerWidget {
   }
 
   Future<void> _showCompletionDialog(BuildContext context, WidgetRef ref) async {
-    AppLogger.examination("Showing completion dialog");
+    AppLogger.examination('Showing completion dialog');
 
     return showDialog<void>(
       context: context,
@@ -250,14 +249,14 @@ class ExaminationSummaryScreen extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () {
-              AppLogger.examination("Completion dialog - Cancel pressed");
+              AppLogger.examination('Completion dialog - Cancel pressed');
               Navigator.of(dialogContext).pop();
             },
             child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () async {
-              AppLogger.examination("Completion dialog - Complete pressed");
+              AppLogger.examination('Completion dialog - Complete pressed');
 
               // Close dialog first
               Navigator.of(dialogContext).pop();
@@ -277,7 +276,7 @@ class ExaminationSummaryScreen extends ConsumerWidget {
 
               // Navigate back to home - pop multiple times to get back to main screen
               if (context.mounted) {
-                AppLogger.examination("Using multiple pops to return home");
+                AppLogger.examination('Using multiple pops to return home');
                 Navigator.of(context).pop(); // Pop summary screen
                 Navigator.of(context).pop(); // Pop category screen  
                 Navigator.of(context).pop(); // Pop intro screen

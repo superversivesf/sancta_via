@@ -10,12 +10,7 @@ class ExaminationModel {
   final List<ExaminationCategory> categories;
 
   ExaminationModel({
-    String? id,
-    required this.title,
-    required this.description,
-    required this.source,
-    required this.targetAudience,
-    required this.categories,
+    required this.title, required this.description, required this.source, required this.targetAudience, required this.categories, String? id,
   }) : id = id ?? const Uuid().v4();
 
   // Factory method to create from JSON
@@ -58,10 +53,8 @@ class ExaminationCategory {
   final List<ExaminationItem> items;
 
   ExaminationCategory({
-    String? id,
-    required this.title,
+    required this.title, required this.items, String? id,
     this.description,
-    required this.items,
   }) : id = id ?? const Uuid().v4();
 
   // Factory method to create from JSON
@@ -94,8 +87,7 @@ class ExaminationItem {
   final String? clarification; // Optional additional explanation
 
   ExaminationItem({
-    String? id,
-    required this.text,
+    required this.text, String? id,
     this.clarification,
   }) : id = id ?? const Uuid().v4();
 

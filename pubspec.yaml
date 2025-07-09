@@ -1,9 +1,21 @@
 name: confession_companion
 description: "Catholic examination of conscience and confession companion app"
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-# of the product and file versions while build-number is used as the build suffix.
+# App Store Information
+app_store:
+  display_name: "Sancta Via Confession"
+  short_description: "Catholic examination of conscience and confession guide"
+  full_description: |
+    Sancta Via Confession is a comprehensive Catholic confession companion app featuring
+    examinations of conscience, spiritual guidance, and tools to help prepare for the Sacrament of Reconciliation.
+  keywords: "catholic, confession, examination of conscience, reconciliation, sacrament, prayer"
+  category: "Reference"
+  age_rating: "4+"
+
+# Version: major.minor.patch+build
+# App Store: CFBundleShortVersionString = 1.0.0, CFBundleVersion = 1
+# Google Play: versionName = 1.0.0, versionCode = 1
 version: 1.0.0+1
 
 environment:

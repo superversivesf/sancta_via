@@ -4,16 +4,13 @@ import 'package:go_router/go_router.dart';
 import '../models/examination_response_status.dart';
 import '../providers/examination_provider.dart';
 import '../providers/examination_session_provider.dart';
-import 'examination_summary_screen.dart';
 
 class ExaminationQuestionsScreen extends ConsumerStatefulWidget {
   final String examinationId;
   final String categoryId;
 
   const ExaminationQuestionsScreen({
-    super.key,
-    required this.examinationId,
-    required this.categoryId,
+    required this.examinationId, required this.categoryId, super.key,
   });
 
   @override

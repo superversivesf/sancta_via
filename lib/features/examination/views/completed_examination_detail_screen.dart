@@ -8,8 +8,7 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
   final String completedExaminationId;
 
   const CompletedExaminationDetailScreen({
-    super.key,
-    required this.completedExaminationId,
+    required this.completedExaminationId, super.key,
   });
 
   @override

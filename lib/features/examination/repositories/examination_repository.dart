@@ -104,7 +104,7 @@ class ExaminationRepository {
 
       // If no examinations loaded from assets, use sample data
       if (examinations.isEmpty) {
-        AppLogger.examination("No examinations loaded from assets, using sample data");
+        AppLogger.examination('No examinations loaded from assets, using sample data');
         final sampleData = await _getSampleExaminations();
         return sampleData;
       }
@@ -118,24 +118,24 @@ class ExaminationRepository {
 
   // Get sample examinations as fallback
   Future<List<ExaminationModel>> _getSampleExaminations() async {
-    AppLogger.examination("Using sample examinations data");
+    AppLogger.examination('Using sample examinations data');
     return sampleExaminations;
   }
 
   // Get examination by ID
   Future<ExaminationModel?> getExaminationById(String id) async {
-    AppLogger.repository("Loading examination by ID: $id");
+    AppLogger.repository('Loading examination by ID: $id');
     try {
       // First try to find metadata for this examination
       final metadataList = await getExaminationsMetadata();
-      AppLogger.repository("Found ${metadataList.length} examination metadata entries");
+      AppLogger.repository('Found ${metadataList.length} examination metadata entries');
       
       final metadata = metadataList.firstWhere(
         (meta) => meta.id == id,
         orElse: () => throw DataException('Examination not found: $id'),
       );
       
-      AppLogger.repository("Found metadata for examination $id: ${metadata.fileName}");
+      AppLogger.repository('Found metadata for examination $id: ${metadata.fileName}');
 
       // Try to load from app documents directory first (for updated files)
       final appDir = await getApplicationDocumentsDirectory();
@@ -144,17 +144,17 @@ class ExaminationRepository {
       String jsonString;
       if (await examinationFile.exists()) {
         // Load from local storage (might be an updated version)
-        AppLogger.repository("Loading examination from local storage: ${examinationFile.path}");
+        AppLogger.repository('Loading examination from local storage: ${examinationFile.path}');
         jsonString = await examinationFile.readAsString();
       } else {
         // Load from bundled assets
-        AppLogger.repository("Loading examination from bundled assets: assets/$_examinationsFolder/${metadata.fileName}");
+        AppLogger.repository('Loading examination from bundled assets: assets/$_examinationsFolder/${metadata.fileName}');
         jsonString = await rootBundle.loadString('assets/$_examinationsFolder/${metadata.fileName}');
       }
 
       // Parse JSON
       final Map<String, dynamic> jsonData = json.decode(jsonString);
-      AppLogger.repository("Successfully parsed JSON for examination $id");
+      AppLogger.repository('Successfully parsed JSON for examination $id');
       return ExaminationModel.fromJson(jsonData);
       
     } catch (e, stackTrace) {
@@ -246,12 +246,12 @@ class ExaminationRepository {
 
   // Save active session (securely)
   Future<void> saveActiveSession(ExaminationSession session) async {
-    AppLogger.repository("Saving active session: ${session.id}");
+    AppLogger.repository('Saving active session: ${session.id}');
     
     try {
       final jsonData = jsonEncode(session.toJson());
       await SecureStorageService.saveActiveExaminationSession(jsonData);
-      AppLogger.repository("Session saved to secure storage");
+      AppLogger.repository('Session saved to secure storage');
     } catch (e, stackTrace) {
       AppLogger.error('Failed to save examination session', e, stackTrace, 'REPO');
       throw DataException('Failed to save examination session');
@@ -260,19 +260,19 @@ class ExaminationRepository {
 
   // Get active session (if exists)
   Future<ExaminationSession?> getActiveSession() async {
-    AppLogger.repository("Attempting to get active session");
+    AppLogger.repository('Attempting to get active session');
     
     try {
       final jsonData = await SecureStorageService.getActiveExaminationSession();
       
       if (jsonData == null) {
-        AppLogger.repository("No active session found in secure storage");
+        AppLogger.repository('No active session found in secure storage');
         return null;
       }
       
-      AppLogger.repository("Found active session data, length: ${jsonData.length}");
+      AppLogger.repository('Found active session data, length: ${jsonData.length}');
       final session = ExaminationSession.fromJson(jsonDecode(jsonData));
-      AppLogger.repository("Successfully parsed active session with ID: ${session.id}");
+      AppLogger.repository('Successfully parsed active session with ID: ${session.id}');
       return session;
       
     } catch (e, stackTrace) {
@@ -283,21 +283,21 @@ class ExaminationRepository {
 
   // Complete and archive a session
   Future<void> completeSession(ExaminationSession session) async {
-    AppLogger.repository("Repository completing session: ${session.id}");
+    AppLogger.repository('Repository completing session: ${session.id}');
     
     try {
       // Mark as completed
       final completedSession = session.copyWith(isCompleted: true);
       
       // Get previously completed sessions from secure storage
-      String? existingCompletedData = await SecureStorageService.getCompletedExaminations();
+      final String? existingCompletedData = await SecureStorageService.getCompletedExaminations();
       List<dynamic> completedSessionsList = [];
       
       if (existingCompletedData != null) {
         try {
           completedSessionsList = jsonDecode(existingCompletedData);
         } catch (e) {
-          AppLogger.warning("Failed to parse existing completed sessions, starting fresh", 'REPO');
+          AppLogger.warning('Failed to parse existing completed sessions, starting fresh', 'REPO');
           completedSessionsList = [];
         }
       }
@@ -311,7 +311,7 @@ class ExaminationRepository {
 
       // Clear active session
       await SecureStorageService.clearActiveExaminationSession();
-      AppLogger.repository("Deleted active session from secure storage");
+      AppLogger.repository('Deleted active session from secure storage');
       
     } catch (e, stackTrace) {
       AppLogger.error('Failed to complete examination session', e, stackTrace, 'REPO');
@@ -325,7 +325,7 @@ class ExaminationRepository {
       final completedData = await SecureStorageService.getCompletedExaminations();
       
       if (completedData == null) {
-        AppLogger.repository("No completed sessions found");
+        AppLogger.repository('No completed sessions found');
         return [];
       }
 
@@ -345,7 +345,7 @@ class ExaminationRepository {
       // Sort by most recent first
       completedSessions.sort((a, b) => b.createdAt.compareTo(a.createdAt));
       
-      AppLogger.repository("Loaded ${completedSessions.length} completed sessions");
+      AppLogger.repository('Loaded ${completedSessions.length} completed sessions');
       return completedSessions;
       
     } catch (e, stackTrace) {
@@ -357,12 +357,12 @@ class ExaminationRepository {
   // Delete specific session data (after confession)
   Future<void> deleteSession(String sessionId) async {
     try {
-      AppLogger.repository("Deleting session: $sessionId");
+      AppLogger.repository('Deleting session: $sessionId');
       
       // Get current completed sessions
       final completedData = await SecureStorageService.getCompletedExaminations();
       if (completedData == null) {
-        AppLogger.repository("No completed sessions to delete from");
+        AppLogger.repository('No completed sessions to delete from');
         return;
       }
 
@@ -381,7 +381,7 @@ class ExaminationRepository {
       final updatedCompletedData = jsonEncode(completedSessionsList);
       await SecureStorageService.saveCompletedExaminations(updatedCompletedData);
       
-      AppLogger.repository("Successfully deleted session $sessionId");
+      AppLogger.repository('Successfully deleted session $sessionId');
     } catch (e, stackTrace) {
       AppLogger.error('Failed to delete session $sessionId', e, stackTrace, 'REPO');
       throw DataException('Failed to delete examination session');
@@ -391,7 +391,7 @@ class ExaminationRepository {
   // Delete all sessions (clear everything)
   Future<void> deleteAllSessions() async {
     try {
-      AppLogger.repository("Deleting all examination sessions");
+      AppLogger.repository('Deleting all examination sessions');
       
       // Clear active session
       await SecureStorageService.clearActiveExaminationSession();
@@ -399,7 +399,7 @@ class ExaminationRepository {
       // Clear all completed sessions
       await SecureStorageService.saveCompletedExaminations('[]');
       
-      AppLogger.repository("Successfully deleted all examination sessions");
+      AppLogger.repository('Successfully deleted all examination sessions');
     } catch (e, stackTrace) {
       AppLogger.error('Failed to delete all sessions', e, stackTrace, 'REPO');
       throw DataException('Failed to delete all examination sessions');
