@@ -16,8 +16,7 @@ class PrayerListScreen extends ConsumerWidget {
   final bool showRecent;
 
   const PrayerListScreen({
-    super.key,
-    required this.title,
+    required this.title, super.key,
     this.categoryId,
     this.groupId,
     this.showFavorites = false,

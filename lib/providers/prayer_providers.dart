@@ -83,7 +83,6 @@ String _convertLanguageToString(AppLanguage language) {
     case AppLanguage.spanish:
       return 'Spanish';
     case AppLanguage.english:
-    default:
       return 'English';
   }
 }
@@ -322,7 +321,7 @@ final prayerOfTheDayContextProvider = Provider<Map<String, String>>((ref) {
   };
 });
 
-String _getPrayerSelectionReason(liturgicalDay) {
+String _getPrayerSelectionReason(dynamic liturgicalDay) {
   if (liturgicalDay.isSolemnity && liturgicalDay.celebration.name.isNotEmpty) {
     return 'Selected for ${liturgicalDay.celebration.name}';
   } else if (liturgicalDay.season.toLowerCase() != 'ordinary time') {

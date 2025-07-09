@@ -24,7 +24,7 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/prayers',
       name: 'prayers',
-      builder: (context, state) => const PrayerListScreen(),
+      builder: (context, state) => const PrayerListScreen(title: 'Prayers'),
     ),
     GoRoute(
       path: '/prayer/:prayerId',

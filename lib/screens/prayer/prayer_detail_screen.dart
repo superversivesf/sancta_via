@@ -15,8 +15,7 @@ class PrayerDetailScreen extends ConsumerWidget {
   final String prayerId;
 
   const PrayerDetailScreen({
-    super.key,
-    required this.prayerId,
+    required this.prayerId, super.key,
   });
 
   @override
@@ -68,33 +67,33 @@ class PrayerDetailScreen extends ConsumerWidget {
                   icon: const Icon(Icons.more_vert),
                   onSelected: (value) => _handleMenuAction(value, context, ref),
                   itemBuilder: (context) => [
-                    PopupMenuItem(
+                    const PopupMenuItem(
                       value: 'share',
                       child: Row(
                         children: [
-                          const Icon(Icons.share, size: 20),
-                          const SizedBox(width: 12),
+                          Icon(Icons.share, size: 20),
+                          SizedBox(width: 12),
                           Text('Share Prayer'),
                         ],
                       ),
                     ),
-                    PopupMenuItem(
+                    const PopupMenuItem(
                       value: 'copy',
                       child: Row(
                         children: [
-                          const Icon(Icons.copy, size: 20),
-                          const SizedBox(width: 12),
+                          Icon(Icons.copy, size: 20),
+                          SizedBox(width: 12),
                           Text('Copy Text'),
                         ],
                       ),
                     ),
                     const PopupMenuDivider(),
-                    PopupMenuItem(
+                    const PopupMenuItem(
                       value: 'settings',
                       child: Row(
                         children: [
-                          const Icon(Icons.settings, size: 20),
-                          const SizedBox(width: 12),
+                          Icon(Icons.settings, size: 20),
+                          SizedBox(width: 12),
                           Text('Reading Settings'),
                         ],
                       ),
@@ -363,22 +362,22 @@ class PrayerDetailScreen extends ConsumerWidget {
             ),
             onSelected: (value) => _handleMenuAction(value, context, ref),
             itemBuilder: (context) => [
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: 'copy',
                 child: Row(
                   children: [
-                    const Icon(Icons.copy, size: 18),
-                    const SizedBox(width: 12),
+                    Icon(Icons.copy, size: 18),
+                    SizedBox(width: 12),
                     Text('Copy Text', style: TextStyle(fontSize: 14)),
                   ],
                 ),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: 'settings',
                 child: Row(
                   children: [
-                    const Icon(Icons.settings, size: 18),
-                    const SizedBox(width: 12),
+                    Icon(Icons.settings, size: 18),
+                    SizedBox(width: 12),
                     Text('Settings', style: TextStyle(fontSize: 14)),
                   ],
                 ),

@@ -11,9 +11,7 @@ class PrayerCard extends ConsumerWidget {
   final Color? themeColor;
 
   const PrayerCard({
-    super.key,
-    required this.prayer,
-    required this.onTap,
+    required this.prayer, required this.onTap, super.key,
     this.themeColor,
   });
 

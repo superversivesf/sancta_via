@@ -17,8 +17,7 @@ class EnhancedPrayerText extends ConsumerStatefulWidget {
   final bool enableVerseHighlighting;
 
   const EnhancedPrayerText({
-    super.key,
-    required this.text,
+    required this.text, super.key,
     this.language = 'English',
     this.themeColor,
     this.readingMode = PrayerReadingMode.normal,
@@ -71,7 +70,7 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
     }
     
     // Base style with enhanced typography and proper color
-    TextStyle baseStyle = textScaling.scaledPrayerText(
+    final TextStyle baseStyle = textScaling.scaledPrayerText(
       context,
       language: widget.language,
       color: textColor,
@@ -95,7 +94,6 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
           color: textColor, // Ensure color is preserved
         );
       case PrayerReadingMode.normal:
-      default:
         return baseStyle.copyWith(
           height: 1.6, // Better than default 1.0 line spacing
           letterSpacing: 0.2,
@@ -226,7 +224,6 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
       case PrayerReadingMode.immersive:
         return TextAlign.center;
       case PrayerReadingMode.normal:
-      default:
         return TextAlign.left;
     }
   }
@@ -237,7 +234,6 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
       case PrayerReadingMode.immersive:
         return CrossAxisAlignment.center;
       case PrayerReadingMode.normal:
-      default:
         return CrossAxisAlignment.stretch;
     }
   }
