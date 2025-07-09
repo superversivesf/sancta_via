@@ -9,8 +9,8 @@ class DayDetailScreen extends ConsumerWidget {
   final DateTime date;
 
   const DayDetailScreen({
-    super.key,
     required this.date,
+    super.key,
   });
 
   @override

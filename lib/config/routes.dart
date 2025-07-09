@@ -29,7 +29,8 @@ final appRouter = GoRouter(
       path: '/day/:date',
       name: 'day-detail',
       builder: (context, state) {
-        final date = state.pathParameters['date']!;
+        final dateString = state.pathParameters['date']!;
+        final date = DateTime.parse(dateString);
         return DayDetailScreen(date: date);
       },
     ),

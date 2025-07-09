@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
-import '../../config/routes.dart';
 import '../../providers/calendar_providers.dart' as local_providers;
 import '../../widgets/liturgical_day_card.dart';
 import '../../widgets/upcoming_feasts_list.dart';
@@ -36,7 +36,7 @@ class CalendarScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              AppNavigation.pushToSettings(context);
+              context.go('/settings');
             },
             tooltip: 'Settings',
           ),
@@ -69,7 +69,7 @@ class CalendarScreen extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => AppNavigation.pushToSearch(context),
+        onPressed: () => context.go('/search'),
         tooltip: 'Search celebrations',
         child: const Icon(Icons.search),
       ),
@@ -302,7 +302,7 @@ class CalendarScreen extends ConsumerWidget {
       return LiturgicalDayCard(
         liturgicalDay: liturgicalDay,
         selectedDate: selectedDate,
-        onTap: () => AppNavigation.pushToDayDetail(context, selectedDate),
+        onTap: () => context.go('/day/${selectedDate.toIso8601String().split('T')[0]}'),
       );
     } else {
       return Container(

@@ -8,8 +8,8 @@ class UpcomingFeastsList extends ConsumerWidget {
   final List<LiturgicalDayData> feasts;
 
   const UpcomingFeastsList({
-    super.key,
     required this.feasts,
+    super.key,
   });
 
   @override

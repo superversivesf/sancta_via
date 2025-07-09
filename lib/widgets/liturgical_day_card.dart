@@ -10,9 +10,9 @@ class LiturgicalDayCard extends ConsumerWidget {
   final VoidCallback? onTap;
 
   const LiturgicalDayCard({
-    super.key,
     required this.liturgicalDay,
     required this.selectedDate,
+    super.key,
     this.onTap,
   });
 

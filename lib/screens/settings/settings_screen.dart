@@ -51,10 +51,10 @@ class SettingsScreen extends ConsumerWidget {
         ),
 
         // Show/hide optional memorials (future feature)
-        SwitchListTile(
-          secondary: const Icon(Icons.visibility),
-          title: const Text('Show Optional Memorials'),
-          subtitle: const Text('Display optional memorial celebrations'),
+        const SwitchListTile(
+          secondary: Icon(Icons.visibility),
+          title: Text('Show Optional Memorials'),
+          subtitle: Text('Display optional memorial celebrations'),
           value: true, // Default for now
           onChanged: null, // Disabled for now
         ),
