@@ -21,6 +21,10 @@ export 'src/widgets/accessibility_settings.dart';
 export 'src/widgets/notifications_settings.dart';
 export 'src/widgets/app_info_section.dart';
 
+// Legal and Support components
+export 'components/privacy_policy_screen.dart';
+export 'components/support_screen.dart';
+
 // Examples
 export 'src/examples/unified_settings_screen.dart';
 
