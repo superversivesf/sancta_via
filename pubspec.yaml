@@ -14,9 +14,17 @@ dev_dependencies:
 
 homepage: https://sancta-via.net
 repository: https://github.com/superversivesf/sancta_via_bible_data
+issue_tracker: https://github.com/superversivesf/sancta_via_bible_data/issues
+documentation: https://github.com/superversivesf/sancta_via_bible_data#readme
+
+# Funding information
+funding:
+  - https://github.com/sponsors/superversive-ca
 
 topics:
   - bible
   - catholic
   - scripture
   - liturgy
+  - sancta-via
+  - religion
