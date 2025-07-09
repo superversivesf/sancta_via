@@ -149,7 +149,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
                     onPressed: () {
                       ref.read(readingPlanProvider.notifier).clearPlan();
                     },
-                    child: Text('Clear Plan'),
+                    child: const Text('Clear Plan'),
                   ),
                 ],
               ),
@@ -505,7 +505,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
     ref.read(readingPlanProvider.notifier).createPlan(plan);
     
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Reading plan created successfully!'),
         backgroundColor: Colors.green,
       ),

@@ -1,9 +1,21 @@
 name: bible_reading_app
 description: "Catholic Bible reading app with liturgical integration and multiple Bible translations"
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-# of the product and file versions while build-number is used as the build suffix.
+# App Store Information
+app_store:
+  display_name: "Sancta Via Bible"
+  short_description: "Catholic Bible reading with liturgical integration"
+  full_description: |
+    Sancta Via Bible is a comprehensive Catholic Bible reading app that integrates with the liturgical calendar.
+    Features multiple Bible translations, daily readings, and spiritual resources for Catholic faithful.
+  keywords: "catholic, bible, liturgy, scripture, prayer, daily readings"
+  category: "Reference"
+  age_rating: "4+"
+
+# Version: major.minor.patch+build
+# App Store: CFBundleShortVersionString = 1.0.0, CFBundleVersion = 1
+# Google Play: versionName = 1.0.0, versionCode = 1
 version: 1.0.0+1
 
 environment:
@@ -16,16 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  flutter:
-    sdk: flutter
-
   # Sancta Via packages - LOCAL DEVELOPMENT VERSIONS
-  sancta_via_shared_ui:
-    path: ../sancta_via_shared_ui
-  sancta_via_liturgical_calendar:
-    path: ../sancta_via_liturgical_calendar
-  sancta_via_liturgical_calendar_riverpod:
-    path: ../sancta_via_liturgical_calendar_riverpod
   bible_data:
     path: ../sancta_via_bible_data
   bible_data_riverpod:
@@ -35,19 +38,27 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
+  flutter:
+    sdk: flutter
+
   # State Management
   flutter_riverpod: ^2.6.1
 
   # Navigation
   go_router: ^15.1.2
 
+  sancta_via_liturgical_calendar:
+    path: ../sancta_via_liturgical_calendar
+  sancta_via_liturgical_calendar_riverpod:
+    path: ../sancta_via_liturgical_calendar_riverpod
+  sancta_via_shared_ui:
+    path: ../sancta_via_shared_ui
+
   # Storage
   shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
-  flutter_test:
-    sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -55,6 +66,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+
+  flutter_test:
+    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

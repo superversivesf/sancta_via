@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import 'package:bible_data_riverpod/bible_data_riverpod.dart';
@@ -21,9 +22,7 @@ class ChapterReadingScreen extends ConsumerStatefulWidget {
   final int? startVerse; // Optional starting verse
 
   const ChapterReadingScreen({
-    super.key,
-    required this.bookName,
-    required this.chapter,
+    required this.bookName, required this.chapter, super.key,
     this.startVerse,
   });
 
@@ -37,6 +36,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
   late String currentBookName;
   late int currentChapter;
   String _currentChapterText = ''; // Store for debugging
+  bool _hasScrolledToInitialVerse = false; // Track if we've scrolled to the initial verse
   
   @override
   void initState() {
@@ -59,6 +59,9 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     setState(() {
       currentBookName = bookName;
       currentChapter = chapter;
+      // Reset the scroll flag when navigating to a different chapter
+      // so we don't scroll to the original startVerse in the new chapter
+      _hasScrolledToInitialVerse = true; 
     });
     debugLog('Navigated to: $bookName $chapter', 'CHAPTER');
   }
@@ -114,7 +117,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.of(context).pushNamed('/settings');
+              context.push('/settings');
             },
           ),
         ],
@@ -149,7 +152,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       floatingActionButton: maxChaptersAsync.when(
         data: (maxChapters) => _buildNavigationButtons(context, maxChapters, themeColor),
         loading: () => null, // Don't show buttons while loading
-        error: (_, __) => null, // Don't show buttons on error
+        error: (error, stackTrace) => null, // Don't show buttons on error
       ),
     );
   }
@@ -165,9 +168,15 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     }
 
     // Schedule scroll to starting verse after the content is built
-    if (widget.startVerse != null && widget.startVerse! > 1) {
+    // Only do this once, when we first load the original chapter with the startVerse
+    if (widget.startVerse != null && 
+        widget.startVerse! > 1 && 
+        !_hasScrolledToInitialVerse &&
+        currentBookName == widget.bookName &&
+        currentChapter == widget.chapter) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _scrollToVerse(widget.startVerse!);
+        _hasScrolledToInitialVerse = true; // Mark that we've scrolled
       });
     }
 
@@ -524,7 +533,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
           padding: const EdgeInsets.only(left: 32),
           child: showPrevious
               ? FloatingActionButton(
-                  heroTag: "previous",
+                  heroTag: 'previous',
                   onPressed: _navigateToPreviousChapter,
                   backgroundColor: themeColor?.withValues(alpha: 0.8) ?? 
                                  Theme.of(context).colorScheme.primary,
@@ -535,7 +544,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         // Next chapter button (always in same position)
         showNext
             ? FloatingActionButton(
-                heroTag: "next",
+                heroTag: 'next',
                 onPressed: _navigateToNextChapter,
                 backgroundColor: themeColor?.withValues(alpha: 0.8) ?? 
                                Theme.of(context).colorScheme.primary,

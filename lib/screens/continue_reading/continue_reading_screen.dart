@@ -334,7 +334,7 @@ class ContinueReadingScreen extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.schedule,
                     color: Colors.orange,
                   ),
@@ -368,7 +368,7 @@ class ContinueReadingScreen extends ConsumerWidget {
                         plan.progress.currentChapter
                       ),
                       icon: const Icon(Icons.menu_book),
-                      label: Text('Read Anyway'),
+                      label: const Text('Read Anyway'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: (themeColor ?? Theme.of(context).colorScheme.primary)
                             .withValues(alpha: 0.1),
@@ -438,7 +438,7 @@ class ContinueReadingScreen extends ConsumerWidget {
                         );
                       },
                       icon: const Icon(Icons.refresh),
-                      label: Text('Start New Plan'),
+                      label: const Text('Start New Plan'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
@@ -452,10 +452,10 @@ class ContinueReadingScreen extends ConsumerWidget {
                         ref.read(readingPlanProvider.notifier).resetProgress();
                       },
                       icon: const Icon(Icons.replay),
-                      label: Text('Restart Plan'),
+                      label: const Text('Restart Plan'),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.green,
-                        side: BorderSide(color: Colors.green),
+                        side: const BorderSide(color: Colors.green),
                       ),
                     ),
                   ),
@@ -575,9 +575,9 @@ class ContinueReadingScreen extends ConsumerWidget {
               
               if (plan != null) ...[
                 ListTile(
-                  leading: Icon(Icons.edit),
-                  title: Text('Modify Reading Plan'),
-                  subtitle: Text('Update schedule, pace, or book selection'),
+                  leading: const Icon(Icons.edit),
+                  title: const Text('Modify Reading Plan'),
+                  subtitle: const Text('Update schedule, pace, or book selection'),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const ReadingPlanScreen()),
@@ -585,22 +585,22 @@ class ContinueReadingScreen extends ConsumerWidget {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.fast_forward),
-                  title: Text('Skip to Next Section'),
-                  subtitle: Text('Jump ahead in your reading plan'),
+                  leading: const Icon(Icons.fast_forward),
+                  title: const Text('Skip to Next Section'),
+                  subtitle: const Text('Jump ahead in your reading plan'),
                   onTap: () => _showSkipDialog(context, ref),
                 ),
                 ListTile(
-                  leading: Icon(Icons.restart_alt),
-                  title: Text('Reset Progress'),
-                  subtitle: Text('Start your current plan from the beginning'),
+                  leading: const Icon(Icons.restart_alt),
+                  title: const Text('Reset Progress'),
+                  subtitle: const Text('Start your current plan from the beginning'),
                   onTap: () => _showResetDialog(context, ref),
                 ),
               ] else ...[
                 ListTile(
-                  leading: Icon(Icons.add),
-                  title: Text('Create Reading Plan'),
-                  subtitle: Text('Get started with structured Bible reading'),
+                  leading: const Icon(Icons.add),
+                  title: const Text('Create Reading Plan'),
+                  subtitle: const Text('Get started with structured Bible reading'),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const ReadingPlanScreen()),

@@ -88,7 +88,7 @@ class TextScaling {
     final baseStyle = TextStyle(
       fontSize: baseFontSize,
       height: lineHeight,
-      color: color,
+      color: color ?? Theme.of(context).colorScheme.onSurface, // Use theme color if no color provided
     );
     
     return baseStyle;

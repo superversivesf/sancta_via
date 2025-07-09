@@ -37,8 +37,8 @@ final chapterCountProvider = FutureProvider.family<int, ({String bookName, Bible
         return 1; // Default fallback
       }
     },
-    loading: () => 1,
-    error: (error, stack) => 1,
+    loading: () => throw Exception('Bible service is loading'),
+    error: (error, stack) => throw error,
   );
 });
 

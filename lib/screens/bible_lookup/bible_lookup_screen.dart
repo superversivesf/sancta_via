@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import 'package:bible_data/bible_data.dart';
+import 'package:bible_data_riverpod/bible_data_riverpod.dart';
 
 import '../../providers/app_providers.dart';
+import '../../providers/book_provider.dart';
 import '../../providers/text_scaling_provider.dart';
 import '../chapter_selection/chapter_selection_screen.dart';
 
@@ -24,7 +26,7 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
   final Map<String, List<String>> bibleBooks = {
     'Law': ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy'],
     'History': ['Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Tobit', 'Judith', 'Esther', '1 Maccabees', '2 Maccabees'],
-    'Wisdom': ['Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs', 'Wisdom', 'Sirach'],
+    'Wisdom': ['Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Wisdom', 'Sirach'],
     'Major Prophets': ['Isaiah', 'Jeremiah', 'Lamentations', 'Baruch', 'Ezekiel', 'Daniel'],
     'Minor Prophets': ['Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi'],
   };
@@ -34,7 +36,7 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
     'History': ['Acts'],
     'Paul\'s Letters': ['Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon'],
     'General Letters': ['Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude'],
-    'Prophecy': ['Revelation'],
+    'Prophecy': ['Revelation of John'],
   };
 
   @override
@@ -123,7 +125,7 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
                         controller: _searchController,
                         decoration: InputDecoration(
                           hintText: 'Search books...',
-                          prefixIcon: Icon(Icons.search, size: 20),
+                          prefixIcon: const Icon(Icons.search, size: 20),
                           isDense: true,
                           contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                           border: OutlineInputBorder(
@@ -185,7 +187,7 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
               ),
             ),
             title: Text(book),
-            subtitle: Text(_getBookInfo(book)),
+            subtitle: BookChapterCount(bookName: book),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               _navigateToChapterSelection(book);
@@ -277,15 +279,12 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
                             ),
                             const SizedBox(height: 2), // Reduced spacing
                             Flexible( // Made flexible to prevent overflow
-                              child: Text(
-                                _getBookInfo(book),
-                                style: textScaling.scaledBodySmall(context).copyWith(
+                              child: BookChapterCount(
+                                bookName: book,
+                                textStyle: textScaling.scaledBodySmall(context).copyWith(
                                   color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                                   fontSize: 11, // Smaller info text
                                 ),
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
@@ -303,28 +302,61 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
     );
   }
 
-  String _getBookInfo(String book) {
-    // Simplified book info - in a real app you'd have actual chapter/verse counts
-    final Map<String, String> bookInfo = {
-      'Genesis': '50 chapters',
-      'Exodus': '40 chapters',
-      'Psalms': '150 chapters',
-      'Matthew': '28 chapters',
-      'Mark': '16 chapters',
-      'Luke': '24 chapters',
-      'John': '21 chapters',
-      'Romans': '16 chapters',
-      'Revelation': '22 chapters',
-    };
-    return bookInfo[book] ?? 'Bible book';
-  }
-
   void _navigateToChapterSelection(String bookName) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => ChapterSelectionScreen(
           bookName: bookName,
         ),
+      ),
+    );
+  }
+}
+
+/// Widget to display chapter count for a specific book
+class BookChapterCount extends ConsumerWidget {
+  final String bookName;
+  final TextStyle? textStyle;
+
+  const BookChapterCount({
+    required this.bookName,
+    super.key,
+    this.textStyle,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
+    final chapterCountAsync = ref.watch(chapterCountProvider((
+      bookName: bookName,
+      translation: selectedTranslation,
+    )));
+
+    return chapterCountAsync.when(
+      data: (count) => Text(
+        count == 1 ? '1 chapter' : '$count chapters',
+        style: textStyle,
+        textAlign: TextAlign.center,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      loading: () => SizedBox(
+        height: 16,
+        width: 16,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          valueColor: AlwaysStoppedAnimation<Color>(
+            textStyle?.color?.withValues(alpha: 0.6) ?? 
+            Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+          ),
+        ),
+      ),
+      error: (error, stackTrace) => Text(
+        'Bible book',
+        style: textStyle,
+        textAlign: TextAlign.center,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

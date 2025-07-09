@@ -253,9 +253,7 @@ class ReadingPlan {
     required this.frequency,
     required this.chaptersPerDay,
     required this.remindersEnabled,
-    this.reminderTime,
-    required this.progress,
-    required this.createdAt,
+    required this.progress, required this.createdAt, this.reminderTime,
     this.completedAt,
   });
 

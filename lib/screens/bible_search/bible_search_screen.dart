@@ -54,35 +54,35 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
     // This is a simplified mock implementation
     // In a real app, you'd search through the actual Bible text
     final mockResults = <SearchResult>[
-      SearchResult(
+      const SearchResult(
         book: 'John',
         chapter: 3,
         verse: 16,
         text: 'For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.',
         translation: 'CPDV',
       ),
-      SearchResult(
+      const SearchResult(
         book: 'Romans',
         chapter: 8,
         verse: 28,
         text: 'And we know that in all things God works for the good of those who love him, who have been called according to his purpose.',
         translation: 'CPDV',
       ),
-      SearchResult(
+      const SearchResult(
         book: 'Philippians',
         chapter: 4,
         verse: 13,
         text: 'I can do all this through him who gives me strength.',
         translation: 'CPDV',
       ),
-      SearchResult(
+      const SearchResult(
         book: 'Psalms',
         chapter: 23,
         verse: 1,
         text: 'The Lord is my shepherd, I lack nothing.',
         translation: 'CPDV',
       ),
-      SearchResult(
+      const SearchResult(
         book: '1 Corinthians',
         chapter: 13,
         verse: 4,
@@ -193,7 +193,7 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
                         ),
                       ),
                       child: _isSearching
-                          ? SizedBox(
+                          ? const SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
@@ -201,7 +201,7 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
                                 color: Colors.white,
                               ),
                             )
-                          : Text('Search'),
+                          : const Text('Search'),
                     ),
                   ],
                 ),

@@ -13,9 +13,7 @@ class VerseSelectionScreen extends ConsumerWidget {
   final int chapter;
 
   const VerseSelectionScreen({
-    super.key,
-    required this.bookName,
-    required this.chapter,
+    required this.bookName, required this.chapter, super.key,
   });
 
   @override
@@ -88,7 +86,7 @@ class VerseSelectionScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.error_outline,
                 size: 48,
                 color: Colors.red,
@@ -122,7 +120,7 @@ class VerseSelectionScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.search_off,
               size: 48,
               color: Colors.orange,
@@ -238,7 +236,7 @@ class VerseSelectionScreen extends ConsumerWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => _navigateToChapterWithVerse(context, 1),
                   icon: const Icon(Icons.first_page),
-                  label: Text('Start at Verse 1'),
+                  label: const Text('Start at Verse 1'),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
                     side: BorderSide(
@@ -252,7 +250,7 @@ class VerseSelectionScreen extends ConsumerWidget {
                 child: ElevatedButton.icon(
                   onPressed: () => _navigateToChapterFromBeginning(context),
                   icon: const Icon(Icons.menu_book),
-                  label: Text('Read Whole Chapter'),
+                  label: const Text('Read Whole Chapter'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,

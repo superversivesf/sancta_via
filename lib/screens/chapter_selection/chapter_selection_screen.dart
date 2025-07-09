@@ -13,8 +13,7 @@ class ChapterSelectionScreen extends ConsumerWidget {
   final String bookName;
 
   const ChapterSelectionScreen({
-    super.key,
-    required this.bookName,
+    required this.bookName, super.key,
   });
 
   @override
@@ -84,7 +83,7 @@ class ChapterSelectionScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.error_outline,
                 size: 48,
                 color: Colors.red,
@@ -207,7 +206,7 @@ class ChapterSelectionScreen extends ConsumerWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => _navigateToChapter(context, 1),
                   icon: const Icon(Icons.first_page),
-                  label: Text('Read from Chapter 1'),
+                  label: const Text('Read from Chapter 1'),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
                     side: BorderSide(
@@ -221,7 +220,7 @@ class ChapterSelectionScreen extends ConsumerWidget {
                 child: ElevatedButton.icon(
                   onPressed: maxChapters > 0 ? () => _navigateToChapter(context, maxChapters) : null,
                   icon: const Icon(Icons.last_page),
-                  label: Text('Last Chapter'),
+                  label: const Text('Last Chapter'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
