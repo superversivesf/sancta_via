@@ -60,7 +60,7 @@ class NovenaAppSettings {
       }
       
       // Handle color scheme style migration
-      AppLanguage language = AppLanguage.english;
+      final AppLanguage language = AppLanguage.english;
       bool showLiturgicalColors = true;
       
       // Map old color scheme style to show liturgical colors

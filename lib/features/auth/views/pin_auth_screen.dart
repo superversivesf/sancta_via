@@ -27,7 +27,7 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
   Future<void> _showPinAuthFlow() async {
     // Get the return destination from the current route BEFORE showing modal
     final returnTo = GoRouterState.of(context).uri.queryParameters['returnTo'];
-    AppLogger.debug("Retrieved returnTo parameter: $returnTo", 'PIN_AUTH');
+    AppLogger.debug('Retrieved returnTo parameter: $returnTo', 'PIN_AUTH');
     
     // Load initial data
     final authService = ref.read(authServiceProvider);
@@ -121,12 +121,12 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
     // Show loading modal
 
     try {
-      AppLogger.debug("=== PIN VALIDATION START ===", 'PIN_AUTH');
+      AppLogger.debug('=== PIN VALIDATION START ===', 'PIN_AUTH');
       
       final authService = ref.read(authServiceProvider);
       final isValid = await authService.validatePin(pin);
       
-      AppLogger.debug("PIN validation result: $isValid", 'PIN_AUTH');
+      AppLogger.debug('PIN validation result: $isValid', 'PIN_AUTH');
       
       // Close loading modal
       if (mounted) Navigator.of(context).pop();
@@ -144,7 +144,7 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
   }
 
   Future<void> _handleAuthSuccess(String? returnTo) async {
-    AppLogger.debug("=== AUTHENTICATION SUCCESS ===", 'PIN_AUTH');
+    AppLogger.debug('=== AUTHENTICATION SUCCESS ===', 'PIN_AUTH');
     
     if (!mounted) return;
     
@@ -155,51 +155,51 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
       // Verify authentication state
       final authService = ref.read(authServiceProvider);
       if (!authService.isAuthenticated) {
-        AppLogger.warning("Authentication state lost, forcing to true", 'PIN_AUTH');
+        AppLogger.warning('Authentication state lost, forcing to true', 'PIN_AUTH');
         authService.setAuthenticatedForDebug(true);
       }
       
       if (returnTo != null && returnTo.isNotEmpty) {
-        AppLogger.debug("Navigating to intended destination: $returnTo", 'PIN_AUTH');
+        AppLogger.debug('Navigating to intended destination: $returnTo', 'PIN_AUTH');
         if (mounted) {
           context.go(returnTo);
         }
       } else {
-        AppLogger.debug("No return destination, going to home", 'PIN_AUTH');
+        AppLogger.debug('No return destination, going to home', 'PIN_AUTH');
         if (mounted) {
           context.goNamed(RouteNames.home);
         }
       }
       
     } catch (e, stackTrace) {
-      AppLogger.error("Navigation error after PIN auth", e, stackTrace, 'PIN_AUTH');
+      AppLogger.error('Navigation error after PIN auth', e, stackTrace, 'PIN_AUTH');
       // Fallback to home
       try {
         if (mounted) {
           context.goNamed(RouteNames.home);
         }
       } catch (fallbackError) {
-        AppLogger.error("Fallback navigation failed", fallbackError, null, 'PIN_AUTH');
+        AppLogger.error('Fallback navigation failed', fallbackError, null, 'PIN_AUTH');
       }
     }
   }
 
   void _handleAuthCancelled() {
-    AppLogger.debug("=== AUTHENTICATION CANCELLED ===", 'PIN_AUTH');
+    AppLogger.debug('=== AUTHENTICATION CANCELLED ===', 'PIN_AUTH');
     try {
       context.go('/');
     } catch (e, stackTrace) {
-      AppLogger.error("Error in cancel navigation", e, stackTrace, 'PIN_AUTH');
+      AppLogger.error('Error in cancel navigation', e, stackTrace, 'PIN_AUTH');
       try {
         context.goNamed(RouteNames.home);
       } catch (e2, stackTrace2) {
-        AppLogger.error("Fallback cancel navigation failed", e2, stackTrace2, 'PIN_AUTH');
+        AppLogger.error('Fallback cancel navigation failed', e2, stackTrace2, 'PIN_AUTH');
       }
     }
   }
 
   void _showLockoutModal(Duration remainingTime) async {
-    AppLogger.debug("Showing PIN lockout modal, remaining time: $remainingTime", 'PIN_AUTH');
+    AppLogger.debug('Showing PIN lockout modal, remaining time: $remainingTime', 'PIN_AUTH');
     
     await PinLockoutModal.show(
       context: context,

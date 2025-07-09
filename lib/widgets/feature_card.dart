@@ -9,11 +9,11 @@ class FeatureCard extends StatelessWidget {
   final Widget? trailing;
 
   const FeatureCard({
-    super.key,
     required this.icon,
     required this.title,
-    this.subtitle,
     required this.description,
+    super.key,
+    this.subtitle,
     this.onTap,
     this.trailing,
   });

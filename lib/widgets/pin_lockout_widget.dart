@@ -8,8 +8,8 @@ class PinLockoutWidget extends StatefulWidget {
   final VoidCallback? onLockoutExpired;
 
   const PinLockoutWidget({
-    super.key,
     required this.initialDuration,
+    super.key,
     this.onLockoutExpired,
   });
 
@@ -37,7 +37,7 @@ class _PinLockoutWidgetState extends State<PinLockoutWidget> {
   void _startCountdown() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_remainingTime.inSeconds <= 1) {
-        AppLogger.debug("PIN lockout expired", 'PIN_LOCKOUT');
+        AppLogger.debug('PIN lockout expired', 'PIN_LOCKOUT');
         timer.cancel();
         if (mounted) {
           widget.onLockoutExpired?.call();

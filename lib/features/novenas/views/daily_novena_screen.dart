@@ -10,8 +10,8 @@ class DailyNovenaScreen extends ConsumerWidget {
   final int dayNumber;
 
   const DailyNovenaScreen({
-    super.key,
     required this.dayNumber,
+    super.key,
   });
 
   @override

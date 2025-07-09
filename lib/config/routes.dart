@@ -119,7 +119,7 @@ final appRouter = GoRouter(
   redirect: (BuildContext context, GoRouterState state) async {
     try {
       // No protected routes in the basic novena app - all content is accessible
-      AppLogger.debug("Route: ${state.matchedLocation}", 'ROUTER');
+      AppLogger.debug('Route: ${state.matchedLocation}', 'ROUTER');
       return null; // No redirect needed
       
     } catch (e, stackTrace) {

@@ -9,8 +9,8 @@ class NovenaDetailScreen extends ConsumerWidget {
   final String novenaId;
 
   const NovenaDetailScreen({
-    super.key,
     required this.novenaId,
+    super.key,
   });
 
   @override

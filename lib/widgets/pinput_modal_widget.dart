@@ -45,10 +45,10 @@ class _PinputOverlay extends StatefulWidget {
 
   const _PinputOverlay({
     required this.title,
-    this.subtitle,
-    this.errorMessage,
     required this.isLoading,
     required this.obscureText,
+    this.subtitle,
+    this.errorMessage,
     this.confirmPinText,
     this.onForgotPin,
   });
@@ -85,11 +85,11 @@ class _PinputOverlayState extends State<_PinputOverlay>
 
     // Auto-focus the PIN input with delay to ensure modal is fully shown
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      AppLogger.debug("Requesting focus for PIN input", 'PINPUT_MODAL');
+      AppLogger.debug('Requesting focus for PIN input', 'PINPUT_MODAL');
       Future.delayed(const Duration(milliseconds: 300), () {
         if (mounted && !widget.isLoading) {
           _focusNode.requestFocus();
-          AppLogger.debug("Focus requested for PIN input", 'PINPUT_MODAL');
+          AppLogger.debug('Focus requested for PIN input', 'PINPUT_MODAL');
         }
       });
     });
@@ -412,16 +412,16 @@ class _PinputOverlayState extends State<_PinputOverlay>
         useNativeKeyboard: true, // Use native keyboard for better UX
         hapticFeedbackType: HapticFeedbackType.lightImpact,
         onCompleted: (pin) {
-          AppLogger.debug("PIN completed: length=${pin.length}", 'PINPUT_MODAL');
+          AppLogger.debug('PIN completed: length=${pin.length}', 'PINPUT_MODAL');
           if (!widget.isLoading) {
             Navigator.of(context).pop(pin);
           }
         },
         onChanged: (pin) {
-          AppLogger.debug("PIN changed: length=${pin.length}", 'PINPUT_MODAL');
+          AppLogger.debug('PIN changed: length=${pin.length}', 'PINPUT_MODAL');
         },
         onTap: () {
-          AppLogger.debug("PIN input tapped - requesting focus", 'PINPUT_MODAL');
+          AppLogger.debug('PIN input tapped - requesting focus', 'PINPUT_MODAL');
           if (!_focusNode.hasFocus) {
             _focusNode.requestFocus();
           }

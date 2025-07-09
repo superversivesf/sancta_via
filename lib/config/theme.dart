@@ -113,8 +113,8 @@ class AppTheme {
         surface: const Color(0xFF1E1E1E),
         surfaceContainerHighest: const Color(0xFF2C2C2C),
       ),
-      appBarTheme: AppBarTheme(
-        backgroundColor: const Color(0xFF1E1E1E),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color(0xFF1E1E1E),
         foregroundColor: Colors.white,
         elevation: 0,
       ),

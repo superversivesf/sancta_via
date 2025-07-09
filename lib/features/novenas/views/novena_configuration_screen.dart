@@ -11,8 +11,8 @@ class NovenaConfigurationScreen extends ConsumerStatefulWidget {
   final String novenaId;
 
   const NovenaConfigurationScreen({
-    super.key,
     required this.novenaId,
+    super.key,
   });
 
   @override
@@ -241,8 +241,8 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
     BuildContext context, {
     required String title,
     required IconData icon,
-    String? subtitle,
     required Widget child,
+    String? subtitle,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),

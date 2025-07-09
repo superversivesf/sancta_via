@@ -87,22 +87,22 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
     );
 
     try {
-      AppLogger.debug("=== PIN SETUP SAVE START ===", 'PIN_SETUP');
-      AppLogger.debug("Saving PIN of length: ${pin.length}", 'PIN_SETUP');
+      AppLogger.debug('=== PIN SETUP SAVE START ===', 'PIN_SETUP');
+      AppLogger.debug('Saving PIN of length: ${pin.length}', 'PIN_SETUP');
       
       final authService = ref.read(authServiceProvider);
       await authService.setPinCode(pin);
       
-      AppLogger.debug("PIN set in auth service, waiting for storage to settle", 'PIN_SETUP');
+      AppLogger.debug('PIN set in auth service, waiting for storage to settle', 'PIN_SETUP');
       await Future.delayed(const Duration(milliseconds: 500));
 
       // Verify PIN was stored correctly
-      AppLogger.debug("Verifying PIN storage by testing validation", 'PIN_SETUP');
+      AppLogger.debug('Verifying PIN storage by testing validation', 'PIN_SETUP');
       final isValid = await authService.validatePin(pin);
-      AppLogger.debug("PIN validation test result: $isValid", 'PIN_SETUP');
+      AppLogger.debug('PIN validation test result: $isValid', 'PIN_SETUP');
       
       if (!isValid) {
-        AppLogger.warning("PIN validation failed immediately after saving!", 'PIN_SETUP');
+        AppLogger.warning('PIN validation failed immediately after saving!', 'PIN_SETUP');
         throw Exception('PIN storage verification failed. Please try again.');
       }
 
@@ -110,11 +110,11 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
       await ref.read(novenaAppSettingsProvider.notifier).refreshPinStatus();
 
       // IMPORTANT: Force logout to ensure user must authenticate to access protected content
-      AppLogger.debug("Forcing logout after PIN setup to clear authentication state", 'PIN_SETUP');
+      AppLogger.debug('Forcing logout after PIN setup to clear authentication state', 'PIN_SETUP');
       authService.forceLogout();
       authService.debugAuthState();
 
-      AppLogger.debug("=== PIN SAVE PROCESS COMPLETED SUCCESSFULLY ===", 'PIN_SETUP');
+      AppLogger.debug('=== PIN SAVE PROCESS COMPLETED SUCCESSFULLY ===', 'PIN_SETUP');
       
       // Close loading modal
       if (mounted) Navigator.of(context).pop();

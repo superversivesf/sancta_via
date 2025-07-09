@@ -62,7 +62,7 @@ class NovenaAppSettingsNotifier extends StateNotifier<NovenaAppSettings> {
       // Sync PIN status with auth service
       await _refreshPinStatus();
       
-      AppLogger.debug("Novena settings loaded successfully", 'NOVENA_SETTINGS');
+      AppLogger.debug('Novena settings loaded successfully', 'NOVENA_SETTINGS');
     } catch (e, stackTrace) {
       AppLogger.error('Failed to load novena settings', e, stackTrace, 'NOVENA_SETTINGS');
       ErrorHandler.handleError(e, stackTrace: stackTrace, tag: 'NOVENA_SETTINGS');
@@ -101,7 +101,7 @@ class NovenaAppSettingsNotifier extends StateNotifier<NovenaAppSettings> {
       // Mark migration as complete
       await prefs.setBool(_migrationKey, true);
       
-      AppLogger.debug("Settings migration completed successfully", 'NOVENA_SETTINGS');
+      AppLogger.debug('Settings migration completed successfully', 'NOVENA_SETTINGS');
     } catch (e, stackTrace) {
       AppLogger.error('Settings migration failed', e, stackTrace, 'NOVENA_SETTINGS');
       // Continue with defaults if migration fails
@@ -195,7 +195,7 @@ class NovenaAppSettingsNotifier extends StateNotifier<NovenaAppSettings> {
       await _authService.setPinCode(pinCode);
       state = state.copyWith(hasPinCode: true);
       await _saveSettings();
-      AppLogger.debug("PIN code set via novena settings", 'NOVENA_SETTINGS');
+      AppLogger.debug('PIN code set via novena settings', 'NOVENA_SETTINGS');
     } catch (e, stackTrace) {
       AppLogger.error('Failed to set PIN code via novena settings', e, stackTrace, 'NOVENA_SETTINGS');
       ErrorHandler.handleError(e, stackTrace: stackTrace, tag: 'NOVENA_SETTINGS');
@@ -209,7 +209,7 @@ class NovenaAppSettingsNotifier extends StateNotifier<NovenaAppSettings> {
       await _authService.clearPinCode();
       state = state.copyWith(hasPinCode: false);
       await _saveSettings();
-      AppLogger.debug("PIN code cleared via novena settings", 'NOVENA_SETTINGS');
+      AppLogger.debug('PIN code cleared via novena settings', 'NOVENA_SETTINGS');
     } catch (e, stackTrace) {
       AppLogger.error('Failed to clear PIN code via novena settings', e, stackTrace, 'NOVENA_SETTINGS');
       ErrorHandler.handleError(e, stackTrace: stackTrace, tag: 'NOVENA_SETTINGS');

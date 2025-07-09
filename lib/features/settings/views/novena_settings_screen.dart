@@ -66,7 +66,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
         ListTile(
           leading: const Icon(Icons.schedule),
           title: const Text('Daily Reminder Time'),
-          subtitle: Text(
+          subtitle: const Text(
             'Set your preferred time for novena prayer reminders',
           ),
           trailing: Text(

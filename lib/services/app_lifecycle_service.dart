@@ -14,7 +14,7 @@ class AppLifecycleService extends WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
     
     if (state == AppLifecycleState.resumed) {
-      AppLogger.debug("App resumed - performing maintenance tasks", 'APP_LIFECYCLE');
+      AppLogger.debug('App resumed - performing maintenance tasks', 'APP_LIFECYCLE');
       
       // App came back to foreground - check if date changed
       final dateChangeService = _container.read(dateChangeServiceProvider);
@@ -23,7 +23,7 @@ class AppLifecycleService extends WidgetsBindingObserver {
       // Clear PIN lockout on app restart for casual security
       final authService = _container.read(authServiceProvider);
       authService.clearLockoutOnRestart().catchError((e) {
-        AppLogger.error("Failed to clear lockout on app resume", e, null, 'APP_LIFECYCLE');
+        AppLogger.error('Failed to clear lockout on app resume', e, null, 'APP_LIFECYCLE');
       });
     }
   }

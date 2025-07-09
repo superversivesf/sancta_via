@@ -97,9 +97,9 @@ class Novena {
     required this.feastDay,
     required this.intention,
     required this.instructions,
-    this.backgroundInfo,
     required this.days,
     required this.source,
+    this.backgroundInfo,
     this.notes,
   });
 
@@ -148,8 +148,8 @@ class ActiveNovena {
     required this.startDate,
     required this.reminderTime,
     required this.reminderFrequency,
-    this.personalIntention,
     required this.completedDays,
+    this.personalIntention,
     this.lastCompletedDate,
   });
 
