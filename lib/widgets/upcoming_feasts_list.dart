@@ -35,16 +35,15 @@ class UpcomingFeastsList extends ConsumerWidget {
               color: theme.colorScheme.primary,
             ),
           ),
-          const SizedBox(height: 12), // More breathing room
-          SizedBox(
-            height: 120, // More comfortable height for cards
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: feasts.length,
-              itemBuilder: (context, index) {
-                final feast = feasts[index];
-                return _buildFeastCard(context, feast, colorIntensity);
-              },
+          const SizedBox(height: 12),
+          // Use SingleChildScrollView with Row for proper intrinsic height support
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: feasts.map((feast) => _buildFeastCard(context, feast, colorIntensity)).toList(),
+              ),
             ),
           ),
         ],
@@ -58,13 +57,16 @@ class UpcomingFeastsList extends ConsumerWidget {
     final feastDate = DateTime.parse(feast.date);
     
     return Container(
-      width: 160, // Back to comfortable width
-      height: 120, // Match the ListView height
-      margin: const EdgeInsets.only(right: 12), // Normal margin
-      padding: const EdgeInsets.all(8), // More comfortable padding
+      width: 160, // Keep consistent width
+      // Remove fixed height - let it size based on content
+      constraints: const BoxConstraints(
+        minHeight: 100, // Minimum height for consistency
+      ),
+      margin: const EdgeInsets.only(right: 12),
+      padding: const EdgeInsets.all(12), // Increased padding for larger text
       decoration: BoxDecoration(
         color: feastColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8), // Smaller radius
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: feastColor.withValues(alpha: 0.3),
           width: 1,
@@ -72,62 +74,57 @@ class UpcomingFeastsList extends ConsumerWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min, // Size to content
         children: [
           // Date and rank indicator
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                DateFormat('MMM d').format(feastDate),
-                style: theme.textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: feastColor,
-                  fontSize: 11, // Slightly larger
+              Flexible(
+                child: Text(
+                  DateFormat('MMM d').format(feastDate),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: feastColor,
+                  ),
                 ),
               ),
               if (feast.celebration.prioritized || feast.celebration.rank == 'SOLEMNITY')
                 Icon(
                   Icons.star,
-                  size: 14, // Slightly larger
+                  size: 16, // Responsive to text scaling
                   color: feastColor,
                 ),
             ],
           ),
-          const SizedBox(height: 6), // More spacing
+          const SizedBox(height: 8),
           
-          // Celebration name - take up remaining space
-          Expanded(
-            child: Text(
-              feast.celebration.name.isEmpty 
-                  ? feast.season 
-                  : feast.celebration.name,
-              style: theme.textTheme.bodyMedium?.copyWith( // Back to bodyMedium
-                fontWeight: feast.celebration.rank == 'SOLEMNITY' 
-                    ? FontWeight.bold 
-                    : FontWeight.normal,
-                fontSize: 12,
-                height: 1.3, // Better line height
-              ),
-              maxLines: 3, // Good balance
-              overflow: TextOverflow.ellipsis,
+          // Celebration name - flexible sizing
+          Text(
+            feast.celebration.name.isEmpty 
+                ? feast.season 
+                : feast.celebration.name,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontWeight: feast.celebration.rank == 'SOLEMNITY' 
+                  ? FontWeight.bold 
+                  : FontWeight.normal,
+              height: 1.3,
             ),
+            // Remove maxLines and ellipsis to allow full text display
           ),
           
-          // Rank - show for more celebrations now that we have space
+          // Rank - show for significant celebrations
           if ((feast.celebration.rank == 'SOLEMNITY' || 
                feast.celebration.rank == 'FEAST' ||
                feast.celebration.rank == 'MEMORIAL') && 
               feast.celebration.rank.isNotEmpty) ...[
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Text(
               _formatRank(feast.celebration.rank),
               style: theme.textTheme.bodySmall?.copyWith(
                 fontStyle: FontStyle.italic,
                 color: theme.colorScheme.onSurfaceVariant,
-                fontSize: 10, // Slightly larger
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
           ],
         ],
