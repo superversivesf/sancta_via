@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import '../../features/examination/providers/examination_provider.dart';
 import '../../features/examination/providers/examination_session_provider.dart';
+import '../../providers/text_scaling_provider.dart';
 import '../../config/constants.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -13,6 +15,7 @@ class HomeScreen extends ConsumerWidget {
     final liturgicalData = ref.watch(currentLiturgicalDayProvider);
     final activeSession = ref.watch(examinationSessionProvider);
     final defaultExamination = ref.watch(defaultExaminationProvider);
+    final textScaling = ref.watch(textScaleProvider);
     
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +48,7 @@ class HomeScreen extends ConsumerWidget {
                         const SizedBox(width: 8),
                         Text(
                           'Today\'s Liturgical Season',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          style: textScaling.scaledTitleMedium(context).copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -54,7 +57,7 @@ class HomeScreen extends ConsumerWidget {
                     const SizedBox(height: 8),
                     Text(
                       liturgicalData.season,
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      style: textScaling.scaledHeadlineSmall(context).copyWith(
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
@@ -62,7 +65,7 @@ class HomeScreen extends ConsumerWidget {
                       const SizedBox(height: 8),
                       Text(
                         liturgicalData.celebration.name,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: textScaling.scaledBodyLarge(context),
                       ),
                     ],
                   ],
@@ -90,7 +93,7 @@ class HomeScreen extends ConsumerWidget {
                           const SizedBox(width: 8),
                           Text(
                             'Active Examination',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            style: textScaling.scaledTitleMedium(context).copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -99,7 +102,7 @@ class HomeScreen extends ConsumerWidget {
                       const SizedBox(height: 8),
                       Text(
                         'You have an examination in progress',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: textScaling.scaledBodyMedium(context),
                       ),
                       const SizedBox(height: 16),
                       Row(
@@ -152,7 +155,7 @@ class HomeScreen extends ConsumerWidget {
             // Quick Actions
             Text(
               'Quick Actions',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              style: textScaling.scaledHeadlineSmall(context).copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -225,7 +228,7 @@ class HomeScreen extends ConsumerWidget {
             // Information Section
             Text(
               'About Examination of Conscience',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              style: textScaling.scaledHeadlineSmall(context).copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -239,7 +242,7 @@ class HomeScreen extends ConsumerWidget {
                   children: [
                     Text(
                       'Preparation for Confession',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      style: textScaling.scaledTitleMedium(context).copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -248,7 +251,7 @@ class HomeScreen extends ConsumerWidget {
                       'An examination of conscience is a prayerful reflection on our sins and failings, '
                       'helping us to prepare well for the Sacrament of Confession. Through honest '
                       'self-examination, we open our hearts to God\'s mercy and grace.',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: textScaling.scaledBodyMedium(context),
                     ),
                   ],
                 ),

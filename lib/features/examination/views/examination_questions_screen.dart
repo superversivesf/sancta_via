@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../models/examination_response_status.dart';
 import '../providers/examination_provider.dart';
 import '../providers/examination_session_provider.dart';
+import '../../../providers/text_scaling_provider.dart';
 
 class ExaminationQuestionsScreen extends ConsumerStatefulWidget {
   final String examinationId;
@@ -68,6 +69,7 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
   @override
   Widget build(BuildContext context) {
     final sessionState = ref.watch(examinationSessionProvider);
+    final textScaling = ref.watch(textScaleProvider);
 
     if (sessionState == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -134,7 +136,7 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                       // Category title
                       Text(
                         category.title,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        style: textScaling.scaledTitleLarge(context).copyWith(
                           color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
                         ),
@@ -144,7 +146,7 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                       // Question number
                       Text(
                         'Question ${currentIndex + 1} of ${items.length}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        style: textScaling.scaledBodySmall(context).copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),

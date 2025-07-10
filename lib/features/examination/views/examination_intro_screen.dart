@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/examination_provider.dart';
 import '../providers/examination_session_provider.dart';
+import '../../../providers/text_scaling_provider.dart';
 import '../../../utils/logger.dart';
 
 class ExaminationIntroScreen extends ConsumerWidget {
@@ -15,6 +16,7 @@ class ExaminationIntroScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final examinationAsync = ref.watch(examinationByIdProvider(examinationId));
+    final textScaling = ref.watch(textScaleProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +35,7 @@ class ExaminationIntroScreen extends ConsumerWidget {
               children: [
                 Text(
                   examination.title,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  style: textScaling.scaledHeadlineMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.primary,
                   ),
@@ -41,7 +43,7 @@ class ExaminationIntroScreen extends ConsumerWidget {
                 const SizedBox(height: 8),
                 Text(
                   'Source: ${examination.source}',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  style: textScaling.scaledBodyMedium(context).copyWith(
                     fontStyle: FontStyle.italic,
                   ),
                 ),
@@ -145,7 +147,7 @@ class ExaminationIntroScreen extends ConsumerWidget {
                       children: [
                         Text(
                           'Suggested Opening Prayer',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          style: textScaling.scaledTitleMedium(context).copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -181,44 +183,48 @@ class ExaminationIntroScreen extends ConsumerWidget {
         required String content,
         required IconData icon,
       }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              icon,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+    return Consumer(
+      builder: (context, ref, child) {
+        final textScaling = ref.watch(textScaleProvider);
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  content,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                child: Icon(
+                  icon,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: textScaling.scaledTitleMedium(context).copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      content,
+                      style: textScaling.scaledBodyMedium(context),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

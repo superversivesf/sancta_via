@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../screens/home/home_screen.dart';
@@ -9,6 +10,7 @@ import '../features/examination/views/examination_questions_screen.dart';
 import '../features/examination/views/examination_summary_screen.dart';
 import '../features/examination/views/completed_examinations_screen.dart';
 import '../features/examination/views/completed_examination_detail_screen.dart';
+import '../providers/text_scaling_provider.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -86,30 +88,35 @@ final appRouter = GoRouter(
   ],
 
   // Error handling
-  errorBuilder: (context, state) => Scaffold(
-    appBar: AppBar(
-      title: const Text('Page Not Found'),
-      automaticallyImplyLeading: true,
-    ),
-    body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.error_outline, size: 64),
-          const SizedBox(height: 16),
-          Text(
-            'Page Not Found',
-            style: Theme.of(context).textTheme.headlineSmall,
+  errorBuilder: (context, state) => Consumer(
+    builder: (context, ref, child) {
+      final textScaling = ref.watch(textScaleProvider);
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Page Not Found'),
+          automaticallyImplyLeading: true,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, size: 64),
+              const SizedBox(height: 16),
+              Text(
+                'Page Not Found',
+                style: textScaling.scaledHeadlineSmall(context),
+              ),
+              const SizedBox(height: 8),
+              Text('No route found for ${state.uri.path}'),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => context.go('/'),
+                child: const Text('Go Home'),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Text('No route found for ${state.uri.path}'),
-          const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () => context.go('/'),
-            child: const Text('Go Home'),
-          ),
-        ],
-      ),
-    ),
+        ),
+      );
+    },
   ),
 );

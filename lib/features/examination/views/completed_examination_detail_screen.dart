@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../models/confession_item_model.dart';
 import '../providers/examination_provider.dart';
+import '../../../providers/text_scaling_provider.dart';
 
 class CompletedExaminationDetailScreen extends ConsumerWidget {
   final String completedExaminationId;
@@ -15,6 +16,7 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final sessionAsync = ref.watch(completedSessionProvider(completedExaminationId));
     final confessionItems = ref.watch(completedSessionItemsProvider(completedExaminationId));
+    final textScaling = ref.watch(textScaleProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +47,7 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
                           // Header
                           Text(
                             'Items to Confess',
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            style: textScaling.scaledHeadlineSmall(context).copyWith(
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).colorScheme.primary,
                             ),
@@ -53,13 +55,14 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
                           const SizedBox(height: 8),
                           Text(
                             'Examination: ${examination.title}',
-                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: textScaling.scaledBodyLarge(context).copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             'Completed: ${_formatDate(session.createdAt)}',
-                            style: TextStyle(
-                              fontSize: 14,
+                            style: textScaling.scaledBodyMedium(context).copyWith(
                               color: Theme.of(context).textTheme.bodyMedium?.color,
                             ),
                           ),
@@ -95,7 +98,7 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
                           if (confessionItems.isEmpty) ...[
                             Text(
                               'No items were marked for confession in this examination.',
-                              style: Theme.of(context).textTheme.bodyLarge,
+                              style: textScaling.scaledBodyLarge(context),
                             ),
                           ] else ...[
                             ...confessionItems.map((item) => _buildConfessionItem(context, item)),
@@ -113,7 +116,7 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
                                 children: [
                                   Text(
                                     'Act of Contrition',
-                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    style: textScaling.scaledTitleMedium(context).copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -180,43 +183,46 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
   }
 
   Widget _buildConfessionItem(BuildContext context, ConfessionItem item) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            Icons.check,
-            color: Theme.of(context).colorScheme.primary,
-            size: 20,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.getDisplayText(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                if (item.note != null && item.note!.isNotEmpty) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    item.note!,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).textTheme.bodySmall?.color,
+    return Consumer(
+      builder: (context, ref, child) {
+        final textScaling = ref.watch(textScaleProvider);
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.check,
+                color: Theme.of(context).colorScheme.primary,
+                size: 20,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.getDisplayText(),
+                      style: textScaling.scaledBodyLarge(context).copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
-              ],
-            ),
+                    if (item.note != null && item.note!.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        item.note!,
+                        style: textScaling.scaledBodySmall(context).copyWith(
+                          color: Theme.of(context).textTheme.bodySmall?.color,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 

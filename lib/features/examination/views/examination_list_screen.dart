@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../models/examination_model.dart';
 import '../models/user_preferences_model.dart';
 import '../providers/examination_provider.dart';
+import '../../../providers/text_scaling_provider.dart';
 
 class ExaminationListScreen extends ConsumerStatefulWidget {
   const ExaminationListScreen({super.key});
@@ -20,6 +21,7 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
   Widget build(BuildContext context) {
     final examinationsAsync = ref.watch(examinationsProvider);
     final preferences = ref.watch(examinationPreferencesProvider);
+    final textScaling = ref.watch(textScaleProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -113,11 +115,12 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
 
   // Helper method to build section headers
   Widget _buildSectionHeader(BuildContext context, String title) {
+    final textScaling = ref.watch(textScaleProvider);
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       child: Text(
         title,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+        style: textScaling.scaledTitleMedium(context).copyWith(
           color: Theme.of(context).colorScheme.primary,
           fontWeight: FontWeight.bold,
         ),
@@ -150,7 +153,7 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
                   Expanded(
                     child: Text(
                       examination.title,
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: ref.watch(textScaleProvider).scaledTitleLarge(context),
                     ),
                   ),
                   // Favorite toggle button
@@ -190,7 +193,7 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
               const SizedBox(height: 8),
               Text(
                 examination.description,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: ref.watch(textScaleProvider).scaledBodyMedium(context),
               ),
               const SizedBox(height: 12),
               Wrap(

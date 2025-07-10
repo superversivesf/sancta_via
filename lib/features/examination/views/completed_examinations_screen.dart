@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../models/examination_session_model.dart';
 import '../providers/examination_provider.dart';
+import '../../../providers/text_scaling_provider.dart';
 
 class CompletedExaminationsScreen extends ConsumerWidget {
   const CompletedExaminationsScreen({super.key});
@@ -11,6 +12,7 @@ class CompletedExaminationsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final completedExaminationsAsync = ref.watch(completedExaminationsProvider);
+    final textScaling = ref.watch(textScaleProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -41,7 +43,7 @@ class CompletedExaminationsScreen extends ConsumerWidget {
                     const SizedBox(height: 24),
                     Text(
                       'No completed examinations',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: textScaling.scaledHeadlineSmall(context),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
