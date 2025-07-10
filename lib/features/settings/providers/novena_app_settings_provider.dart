@@ -8,7 +8,6 @@ import '../models/novena_app_settings.dart';
 import '../../../services/auth_service.dart';
 import '../../../utils/logger.dart';
 import '../../../utils/error_handler.dart';
-import '../../../config/theme.dart';
 
 /// Provider for Novena app specific settings
 class NovenaAppSettingsNotifier extends StateNotifier<NovenaAppSettings> {
@@ -223,14 +222,9 @@ class NovenaAppSettingsNotifier extends StateNotifier<NovenaAppSettings> {
   }
 
   /// Map color scheme style to shared UI color intensity
-  Future<void> setColorSchemeStyle(ColorSchemeStyle style) async {
-    // Map the old color scheme style to the new shared UI color intensity
-    final colorIntensity = style == ColorSchemeStyle.vibrant 
-        ? ColorIntensity.vibrant 
-        : ColorIntensity.muted;
-    
-    // Use the shared UI color intensity provider
-    await _ref.read(colorIntensityProvider.notifier).setColorIntensity(colorIntensity);
+  Future<void> setColorSchemeStyle(ColorIntensity style) async {
+    // Use the shared UI color intensity provider directly
+    await _ref.read(colorIntensityProvider.notifier).setColorIntensity(style);
   }
 }
 
@@ -276,8 +270,8 @@ final legacySettingsProvider = Provider<dynamic>((ref) {
         : novenaSettings.fontSize / 18.0, // Convert points to scale factor
     hasPinCode: novenaSettings.hasPinCode,
     colorSchemeStyle: novenaSettings.showLiturgicalColors 
-        ? ColorSchemeStyle.vibrant 
-        : ColorSchemeStyle.muted,
+        ? ColorIntensity.vibrant 
+        : ColorIntensity.muted,
   );
 });
 
@@ -285,7 +279,7 @@ final legacySettingsProvider = Provider<dynamic>((ref) {
 class LegacySettingsModel {
   final double fontSize;
   final bool hasPinCode;
-  final ColorSchemeStyle colorSchemeStyle;
+  final ColorIntensity colorSchemeStyle;
 
   LegacySettingsModel({
     required this.fontSize,
@@ -296,7 +290,7 @@ class LegacySettingsModel {
   LegacySettingsModel copyWith({
     double? fontSize,
     bool? hasPinCode,
-    ColorSchemeStyle? colorSchemeStyle,
+    ColorIntensity? colorSchemeStyle,
   }) {
     return LegacySettingsModel(
       fontSize: fontSize ?? this.fontSize,
