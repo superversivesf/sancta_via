@@ -118,7 +118,7 @@ class ExaminationIntroScreen extends ConsumerWidget {
                         
                         // Now navigate
                         if (context.mounted) {
-                          context.go('/examination/$examinationId/category/$firstCategoryId');
+                          context.push('/examination/$examinationId/category/$firstCategoryId');
                         }
                       } else {
                         AppLogger.warning('Context is NOT mounted after starting examination', 'EXAM');

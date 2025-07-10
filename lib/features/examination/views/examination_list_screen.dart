@@ -140,7 +140,7 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
         onTap: () {
-          context.go('/examination/${examination.id}');
+          context.push('/examination/${examination.id}');
         },
         borderRadius: BorderRadius.circular(16),
         child: Padding(

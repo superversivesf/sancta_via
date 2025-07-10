@@ -365,7 +365,7 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                 Navigator.of(context).pop(); // Close dialog
                 final nextCategory = _getNextCategory(examination, category);
                 if (nextCategory != null) {
-                  context.go('/examination/${examination.id}/category/${nextCategory.id}');
+                  context.push('/examination/${examination.id}/category/${nextCategory.id}');
                 }
               },
               child: const Text('Continue to Next Section'),
@@ -374,7 +374,7 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
             onPressed: () {
               Navigator.of(context).pop(); // Close dialog
               // Navigate to summary screen
-              context.go('/examination/${examination.id}/summary');
+              context.push('/examination/${examination.id}/summary');
             },
             child: const Text('View Summary'),
           ),

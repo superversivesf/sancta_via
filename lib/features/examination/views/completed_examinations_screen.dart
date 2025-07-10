@@ -88,7 +88,7 @@ class CompletedExaminationsScreen extends ConsumerWidget {
       child: ListTile(
         // Make the entire ListTile tappable
         onTap: () {
-          context.go('/completed/${session.id}');
+          context.push('/completed/${session.id}');
         },
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).colorScheme.primaryContainer,

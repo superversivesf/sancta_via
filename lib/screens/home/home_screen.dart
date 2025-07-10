@@ -111,7 +111,7 @@ class HomeScreen extends ConsumerWidget {
                             icon: const Icon(Icons.play_arrow),
                             label: const Text('Continue'),
                             onPressed: () {
-                              context.go('/examinations');
+                              context.push('/examinations');
                             },
                           ),
                           const SizedBox(width: 8),
@@ -176,7 +176,7 @@ class HomeScreen extends ConsumerWidget {
                   subtitle: const Text('Your default examination'),
                   trailing: const Icon(Icons.arrow_forward_ios),
                   onTap: () {
-                    context.go('/examination/${defaultExamination.id}');
+                    context.push('/examination/${defaultExamination.id}');
                   },
                 ),
               ),
@@ -197,7 +197,7 @@ class HomeScreen extends ConsumerWidget {
                 subtitle: const Text('View all available examinations of conscience'),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  context.go('/examinations');
+                  context.push('/examinations');
                 },
               ),
             ),
@@ -218,7 +218,7 @@ class HomeScreen extends ConsumerWidget {
                 subtitle: const Text('View examinations ready for confession'),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  context.go('/completed-examinations');
+                  context.push('/completed-examinations');
                 },
               ),
             ),
