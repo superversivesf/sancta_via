@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import '../config/routes.dart';
+import '../providers/calendar_providers.dart' as local_providers;
 
 class LiturgicalCalendarApp extends ConsumerWidget {
   const LiturgicalCalendarApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch liturgical color for dynamic theming from riverpod package
-    final liturgicalColorString = ref.watch(currentLiturgicalColorProvider);
+    // Watch liturgical color for dynamic theming - now based on selected date!
+    final liturgicalColorString = ref.watch(local_providers.selectedDateLiturgicalColorProvider);
     
     // Watch shared UI theme providers
     final themeMode = ref.watch(themeModeProvider);

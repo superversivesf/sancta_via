@@ -34,6 +34,13 @@ final liturgicalDayForDateProvider = Provider.family<LiturgicalDayData?, DateTim
   return LiturgicalCalendarService.getDayForDate(date);
 });
 
+// Provider for liturgical color of the selected date (for dynamic theming)
+final selectedDateLiturgicalColorProvider = Provider<String?>((ref) {
+  final selectedDate = ref.watch(selectedDateProvider);
+  final liturgicalDay = ref.watch(liturgicalDayForDateProvider(selectedDate));
+  return liturgicalDay?.celebration.color;
+});
+
 // Provider for upcoming feasts and celebrations
 final upcomingFeastsProvider = Provider<List<LiturgicalDayData>>((ref) {
   return LiturgicalCalendarService.getUpcomingFeasts(daysAhead: 30);
