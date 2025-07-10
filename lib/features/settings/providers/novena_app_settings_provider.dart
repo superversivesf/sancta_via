@@ -139,7 +139,7 @@ class NovenaAppSettingsNotifier extends StateNotifier<NovenaAppSettings> {
     }
   }
 
-  // Base settings methods (delegate to base provider)
+  // Base settings methods (delegate to shared UI providers)
   Future<void> updateFontSize(double fontSize) async {
     await _ref.read(baseSettingsProvider.notifier).setFontSize(fontSize);
   }
@@ -222,12 +222,15 @@ class NovenaAppSettingsNotifier extends StateNotifier<NovenaAppSettings> {
     await _refreshPinStatus();
   }
 
-  /// Map color scheme style to base settings equivalent
+  /// Map color scheme style to shared UI color intensity
   Future<void> setColorSchemeStyle(ColorSchemeStyle style) async {
-    // For now, we map color scheme style to show liturgical colors setting
-    // In the future, we might add color intensity to base settings
-    final showColors = style == ColorSchemeStyle.vibrant;
-    await updateShowLiturgicalColors(showColors);
+    // Map the old color scheme style to the new shared UI color intensity
+    final colorIntensity = style == ColorSchemeStyle.vibrant 
+        ? ColorIntensity.vibrant 
+        : ColorIntensity.muted;
+    
+    // Use the shared UI color intensity provider
+    await _ref.read(colorIntensityProvider.notifier).setColorIntensity(colorIntensity);
   }
 }
 

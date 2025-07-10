@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import '../providers/novena_app_settings_provider.dart';
@@ -8,8 +7,6 @@ import '../../../services/auth_service.dart';
 import '../../../widgets/pinput_modal_widget.dart';
 import '../../../utils/logger.dart';
 import '../../../config/constants.dart';
-import '../../../config/route_names.dart';
-import '../../../providers/theme_provider.dart' as local_theme;
 import '../../novenas/providers/novena_state_provider.dart';
 
 /// Unified settings screen for Novena Companion using standardized components
@@ -99,17 +96,42 @@ class NovenaSettingsScreen extends ConsumerWidget {
         const Divider(),
 
         // ═══════════════════════════════════════
-        // APPEARANCE SECTION
+        // APPEARANCE SECTION (using shared UI)
         // ═══════════════════════════════════════
         const SettingsSectionHeader(title: 'Appearance'),
-
-        // Theme Settings
+        
+        // Theme mode selection (Light/Dark/System)
+        const ThemeModeSelector(),
+        
+        // Color intensity selection (Vibrant/Muted)
+        const ColorIntensitySelector(),
+        
+        // Liturgical color preview
+        const LiturgicalColorPreview(),
+        
+        // Current color display for easier verification
         ListTile(
-          leading: const Icon(Icons.palette),
-          title: const Text('Theme & Colors'),
-          subtitle: Text(_getThemeModeDescription(ref.watch(local_theme.themeModeProvider))),
-          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-          onTap: () => context.pushNamed(RouteNames.themePreview),
+          leading: const Icon(Icons.info),
+          title: const Text('Current Theme Color'),
+          trailing: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Theme.of(context).colorScheme.outline),
+            ),
+          ),
+        ),
+        
+        const Divider(),
+
+        // ═══════════════════════════════════════
+        // ACCESSIBILITY SECTION (with working font size)
+        // ═══════════════════════════════════════
+        const AccessibilitySettings(
+          fontPreviewText: 'Sample novena prayer text: "O Saint Jude, glorious apostle..."',
+          showFontSize: true,
         ),
 
         const Divider(),
@@ -606,16 +628,6 @@ class NovenaSettingsScreen extends ConsumerWidget {
     }
   }
 
-  String _getThemeModeDescription(ThemeMode themeMode) {
-    switch (themeMode) {
-      case ThemeMode.light:
-        return 'Light mode';
-      case ThemeMode.dark:
-        return 'Dark mode';
-      case ThemeMode.system:
-        return 'Follow system settings';
-    }
-  }
 
   void _showComingSoon(BuildContext context, String feature) {
     ScaffoldMessenger.of(context).showSnackBar(

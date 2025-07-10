@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'config/routes.dart';
-import 'features/settings/providers/settings_providers.dart';
-import 'providers/theme_provider.dart' as local_theme;
 import 'services/app_lifecycle_service.dart';
 import 'services/secure_storage_service.dart';
 import 'features/novenas/services/novena_notification_service.dart';
@@ -86,10 +85,28 @@ class NovenaCompanionApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(local_theme.themeModeProvider);
-    final lightTheme = ref.watch(local_theme.lightThemeProvider);
-    final darkTheme = ref.watch(local_theme.darkThemeProvider);
-    final fontScale = ref.watch(settingsProvider).fontSize;
+    // Watch shared UI theme providers
+    final themeMode = ref.watch(themeModeProvider);
+    final colorIntensity = ref.watch(colorIntensityProvider);
+    final textScale = ref.watch(effectiveTextScaleProvider);
+    
+    // Watch liturgical color for dynamic theming (using shared provider)
+    final currentLiturgicalColorString = ref.watch(currentLiturgicalColorProvider);
+    
+    // Parse liturgical color from string (same as other Sancta Via apps)
+    final liturgicalColor = currentLiturgicalColorString != null 
+        ? LiturgicalColor.fromString(currentLiturgicalColorString)
+        : null;
+    
+    // Debug logging for color values
+    AppLogger.debug('Theme rebuild - Liturgical Color: $currentLiturgicalColorString, Color Intensity: $colorIntensity', 'THEME_DEBUG');
+    
+    // Get themes from shared UI system  
+    final lightTheme = AppTheme.lightTheme(liturgicalColor, colorIntensity);
+    final darkTheme = AppTheme.darkTheme(liturgicalColor, colorIntensity);
+    
+    // Log actual primary colors for debugging
+    AppLogger.debug('Primary Color (Light): ${lightTheme.colorScheme.primary}, (Dark): ${darkTheme.colorScheme.primary}', 'COLOR_DEBUG');
     
     // Initialize app lifecycle service for date change detection
     ref.watch(appLifecycleServiceProvider);
@@ -102,11 +119,15 @@ class NovenaCompanionApp extends ConsumerWidget {
       darkTheme: darkTheme,
       routerConfig: appRouter,
       builder: (context, child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(
-            textScaler: TextScaler.linear(fontScale),
+        return MediaQuery.withClampedTextScaling(
+          minScaleFactor: 0.8,
+          maxScaleFactor: 2.0,
+          child: MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: TextScaler.linear(textScale),
+            ),
+            child: child!,
           ),
-          child: child!,
         );
       },
     );
