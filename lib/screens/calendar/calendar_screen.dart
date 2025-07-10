@@ -36,7 +36,7 @@ class CalendarScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              context.go('/settings');
+              context.push('/settings');
             },
             tooltip: 'Settings',
           ),
@@ -69,7 +69,7 @@ class CalendarScreen extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.go('/search'),
+        onPressed: () => context.push('/search'),
         tooltip: 'Search celebrations',
         child: const Icon(Icons.search),
       ),
@@ -302,7 +302,7 @@ class CalendarScreen extends ConsumerWidget {
       return LiturgicalDayCard(
         liturgicalDay: liturgicalDay,
         selectedDate: selectedDate,
-        onTap: () => context.go('/day/${selectedDate.toIso8601String().split('T')[0]}'),
+        onTap: () => context.push('/day/${selectedDate.toIso8601String().split('T')[0]}'),
       );
     } else {
       return Container(

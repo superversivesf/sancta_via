@@ -60,22 +60,6 @@ class SettingsScreen extends ConsumerWidget {
         ),
 
         const Divider(),
-
-        // ═══════════════════════════════════════
-        // APPEARANCE SECTION
-        // ═══════════════════════════════════════
-        const SettingsSectionHeader(title: 'Appearance'),
-
-        // Theme mode selection - using shared component
-        const ThemeModeSelector(),
-
-        // Color intensity setting - using shared component
-        const ColorIntensitySelector(),
-
-        // Preview liturgical colors - using shared component
-        const LiturgicalColorPreview(),
-
-        const Divider(),
       ],
     );
   }

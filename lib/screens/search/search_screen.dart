@@ -263,7 +263,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               )
             : null,
         onTap: () {
-          context.go('/day/${resultDate.toIso8601String().split('T')[0]}');
+          context.push('/day/${resultDate.toIso8601String().split('T')[0]}');
         },
       ),
     );
