@@ -32,11 +32,12 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "net.superversive.novena_companion"
     compileSdk flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    ndkVersion "27.0.12077973"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
@@ -71,10 +72,11 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Use release signing if keystore exists, otherwise fall back to debug signing
+            signingConfig keystorePropertiesFile.exists() ? signingConfigs.release : signingConfigs.debug
+            minifyEnabled false
+            shrinkResources false
+            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             
             // Build configuration
             debuggable false
@@ -96,5 +98,9 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // Kotlin standard library is now included automatically by Flutter
+    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    
+    // Core library desugaring for flutter_local_notifications
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }
