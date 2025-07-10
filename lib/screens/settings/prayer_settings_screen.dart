@@ -26,23 +26,29 @@ class PrayerSettingsScreen extends ConsumerWidget {
     // Prayer-specific settings section
     final prayerSpecificSettings = _buildPrayerSpecificSettings(context, ref);
 
-    return UnifiedSettingsScreen(
-      appInfo: appInfo,
-      appSpecificSettings: prayerSpecificSettings,
-      customNotifications: [
-        CatholicNotificationOptions.prayerReminders(
-          enabled: false, // TODO: Connect to actual notifications
-          onChanged: (enabled) {
-            _showComingSoon(context, 'Prayer reminders');
-          },
-        ),
-        CatholicNotificationOptions.liturgicalCalendar(
-          enabled: false, // TODO: Connect to liturgical notifications
-          onChanged: (enabled) {
-            _showComingSoon(context, 'Liturgical calendar notifications');
-          },
-        ),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Settings'),
+        centerTitle: true,
+      ),
+      body: UnifiedSettingsScreen(
+        appInfo: appInfo,
+        appSpecificSettings: prayerSpecificSettings,
+        customNotifications: [
+          CatholicNotificationOptions.prayerReminders(
+            enabled: false, // TODO: Connect to actual notifications
+            onChanged: (enabled) {
+              _showComingSoon(context, 'Prayer reminders');
+            },
+          ),
+          CatholicNotificationOptions.liturgicalCalendar(
+            enabled: false, // TODO: Connect to liturgical notifications
+            onChanged: (enabled) {
+              _showComingSoon(context, 'Liturgical calendar notifications');
+            },
+          ),
+        ],
+      ),
     );
   }
 
