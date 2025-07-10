@@ -43,11 +43,11 @@ class SettingsScreen extends ConsumerWidget {
           const Divider(),
 
           // ═══════════════════════════════════════
-          // ACCESSIBILITY SECTION (WITHOUT font size)
+          // ACCESSIBILITY SECTION (WITH working font size)
           // ═══════════════════════════════════════
           const AccessibilitySettings(
             fontPreviewText: 'Sample prayer text: "Hail Mary, full of grace..."',
-            showFontSize: false, // Hide the non-functional font size slider
+            showFontSize: true, // Font size now works throughout the app!
           ),
           
           const Divider(),

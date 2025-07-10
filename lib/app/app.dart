@@ -17,6 +17,9 @@ class LiturgicalCalendarApp extends ConsumerWidget {
     // Watch user preferences
     final colorIntensity = ref.watch(colorIntensityProvider);
     
+    // Watch font size setting for text scaling
+    final textScale = ref.watch(effectiveTextScaleProvider);
+    
     // Parse liturgical color from string
     final liturgicalColor = liturgicalColorString != null 
         ? LiturgicalColor.fromString(liturgicalColorString)
@@ -33,6 +36,19 @@ class LiturgicalCalendarApp extends ConsumerWidget {
       themeMode: themeMode,
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
+      // Apply user's font size setting to all text throughout the app
+      builder: (context, child) {
+        return MediaQuery.withClampedTextScaling(
+          minScaleFactor: 0.8,
+          maxScaleFactor: 2.0,
+          child: MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: TextScaler.linear(textScale),
+            ),
+            child: child!,
+          ),
+        );
+      },
     );
   }
 }
