@@ -20,17 +20,80 @@ class SettingsScreen extends ConsumerWidget {
     // Calendar-specific settings section
     final calendarSpecificSettings = _buildCalendarSpecificSettings(context, ref);
 
-    return UnifiedSettingsScreen(
-      appInfo: appInfo,
-      appSpecificSettings: calendarSpecificSettings,
-      customNotifications: [
-        CatholicNotificationOptions.liturgicalCalendar(
-          enabled: false, // TODO: Connect to liturgical notifications when implemented
-          onChanged: (enabled) {
-            _showComingSoon(context, 'Liturgical calendar notifications');
-          },
-        ),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Settings'),
+      ),
+      body: ListView(
+        children: [
+          // ═══════════════════════════════════════
+          // APPEARANCE SECTION (from shared UI)
+          // ═══════════════════════════════════════
+          const SettingsSectionHeader(title: 'Appearance'),
+          
+          // Theme mode selection (Light/Dark/System)
+          const ThemeModeSelector(),
+          
+          // Color intensity selection (Vibrant/Muted)
+          const ColorIntensitySelector(),
+          
+          // Liturgical color preview
+          const LiturgicalColorPreview(),
+          
+          const Divider(),
+
+          // ═══════════════════════════════════════
+          // ACCESSIBILITY SECTION (WITHOUT font size)
+          // ═══════════════════════════════════════
+          const AccessibilitySettings(
+            fontPreviewText: 'Sample prayer text: "Hail Mary, full of grace..."',
+            showFontSize: false, // Hide the non-functional font size slider
+          ),
+          
+          const Divider(),
+
+          // ═══════════════════════════════════════
+          // LANGUAGE & LOCALIZATION
+          // ═══════════════════════════════════════
+          const SettingsSectionHeader(title: 'Language & Localization'),
+          
+          const LanguageSelector(
+            subtitle: 'Choose language for prayers and interface',
+          ),
+          
+          const Divider(),
+
+          // ═══════════════════════════════════════
+          // NOTIFICATIONS SECTION
+          // ═══════════════════════════════════════
+          NotificationsSettings(
+            subtitle: 'Prayer reminders and liturgical notifications',
+            customOptions: [
+              CatholicNotificationOptions.liturgicalCalendar(
+                enabled: false, // TODO: Connect to liturgical notifications when implemented
+                onChanged: (enabled) {
+                  _showComingSoon(context, 'Liturgical calendar notifications');
+                },
+              ),
+            ],
+          ),
+          
+          const Divider(),
+
+          // ═══════════════════════════════════════
+          // APP-SPECIFIC SETTINGS
+          // ═══════════════════════════════════════
+          calendarSpecificSettings,
+          const Divider(),
+
+          // ═══════════════════════════════════════
+          // ABOUT SECTION
+          // ═══════════════════════════════════════
+          AppInfoSection(
+            appInfo: appInfo,
+          ),
+        ],
+      ),
     );
   }
 
