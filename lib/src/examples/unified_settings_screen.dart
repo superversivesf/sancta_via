@@ -36,8 +36,10 @@ class UnifiedSettingsScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: ListView(
-        children: [
+      body: SafeArea(
+        top: false, // Let AppBar handle top
+        child: ListView(
+          children: [
           // ═══════════════════════════════════════
           // APPEARANCE SECTION
           // ═══════════════════════════════════════
@@ -98,10 +100,11 @@ class UnifiedSettingsScreen extends ConsumerWidget {
           // ═══════════════════════════════════════
           // ABOUT SECTION
           // ═══════════════════════════════════════
-          AppInfoSection(
-            appInfo: appInfo,
-          ),
-        ],
+            AppInfoSection(
+              appInfo: appInfo,
+            ),
+          ],
+        ),
       ),
     );
   }
