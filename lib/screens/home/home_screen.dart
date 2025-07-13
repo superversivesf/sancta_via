@@ -43,9 +43,11 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
+      body: SafeArea(
+        top: false, // Let AppBar handle top
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Liturgical Day Card (keep this - it's beautiful!)
@@ -122,7 +124,8 @@ class HomeScreen extends ConsumerWidget {
 
             // Navigation Options
             _buildNavigationGrid(context, ref, themeColor),
-          ],
+            ],
+          ),
         ),
       ),
     );

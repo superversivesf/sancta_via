@@ -1,4 +1,4 @@
-package com.example.bible_reading_app
+package net.superversive.sancta_via.bible_reading_app
 
 import io.flutter.embedding.android.FlutterActivity
 

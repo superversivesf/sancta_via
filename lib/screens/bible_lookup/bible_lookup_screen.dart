@@ -161,7 +161,10 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
           ),
         ),
       ),
-      body: _searchQuery.isNotEmpty ? _buildSearchResults(themeColor) : _buildTabView(themeColor),
+      body: SafeArea(
+        top: false, // Let AppBar handle top
+        child: _searchQuery.isNotEmpty ? _buildSearchResults(themeColor) : _buildTabView(themeColor),
+      ),
     );
   }
 

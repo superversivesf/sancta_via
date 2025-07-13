@@ -133,19 +133,22 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
             _navigateToPreviousChapter();
           }
         },
-        child: Container(
-          decoration: BoxDecoration(
-            border: themeColor != null ? Border(
-              top: BorderSide(
-                color: themeColor.withValues(alpha: 0.3),
-                width: 3,
-              ),
-            ) : null,
-          ),
-          child: chapterAsync.when(
+        child: SafeArea(
+          top: false, // Let AppBar handle top
+          child: Container(
+            decoration: BoxDecoration(
+              border: themeColor != null ? Border(
+                top: BorderSide(
+                  color: themeColor.withValues(alpha: 0.3),
+                  width: 3,
+                ),
+              ) : null,
+            ),
+            child: chapterAsync.when(
             data: (scripture) => _buildChapterContent(context, scripture, themeColor),
             loading: () => _buildLoadingContent(context, themeColor),
-            error: (error, stack) => _buildErrorContent(context, error, themeColor),
+              error: (error, stack) => _buildErrorContent(context, error, themeColor),
+            ),
           ),
         ),
       ),
