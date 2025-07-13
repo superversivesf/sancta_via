@@ -42,11 +42,13 @@ class CalendarScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Month navigation
-            _buildMonthNavigation(context, ref, displayedMonth),
+      body: SafeArea(
+        top: false, // Let AppBar handle top
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Month navigation
+              _buildMonthNavigation(context, ref, displayedMonth),
             
             // Calendar grid - no constraints, natural size
             _buildCalendarGrid(
@@ -63,9 +65,10 @@ class CalendarScreen extends ConsumerWidget {
             // Upcoming feasts - natural height
             UpcomingFeastsList(feasts: upcomingFeasts),
             
-            // Bottom padding for better scrolling
-            const SizedBox(height: 20),
-          ],
+              // Bottom padding for better scrolling
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

@@ -22,9 +22,12 @@ class DayDetailScreen extends ConsumerWidget {
         title: Text(DateFormat('MMMM d, yyyy').format(date)),
         centerTitle: true,
       ),
-      body: liturgicalDay != null
-          ? _buildDayDetail(context, ref, liturgicalDay)
-          : _buildNoDataState(context),
+      body: SafeArea(
+        top: false, // Let AppBar handle top
+        child: liturgicalDay != null
+            ? _buildDayDetail(context, ref, liturgicalDay)
+            : _buildNoDataState(context),
+      ),
     );
   }
 

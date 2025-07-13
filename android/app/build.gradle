@@ -30,7 +30,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "net.superversive.liturgical_calendar_app"
+    namespace "net.superversive.sancta_via.liturgical_calendar_app"
     compileSdk flutter.compileSdkVersion
     ndkVersion "27.0.12077973"
 
@@ -48,7 +48,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "net.superversive.liturgical_calendar_app"
+        applicationId "net.superversive.sancta_via.liturgical_calendar_app"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.superversive.liturgical_calendar_app">
+    package="net.superversive.sancta_via.liturgical_calendar_app">
     
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
