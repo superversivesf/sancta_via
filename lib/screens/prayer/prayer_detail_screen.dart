@@ -177,9 +177,11 @@ class PrayerDetailScreen extends ConsumerWidget {
         ? const EdgeInsets.symmetric(horizontal: 24, vertical: 32)
         : const EdgeInsets.all(16);
 
-    return SingleChildScrollView(
-      padding: padding,
-      child: Column(
+    return SafeArea(
+      top: false, // Let AppBar handle top
+      child: SingleChildScrollView(
+        padding: padding,
+        child: Column(
         crossAxisAlignment: preferences.readingMode == PrayerReadingMode.contemplative
             ? CrossAxisAlignment.center
             : CrossAxisAlignment.start,
@@ -290,10 +292,11 @@ class PrayerDetailScreen extends ConsumerWidget {
             ),
           ],
 
-          // Extra bottom padding for immersive mode
-          if (preferences.readingMode == PrayerReadingMode.immersive) 
-            const SizedBox(height: 40),
-        ],
+            // Extra bottom padding for immersive mode
+            if (preferences.readingMode == PrayerReadingMode.immersive) 
+              const SizedBox(height: 40),
+          ],
+        ),
       ),
     );
   }

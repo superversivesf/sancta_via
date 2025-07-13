@@ -7,13 +7,26 @@ import '../../providers/text_scaling_provider.dart';
 import '../../widgets/font_size_selector.dart' as local_widgets;
 import '../../widgets/enhanced_prayer_text.dart';
 
-/// Unified settings screen for Prayer Companion using standardized components
+/// Custom settings screen for Prayer Companion that excludes the problematic AccessibilitySettings
+/// while keeping all other unified components that work properly
 class PrayerSettingsScreen extends ConsumerWidget {
   const PrayerSettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // App information for the unified screen
+    final textScaling = ref.watch(textScaleProvider);
+    
+    // Force synchronization of base settings when prayer settings change
+    ref.listen(prayerAppSettingsProvider, (previous, next) {
+      if (previous?.fontSize != next.fontSize) {
+        // Ensure base settings are updated when prayer font size changes
+        Future.microtask(() {
+          ref.read(baseSettingsProvider.notifier).setFontSize(next.fontSize);
+        });
+      }
+    });
+    
+    // App information for the about section
     final appInfo = AppInfo(
       appName: 'Prayer Companion',
       version: '1.0.0',
@@ -23,31 +36,94 @@ class PrayerSettingsScreen extends ConsumerWidget {
       onSupport: () => _showSupportDialog(context),
     );
 
-    // Prayer-specific settings section
-    final prayerSpecificSettings = _buildPrayerSpecificSettings(context, ref);
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
-        centerTitle: true,
+        title: Text(
+          'Settings',
+          style: textScaling.scaledTitleLarge(context),
+        ),
       ),
-      body: UnifiedSettingsScreen(
-        appInfo: appInfo,
-        appSpecificSettings: prayerSpecificSettings,
-        customNotifications: [
-          CatholicNotificationOptions.prayerReminders(
-            enabled: false, // TODO: Connect to actual notifications
-            onChanged: (enabled) {
-              _showComingSoon(context, 'Prayer reminders');
-            },
+      body: SafeArea(
+        top: false, // Let AppBar handle top
+        child: ListView(
+          children: [
+            // ═══════════════════════════════════════
+            // APPEARANCE SECTION (with consistent text scaling)
+            // ═══════════════════════════════════════
+            _buildScaledSectionHeader(context, ref, 'Appearance'),
+          
+          // Theme mode selection (wrapped for consistent scaling)
+          _wrapWithTextScaling(context, ref, const ThemeModeSelector()),
+          
+          // Color intensity selection (wrapped for consistent scaling)
+          _wrapWithTextScaling(context, ref, const ColorIntensitySelector()),
+          
+          // Liturgical color preview (wrapped for consistent scaling)
+          _wrapWithTextScaling(context, ref, const LiturgicalColorPreview()),
+          
+          const Divider(),
+
+          // ═══════════════════════════════════════
+          // LANGUAGE & LOCALIZATION (with consistent text scaling)
+          // ═══════════════════════════════════════
+          _buildScaledSectionHeader(context, ref, 'Language & Localization'),
+          
+          _wrapWithTextScaling(
+            context, 
+            ref, 
+            const LanguageSelector(
+              subtitle: 'Choose language for prayers and interface',
+            ),
           ),
-          CatholicNotificationOptions.liturgicalCalendar(
-            enabled: false, // TODO: Connect to liturgical notifications
-            onChanged: (enabled) {
-              _showComingSoon(context, 'Liturgical calendar notifications');
-            },
+          
+          const Divider(),
+
+          // ═══════════════════════════════════════
+          // PRAYER SETTINGS SECTION (app-specific)
+          // ═══════════════════════════════════════
+          _buildPrayerSpecificSettings(context, ref),
+
+          const Divider(),
+
+          // ═══════════════════════════════════════
+          // NOTIFICATIONS SECTION (with consistent text scaling)
+          // ═══════════════════════════════════════
+          _wrapWithTextScaling(
+            context,
+            ref,
+            NotificationsSettings(
+              subtitle: 'Prayer reminders and liturgical notifications',
+              customOptions: [
+                CatholicNotificationOptions.prayerReminders(
+                  enabled: false, // TODO: Connect to actual notifications
+                  onChanged: (enabled) {
+                    _showComingSoon(context, 'Prayer reminders');
+                  },
+                ),
+                CatholicNotificationOptions.liturgicalCalendar(
+                  enabled: false, // TODO: Connect to liturgical notifications
+                  onChanged: (enabled) {
+                    _showComingSoon(context, 'Liturgical calendar notifications');
+                  },
+                ),
+              ],
+            ),
           ),
-        ],
+          
+          const Divider(),
+
+          // ═══════════════════════════════════════
+          // ABOUT SECTION (with consistent text scaling)
+          // ═══════════════════════════════════════
+            _wrapWithTextScaling(
+              context,
+              ref,
+              AppInfoSection(
+                appInfo: appInfo,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -374,6 +450,34 @@ class PrayerSettingsScreen extends ConsumerWidget {
     }
   }
 
+  /// Helper method to build section headers with consistent text scaling
+  Widget _buildScaledSectionHeader(BuildContext context, WidgetRef ref, String title) {
+    final textScaling = ref.watch(textScaleProvider);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+      child: Text(
+        title,
+        style: textScaling.scaledTitleMedium(context).copyWith(
+          fontWeight: FontWeight.w600,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+    );
+  }
+
+  /// Helper method to wrap shared UI components with consistent text scaling
+  Widget _wrapWithTextScaling(BuildContext context, WidgetRef ref, Widget child) {
+    final textScaling = ref.watch(textScaleProvider);
+    final scaleFactor = textScaling.scaleFactor;
+    
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(
+        textScaler: TextScaler.linear(scaleFactor),
+      ),
+      child: child,
+    );
+  }
+
   void _showComingSoon(BuildContext context, String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -386,20 +490,32 @@ class PrayerSettingsScreen extends ConsumerWidget {
   void _showSupportDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Support Prayer Companion'),
-        content: const Text(
-          'Prayer Companion is part of the Sancta Via ecosystem of Catholic applications.\n\n'
-          'This app provides access to traditional and contemporary Catholic prayers, '
-          'with liturgical calendar integration for seasonal prayer recommendations.\n\n'
-          'Your support helps us continue developing high-quality Catholic applications for the faithful.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
-          ),
-        ],
+      builder: (context) => Consumer(
+        builder: (context, ref, child) {
+          final textScaling = ref.watch(textScaleProvider);
+          return AlertDialog(
+            title: Text(
+              'Support Prayer Companion',
+              style: textScaling.scaledTitleLarge(context),
+            ),
+            content: Text(
+              'Prayer Companion is part of the Sancta Via ecosystem of Catholic applications.\n\n'
+              'This app provides access to traditional and contemporary Catholic prayers, '
+              'with liturgical calendar integration for seasonal prayer recommendations.\n\n'
+              'Your support helps us continue developing high-quality Catholic applications for the faithful.',
+              style: textScaling.scaledBodyMedium(context),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'Close',
+                  style: textScaling.scaledBodyMedium(context),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -407,29 +523,44 @@ class PrayerSettingsScreen extends ConsumerWidget {
   void _showClearFavoritesDialog(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Clear Favorites'),
-        content: const Text(
-          'This will remove all prayers from your favorites list.\n\n'
-          'This action cannot be undone. Continue?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-              // TODO: Implement clear favorites
-              _showComingSoon(context, 'Clear favorites');
-            },
-            style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).colorScheme.error,
+      builder: (context) => Consumer(
+        builder: (context, ref, child) {
+          final textScaling = ref.watch(textScaleProvider);
+          return AlertDialog(
+            title: Text(
+              'Clear Favorites',
+              style: textScaling.scaledTitleLarge(context),
             ),
-            child: const Text('Clear'),
-          ),
-        ],
+            content: Text(
+              'This will remove all prayers from your favorites list.\n\n'
+              'This action cannot be undone. Continue?',
+              style: textScaling.scaledBodyMedium(context),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'Cancel',
+                  style: textScaling.scaledBodyMedium(context),
+                ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  // TODO: Implement clear favorites
+                  _showComingSoon(context, 'Clear favorites');
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.error,
+                ),
+                child: Text(
+                  'Clear',
+                  style: textScaling.scaledBodyMedium(context),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -437,29 +568,44 @@ class PrayerSettingsScreen extends ConsumerWidget {
   void _showClearRecentsDialog(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Clear Recent Prayers'),
-        content: const Text(
-          'This will remove all prayers from your recent prayers list.\n\n'
-          'This action cannot be undone. Continue?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-              // TODO: Implement clear recents  
-              _showComingSoon(context, 'Clear recent prayers');
-            },
-            style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).colorScheme.error,
+      builder: (context) => Consumer(
+        builder: (context, ref, child) {
+          final textScaling = ref.watch(textScaleProvider);
+          return AlertDialog(
+            title: Text(
+              'Clear Recent Prayers',
+              style: textScaling.scaledTitleLarge(context),
             ),
-            child: const Text('Clear'),
-          ),
-        ],
+            content: Text(
+              'This will remove all prayers from your recent prayers list.\n\n'
+              'This action cannot be undone. Continue?',
+              style: textScaling.scaledBodyMedium(context),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'Cancel',
+                  style: textScaling.scaledBodyMedium(context),
+                ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  // TODO: Implement clear recents  
+                  _showComingSoon(context, 'Clear recent prayers');
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.error,
+                ),
+                child: Text(
+                  'Clear',
+                  style: textScaling.scaledBodyMedium(context),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -467,28 +613,48 @@ class PrayerSettingsScreen extends ConsumerWidget {
   void _showClearCacheDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Clear Cache'),
-        content: const Text(
-          'This will clear cached prayer data and may require re-downloading content. '
-          'Your preferences and favorites will be preserved.\n\n'
-          'Do you want to continue?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Cache cleared successfully')),
-              );
-            },
-            child: const Text('Clear'),
-          ),
-        ],
+      builder: (context) => Consumer(
+        builder: (context, ref, child) {
+          final textScaling = ref.watch(textScaleProvider);
+          return AlertDialog(
+            title: Text(
+              'Clear Cache',
+              style: textScaling.scaledTitleLarge(context),
+            ),
+            content: Text(
+              'This will clear cached prayer data and may require re-downloading content. '
+              'Your preferences and favorites will be preserved.\n\n'
+              'Do you want to continue?',
+              style: textScaling.scaledBodyMedium(context),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'Cancel',
+                  style: textScaling.scaledBodyMedium(context),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Cache cleared successfully',
+                        style: textScaling.scaledBodyMedium(context),
+                      ),
+                    ),
+                  );
+                },
+                child: Text(
+                  'Clear',
+                  style: textScaling.scaledBodyMedium(context),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
