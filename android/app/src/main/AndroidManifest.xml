@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.superversive.confession_companion">
+    package="net.superversive.sancta_via.confession_companion">
     
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />

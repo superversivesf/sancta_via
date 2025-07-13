@@ -27,9 +27,11 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: liturgicalData != null ? SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
+      body: liturgicalData != null ? SafeArea(
+        top: false, // Let AppBar handle top
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Liturgical Calendar Integration
@@ -257,9 +259,13 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
             ),
-          ],
+            ],
+          ),
         ),
-      ) : const Center(child: CircularProgressIndicator()),
+      ) : const SafeArea(
+        top: false,
+        child: Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }

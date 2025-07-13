@@ -30,7 +30,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "net.superversive.confession_companion"
+    namespace "net.superversive.sancta_via.confession_companion"
     compileSdk flutter.compileSdkVersion
     ndkVersion "27.0.12077973"
 
@@ -48,7 +48,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "net.superversive.confession_companion"
+        applicationId "net.superversive.sancta_via.confession_companion"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
