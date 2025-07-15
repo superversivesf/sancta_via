@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../providers/app_providers.dart';
 import '../../providers/text_scaling_provider.dart';
 import '../../providers/book_provider.dart';
-import '../verse_selection/verse_selection_screen.dart';
-import '../chapter/chapter_reading_screen.dart';
 
 class ChapterSelectionScreen extends ConsumerWidget {
   final String bookName;
@@ -235,24 +234,10 @@ class ChapterSelectionScreen extends ConsumerWidget {
   }
 
   void _navigateToVerseSelection(BuildContext context, int chapter) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => VerseSelectionScreen(
-          bookName: bookName,
-          chapter: chapter,
-        ),
-      ),
-    );
+    context.push('/verse-selection/${Uri.encodeComponent(bookName)}/$chapter');
   }
 
   void _navigateToChapter(BuildContext context, int chapter) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ChapterReadingScreen(
-          bookName: bookName,
-          chapter: chapter,
-        ),
-      ),
-    );
+    context.push('/chapter/${Uri.encodeComponent(bookName)}/$chapter');
   }
 }

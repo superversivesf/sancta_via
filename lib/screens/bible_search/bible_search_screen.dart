@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../providers/app_providers.dart';
 import '../../providers/text_scaling_provider.dart';
-import '../chapter/chapter_reading_screen.dart';
 
 class BibleSearchScreen extends ConsumerStatefulWidget {
   const BibleSearchScreen({super.key});
@@ -465,14 +465,7 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
   }
 
   void _navigateToChapter(String book, int chapter) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ChapterReadingScreen(
-          bookName: book,
-          chapter: chapter,
-        ),
-      ),
-    );
+    context.push('/chapter/${Uri.encodeComponent(book)}/$chapter');
   }
 }
 

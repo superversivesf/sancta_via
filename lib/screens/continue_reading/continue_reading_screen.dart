@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../providers/text_scaling_provider.dart';
 import '../../providers/reading_plan_provider.dart';
 import '../../models/reading_plan.dart';
-import '../chapter/chapter_reading_screen.dart';
-import '../reading_plan/reading_plan_screen.dart';
 
 class ContinueReadingScreen extends ConsumerWidget {
   const ContinueReadingScreen({super.key});
@@ -121,9 +120,7 @@ class ContinueReadingScreen extends ConsumerWidget {
               const SizedBox(height: 24),
               ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const ReadingPlanScreen()),
-                  );
+                  context.push('/reading-plan');
                 },
                 icon: const Icon(Icons.create),
                 label: Text(
@@ -433,9 +430,7 @@ class ContinueReadingScreen extends ConsumerWidget {
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const ReadingPlanScreen()),
-                        );
+                        context.push('/reading-plan');
                       },
                       icon: const Icon(Icons.refresh),
                       label: const Text('Start New Plan'),
@@ -579,9 +574,7 @@ class ContinueReadingScreen extends ConsumerWidget {
                   title: const Text('Modify Reading Plan'),
                   subtitle: const Text('Update schedule, pace, or book selection'),
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const ReadingPlanScreen()),
-                    );
+                    context.push('/reading-plan');
                   },
                 ),
                 ListTile(
@@ -602,9 +595,7 @@ class ContinueReadingScreen extends ConsumerWidget {
                   title: const Text('Create Reading Plan'),
                   subtitle: const Text('Get started with structured Bible reading'),
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const ReadingPlanScreen()),
-                    );
+                    context.push('/reading-plan');
                   },
                 ),
               ],
@@ -616,14 +607,7 @@ class ContinueReadingScreen extends ConsumerWidget {
   }
 
   void _navigateToChapter(BuildContext context, String book, int chapter) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ChapterReadingScreen(
-          bookName: book,
-          chapter: chapter,
-        ),
-      ),
-    );
+    context.push('/chapter/${Uri.encodeComponent(book)}/$chapter');
   }
 
   void _markTodayComplete(BuildContext context, WidgetRef ref) {

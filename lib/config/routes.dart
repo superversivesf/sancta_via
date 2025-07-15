@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../screens/home/home_screen.dart';
+import '../screens/app_wrapper.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/bible_lookup/bible_lookup_screen.dart';
 import '../screens/reading_plan/reading_plan_screen.dart';
 import '../screens/bible_search/bible_search_screen.dart';
 import '../screens/continue_reading/continue_reading_screen.dart';
+import '../screens/chapter_selection/chapter_selection_screen.dart';
+import '../screens/chapter/chapter_reading_screen.dart';
+import '../screens/verse_selection/verse_selection_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
   debugLogDiagnostics: false,
   
   routes: [
-    // Home route
+    // Home route - uses AppWrapper to handle onboarding
     GoRoute(
       path: '/',
       name: 'home',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const AppWrapper(),
     ),
 
     // Bible features
@@ -40,6 +43,42 @@ final appRouter = GoRouter(
       path: '/continue-reading',
       name: 'continue-reading',
       builder: (context, state) => const ContinueReadingScreen(),
+    ),
+
+    // Chapter navigation routes
+    GoRoute(
+      path: '/chapter-selection/:bookName',
+      name: 'chapter-selection',
+      builder: (context, state) {
+        final bookName = state.pathParameters['bookName']!;
+        return ChapterSelectionScreen(bookName: bookName);
+      },
+    ),
+    GoRoute(
+      path: '/chapter/:bookName/:chapter',
+      name: 'chapter-reading',
+      builder: (context, state) {
+        final bookName = state.pathParameters['bookName']!;
+        final chapter = int.parse(state.pathParameters['chapter']!);
+        final startVerse = state.uri.queryParameters['startVerse'];
+        return ChapterReadingScreen(
+          bookName: bookName, 
+          chapter: chapter,
+          startVerse: startVerse != null ? int.tryParse(startVerse) : null,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/verse-selection/:bookName/:chapter',
+      name: 'verse-selection',
+      builder: (context, state) {
+        final bookName = state.pathParameters['bookName']!;
+        final chapter = int.parse(state.pathParameters['chapter']!);
+        return VerseSelectionScreen(
+          bookName: bookName,
+          chapter: chapter,
+        );
+      },
     ),
 
     // Settings

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import 'package:bible_data/bible_data.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../providers/bible_app_settings_provider.dart';
 
@@ -11,39 +12,44 @@ class BibleSettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // App information for the unified screen
-    final appInfo = AppInfo(
-      appName: 'Bible Reading App',
-      version: '1.0.0',
-      description: 'A Catholic Bible reading app with liturgical calendar integration for daily spiritual reading.',
-      icon: const Icon(Icons.book, size: 48, color: Colors.blue),
-      onFeedback: () => _showComingSoon(context, 'Feedback'),
-      onSupport: () => _showSupportDialog(context),
-    );
+    return FutureBuilder<PackageInfo>(
+      future: PackageInfo.fromPlatform(),
+      builder: (context, snapshot) {
+        // App information for the unified screen
+        final appInfo = AppInfo(
+          appName: 'Bible Reading App',
+          version: snapshot.hasData ? snapshot.data!.version : 'Loading...',
+          description: 'A Catholic Bible reading app with liturgical calendar integration for daily spiritual reading.',
+          icon: const Icon(Icons.book, size: 48, color: Colors.blue),
+          onFeedback: () => _showComingSoon(context, 'Feedback'),
+          onSupport: () => _showSupportDialog(context),
+        );
 
-    // Bible-specific settings section
-    final bibleSpecificSettings = _buildBibleSpecificSettings(context, ref);
+        // Bible-specific settings section
+        final bibleSpecificSettings = _buildBibleSpecificSettings(context, ref);
 
-    return UnifiedSettingsScreen(
-      appInfo: appInfo,
-      appSpecificSettings: bibleSpecificSettings,
-      customNotifications: [
-        CatholicNotificationOptions.liturgicalCalendar(
-          enabled: ref.watch(bibleNotificationsEnabledProvider),
-          onChanged: (enabled) {
-            ref.read(bibleAppSettingsProvider.notifier).setNotificationsEnabled(enabled);
-          },
-        ),
-        NotificationOption(
-          title: 'Daily Reading Reminders',
-          subtitle: 'Notifications for daily liturgical readings',
-          icon: Icons.schedule_outlined,
-          enabled: false, // TODO: Implement daily reading notifications
-          onChanged: (enabled) {
-            _showComingSoon(context, 'Daily reading reminders');
-          },
-        ),
-      ],
+        return UnifiedSettingsScreen(
+          appInfo: appInfo,
+          appSpecificSettings: bibleSpecificSettings,
+          customNotifications: [
+            CatholicNotificationOptions.liturgicalCalendar(
+              enabled: ref.watch(bibleNotificationsEnabledProvider),
+              onChanged: (enabled) {
+                ref.read(bibleAppSettingsProvider.notifier).setNotificationsEnabled(enabled);
+              },
+            ),
+            NotificationOption(
+              title: 'Daily Reading Reminders',
+              subtitle: 'Notifications for daily liturgical readings',
+              icon: Icons.schedule_outlined,
+              enabled: ref.watch(dailyReadingNotificationsEnabledProvider),
+              onChanged: (enabled) {
+                ref.read(bibleAppSettingsProvider.notifier).setDailyReadingNotificationsEnabled(enabled);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

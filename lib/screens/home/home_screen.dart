@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../providers/text_scaling_provider.dart';
-import '../settings/settings_screen.dart';
-import '../bible_lookup/bible_lookup_screen.dart';
-import '../reading_plan/reading_plan_screen.dart';
-import '../bible_search/bible_search_screen.dart';
-import '../continue_reading/continue_reading_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -36,9 +32,7 @@ class HomeScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              );
+              context.push('/settings');
             },
           ),
         ],
@@ -147,9 +141,7 @@ class HomeScreen extends ConsumerWidget {
                 title: 'Bible Lookup',
                 subtitle: 'Read any chapter',
                 icon: Icons.menu_book,
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const BibleLookupScreen()),
-                ),
+                onTap: () => context.push('/bible-lookup'),
               ),
             ),
             const SizedBox(width: 12),
@@ -161,9 +153,7 @@ class HomeScreen extends ConsumerWidget {
                 title: 'Reading Plans',
                 subtitle: 'Structured reading',
                 icon: Icons.calendar_today,
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const ReadingPlanScreen()),
-                ),
+                onTap: () => context.push('/reading-plan'),
               ),
             ),
           ],
@@ -181,9 +171,7 @@ class HomeScreen extends ConsumerWidget {
                 title: 'Continue Reading',
                 subtitle: 'Pick up where you left off',
                 icon: Icons.play_circle_filled,
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const ContinueReadingScreen()),
-                ),
+                onTap: () => context.push('/continue-reading'),
               ),
             ),
             const SizedBox(width: 12),
@@ -195,9 +183,7 @@ class HomeScreen extends ConsumerWidget {
                 title: 'Search Bible',
                 subtitle: 'Find verses & topics',
                 icon: Icons.search,
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const BibleSearchScreen()),
-                ),
+                onTap: () => context.push('/bible-search'),
               ),
             ),
           ],
@@ -220,7 +206,7 @@ class HomeScreen extends ConsumerWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Container(
-          height: 140, // Increased height to prevent overflow
+          height: 160, // Increased height to prevent text wrapping issues
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: themeColor != null ? Border.all(

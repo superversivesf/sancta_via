@@ -4,11 +4,11 @@ import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_ca
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import 'package:bible_data/bible_data.dart';
 import 'package:bible_data_riverpod/bible_data_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../providers/app_providers.dart';
 import '../../providers/book_provider.dart';
 import '../../providers/text_scaling_provider.dart';
-import '../chapter_selection/chapter_selection_screen.dart';
 
 class BibleLookupScreen extends ConsumerStatefulWidget {
   const BibleLookupScreen({super.key});
@@ -306,13 +306,7 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
   }
 
   void _navigateToChapterSelection(String bookName) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ChapterSelectionScreen(
-          bookName: bookName,
-        ),
-      ),
-    );
+    context.push('/chapter-selection/${Uri.encodeComponent(bookName)}');
   }
 }
 

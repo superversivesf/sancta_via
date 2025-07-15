@@ -19,6 +19,9 @@ class BibleAppSettings {
   
   /// Reading plan preference
   final String? activeReadingPlan;
+  
+  /// Whether daily reading notifications are enabled
+  final bool dailyReadingNotificationsEnabled;
 
   const BibleAppSettings({
     required this.baseSettings,
@@ -26,6 +29,7 @@ class BibleAppSettings {
     this.showVerseNumbers = true,
     this.highlightCurrentVerse = true,
     this.activeReadingPlan,
+    this.dailyReadingNotificationsEnabled = false,
   });
 
   /// Create default Bible app settings
@@ -67,6 +71,7 @@ class BibleAppSettings {
       showVerseNumbers: json['showVerseNumbers'] as bool? ?? true,
       highlightCurrentVerse: json['highlightCurrentVerse'] as bool? ?? true,
       activeReadingPlan: json['activeReadingPlan'] as String?,
+      dailyReadingNotificationsEnabled: json['dailyReadingNotificationsEnabled'] as bool? ?? false,
     );
   }
 
@@ -78,6 +83,7 @@ class BibleAppSettings {
       'showVerseNumbers': showVerseNumbers,
       'highlightCurrentVerse': highlightCurrentVerse,
       'activeReadingPlan': activeReadingPlan,
+      'dailyReadingNotificationsEnabled': dailyReadingNotificationsEnabled,
     };
   }
 
@@ -88,6 +94,7 @@ class BibleAppSettings {
     bool? showVerseNumbers,
     bool? highlightCurrentVerse,
     String? activeReadingPlan,
+    bool? dailyReadingNotificationsEnabled,
   }) {
     return BibleAppSettings(
       baseSettings: baseSettings ?? this.baseSettings,
@@ -95,6 +102,7 @@ class BibleAppSettings {
       showVerseNumbers: showVerseNumbers ?? this.showVerseNumbers,
       highlightCurrentVerse: highlightCurrentVerse ?? this.highlightCurrentVerse,
       activeReadingPlan: activeReadingPlan ?? this.activeReadingPlan,
+      dailyReadingNotificationsEnabled: dailyReadingNotificationsEnabled ?? this.dailyReadingNotificationsEnabled,
     );
   }
 
@@ -118,7 +126,8 @@ class BibleAppSettings {
         other.selectedBibleTranslation == selectedBibleTranslation &&
         other.showVerseNumbers == showVerseNumbers &&
         other.highlightCurrentVerse == highlightCurrentVerse &&
-        other.activeReadingPlan == activeReadingPlan;
+        other.activeReadingPlan == activeReadingPlan &&
+        other.dailyReadingNotificationsEnabled == dailyReadingNotificationsEnabled;
   }
 
   @override
@@ -129,6 +138,7 @@ class BibleAppSettings {
       showVerseNumbers,
       highlightCurrentVerse,
       activeReadingPlan,
+      dailyReadingNotificationsEnabled,
     );
   }
 
@@ -139,7 +149,8 @@ class BibleAppSettings {
         'selectedBibleTranslation: $selectedBibleTranslation, '
         'showVerseNumbers: $showVerseNumbers, '
         'highlightCurrentVerse: $highlightCurrentVerse, '
-        'activeReadingPlan: $activeReadingPlan'
+        'activeReadingPlan: $activeReadingPlan, '
+        'dailyReadingNotificationsEnabled: $dailyReadingNotificationsEnabled'
         ')';
   }
 }

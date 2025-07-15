@@ -164,6 +164,13 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
     debugLog('Active reading plan updated to: $plan', 'BIBLE_SETTINGS');
   }
 
+  /// Update daily reading notifications
+  Future<void> setDailyReadingNotificationsEnabled(bool enabled) async {
+    state = state.copyWith(dailyReadingNotificationsEnabled: enabled);
+    await _saveSettings();
+    debugLog('Daily reading notifications updated to: $enabled', 'BIBLE_SETTINGS');
+  }
+
   /// Update font size (delegates to base settings)
   Future<void> setFontSize(double fontSize) async {
     await _ref.read(baseSettingsProvider.notifier).setFontSize(fontSize);
@@ -231,4 +238,9 @@ final bibleDefaultLanguageProvider = Provider<AppLanguage>((ref) {
 /// Provider for notifications enabled - convenience access
 final bibleNotificationsEnabledProvider = Provider<bool>((ref) {
   return ref.watch(bibleAppSettingsProvider).notificationsEnabled;
+});
+
+/// Provider for daily reading notifications
+final dailyReadingNotificationsEnabledProvider = Provider<bool>((ref) {
+  return ref.watch(bibleAppSettingsProvider).dailyReadingNotificationsEnabled;
 });
