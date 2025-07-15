@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bible_data_riverpod/bible_data_riverpod.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:archive/archive.dart';
 
 /// Debug logging utility
 void debugLog(String message, [String? tag]) {
@@ -79,7 +80,37 @@ class OnboardingService {
     return prefs.getBool(_databaseInitializedKey) ?? false;
   }
 
-  /// Load JSON file content
+  /// Load and decompress gzipped JSON file content
+  static Future<Map<String, dynamic>> loadCompressedJsonFile(String path) async {
+    try {
+      debugLog('Loading compressed JSON file: $path', 'ONBOARDING');
+      
+      // Load the compressed file as bytes
+      final ByteData data = await rootBundle.load(path);
+      final Uint8List compressedBytes = data.buffer.asUint8List(
+        data.offsetInBytes, 
+        data.lengthInBytes
+      );
+      
+      debugLog('Loaded ${compressedBytes.length} compressed bytes', 'ONBOARDING');
+      
+      // Decompress the data
+      final decompressedBytes = GZipDecoder().decodeBytes(compressedBytes);
+      debugLog('Decompressed to ${decompressedBytes.length} bytes', 'ONBOARDING');
+      
+      // Convert to string and parse JSON
+      final jsonString = utf8.decode(decompressedBytes);
+      final jsonData = json.decode(jsonString) as Map<String, dynamic>;
+      
+      debugLog('Successfully parsed JSON from $path', 'ONBOARDING');
+      return jsonData;
+    } catch (e) {
+      debugLog('Error loading compressed JSON file $path: $e', 'ONBOARDING');
+      rethrow;
+    }
+  }
+
+  /// Load JSON file content (legacy method for uncompressed files)
   static Future<Map<String, dynamic>> loadJsonFile(String path) async {
     try {
       final jsonString = await rootBundle.loadString(path);
@@ -90,13 +121,29 @@ class OnboardingService {
     }
   }
 
-  /// Get available Bible translations from JSON files
+  /// Get available Bible translations from compressed JSON files
   static Future<List<BibleTranslation>> getAvailableBibleTranslations() async {
     return [
       BibleTranslation.cpdv,
       BibleTranslation.drc,
       BibleTranslation.engwebc,
     ];
+  }
+
+  /// Verify compressed Bible files can be decompressed
+  static Future<void> verifyCompressedBibleFiles() async {
+    final translations = await getAvailableBibleTranslations();
+    
+    for (final translation in translations) {
+      final path = 'assets/bibles/${translation.id}.json.gz';
+      try {
+        final data = await loadCompressedJsonFile(path);
+        debugLog('✓ Verified ${translation.id}: ${data['metadata']?['name'] ?? 'Unknown'}', 'ONBOARDING');
+      } catch (e) {
+        debugLog('✗ Failed to verify ${translation.id}: $e', 'ONBOARDING');
+        rethrow;
+      }
+    }
   }
 }
 
@@ -107,7 +154,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
     message: 'Checking app status...',
     progress: 0.0,
     currentStep: 0,
-    totalSteps: 4,
+    totalSteps: 5,
   ));
 
   /// Initialize the onboarding process
@@ -152,7 +199,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
     }
   }
 
-  /// Initialize the Bible database from JSON files
+  /// Initialize the Bible database from compressed JSON files
   Future<void> _initializeBibleDatabase() async {
     debugLog('Starting Bible database initialization...', 'ONBOARDING');
     
@@ -161,18 +208,28 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
       state = state.copyWith(
         state: OnboardingState.loading,
         message: 'Loading Bible translations...',
-        progress: 0.25,
+        progress: 0.2,
         currentStep: 2,
       );
 
       final translations = await OnboardingService.getAvailableBibleTranslations();
       debugLog('Found ${translations.length} translations to load', 'ONBOARDING');
 
-      // Step 3: Initialize Bible service and load data
+      // Step 3: Verify compressed Bible files
+      state = state.copyWith(
+        message: 'Verifying Bible data...',
+        progress: 0.4,
+        currentStep: 3,
+      );
+
+      await OnboardingService.verifyCompressedBibleFiles();
+      debugLog('All compressed Bible files verified successfully', 'ONBOARDING');
+
+      // Step 4: Initialize Bible service and load data
       state = state.copyWith(
         message: 'Initializing Bible service...',
-        progress: 0.5,
-        currentStep: 3,
+        progress: 0.6,
+        currentStep: 4,
       );
 
       // The Bible service will automatically handle database initialization
@@ -182,11 +239,11 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
       // This will be handled by the Bible service provider
       await Future.delayed(const Duration(milliseconds: 500)); // Small delay for UI
 
-      // Step 4: Complete initialization
+      // Step 5: Complete initialization
       state = state.copyWith(
         message: 'Finalizing setup...',
-        progress: 0.75,
-        currentStep: 4,
+        progress: 0.8,
+        currentStep: 5,
       );
 
       // Mark as completed
@@ -218,7 +275,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
       message: 'Retrying...',
       progress: 0.0,
       currentStep: 0,
-      totalSteps: 4,
+      totalSteps: 5,
     );
     await initialize();
   }

@@ -28,6 +28,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  # Archive for gzip decompression
+  archive: ^3.6.1
+  
   # Sancta Via packages - LOCAL DEVELOPMENT VERSIONS
   bible_data:
     path: ../sancta_via_bible_data

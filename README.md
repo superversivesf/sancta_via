@@ -52,12 +52,19 @@ This app is part of the Sancta Via ecosystem and depends on several shared packa
 ### **Data Structure**
 ```
 assets/
-├── bibles/            # Bible translation JSON files
-│   ├── cpdv.json     # Catholic Public Domain Version
-│   ├── drc.json      # Douay-Rheims Catholic Bible
-│   └── engwebc.json  # English Web Bible Catholic
-└── app_icon.png      # Application icon
+├── bibles/              # Bible translation files (compressed)
+│   ├── cpdv.json.gz    # Catholic Public Domain Version (compressed)
+│   ├── drc.json.gz     # Douay-Rheims Catholic Bible (compressed)
+│   └── engwebc.json.gz # English Web Bible Catholic (compressed)
+├── bibles.db           # Pre-built SQLite database for fast access
+└── app_icon.png        # Application icon
 ```
+
+### **Compression & Performance**
+- **Compressed Bible Data**: JSON files are gzipped to reduce app bundle size by ~82%
+- **Space Savings**: ~25.7MB reduction (from 31.2MB to 5.5MB for JSON files)
+- **Runtime Performance**: Uses SQLite database for fast Bible access
+- **One-time Decompression**: JSON files decompressed only during first-run setup
 
 ### **Bible Translation Details**
 
@@ -104,6 +111,15 @@ assets/
    ```
 
 ### Building for Production
+
+#### Compress Bible Data (if needed)
+```bash
+# Compress JSON files to reduce app size
+./scripts/compress_bibles.sh
+
+# Decompress a file for editing
+./scripts/compress_bibles.sh decompress cpdv.json.gz
+```
 
 #### Android
 ```bash
