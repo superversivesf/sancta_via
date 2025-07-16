@@ -7,7 +7,6 @@ import 'package:bible_data_riverpod/bible_data_riverpod.dart';
 
 import '../../providers/app_providers.dart';
 import '../../providers/text_scaling_provider.dart';
-import '../../providers/book_provider.dart';
 
 /// Debug logging utility
 void debugLog(String message, [String? tag]) {
@@ -85,8 +84,8 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     final textScaling = ref.watch(textScaleProvider);
     final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
     
-    // Get max chapters for navigation logic
-    final maxChaptersAsync = ref.watch(chapterCountProvider((
+    // Get max chapters for navigation logic (using optimized provider)
+    final maxChaptersAsync = ref.watch(optimizedChapterCountProvider((
       bookName: currentBookName,
       translation: selectedTranslation,
     )));
@@ -101,7 +100,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
 
     // Create scripture reference for current chapter
     final reference = ScriptureReference.chapter(currentBookName, currentChapter);
-    final chapterAsync = ref.watch(scriptureByReferenceProvider((
+    final chapterAsync = ref.watch(optimizedScriptureByReferenceProvider((
       reference: reference,
       translation: selectedTranslation,
     )));
@@ -160,7 +159,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     );
   }
 
-  Widget _buildChapterContent(BuildContext context, ScriptureContent scripture, Color? themeColor) {
+  Widget _buildChapterContent(BuildContext context, OptimizedScriptureContent scripture, Color? themeColor) {
     final textScaling = ref.watch(textScaleProvider);
     final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
 
@@ -183,103 +182,123 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       });
     }
 
-    return SingleChildScrollView(
-      controller: _scrollController,
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Chapter header
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: (themeColor ?? Theme.of(context).colorScheme.primary)
-                  .withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: (themeColor ?? Theme.of(context).colorScheme.primary)
-                    .withValues(alpha: 0.3),
-                width: 2,
-              ),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  scripture.reference.displayText,
-                  style: textScaling.scaledHeadlineSmall(context).copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: themeColor?.withValues(alpha: 0.8) ?? 
-                           Theme.of(context).colorScheme.primary,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  selectedTranslation.name,
-                  style: textScaling.scaledBodyMedium(context).copyWith(
-                    fontStyle: FontStyle.italic,
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-          
-          // Chapter text with verse formatting
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: (themeColor ?? Theme.of(context).colorScheme.primary)
-                    .withValues(alpha: 0.2),
-                width: 1,
-              ),
-            ),
-            child: _buildFormattedChapterText(context, scripture.text, themeColor),
-          ),
-          
-          const SizedBox(height: 100), // Space for floating action buttons
-          
-          // Navigation hint
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.grey.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.swipe_left,
-                  size: textScaling.scaleFactor * 16,
-                  color: Colors.grey,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'Swipe left/right to navigate chapters',
-                  style: textScaling.scaledBodySmall(context).copyWith(
-                    color: Colors.grey,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Icon(
-                  Icons.swipe_right,
-                  size: textScaling.scaleFactor * 16,
-                  color: Colors.grey,
-                ),
-              ],
-            ),
-          ),
-        ],
+    return ScrollbarTheme(
+      data: ScrollbarThemeData(
+        thumbColor: WidgetStateProperty.all(
+          (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.6)
+        ),
+        trackColor: WidgetStateProperty.all(
+          (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1)
+        ),
+        trackBorderColor: WidgetStateProperty.all(Colors.transparent),
+        thickness: WidgetStateProperty.all(6.0),
+        radius: const Radius.circular(3.0),
+        crossAxisMargin: 2.0,
+        mainAxisMargin: 4.0,
       ),
-    );
+      child: Scrollbar(
+        controller: _scrollController,
+        thumbVisibility: true, // Always show the scroll thumb for progress indication
+        trackVisibility: true, // Show a subtle track for better visual guidance
+        child: SingleChildScrollView(
+        controller: _scrollController,
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Chapter header
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                    .withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                      .withValues(alpha: 0.3),
+                  width: 2,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    scripture.reference.displayText,
+                    style: textScaling.scaledHeadlineSmall(context).copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: themeColor?.withValues(alpha: 0.8) ?? 
+                             Theme.of(context).colorScheme.primary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    selectedTranslation.name,
+                    style: textScaling.scaledBodyMedium(context).copyWith(
+                      fontStyle: FontStyle.italic,
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            
+            // Chapter text with verse formatting
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                      .withValues(alpha: 0.2),
+                  width: 1,
+                ),
+              ),
+              child: _buildFormattedChapterText(context, scripture.text, themeColor),
+            ),
+            
+            const SizedBox(height: 100), // Space for floating action buttons
+            
+            // Navigation hint
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.swipe_left,
+                    size: textScaling.scaleFactor * 16,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Swipe left/right to navigate chapters',
+                    style: textScaling.scaledBodySmall(context).copyWith(
+                      color: Colors.grey,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Icon(
+                    Icons.swipe_right,
+                    size: textScaling.scaleFactor * 16,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
   }
 
   Widget _buildLoadingContent(BuildContext context, Color? themeColor) {

@@ -1,62 +1,25 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bible_data_riverpod/bible_data_riverpod.dart';
+import 'app_providers.dart';
 
-/// Provider for getting available books from the actual Bible data
+/// Provider for getting available books from the actual Bible data (OPTIMIZED)
 final availableBooksProvider = FutureProvider<List<String>>((ref) async {
-  final serviceAsync = ref.watch(bibleServiceNotifierProvider);
-  final selectedTranslation = ref.watch(selectedBibleTranslationProvider);
+  final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
   
-  return serviceAsync.when(
-    data: (service) async {
-      try {
-        // Get the actual book names from the Bible data
-        final bookNames = await service.getBookNames(selectedTranslation);
-        return bookNames;
-      } catch (e) {
-        // Fallback to empty list if there's an error
-        return <String>[];
-      }
-    },
-    loading: () => <String>[],
-    error: (error, stack) => <String>[],
-  );
+  // Use optimized provider for much faster book loading
+  return await ref.watch(optimizedBookNamesProvider(selectedTranslation).future);
 });
 
-/// Provider for getting chapter count for a specific book from actual Bible data
+/// Provider for getting chapter count for a specific book (OPTIMIZED) 
 final chapterCountProvider = FutureProvider.family<int, ({String bookName, BibleTranslation translation})>((ref, params) async {
-  final serviceAsync = ref.watch(bibleServiceNotifierProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      try {
-        // Get the Bible for the translation
-        final bible = await service.getBible(params.translation);
-        final book = bible.findBook(params.bookName);
-        return book?.chapters.length ?? 1;
-      } catch (e) {
-        return 1; // Default fallback
-      }
-    },
-    loading: () => throw Exception('Bible service is loading'),
-    error: (error, stack) => throw error,
-  );
+  // Use optimized provider for fast chapter count lookup
+  return await ref.watch(optimizedChapterCountProvider(params).future);
 });
 
-/// Provider for checking if a book exists in the current translation
+/// Provider for checking if a book exists in the current translation (OPTIMIZED)
 final bookExistsProvider = FutureProvider.family<bool, ({String bookName, BibleTranslation translation})>((ref, params) async {
-  final serviceAsync = ref.watch(bibleServiceNotifierProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      try {
-        return await service.hasBook(params.bookName, params.translation);
-      } catch (e) {
-        return false;
-      }
-    },
-    loading: () => false,
-    error: (error, stack) => false,
-  );
+  // Use optimized provider for fast book existence check
+  return await ref.watch(optimizedBookExistsProvider(params).future);
 });
 
 /// Provider for all books organized by testament (when we have the data)

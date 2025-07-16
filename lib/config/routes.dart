@@ -10,6 +10,7 @@ import '../screens/continue_reading/continue_reading_screen.dart';
 import '../screens/chapter_selection/chapter_selection_screen.dart';
 import '../screens/chapter/chapter_reading_screen.dart';
 import '../screens/verse_selection/verse_selection_screen.dart';
+import '../screens/debug/numbered_books_debug_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -86,6 +87,13 @@ final appRouter = GoRouter(
       path: '/settings',
       name: 'settings',
       builder: (context, state) => const SettingsScreen(),
+    ),
+
+    // Debug routes (for development/testing)
+    GoRoute(
+      path: '/debug/numbered-books',
+      name: 'numbered-books-debug',
+      builder: (context, state) => const NumberedBooksDebugScreen(),
     ),
   ],
 
