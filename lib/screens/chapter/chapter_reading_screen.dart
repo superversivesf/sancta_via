@@ -34,8 +34,11 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
   late ScrollController _scrollController;
   late String currentBookName;
   late int currentChapter;
-  String _currentChapterText = ''; // Store for debugging
   bool _hasScrolledToInitialVerse = false; // Track if we've scrolled to the initial verse
+  
+  // Verse scrolling management
+  final List<GlobalKey> _verseKeys = [];
+  List<String> _currentVerses = [];
   
   @override
   void initState() {
@@ -60,7 +63,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       currentChapter = chapter;
       // Reset the scroll flag when navigating to a different chapter
       // so we don't scroll to the original startVerse in the new chapter
-      _hasScrolledToInitialVerse = true; 
+      _hasScrolledToInitialVerse = true;
+      // Clear verse keys for new chapter
+      _verseKeys.clear();
+      _currentVerses.clear();
     });
     debugLog('Navigated to: $bookName $chapter', 'CHAPTER');
   }
@@ -177,7 +183,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         currentBookName == widget.bookName &&
         currentChapter == widget.chapter) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _scrollToVerse(widget.startVerse!);
+        _scrollToVerseAccurate(widget.startVerse!);
         _hasScrolledToInitialVerse = true; // Mark that we've scrolled
       });
     }
@@ -397,8 +403,11 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
 
   Widget _buildFormattedChapterText(BuildContext context, String chapterText, Color? themeColor) {
     final textScaling = ref.watch(textScaleProvider);
-    _currentChapterText = chapterText; // Store for debugging
     final verses = _parseVersesFromChapter(chapterText);
+    
+    // Generate keys for each verse if needed
+    _generateVerseKeys(verses.length);
+    _currentVerses = verses;
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -407,8 +416,14 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         final verseText = entry.value;
         
         return Container(
-          key: ValueKey('verse_$verseNumber'), // For potential future scrolling improvements
+          key: _verseKeys[entry.key], // Use GlobalKey for precise scrolling
           margin: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2), // Subtle padding
+          decoration: BoxDecoration(
+            // Borderless - completely transparent
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(4),
+          ),
           child: RichText(
             text: TextSpan(
               style: textScaling.scaledBibleText(context, lineHeight: 1.8),
@@ -468,73 +483,63 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     return verses;
   }
 
-  void _scrollToVerse(int startVerse) {
-    if (!_scrollController.hasClients) return;
+  void _scrollToVerseAccurate(int startVerse) {
+    if (startVerse <= 0 || startVerse > _verseKeys.length) {
+      debugLog('Invalid verse number: $startVerse (available: ${_verseKeys.length})', 'CHAPTER');
+      return;
+    }
     
-    try {
-      // Get current scroll information for debugging
-      final currentPosition = _scrollController.position;
-      final maxScrollExtent = currentPosition.maxScrollExtent;
-      final viewportHeight = currentPosition.viewportDimension;
-      final initialOffset = currentPosition.pixels;
-      
-      debugLog('=== SCROLL DEBUG INFO ===', 'CHAPTER');
-      debugLog('Target verse: $startVerse', 'CHAPTER');
-      debugLog('Current scroll offset: $initialOffset', 'CHAPTER');
-      debugLog('Max scroll extent: $maxScrollExtent', 'CHAPTER');
-      debugLog('Viewport height: $viewportHeight', 'CHAPTER');
-      
-      // Let's try a different approach - use a percentage of the total content
-      // Get the total number of verses we parsed
-      final totalVerses = _parseVersesFromChapter(_getCurrentChapterText()).length;
-      debugLog('Total verses parsed: $totalVerses', 'CHAPTER');
-      
-      if (totalVerses == 0 || startVerse > totalVerses) {
-        debugLog('Invalid verse number or no verses found', 'CHAPTER');
-        return;
+    final verseIndex = startVerse - 1; // Convert to 0-based index
+    final verseKey = _verseKeys[verseIndex];
+    
+    debugLog('=== ACCURATE SCROLL DEBUG ===', 'CHAPTER');
+    debugLog('Target verse: $startVerse (index: $verseIndex)', 'CHAPTER');
+    debugLog('Total verses: ${_verseKeys.length}', 'CHAPTER');
+    
+    // Wait for the widget to be built and rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final context = verseKey.currentContext;
+      if (context != null) {
+        // Adjust alignment for verses near the end
+        double alignment = 0.15; // Default: 15% from top
+        
+        // If this is in the last 20% of verses, center it instead
+        if (startVerse > (_verseKeys.length * 0.8)) {
+          alignment = 0.5; // Center it for better visibility
+          debugLog('Using center alignment for verse near end', 'CHAPTER');
+        }
+        
+        debugLog('Scrolling to verse with alignment: $alignment', 'CHAPTER');
+        
+        try {
+          Scrollable.ensureVisible(
+            context,
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeInOut,
+            alignment: alignment,
+          );
+          
+          debugLog('Successfully initiated scroll to verse $startVerse', 'CHAPTER');
+        } catch (e) {
+          debugLog('Error during ensureVisible: $e', 'CHAPTER');
+        }
+      } else {
+        debugLog('Verse context not found for verse $startVerse', 'CHAPTER');
       }
       
-      // Calculate what percentage through the content this verse represents
-      final verseProgress = (startVerse - 1) / totalVerses;
-      debugLog('Verse progress: $verseProgress (${(verseProgress * 100).toStringAsFixed(1)}%)', 'CHAPTER');
-      
-      // Apply this percentage to the scrollable content
-      // Leave some room at the top (header) - estimate 300px for header + padding
-      const estimatedHeaderHeight = 300.0;
-      final scrollableContent = maxScrollExtent - estimatedHeaderHeight;
-      final targetPosition = estimatedHeaderHeight + (scrollableContent * verseProgress);
-      
-      debugLog('Estimated header height: $estimatedHeaderHeight', 'CHAPTER');
-      debugLog('Scrollable content: $scrollableContent', 'CHAPTER');
-      debugLog('Calculated target position: $targetPosition', 'CHAPTER');
-      
-      // Clamp to valid range
-      final clampedPosition = targetPosition.clamp(0.0, maxScrollExtent);
-      debugLog('Clamped position: $clampedPosition', 'CHAPTER');
-      
-      // Scroll to the calculated position
-      _scrollController.animateTo(
-        clampedPosition,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.easeInOut,
-      );
-      
-      // Log the final position after a delay
-      Future.delayed(const Duration(milliseconds: 1000), () {
-        if (_scrollController.hasClients) {
-          final finalPosition = _scrollController.position.pixels;
-          debugLog('Final scroll position: $finalPosition', 'CHAPTER');
-          debugLog('=== END SCROLL DEBUG ===', 'CHAPTER');
-        }
-      });
-      
-    } catch (e) {
-      debugLog('Error scrolling to verse: $e', 'CHAPTER');
-    }
+      debugLog('=== END ACCURATE SCROLL DEBUG ===', 'CHAPTER');
+    });
   }
-
-  String _getCurrentChapterText() {
-    return _currentChapterText;
+  
+  
+  /// Generate GlobalKeys for each verse for precise scrolling
+  void _generateVerseKeys(int verseCount) {
+    // Only regenerate if the count has changed
+    if (_verseKeys.length != verseCount) {
+      _verseKeys.clear();
+      _verseKeys.addAll(List.generate(verseCount, (index) => GlobalKey()));
+      debugLog('Generated ${_verseKeys.length} verse keys', 'CHAPTER');
+    }
   }
 
   Widget? _buildNavigationButtons(BuildContext context, int maxChapters, Color? themeColor) {
