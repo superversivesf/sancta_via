@@ -1,6 +1,13 @@
+import 'package:package_info_plus/package_info_plus.dart';
+
 class AppConstants {
   static const String appName = 'Confession Companion';
-  static const String appVersion = '1.0.0';
+  
+  // Get app version dynamically from package info
+  static Future<String> get appVersion async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version;
+  }
   
   // Storage keys
   static const String examinationPreferencesKey = 'examination_preferences';

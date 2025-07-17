@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../providers/confession_app_settings_provider.dart';
 import '../../providers/text_scaling_provider.dart';
@@ -13,37 +14,42 @@ class ConfessionSettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // App information for the unified screen
-    final appInfo = AppInfo(
-      appName: AppConstants.appName,
-      version: AppConstants.appVersion,
-      description: 'A Catholic app providing guided examinations of conscience to help faithful Catholics '
-          'prepare for the Sacrament of Confession with proper reflection and prayer.',
-      icon: const Icon(Icons.self_improvement, size: 48, color: Colors.purple),
-      onFeedback: () => _showComingSoon(context, 'Feedback'),
-      onSupport: () => _showSupportDialog(context),
-    );
+    return FutureBuilder<PackageInfo>(
+      future: PackageInfo.fromPlatform(),
+      builder: (context, snapshot) {
+        // App information for the unified screen
+        final appInfo = AppInfo(
+          appName: AppConstants.appName,
+          version: snapshot.hasData ? snapshot.data!.version : 'Loading...',
+          description: 'A Catholic app providing guided examinations of conscience to help faithful Catholics '
+              'prepare for the Sacrament of Confession with proper reflection and prayer.',
+          icon: const Icon(Icons.self_improvement, size: 48, color: Colors.purple),
+          onFeedback: () => _showComingSoon(context, 'Feedback'),
+          onSupport: () => _showSupportDialog(context),
+        );
 
-    // Confession-specific settings section
-    final confessionSpecificSettings = _buildConfessionSpecificSettings(context, ref);
+        // Confession-specific settings section
+        final confessionSpecificSettings = _buildConfessionSpecificSettings(context, ref);
 
-    return UnifiedSettingsScreen(
-      appInfo: appInfo,
-      appSpecificSettings: confessionSpecificSettings,
-      customNotifications: [
-        CatholicNotificationOptions.examinations(
-          enabled: ref.watch(confessionNotificationsEnabledProvider),
-          onChanged: (enabled) {
-            ref.read(confessionAppSettingsProvider.notifier).setNotificationsEnabled(enabled);
-          },
-        ),
-        CatholicNotificationOptions.liturgicalCalendar(
-          enabled: false, // TODO: Implement liturgical calendar notifications
-          onChanged: (enabled) {
-            _showComingSoon(context, 'Liturgical calendar notifications');
-          },
-        ),
-      ],
+        return UnifiedSettingsScreen(
+          appInfo: appInfo,
+          appSpecificSettings: confessionSpecificSettings,
+          customNotifications: [
+            CatholicNotificationOptions.examinations(
+              enabled: ref.watch(confessionNotificationsEnabledProvider),
+              onChanged: (enabled) {
+                ref.read(confessionAppSettingsProvider.notifier).setNotificationsEnabled(enabled);
+              },
+            ),
+            CatholicNotificationOptions.liturgicalCalendar(
+              enabled: false, // TODO: Implement liturgical calendar notifications
+              onChanged: (enabled) {
+                _showComingSoon(context, 'Liturgical calendar notifications');
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
