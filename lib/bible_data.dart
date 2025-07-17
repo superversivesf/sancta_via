@@ -21,8 +21,12 @@ export 'src/models/bible.dart';
 export 'src/models/scripture_reference.dart';
 
 export 'src/services/bible_loader.dart';
+export 'src/services/sqlite_bible_loader.dart';
+export 'src/services/optimized_sqlite_bible_loader.dart';
 export 'src/services/bible_search_service.dart';
 export 'src/services/bible_service.dart';
+export 'src/services/optimized_bible_service.dart';
 
 export 'src/utils/book_mapping.dart';
 export 'src/utils/reference_parser.dart';
+export 'src/utils/book_name_normalizer.dart';
