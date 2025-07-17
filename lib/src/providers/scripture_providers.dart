@@ -243,3 +243,72 @@ final isReferenceInFavoritesProvider = Provider.family<bool, String>((ref, refer
   final notifier = ref.watch(favoriteScripturesProvider.notifier);
   return notifier.isFavorite(reference);
 });
+
+// ============================================================================
+// OPTIMIZED PROVIDERS - Much faster app startup and chapter loading
+// ============================================================================
+
+/// Provider for optimized scripture content by reference (much faster!)
+final optimizedScriptureByReferenceProvider = FutureProvider.family<OptimizedScriptureContent, ({ScriptureReference reference, BibleTranslation translation})>((ref, params) async {
+  final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
+  
+  return serviceAsync.when(
+    data: (service) async {
+      return await service.getScriptureContent(params.reference, params.translation);
+    },
+    loading: () => throw Exception('Optimized Bible service is loading'),
+    error: (error, stack) => throw error,
+  );
+});
+
+/// Fast provider that gets book names without loading full Bible content
+final optimizedBookNamesProvider = FutureProvider.family<List<String>, BibleTranslation>((ref, translation) async {
+  final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
+  
+  return serviceAsync.when(
+    data: (service) async {
+      return await service.getBookNames(translation);
+    },
+    loading: () => throw Exception('Optimized Bible service is loading'),
+    error: (error, stack) => throw error,
+  );
+});
+
+/// Fast provider that gets chapter count for a book
+final optimizedChapterCountProvider = FutureProvider.family<int, ({String bookName, BibleTranslation translation})>((ref, params) async {
+  final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
+  
+  return serviceAsync.when(
+    data: (service) async {
+      return await service.getChapterCount(params.bookName, params.translation);
+    },
+    loading: () => throw Exception('Optimized Bible service is loading'),
+    error: (error, stack) => throw error,
+  );
+});
+
+/// Fast provider for checking if a book exists
+final optimizedBookExistsProvider = FutureProvider.family<bool, ({String bookName, BibleTranslation translation})>((ref, params) async {
+  final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
+  
+  return serviceAsync.when(
+    data: (service) async {
+      return await service.hasBook(params.bookName, params.translation);
+    },
+    loading: () => false,
+    error: (error, stack) => false,
+  );
+});
+
+/// Fast provider for available translations (no content loading)
+final optimizedAvailableTranslationsProvider = FutureProvider<List<BibleTranslation>>((ref) async {
+  final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
+  
+  return serviceAsync.when(
+    data: (service) async {
+      return await service.getAvailableTranslations();
+    },
+    loading: () => <BibleTranslation>[],
+    error: (error, stack) => <BibleTranslation>[],
+  );
+});

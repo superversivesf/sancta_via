@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bible_data/bible_data.dart';
@@ -17,6 +18,14 @@ final bibleServiceProvider = Provider<BibleService>((ref) {
     assetLoader: rootBundle.loadString,
   );
   return BibleService(loader);
+});
+
+/// Provider for the optimized Bible service (fast startup, chapter-level caching)
+final optimizedBibleServiceProvider = Provider<OptimizedBibleService>((ref) {
+  final loader = OptimizedSqliteBibleLoader(
+    databaseAssetPath: 'assets/bibles.db',
+  );
+  return OptimizedBibleService(loader);
 });
 
 /// Debug-enhanced AssetBibleLoader that logs all operations
@@ -71,24 +80,34 @@ class DebugAssetBibleLoader implements BibleLoader {
 /// Provider for configuring the Bible loader
 /// Apps can override this to provide their own loader configuration
 final bibleLoaderProvider = Provider<BibleLoader>((ref) {
-  debugLog('Creating AssetBibleLoader with assetBasePath: assets/bibles', 'BIBLE_LOADER');
-  
-  final baseLoader = AssetBibleLoader(
-    assetBasePath: 'assets/bibles',
-    assetLoader: (path) async {
-      debugLog('Loading asset: $path', 'BIBLE_LOADER');
-      try {
-        final content = await rootBundle.loadString(path);
-        debugLog('Asset loaded successfully: $path, length: ${content.length}', 'BIBLE_LOADER');
-        return content;
-      } catch (e) {
-        debugLog('Failed to load asset $path: $e', 'BIBLE_LOADER');
-        rethrow;
-      }
-    },
-  );
-  
-  return DebugAssetBibleLoader(baseLoader);
+  if (kIsWeb) {
+    // Web doesn't support SQLite, fall back to JSON loading
+    debugLog('Creating AssetBibleLoader for web platform (JSON fallback)', 'BIBLE_LOADER');
+    
+    final baseLoader = AssetBibleLoader(
+      assetBasePath: 'assets/bibles',
+      assetLoader: (path) async {
+        debugLog('Loading asset: $path', 'BIBLE_LOADER');
+        try {
+          final content = await rootBundle.loadString(path);
+          debugLog('Asset loaded successfully: $path, length: ${content.length}', 'BIBLE_LOADER');
+          return content;
+        } catch (e) {
+          debugLog('Failed to load asset $path: $e', 'BIBLE_LOADER');
+          rethrow;
+        }
+      },
+    );
+    
+    return DebugAssetBibleLoader(baseLoader);
+  } else {
+    // Mobile/Desktop: Use high-performance SQLite
+    debugLog('Creating SqliteBibleLoader for mobile/desktop platform', 'BIBLE_LOADER');
+    
+    return SqliteBibleLoader(
+      databaseAssetPath: 'assets/bibles.db',
+    );
+  }
 });
 
 /// StateNotifier for managing Bible service initialization and state
@@ -146,10 +165,66 @@ class BibleServiceNotifier extends StateNotifier<AsyncValue<BibleService>> {
   }
 }
 
+/// Fast StateNotifier for optimized Bible service (no expensive startup operations)
+class OptimizedBibleServiceNotifier extends StateNotifier<AsyncValue<OptimizedBibleService>> {
+  OptimizedBibleServiceNotifier(this._loader) : super(const AsyncValue.loading()) {
+    debugLog('OptimizedBibleServiceNotifier created, starting fast initialization...', 'OPTIMIZED_SERVICE');
+    _initialize();
+  }
+
+  final OptimizedSqliteBibleLoader _loader;
+  OptimizedBibleService? _service;
+
+  Future<void> _initialize() async {
+    debugLog('Initializing OptimizedBibleService (fast)...', 'OPTIMIZED_SERVICE');
+    
+    try {
+      _service = OptimizedBibleService(_loader);
+      debugLog('OptimizedBibleService created successfully', 'OPTIMIZED_SERVICE');
+      
+      // NO expensive operations here - just mark as ready
+      // Available translations will be queried only when needed
+      
+      state = AsyncValue.data(_service!);
+      debugLog('OptimizedBibleService initialization complete (fast)', 'OPTIMIZED_SERVICE');
+    } catch (error, stackTrace) {
+      debugLog('OptimizedBibleService initialization failed: $error', 'OPTIMIZED_SERVICE');
+      debugLog('Stack trace: $stackTrace', 'OPTIMIZED_SERVICE');
+      state = AsyncValue.error(error, stackTrace);
+    }
+  }
+
+  /// Get the current optimized Bible service instance
+  OptimizedBibleService? get service => _service;
+
+  /// Clear all caches
+  void clearCache() {
+    _service?.clearCache();
+  }
+
+  /// Get cache statistics
+  Map<String, dynamic> getCacheStats() {
+    return _service?.getCacheStats() ?? {};
+  }
+}
+
 /// Provider for the Bible service with initialization state
 final bibleServiceNotifierProvider = StateNotifierProvider<BibleServiceNotifier, AsyncValue<BibleService>>((ref) {
   final loader = ref.watch(bibleLoaderProvider);
   return BibleServiceNotifier(loader);
+});
+
+/// Provider for the optimized Bible service with fast initialization
+final optimizedBibleServiceNotifierProvider = StateNotifierProvider<OptimizedBibleServiceNotifier, AsyncValue<OptimizedBibleService>>((ref) {
+  final loader = OptimizedSqliteBibleLoader(
+    databaseAssetPath: 'assets/bibles.db',
+  );
+  return OptimizedBibleServiceNotifier(loader);
+});
+
+/// Main provider that uses the optimized service for better performance
+final mainBibleServiceProvider = Provider<AsyncValue<OptimizedBibleService>>((ref) {
+  return ref.watch(optimizedBibleServiceNotifierProvider);
 });
 
 /// Provider for checking if Bible translations are available
