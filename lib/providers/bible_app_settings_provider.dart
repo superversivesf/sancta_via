@@ -157,12 +157,6 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
     debugLog('Highlight current verse updated to: $highlight', 'BIBLE_SETTINGS');
   }
 
-  /// Update active reading plan
-  Future<void> setActiveReadingPlan(String? plan) async {
-    state = state.copyWith(activeReadingPlan: plan);
-    await _saveSettings();
-    debugLog('Active reading plan updated to: $plan', 'BIBLE_SETTINGS');
-  }
 
   /// Update daily reading notifications
   Future<void> setDailyReadingNotificationsEnabled(bool enabled) async {
@@ -225,10 +219,6 @@ final highlightCurrentVerseProvider = Provider<bool>((ref) {
   return ref.watch(bibleAppSettingsProvider).highlightCurrentVerse;
 });
 
-/// Provider for active reading plan
-final activeReadingPlanProvider = Provider<String?>((ref) {
-  return ref.watch(bibleAppSettingsProvider).activeReadingPlan;
-});
 
 /// Provider for default language - convenience access
 final bibleDefaultLanguageProvider = Provider<AppLanguage>((ref) {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import 'package:bible_data/bible_data.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../providers/bible_app_settings_provider.dart';
+import '../../providers/reading_plan_provider.dart';
 
 /// Unified settings screen for Bible Reading App using standardized components
 class BibleSettingsScreen extends ConsumerWidget {
@@ -123,18 +123,8 @@ class BibleSettingsScreen extends ConsumerWidget {
           },
         ),
 
-        // Reading Plan (placeholder for future feature)
-        ListTile(
-          leading: const Icon(Icons.calendar_view_day),
-          title: const Text('Reading Plan'),
-          subtitle: Text(
-            settings.activeReadingPlan ?? 'None selected',
-          ),
-          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-          onTap: () {
-            _showComingSoon(context, 'Reading plans');
-          },
-        ),
+        // Reading Plans
+        _buildReadingPlansSection(context, ref),
 
         // Preview Section with current settings
         const SettingsSectionHeader(title: 'Preview'),
@@ -219,6 +209,24 @@ class BibleSettingsScreen extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildReadingPlansSection(BuildContext context, WidgetRef ref) {
+    final activePlans = ref.watch(activeReadingPlansProvider);
+    
+    return ListTile(
+      leading: const Icon(Icons.calendar_view_day),
+      title: const Text('Reading Plans'),
+      subtitle: Text(
+        activePlans.isEmpty 
+          ? 'No active plans'
+          : '${activePlans.length} active plan${activePlans.length != 1 ? 's' : ''}',
+      ),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+      onTap: () {
+        Navigator.of(context).pushNamed('/reading-plan');
+      },
     );
   }
 

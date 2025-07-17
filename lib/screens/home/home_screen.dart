@@ -4,6 +4,7 @@ import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../providers/text_scaling_provider.dart';
+import '../../providers/reading_plan_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -107,6 +108,10 @@ class HomeScreen extends ConsumerWidget {
               ),
             ],
 
+            // Today's Reading Plans Summary
+            _buildTodaysReadingSummary(context, ref, themeColor),
+            const SizedBox(height: 24),
+
             // Welcome Header
             Text(
               'Choose your Bible reading experience',
@@ -189,6 +194,147 @@ class HomeScreen extends ConsumerWidget {
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildTodaysReadingSummary(BuildContext context, WidgetRef ref, Color? themeColor) {
+    final textScaling = ref.watch(textScaleProvider);
+    final todaysPlans = ref.watch(todaysReadingPlansProvider);
+    final todaysUnreadPlans = ref.watch(todaysUnreadPlansProvider);
+    
+    if (todaysPlans.isEmpty) {
+      return const SizedBox.shrink(); // Don't show anything if no plans for today
+    }
+    
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: themeColor != null ? Border.all(
+            color: themeColor.withValues(alpha: 0.3),
+            width: 2,
+          ) : null,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.today,
+                    color: themeColor ?? Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Today\'s Reading Plans',
+                      style: textScaling.scaledTitleMedium(context).copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: themeColor?.withValues(alpha: 0.8) ?? 
+                               Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: todaysUnreadPlans.isEmpty 
+                        ? Colors.green.withValues(alpha: 0.1)
+                        : (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      todaysUnreadPlans.isEmpty ? 'All Complete!' : '${todaysUnreadPlans.length} to read',
+                      style: textScaling.scaledLabelSmall(context).copyWith(
+                        color: todaysUnreadPlans.isEmpty 
+                          ? Colors.green.shade700
+                          : (themeColor ?? Theme.of(context).colorScheme.primary),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              
+              // Quick summary of today's plans
+              ...todaysPlans.take(3).map((plan) {
+                final todaysReading = TodaysReading.fromPlan(plan);
+                final isRead = plan.hasReadToday;
+                
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    children: [
+                      Icon(
+                        isRead ? Icons.check_circle : Icons.circle_outlined,
+                        size: 16,
+                        color: isRead 
+                          ? Colors.green
+                          : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          '${plan.name}: ${todaysReading.displayText}',
+                          style: textScaling.scaledBodyMedium(context).copyWith(
+                            decoration: isRead ? TextDecoration.lineThrough : null,
+                            color: isRead 
+                              ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6)
+                              : null,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+              
+              if (todaysPlans.length > 3) ...[
+                Text(
+                  '...and ${todaysPlans.length - 3} more plan${todaysPlans.length - 3 != 1 ? 's' : ''}',
+                  style: textScaling.scaledBodySmall(context).copyWith(
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+              
+              const SizedBox(height: 12),
+              
+              // Continue reading button
+              Center(
+                child: ElevatedButton.icon(
+                  onPressed: () => context.push('/continue-reading'),
+                  icon: Icon(
+                    todaysUnreadPlans.isEmpty ? Icons.celebration : Icons.menu_book,
+                    size: 18,
+                  ),
+                  label: Text(
+                    todaysUnreadPlans.isEmpty ? 'View Progress' : 'Continue Reading',
+                    style: textScaling.scaledBodyMedium(context).copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: todaysUnreadPlans.isEmpty 
+                      ? Colors.green
+                      : (themeColor ?? Theme.of(context).colorScheme.primary),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
