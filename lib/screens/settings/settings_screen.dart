@@ -1,99 +1,105 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // App information for the unified screen
-    final appInfo = AppInfo(
-      appName: 'Sancta Via Calendar',
-      version: '1.0.0',
-      description: 'A focused Catholic liturgical calendar app with beautiful interface and detailed feast information.',
-      icon: const Icon(Icons.calendar_month, size: 48, color: Colors.deepPurple),
-      onFeedback: () => _showComingSoon(context, 'Feedback'),
-      onSupport: () => _showSupportDialog(context),
-    );
+    return FutureBuilder<PackageInfo>(
+      future: PackageInfo.fromPlatform(),
+      builder: (context, snapshot) {
+        // App information for the unified screen
+        final appInfo = AppInfo(
+          appName: 'Sancta Via Calendar',
+          version: snapshot.hasData ? snapshot.data!.version : 'Loading...',
+          description: 'A focused Catholic liturgical calendar app with beautiful interface and detailed feast information.',
+          icon: const Icon(Icons.calendar_month, size: 48, color: Colors.deepPurple),
+          onFeedback: () => _showComingSoon(context, 'Feedback'),
+          onSupport: () => _showSupportDialog(context),
+        );
 
-    // Calendar-specific settings section
-    final calendarSpecificSettings = _buildCalendarSpecificSettings(context, ref);
+        // Calendar-specific settings section
+        final calendarSpecificSettings = _buildCalendarSpecificSettings(context, ref);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
-      body: ListView(
-        children: [
-          // ═══════════════════════════════════════
-          // APPEARANCE SECTION (from shared UI)
-          // ═══════════════════════════════════════
-          const SettingsSectionHeader(title: 'Appearance'),
-          
-          // Theme mode selection (Light/Dark/System)
-          const ThemeModeSelector(),
-          
-          // Color intensity selection (Vibrant/Muted)
-          const ColorIntensitySelector(),
-          
-          // Liturgical color preview
-          const LiturgicalColorPreview(),
-          
-          const Divider(),
-
-          // ═══════════════════════════════════════
-          // ACCESSIBILITY SECTION (WITH working font size)
-          // ═══════════════════════════════════════
-          const AccessibilitySettings(
-            fontPreviewText: 'Sample prayer text: "Hail Mary, full of grace..."',
-            showFontSize: true, // Font size now works throughout the app!
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Settings'),
           ),
-          
-          const Divider(),
+          body: ListView(
+            children: [
+              // ═══════════════════════════════════════
+              // APPEARANCE SECTION (from shared UI)
+              // ═══════════════════════════════════════
+              const SettingsSectionHeader(title: 'Appearance'),
+              
+              // Theme mode selection (Light/Dark/System)
+              const ThemeModeSelector(),
+              
+              // Color intensity selection (Vibrant/Muted)
+              const ColorIntensitySelector(),
+              
+              // Liturgical color preview
+              const LiturgicalColorPreview(),
+              
+              const Divider(),
 
-          // ═══════════════════════════════════════
-          // LANGUAGE & LOCALIZATION
-          // ═══════════════════════════════════════
-          const SettingsSectionHeader(title: 'Language & Localization'),
-          
-          const LanguageSelector(
-            subtitle: 'Choose language for prayers and interface',
-          ),
-          
-          const Divider(),
+              // ═══════════════════════════════════════
+              // ACCESSIBILITY SECTION (WITH working font size)
+              // ═══════════════════════════════════════
+              const AccessibilitySettings(
+                fontPreviewText: 'Sample prayer text: "Hail Mary, full of grace..."',
+                showFontSize: true, // Font size now works throughout the app!
+              ),
+              
+              const Divider(),
 
-          // ═══════════════════════════════════════
-          // NOTIFICATIONS SECTION
-          // ═══════════════════════════════════════
-          NotificationsSettings(
-            subtitle: 'Prayer reminders and liturgical notifications',
-            customOptions: [
-              CatholicNotificationOptions.liturgicalCalendar(
-                enabled: false, // TODO: Connect to liturgical notifications when implemented
-                onChanged: (enabled) {
-                  _showComingSoon(context, 'Liturgical calendar notifications');
-                },
+              // ═══════════════════════════════════════
+              // LANGUAGE & LOCALIZATION
+              // ═══════════════════════════════════════
+              const SettingsSectionHeader(title: 'Language & Localization'),
+              
+              const LanguageSelector(
+                subtitle: 'Choose language for prayers and interface',
+              ),
+              
+              const Divider(),
+
+              // ═══════════════════════════════════════
+              // NOTIFICATIONS SECTION
+              // ═══════════════════════════════════════
+              NotificationsSettings(
+                subtitle: 'Prayer reminders and liturgical notifications',
+                customOptions: [
+                  CatholicNotificationOptions.liturgicalCalendar(
+                    enabled: false, // TODO: Connect to liturgical notifications when implemented
+                    onChanged: (enabled) {
+                      _showComingSoon(context, 'Liturgical calendar notifications');
+                    },
+                  ),
+                ],
+              ),
+              
+              const Divider(),
+
+              // ═══════════════════════════════════════
+              // APP-SPECIFIC SETTINGS
+              // ═══════════════════════════════════════
+              calendarSpecificSettings,
+              const Divider(),
+
+              // ═══════════════════════════════════════
+              // ABOUT SECTION
+              // ═══════════════════════════════════════
+              AppInfoSection(
+                appInfo: appInfo,
               ),
             ],
           ),
-          
-          const Divider(),
-
-          // ═══════════════════════════════════════
-          // APP-SPECIFIC SETTINGS
-          // ═══════════════════════════════════════
-          calendarSpecificSettings,
-          const Divider(),
-
-          // ═══════════════════════════════════════
-          // ABOUT SECTION
-          // ═══════════════════════════════════════
-          AppInfoSection(
-            appInfo: appInfo,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

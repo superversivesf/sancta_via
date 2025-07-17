@@ -14,7 +14,7 @@ app_store:
   age_rating: "4+"
 
 # Version: major.minor.patch+build
-version: 1.0.0+1
+version: 1.0.6
 repository: https://github.com/superversivesf/sancta_via_liturgical_calendar_app
 homepage: https://sancta-via.net
 
@@ -31,6 +31,7 @@ dependencies:
   go_router: ^15.1.2
   intl: ^0.20.2
   material_color_utilities: ^0.11.1
+  package_info_plus: ^8.3.0
   sancta_via_liturgical_calendar:
     path: ../sancta_via_liturgical_calendar
   sancta_via_liturgical_calendar_riverpod:
