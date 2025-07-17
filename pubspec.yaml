@@ -14,7 +14,7 @@ app_store:
   age_rating: "4+"
 
 # Version: major.minor.patch+build
-version: 1.0.0+1
+version: 1.0.6
 
 environment:
   sdk: ^3.8.1
@@ -31,6 +31,7 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^2.6.1
   go_router: ^15.1.2
+  package_info_plus: ^8.3.0
   sancta_via_liturgical_calendar:
     path: ../sancta_via_liturgical_calendar
   sancta_via_liturgical_calendar_riverpod:

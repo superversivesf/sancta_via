@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../providers/prayer_app_settings_provider.dart';
 import '../../providers/text_scaling_provider.dart';
@@ -25,18 +26,21 @@ class PrayerSettingsScreen extends ConsumerWidget {
         });
       }
     });
-    
-    // App information for the about section
-    final appInfo = AppInfo(
-      appName: 'Prayer Companion',
-      version: '1.0.0',
-      description: 'Traditional and contemporary Catholic prayers with liturgical calendar integration for daily spiritual reading.',
-      icon: const Icon(Icons.church, size: 48, color: Colors.indigo),
-      onFeedback: () => _showComingSoon(context, 'Feedback'),
-      onSupport: () => _showSupportDialog(context),
-    );
 
-    return Scaffold(
+    return FutureBuilder<PackageInfo>(
+      future: PackageInfo.fromPlatform(),
+      builder: (context, snapshot) {
+        // App information for the about section
+        final appInfo = AppInfo(
+          appName: 'Prayer Companion',
+          version: snapshot.hasData ? snapshot.data!.version : 'Loading...',
+          description: 'Traditional and contemporary Catholic prayers with liturgical calendar integration for daily spiritual reading.',
+          icon: const Icon(Icons.church, size: 48, color: Colors.indigo),
+          onFeedback: () => _showComingSoon(context, 'Feedback'),
+          onSupport: () => _showSupportDialog(context),
+        );
+
+        return Scaffold(
       appBar: AppBar(
         title: Text(
           'Settings',
@@ -125,6 +129,8 @@ class PrayerSettingsScreen extends ConsumerWidget {
           ],
         ),
       ),
+    );
+      },
     );
   }
 
