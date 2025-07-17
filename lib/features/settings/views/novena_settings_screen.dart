@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../providers/novena_app_settings_provider.dart';
 import '../../../services/auth_service.dart';
@@ -15,36 +16,41 @@ class NovenaSettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // App information for the unified screen
-    final appInfo = AppInfo(
-      appName: 'Novena Companion',
-      version: '1.0.0',
-      description: 'Catholic novena companion app with traditional nine-day prayer devotions and liturgical integration for spiritual growth.',
-      icon: const Icon(Icons.auto_stories, size: 48, color: Colors.deepPurple),
-      onFeedback: () => _showComingSoon(context, 'Feedback'),
-      onSupport: () => _showSupportDialog(context),
-    );
+    return FutureBuilder<PackageInfo>(
+      future: PackageInfo.fromPlatform(),
+      builder: (context, snapshot) {
+        // App information for the unified screen
+        final appInfo = AppInfo(
+          appName: 'Novena Companion',
+          version: snapshot.hasData ? snapshot.data!.version : 'Loading...',
+          description: 'Catholic novena companion app with traditional nine-day prayer devotions and liturgical integration for spiritual growth.',
+          icon: const Icon(Icons.auto_stories, size: 48, color: Colors.deepPurple),
+          onFeedback: () => _showComingSoon(context, 'Feedback'),
+          onSupport: () => _showSupportDialog(context),
+        );
 
-    // Novena-specific settings section
-    final novenaSpecificSettings = _buildNovenaSpecificSettings(context, ref);
+        // Novena-specific settings section
+        final novenaSpecificSettings = _buildNovenaSpecificSettings(context, ref);
 
-    return UnifiedSettingsScreen(
-      appInfo: appInfo,
-      appSpecificSettings: novenaSpecificSettings,
-      customNotifications: [
-        CatholicNotificationOptions.novenas(
-          enabled: ref.watch(novenaNotificationsEnabledProvider),
-          onChanged: (enabled) {
-            ref.read(novenaAppSettingsProvider.notifier).updateNovenaNotificationsEnabled(enabled);
-          },
-        ),
-        CatholicNotificationOptions.liturgicalCalendar(
-          enabled: false, // TODO: Connect to liturgical notifications
-          onChanged: (enabled) {
-            _showComingSoon(context, 'Liturgical calendar notifications');
-          },
-        ),
-      ],
+        return UnifiedSettingsScreen(
+          appInfo: appInfo,
+          appSpecificSettings: novenaSpecificSettings,
+          customNotifications: [
+            CatholicNotificationOptions.novenas(
+              enabled: ref.watch(novenaNotificationsEnabledProvider),
+              onChanged: (enabled) {
+                ref.read(novenaAppSettingsProvider.notifier).updateNovenaNotificationsEnabled(enabled);
+              },
+            ),
+            CatholicNotificationOptions.liturgicalCalendar(
+              enabled: false, // TODO: Connect to liturgical notifications
+              onChanged: (enabled) {
+                _showComingSoon(context, 'Liturgical calendar notifications');
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
