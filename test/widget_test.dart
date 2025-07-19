@@ -9,6 +9,6 @@ void main() {
     await tester.pumpWidget(const ProviderScope(child: BibleReadingApp()));
 
     // Verify that our app loads
-    expect(find.text('Bible Reading'), findsOneWidget);
+    expect(find.text('Bible Reading App'), findsOneWidget);
   });
 }

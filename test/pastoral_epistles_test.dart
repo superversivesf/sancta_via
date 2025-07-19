@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import '../lib/models/reading_plan.dart';
+import 'package:bible_reading_app/models/reading_plan.dart';
 
 void main() {
   group('Pastoral Epistles Reading Plan', () {

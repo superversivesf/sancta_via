@@ -16,7 +16,7 @@ app_store:
 # Version: major.minor.patch+build
 # App Store: CFBundleShortVersionString = 1.0.0, CFBundleVersion = 1
 # Google Play: versionName = 1.0.0, versionCode = 1
-version: 1.0.6
+version: 1.0.9
 
 environment:
   sdk: ^3.8.1
@@ -64,17 +64,10 @@ dependencies:
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
-  sqflite_common_ffi: ^2.3.6
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^6.0.0
-
   flutter_test:
     sdk: flutter
+  sqflite_common_ffi: ^2.3.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bible_data_riverpod/bible_data_riverpod.dart';
-import 'package:bible_data/bible_data.dart';
 
 /// Debug screen to verify that numbered books are working correctly
 class NumberedBooksDebugScreen extends ConsumerWidget {
@@ -123,10 +122,10 @@ class NumberedBooksDebugScreen extends ConsumerWidget {
                     Text('Loading...'),
                   ],
                 ),
-                error: (error, stack) => Row(
+                error: (error, stack) => const Row(
                   children: [
-                    const Icon(Icons.error, color: Colors.red, size: 20),
-                    const SizedBox(width: 8),
+                    Icon(Icons.error, color: Colors.red, size: 20),
+                    SizedBox(width: 8),
                     Text(
                       'Error',
                       style: TextStyle(color: Colors.red),

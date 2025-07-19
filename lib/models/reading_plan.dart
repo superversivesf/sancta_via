@@ -489,16 +489,20 @@ class ReadingPlan {
 class ReadingPlanManager {
   final List<ReadingPlan> plans;
   final DateTime lastUpdated;
+  final DateTime lastDailyReset; // Track when we last reset daily status
 
   const ReadingPlanManager({
     required this.plans,
     required this.lastUpdated,
+    required this.lastDailyReset,
   });
 
   factory ReadingPlanManager.empty() {
+    final now = DateTime.now();
     return ReadingPlanManager(
       plans: [],
-      lastUpdated: DateTime.now(),
+      lastUpdated: now,
+      lastDailyReset: now,
     );
   }
 
@@ -562,10 +566,12 @@ class ReadingPlanManager {
   ReadingPlanManager copyWith({
     List<ReadingPlan>? plans,
     DateTime? lastUpdated,
+    DateTime? lastDailyReset,
   }) {
     return ReadingPlanManager(
       plans: plans ?? this.plans,
       lastUpdated: lastUpdated ?? this.lastUpdated,
+      lastDailyReset: lastDailyReset ?? this.lastDailyReset,
     );
   }
 
@@ -573,15 +579,29 @@ class ReadingPlanManager {
     return {
       'plans': plans.map((plan) => plan.toJson()).toList(),
       'lastUpdated': lastUpdated.toIso8601String(),
+      'lastDailyReset': lastDailyReset.toIso8601String(),
     };
   }
 
   factory ReadingPlanManager.fromJson(Map<String, dynamic> json) {
+    final lastUpdated = DateTime.parse(json['lastUpdated']);
     return ReadingPlanManager(
       plans: (json['plans'] as List)
           .map((planJson) => ReadingPlan.fromJson(planJson))
           .toList(),
-      lastUpdated: DateTime.parse(json['lastUpdated']),
+      lastUpdated: lastUpdated,
+      // For backward compatibility, use lastUpdated if lastDailyReset doesn't exist
+      lastDailyReset: json['lastDailyReset'] != null 
+          ? DateTime.parse(json['lastDailyReset']) 
+          : lastUpdated,
     );
+  }
+
+  /// Check if we need to reset daily status (new day detected)
+  bool get needsDailyReset {
+    final now = DateTime.now();
+    final resetDate = DateTime(lastDailyReset.year, lastDailyReset.month, lastDailyReset.day);
+    final currentDate = DateTime(now.year, now.month, now.day);
+    return currentDate.isAfter(resetDate);
   }
 }

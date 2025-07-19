@@ -429,7 +429,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Icon(Icons.pause_circle, color: Colors.orange),
+              const Icon(Icons.pause_circle, color: Colors.orange),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -478,7 +478,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Icon(Icons.celebration, color: Colors.green),
+              const Icon(Icons.celebration, color: Colors.green),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(

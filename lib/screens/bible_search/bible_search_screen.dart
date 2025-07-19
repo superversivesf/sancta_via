@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:bible_data_riverpod/bible_data_riverpod.dart';
 
 import '../../providers/app_providers.dart';
 import '../../providers/text_scaling_provider.dart';
@@ -16,9 +17,7 @@ class BibleSearchScreen extends ConsumerStatefulWidget {
 
 class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
   final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
-  bool _isSearching = false;
-  List<SearchResult> _searchResults = [];
+  bool _showAdvancedOptions = false;
 
   @override
   void dispose() {
@@ -26,76 +25,26 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
     super.dispose();
   }
 
-  void _performSearch() async {
+  void _performSearch() {
     if (_searchController.text.trim().isEmpty) return;
 
-    setState(() {
-      _isSearching = true;
-      _searchQuery = _searchController.text.trim();
-      _searchResults = [];
-    });
-
-    // Note: This is a simplified search implementation
-    // In a real app, you'd want to implement proper full-text search
-    // For now, we'll search through available books and show placeholder results
+    final query = _searchController.text.trim();
     
-    await Future.delayed(const Duration(milliseconds: 500)); // Simulate search delay
-
-    // Generate mock search results for demonstration
-    final mockResults = _generateMockResults(_searchQuery);
-
-    setState(() {
-      _isSearching = false;
-      _searchResults = mockResults;
-    });
+    // Add to search history
+    ref.read(searchHistoryProvider.notifier).addSearch(query);
+    
+    // Perform the search using the search state provider
+    ref.read(searchStateProvider.notifier).search(query);
   }
 
-  List<SearchResult> _generateMockResults(String query) {
-    // This is a simplified mock implementation
-    // In a real app, you'd search through the actual Bible text
-    final mockResults = <SearchResult>[
-      const SearchResult(
-        book: 'John',
-        chapter: 3,
-        verse: 16,
-        text: 'For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.',
-        translation: 'CPDV',
-      ),
-      const SearchResult(
-        book: 'Romans',
-        chapter: 8,
-        verse: 28,
-        text: 'And we know that in all things God works for the good of those who love him, who have been called according to his purpose.',
-        translation: 'CPDV',
-      ),
-      const SearchResult(
-        book: 'Philippians',
-        chapter: 4,
-        verse: 13,
-        text: 'I can do all this through him who gives me strength.',
-        translation: 'CPDV',
-      ),
-      const SearchResult(
-        book: 'Psalms',
-        chapter: 23,
-        verse: 1,
-        text: 'The Lord is my shepherd, I lack nothing.',
-        translation: 'CPDV',
-      ),
-      const SearchResult(
-        book: '1 Corinthians',
-        chapter: 13,
-        verse: 4,
-        text: 'Love is patient, love is kind. It does not envy, it does not boast, it is not proud.',
-        translation: 'CPDV',
-      ),
-    ];
+  void _clearSearch() {
+    _searchController.clear();
+    ref.read(searchStateProvider.notifier).clear();
+  }
 
-    // Filter results that contain the search query (case insensitive)
-    return mockResults.where((result) => 
-      result.text.toLowerCase().contains(query.toLowerCase()) ||
-      result.book.toLowerCase().contains(query.toLowerCase())
-    ).toList();
+  void _searchFromSuggestion(String query) {
+    _searchController.text = query;
+    _performSearch();
   }
 
   @override
@@ -104,6 +53,8 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
     final colorIntensity = ref.watch(colorIntensityProvider);
     final textScaling = ref.watch(textScaleProvider);
     final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
+    final searchState = ref.watch(searchStateProvider);
+    final searchSettings = ref.watch(searchSettingsProvider);
     
     // Parse liturgical color and convert to Flutter color
     final liturgicalColor = currentColor != null 
@@ -118,6 +69,23 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
           style: textScaling.scaledTitleLarge(context),
         ),
         backgroundColor: themeColor?.withValues(alpha: 0.1),
+        actions: [
+          if (searchState.query != null)
+            IconButton(
+              icon: const Icon(Icons.clear),
+              onPressed: _clearSearch,
+              tooltip: 'Clear search',
+            ),
+          IconButton(
+            icon: Icon(_showAdvancedOptions ? Icons.expand_less : Icons.expand_more),
+            onPressed: () {
+              setState(() {
+                _showAdvancedOptions = !_showAdvancedOptions;
+              });
+            },
+            tooltip: 'Search options',
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -183,7 +151,7 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
                     ),
                     const SizedBox(width: 12),
                     ElevatedButton(
-                      onPressed: _isSearching ? null : _performSearch,
+                      onPressed: (searchState is SearchStateLoading) ? null : _performSearch,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
                         foregroundColor: Colors.white,
@@ -192,7 +160,7 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: _isSearching
+                      child: (searchState is SearchStateLoading)
                           ? const SizedBox(
                               width: 20,
                               height: 20,
@@ -207,7 +175,7 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
                 ),
                 
                 // Translation Indicator
-                if (_searchQuery.isNotEmpty) ...[
+                if (searchState.query != null) ...[
                   const SizedBox(height: 12),
                   Row(
                     children: [
@@ -226,47 +194,264 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
                     ],
                   ),
                 ],
+
+                // Advanced Options
+                if (_showAdvancedOptions) ...[
+                  const SizedBox(height: 16),
+                  _buildAdvancedOptions(context, searchSettings, themeColor),
+                ],
               ],
             ),
           ),
 
           // Search Results
           Expanded(
-            child: _buildSearchContent(context, themeColor),
+            child: _buildSearchContent(context, searchState, themeColor),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSearchContent(BuildContext context, Color? themeColor) {
+  Widget _buildAdvancedOptions(BuildContext context, SearchSettings searchSettings, Color? themeColor) {
     final textScaling = ref.watch(textScaleProvider);
+    final searchSettingsNotifier = ref.read(searchSettingsProvider.notifier);
 
-    if (_searchQuery.isEmpty) {
-      return _buildSearchSuggestions(context, themeColor);
-    }
-
-    if (_isSearching) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(
-              color: themeColor ?? Theme.of(context).colorScheme.primary,
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Search Options',
+            style: textScaling.scaledTitleSmall(context).copyWith(
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 16),
+          ),
+          const SizedBox(height: 12),
+          
+          // Search option switches
+          _buildSearchOption(
+            context,
+            'Case sensitive',
+            searchSettings.caseSensitive,
+            searchSettingsNotifier.toggleCaseSensitive,
+            themeColor,
+          ),
+          _buildSearchOption(
+            context,
+            'Whole words only',
+            searchSettings.wholeWords,
+            searchSettingsNotifier.toggleWholeWords,
+            themeColor,
+          ),
+          _buildSearchOption(
+            context,
+            'Old Testament only',
+            searchSettings.oldTestamentOnly,
+            searchSettingsNotifier.toggleOldTestamentOnly,
+            themeColor,
+          ),
+          _buildSearchOption(
+            context,
+            'New Testament only',
+            searchSettings.newTestamentOnly,
+            searchSettingsNotifier.toggleNewTestamentOnly,
+            themeColor,
+          ),
+          
+          const SizedBox(height: 8),
+          
+          // Max results slider
+          Text(
+            'Max results: ${searchSettings.maxResults}',
+            style: textScaling.scaledBodySmall(context).copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+            ),
+          ),
+          Slider(
+            value: searchSettings.maxResults.toDouble(),
+            min: 10,
+            max: 200,
+            divisions: 9,
+            activeColor: themeColor ?? Theme.of(context).colorScheme.primary,
+            onChanged: (value) {
+              searchSettingsNotifier.updateMaxResults(value.toInt());
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchOption(
+    BuildContext context,
+    String title,
+    bool value,
+    VoidCallback onChanged,
+    Color? themeColor,
+  ) {
+    final textScaling = ref.watch(textScaleProvider);
+    
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Switch(
+            value: value,
+            onChanged: (_) => onChanged(),
+            activeColor: themeColor ?? Theme.of(context).colorScheme.primary,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            title,
+            style: textScaling.scaledBodyMedium(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchContent(BuildContext context, SearchState searchState, Color? themeColor) {
+    return switch (searchState) {
+      SearchStateInitial() => _buildSearchSuggestions(context, themeColor),
+      SearchStateLoading() => _buildLoadingContent(context, searchState.query!, themeColor),
+      SearchStateSuccess() => _buildSearchResults(context, searchState.query!, searchState.results, themeColor),
+      SearchStateError() => _buildErrorContent(context, searchState.query!, searchState.error, themeColor),
+    };
+  }
+
+  Widget _buildSearchSuggestions(BuildContext context, Color? themeColor) {
+    final textScaling = ref.watch(textScaleProvider);
+    final suggestions = ref.watch(searchSuggestionsProvider);
+    final recentSearches = ref.watch(recentSearchesProvider);
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Recent searches
+          if (recentSearches.isNotEmpty) ...[
             Text(
-              'Searching for "$_searchQuery"...',
-              style: textScaling.scaledBodyLarge(context).copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+              'Recent Searches',
+              style: textScaling.scaledTitleMedium(context).copyWith(
+                fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: recentSearches.map((search) => GestureDetector(
+                onTap: () => _searchFromSuggestion(search),
+                child: Chip(
+                  label: Text(search),
+                  backgroundColor: Colors.grey.shade100,
+                  deleteIcon: const Icon(Icons.close, size: 16),
+                  onDeleted: () {
+                    ref.read(searchHistoryProvider.notifier).removeSearch(search);
+                  },
+                ),
+              )).toList(),
+            ),
+            const SizedBox(height: 24),
           ],
-        ),
-      );
-    }
+          
+          // Popular suggestions
+          Text(
+            'Popular Search Terms',
+            style: textScaling.scaledTitleMedium(context).copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: suggestions.map((suggestion) => GestureDetector(
+              onTap: () => _searchFromSuggestion(suggestion),
+              child: Chip(
+                label: Text(suggestion),
+                backgroundColor: (themeColor ?? Theme.of(context).colorScheme.primary)
+                    .withValues(alpha: 0.1),
+                side: BorderSide(
+                  color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                      .withValues(alpha: 0.3),
+                ),
+              ),
+            )).toList(),
+          ),
+          const SizedBox(height: 32),
+          
+          // Search tips
+          Icon(
+            Icons.lightbulb_outline,
+            size: textScaling.scaleFactor * 48,
+            color: Colors.grey.shade400,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Search Tips:',
+            style: textScaling.scaledTitleSmall(context).copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.grey.shade700,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ...[ 
+            '• Search for specific words or phrases',
+            '• Try different variations of words',
+            '• Use advanced options for precise results',
+            '• Search for book names to find passages',
+            '• Use shorter, specific terms for better results',
+          ].map((tip) => Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Text(
+              tip,
+              style: textScaling.scaledBodyMedium(context).copyWith(
+                color: Colors.grey.shade600,
+              ),
+            ),
+          )),
+        ],
+      ),
+    );
+  }
 
-    if (_searchResults.isEmpty) {
+  Widget _buildLoadingContent(BuildContext context, String query, Color? themeColor) {
+    final textScaling = ref.watch(textScaleProvider);
+    
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(
+            color: themeColor ?? Theme.of(context).colorScheme.primary,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Searching for "$query"...',
+            style: textScaling.scaledBodyLarge(context).copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchResults(BuildContext context, String query, List<SearchResult> results, Color? themeColor) {
+    final textScaling = ref.watch(textScaleProvider);
+
+    if (results.isEmpty) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(32),
@@ -288,7 +473,7 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Try searching for different words or phrases.',
+                'Try different search terms or adjust your search options.',
                 style: textScaling.scaledBodyMedium(context).copyWith(
                   color: Colors.grey.shade600,
                 ),
@@ -302,13 +487,13 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
 
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: _searchResults.length + 1, // +1 for results header
+      itemCount: results.length + 1, // +1 for results header
       itemBuilder: (context, index) {
         if (index == 0) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: Text(
-              'Found ${_searchResults.length} result${_searchResults.length == 1 ? '' : 's'} for "$_searchQuery"',
+              'Found ${results.length} result${results.length == 1 ? '' : 's'} for "$query"',
               style: textScaling.scaledTitleMedium(context).copyWith(
                 fontWeight: FontWeight.bold,
                 color: themeColor?.withValues(alpha: 0.8) ?? 
@@ -318,92 +503,60 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
           );
         }
 
-        final result = _searchResults[index - 1];
-        return _buildSearchResultCard(context, result, themeColor);
+        final result = results[index - 1];
+        return _buildSearchResultCard(context, result, query, themeColor);
       },
     );
   }
 
-  Widget _buildSearchSuggestions(BuildContext context, Color? themeColor) {
+  Widget _buildErrorContent(BuildContext context, String query, Object error, Color? themeColor) {
     final textScaling = ref.watch(textScaleProvider);
     
-    final suggestions = [
-      'love', 'peace', 'joy', 'hope', 'faith', 'grace',
-      'salvation', 'forgiveness', 'wisdom', 'strength'
-    ];
-
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Popular Search Terms',
-            style: textScaling.scaledTitleMedium(context).copyWith(
-              fontWeight: FontWeight.bold,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: textScaling.scaleFactor * 64,
+              color: Colors.red,
             ),
-          ),
-          const SizedBox(height: 16),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: suggestions.map((suggestion) => GestureDetector(
-              onTap: () {
-                _searchController.text = suggestion;
-                _performSearch();
-              },
-              child: Chip(
-                label: Text(suggestion),
-                backgroundColor: (themeColor ?? Theme.of(context).colorScheme.primary)
-                    .withValues(alpha: 0.1),
-                side: BorderSide(
-                  color: (themeColor ?? Theme.of(context).colorScheme.primary)
-                      .withValues(alpha: 0.3),
-                ),
+            const SizedBox(height: 16),
+            Text(
+              'Search Error',
+              style: textScaling.scaledTitleLarge(context).copyWith(
+                color: Colors.red.shade700,
+                fontWeight: FontWeight.bold,
               ),
-            )).toList(),
-          ),
-          const SizedBox(height: 32),
-          Icon(
-            Icons.lightbulb_outline,
-            size: textScaling.scaleFactor * 48,
-            color: Colors.grey.shade400,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Search Tips:',
-            style: textScaling.scaledTitleSmall(context).copyWith(
-              fontWeight: FontWeight.bold,
-              color: Colors.grey.shade700,
             ),
-          ),
-          const SizedBox(height: 8),
-          ...[ 
-            '• Search for specific words or phrases',
-            '• Try different variations of words',
-            '• Search for book names to find passages',
-            '• Use shorter, specific terms for better results',
-          ].map((tip) => Padding(
-            padding: const EdgeInsets.only(bottom: 4),
-            child: Text(
-              tip,
+            const SizedBox(height: 8),
+            Text(
+              'Failed to search for "$query". Please try again.',
               style: textScaling.scaledBodyMedium(context).copyWith(
-                color: Colors.grey.shade600,
+                color: Colors.red.shade600,
               ),
+              textAlign: TextAlign.center,
             ),
-          )),
-        ],
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => _performSearch(),
+              child: const Text('Try Again'),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildSearchResultCard(BuildContext context, SearchResult result, Color? themeColor) {
+  Widget _buildSearchResultCard(BuildContext context, SearchResult result, String query, Color? themeColor) {
     final textScaling = ref.watch(textScaleProvider);
     
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: InkWell(
-        onTap: () => _navigateToChapter(result.book, result.chapter),
+        onTap: () => _navigateToChapter(result.reference.book, result.reference.chapter, result.reference.startVerse),
         borderRadius: BorderRadius.circular(12),
         child: Container(
           decoration: BoxDecoration(
@@ -432,7 +585,7 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
                         ),
                       ),
                       child: Text(
-                        '${result.book} ${result.chapter}:${result.verse}',
+                        result.reference.displayText,
                         style: textScaling.scaledBodySmall(context).copyWith(
                           fontWeight: FontWeight.bold,
                           color: themeColor?.withValues(alpha: 0.8) ?? 
@@ -449,12 +602,9 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
                 ),
                 const SizedBox(height: 12),
                 
-                // Verse Text
-                Text(
-                  result.text,
-                  style: textScaling.scaledBodyLarge(context).copyWith(
-                    height: 1.6,
-                  ),
+                // Verse Text with highlighting
+                RichText(
+                  text: _buildHighlightedText(result.verse.text, query, context),
                 ),
               ],
             ),
@@ -464,23 +614,64 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
     );
   }
 
-  void _navigateToChapter(String book, int chapter) {
-    context.push('/chapter/${Uri.encodeComponent(book)}/$chapter');
+  TextSpan _buildHighlightedText(String text, String query, BuildContext context) {
+    final textScaling = ref.watch(textScaleProvider);
+    final themeColor = Theme.of(context).colorScheme.primary;
+    
+    if (query.isEmpty) {
+      return TextSpan(
+        text: text,
+        style: textScaling.scaledBodyLarge(context).copyWith(height: 1.6),
+      );
+    }
+
+    final List<TextSpan> spans = [];
+    final String lowerText = text.toLowerCase();
+    final String lowerQuery = query.toLowerCase();
+    
+    int start = 0;
+    int index = lowerText.indexOf(lowerQuery);
+    
+    while (index != -1) {
+      // Add text before the match
+      if (index > start) {
+        spans.add(TextSpan(
+          text: text.substring(start, index),
+          style: textScaling.scaledBodyLarge(context).copyWith(height: 1.6),
+        ));
+      }
+      
+      // Add highlighted match
+      spans.add(TextSpan(
+        text: text.substring(index, index + query.length),
+        style: textScaling.scaledBodyLarge(context).copyWith(
+          height: 1.6,
+          backgroundColor: themeColor.withValues(alpha: 0.2),
+          fontWeight: FontWeight.bold,
+        ),
+      ));
+      
+      start = index + query.length;
+      index = lowerText.indexOf(lowerQuery, start);
+    }
+    
+    // Add remaining text
+    if (start < text.length) {
+      spans.add(TextSpan(
+        text: text.substring(start),
+        style: textScaling.scaledBodyLarge(context).copyWith(height: 1.6),
+      ));
+    }
+    
+    return TextSpan(children: spans);
   }
-}
 
-class SearchResult {
-  final String book;
-  final int chapter;
-  final int verse;
-  final String text;
-  final String translation;
-
-  const SearchResult({
-    required this.book,
-    required this.chapter,
-    required this.verse,
-    required this.text,
-    required this.translation,
-  });
+  void _navigateToChapter(String book, int chapter, int? verse) {
+    final route = '/chapter/${Uri.encodeComponent(book)}/$chapter';
+    if (verse != null) {
+      context.push('$route?startVerse=$verse');
+    } else {
+      context.push(route);
+    }
+  }
 }

@@ -32,9 +32,9 @@ class OnboardingProgress {
     required this.state,
     required this.message,
     required this.progress,
-    this.error,
     required this.currentStep,
     required this.totalSteps,
+    this.error,
   });
 
   OnboardingProgress copyWith({

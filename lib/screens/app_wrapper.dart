@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bible_data_riverpod/bible_data_riverpod.dart';
 
 import '../providers/onboarding_provider.dart';
+import '../providers/reading_plan_provider.dart';
 import 'onboarding/onboarding_screen.dart';
 import 'home/home_screen.dart';
 
@@ -19,6 +20,12 @@ class AppWrapper extends ConsumerWidget {
     // Check if app is ready
     final isAppReady = onboardingProgress.state == OnboardingState.completed &&
                       bibleServiceAsync.hasValue;
+
+    // Ensure daily reset check happens when app is ready
+    if (isAppReady) {
+      // Trigger daily reset check (this provider will handle it automatically)
+      ref.watch(readingPlanManagerProvider);
+    }
 
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),

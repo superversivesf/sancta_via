@@ -7,7 +7,10 @@ import '../models/reading_plan.dart';
 
 /// Provider for the reading plan manager (multiple plans)
 final readingPlanManagerProvider = StateNotifierProvider<ReadingPlanManagerNotifier, ReadingPlanManager>((ref) {
-  return ReadingPlanManagerNotifier();
+  final notifier = ReadingPlanManagerNotifier();
+  // Automatically check for daily reset when provider is accessed
+  notifier.checkDailyResetIfNeeded();
+  return notifier;
 });
 
 /// Provider to get all active reading plans
@@ -154,6 +157,9 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       if (managerJson != null) {
         final managerMap = jsonDecode(managerJson);
         state = ReadingPlanManager.fromJson(managerMap);
+        
+        // Check if we need to automatically reset daily status
+        await _checkAndResetDailyStatus();
         return;
       }
       
@@ -161,6 +167,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       final legacyPlanJson = prefs.getString(_legacyStorageKey);
       if (legacyPlanJson != null) {
         await _migrateLegacyPlan(legacyPlanJson, prefs);
+        await _checkAndResetDailyStatus();
         return;
       }
       
@@ -172,6 +179,18 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       print('Error loading reading plans: $e');
       state = ReadingPlanManager.empty();
     }
+  }
+
+  /// Automatically check and reset daily status if a new day has started
+  Future<void> _checkAndResetDailyStatus() async {
+    if (state.needsDailyReset) {
+      await resetDailyStatus();
+    }
+  }
+
+  /// Public method to manually trigger daily reset check
+  Future<void> checkDailyResetIfNeeded() async {
+    await _checkAndResetDailyStatus();
   }
 
   Future<void> _migrateLegacyPlan(String legacyPlanJson, SharedPreferences prefs) async {
@@ -247,6 +266,28 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     await updatePlan(updatedPlan);
   }
 
+  /// Continue reading - advance to next reading and allow getting ahead
+  Future<void> continueReading(String planId) async {
+    final plan = state.plans.firstWhere((p) => p.id == planId);
+    final updatedProgress = _advanceProgress(plan.progress, plan.chaptersPerDay);
+    final updatedPlan = plan.copyWith(
+      progress: updatedProgress,
+      hasReadToday: false, // Allow continued reading by not marking as "read today"
+    );
+    await updatePlan(updatedPlan);
+  }
+
+  /// Complete today's reading and stop (traditional behavior)
+  Future<void> completeReadingForToday(String planId) async {
+    final plan = state.plans.firstWhere((p) => p.id == planId);
+    final updatedProgress = _advanceProgress(plan.progress, plan.chaptersPerDay);
+    final updatedPlan = plan.copyWith(
+      progress: updatedProgress,
+      hasReadToday: true, // Mark as read for today, preventing further reading today
+    );
+    await updatePlan(updatedPlan);
+  }
+
   Future<void> markChapterComplete(String planId, String book, int chapter) async {
     final plan = state.plans.firstWhere((p) => p.id == planId);
     
@@ -267,7 +308,10 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       return plan.copyWith(hasReadToday: false);
     }).toList();
     
-    state = state.copyWith(plans: updatedPlans);
+    state = state.copyWith(
+      plans: updatedPlans,
+      lastDailyReset: DateTime.now(),
+    );
     await _savePlans();
   }
 
@@ -301,31 +345,66 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     await updatePlan(updatedPlan);
   }
 
+  /// Map of Bible book names to their chapter counts
+  static const Map<String, int> _chapterCounts = {
+    // Old Testament
+    'Genesis': 50, 'Exodus': 40, 'Leviticus': 27, 'Numbers': 36, 'Deuteronomy': 34,
+    'Joshua': 24, 'Judges': 21, 'Ruth': 4, '1 Samuel': 31, '2 Samuel': 24,
+    '1 Kings': 22, '2 Kings': 25, '1 Chronicles': 29, '2 Chronicles': 36,
+    'Ezra': 10, 'Nehemiah': 13, 'Esther': 10, 'Job': 42, 'Psalms': 150,
+    'Proverbs': 31, 'Ecclesiastes': 12, 'Song of Songs': 8, 'Isaiah': 66,
+    'Jeremiah': 52, 'Lamentations': 5, 'Ezekiel': 48, 'Daniel': 12,
+    'Hosea': 14, 'Joel': 3, 'Amos': 9, 'Obadiah': 1, 'Jonah': 4,
+    'Micah': 7, 'Nahum': 3, 'Habakkuk': 3, 'Zephaniah': 3, 'Haggai': 2,
+    'Zechariah': 14, 'Malachi': 4,
+    // New Testament
+    'Matthew': 28, 'Mark': 16, 'Luke': 24, 'John': 21, 'Acts': 28,
+    'Romans': 16, '1 Corinthians': 16, '2 Corinthians': 13, 'Galatians': 6,
+    'Ephesians': 6, 'Philippians': 4, 'Colossians': 4, '1 Thessalonians': 5,
+    '2 Thessalonians': 3, '1 Timothy': 6, '2 Timothy': 4, 'Titus': 3,
+    'Philemon': 1, 'Hebrews': 13, 'James': 5, '1 Peter': 5, '2 Peter': 3,
+    '1 John': 5, '2 John': 1, '3 John': 1, 'Jude': 1, 'Revelation': 22,
+  };
+
   ReadingProgress _advanceProgress(ReadingProgress current, int chaptersToAdvance) {
     var currentChapter = current.currentChapter;
     var bookIndex = current.bookIndex;
     var currentBook = current.currentBook;
+    var chaptersRemaining = chaptersToAdvance;
 
-    // Advance chapters
-    currentChapter += chaptersToAdvance;
-
-    // Check if we need to move to the next book
-    // Note: This is simplified - in a real app you'd need actual chapter counts per book
-    const averageChaptersPerBook = 30; // Simplified assumption
-    
-    while (currentChapter > averageChaptersPerBook && bookIndex < current.books.length - 1) {
-      currentChapter -= averageChaptersPerBook;
-      bookIndex++;
-      currentBook = current.books[bookIndex];
+    while (chaptersRemaining > 0 && bookIndex < current.books.length) {
+      final bookChapterCount = _chapterCounts[currentBook] ?? 30; // Fallback to 30
+      
+      // Check if we can complete the remaining chapters in the current book
+      if (currentChapter + chaptersRemaining <= bookChapterCount) {
+        // Stay in current book
+        currentChapter += chaptersRemaining;
+        chaptersRemaining = 0;
+      } else {
+        // Need to move to next book(s)
+        chaptersRemaining -= (bookChapterCount - currentChapter + 1);
+        
+        // Move to next book
+        bookIndex++;
+        if (bookIndex < current.books.length) {
+          currentBook = current.books[bookIndex];
+          currentChapter = 1;
+        } else {
+          // We've completed all books
+          break;
+        }
+      }
     }
 
     // Check if we've completed the entire collection
-    final isCompleted = bookIndex >= current.books.length - 1 && currentChapter > averageChaptersPerBook;
+    final isCompleted = bookIndex >= current.books.length ||
+        (bookIndex == current.books.length - 1 && 
+         currentChapter > (_chapterCounts[currentBook] ?? 30));
 
     return current.copyWith(
       currentBook: currentBook,
-      currentChapter: currentChapter,
-      bookIndex: bookIndex,
+      currentChapter: isCompleted ? currentChapter : currentChapter,
+      bookIndex: isCompleted ? current.books.length : bookIndex,
       isCompleted: isCompleted,
       lastReadDate: DateTime.now(),
     );

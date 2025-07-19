@@ -400,16 +400,49 @@ class ContinueReadingScreen extends ConsumerWidget {
                 
                 const SizedBox(height: 12),
                 
-                // Mark complete button
-                Center(
-                  child: TextButton.icon(
-                    onPressed: () => _markPlanComplete(context, ref, plan.id),
-                    icon: const Icon(Icons.check_circle_outline),
-                    label: Text(
-                      'Mark as Complete',
-                      style: textScaling.scaledBodySmall(context),
+                // Completion options
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Complete for today (traditional behavior)
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: ElevatedButton.icon(
+                          onPressed: () => _completeReadingForToday(context, ref, plan.id),
+                          icon: const Icon(Icons.check_circle, size: 18),
+                          label: Text(
+                            'Complete for Today',
+                            style: textScaling.scaledLabelSmall(context),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    // Continue reading (get ahead)
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: ElevatedButton.icon(
+                          onPressed: () => _continueReading(context, ref, plan.id),
+                          icon: const Icon(Icons.arrow_forward, size: 18),
+                          label: Text(
+                            'Continue Reading',
+                            style: textScaling.scaledLabelSmall(context),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ] else ...[
                 // Already read - show summary
@@ -603,15 +636,28 @@ class ContinueReadingScreen extends ConsumerWidget {
     context.push('/chapter/${Uri.encodeComponent(book)}/$chapter');
   }
 
-  void _markPlanComplete(BuildContext context, WidgetRef ref, String planId) {
-    ref.read(readingPlanManagerProvider.notifier).markPlanReadToday(planId);
+  void _completeReadingForToday(BuildContext context, WidgetRef ref, String planId) {
+    ref.read(readingPlanManagerProvider.notifier).completeReadingForToday(planId);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Great job! Plan marked as complete for today.'),
+        content: Text('Great job! Reading completed for today. See you tomorrow!'),
         backgroundColor: Colors.green,
+        duration: Duration(seconds: 2),
       ),
     );
   }
+
+  void _continueReading(BuildContext context, WidgetRef ref, String planId) {
+    ref.read(readingPlanManagerProvider.notifier).continueReading(planId);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Excellent! Moving to next reading. Keep going!'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
 
   void _showResetDailyDialog(BuildContext context, WidgetRef ref) {
     showDialog(
