@@ -288,6 +288,17 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     await updatePlan(updatedPlan);
   }
 
+  /// Advance to next chapter without changing daily reading status
+  Future<void> advanceToNextChapter(String planId) async {
+    final plan = state.plans.firstWhere((p) => p.id == planId);
+    final updatedProgress = _advanceProgress(plan.progress, plan.chaptersPerDay);
+    final updatedPlan = plan.copyWith(
+      progress: updatedProgress,
+      // Keep hasReadToday unchanged - don't reset the daily reading status
+    );
+    await updatePlan(updatedPlan);
+  }
+
   Future<void> markChapterComplete(String planId, String book, int chapter) async {
     final plan = state.plans.firstWhere((p) => p.id == planId);
     

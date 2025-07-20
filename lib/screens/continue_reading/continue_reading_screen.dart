@@ -303,38 +303,57 @@ class ContinueReadingScreen extends ConsumerWidget {
               
               const SizedBox(height: 16),
               
-              // Reading details
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: iconColor.withValues(alpha: 0.2),
-                  ),
+              // Reading details - clickable to start reading
+              InkWell(
+                onTap: () => _navigateToChapter(
+                  context, 
+                  todaysReading.book, 
+                  todaysReading.startChapter
                 ),
-                child: Column(
-                  children: [
-                    Text(
-                      todaysReading.displayText,
-                      style: textScaling.scaledTitleMedium(context).copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: iconColor.withValues(alpha: 0.9),
-                      ),
-                      textAlign: TextAlign.center,
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: iconColor.withValues(alpha: 0.2),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      todaysReading.chaptersToRead == 1 
-                        ? '1 chapter to read'
-                        : '${todaysReading.chaptersToRead} chapters to read',
-                      style: textScaling.scaledBodySmall(context).copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.menu_book,
+                            size: 20,
+                            color: iconColor.withValues(alpha: 0.8),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            todaysReading.displayText,
+                            style: textScaling.scaledTitleMedium(context).copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: iconColor.withValues(alpha: 0.9),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                      const SizedBox(height: 4),
+                      Text(
+                        'Tap to start reading • ${todaysReading.chaptersToRead == 1 
+                          ? '1 chapter to read'
+                          : '${todaysReading.chaptersToRead} chapters to read'}',
+                        style: textScaling.scaledBodySmall(context).copyWith(
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               
@@ -342,63 +361,6 @@ class ContinueReadingScreen extends ConsumerWidget {
               
               // Action buttons
               if (!isRead) ...[
-                // Reading buttons for unread plans
-                if (todaysReading.chaptersToRead == 1) ...[
-                  Center(
-                    child: ElevatedButton.icon(
-                      onPressed: () => _navigateToChapter(
-                        context, 
-                        todaysReading.book, 
-                        todaysReading.startChapter
-                      ),
-                      icon: const Icon(Icons.menu_book),
-                      label: Text(
-                        'Start Reading',
-                        style: textScaling.scaledBodyMedium(context).copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: iconColor,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                ] else ...[
-                  // Multiple chapters
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      ...todaysReading.chapterRange.map((chapter) {
-                        return ElevatedButton(
-                          onPressed: () => _navigateToChapter(
-                            context, 
-                            todaysReading.book, 
-                            chapter
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: iconColor.withValues(alpha: 0.1),
-                            foregroundColor: iconColor,
-                            side: BorderSide(
-                              color: iconColor.withValues(alpha: 0.3),
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                          ),
-                          child: Text('Ch. $chapter'),
-                        );
-                      }),
-                    ],
-                  ),
-                ],
-                
-                const SizedBox(height: 12),
                 
                 // Completion options
                 Row(
@@ -412,7 +374,7 @@ class ContinueReadingScreen extends ConsumerWidget {
                           onPressed: () => _completeReadingForToday(context, ref, plan.id),
                           icon: const Icon(Icons.check_circle, size: 18),
                           label: Text(
-                            'Complete for Today',
+                            'Finish Reading',
                             style: textScaling.scaledLabelSmall(context),
                           ),
                           style: ElevatedButton.styleFrom(
@@ -449,14 +411,9 @@ class ContinueReadingScreen extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.celebration,
-                      color: Colors.green,
-                      size: textScaling.scaleFactor * 16,
-                    ),
                     const SizedBox(width: 8),
                     Text(
-                      'Great job! Reading completed for today.',
+                      'Reading completed for today',
                       style: textScaling.scaledBodyMedium(context).copyWith(
                         color: Colors.green.shade700,
                         fontWeight: FontWeight.w500,
@@ -640,9 +597,9 @@ class ContinueReadingScreen extends ConsumerWidget {
     ref.read(readingPlanManagerProvider.notifier).completeReadingForToday(planId);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Great job! Reading completed for today. See you tomorrow!'),
+        content: Text('📖 Today\'s reading complete! Advanced to next chapter. You can always read ahead if you\'d like!'),
         backgroundColor: Colors.green,
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 3),
       ),
     );
   }
@@ -651,13 +608,12 @@ class ContinueReadingScreen extends ConsumerWidget {
     ref.read(readingPlanManagerProvider.notifier).continueReading(planId);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Excellent! Moving to next reading. Keep going!'),
+        content: const Text('🚀 Excellent! Advanced to next chapter. Keep the momentum going!'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         duration: const Duration(seconds: 2),
       ),
     );
   }
-
 
   void _showResetDailyDialog(BuildContext context, WidgetRef ref) {
     showDialog(

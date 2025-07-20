@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../providers/text_scaling_provider.dart';
 import '../../providers/reading_plan_provider.dart';
+import '../../models/reading_plan.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -281,13 +282,29 @@ class HomeScreen extends ConsumerWidget {
                         child: Text(
                           '${plan.name}: ${todaysReading.displayText}',
                           style: textScaling.scaledBodyMedium(context).copyWith(
-                            decoration: isRead ? TextDecoration.lineThrough : null,
                             color: isRead 
-                              ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6)
+                              ? Colors.green.shade700
                               : null,
+                            fontWeight: isRead ? FontWeight.w500 : null,
                           ),
                         ),
                       ),
+                      if (isRead) ...[
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'Done',
+                            style: textScaling.scaledLabelSmall(context).copyWith(
+                              color: Colors.green.shade700,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 );
@@ -308,13 +325,29 @@ class HomeScreen extends ConsumerWidget {
               // Continue reading button
               Center(
                 child: ElevatedButton.icon(
-                  onPressed: () => context.push('/continue-reading'),
+                  onPressed: () {
+                    if (todaysUnreadPlans.isEmpty && todaysPlans.isNotEmpty) {
+                      // All readings complete - jump to next chapter of first plan
+                      final firstPlan = todaysPlans.first;
+                      final nextReading = _getNextReading(firstPlan);
+                      if (nextReading != null) {
+                        _continueToNextChapter(context, ref, firstPlan.id, nextReading);
+                      } else {
+                        context.push('/continue-reading');
+                      }
+                    } else {
+                      // Regular continue reading
+                      context.push('/continue-reading');
+                    }
+                  },
                   icon: Icon(
-                    todaysUnreadPlans.isEmpty ? Icons.celebration : Icons.menu_book,
+                    todaysUnreadPlans.isEmpty ? Icons.auto_stories : Icons.menu_book,
                     size: 18,
                   ),
                   label: Text(
-                    todaysUnreadPlans.isEmpty ? 'View Progress' : 'Continue Reading',
+                    todaysUnreadPlans.isEmpty 
+                      ? 'Continue Reading${_getNextChapterText(todaysPlans)}' 
+                      : 'Continue Reading',
                     style: textScaling.scaledBodyMedium(context).copyWith(
                       fontWeight: FontWeight.w600,
                     ),
@@ -401,6 +434,78 @@ class HomeScreen extends ConsumerWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  /// Get the next reading after advancing progress for a plan
+  TodaysReading? _getNextReading(ReadingPlan plan) {
+    try {
+      // Create a temporary updated progress to see what the next reading would be
+      final currentProgress = plan.progress;
+      var nextChapter = currentProgress.currentChapter + plan.chaptersPerDay;
+      var nextBook = currentProgress.currentBook;
+      var nextBookIndex = currentProgress.bookIndex;
+      
+      // Handle book boundaries (simplified version)
+      final chapterCounts = {
+        'Genesis': 50, 'Exodus': 40, 'Leviticus': 27, 'Numbers': 36, 'Deuteronomy': 34,
+        'Matthew': 28, 'Mark': 16, 'Luke': 24, 'John': 21, 'Acts': 28,
+        // Add more as needed - this is a simplified version
+      };
+      
+      final currentBookChapters = chapterCounts[nextBook] ?? 30;
+      if (nextChapter > currentBookChapters) {
+        // Move to next book
+        nextBookIndex++;
+        if (nextBookIndex < currentProgress.books.length) {
+          nextBook = currentProgress.books[nextBookIndex];
+          nextChapter = 1;
+        } else {
+          // Plan completed
+          return null;
+        }
+      }
+      
+      return TodaysReading(
+        planId: plan.id,
+        planName: plan.name,
+        book: nextBook,
+        startChapter: nextChapter,
+        chaptersToRead: plan.chaptersPerDay,
+        hasReadToday: plan.hasReadToday,
+        collection: plan.collection,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Get text showing the next chapter that will be read
+  String _getNextChapterText(List<ReadingPlan> plans) {
+    if (plans.isEmpty) return '';
+    
+    final firstPlan = plans.first;
+    final nextReading = _getNextReading(firstPlan);
+    if (nextReading == null) return '';
+    
+    return ' (${nextReading.displayText})';
+  }
+
+  /// Continue to next chapter without resetting daily status
+  void _continueToNextChapter(BuildContext context, WidgetRef ref, String planId, TodaysReading nextReading) {
+    // Advance the plan to the next chapter
+    ref.read(readingPlanManagerProvider.notifier).advanceToNextChapter(planId);
+    
+    // Navigate directly to the next chapter
+    context.push('/chapter/${Uri.encodeComponent(nextReading.book)}/${nextReading.startChapter}');
+    
+    // Show encouraging message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('📖 Continuing with ${nextReading.displayText}. Keep up the great reading!'),
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 2),
       ),
     );
   }
