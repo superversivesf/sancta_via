@@ -7,6 +7,7 @@ import 'package:bible_data_riverpod/bible_data_riverpod.dart';
 
 import '../../providers/app_providers.dart';
 import '../../providers/text_scaling_provider.dart';
+import '../../providers/reading_plan_provider.dart';
 
 /// Debug logging utility
 void debugLog(String message, [String? tag]) {
@@ -48,6 +49,11 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     _pageController = PageController();
     _scrollController = ScrollController();
     debugLog('ChapterReadingScreen initialized: $currentBookName $currentChapter${widget.startVerse != null ? ' (starting at verse ${widget.startVerse})' : ''}', 'CHAPTER');
+    
+    // Check if this chapter visit should mark a reading plan as complete
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndMarkReadingPlanComplete();
+    });
   }
 
   @override
@@ -55,6 +61,29 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     _pageController.dispose();
     _scrollController.dispose();
     super.dispose();
+  }
+
+  /// Check if visiting this chapter should mark any reading plan as complete
+  void _checkAndMarkReadingPlanComplete() {
+    final activePlans = ref.read(activeReadingPlansProvider);
+    
+    for (final plan in activePlans) {
+      // Check if this chapter matches the plan's current reading
+      if (plan.progress.currentBook == currentBookName && 
+          !plan.hasReadToday) {
+        
+        // Check if the current chapter is within the plan's reading range for today
+        final startChapter = plan.progress.currentChapter;
+        final endChapter = startChapter + plan.chaptersPerDay - 1;
+        
+        if (currentChapter >= startChapter && currentChapter <= endChapter) {
+          // This chapter visit counts toward this reading plan
+          ref.read(readingPlanManagerProvider.notifier).markCurrentReadingAsComplete(plan.id);
+          debugLog('Marked reading plan "${plan.name}" as complete for visiting $currentBookName $currentChapter', 'CHAPTER');
+          break; // Only mark one plan to avoid conflicts
+        }
+      }
+    }
   }
 
   void _navigateToChapter(String bookName, int chapter) {

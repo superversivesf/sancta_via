@@ -242,17 +242,13 @@ class HomeScreen extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: todaysUnreadPlans.isEmpty 
-                        ? Colors.green.withValues(alpha: 0.1)
-                        : (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
+                      color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       todaysUnreadPlans.isEmpty ? 'All Complete!' : '${todaysUnreadPlans.length} to read',
                       style: textScaling.scaledLabelSmall(context).copyWith(
-                        color: todaysUnreadPlans.isEmpty 
-                          ? Colors.green.shade700
-                          : (themeColor ?? Theme.of(context).colorScheme.primary),
+                        color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.8),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -274,7 +270,7 @@ class HomeScreen extends ConsumerWidget {
                         isRead ? Icons.check_circle : Icons.circle_outlined,
                         size: 16,
                         color: isRead 
-                          ? Colors.green
+                          ? (themeColor ?? Theme.of(context).colorScheme.primary)
                           : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                       ),
                       const SizedBox(width: 8),
@@ -283,7 +279,7 @@ class HomeScreen extends ConsumerWidget {
                           '${plan.name}: ${todaysReading.displayText}',
                           style: textScaling.scaledBodyMedium(context).copyWith(
                             color: isRead 
-                              ? Colors.green.shade700
+                              ? (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.8)
                               : null,
                             fontWeight: isRead ? FontWeight.w500 : null,
                           ),
@@ -293,13 +289,13 @@ class HomeScreen extends ConsumerWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: Colors.green.withValues(alpha: 0.1),
+                            color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             'Done',
                             style: textScaling.scaledLabelSmall(context).copyWith(
-                              color: Colors.green.shade700,
+                              color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.8),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -353,9 +349,7 @@ class HomeScreen extends ConsumerWidget {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: todaysUnreadPlans.isEmpty 
-                      ? Colors.green
-                      : (themeColor ?? Theme.of(context).colorScheme.primary),
+                    backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     shape: RoundedRectangleBorder(
@@ -503,8 +497,8 @@ class HomeScreen extends ConsumerWidget {
     // Show encouraging message
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('📖 Continuing with ${nextReading.displayText}. Keep up the great reading!'),
-        backgroundColor: Colors.green,
+        content: Text('📖 Opening ${nextReading.displayText}. Visit the chapter to mark as complete!'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         duration: const Duration(seconds: 2),
       ),
     );

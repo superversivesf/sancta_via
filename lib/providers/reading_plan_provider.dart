@@ -266,24 +266,13 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     await updatePlan(updatedPlan);
   }
 
-  /// Continue reading - advance to next reading and allow getting ahead
+  /// Continue reading - advance to next reading for getting ahead (resets daily status)
   Future<void> continueReading(String planId) async {
     final plan = state.plans.firstWhere((p) => p.id == planId);
     final updatedProgress = _advanceProgress(plan.progress, plan.chaptersPerDay);
     final updatedPlan = plan.copyWith(
       progress: updatedProgress,
-      hasReadToday: false, // Allow continued reading by not marking as "read today"
-    );
-    await updatePlan(updatedPlan);
-  }
-
-  /// Complete today's reading and stop (traditional behavior)
-  Future<void> completeReadingForToday(String planId) async {
-    final plan = state.plans.firstWhere((p) => p.id == planId);
-    final updatedProgress = _advanceProgress(plan.progress, plan.chaptersPerDay);
-    final updatedPlan = plan.copyWith(
-      progress: updatedProgress,
-      hasReadToday: true, // Mark as read for today, preventing further reading today
+      hasReadToday: false, // Reset daily status to allow getting ahead
     );
     await updatePlan(updatedPlan);
   }
@@ -296,6 +285,13 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       progress: updatedProgress,
       // Keep hasReadToday unchanged - don't reset the daily reading status
     );
+    await updatePlan(updatedPlan);
+  }
+
+  /// Mark current reading as complete when user visits the chapter
+  Future<void> markCurrentReadingAsComplete(String planId) async {
+    final plan = state.plans.firstWhere((p) => p.id == planId);
+    final updatedPlan = plan.copyWith(hasReadToday: true);
     await updatePlan(updatedPlan);
   }
 

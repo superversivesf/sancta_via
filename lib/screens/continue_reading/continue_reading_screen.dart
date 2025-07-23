@@ -221,15 +221,14 @@ class ContinueReadingScreen extends ConsumerWidget {
     
     // Different styling for read vs unread plans
     final isRead = plan.hasReadToday;
+    final completionColor = themeColor ?? Theme.of(context).colorScheme.primary;
     final cardColor = isRead 
-      ? Colors.green.withValues(alpha: 0.1)
-      : (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.05);
+      ? completionColor.withValues(alpha: 0.1)
+      : completionColor.withValues(alpha: 0.05);
     final borderColor = isRead 
-      ? Colors.green.withValues(alpha: 0.3)
-      : (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3);
-    final iconColor = isRead 
-      ? Colors.green
-      : (themeColor ?? Theme.of(context).colorScheme.primary);
+      ? completionColor.withValues(alpha: 0.3)
+      : completionColor.withValues(alpha: 0.3);
+    final iconColor = completionColor;
     
     return Card(
       child: Container(
@@ -286,7 +285,7 @@ class ContinueReadingScreen extends ConsumerWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.green,
+                        color: iconColor,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -361,62 +360,61 @@ class ContinueReadingScreen extends ConsumerWidget {
               
               // Action buttons
               if (!isRead) ...[
-                
-                // Completion options
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // Complete for today (traditional behavior)
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: ElevatedButton.icon(
-                          onPressed: () => _completeReadingForToday(context, ref, plan.id),
-                          icon: const Icon(Icons.check_circle, size: 18),
-                          label: Text(
-                            'Finish Reading',
-                            style: textScaling.scaledLabelSmall(context),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                          ),
-                        ),
-                      ),
+                // No buttons initially - just click the text to read
+                const SizedBox(height: 8),
+                Center(
+                  child: Text(
+                    'Tap the reading above to start',
+                    style: textScaling.scaledBodySmall(context).copyWith(
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                      fontStyle: FontStyle.italic,
                     ),
-                    // Continue reading (get ahead)
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: ElevatedButton.icon(
-                          onPressed: () => _continueReading(context, ref, plan.id),
-                          icon: const Icon(Icons.arrow_forward, size: 18),
-                          label: Text(
-                            'Continue Reading',
-                            style: textScaling.scaledLabelSmall(context),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ] else ...[
-                // Already read - show summary
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                // Already read - show celebration and get ahead option
+                Column(
                   children: [
-                    const SizedBox(width: 8),
-                    Text(
-                      'Reading completed for today',
-                      style: textScaling.scaledBodyMedium(context).copyWith(
-                        color: Colors.green.shade700,
-                        fontWeight: FontWeight.w500,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.celebration,
+                          color: iconColor,
+                          size: textScaling.scaleFactor * 16,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Great job! Reading completed for today.',
+                          style: textScaling.scaledBodyMedium(context).copyWith(
+                            color: iconColor.withValues(alpha: 0.8),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Get ahead button
+                    Center(
+                      child: ElevatedButton.icon(
+                        onPressed: () => _getAhead(context, ref, plan.id),
+                        icon: const Icon(Icons.arrow_forward, size: 18),
+                        label: Text(
+                          'Get Ahead',
+                          style: textScaling.scaledBodyMedium(context).copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -593,22 +591,11 @@ class ContinueReadingScreen extends ConsumerWidget {
     context.push('/chapter/${Uri.encodeComponent(book)}/$chapter');
   }
 
-  void _completeReadingForToday(BuildContext context, WidgetRef ref, String planId) {
-    ref.read(readingPlanManagerProvider.notifier).completeReadingForToday(planId);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('📖 Today\'s reading complete! Advanced to next chapter. You can always read ahead if you\'d like!'),
-        backgroundColor: Colors.green,
-        duration: Duration(seconds: 3),
-      ),
-    );
-  }
-
-  void _continueReading(BuildContext context, WidgetRef ref, String planId) {
-    ref.read(readingPlanManagerProvider.notifier).continueReading(planId);
+  void _getAhead(BuildContext context, WidgetRef ref, String planId) {
+    ref.read(readingPlanManagerProvider.notifier).advanceToNextChapter(planId);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('🚀 Excellent! Advanced to next chapter. Keep the momentum going!'),
+        content: const Text('📚 Advanced to next reading! Keep the momentum going.'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         duration: const Duration(seconds: 2),
       ),

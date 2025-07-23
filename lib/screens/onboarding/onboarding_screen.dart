@@ -285,12 +285,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   height: 48,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.green.withValues(alpha: 0.1),
+                    color: themeColor.withValues(alpha: 0.1),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.check_circle,
                     size: 32,
-                    color: Colors.green,
+                    color: themeColor,
                   ),
                 ),
               ],
