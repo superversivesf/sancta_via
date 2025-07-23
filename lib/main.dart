@@ -4,6 +4,7 @@ import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_ca
 import 'config/routes.dart';
 import 'services/app_lifecycle_service.dart';
 import 'services/secure_storage_service.dart';
+import 'services/database/novena_database_initializer.dart';
 import 'features/novenas/services/novena_notification_service.dart';
 import 'utils/logger.dart';
 
@@ -24,6 +25,33 @@ void main() async {
   } catch (e) {
     AppLogger.error('Failed to check installation status: $e', 'MAIN');
     // Continue with app startup even if installation check fails
+  }
+  
+  // Initialize novena database
+  try {
+    final databaseInitializer = NovenaDatabaseInitializer();
+    final initResult = await databaseInitializer.initializeDatabase();
+    
+    if (initResult.success) {
+      if (initResult.wasAlreadyInitialized) {
+        AppLogger.info('Database was already initialized', 'MAIN');
+      } else {
+        AppLogger.info('Database initialized successfully: ${initResult.novenaCount} novenas loaded', 'MAIN');
+        if (initResult.errors.isNotEmpty) {
+          AppLogger.warning('Database initialization had ${initResult.errors.length} warnings: ${initResult.errors}', 'MAIN');
+        }
+      }
+      
+      // Log database stats for debugging
+      final stats = await databaseInitializer.getDatabaseInfo();
+      AppLogger.info('Database stats: ${stats['stats']}', 'MAIN');
+    } else {
+      AppLogger.error('Database initialization failed: ${initResult.error}', 'MAIN');
+      // Continue with app startup - the app can still function without the database
+    }
+  } catch (e) {
+    AppLogger.error('Database initialization threw exception: $e', 'MAIN');
+    // Continue with app startup even if database fails
   }
   
   // Initialize notification service for novenas

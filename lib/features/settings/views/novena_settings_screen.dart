@@ -9,6 +9,7 @@ import '../../../widgets/pinput_modal_widget.dart';
 import '../../../utils/logger.dart';
 import '../../../config/constants.dart';
 import '../../novenas/providers/novena_state_provider.dart';
+import '../../../utils/database_test_utility.dart';
 
 /// Unified settings screen for Novena Companion using standardized components
 class NovenaSettingsScreen extends ConsumerWidget {
@@ -179,7 +180,32 @@ class NovenaSettingsScreen extends ConsumerWidget {
         // ═══════════════════════════════════════
         // DEBUG SECTION (for development)
         // ═══════════════════════════════════════
+        const SettingsSectionHeader(title: 'Debug Tools'),
+        
+        // Database debug tools
+        ListTile(
+          leading: const Icon(Icons.storage, color: Colors.blue),
+          title: const Text('Test Database'),
+          subtitle: const Text('Run comprehensive database test'),
+          onTap: () => _testDatabase(context),
+        ),
+        
+        ListTile(
+          leading: const Icon(Icons.info, color: Colors.blue),
+          title: const Text('Database Info'),
+          subtitle: const Text('Show database statistics'),
+          onTap: () => _showDatabaseInfo(context),
+        ),
+        
+        ListTile(
+          leading: const Icon(Icons.refresh, color: Colors.orange),
+          title: const Text('Reset Database'),
+          subtitle: const Text('Clear and reinitialize database'),
+          onTap: () => _resetDatabase(context),
+        ),
+        
         if (activeNovena != null) ...[
+          const Divider(),
           const SettingsSectionHeader(title: 'Debug Tools'),
           
           // Current novena status
@@ -227,7 +253,6 @@ class NovenaSettingsScreen extends ConsumerWidget {
             onTap: () => _cancelNovena(context, ref),
           ),
           
-          const Divider(),
         ],
       ],
     );
@@ -517,6 +542,173 @@ class NovenaSettingsScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  // Database debug methods
+  Future<void> _testDatabase(BuildContext context) async {
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 16),
+            Text('Running database test...'),
+          ],
+        ),
+      ),
+    );
+
+    try {
+      final results = await DatabaseTestUtility.runDatabaseTest();
+      
+      // Close loading dialog
+      if (context.mounted) Navigator.of(context).pop();
+      
+      // Show results
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Database Test Results'),
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Test Completed: ${results['test_completed'] ?? false}'),
+                  const SizedBox(height: 8),
+                  if (results['initialization'] != null) ...[
+                    Text('Initialization: ${results['initialization']['success'] ? 'Success' : 'Failed'}'),
+                    if (results['initialization']['novena_count'] > 0)
+                      Text('Novenas: ${results['initialization']['novena_count']}'),
+                    const SizedBox(height: 8),
+                  ],
+                  if (results['stats'] != null) ...[
+                    Text('Database Stats:'),
+                    Text('  Novenas: ${results['stats']['novenas']}'),
+                    Text('  Days: ${results['stats']['days']}'),
+                    const SizedBox(height: 8),
+                  ],
+                  if (results['categories'] != null) ...[
+                    Text('Categories: ${(results['categories'] as List).join(', ')}'),
+                    const SizedBox(height: 8),
+                  ],
+                  if (results['difficulties'] != null) ...[
+                    Text('Difficulties: ${(results['difficulties'] as List).join(', ')}'),
+                    const SizedBox(height: 8),
+                  ],
+                  if (results['search_test'] != null) ...[
+                    Text('Search Test: ${results['search_test']['results_count']} results for "${results['search_test']['search_term']}"'),
+                  ],
+                  if (results['error'] != null) ...[
+                    const SizedBox(height: 8),
+                    Text('Error: ${results['error']}', style: const TextStyle(color: Colors.red)),
+                  ],
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Close'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      // Close loading dialog
+      if (context.mounted) Navigator.of(context).pop();
+      
+      if (context.mounted) {
+        _showErrorSnackBar(context, 'Database test failed: $e');
+      }
+    }
+  }
+
+  Future<void> _showDatabaseInfo(BuildContext context) async {
+    try {
+      // This will print to console and can be viewed in debug logs
+      await DatabaseTestUtility.printDatabaseInfo();
+      
+      if (context.mounted) {
+        _showSuccessSnackBar(context, 'Database info printed to console');
+      }
+    } catch (e) {
+      if (context.mounted) {
+        _showErrorSnackBar(context, 'Failed to get database info: $e');
+      }
+    }
+  }
+
+  Future<void> _resetDatabase(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Reset Database'),
+        content: const Text(
+          'This will clear all novena data and reload from JSON files. '
+          'This action cannot be undone. Are you sure?'
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Reset'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 16),
+            Text('Resetting database...'),
+          ],
+        ),
+      ),
+    );
+
+    try {
+      final success = await DatabaseTestUtility.resetDatabase();
+      
+      // Close loading dialog
+      if (context.mounted) Navigator.of(context).pop();
+      
+      if (success) {
+        if (context.mounted) {
+          _showSuccessSnackBar(context, 'Database reset successfully', backgroundColor: Colors.orange);
+        }
+      } else {
+        if (context.mounted) {
+          _showErrorSnackBar(context, 'Failed to reset database');
+        }
+      }
+    } catch (e) {
+      // Close loading dialog
+      if (context.mounted) Navigator.of(context).pop();
+      
+      if (context.mounted) {
+        _showErrorSnackBar(context, 'Database reset failed: $e');
+      }
+    }
   }
 
   // Debug methods for novena testing

@@ -10,6 +10,9 @@ import '../../../utils/logger.dart';
 /// Navigation callback type for handling notification taps
 typedef NotificationNavigationCallback = void Function(String payload);
 
+/// Completion check callback - returns true if the specified day is complete
+typedef CompletionCheckCallback = bool Function(int day);
+
 /// Notification service specifically for novena reminders and updates
 class NovenaNotificationService {
   static final NovenaNotificationService _instance = NovenaNotificationService._internal();
@@ -22,6 +25,7 @@ class NovenaNotificationService {
   bool _hasPermission = false;
   String? _lastError;
   NotificationNavigationCallback? _navigationCallback;
+  CompletionCheckCallback? _completionCheckCallback;
 
   // Notification ID scheme for novenas
   static const int _baseReminderIdDaily = 2000;      // 2000-2008 for daily reminders
@@ -38,6 +42,11 @@ class NovenaNotificationService {
   /// Set navigation callback for handling notification taps
   void setNavigationCallback(NotificationNavigationCallback callback) {
     _navigationCallback = callback;
+  }
+
+  /// Set completion check callback to verify if days are complete
+  void setCompletionCheckCallback(CompletionCheckCallback callback) {
+    _completionCheckCallback = callback;
   }
 
   /// Initialize the notification service
@@ -144,20 +153,32 @@ class NovenaNotificationService {
       int scheduledCount = 0;
       final errors = <String>[];
       
-      // Schedule daily reminders for each day
+      // Schedule daily reminders only for incomplete days
       for (int day = 1; day <= 9; day++) {
+        // Skip if this day is already completed
+        if (activeNovena.isDayComplete(day)) {
+          AppLogger.debug('Day $day is already complete, skipping notifications', 'NOTIFICATION');
+          continue;
+        }
+
+        // Only schedule for days that are accessible (up to spiritual day)
+        if (day > activeNovena.spiritualDay) {
+          AppLogger.debug('Day $day is not yet accessible (spiritual day: ${activeNovena.spiritualDay}), skipping', 'NOTIFICATION');
+          continue;
+        }
+
         final result = await _scheduleDayReminders(activeNovena, novenaTitle, day);
         if (result.success) {
           scheduledCount += result.count;
-        } else {
+        } else if (!result.skipped) {
           errors.add('Day $day: ${result.error}');
         }
       }
       
-      AppLogger.info('Scheduled $scheduledCount notifications', 'NOTIFICATION');
+      AppLogger.info('Scheduled $scheduledCount notifications for incomplete days', 'NOTIFICATION');
       
-      if (scheduledCount == 0) {
-        return NotificationScheduleResult.failure('No notifications could be scheduled');
+      if (scheduledCount == 0 && errors.isEmpty) {
+        return NotificationScheduleResult.success(0); // All days complete
       } else if (errors.isNotEmpty) {
         return NotificationScheduleResult.partial(scheduledCount, errors);
       } else {
@@ -168,6 +189,42 @@ class NovenaNotificationService {
       _lastError = e.toString();
       AppLogger.error('Failed to schedule notifications', e, stackTrace, 'NOTIFICATION');
       return NotificationScheduleResult.failure(e.toString());
+    }
+  }
+
+  /// Update notifications when novena progress changes
+  Future<void> updateNotificationsForProgress(
+    ActiveNovena activeNovena,
+    String novenaTitle,
+    int completedDay,
+  ) async {
+    if (!isReady) return;
+
+    try {
+      AppLogger.debug('Updating notifications after completing day $completedDay', 'NOTIFICATION');
+      
+      // Cancel notifications for the completed day
+      await cancelDayNotifications(completedDay);
+      
+      // If we've advanced to a new spiritual day, schedule notifications for it
+      final currentSpiritualDay = activeNovena.spiritualDay;
+      if (currentSpiritualDay <= 9 && !activeNovena.isDayComplete(currentSpiritualDay)) {
+        // Check if we need to schedule notifications for today
+        final result = await _scheduleDayReminders(activeNovena, novenaTitle, currentSpiritualDay);
+        if (result.success) {
+          AppLogger.debug('Scheduled notifications for new spiritual day $currentSpiritualDay', 'NOTIFICATION');
+        }
+      }
+      
+      // Send progress notification
+      await sendProgressNotification(
+        title: '✅ Day $completedDay Complete!',
+        body: _getProgressNotificationBody(activeNovena, completedDay),
+        payload: 'progress_$completedDay',
+      );
+      
+    } catch (e, stackTrace) {
+      AppLogger.error('Failed to update notifications for progress', e, stackTrace, 'NOTIFICATION');
     }
   }
 
@@ -194,32 +251,34 @@ class NovenaNotificationService {
 
       int scheduledCount = 0;
 
-      // 1. Schedule main daily reminder
-      await _scheduleNotification(
+      // 1. Schedule main daily reminder with completion check
+      await _scheduleSmartNotification(
         id: _baseReminderIdDaily + day - 1,
         title: _getDailyReminderTitle(novenaTitle, day),
         body: _getDailyReminderBody(day),
         scheduledTime: reminderTime,
         payload: 'daily_reminder_$day',
         isDaily: true,
+        dayToCheck: day,
       );
       scheduledCount++;
 
       // 2. Schedule follow-up reminders based on frequency
       final followUpTimes = _calculateFollowUpTimes(reminderTime, activeNovena.reminderFrequency);
       for (int i = 0; i < followUpTimes.length; i++) {
-        await _scheduleNotification(
+        await _scheduleSmartNotification(
           id: _baseReminderIdFollowUp + day - 1 + (i * 10), // Unique IDs
           title: _getFollowUpTitle(novenaTitle),
           body: _getFollowUpBody(day),
           scheduledTime: followUpTimes[i],
           payload: 'follow_up_${day}_$i',
           isDaily: false,
+          dayToCheck: day,
         );
         scheduledCount++;
       }
 
-      AppLogger.debug('Scheduled $scheduledCount notifications for day $day', 'NOTIFICATION');
+      AppLogger.debug('Scheduled $scheduledCount smart notifications for day $day', 'NOTIFICATION');
       return DayScheduleResult.success(scheduledCount);
       
     } catch (e) {
@@ -246,7 +305,39 @@ class NovenaNotificationService {
     return times;
   }
 
-  /// Schedule individual notification
+  /// Schedule individual notification with completion checking
+  Future<void> _scheduleSmartNotification({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime scheduledTime,
+    required String payload,
+    required bool isDaily,
+    required int dayToCheck,
+  }) async {
+    try {
+      final tzDateTime = tz.TZDateTime.from(scheduledTime, tz.local);
+      
+      // Create a wrapper payload that includes the day to check
+      final smartPayload = '$payload|check_day:$dayToCheck';
+      
+      await _plugin.zonedSchedule(
+        id,
+        title,
+        body,
+        tzDateTime,
+        _getNotificationDetails(isDaily),
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        payload: smartPayload,
+      );
+      
+    } catch (e) {
+      AppLogger.warning('Failed to schedule smart notification $id: $e', 'NOTIFICATION');
+      rethrow;
+    }
+  }
+
+  /// Schedule individual notification (legacy method for non-smart notifications)
   Future<void> _scheduleNotification({
     required int id,
     required String title,
@@ -351,7 +442,7 @@ class NovenaNotificationService {
         await _plugin.cancel(_baseReminderIdFollowUp + day - 1 + (i * 10));
       }
       
-      AppLogger.debug('Cancelled notifications for day $day', 'NOTIFICATION');
+      AppLogger.debug('Cancelled notifications for completed day $day', 'NOTIFICATION');
     } catch (e) {
       AppLogger.error('Failed to cancel day $day notifications', e, null, 'NOTIFICATION');
     }
@@ -385,8 +476,34 @@ class NovenaNotificationService {
   void _onNotificationTapped(NotificationResponse response) {
     AppLogger.debug('Notification tapped: ${response.payload}', 'NOTIFICATION');
     
-    if (_navigationCallback != null && response.payload != null) {
-      _navigationCallback!(response.payload!);
+    if (response.payload != null) {
+      // Parse smart payload to check if day is complete before navigating
+      final payload = response.payload!;
+      if (payload.contains('|check_day:')) {
+        final parts = payload.split('|check_day:');
+        final originalPayload = parts[0];
+        final dayToCheck = int.tryParse(parts[1]);
+        
+        // Check if this day is now complete
+        if (dayToCheck != null && _completionCheckCallback != null) {
+          final isComplete = _completionCheckCallback!(dayToCheck);
+          if (isComplete) {
+            AppLogger.debug('Day $dayToCheck is already complete, showing completion message instead of navigation', 'NOTIFICATION');
+            // Could show a different notification or just return
+            return;
+          }
+        }
+        
+        // Day is not complete, proceed with normal navigation
+        if (_navigationCallback != null) {
+          _navigationCallback!(originalPayload);
+        }
+      } else {
+        // Normal payload without completion checking
+        if (_navigationCallback != null) {
+          _navigationCallback!(payload);
+        }
+      }
     } else {
       AppLogger.warning('No navigation callback set or payload is null', 'NOTIFICATION');
     }
@@ -407,6 +524,15 @@ class NovenaNotificationService {
 
   String _getFollowUpBody(int day) {
     return 'Your day $day prayer is still waiting for you whenever you\'re ready.';
+  }
+
+  String _getProgressNotificationBody(ActiveNovena activeNovena, int completedDay) {
+    final remaining = 9 - activeNovena.accessibleCompletedCount;
+    if (remaining == 0) {
+      return 'Congratulations! You have completed your novena. 🎉';
+    } else {
+      return '$remaining days remaining. Keep going! 💪';
+    }
   }
 }
 

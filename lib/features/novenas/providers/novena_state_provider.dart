@@ -14,7 +14,18 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
   final NovenaNotificationService _notificationService;
   
   NovenaStateNotifier(this._notificationService) : super(null) {
+    _setupNotificationService();
     _loadActiveNovena();
+  }
+
+  /// Set up notification service with completion checking
+  void _setupNotificationService() {
+    // Set up completion check callback
+    _notificationService.setCompletionCheckCallback((int day) {
+      final current = state;
+      if (current == null) return false;
+      return current.isDayComplete(day);
+    });
   }
 
   // Load active novena from storage
@@ -34,9 +45,11 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
           await clearActiveNovena();
         } else {
           state = activeNovena;
+          AppLogger.debug('Loaded active novena: ${activeNovena.novenaId}, day ${activeNovena.spiritualDay}', 'NOVENA_STATE');
         }
       }
     } catch (e) {
+      AppLogger.error('Error loading active novena', e, null, 'NOVENA_STATE');
       // If there's an error loading, clear the storage
       await clearActiveNovena();
     }
@@ -49,21 +62,23 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
       if (state != null) {
         final novenaJson = json.encode(state!.toJson());
         await prefs.setString(_activeNovenaKey, novenaJson);
+        AppLogger.debug('Saved active novena state', 'NOVENA_STATE');
       } else {
         await prefs.remove(_activeNovenaKey);
+        AppLogger.debug('Cleared active novena from storage', 'NOVENA_STATE');
       }
     } catch (e) {
-      // Handle storage error - could log or show user message
+      AppLogger.error('Failed to save active novena', e, null, 'NOVENA_STATE');
     }
   }
 
-  // Start a new novena with notifications
+  // Start a new novena with smart notifications
   Future<void> startNovena(ActiveNovena activeNovena, String novenaTitle) async {
-    AppLogger.debug('startNovena called with title: $novenaTitle', 'NOVENA_STATE');
+    AppLogger.info('Starting novena: $novenaTitle', 'NOVENA_STATE');
     state = activeNovena;
     await _saveActiveNovena();
     
-    // Schedule notifications
+    // Schedule smart notifications that check completion status
     try {
       final result = await _notificationService.scheduleNovenaNotifications(
         activeNovena, 
@@ -71,7 +86,10 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
       );
       
       if (result.success) {
-        AppLogger.info('Scheduled ${result.scheduledCount} notifications for novena', 'NOVENA_STATE');
+        AppLogger.info('Scheduled ${result.scheduledCount} smart notifications for novena', 'NOVENA_STATE');
+        if (result.errors.isNotEmpty) {
+          AppLogger.warning('Some notification scheduling had warnings: ${result.errors}', 'NOVENA_STATE');
+        }
       } else {
         AppLogger.warning('Notification scheduling failed: ${result.error}', 'NOVENA_STATE');
       }
@@ -83,30 +101,30 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
 
   // Update state without scheduling new notifications (for debug/reset)
   Future<void> updateState(ActiveNovena activeNovena) async {
-    AppLogger.debug('updateState called (no notification scheduling)', 'NOVENA_STATE');
+    AppLogger.debug('Updating state without rescheduling notifications', 'NOVENA_STATE');
     state = activeNovena;
     await _saveActiveNovena();
   }
 
-  // Mark today's spiritual day as complete
+  // Mark today's spiritual day as complete with smart notification updates
   Future<void> markTodayComplete() async {
-    AppLogger.debug('markTodayComplete called', 'NOVENA_STATE');
+    AppLogger.debug('Marking today complete', 'NOVENA_STATE');
     final current = state;
     if (current == null) {
-      AppLogger.warning('markTodayComplete: No active novena found', 'NOVENA_STATE');
+      AppLogger.warning('No active novena found', 'NOVENA_STATE');
       return;
     }
 
     final spiritualDay = current.spiritualDay;
-    AppLogger.debug('markTodayComplete: spiritualDay=$spiritualDay, isTodayComplete=${current.isTodayComplete}', 'NOVENA_STATE');
+    AppLogger.debug('Current spiritual day: $spiritualDay, already complete: ${current.isTodayComplete}', 'NOVENA_STATE');
     
     if (spiritualDay > 9) {
-      AppLogger.warning('markTodayComplete: Spiritual day ($spiritualDay) is beyond day 9', 'NOVENA_STATE');
+      AppLogger.warning('Spiritual day ($spiritualDay) is beyond day 9', 'NOVENA_STATE');
       return;
     }
     
     if (current.isDayComplete(spiritualDay)) {
-      AppLogger.debug('markTodayComplete: Spiritual day $spiritualDay is already complete', 'NOVENA_STATE');
+      AppLogger.debug('Spiritual day $spiritualDay is already complete', 'NOVENA_STATE');
       return;
     }
 
@@ -116,47 +134,46 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
       updatedCompletedDays.add(false);
     }
     
-    AppLogger.debug('markTodayComplete: Original completedDays: ${current.completedDays}', 'NOVENA_STATE');
-    
     updatedCompletedDays[spiritualDay - 1] = true;
-    AppLogger.debug('markTodayComplete: Updated completedDays: $updatedCompletedDays', 'NOVENA_STATE');
+    AppLogger.debug('Updated completion status for day $spiritualDay', 'NOVENA_STATE');
 
-    state = current.copyWith(
+    final updatedNovena = current.copyWith(
       completedDays: updatedCompletedDays,
       lastCompletedDate: DateTime.now(),
     );
 
-    AppLogger.info('markTodayComplete: State updated for spiritual day $spiritualDay', 'NOVENA_STATE');
+    state = updatedNovena;
     await _saveActiveNovena();
     
-    // Cancel today's remaining notifications since prayer is complete
+    // Use smart notification updates that handle progress and rescheduling
     try {
-      await _notificationService.cancelDayNotifications(spiritualDay);
-      AppLogger.debug('Cancelled day $spiritualDay notifications', 'NOVENA_STATE');
-      
-      // Send progress notification
-      await _notificationService.sendProgressNotification(
-        title: '🎉 Day $spiritualDay Complete!',
-        body: 'Well done! You\'ve completed day $spiritualDay of your novena.',
-        payload: 'progress_$spiritualDay',
+      await _notificationService.updateNotificationsForProgress(
+        updatedNovena,
+        'Current Novena', // You might want to pass the actual title here
+        spiritualDay,
       );
       
-      // Check if novena is complete
-      if (state?.isComplete == true) {
+      AppLogger.info('Day $spiritualDay marked complete with smart notification updates', 'NOVENA_STATE');
+      
+      // Check if entire novena is complete
+      if (updatedNovena.isComplete) {
+        AppLogger.info('Novena completed! All 9 days done.', 'NOVENA_STATE');
         await _notificationService.sendProgressNotification(
           title: '🌟 Novena Complete!',
-          body: 'Congratulations! You\'ve completed your full 9-day novena journey.',
+          body: 'Congratulations! You\'ve completed your full 9-day novena journey. May your prayers be answered.',
           payload: 'completion',
           isCompletion: true,
         );
       }
     } catch (e) {
-      AppLogger.error('Failed to handle completion notifications', e, null, 'NOVENA_STATE');
+      AppLogger.error('Failed to handle smart notification updates', e, null, 'NOVENA_STATE');
     }
   }
 
   // Clear active novena (cancel or complete)
   Future<void> clearActiveNovena() async {
+    AppLogger.info('Clearing active novena', 'NOVENA_STATE');
+    
     // Cancel all notifications before clearing state
     try {
       await _notificationService.cancelAllNovenaNotifications();
@@ -169,14 +186,19 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
     await _saveActiveNovena();
   }
 
-  // Update reminder settings and reschedule notifications
+  // Update reminder settings and reschedule smart notifications
   Future<void> updateReminderSettings({
     required TimeOfDay reminderTime,
     required ReminderInterval reminderFrequency,
     required String novenaTitle,
   }) async {
     final current = state;
-    if (current == null) return;
+    if (current == null) {
+      AppLogger.warning('Cannot update reminder settings: no active novena', 'NOVENA_STATE');
+      return;
+    }
+
+    AppLogger.debug('Updating reminder settings: ${reminderTime.format(null)}, ${reminderFrequency.displayName}', 'NOVENA_STATE');
 
     state = current.copyWith(
       reminderTime: reminderTime,
@@ -185,7 +207,7 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
 
     await _saveActiveNovena();
     
-    // Reschedule notifications with new settings
+    // Reschedule smart notifications with new settings
     try {
       await _notificationService.cancelAllNovenaNotifications();
       final result = await _notificationService.scheduleNovenaNotifications(
@@ -194,12 +216,39 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
       );
       
       if (result.success) {
-        AppLogger.info('Rescheduled ${result.scheduledCount} notifications', 'NOVENA_STATE');
+        AppLogger.info('Rescheduled ${result.scheduledCount} smart notifications with new settings', 'NOVENA_STATE');
       } else {
         AppLogger.warning('Failed to reschedule notifications: ${result.error}', 'NOVENA_STATE');
       }
     } catch (e) {
       AppLogger.error('Failed to update notification settings', e, null, 'NOVENA_STATE');
+    }
+  }
+
+  // Reschedule notifications (useful when app comes back from background)
+  Future<void> rescheduleNotifications(String novenaTitle) async {
+    final current = state;
+    if (current == null) return;
+
+    AppLogger.debug('Rescheduling notifications for active novena', 'NOVENA_STATE');
+    
+    try {
+      // Cancel existing notifications first
+      await _notificationService.cancelAllNovenaNotifications();
+      
+      // Reschedule with current state (smart notifications will skip completed days)
+      final result = await _notificationService.scheduleNovenaNotifications(
+        current,
+        novenaTitle,
+      );
+      
+      if (result.success) {
+        AppLogger.debug('Rescheduled ${result.scheduledCount} notifications', 'NOVENA_STATE');
+      } else {
+        AppLogger.warning('Failed to reschedule notifications: ${result.error}', 'NOVENA_STATE');
+      }
+    } catch (e) {
+      AppLogger.error('Failed to reschedule notifications', e, null, 'NOVENA_STATE');
     }
   }
 }
@@ -228,4 +277,15 @@ final currentNovenaSpiritualDayProvider = Provider<int?>((ref) {
 final isTodayCompleteProvider = Provider<bool>((ref) {
   final activeNovena = ref.watch(novenaStateProvider);
   return activeNovena?.isTodayComplete ?? false;
+});
+
+final accessibleCompletedCountProvider = Provider<int>((ref) {
+  final activeNovena = ref.watch(novenaStateProvider);
+  return activeNovena?.accessibleCompletedCount ?? 0;
+});
+
+final canAccessTodayProvider = Provider<bool>((ref) {
+  final activeNovena = ref.watch(novenaStateProvider);
+  if (activeNovena == null) return false;
+  return activeNovena.canAccessDay(activeNovena.spiritualDay);
 });
