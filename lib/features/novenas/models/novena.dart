@@ -12,7 +12,6 @@ class NovenaMetadata {
   final String intentionCategory;
   final String difficulty;
   final int durationMinutes;
-  final String fileName;
 
   const NovenaMetadata({
     required this.id,
@@ -23,7 +22,6 @@ class NovenaMetadata {
     required this.intentionCategory,
     required this.difficulty,
     required this.durationMinutes,
-    required this.fileName,
   });
 
   factory NovenaMetadata.fromJson(Map<String, dynamic> json) {
@@ -36,7 +34,6 @@ class NovenaMetadata {
       intentionCategory: json['intention_category'] as String,
       difficulty: json['difficulty'] as String,
       durationMinutes: json['duration_minutes'] as int,
-      fileName: json['file_name'] as String,
     );
   }
 }

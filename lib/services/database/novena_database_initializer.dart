@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import '../../../utils/logger.dart';
 import 'novena_database_service.dart';
 
-/// Service to initialize the novena database from JSON assets
+/// Service to initialize the novena database from individual JSON assets
 class NovenaDatabaseInitializer {
   static final NovenaDatabaseInitializer _instance = NovenaDatabaseInitializer._internal();
   factory NovenaDatabaseInitializer() => _instance;
@@ -46,40 +46,31 @@ class NovenaDatabaseInitializer {
     }
   }
 
-  /// Populate database from JSON assets
+  /// Populate database from individual JSON assets
   Future<DatabaseInitResult> _populateFromAssets() async {
     try {
-      AppLogger.debug('Reading novena metadata and JSON files from assets...', 'DB_INIT');
+      AppLogger.debug('Discovering and loading novena JSON files from assets...', 'DB_INIT');
       
-      // First, load the metadata file
-      final metadataString = await rootBundle.loadString('assets/novenas/novenas_metadata.json');
-      final metadataJson = json.decode(metadataString) as Map<String, dynamic>;
-      final novenasList = metadataJson['novenas'] as List<dynamic>;
+      // Get list of novena files by reading the asset manifest
+      final novenaFiles = await _discoverNovenaFiles();
       
-      AppLogger.debug('Loaded metadata for ${novenasList.length} novenas', 'DB_INIT');
+      AppLogger.debug('Discovered ${novenaFiles.length} novena files', 'DB_INIT');
       
       int successCount = 0;
       final errors = <String>[];
       
-      // Load and merge each novena with its metadata
-      for (final metadataEntry in novenasList) {
-        final metadata = metadataEntry as Map<String, dynamic>;
-        final fileName = metadata['file_name'] as String;
-        
+      // Load each novena file
+      for (final fileName in novenaFiles) {
         try {
-          // Load the full novena content
-          final novenaContent = await _loadNovenaFromAsset(fileName);
-          if (novenaContent != null) {
-            // Merge metadata with content
-            final completeNovena = _mergeNovenaData(metadata, novenaContent);
-            
-            // Validate the complete novena
-            if (_validateNovenaData(completeNovena)) {
-              await _databaseService.insertNovena(completeNovena);
+          final novenaData = await _loadNovenaFromAsset(fileName);
+          if (novenaData != null) {
+            // Validate the novena data
+            if (_validateNovenaData(novenaData)) {
+              await _databaseService.insertNovena(novenaData);
               successCount++;
-              AppLogger.debug('Successfully imported: ${completeNovena['id']}', 'DB_INIT');
+              AppLogger.debug('Successfully imported: ${novenaData['id']}', 'DB_INIT');
             } else {
-              errors.add('Failed to validate merged data for $fileName');
+              errors.add('Failed to validate data for $fileName');
             }
           } else {
             errors.add('Failed to load content for $fileName');
@@ -105,23 +96,41 @@ class NovenaDatabaseInitializer {
     }
   }
 
-  /// Merge metadata with novena content to create complete novena object
-  Map<String, dynamic> _mergeNovenaData(Map<String, dynamic> metadata, Map<String, dynamic> content) {
-    // Start with the content (which has the full prayer structure)
-    final merged = Map<String, dynamic>.from(content);
-    
-    // Add metadata fields that are missing
-    merged['intention_category'] = metadata['intention_category'];
-    merged['difficulty'] = metadata['difficulty'];
-    merged['duration_minutes'] = metadata['duration_minutes'];
-    
-    // Ensure description from metadata is used (more detailed)
-    if (metadata.containsKey('description') && metadata['description'] != null) {
-      merged['description'] = metadata['description'];
+  /// Discover novena files from assets
+  Future<List<String>> _discoverNovenaFiles() async {
+    try {
+      // Get the asset manifest to find all JSON files in novenas directory
+      final manifestContent = await rootBundle.loadString('AssetManifest.json');
+      final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+      
+      // Filter for novena JSON files (exclude metadata files)
+      final novenaFiles = manifestMap.keys
+          .where((String key) => 
+              key.startsWith('assets/novenas/') && 
+              key.endsWith('.json') &&
+              !key.contains('metadata'))
+          .map((key) => key.split('/').last) // Get just the filename
+          .toList();
+      
+      AppLogger.debug('Discovered novena files from manifest: $novenaFiles', 'DB_INIT');
+      return novenaFiles;
+      
+    } catch (e) {
+      // Fallback: Use hardcoded list if manifest approach fails
+      AppLogger.warning('Failed to read asset manifest, using fallback file list', 'DB_INIT');
+      
+      return [
+        'divine-mercy.json',
+        'sacred-heart.json',
+        'immaculate-heart.json',
+        'st-jude.json',
+        'st-anthony.json',
+        'st-joseph.json',
+        'st-therese.json',
+        'st-john-paul-ii.json',
+        'our-lady-perpetual-help.json',
+      ];
     }
-    
-    AppLogger.debug('Merged novena data for: ${merged['id']}', 'DB_INIT');
-    return merged;
   }
 
   /// Load a single novena from asset bundle
@@ -142,11 +151,11 @@ class NovenaDatabaseInitializer {
     }
   }
 
-  /// Validate that novena data has all required fields
+  /// Validate that novena data has all required fields (including metadata fields)
   bool _validateNovenaData(Map<String, dynamic> data) {
     const requiredFields = [
       'id', 'title', 'description', 'saint', 'feast_day',
-      'intention_category', 'difficulty', 'duration_minutes',
+      'intention_category', 'difficulty', 'duration_minutes', // Metadata fields now in each file
       'intention', 'instructions', 'source', 'days'
     ];
     
@@ -156,6 +165,12 @@ class NovenaDatabaseInitializer {
         AppLogger.warning('Missing required field: $field in ${data['id'] ?? 'unknown'}', 'DB_INIT');
         return false;
       }
+    }
+    
+    // Validate metadata field types
+    if (data['duration_minutes'] is! int) {
+      AppLogger.warning('duration_minutes must be an integer in ${data['id']}', 'DB_INIT');
+      return false;
     }
     
     // Validate days array

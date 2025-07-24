@@ -28,6 +28,13 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
     });
   }
 
+  /// Helper method to format TimeOfDay for logging
+  String _formatTimeOfDay(TimeOfDay time) {
+    final hour = time.hour.toString().padLeft(2, '0');
+    final minute = time.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+
   // Load active novena from storage
   Future<void> _loadActiveNovena() async {
     try {
@@ -198,7 +205,7 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
       return;
     }
 
-    AppLogger.debug('Updating reminder settings: ${reminderTime.format(null)}, ${reminderFrequency.displayName}', 'NOVENA_STATE');
+    AppLogger.debug('Updating reminder settings: ${_formatTimeOfDay(reminderTime)}, ${reminderFrequency.displayName}', 'NOVENA_STATE');
 
     state = current.copyWith(
       reminderTime: reminderTime,

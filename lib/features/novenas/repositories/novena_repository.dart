@@ -21,7 +21,6 @@ class NovenaRepository {
           intentionCategory: data['intention_category'] as String,
           difficulty: data['difficulty'] as String,
           durationMinutes: data['duration_minutes'] as int,
-          fileName: '${data['id']}.json', // For backwards compatibility if needed
         );
       }).toList();
       
@@ -70,7 +69,6 @@ class NovenaRepository {
           intentionCategory: data['intention_category'] as String,
           difficulty: data['difficulty'] as String,
           durationMinutes: data['duration_minutes'] as int,
-          fileName: '${data['id']}.json',
         );
       }).toList();
       
@@ -97,7 +95,6 @@ class NovenaRepository {
           intentionCategory: data['intention_category'] as String,
           difficulty: data['difficulty'] as String,
           durationMinutes: data['duration_minutes'] as int,
-          fileName: '${data['id']}.json',
         );
       }).toList();
       
@@ -124,7 +121,6 @@ class NovenaRepository {
           intentionCategory: data['intention_category'] as String,
           difficulty: data['difficulty'] as String,
           durationMinutes: data['duration_minutes'] as int,
-          fileName: '${data['id']}.json',
         );
       }).toList();
       
