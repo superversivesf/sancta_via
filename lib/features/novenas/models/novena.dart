@@ -192,7 +192,17 @@ class ActiveNovena {
   int get spiritualDay {
     final today = DateTime.now();
     final daysSinceStart = today.difference(startDate).inDays;
-    return (daysSinceStart + 1).clamp(1, 9);
+    final calculatedDay = (daysSinceStart + 1).clamp(1, 9);
+    
+    // Debug logging for day calculation
+    print('🔍 SPIRITUAL DAY DEBUG:');
+    print('  Start Date: ${startDate.toString()}');
+    print('  Today: ${today.toString()}');
+    print('  Days Since Start: $daysSinceStart');
+    print('  Calculated Day: $calculatedDay');
+    print('  Completed Days: $completedDays');
+    
+    return calculatedDay;
   }
   
   /// Check if a specific day can be accessed (up to current spiritual day)

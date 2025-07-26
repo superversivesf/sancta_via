@@ -291,8 +291,19 @@ class DailyNovenaScreen extends ConsumerWidget {
   }
 
   Future<void> _markAsComplete(BuildContext context, WidgetRef ref) async {
+    final activeNovena = ref.read(novenaStateProvider);
+    
+    AppLogger.debug('📦 MARK COMPLETE - Day $dayNumber clicked', 'DAILY_NOVENA');
+    AppLogger.debug('📅 Active novena start date: ${activeNovena?.startDate}', 'DAILY_NOVENA');
+    AppLogger.debug('🎯 Current spiritual day: ${activeNovena?.spiritualDay}', 'DAILY_NOVENA');
+    AppLogger.debug('📊 Completed days before: ${activeNovena?.completedDays}', 'DAILY_NOVENA');
+    
     try {
-      await ref.read(novenaStateProvider.notifier).markTodayComplete();
+      await ref.read(novenaStateProvider.notifier).markDayComplete(dayNumber);
+      
+      // Log the state after completion
+      final updatedNovena = ref.read(novenaStateProvider);
+      AppLogger.debug('✅ Completed days after: ${updatedNovena?.completedDays}', 'DAILY_NOVENA');
       
       if (context.mounted) {
         // Show brief success message

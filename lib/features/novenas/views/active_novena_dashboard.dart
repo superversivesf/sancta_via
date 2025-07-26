@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../models/novena.dart';
 import '../providers/novena_providers.dart';
-import '../providers/novena_notification_provider.dart';
+
 import '../../../config/route_names.dart';
 import '../providers/novena_state_provider.dart';
 import '../../../utils/logger.dart';
@@ -14,7 +14,7 @@ class ActiveNovenaDashboard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final activeNovena = ref.watch(novenaStateProvider);
-    final notificationsReady = ref.watch(notificationsReadyProvider);
+
     
     if (activeNovena == null) {
       // No active novena, redirect to list
@@ -83,9 +83,7 @@ class ActiveNovenaDashboard extends ConsumerWidget {
                 _buildProgressSection(context, activeNovena),
                 const SizedBox(height: 24),
 
-                // Notification status
-                _buildNotificationSection(context, activeNovena, notificationsReady),
-                const SizedBox(height: 24),
+
 
                 // Days grid
                 _buildDaysGrid(context, activeNovena),
@@ -451,102 +449,6 @@ class ActiveNovenaDashboard extends ConsumerWidget {
     );
   }
 
-  Widget _buildNotificationSection(BuildContext context, ActiveNovena activeNovena, bool notificationsReady) {
-    final nextReminderTime = _getNextReminderTime(activeNovena);
-    
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: notificationsReady 
-            ? Theme.of(context).colorScheme.primaryContainer.withAlpha(128)
-            : Theme.of(context).colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withAlpha(51),
-        ),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            notificationsReady ? Icons.schedule : Icons.notifications_off_outlined,
-            color: notificationsReady 
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.outline,
-            size: 20,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  notificationsReady ? 'Daily Reminders Active' : 'Notifications Off',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                if (notificationsReady && nextReminderTime != null) ...[
-                  const SizedBox(height: 2),
-                  Text(
-                    'Next reminder: ${_formatTime(activeNovena.reminderTime)}',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withAlpha(179),
-                    ),
-                  ),
-                ] else if (!notificationsReady) ...[
-                  const SizedBox(height: 2),
-                  Text(
-                    'You can still track your progress manually',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withAlpha(179),
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  DateTime? _getNextReminderTime(ActiveNovena activeNovena) {
-    final now = DateTime.now();
-    final spiritualDay = activeNovena.spiritualDay;
-    
-    if (spiritualDay > 9) return null; // Novena complete
-    
-    // Calculate next reminder time
-    final today = DateTime.now();
-    final todayReminder = DateTime(
-      today.year,
-      today.month, 
-      today.day,
-      activeNovena.reminderTime.hour,
-      activeNovena.reminderTime.minute,
-    );
-    
-    if (todayReminder.isAfter(now)) {
-      return todayReminder; // Today's reminder hasn't happened yet
-    } else {
-      // Tomorrow's reminder
-      final tomorrow = today.add(const Duration(days: 1));
-      return DateTime(
-        tomorrow.year,
-        tomorrow.month,
-        tomorrow.day,
-        activeNovena.reminderTime.hour,
-        activeNovena.reminderTime.minute,
-      );
-    }
-  }
-
-  String _formatTime(TimeOfDay time) {
-    final hour = time.hour == 0 ? 12 : time.hour > 12 ? time.hour - 12 : time.hour;
-    final minute = time.minute.toString().padLeft(2, '0');
-    final period = time.hour < 12 ? 'AM' : 'PM';
-    return '$hour:$minute $period';
-  }
 
 }
