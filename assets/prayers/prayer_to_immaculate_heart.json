@@ -6,5 +6,17 @@
     "latin": "O Cor Immaculatum Mariae,\ncaelestis pulchritudo et splendor Patris,\ntu es pretiosissimum opus manuum eius.\nTu es gloriosa Mater Filii,\net opus praeclarum Spiritus Sancti.\nTu es templum Sanctissimae Trinitatis,\nparadisus aeterni Regis,\nthronus Omnipotentis,\ncivitas et palatium magni Dei.\n\nO Cor Immaculatum Mariae,\nnobile requies Verbi incarnati,\ntu es immaculata et sancta,\ntota pulchra et perfecta.\nTu es Mater pulchri amoris,\nMater gratiae et misericordiae.\n\nProtege nos, purifica nos, consecra nos Filio tuo.\nRegna super nos, doce nos facere Iesum\nregnare et triumphare in nobis et circa nos,\nsicut regnavit et triumphavit in te,\nad gloriam Patris.\nAmen.\n\nCor Immaculatum Mariae, ora pro nobis.\nCor Immaculatum Mariae, ora pro nobis nunc et in hora mortis nostrae."
   },
   "attribution": "Traditional Marian devotion, promoted especially at Fatima (1917)",
-  "notes": "Devotion to the Immaculate Heart of Mary is closely linked with the Sacred Heart of Jesus. At Fatima, Our Lady requested devotion to her Immaculate Heart as a means of peace and conversion. This prayer acknowledges Mary's perfect love and asks for her maternal protection and intercession."
+  "notes": "Devotion to the Immaculate Heart of Mary is closely linked with the Sacred Heart of Jesus. At Fatima, Our Lady requested devotion to her Immaculate Heart as a means of peace and conversion. This prayer acknowledges Mary's perfect love and asks for her maternal protection and intercession.",
+  "categories": [
+    "marian"
+  ],
+  "description": "Devotion to the Immaculate Heart of Mary is closely linked with the Sacred Heart of Jesus",
+  "tags": [
+    "marian",
+    "devotion",
+    "fatima"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null
 }

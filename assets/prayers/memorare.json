@@ -6,5 +6,16 @@
     "latin": "Memorare, O piissima Virgo Maria,\nnon esse auditum a saeculo,\nquemquam ad tua currentem praesidia,\ntua implorantem auxilia,\ntua petentem suffragia, esse derelictum.\nEgo tali animatus confidentia,\nad te, Virgo Virginum, Mater, curro,\nad te venio, coram te gemens peccator assisto.\nNoli, Mater Verbi, verba mea despicere;\nsed audi propitia et exaudi.\nAmen."
   },
   "attribution": "St. Bernard of Clairvaux (attributed)",
-  "notes": "The Memorare is a powerful prayer seeking the intercession of the Blessed Virgin Mary. While traditionally attributed to St. Bernard of Clairvaux, it was popularized in its current form by Fr. Claude Bernard in the 17th century. The prayer expresses confidence in Mary's motherly care and her powerful intercession."
+  "notes": "The Memorare is a powerful prayer seeking the intercession of the Blessed Virgin Mary. While traditionally attributed to St. Bernard of Clairvaux, it was popularized in its current form by Fr. Claude Bernard in the 17th century. The prayer expresses confidence in Mary's motherly care and her powerful intercession.",
+  "categories": [
+    "marian"
+  ],
+  "description": "The Memorare is a powerful prayer seeking the intercession of the Blessed Virgin Mary",
+  "tags": [
+    "marian",
+    "intercession"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null
 }

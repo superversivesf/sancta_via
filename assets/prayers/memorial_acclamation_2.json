@@ -7,9 +7,25 @@
   },
   "attribution": "Roman Missal (1970, revised 2011)",
   "notes": "This second Memorial Acclamation directly references the Eucharistic elements (Bread and Cup) and connects our participation in the Eucharist with the proclamation of Christ's death and anticipated return. It's based on 1 Corinthians 11:26.",
-  "tags": ["liturgical", "mass", "eucharist", "memorial", "acclamation"],
+  "tags": [
+    "liturgical",
+    "mass",
+    "eucharist",
+    "memorial"
+  ],
   "difficulty": "simple",
-  "audience": ["adults", "teens", "children"],
+  "audience": [
+    "adults",
+    "teens",
+    "children"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "mass"
+  ],
+  "description": "When we eat this Bread and drink this Cup",
+  "isLiturgical": true,
+  "liturgicalPriority": 8,
+  "liturgicalSeason": null
 }

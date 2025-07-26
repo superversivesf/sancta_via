@@ -7,9 +7,24 @@
   },
   "attribution": "Liturgy of the Hours - Compline Conclusion",
   "notes": "This is the final prayer of Compline, summarizing the entire night prayer service. It asks for salvation during waking hours and protection during sleep, while emphasizing our union with Christ in both states. This prayer beautifully balances active vigilance with peaceful rest.",
-  "tags": ["compline", "final", "watching", "rest", "christ"],
+  "tags": [
+    "compline",
+    "final",
+    "watching",
+    "rest"
+  ],
   "difficulty": "simple",
-  "audience": ["adults", "teens"],
+  "audience": [
+    "adults",
+    "teens"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "evening"
+  ],
+  "description": "The final prayer of Compline, balancing vigilance with peaceful rest",
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null
 }

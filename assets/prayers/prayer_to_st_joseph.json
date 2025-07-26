@@ -6,5 +6,17 @@
     "latin": "O Sancte Ioseph, cuius protectio tam magna, tam fortis, tam prompta est ante thronum Dei, commendo tibi omnia mea studia atque desideria. O Sancte Ioseph, adiuva me tua potenti intercessione, et impetra mihi a divino Filio tuo omnes benedictiones spirituales per Iesum Christum Dominum nostrum, ut cum caelesti virtute tua hic in terris usus fuerim, gratiarum actionem et obsequium offerre possim amantissimo Patri. O Sancte Ioseph, nunquam fatigor te contemplari et Iesum dormientem in brachiis tuis; non audeo accedere dum Ipse requiescit iuxta cor tuum. Preme Eum meo nomine et osculare pulchrum caput eius pro me, et roga Eum ut osculum reddat cum spiritum efflavero. Sancte Ioseph, patrōne morientium, ora pro nobis. Amen."
   },
   "attribution": "Pope Pius X",
-  "notes": "St. Joseph is the patron saint of the universal Church, workers, fathers, and the dying. This prayer asks for his powerful intercession and protection, especially at the hour of death."
+  "notes": "St. Joseph is the patron saint of the universal Church, workers, fathers, and the dying. This prayer asks for his powerful intercession and protection, especially at the hour of death.",
+  "categories": [
+    "saints"
+  ],
+  "description": "St. Joseph is the patron saint of the universal Church, workers, fathers, and the dying",
+  "tags": [
+    "saint",
+    "patron",
+    "protection"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null
 }

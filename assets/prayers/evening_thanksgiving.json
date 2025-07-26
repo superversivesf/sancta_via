@@ -7,9 +7,24 @@
   },
   "attribution": "Traditional Catholic Evening Prayer",
   "notes": "This formal evening prayer combines thanksgiving for the day's blessings, petition for forgiveness, intercession for others, and a request for God's protection through the night. It concludes with the Gloria Patri, making it a complete evening devotion.",
-  "tags": ["evening", "thanksgiving", "forgiveness", "intercession", "traditional"],
+  "tags": [
+    "evening",
+    "thanksgiving",
+    "forgiveness",
+    "intercession"
+  ],
   "difficulty": "moderate",
-  "audience": ["adults", "teens"],
+  "audience": [
+    "adults",
+    "teens"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "evening"
+  ],
+  "description": "Formal evening prayer with thanksgiving, forgiveness, and intercession",
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null
 }

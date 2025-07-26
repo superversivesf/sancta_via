@@ -7,5 +7,17 @@
     "greek": "Ὑπὸ τὴν σὴν εὐσπλαγχνίαν,\nκαταφεύγομεν, Θεοτόκε.\nτὰς ἡμετέρας ἱκεσίας\nμὴ παρίδῃς ἐν περιστάσει,\nἀλλ᾽ ἐκ κινδύνων λύτρωσαι ἡμᾶς,\nμόνη ἁγνή, μόνη εὐλογημένη."
   },
   "attribution": "Ancient Christian prayer (3rd-4th century)",
-  "notes": "Sub Tuum Praesidium is believed to be the oldest known Marian prayer, with papyrus fragments dating to around 250-280 AD found in Egypt. This ancient prayer shows the early Church's devotion to Mary as our protector and intercessor. It is still prayed daily in the Divine Office."
+  "notes": "Sub Tuum Praesidium is believed to be the oldest known Marian prayer, with papyrus fragments dating to around 250-280 AD found in Egypt. This ancient prayer shows the early Church's devotion to Mary as our protector and intercessor. It is still prayed daily in the Divine Office.",
+  "categories": [
+    "marian"
+  ],
+  "description": "Sub Tuum Praesidium is believed to be the oldest known Marian prayer, with papyrus fragments dating to around 250-280 AD found in Egypt",
+  "tags": [
+    "marian",
+    "ancient",
+    "protection"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 8,
+  "liturgicalSeason": null
 }

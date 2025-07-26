@@ -6,5 +6,17 @@
     "latin": "Gloria in excelsis Deo\net in terra pax hominibus bonae voluntatis.\n\nLaudamus te,\nbenedicimus te,\nadoramus te,\nglorificamus te,\ngratias agimus tibi propter magnam gloriam tuam,\nDomine Deus, Rex caelestis,\nDeus Pater omnipotens.\n\nDomine Fili unigenite, Iesu Christe,\nDomine Deus, Agnus Dei, Filius Patris,\nqui tollis peccata mundi, miserere nobis;\nqui tollis peccata mundi, suscipe deprecationem nostram.\nQui sedes ad dexteram Patris, miserere nobis.\n\nQuoniam tu solus Sanctus, tu solus Dominus,\ntu solus Altissimus,\nIesu Christe,\ncum Sancto Spiritu:\nin gloria Dei Patris.\nAmen."
   },
   "attribution": "Ancient Christian Hymn (4th century)",
-  "notes": "The Gloria is sung or recited during Mass on Sundays (except during Advent and Lent) and on solemnities and feasts. It is one of the oldest hymns of the Church, expressing praise and adoration to the Trinity."
+  "notes": "The Gloria is sung or recited during Mass on Sundays (except during Advent and Lent) and on solemnities and feasts. It is one of the oldest hymns of the Church, expressing praise and adoration to the Trinity.",
+  "categories": [
+    "mass"
+  ],
+  "description": "The Gloria is sung or recited during Mass on Sundays (except during Advent and Lent) and on solemnities and feasts",
+  "tags": [
+    "liturgical",
+    "mass",
+    "praise"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 9,
+  "liturgicalSeason": null
 }

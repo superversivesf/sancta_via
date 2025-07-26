@@ -5,9 +5,25 @@
   "translation": null,
   "attribution": "St. Thérèse of Lisieux (from her writings)",
   "notes": "This is St. Thérèse's own morning offering prayer, taken from her personal writings. It beautifully expresses her complete trust in God's mercy and her desire to offer everything to the Sacred Heart of Jesus. It embodies her 'Little Way' of confidence and self-abandonment.",
-  "tags": ["st_therese", "morning", "offering", "sacred_heart", "little_way"],
+  "tags": [
+    "st_therese",
+    "morning",
+    "offering",
+    "sacred_heart"
+  ],
   "difficulty": "moderate",
-  "audience": ["adults", "teens"],
+  "audience": [
+    "adults",
+    "teens"
+  ],
   "liturgical_season": null,
-  "feast_day": "October 1"
+  "feast_day": "October 1",
+  "categories": [
+    "saints",
+    "morning"
+  ],
+  "description": "St. Thérèse's own morning offering prayer from her writings",
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null
 }

@@ -7,9 +7,25 @@
   },
   "attribution": "Traditional Catholic Morning Offering",
   "notes": "This beautiful morning offering unites our daily actions with the sacrifice of the Mass and the intentions of the Sacred Heart of Jesus, offered through the Immaculate Heart of Mary. It transforms ordinary activities into prayers.",
-  "tags": ["morning", "offering", "mary", "sacred_heart", "mass", "daily"],
-  "difficulty": "moderate", 
-  "audience": ["adults", "teens"],
+  "tags": [
+    "morning",
+    "offering",
+    "mary",
+    "sacred_heart"
+  ],
+  "difficulty": "moderate",
+  "audience": [
+    "adults",
+    "teens"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "morning",
+    "marian"
+  ],
+  "description": "Offering the day through the Immaculate Heart of Mary",
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null
 }

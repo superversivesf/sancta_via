@@ -6,5 +6,17 @@
     "latin": "Sancte Michael Archangele, defende nos in proelio;\ncontra nequitiam et insidias diaboli esto praesidium.\nImperet illi Deus, supplices deprecamur;\ntuque, Princeps militiae caelestis,\nSatanam aliosque spiritus malignos,\nqui ad perditionem animarum pervagantur in mundo,\ndivina virtute in infernum detrude.\nAmen."
   },
   "attribution": "Pope Leo XIII (1884)",
-  "notes": "The Prayer to St. Michael was composed by Pope Leo XIII after reportedly having a vision of the spiritual battle between the Church and Satan. After Vatican II, it was removed from the prayers said after Mass, but Pope John Paul II encouraged Catholics to continue praying it privately for the protection of the Church."
+  "notes": "The Prayer to St. Michael was composed by Pope Leo XIII after reportedly having a vision of the spiritual battle between the Church and Satan. After Vatican II, it was removed from the prayers said after Mass, but Pope John Paul II encouraged Catholics to continue praying it privately for the protection of the Church.",
+  "categories": [
+    "saints"
+  ],
+  "description": "The Prayer to St. Michael the Archangel is a powerful prayer for protection against evil",
+  "tags": [
+    "protection",
+    "saint",
+    "archangel"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 4,
+  "liturgicalSeason": null
 }

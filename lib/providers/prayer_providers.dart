@@ -5,7 +5,6 @@ import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import '../models/prayer.dart';
 import '../models/prayer_category.dart';
 import '../models/prayer_category_group.dart';
-import '../models/prayer_metadata.dart';
 import '../models/prayer_app_settings.dart';
 import '../repositories/prayer_repository.dart';
 import '../services/prayer_of_the_day_service.dart';
@@ -33,20 +32,25 @@ final prayerCategoryGroupsProvider = FutureProvider<List<PrayerCategoryGroup>>((
   return await repository.getPrayerCategoryGroups();
 });
 
-// Provider for all prayer metadata
-final prayerMetadataProvider = FutureProvider<List<PrayerMetadata>>((ref) async {
+// Provider for all prayers (replaces prayerMetadataProvider)
+final allPrayersProvider = FutureProvider<List<Prayer>>((ref) async {
   final repository = ref.watch(prayerRepositoryProvider);
-  return await repository.getPrayerMetadata();
+  return await repository.getAllPrayers();
+});
+
+// BACKWARD COMPATIBILITY: Provider that mimics the old metadata provider
+final prayerMetadataProvider = FutureProvider<List<Prayer>>((ref) async {
+  return ref.watch(allPrayersProvider.future);
 });
 
 // Provider for prayers by category
-final prayersByCategoryProvider = FutureProvider.family<List<PrayerMetadata>, String>((ref, categoryId) async {
+final prayersByCategoryProvider = FutureProvider.family<List<Prayer>, String>((ref, categoryId) async {
   final repository = ref.watch(prayerRepositoryProvider);
   return await repository.getPrayersByCategory(categoryId);
 });
 
 // Provider for prayers by group
-final prayersByGroupProvider = FutureProvider.family<List<PrayerMetadata>, String>((ref, groupId) async {
+final prayersByGroupProvider = FutureProvider.family<List<Prayer>, String>((ref, groupId) async {
   final repository = ref.watch(prayerRepositoryProvider);
   return await repository.getPrayersByGroup(groupId);
 });
@@ -124,8 +128,8 @@ final prayerPreferencesNotifierProvider = Provider<PrayerPreferencesNotifier>((r
 });
 
 // Provider for favorite prayers
-final favoritePrayersProvider = FutureProvider<List<PrayerMetadata>>((ref) async {
-  final allPrayers = await ref.watch(prayerMetadataProvider.future);
+final favoritePrayersProvider = FutureProvider<List<Prayer>>((ref) async {
+  final allPrayers = await ref.watch(allPrayersProvider.future);
   final settings = ref.watch(prayerPreferencesProvider);
 
   return allPrayers
@@ -134,8 +138,8 @@ final favoritePrayersProvider = FutureProvider<List<PrayerMetadata>>((ref) async
 });
 
 // Provider for recent prayers
-final recentPrayersProvider = FutureProvider<List<PrayerMetadata>>((ref) async {
-  final allPrayers = await ref.watch(prayerMetadataProvider.future);
+final recentPrayersProvider = FutureProvider<List<Prayer>>((ref) async {
+  final allPrayers = await ref.watch(allPrayersProvider.future);
   final settings = ref.watch(prayerPreferencesProvider);
 
   // Sort in the order of recentPrayerIds
@@ -150,7 +154,7 @@ final recentPrayersProvider = FutureProvider<List<PrayerMetadata>>((ref) async {
 final searchQueryProvider = StateProvider<String>((ref) => '');
 
 // Provider for search results
-final searchResultsProvider = FutureProvider<List<PrayerMetadata>>((ref) async {
+final searchResultsProvider = FutureProvider<List<Prayer>>((ref) async {
   final repository = ref.watch(prayerRepositoryProvider);
   final query = ref.watch(searchQueryProvider);
 
@@ -196,7 +200,7 @@ class SelectedTagsNotifier extends StateNotifier<List<String>> {
 
 // Available tags provider
 final availableTagsProvider = Provider<List<String>>((ref) {
-  final allPrayers = ref.watch(prayerMetadataProvider).valueOrNull ?? [];
+  final allPrayers = ref.watch(allPrayersProvider).valueOrNull ?? [];
   final Set<String> tags = {};
 
   for (final prayer in allPrayers) {
@@ -210,8 +214,8 @@ final availableTagsProvider = Provider<List<String>>((ref) {
 final showFavoritesOnlyProvider = StateProvider<bool>((ref) => false);
 
 // Filtered prayers provider
-final filteredPrayersProvider = FutureProvider<List<PrayerMetadata>>((ref) async {
-  final allPrayersAsync = ref.watch(prayerMetadataProvider);
+final filteredPrayersProvider = FutureProvider<List<Prayer>>((ref) async {
+  final allPrayersAsync = ref.watch(allPrayersProvider);
   final allPrayers = allPrayersAsync.value ?? [];
 
   final selectedTags = ref.watch(selectedTagsProvider);
@@ -239,8 +243,8 @@ final filteredPrayersProvider = FutureProvider<List<PrayerMetadata>>((ref) async
 });
 
 // Filtered category prayers provider
-final filteredCategoryPrayersProvider = FutureProvider.family<List<PrayerMetadata>, String>((ref, categoryFilter) async {
-  final allPrayersAsync = ref.watch(prayerMetadataProvider);
+final filteredCategoryPrayersProvider = FutureProvider.family<List<Prayer>, String>((ref, categoryFilter) async {
+  final allPrayersAsync = ref.watch(allPrayersProvider);
   final allPrayers = allPrayersAsync.value ?? [];
 
   final selectedTags = ref.watch(selectedTagsProvider);
@@ -272,7 +276,7 @@ final filteredCategoryPrayersProvider = FutureProvider.family<List<PrayerMetadat
 });
 
 // Prayer of the day provider using liturgical calendar
-final prayerOfTheDayProvider = FutureProvider<PrayerMetadata?>((ref) async {
+final prayerOfTheDayProvider = FutureProvider<Prayer?>((ref) async {
   final repository = ref.watch(prayerRepositoryProvider);
   final today = DateTime.now();
 
@@ -281,7 +285,7 @@ final prayerOfTheDayProvider = FutureProvider<PrayerMetadata?>((ref) async {
   if (liturgicalDay == null) return null;
 
   // Get all prayers for selection
-  final allPrayers = await repository.getPrayerMetadata();
+  final allPrayers = await repository.getAllPrayers();
 
   // Use the service to select the appropriate prayer
   return PrayerOfTheDayService.selectPrayerOfTheDay(

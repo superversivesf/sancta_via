@@ -6,5 +6,18 @@
     "latin": "Credo in unum Deum,\nPatrem omnipotentem,\nfactorem caeli et terrae,\nvisibilium omnium et invisibilium.\n\nEt in unum Dominum Iesum Christum,\nFilium Dei unigenitum,\net ex Patre natum ante omnia saecula.\nDeum de Deo, lumen de lumine,\nDeum verum de Deo vero,\ngenitum, non factum, consubstantialem Patri:\nper quem omnia facta sunt.\nQui propter nos homines et propter nostram salutem\ndescendit de caelis.\nEt incarnatus est de Spiritu Sancto\nex Maria Virgine, et homo factus est.\nCrucifixus etiam pro nobis sub Pontio Pilato;\npassus et sepultus est,\net resurrexit tertia die, secundum Scripturas,\net ascendit in caelum, sedet ad dexteram Patris.\nEt iterum venturus est cum gloria,\niudicare vivos et mortuos,\ncuius regni non erit finis.\n\nEt in Spiritum Sanctum, Dominum et vivificantem:\nqui ex Patre Filioque procedit.\nQui cum Patre et Filio simul adoratur et conglorificatur:\nqui locutus est per prophetas.\n\nEt unam, sanctam, catholicam et apostolicam Ecclesiam.\nConfiteor unum baptisma in remissionem peccatorum.\nEt expecto resurrectionem mortuorum,\net vitam venturi saeculi.\nAmen."
   },
   "attribution": "First Council of Constantinople (381 AD)",
-  "notes": "The Nicene Creed is the most widely accepted statement of faith among Christian churches. It is used during Mass on Sundays and solemnities, and expresses the fundamental beliefs of Christianity concerning the Trinity and Jesus Christ."
+  "notes": "The Nicene Creed is the most widely accepted statement of faith among Christian churches. It is used during Mass on Sundays and solemnities, and expresses the fundamental beliefs of Christianity concerning the Trinity and Jesus Christ.",
+  "categories": [
+    "essential",
+    "mass"
+  ],
+  "description": "The Nicene Creed is the most widely accepted statement of faith among Christian churches",
+  "tags": [
+    "essential",
+    "creed",
+    "liturgical"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 9,
+  "liturgicalSeason": null
 }

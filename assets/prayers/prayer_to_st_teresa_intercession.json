@@ -5,9 +5,23 @@
   "translation": null,
   "attribution": "Traditional Prayer to St. Teresa of Avila",
   "notes": "This traditional prayer asks for St. Teresa's intercession to help us grow in divine love. It emphasizes her mystical experiences and her burning love for God. St. Teresa wrote extensively about the stages of mystical prayer and is considered one of the greatest teachers on prayer in the Catholic tradition.",
-  "tags": ["st_teresa", "intercession", "divine_love", "mystical", "prayer"],
+  "tags": [
+    "st_teresa",
+    "intercession",
+    "divine_love",
+    "mystical"
+  ],
   "difficulty": "moderate",
-  "audience": ["adults"],
+  "audience": [
+    "adults"
+  ],
   "liturgical_season": null,
-  "feast_day": "October 15"
+  "feast_day": "October 15",
+  "categories": [
+    "saints"
+  ],
+  "description": "Prayer asking for St. Teresa's intercession to grow in divine love",
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null
 }

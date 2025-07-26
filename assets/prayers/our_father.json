@@ -6,5 +6,18 @@
     "latin": "Pater noster, qui es in caelis,\nsanctificetur nomen tuum;\nadveniat regnum tuum;\nfiat voluntas tua, sicut in caelo, et in terra.\nPanem nostrum cotidianum da nobis hodie;\net dimitte nobis debita nostra,\nsicut et nos dimittimus debitoribus nostris;\net ne nos inducas in tentationem;\nsed libera nos a malo.\nAmen."
   },
   "attribution": "Jesus Christ (Matthew 6:9-13)",
-  "notes": "The Lord's Prayer, taught by Jesus to his disciples. It is the perfect prayer that contains all we can and ought to ask of God."
+  "notes": "The Lord's Prayer, taught by Jesus to his disciples. It is the perfect prayer that contains all we can and ought to ask of God.",
+  "categories": [
+    "essential",
+    "mass"
+  ],
+  "description": "The Lord's Prayer, taught by Jesus to his disciples",
+  "tags": [
+    "daily",
+    "essential",
+    "liturgical"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 10,
+  "liturgicalSeason": null
 }

@@ -6,5 +6,21 @@
     "latin": "V. Angelus Domini nuntiavit Mariae.\nR. Et concepit de Spiritu Sancto.\n\nAve Maria, gratia plena, Dominus tecum.\nBenedicta tu in mulieribus,\net benedictus fructus ventris tui, Iesus.\nSancta Maria, Mater Dei,\nora pro nobis peccatoribus,\nnunc et in hora mortis nostrae. Amen.\n\nV. Ecce ancilla Domini.\nR. Fiat mihi secundum verbum tuum.\n\nAve Maria...\n\nV. Et Verbum caro factum est.\nR. Et habitavit in nobis.\n\nAve Maria...\n\nV. Ora pro nobis, sancta Dei Genetrix.\nR. Ut digni efficiamur promissionibus Christi.\n\nOremus:\nGratiam tuam, quaesumus, Domine, mentibus nostris infunde;\nut qui, Angelo nuntiante, Christi Filii tui incarnationem cognovimus,\nper passionem eius et crucem, ad resurrectionis gloriam perducamur.\nPer eundem Christum Dominum nostrum.\nAmen."
   },
   "attribution": "13th Century",
-  "notes": "The Angelus is a devotional prayer commemorating the Incarnation. It is traditionally recited three times a day (6am, noon, and 6pm), accompanied by the ringing of the Angelus bell. The prayer consists of three verses from Scripture, each followed by the Hail Mary, and concludes with a collect prayer reflecting on the Incarnation."
+  "notes": "The Angelus is a devotional prayer commemorating the Incarnation. It is traditionally recited three times a day (6am, noon, and 6pm), accompanied by the ringing of the Angelus bell. The prayer consists of three verses from Scripture, each followed by the Hail Mary, and concludes with a collect prayer reflecting on the Incarnation.",
+  "categories": [
+    "marian",
+    "morning",
+    "evening"
+  ],
+  "description": "The Angelus is a devotional prayer commemorating the Incarnation",
+  "tags": [
+    "marian",
+    "daily",
+    "morning",
+    "noon",
+    "evening"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 7,
+  "liturgicalSeason": "ordinary"
 }

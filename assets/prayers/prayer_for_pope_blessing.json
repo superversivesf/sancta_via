@@ -7,9 +7,25 @@
   },
   "attribution": "Traditional Catholic Prayer (based on Psalm 41:2 and Numbers 6:24-26)",
   "notes": "This prayer combines biblical blessings for the Pope. The first part is based on Psalm 41:2, and the second part is the ancient Aaronic blessing from Numbers 6:24-26. It asks for God's protection, blessing, and peace upon the Holy Father in his ministry.",
-  "tags": ["pope", "blessing", "biblical", "protection", "peace"],
+  "tags": [
+    "pope",
+    "blessing",
+    "biblical",
+    "protection"
+  ],
   "difficulty": "simple",
-  "audience": ["adults", "teens", "children"],
+  "audience": [
+    "adults",
+    "teens",
+    "children"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "saints"
+  ],
+  "description": "Prayer combining biblical blessings for the Pope's protection and peace",
+  "isLiturgical": true,
+  "liturgicalPriority": 4,
+  "liturgicalSeason": null
 }

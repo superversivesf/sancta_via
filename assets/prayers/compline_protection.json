@@ -7,9 +7,24 @@
   },
   "attribution": "Liturgy of the Hours - Compline Antiphon",
   "notes": "This beautiful Compline antiphon asks for God's protection both during waking hours and sleep. It emphasizes the dual nature of our spiritual life - actively watching with Christ when awake, and resting peacefully in Him when asleep. The Latin version quotes Psalm 17:8.",
-  "tags": ["compline", "protection", "watching", "peace", "liturgical"],
+  "tags": [
+    "compline",
+    "protection",
+    "watching",
+    "peace"
+  ],
   "difficulty": "simple",
-  "audience": ["adults", "teens"],
+  "audience": [
+    "adults",
+    "teens"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "evening"
+  ],
+  "description": "Compline antiphon asking for protection during waking and sleeping",
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null
 }

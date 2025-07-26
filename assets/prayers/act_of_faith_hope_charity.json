@@ -3,5 +3,16 @@
   "title": "Act of Faith, Hope, and Charity",
   "text": "O my God, I firmly believe\nthat you are one God in three divine Persons,\nFather, Son, and Holy Spirit.\nI believe that your divine Son became man\nand died for our sins and that he will come\nto judge the living and the dead.\nI believe these and all the truths\nwhich the Holy Catholic Church teaches\nbecause you have revealed them\nwho are eternal truth and wisdom,\nwho can neither deceive nor be deceived.\nIn this faith I intend to live and die.\nAmen.\n\nO Lord God, I hope by your grace\nfor the pardon of all my sins\nand after life here to gain eternal happiness\nbecause you have promised it\nwho are infinitely powerful, faithful, kind,\nand merciful.\nIn this hope I intend to live and die.\nAmen.\n\nO my God, I love you above all things\nwith my whole heart and soul\nbecause you are all good and worthy of all my love.\nI love my neighbor as myself for the love of you.\nI forgive all who have injured me\nand I ask pardon of those whom I have injured.\nIn this love I intend to live and die.\nAmen.",
   "attribution": "Traditional Catholic Prayer",
-  "notes": "These three acts correspond to the theological virtues of faith, hope, and charity (love). They are fundamental expressions of Catholic belief and are often prayed together as a complete act of devotion to God."
+  "notes": "These three acts correspond to the theological virtues of faith, hope, and charity (love). They are fundamental expressions of Catholic belief and are often prayed together as a complete act of devotion to God.",
+  "categories": [
+    "essential"
+  ],
+  "description": "These three acts correspond to the theological virtues of faith, hope, and charity (love)",
+  "tags": [
+    "essential",
+    "virtues"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null
 }

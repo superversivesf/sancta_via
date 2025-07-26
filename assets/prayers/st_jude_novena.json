@@ -7,9 +7,24 @@
   },
   "attribution": "Traditional Novena Prayer to St. Jude",
   "notes": "St. Jude Thaddeus, one of the twelve apostles, is the patron saint of hopeless causes and desperate situations. This is the traditional novena prayer, often prayed for nine consecutive days for urgent needs. St. Jude's name was often confused with Judas Iscariot, leading to his being 'forgotten,' which is why he became the saint to turn to when all else fails.",
-  "tags": ["st_jude", "hopeless_cases", "novena", "desperate", "apostle"],
+  "tags": [
+    "st_jude",
+    "hopeless_cases",
+    "novena",
+    "desperate"
+  ],
   "difficulty": "moderate",
-  "audience": ["adults", "teens"],
+  "audience": [
+    "adults",
+    "teens"
+  ],
   "liturgical_season": null,
-  "feast_day": "October 28"
+  "feast_day": "October 28",
+  "categories": [
+    "saints"
+  ],
+  "description": "Traditional novena prayer to St. Jude for hopeless causes",
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null
 }

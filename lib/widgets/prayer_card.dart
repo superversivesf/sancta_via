@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/prayer_metadata.dart';
+import '../models/prayer.dart';
 import '../providers/prayer_providers.dart';
 import '../providers/text_scaling_provider.dart';
 
 class PrayerCard extends ConsumerWidget {
-  final PrayerMetadata prayer;
+  final Prayer prayer;
   final VoidCallback onTap;
   final Color? themeColor;
 

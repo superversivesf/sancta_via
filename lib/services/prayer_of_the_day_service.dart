@@ -1,12 +1,12 @@
 import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
-import '../models/prayer_metadata.dart';
+import '../models/prayer.dart';
 
 class PrayerOfTheDayService {
   // Main method to get prayer of the day
-  static PrayerMetadata? selectPrayerOfTheDay(
+  static Prayer? selectPrayerOfTheDay(
       DateTime date,
       LiturgicalDayData liturgicalDay,
-      List<PrayerMetadata> allPrayers
+      List<Prayer> allPrayers
       ) {
     // Filter liturgical prayers for selection
     final liturgicalPrayers = allPrayers
@@ -28,9 +28,9 @@ class PrayerOfTheDayService {
   }
 
   // Handle specific feast days and solemnities
-  static PrayerMetadata? _getFeastDayPrayer(
+  static Prayer? _getFeastDayPrayer(
       LiturgicalDayData liturgicalDay,
-      List<PrayerMetadata> prayers
+      List<Prayer> prayers
       ) {
     // Major Solemnities get specific prayers
     if (liturgicalDay.isSolemnity && liturgicalDay.celebration.name.isNotEmpty) {
@@ -69,9 +69,9 @@ class PrayerOfTheDayService {
   }
 
   // Handle liturgical seasons
-  static PrayerMetadata? _getSeasonalPrayer(
+  static Prayer? _getSeasonalPrayer(
       LiturgicalDayData liturgicalDay,
-      List<PrayerMetadata> prayers,
+      List<Prayer> prayers,
       DateTime date
       ) {
     final season = LiturgicalSeason.fromString(liturgicalDay.season);
@@ -126,9 +126,9 @@ class PrayerOfTheDayService {
   }
 
   // Handle Ordinary Time with weekly patterns
-  static PrayerMetadata _getOrdinaryTimePrayer(
+  static Prayer _getOrdinaryTimePrayer(
       DateTime date,
-      List<PrayerMetadata> prayers
+      List<Prayer> prayers
       ) {
     // Weekly pattern for Ordinary Time
     final weeklyPatterns = {
@@ -146,7 +146,7 @@ class PrayerOfTheDayService {
   }
 
   // Helper methods
-  static PrayerMetadata? _findPrayerById(List<PrayerMetadata> prayers, String id) {
+  static Prayer? _findPrayerById(List<Prayer> prayers, String id) {
     try {
       return prayers.firstWhere((p) => p.id == id);
     } catch (e) {
@@ -154,7 +154,7 @@ class PrayerOfTheDayService {
     }
   }
 
-  static PrayerMetadata? _findPrayerByPreference(List<PrayerMetadata> prayers, List<String> preferredIds) {
+  static Prayer? _findPrayerByPreference(List<Prayer> prayers, List<String> preferredIds) {
     for (final id in preferredIds) {
       final prayer = _findPrayerById(prayers, id);
       if (prayer != null) return prayer;
@@ -162,11 +162,11 @@ class PrayerOfTheDayService {
     return null;
   }
 
-  static PrayerMetadata _rotatePrayerByDay(List<PrayerMetadata> prayers, List<String> prayerIds, DateTime date) {
+  static Prayer _rotatePrayerByDay(List<Prayer> prayers, List<String> prayerIds, DateTime date) {
     final availablePrayers = prayerIds
         .map((id) => _findPrayerById(prayers, id))
         .where((p) => p != null)
-        .cast<PrayerMetadata>()
+        .cast<Prayer>()
         .toList();
 
     if (availablePrayers.isEmpty) {
@@ -177,11 +177,11 @@ class PrayerOfTheDayService {
     return availablePrayers[dayOfYear % availablePrayers.length];
   }
 
-  static PrayerMetadata _rotatePrayerByWeek(List<PrayerMetadata> prayers, List<String> prayerIds, DateTime date) {
+  static Prayer _rotatePrayerByWeek(List<Prayer> prayers, List<String> prayerIds, DateTime date) {
     final availablePrayers = prayerIds
         .map((id) => _findPrayerById(prayers, id))
         .where((p) => p != null)
-        .cast<PrayerMetadata>()
+        .cast<Prayer>()
         .toList();
 
     if (availablePrayers.isEmpty) {

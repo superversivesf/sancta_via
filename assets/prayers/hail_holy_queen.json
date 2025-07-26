@@ -6,5 +6,17 @@
     "latin": "Salve, Regina, Mater misericordiae,\nvita, dulcedo, et spes nostra, salve.\nAd te clamamus exsules filii Hevae,\nad te suspiramus, gementes et flentes\nin hac lacrimarum valle.\nEia, ergo, advocata nostra, illos tuos\nmisericordes oculos ad nos converte;\net Iesum, benedictum fructum ventris tui,\nnobis post hoc exsilium ostende.\nO clemens, O pia, O dulcis Virgo Maria.\nV. Ora pro nobis, sancta Dei Genetrix.\nR. Ut digni efficiamur promissionibus Christi."
   },
   "attribution": "Hermann of Reichenau (11th century)",
-  "notes": "The Salve Regina is one of the most beloved Marian antiphons, traditionally sung at the end of Compline (Night Prayer). It expresses our longing for heaven and asks for Mary's intercession."
+  "notes": "The Salve Regina is one of the most beloved Marian antiphons, traditionally sung at the end of Compline (Night Prayer). It expresses our longing for heaven and asks for Mary's intercession.",
+  "categories": [
+    "marian"
+  ],
+  "description": "The Salve Regina is one of the most beloved Marian antiphons, traditionally sung at the end of Compline (Night Prayer)",
+  "tags": [
+    "marian",
+    "intercession",
+    "antiphon"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 7,
+  "liturgicalSeason": null
 }

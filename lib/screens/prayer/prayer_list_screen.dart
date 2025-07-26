@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
-import '../../models/prayer_metadata.dart';
+import '../../models/prayer.dart';
 import '../../providers/prayer_providers.dart';
 import '../../widgets/prayer_card.dart';
 import 'prayer_detail_screen.dart';
@@ -100,7 +100,7 @@ class PrayerListScreen extends ConsumerWidget {
   }
 
   // Determine which provider to use based on the screen type
-  AsyncValue<List<PrayerMetadata>> _getPrayersProvider(WidgetRef ref) {
+  AsyncValue<List<Prayer>> _getPrayersProvider(WidgetRef ref) {
     if (showFavorites) {
       return ref.watch(favoritePrayersProvider);
     } else if (showRecent) {

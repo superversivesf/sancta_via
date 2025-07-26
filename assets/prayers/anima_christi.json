@@ -7,9 +7,24 @@
   },
   "attribution": "14th century, popularized by St. Ignatius of Loyola",
   "notes": "The Anima Christi (Soul of Christ) is one of the most beloved prayers of thanksgiving after Holy Communion. It asks for intimate union with Jesus through His Body, Blood, Soul, and Divinity. St. Ignatius of Loyola was particularly devoted to this prayer.",
-  "tags": ["communion", "eucharist", "thanksgiving", "union", "st_ignatius"],
+  "tags": [
+    "communion",
+    "eucharist",
+    "thanksgiving",
+    "union"
+  ],
   "difficulty": "moderate",
-  "audience": ["adults", "teens"],
+  "audience": [
+    "adults",
+    "teens"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "mass"
+  ],
+  "description": "The beloved prayer asking for intimate union with Jesus after Communion",
+  "isLiturgical": true,
+  "liturgicalPriority": 7,
+  "liturgicalSeason": null
 }

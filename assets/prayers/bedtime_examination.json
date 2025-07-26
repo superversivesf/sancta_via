@@ -5,9 +5,25 @@
   "translation": null,
   "attribution": "Traditional Catholic Evening Prayer",
   "notes": "This bedtime prayer combines a brief examination of conscience with thanksgiving and petition for protection. It's perfect for those who want to end their day with reflection on their relationship with God, seeking forgiveness for failures and expressing gratitude for blessings.",
-  "tags": ["bedtime", "examination", "forgiveness", "thanksgiving", "protection"],
+  "tags": [
+    "bedtime",
+    "examination",
+    "forgiveness",
+    "thanksgiving"
+  ],
   "difficulty": "simple",
-  "audience": ["adults", "teens", "children"],
+  "audience": [
+    "adults",
+    "teens",
+    "children"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "evening"
+  ],
+  "description": "Bedtime prayer combining examination of conscience with thanksgiving",
+  "isLiturgical": true,
+  "liturgicalPriority": 4,
+  "liturgicalSeason": null
 }

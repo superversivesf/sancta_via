@@ -7,9 +7,24 @@
   },
   "attribution": "Roman Missal",
   "notes": "This formal prayer for the Pope comes from the Roman Missal and is often used in liturgical contexts. It asks God to guide and bless the Holy Father in his role as shepherd of the universal Church. The 'N.' represents the Pope's name (currently Francis).",
-  "tags": ["pope", "church", "liturgical", "shepherd", "formal"],
+  "tags": [
+    "pope",
+    "church",
+    "liturgical",
+    "shepherd"
+  ],
   "difficulty": "moderate",
-  "audience": ["adults", "teens"],
+  "audience": [
+    "adults",
+    "teens"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "saints"
+  ],
+  "description": "Formal liturgical prayer for the Pope from the Roman Missal",
+  "isLiturgical": true,
+  "liturgicalPriority": 4,
+  "liturgicalSeason": null
 }

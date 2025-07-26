@@ -1,8 +1,8 @@
-# Bible Reading App Build Script
+# Prayer App Build Script
 
 # Configuration
 SHELL := /bin/bash
-APP_NAME := bible_reading_app
+APP_NAME := sancta_via_prayer_companion
 BUILD_DATE := $(shell date +%Y%m%d_%H%M%S)
 BUILD_VERSION := $(shell grep "^version:" pubspec.yaml | sed 's/version: *//' | tr -d '"' | cut -d'+' -f1)
 BUILD_NUMBER := $(shell grep "^version:" pubspec.yaml | sed 's/version: *//' | tr -d '"' | cut -d'+' -f2)
@@ -18,11 +18,12 @@ NC := \033[0m # No Color
 # Default target
 .PHONY: help
 help:
-	@echo "$(GREEN)Bible Reading App Build System$(NC)"
+	@echo "$(GREEN)Sancta Via Prayer Companion Build System$(NC)"
 	@echo ""
 	@echo "Available targets:"
 	@echo "  $(YELLOW)info$(NC)            - Show app information"
 	@echo "  $(YELLOW)deps$(NC)            - Install dependencies"
+	@echo "  $(YELLOW)migrate-prayers$(NC) - Consolidate prayer metadata into individual files"
 	@echo "  $(YELLOW)build-all$(NC)       - Build for all platforms"
 	@echo "  $(YELLOW)build-android$(NC)   - Build Android APK"
 	@echo "  $(YELLOW)build-ios$(NC)       - Build iOS (macOS only)"
@@ -36,7 +37,7 @@ help:
 
 .PHONY: info
 info:
-	@echo "$(GREEN)Bible Reading App Information$(NC)"
+	@echo "$(GREEN)Sancta Via Prayer Companion Information$(NC)"
 	@echo "App Name: $(APP_NAME)"
 	@echo "Version: $(BUILD_VERSION)"
 	@echo "Build Number: $(BUILD_NUMBER)"
@@ -51,6 +52,21 @@ deps:
 	@echo "$(BLUE)[DEPS]$(NC) Installing dependencies..."
 	@flutter pub get
 	@echo "$(GREEN)[SUCCESS]$(NC) Dependencies installed"
+
+.PHONY: migrate-prayers
+migrate-prayers:
+	@echo "$(BLUE)[MIGRATE]$(NC) Consolidating prayer metadata..."
+	@if [ -f "assets/prayers/prayers_metadata.json" ]; then \
+		if command -v jq >/dev/null 2>&1; then \
+			chmod +x scripts/migrate_prayers.sh; \
+			./scripts/migrate_prayers.sh; \
+		else \
+			echo "$(YELLOW)[INFO]$(NC) jq not found, using Dart migration script..."; \
+			cd scripts && dart migrate_prayers.dart; \
+		fi; \
+	else \
+		echo "$(YELLOW)[INFO]$(NC) prayers_metadata.json not found - migration may already be complete"; \
+	fi
 
 .PHONY: clean
 clean:
@@ -122,7 +138,7 @@ build-web: deps
 
 .PHONY: build-all
 build-all: clean
-	@echo "$(GREEN)Building Bible Reading App for all platforms$(NC)"
+	@echo "$(GREEN)Building Sancta Via Prayer Companion for all platforms$(NC)"
 	@echo ""
 	@$(MAKE) build-android
 	@echo ""

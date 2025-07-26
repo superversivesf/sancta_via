@@ -7,9 +7,25 @@
   },
   "attribution": "Traditional Catholic Prayer (from Compline)",
   "notes": "This traditional evening prayer asks for God's protection during the night hours. It requests that angels guard the home and family, driving away all evil influences. This prayer is often used in the Liturgy of the Hours during Compline (Night Prayer).",
-  "tags": ["evening", "protection", "angels", "blessing", "compline"],
+  "tags": [
+    "evening",
+    "protection",
+    "angels",
+    "blessing"
+  ],
   "difficulty": "simple",
-  "audience": ["adults", "teens", "families"],
+  "audience": [
+    "adults",
+    "teens",
+    "families"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "evening"
+  ],
+  "description": "Prayer asking for God's protection during the night hours",
+  "isLiturgical": true,
+  "liturgicalPriority": 4,
+  "liturgicalSeason": null
 }

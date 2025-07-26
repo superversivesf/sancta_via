@@ -7,9 +7,24 @@
   },
   "attribution": "Traditional Prayer to St. Anthony of Padua",
   "notes": "St. Anthony of Padua (1195-1231) is one of the most beloved saints, famous for finding lost objects but also for his powerful preaching and miracles. This prayer asks not only for help finding material things but, more importantly, for spiritual restoration and the grace of God.",
-  "tags": ["st_anthony", "lost_things", "saint", "intercession", "miracles"],
+  "tags": [
+    "st_anthony",
+    "lost_things",
+    "saint",
+    "intercession"
+  ],
   "difficulty": "moderate",
-  "audience": ["adults", "teens"],
+  "audience": [
+    "adults",
+    "teens"
+  ],
   "liturgical_season": null,
-  "feast_day": "June 13"
+  "feast_day": "June 13",
+  "categories": [
+    "saints"
+  ],
+  "description": "Traditional prayer asking St. Anthony's help in finding lost things",
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null
 }

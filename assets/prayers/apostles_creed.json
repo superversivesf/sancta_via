@@ -6,5 +6,18 @@
     "latin": "Credo in Deum Patrem omnipotentem,\nCreatorem caeli et terrae,\net in Iesum Christum, Filium Eius unicum, Dominum nostrum,\nqui conceptus est de Spiritu Sancto,\nnatus ex Maria Virgine,\npassus sub Pontio Pilato,\ncrucifixus, mortuus, et sepultus,\ndescendit ad inferos,\ntertia die resurrexit a mortuis,\nascendit ad caelos,\nsedet ad dexteram Dei Patris omnipotentis,\ninde venturus est iudicare vivos et mortuos.\nCredo in Spiritum Sanctum,\nsanctam Ecclesiam catholicam,\nsanctorum communionem,\nremissionem peccatorum,\ncarnis resurrectionem,\nvitam aeternam.\nAmen."
   },
   "attribution": "Apostolic Tradition (2nd century)",
-  "notes": "The Apostles' Creed is a summary of the apostles' teachings and one of the oldest and most widely used statements of Christian faith. It is divided into twelve articles, reflecting the traditional belief that each of the Twelve Apostles contributed one article."
+  "notes": "The Apostles' Creed is a summary of the apostles' teachings and one of the oldest and most widely used statements of Christian faith. It is divided into twelve articles, reflecting the traditional belief that each of the Twelve Apostles contributed one article.",
+  "categories": [
+    "essential",
+    "mass"
+  ],
+  "description": "The Apostles' Creed is a summary of the apostles' teachings and one of the oldest and most widely used statements of Christian faith",
+  "tags": [
+    "essential",
+    "creed",
+    "liturgical"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 7,
+  "liturgicalSeason": null
 }

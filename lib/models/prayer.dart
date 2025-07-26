@@ -5,14 +5,28 @@ class Prayer {
   final Map<String, String>? translations;
   final String? attribution;
   final String? notes;
+  
+  // Metadata fields from prayers_metadata.json (required parameters come first)
+  final List<String> categories;
+  final String description;
+  final List<String> tags;
+  final bool isLiturgical;
+  final int liturgicalPriority;
+  final String? liturgicalSeason;
 
   Prayer({
     required this.id,
     required this.title,
     required this.text,
+    required this.categories,
+    required this.description,
+    required this.tags,
     this.translations,
     this.attribution,
     this.notes,
+    this.isLiturgical = false,
+    this.liturgicalPriority = 0,
+    this.liturgicalSeason,
   });
 
   factory Prayer.fromJson(Map<String, dynamic> json) {
@@ -29,6 +43,12 @@ class Prayer {
       translations: translationsMap,
       attribution: json['attribution'],
       notes: json['notes'],
+      categories: List<String>.from(json['categories'] ?? []),
+      description: json['description'] ?? '',
+      tags: List<String>.from(json['tags'] ?? []),
+      isLiturgical: json['isLiturgical'] ?? false,
+      liturgicalPriority: json['liturgicalPriority'] ?? 0,
+      liturgicalSeason: json['liturgicalSeason'],
     );
   }
 
@@ -40,6 +60,12 @@ class Prayer {
       'translation': translations,
       'attribution': attribution,
       'notes': notes,
+      'categories': categories,
+      'description': description,
+      'tags': tags,
+      'isLiturgical': isLiturgical,
+      'liturgicalPriority': liturgicalPriority,
+      'liturgicalSeason': liturgicalSeason,
     };
   }
 }

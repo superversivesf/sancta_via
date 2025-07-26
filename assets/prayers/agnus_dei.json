@@ -6,5 +6,17 @@
     "latin": "Agnus Dei, qui tollis peccata mundi,\nmiserere nobis.\n\nAgnus Dei, qui tollis peccata mundi,\nmiserere nobis.\n\nAgnus Dei, qui tollis peccata mundi,\ndona nobis pacem."
   },
   "attribution": "Based on John 1:29, introduced by Pope Sergius I (7th century)",
-  "notes": "The Agnus Dei is sung or recited during the breaking of the bread at Mass, just before Communion. It recalls John the Baptist's words when he saw Jesus: 'Behold, the Lamb of God, who takes away the sin of the world.'"
+  "notes": "The Agnus Dei is sung or recited during the breaking of the bread at Mass, just before Communion. It recalls John the Baptist's words when he saw Jesus: 'Behold, the Lamb of God, who takes away the sin of the world.'",
+  "categories": [
+    "mass"
+  ],
+  "description": "The Agnus Dei is sung or recited during the breaking of the bread at Mass, just before Communion",
+  "tags": [
+    "liturgical",
+    "mass",
+    "communion"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 7,
+  "liturgicalSeason": null
 }

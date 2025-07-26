@@ -7,9 +7,24 @@
   },
   "attribution": "Traditional Catholic Morning Prayer",
   "notes": "A prayer of gratitude for safe rest and the gift of a new day, traditionally said immediately upon waking. This prayer combines thanksgiving for God's protection through the night with a dedication of the day ahead.",
-  "tags": ["morning", "thanksgiving", "traditional", "daily", "protection"],
+  "tags": [
+    "morning",
+    "thanksgiving",
+    "traditional",
+    "daily"
+  ],
   "difficulty": "simple",
-  "audience": ["adults", "teens"],
+  "audience": [
+    "adults",
+    "teens"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "morning"
+  ],
+  "description": "A prayer of gratitude for safe rest and the gift of a new day",
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null
 }

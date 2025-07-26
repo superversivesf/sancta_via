@@ -6,5 +6,16 @@
     "latin": "O Iesu, per Cor Immaculatum Mariae,\ntibi offero orationes, actiones et passiones huius diei\nin omnibus finibus Cordis tui Sanctissimi,\nin unione cum Sanctissimo Sacrificio Missae per totum mundum,\npro redemptione peccatorum, in adiunctis intentionibus Sancti Patris.\nAmen."
   },
   "attribution": "Apostleship of Prayer (1844)",
-  "notes": "The Morning Offering is a prayer said at the beginning of the day to dedicate all thoughts, words, and actions to God. It is associated with the Apostleship of Prayer, now known as the Pope's Worldwide Prayer Network, which encourages Catholics to offer their day for the intentions of the Church and the Holy Father."
+  "notes": "The Morning Offering is a prayer said at the beginning of the day to dedicate all thoughts, words, and actions to God. It is associated with the Apostleship of Prayer, now known as the Pope's Worldwide Prayer Network, which encourages Catholics to offer their day for the intentions of the Church and the Holy Father.",
+  "categories": [
+    "morning"
+  ],
+  "description": "The Morning Offering is a prayer said at the beginning of the day to dedicate all thoughts, words, and actions to God",
+  "tags": [
+    "morning",
+    "daily"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null
 }

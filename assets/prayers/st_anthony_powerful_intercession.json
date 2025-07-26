@@ -7,9 +7,24 @@
   },
   "attribution": "Traditional Novena Prayer to St. Anthony",
   "notes": "This powerful prayer to St. Anthony emphasizes his miraculous powers and his special relationship with the Infant Jesus. According to tradition, St. Anthony had a vision of the Christ Child, who came to rest in his arms. This prayer is often used in novenas for urgent or difficult requests.",
-  "tags": ["st_anthony", "miracles", "intercession", "infant_jesus", "novena"],
+  "tags": [
+    "st_anthony",
+    "miracles",
+    "intercession",
+    "infant_jesus"
+  ],
   "difficulty": "moderate",
-  "audience": ["adults", "teens"],
+  "audience": [
+    "adults",
+    "teens"
+  ],
   "liturgical_season": null,
-  "feast_day": "June 13"
+  "feast_day": "June 13",
+  "categories": [
+    "saints"
+  ],
+  "description": "Prayer emphasizing St. Anthony's miraculous powers and relationship with the Infant Jesus",
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null
 }

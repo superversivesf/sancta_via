@@ -5,9 +5,24 @@
   "translation": null,
   "attribution": "Often attributed to St. Teresa of Avila (though actual authorship uncertain)",
   "notes": "This beautiful prayer, often attributed to St. Teresa of Avila, emphasizes our role as the hands, feet, and eyes of Christ in the world. While its exact authorship is uncertain, it captures the spirit of Teresa's teaching about our intimate union with Christ and our calling to be His presence in the world.",
-  "tags": ["christ", "service", "body_of_christ", "mission", "hands_of_christ"],
+  "tags": [
+    "christ",
+    "service",
+    "body_of_christ",
+    "mission"
+  ],
   "difficulty": "simple",
-  "audience": ["adults", "teens"],
+  "audience": [
+    "adults",
+    "teens"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "saints"
+  ],
+  "description": "Prayer emphasizing our role as Christ's hands, feet, and eyes in the world",
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null
 }

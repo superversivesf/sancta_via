@@ -7,9 +7,25 @@
   },
   "attribution": "Roman Missal (1970, revised 2011)",
   "notes": "This is the first of the three Memorial Acclamations sung or recited by the congregation during the Eucharistic Prayer, immediately after the consecration. It proclaims the central mysteries of our faith: Christ's death, resurrection, and promised return (the Paschal Mystery).",
-  "tags": ["liturgical", "mass", "eucharist", "memorial", "acclamation"],
+  "tags": [
+    "liturgical",
+    "mass",
+    "eucharist",
+    "memorial"
+  ],
   "difficulty": "simple",
-  "audience": ["adults", "teens", "children"],
+  "audience": [
+    "adults",
+    "teens",
+    "children"
+  ],
   "liturgical_season": null,
-  "feast_day": null
+  "feast_day": null,
+  "categories": [
+    "mass"
+  ],
+  "description": "We proclaim your Death, O Lord, and profess your Resurrection",
+  "isLiturgical": true,
+  "liturgicalPriority": 8,
+  "liturgicalSeason": null
 }

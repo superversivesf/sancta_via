@@ -6,5 +6,18 @@
     "latin": "Gloria Patri, et Filio,\net Spiritui Sancto,\nsicut erat in principio,\net nunc, et semper,\net in saecula saeculorum.\nAmen."
   },
   "attribution": "Traditional Doxology",
-  "notes": "The Glory Be (Gloria Patri) is a doxology, a short hymn of praise to the Trinity. It is commonly used at the end of psalms and canticles in the Divine Office and at the end of each decade of the Rosary."
+  "notes": "The Glory Be (Gloria Patri) is a doxology, a short hymn of praise to the Trinity. It is commonly used at the end of psalms and canticles in the Divine Office and at the end of each decade of the Rosary.",
+  "categories": [
+    "essential",
+    "mass"
+  ],
+  "description": "The Glory Be (Gloria Patri) is a doxology, a short hymn of praise to the Trinity",
+  "tags": [
+    "essential",
+    "daily",
+    "liturgical"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 8,
+  "liturgicalSeason": null
 }

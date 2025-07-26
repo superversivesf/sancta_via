@@ -6,5 +6,18 @@
     "latin": "Omnipotens sempiterne Deus,\necce ad sacramentum unigeniti Filii tui,\nDomini nostri Iesu Christi, accedo.\nAccedo tamquam infirmus ad medicum vitae,\nimmundus ad fontem misericordiae,\ncaecus ad lumen claritatis aeternae,\npauper et egenus ad Dominum caeli et terrae.\n\nErgo immensam largitatis tuae abundantiam imploro,\nut meam curare digneris infirmitatem,\nlavare foeditatem, illuminare caecitatem,\nditare paupertatem, vestire nuditatem.\n\nUt panem angelorum, Regem regum\net Dominum dominantium,\ntanta suscipiam reverentia et humilitate,\ntanta contritione et devotione,\ntanta puritate et fide,\ntali proposito et intentione,\nsicut expedit saluti animae meae.\n\nDa mihi, quaeso,\nDomini corporis et sanguinis\nnon solum suscipere sacramentum,\nsed etiam rem et virtutem sacramenti.\n\nO mitissime Deus,\nda mihi corpus unigeniti Filii tui,\nDomini nostri Iesu Christi,\nquod de Virgine Maria traxit,\nsic suscipere,\nut corporis eius mystici\nmerear incorporari membris,\net in eius sanctorum connumerari grege.\n\nO amantissime Pater,\nconcede mihi dilectum Filium tuum,\nquem nunc velatum in via suscipere propono,\nrevelata tandem facie perpetuo contueri.\nAmen."
   },
   "attribution": "Traditional Catholic Prayer (attributed to St. Thomas Aquinas)",
-  "notes": "This prayer helps prepare the soul for the celebration of Mass and reception of Holy Communion. It expresses humility, reverence, and desire for spiritual purification before approaching the Eucharist."
+  "notes": "This prayer helps prepare the soul for the celebration of Mass and reception of Holy Communion. It expresses humility, reverence, and desire for spiritual purification before approaching the Eucharist.",
+  "categories": [
+    "mass",
+    "confession"
+  ],
+  "description": "This prayer helps prepare the soul for the celebration of Mass and reception of Holy Communion",
+  "tags": [
+    "liturgical",
+    "mass",
+    "preparation"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null
 }

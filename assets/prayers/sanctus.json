@@ -6,5 +6,17 @@
     "latin": "Sanctus, Sanctus, Sanctus\nDominus Deus Sabaoth.\nPleni sunt caeli et terra gloria tua.\nHosanna in excelsis.\nBenedictus qui venit in nomine Domini.\nHosanna in excelsis."
   },
   "attribution": "Based on Isaiah 6:3 and Matthew 21:9",
-  "notes": "The Sanctus is sung or recited during every Mass just before the Eucharistic Prayer. It combines the song of the angels from Isaiah's vision with the acclamation of the crowds welcoming Jesus into Jerusalem."
+  "notes": "The Sanctus is sung or recited during every Mass just before the Eucharistic Prayer. It combines the song of the angels from Isaiah's vision with the acclamation of the crowds welcoming Jesus into Jerusalem.",
+  "categories": [
+    "mass"
+  ],
+  "description": "The Sanctus is sung or recited during every Mass just before the Eucharistic Prayer",
+  "tags": [
+    "liturgical",
+    "mass",
+    "praise"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 8,
+  "liturgicalSeason": null
 }
