@@ -6,7 +6,7 @@ import '../models/prayer.dart';
 import '../models/prayer_category.dart';
 import '../models/prayer_category_group.dart';
 import '../models/prayer_metadata.dart';
-import '../models/prayer_preferences.dart';
+import '../models/prayer_app_settings.dart';
 import '../repositories/prayer_repository.dart';
 import '../services/prayer_of_the_day_service.dart';
 import '../widgets/enhanced_prayer_text.dart';
@@ -59,20 +59,10 @@ final prayerProvider = FutureProvider.family<Prayer?, String>((ref, prayerId) as
 
 // BACKWARD COMPATIBILITY: Provider for user preferences using new unified system
 // 
-// This provider now wraps the new PrayerAppSettings but maintains the old PrayerPreferences interface
+// This provider now wraps the new PrayerAppSettings but maintains a compatible interface
 // for backward compatibility. New code should use prayerAppSettingsProvider directly.
-final prayerPreferencesProvider = Provider<PrayerPreferences>((ref) {
-  final prayerSettings = ref.watch(prayerAppSettingsProvider);
-  
-  // Convert to old PrayerPreferences format for backward compatibility
-  return PrayerPreferences(
-    favoritePrayerIds: prayerSettings.favoritePrayerIds,
-    recentPrayerIds: prayerSettings.recentPrayerIds,
-    fontSize: prayerSettings.fontSize,
-    defaultLanguage: _convertLanguageToString(prayerSettings.defaultLanguage),
-    readingMode: prayerSettings.readingMode,
-    verseHighlighting: prayerSettings.verseHighlighting,
-  );
+final prayerPreferencesProvider = Provider<PrayerAppSettings>((ref) {
+  return ref.watch(prayerAppSettingsProvider);
 });
 
 /// Helper function to convert AppLanguage enum to string for backward compatibility
@@ -98,16 +88,8 @@ class PrayerPreferencesNotifier {
   PrayerPreferencesNotifier(this._ref, this.repository);
   
   /// Get current state (backward compatibility)
-  PrayerPreferences get state {
-    final prayerSettings = _ref.read(prayerAppSettingsProvider);
-    return PrayerPreferences(
-      favoritePrayerIds: prayerSettings.favoritePrayerIds,
-      recentPrayerIds: prayerSettings.recentPrayerIds,
-      fontSize: prayerSettings.fontSize,
-      defaultLanguage: _convertLanguageToString(prayerSettings.defaultLanguage),
-      readingMode: prayerSettings.readingMode,
-      verseHighlighting: prayerSettings.verseHighlighting,
-    );
+  PrayerAppSettings get state {
+    return _ref.read(prayerAppSettingsProvider);
   }
 
   Future<void> toggleFavorite(String prayerId) async {
@@ -144,20 +126,20 @@ final prayerPreferencesNotifierProvider = Provider<PrayerPreferencesNotifier>((r
 // Provider for favorite prayers
 final favoritePrayersProvider = FutureProvider<List<PrayerMetadata>>((ref) async {
   final allPrayers = await ref.watch(prayerMetadataProvider.future);
-  final preferences = ref.watch(prayerPreferencesProvider);
+  final settings = ref.watch(prayerPreferencesProvider);
 
   return allPrayers
-      .where((prayer) => preferences.favoritePrayerIds.contains(prayer.id))
+      .where((prayer) => settings.favoritePrayerIds.contains(prayer.id))
       .toList();
 });
 
 // Provider for recent prayers
 final recentPrayersProvider = FutureProvider<List<PrayerMetadata>>((ref) async {
   final allPrayers = await ref.watch(prayerMetadataProvider.future);
-  final preferences = ref.watch(prayerPreferencesProvider);
+  final settings = ref.watch(prayerPreferencesProvider);
 
   // Sort in the order of recentPrayerIds
-  return preferences.recentPrayerIds
+  return settings.recentPrayerIds
       .map((id) => allPrayers.where((prayer) => prayer.id == id))
       .where((prayers) => prayers.isNotEmpty)
       .map((prayers) => prayers.first)
@@ -186,14 +168,14 @@ final selectedTagsProvider = StateNotifierProvider<SelectedTagsNotifier, List<St
 
 // Font size provider (derived from preferences)
 final fontSizeProvider = Provider<double>((ref) {
-  final preferences = ref.watch(prayerPreferencesProvider);
-  return preferences.fontSize;
+  final settings = ref.watch(prayerPreferencesProvider);
+  return settings.fontSize;
 });
 
 // Default language provider (derived from preferences) - backward compatibility
 final prayerDefaultLanguageProvider = Provider<String>((ref) {
-  final preferences = ref.watch(prayerPreferencesProvider);
-  return preferences.defaultLanguage;
+  final settings = ref.watch(prayerPreferencesProvider);
+  return _convertLanguageToString(settings.defaultLanguage);
 });
 
 class SelectedTagsNotifier extends StateNotifier<List<String>> {
@@ -234,7 +216,7 @@ final filteredPrayersProvider = FutureProvider<List<PrayerMetadata>>((ref) async
 
   final selectedTags = ref.watch(selectedTagsProvider);
   final showFavoritesOnly = ref.watch(showFavoritesOnlyProvider);
-  final preferences = ref.watch(prayerPreferencesProvider);
+  final settings = ref.watch(prayerPreferencesProvider);
 
   // Start with all prayers
   var filteredPrayers = allPrayers;
@@ -242,7 +224,7 @@ final filteredPrayersProvider = FutureProvider<List<PrayerMetadata>>((ref) async
   // Filter by favorites if enabled
   if (showFavoritesOnly) {
     filteredPrayers = filteredPrayers.where((prayer) =>
-        preferences.favoritePrayerIds.contains(prayer.id)
+        settings.favoritePrayerIds.contains(prayer.id)
     ).toList();
   }
 
@@ -263,7 +245,7 @@ final filteredCategoryPrayersProvider = FutureProvider.family<List<PrayerMetadat
 
   final selectedTags = ref.watch(selectedTagsProvider);
   final showFavoritesOnly = ref.watch(showFavoritesOnlyProvider);
-  final preferences = ref.watch(prayerPreferencesProvider);
+  final settings = ref.watch(prayerPreferencesProvider);
 
   // Parse comma-separated categories
   final categories = categoryFilter.split(',');
@@ -276,7 +258,7 @@ final filteredCategoryPrayersProvider = FutureProvider.family<List<PrayerMetadat
   // Apply other filters
   if (showFavoritesOnly) {
     filteredPrayers = filteredPrayers.where((prayer) =>
-        preferences.favoritePrayerIds.contains(prayer.id)
+        settings.favoritePrayerIds.contains(prayer.id)
     ).toList();
   }
 

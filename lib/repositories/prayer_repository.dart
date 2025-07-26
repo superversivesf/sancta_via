@@ -6,7 +6,7 @@ import '../models/prayer.dart';
 import '../models/prayer_category.dart';
 import '../models/prayer_category_group.dart';
 import '../models/prayer_metadata.dart';
-import '../models/prayer_preferences.dart';
+import '../models/prayer_app_settings.dart';
 import '../utils/logger.dart';
 
 class PrayerRepository {
@@ -46,68 +46,49 @@ class PrayerRepository {
     }
   }
 
-  // Get user preferences
-  Future<PrayerPreferences> getUserPreferences() async {
+  // Get user preferences (deprecated - use PrayerAppSettingsProvider instead)
+  @Deprecated('Use PrayerAppSettingsProvider instead')
+  Future<PrayerAppSettings> getUserPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString(_preferencesKey);
 
     if (jsonString == null) {
-      return PrayerPreferences();
+      return PrayerAppSettings.defaults();
     }
 
-    return PrayerPreferences.fromJson(json.decode(jsonString));
+    return PrayerAppSettings.fromJson(json.decode(jsonString));
   }
 
-  // Save user preferences
-  Future<void> saveUserPreferences(PrayerPreferences preferences) async {
+  // Save user preferences (deprecated - use PrayerAppSettingsProvider instead)
+  @Deprecated('Use PrayerAppSettingsProvider instead')
+  Future<void> saveUserPreferences(PrayerAppSettings settings) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_preferencesKey, json.encode(preferences.toJson()));
+    await prefs.setString(_preferencesKey, json.encode(settings.toJson()));
   }
 
-  // Toggle favorite status
-  Future<PrayerPreferences> toggleFavorite(String prayerId) async {
-    final preferences = await getUserPreferences();
+  // Toggle favorite status (deprecated - use PrayerAppSettingsProvider instead)
+  @Deprecated('Use PrayerAppSettingsProvider instead')
+  Future<PrayerAppSettings> toggleFavorite(String prayerId) async {
+    final settings = await getUserPreferences();
 
-    final List<String> updatedFavorites = List.from(preferences.favoritePrayerIds);
-    if (updatedFavorites.contains(prayerId)) {
-      updatedFavorites.remove(prayerId);
+    final PrayerAppSettings updatedSettings;
+    if (settings.favoritePrayerIds.contains(prayerId)) {
+      updatedSettings = settings.removeFavorite(prayerId);
     } else {
-      updatedFavorites.add(prayerId);
+      updatedSettings = settings.addFavorite(prayerId);
     }
 
-    final updatedPreferences = preferences.copyWith(
-      favoritePrayerIds: updatedFavorites,
-    );
-
-    await saveUserPreferences(updatedPreferences);
-    return updatedPreferences;
+    await saveUserPreferences(updatedSettings);
+    return updatedSettings;
   }
 
-  // Add prayer to recent
-  Future<PrayerPreferences> addToRecent(String prayerId) async {
-    final preferences = await getUserPreferences();
-
-    final List<String> updatedRecent = List.from(preferences.recentPrayerIds);
-
-    // Remove if already exists (to move to top)
-    if (updatedRecent.contains(prayerId)) {
-      updatedRecent.remove(prayerId);
-    }
-
-    // Add to the beginning of the list
-    updatedRecent.insert(0, prayerId);
-
-    // Keep only last 10
-    if (updatedRecent.length > 10) {
-      updatedRecent.removeLast();
-    }
-
-    final updatedPreferences = preferences.copyWith(
-      recentPrayerIds: updatedRecent,
-    );
-
-    await saveUserPreferences(updatedPreferences);
-    return updatedPreferences;
+  // Add prayer to recent (deprecated - use PrayerAppSettingsProvider instead)
+  @Deprecated('Use PrayerAppSettingsProvider instead')
+  Future<PrayerAppSettings> addToRecent(String prayerId) async {
+    final settings = await getUserPreferences();
+    final updatedSettings = settings.addToRecent(prayerId);
+    await saveUserPreferences(updatedSettings);
+    return updatedSettings;
   }
 
   // Search prayers

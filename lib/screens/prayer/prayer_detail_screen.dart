@@ -4,7 +4,8 @@ import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_ca
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import '../../models/prayer.dart';
-import '../../models/prayer_preferences.dart';
+import '../../models/prayer_app_settings.dart';
+
 import '../../providers/prayer_providers.dart';
 import '../../providers/prayer_app_settings_provider.dart';
 import '../../providers/text_scaling_provider.dart';
@@ -170,10 +171,10 @@ class PrayerDetailScreen extends ConsumerWidget {
     WidgetRef ref,
     Color? themeColor,
     TextScaling textScaling,
-    PrayerPreferences preferences,
+    PrayerAppSettings settings,
     String selectedTranslation,
   ) {
-    final EdgeInsets padding = preferences.readingMode == PrayerReadingMode.immersive 
+    final EdgeInsets padding = settings.readingMode == PrayerReadingMode.immersive 
         ? const EdgeInsets.symmetric(horizontal: 24, vertical: 32)
         : const EdgeInsets.all(16);
 
@@ -182,13 +183,13 @@ class PrayerDetailScreen extends ConsumerWidget {
       child: SingleChildScrollView(
         padding: padding,
         child: Column(
-        crossAxisAlignment: preferences.readingMode == PrayerReadingMode.contemplative
+        crossAxisAlignment: settings.readingMode == PrayerReadingMode.contemplative
             ? CrossAxisAlignment.center
             : CrossAxisAlignment.start,
         children: [
           // Prayer Title (show unless in immersive contemplative mode)
-          if (preferences.readingMode != PrayerReadingMode.immersive || 
-              preferences.readingMode != PrayerReadingMode.contemplative) ...[
+          if (settings.readingMode != PrayerReadingMode.immersive || 
+              settings.readingMode != PrayerReadingMode.contemplative) ...[
             Text(
               prayer.title,
               style: textScaling.scaledHeadlineMedium(context).copyWith(
@@ -197,27 +198,27 @@ class PrayerDetailScreen extends ConsumerWidget {
               ),
               maxLines: textScaling.scaleFactor > 1.2 ? 2 : 3,
               overflow: TextOverflow.ellipsis,
-              textAlign: preferences.readingMode == PrayerReadingMode.contemplative
+              textAlign: settings.readingMode == PrayerReadingMode.contemplative
                   ? TextAlign.center
                   : TextAlign.start,
             ),
 
             // Attribution
             if (prayer.attribution != null) ...[
-              SizedBox(height: preferences.readingMode == PrayerReadingMode.immersive ? 12 : 8),
+              SizedBox(height: settings.readingMode == PrayerReadingMode.immersive ? 12 : 8),
               Text(
                 prayer.attribution!,
                 style: textScaling.scaledBodyMedium(context).copyWith(
                   fontStyle: FontStyle.italic,
                   color: themeColor?.withValues(alpha: 0.7),
                 ),
-                textAlign: preferences.readingMode == PrayerReadingMode.contemplative
+                textAlign: settings.readingMode == PrayerReadingMode.contemplative
                     ? TextAlign.center
                     : TextAlign.start,
               ),
             ],
 
-            SizedBox(height: preferences.readingMode == PrayerReadingMode.immersive ? 32 : 24),
+            SizedBox(height: settings.readingMode == PrayerReadingMode.immersive ? 32 : 24),
           ] else ...[
             // Minimal spacing for contemplative immersive mode
             const SizedBox(height: 16),
@@ -225,7 +226,7 @@ class PrayerDetailScreen extends ConsumerWidget {
 
           // Enhanced Prayer Text
           Container(
-            padding: preferences.readingMode == PrayerReadingMode.immersive 
+            padding: settings.readingMode == PrayerReadingMode.immersive 
                 ? const EdgeInsets.all(16)
                 : const EdgeInsets.all(20),
             width: double.infinity,
@@ -241,13 +242,13 @@ class PrayerDetailScreen extends ConsumerWidget {
               text: displayText,
               language: selectedTranslation,
               themeColor: themeColor,
-              readingMode: preferences.readingMode,
-              enableVerseHighlighting: preferences.verseHighlighting,
+              readingMode: settings.readingMode,
+              enableVerseHighlighting: settings.verseHighlighting,
             ),
           ),
 
           // Translation selector (hide in immersive mode)
-          if (preferences.readingMode != PrayerReadingMode.immersive && 
+          if (settings.readingMode != PrayerReadingMode.immersive && 
               prayer.translations != null && 
               prayer.translations!.isNotEmpty) ...[
             const SizedBox(height: 24),
@@ -256,17 +257,17 @@ class PrayerDetailScreen extends ConsumerWidget {
 
           // Notes (hide in immersive mode unless contemplative)
           if (prayer.notes != null && 
-              (preferences.readingMode != PrayerReadingMode.immersive || 
-               preferences.readingMode == PrayerReadingMode.contemplative)) ...[
-            SizedBox(height: preferences.readingMode == PrayerReadingMode.immersive ? 32 : 24),
-            if (preferences.readingMode != PrayerReadingMode.immersive) ...[
+              (settings.readingMode != PrayerReadingMode.immersive || 
+               settings.readingMode == PrayerReadingMode.contemplative)) ...[
+            SizedBox(height: settings.readingMode == PrayerReadingMode.immersive ? 32 : 24),
+            if (settings.readingMode != PrayerReadingMode.immersive) ...[
               Text(
                 'Notes',
                 style: textScaling.scaledTitleMedium(context).copyWith(
                   fontWeight: FontWeight.bold,
                   color: themeColor ?? Theme.of(context).colorScheme.primary,
                 ),
-                textAlign: preferences.readingMode == PrayerReadingMode.contemplative
+                textAlign: settings.readingMode == PrayerReadingMode.contemplative
                     ? TextAlign.center
                     : TextAlign.start,
               ),
@@ -285,7 +286,7 @@ class PrayerDetailScreen extends ConsumerWidget {
                 style: textScaling.scaledBodyMedium(context).copyWith(
                   height: 1.6,
                 ),
-                textAlign: preferences.readingMode == PrayerReadingMode.contemplative
+                textAlign: settings.readingMode == PrayerReadingMode.contemplative
                     ? TextAlign.center
                     : TextAlign.start,
               ),
@@ -293,7 +294,7 @@ class PrayerDetailScreen extends ConsumerWidget {
           ],
 
             // Extra bottom padding for immersive mode
-            if (preferences.readingMode == PrayerReadingMode.immersive) 
+            if (settings.readingMode == PrayerReadingMode.immersive) 
               const SizedBox(height: 40),
           ],
         ),
