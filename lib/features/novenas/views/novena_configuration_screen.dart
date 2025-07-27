@@ -323,9 +323,20 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
     });
 
     try {
+      // Normalize start date to 00:00:01 of the selected day
+      // This ensures novena days change at midnight, not at the time the user configured
+      final normalizedStartDate = DateTime(
+        _startDate.year,
+        _startDate.month,
+        _startDate.day,
+        0, // hour
+        0, // minute
+        1, // second (1 second past midnight)
+      );
+
       final activeNovena = ActiveNovena(
         novenaId: widget.novenaId,
-        startDate: _startDate,
+        startDate: normalizedStartDate,
         reminderTime: _reminderTime,
         reminderFrequency: _reminderFrequency,
         personalIntention: _intentionController.text.trim().isEmpty 

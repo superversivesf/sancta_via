@@ -197,6 +197,7 @@ class ActiveNovena {
     // Debug logging for day calculation
     print('🔍 SPIRITUAL DAY DEBUG:');
     print('  Start Date: ${startDate.toString()}');
+    print('  Start Time: ${startDate.hour}:${startDate.minute.toString().padLeft(2, '0')}:${startDate.second.toString().padLeft(2, '0')}');
     print('  Today: ${today.toString()}');
     print('  Days Since Start: $daysSinceStart');
     print('  Calculated Day: $calculatedDay');
