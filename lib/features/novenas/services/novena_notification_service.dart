@@ -290,7 +290,7 @@ class NovenaNotificationService {
     
     // Check timezone
     try {
-      final now = tz.TZDateTime.now(tz.local);
+      tz.TZDateTime.now(tz.local); // Test timezone functionality
       report.timezoneStatus = 'OK (${tz.local.name})';
     } catch (e) {
       report.timezoneStatus = 'Error: $e';
@@ -517,33 +517,7 @@ class NovenaNotificationService {
     }
   }
 
-  /// Schedule individual notification (legacy method for non-smart notifications)
-  Future<void> _scheduleNotification({
-    required int id,
-    required String title,
-    required String body,
-    required DateTime scheduledTime,
-    required String payload,
-    required bool isDaily,
-  }) async {
-    try {
-      final tzDateTime = tz.TZDateTime.from(scheduledTime, tz.local);
-      
-      await _plugin.zonedSchedule(
-        id,
-        title,
-        body,
-        tzDateTime,
-        _getNotificationDetails(isDaily),
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-        payload: payload,
-      );
-      
-    } catch (e) {
-      AppLogger.warning('Failed to schedule notification $id: $e', 'NOTIFICATION');
-      rethrow;
-    }
-  }
+
 
   /// Get notification styling details
   NotificationDetails _getNotificationDetails(bool isDaily) {

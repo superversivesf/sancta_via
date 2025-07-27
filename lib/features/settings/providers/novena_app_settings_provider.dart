@@ -9,12 +9,10 @@ import '../../../services/auth_service.dart';
 import '../../../utils/logger.dart';
 import '../../../utils/error_handler.dart';
 
-/// Provider for Novena app specific settings
+/// Simplified provider for Novena app settings
 class NovenaAppSettingsNotifier extends StateNotifier<NovenaAppSettings> {
   static const String _storageKey = 'novena_app_settings_unified';
-  // Legacy storage key no longer used but kept for reference
-  // static const String _legacyStorageKey = 'settings_model';
-  static const String _migrationKey = 'novena_settings_migrated_v1';
+  static const String _migrationKey = 'novena_settings_migrated_v2';
 
   final Ref _ref;
   final AuthService _authService;
@@ -74,8 +72,6 @@ class NovenaAppSettingsNotifier extends StateNotifier<NovenaAppSettings> {
       // Look for old settings format
       final oldFontSize = prefs.getDouble('fontSize');
       final oldColorSchemeStyle = prefs.getInt('colorSchemeStyle');
-      // Theme mode is handled separately by theme provider
-      // final oldThemeMode = prefs.getInt('themeMode');
       
       // Check if auth service has PIN
       final hasPinCode = await _authService.hasPinCode();
@@ -138,35 +134,6 @@ class NovenaAppSettingsNotifier extends StateNotifier<NovenaAppSettings> {
     }
   }
 
-  // Base settings methods (delegate to shared UI providers)
-  Future<void> updateFontSize(double fontSize) async {
-    await _ref.read(baseSettingsProvider.notifier).setFontSize(fontSize);
-  }
-
-  Future<void> updateTextScalingMode(TextScalingMode mode) async {
-    await _ref.read(baseSettingsProvider.notifier).setTextScalingMode(mode);
-  }
-
-  Future<void> updateDefaultLanguage(AppLanguage language) async {
-    await _ref.read(baseSettingsProvider.notifier).setDefaultLanguage(language);
-  }
-
-  Future<void> updateNotificationsEnabled(bool enabled) async {
-    await _ref.read(baseSettingsProvider.notifier).setNotificationsEnabled(enabled);
-  }
-
-  Future<void> updateShowLiturgicalColors(bool show) async {
-    await _ref.read(baseSettingsProvider.notifier).setShowLiturgicalColors(show);
-  }
-
-  Future<void> updateHapticFeedbackEnabled(bool enabled) async {
-    await _ref.read(baseSettingsProvider.notifier).setHapticFeedbackEnabled(enabled);
-  }
-
-  Future<void> updateReduceMotion(bool reduce) async {
-    await _ref.read(baseSettingsProvider.notifier).setReduceMotion(reduce);
-  }
-
   // Novena-specific methods
   Future<void> updateNovenaNotificationsEnabled(bool enabled) async {
     state = state.copyWith(novenaNotificationsEnabled: enabled);
@@ -220,12 +187,6 @@ class NovenaAppSettingsNotifier extends StateNotifier<NovenaAppSettings> {
   Future<void> refreshPinStatus() async {
     await _refreshPinStatus();
   }
-
-  /// Map color scheme style to shared UI color intensity
-  Future<void> setColorSchemeStyle(ColorIntensity style) async {
-    // Use the shared UI color intensity provider directly
-    await _ref.read(colorIntensityProvider.notifier).setColorIntensity(style);
-  }
 }
 
 /// Provider for Novena app settings
@@ -234,15 +195,7 @@ final novenaAppSettingsProvider = StateNotifierProvider<NovenaAppSettingsNotifie
   return NovenaAppSettingsNotifier(ref, authService);
 });
 
-/// Convenience providers for specific settings
-final novenaFontSizeProvider = Provider<double>((ref) {
-  return ref.watch(novenaAppSettingsProvider).fontSize;
-});
-
-final novenaPinCodeProvider = Provider<bool>((ref) {
-  return ref.watch(novenaAppSettingsProvider).hasPinCode;
-});
-
+/// Simplified convenience providers for specific settings
 final novenaNotificationsEnabledProvider = Provider<bool>((ref) {
   return ref.watch(novenaAppSettingsProvider).novenaNotificationsEnabled;
 });
@@ -254,48 +207,3 @@ final novenaDailyReminderTimeProvider = Provider<TimeOfDay>((ref) {
 final novenaShowCompletionCelebrationsProvider = Provider<bool>((ref) {
   return ref.watch(novenaAppSettingsProvider).showCompletionCelebrations;
 });
-
-final novenaAllowMultipleNovenaProvider = Provider<bool>((ref) {
-  return ref.watch(novenaAppSettingsProvider).allowMultipleNovenas;
-});
-
-/// Legacy provider for backward compatibility
-final legacySettingsProvider = Provider<dynamic>((ref) {
-  final novenaSettings = ref.watch(novenaAppSettingsProvider);
-  
-  // Create a legacy-compatible object
-  return LegacySettingsModel(
-    fontSize: novenaSettings.fontSize <= 2.0 
-        ? novenaSettings.fontSize // If it's a scale factor
-        : novenaSettings.fontSize / 18.0, // Convert points to scale factor
-    hasPinCode: novenaSettings.hasPinCode,
-    colorSchemeStyle: novenaSettings.showLiturgicalColors 
-        ? ColorIntensity.vibrant 
-        : ColorIntensity.muted,
-  );
-});
-
-/// Legacy settings model for backward compatibility
-class LegacySettingsModel {
-  final double fontSize;
-  final bool hasPinCode;
-  final ColorIntensity colorSchemeStyle;
-
-  LegacySettingsModel({
-    required this.fontSize,
-    required this.hasPinCode,
-    required this.colorSchemeStyle,
-  });
-
-  LegacySettingsModel copyWith({
-    double? fontSize,
-    bool? hasPinCode,
-    ColorIntensity? colorSchemeStyle,
-  }) {
-    return LegacySettingsModel(
-      fontSize: fontSize ?? this.fontSize,
-      hasPinCode: hasPinCode ?? this.hasPinCode,
-      colorSchemeStyle: colorSchemeStyle ?? this.colorSchemeStyle,
-    );
-  }
-}

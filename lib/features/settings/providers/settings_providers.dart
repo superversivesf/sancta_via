@@ -1,10 +1,10 @@
-// MIGRATION: This file has been updated to use the unified settings system
-// The old implementation is preserved for backward compatibility
+// CLEANED UP: This file has been simplified during settings cleanup
+// The main provider is now in novena_app_settings_provider.dart
 
 export 'novena_app_settings_provider.dart';
 
-// Re-export the legacy provider for backward compatibility
-import 'novena_app_settings_provider.dart';
-
-// Legacy settings provider that delegates to the new unified system
-final settingsProvider = legacySettingsProvider;
+// Main settings provider - use this for all settings operations
+// final novenaAppSettingsProvider - for complete settings state
+// final novenaNotificationsEnabledProvider - for notification toggle
+// final novenaDailyReminderTimeProvider - for reminder time
+// final novenaShowCompletionCelebrationsProvider - for celebrations toggle
