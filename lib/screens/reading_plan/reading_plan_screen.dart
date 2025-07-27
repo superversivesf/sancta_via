@@ -1092,8 +1092,14 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
                 activeColor: themeColor ?? Theme.of(context).colorScheme.primary,
                 onChanged: (bool value) async {
                   if (value) {
-                    // Request notification permissions when enabling reminders
-                    final hasPermission = await NotificationService.requestPermissions();
+                    // Check if permissions are already granted first
+                    bool hasPermission = await NotificationService.hasPermissions();
+                    
+                    if (!hasPermission) {
+                      // Request notification permissions when enabling reminders
+                      hasPermission = await NotificationService.requestPermissions();
+                    }
+                    
                     if (!hasPermission) {
                       // Show error if permission denied
                       if (mounted && context.mounted) {
