@@ -6,6 +6,7 @@ import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import '../../providers/text_scaling_provider.dart';
 import '../../providers/reading_plan_provider.dart';
 import '../../models/reading_plan.dart';
+import '../../services/notification_service.dart';
 
 class ReadingPlanScreen extends ConsumerStatefulWidget {
   const ReadingPlanScreen({super.key});
@@ -1089,7 +1090,24 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
                 ),
                 value: remindersEnabled,
                 activeColor: themeColor ?? Theme.of(context).colorScheme.primary,
-                onChanged: (bool value) {
+                onChanged: (bool value) async {
+                  if (value) {
+                    // Request notification permissions when enabling reminders
+                    final hasPermission = await NotificationService.requestPermissions();
+                    if (!hasPermission) {
+                      // Show error if permission denied
+                      if (mounted && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Notification permission is required for reminders'),
+                            backgroundColor: Colors.orange,
+                          ),
+                        );
+                      }
+                      return;
+                    }
+                  }
+                  
                   setState(() {
                     remindersEnabled = value;
                   });

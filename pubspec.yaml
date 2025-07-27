@@ -47,6 +47,10 @@ dependencies:
   # State Management
   flutter_riverpod: ^2.6.1
 
+  # Notifications
+  flutter_local_notifications: ^17.2.4
+  permission_handler: ^11.3.1
+
   # Navigation
   go_router: ^15.1.2
 
@@ -61,6 +65,7 @@ dependencies:
   # Storage
   shared_preferences: ^2.5.3
   sqflite: ^2.3.6
+  timezone: ^0.9.4
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4

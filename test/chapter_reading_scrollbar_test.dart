@@ -76,8 +76,8 @@ void main() {
       // Check that the theme data is properly configured
       final scrollbarTheme = tester.widget<ScrollbarTheme>(find.byType(ScrollbarTheme));
       expect(scrollbarTheme.data, isNotNull);
-      expect(scrollbarTheme.data!.thickness, isNotNull);
-      expect(scrollbarTheme.data!.radius, equals(const Radius.circular(3.0)));
+      expect(scrollbarTheme.data.thickness, isNotNull);
+      expect(scrollbarTheme.data.radius, equals(const Radius.circular(3.0)));
     });
 
     test('scroll bar should provide good UX for Bible reading', () {
