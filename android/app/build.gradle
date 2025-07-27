@@ -35,6 +35,8 @@ android {
     ndkVersion "27.0.12077973"
 
     compileOptions {
+        // Required for API level 26+ on Android
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -97,6 +99,9 @@ flutter {
 }
 
 dependencies {
+    // Core library desugaring for flutter_local_notifications
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+    
     // Kotlin standard library is now included automatically by Flutter
     // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
