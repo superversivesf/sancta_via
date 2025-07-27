@@ -44,17 +44,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # State Management
-  flutter_riverpod: ^2.6.1
-
   # Notifications
   flutter_local_notifications: ^17.2.4
-  permission_handler: ^11.3.1
+
+  # State Management
+  flutter_riverpod: ^2.6.1
 
   # Navigation
   go_router: ^15.1.2
 
   package_info_plus: ^8.3.0
+  permission_handler: ^11.3.1
+  
   sancta_via_liturgical_calendar:
     path: ../sancta_via_liturgical_calendar
   sancta_via_liturgical_calendar_riverpod:

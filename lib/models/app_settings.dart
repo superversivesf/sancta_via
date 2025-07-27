@@ -5,8 +5,14 @@ import 'package:bible_data/bible_data.dart';
 /// This class is deprecated in favor of the new unified settings system.
 /// Use BibleAppSettings from '../models/bible_app_settings.dart' instead.
 /// 
-/// This class is maintained for backward compatibility only.
-@Deprecated('Use BibleAppSettings with the unified settings system instead')
+/// This class is maintained for backward compatibility only and can be removed
+/// in a future major version (v2.0.0) once all legacy code has been migrated.
+/// 
+/// Migration path:
+/// - Replace AppSettings with BibleAppSettings
+/// - Use bibleAppSettingsProvider instead of appSettingsProvider
+/// - Access base settings through bibleAppSettings.baseSettings
+@Deprecated('Use BibleAppSettings with the unified settings system instead. Can be removed in v2.0.0')
 class AppSettings {
   final double fontSize;
   final BibleTranslation selectedBibleTranslation;

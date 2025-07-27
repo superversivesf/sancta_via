@@ -620,8 +620,8 @@ class ContinueReadingScreen extends ConsumerWidget {
               Navigator.of(context).pop();
               ref.read(readingPlanManagerProvider.notifier).resetDailyStatus();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Daily reading status has been reset for all plans.'),
+                SnackBar(
+                  content: const Text('Daily reading status has been reset for all plans.'),
                   backgroundColor: Colors.orange,
                 ),
               );

@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:archive/archive.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 /// Build script to convert Bible JSON files to SQLite database
@@ -26,6 +27,7 @@ void main() async {
   
   // Clean up old database
   final dbFile = File(dbPath);
+  // ignore: avoid_slow_async_io
   if (await dbFile.exists()) {
     await dbFile.delete();
     print('🗑️  Removed existing database');
@@ -134,7 +136,8 @@ Future<void> _createIndexes(Database db) async {
 Future<void> _convertJsonFiles(Directory assetsDir, Database db) async {
   final jsonFiles = await assetsDir
       .list()
-      .where((entity) => entity is File && entity.path.endsWith('.json'))
+      .where((entity) => entity is File && 
+             (entity.path.endsWith('.json') || entity.path.endsWith('.json.gz')))
       .cast<File>()
       .toList();
   
@@ -148,7 +151,19 @@ Future<void> _convertJsonFiles(Directory assetsDir, Database db) async {
     final translationId = _getTranslationId(file.path);
     print('🔄 Processing $translationId...');
     
-    final jsonContent = await file.readAsString();
+    // Handle both .json and .json.gz files
+    String jsonContent;
+    if (file.path.endsWith('.gz')) {
+      // ignore: avoid_slow_async_io
+      final gzBytes = await file.readAsBytes();
+      final decompressed = GZipDecoder().decodeBytes(gzBytes);
+      jsonContent = String.fromCharCodes(decompressed);
+      print('  📦 Decompressed ${file.path}');
+    } else {
+      // ignore: avoid_slow_async_io
+      jsonContent = await file.readAsString();
+    }
+    
     final bibleData = json.decode(jsonContent) as Map<String, dynamic>;
     
     await _insertTranslation(db, translationId, bibleData);
@@ -161,7 +176,9 @@ Future<void> _convertJsonFiles(Directory assetsDir, Database db) async {
 
 /// Extract translation ID from file path
 String _getTranslationId(String filePath) {
-  return filePath.split('/').last.replaceAll('.json', '');
+  return filePath.split('/').last
+      .replaceAll('.json.gz', '')
+      .replaceAll('.json', '');
 }
 
 /// Insert translation metadata

@@ -11,6 +11,7 @@ void main() async {
   databaseFactory = databaseFactoryFfi;
   
   final dbPath = 'assets/bibles.db';
+  // ignore: avoid_slow_async_io
   if (!await File(dbPath).exists()) {
     print('❌ Database not found at $dbPath');
     return;

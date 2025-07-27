@@ -1,9 +1,9 @@
-// MIGRATION: This file has been updated to use the unified settings system
-// The old implementation has been backed up as settings_screen_old.dart
+// Settings screen for Bible Reading App
+// Uses the unified settings system from sancta_via_shared_ui
 
 import 'bible_settings_screen.dart';
 
-// Export the new implementation with the same class name for backward compatibility
+// Re-export with the expected class name for backward compatibility
 class SettingsScreen extends BibleSettingsScreen {
   const SettingsScreen({super.key});
 }

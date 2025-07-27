@@ -12,13 +12,6 @@ import '../models/app_settings.dart';
 // New code should use these for full functionality
 export 'bible_app_settings_provider.dart';
 
-/// Debug logging utility
-void debugLog(String message, [String? tag]) {
-  final timestamp = DateTime.now().toIso8601String();
-  // ignore: avoid_print
-  print('[$timestamp] ${tag != null ? '[$tag] ' : ''}$message');
-}
-
 /// BACKWARD COMPATIBILITY: Provider for app settings using new unified system
 /// 
 /// This provider now wraps the new BibleAppSettings but maintains the old AppSettings interface

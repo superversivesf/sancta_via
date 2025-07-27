@@ -11,6 +11,7 @@ void main() async {
   databaseFactory = databaseFactoryFfi;
   
   final dbPath = 'assets/bibles.db';
+  // ignore: avoid_slow_async_io
   if (!await File(dbPath).exists()) {
     print('❌ Database not found at $dbPath');
     return;
@@ -102,6 +103,7 @@ Future<void> _optimizeDatabase(Database db) async {
   
   // Check size after optimization
   final file = File('assets/bibles.db');
+  // ignore: avoid_slow_async_io
   final stats = await file.stat();
   final sizeMB = (stats.size / (1024 * 1024)).toStringAsFixed(1);
   print('   📦 Final size: ${sizeMB}MB');

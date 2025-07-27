@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
@@ -133,18 +134,32 @@ class BibleSettingsScreen extends ConsumerWidget {
 
         const Divider(),
 
-        // Debug Section (for development)
-        const SettingsSectionHeader(title: 'Debug & Testing'),
+        // Advanced Settings
+        const SettingsSectionHeader(title: 'Advanced'),
         
         ListTile(
-          leading: const Icon(Icons.bug_report),
-          title: const Text('Test Numbered Books'),
-          subtitle: const Text('Verify 1 Samuel, 2 Corinthians, etc. are working'),
-          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-          onTap: () {
-            Navigator.of(context).pushNamed('/debug/numbered-books');
-          },
+          leading: const Icon(Icons.restore),
+          title: const Text('Reset Settings'),
+          subtitle: const Text('Reset all settings to default values'),
+          onTap: () => _showResetDialog(context, ref),
         ),
+
+        if (kDebugMode) ...[  
+          const Divider(),
+          
+          // Debug Section (only in debug mode)
+          const SettingsSectionHeader(title: 'Debug & Testing'),
+          
+          ListTile(
+            leading: const Icon(Icons.bug_report),
+            title: const Text('Test Numbered Books'),
+            subtitle: const Text('Verify 1 Samuel, 2 Corinthians, etc. are working'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () {
+              Navigator.of(context).pushNamed('/debug/numbered-books');
+            },
+          ),
+        ],
 
         const Divider(),
       ],
@@ -227,6 +242,40 @@ class BibleSettingsScreen extends ConsumerWidget {
       onTap: () {
         Navigator.of(context).pushNamed('/reading-plan');
       },
+    );
+  }
+
+  void _showResetDialog(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Reset Settings'),
+        content: const Text(
+          'Are you sure you want to reset all settings to their default values? '
+          'This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await ref.read(bibleAppSettingsProvider.notifier).resetToDefaults();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Settings reset to defaults'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              }
+            },
+            child: const Text('Reset'),
+          ),
+        ],
+      ),
     );
   }
 

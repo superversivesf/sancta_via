@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
@@ -6,11 +7,12 @@ import 'package:bible_data/bible_data.dart';
 
 import '../models/bible_app_settings.dart';
 
-/// Debug logging utility
-void debugLog(String message, [String? tag]) {
-  final timestamp = DateTime.now().toIso8601String();
-  // ignore: avoid_print
-  print('[$timestamp] ${tag != null ? '[$tag] ' : ''}$message');
+/// Conditional logging utility for development
+void _logDebug(String message, [String? tag]) {
+  if (kDebugMode) {
+    final timestamp = DateTime.now().toIso8601String().substring(11, 19);
+    debugPrint('[$timestamp] ${tag != null ? '[$tag] ' : ''}$message');
+  }
 }
 
 /// Provider for Bible app specific settings
@@ -34,7 +36,7 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
   /// Load settings from persistent storage with migration support
   Future<void> _loadSettings() async {
     try {
-      debugLog('Loading Bible app settings...', 'BIBLE_SETTINGS');
+      _logDebug('Loading Bible app settings...');
       final prefs = await SharedPreferences.getInstance();
       
       // Check if we need to migrate from old format
@@ -59,7 +61,7 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
               .updateSettings(settings.baseSettings);
         }
         
-        debugLog('Bible app settings loaded successfully', 'BIBLE_SETTINGS');
+        _logDebug('Settings loaded successfully');
       } else {
         // No settings found, use defaults and sync base settings
         final defaultSettings = BibleAppSettings.defaults();
@@ -67,10 +69,10 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
         await _ref.read(baseSettingsProvider.notifier)
             .updateSettings(defaultSettings.baseSettings);
         
-        debugLog('Using default Bible app settings', 'BIBLE_SETTINGS');
+        _logDebug('Using default settings');
       }
     } catch (e) {
-      debugLog('Error loading Bible app settings: $e', 'BIBLE_SETTINGS');
+      _logDebug('Error loading settings: $e');
       // If there's an error, use defaults
       state = BibleAppSettings.defaults();
     }
@@ -79,13 +81,13 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
   /// Migrate from old individual preference keys
   Future<void> _migrateFromLegacySettings(SharedPreferences prefs) async {
     try {
-      debugLog('Migrating from legacy Bible app settings...', 'MIGRATION');
+      _logDebug('Migrating from legacy settings...');
       
       // Load old individual settings
       final oldFontSize = prefs.getDouble('fontSize') ?? 18.0;
       final oldTranslationId = prefs.getString('selectedBibleTranslation') ?? 'cpdv';
       
-      debugLog('Found legacy settings - fontSize: $oldFontSize, translation: $oldTranslationId', 'MIGRATION');
+      _logDebug('Found legacy settings - fontSize: $oldFontSize, translation: $oldTranslationId');
       
       // Create new settings with migrated values
       final translation = BibleTranslation.fromId(oldTranslationId);
@@ -107,9 +109,9 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
       await prefs.remove('fontSize');
       await prefs.remove('selectedBibleTranslation');
       
-      debugLog('Legacy settings migration completed', 'MIGRATION');
+      _logDebug('Legacy settings migration completed');
     } catch (e) {
-      debugLog('Error during migration: $e', 'MIGRATION');
+      _logDebug('Error during migration: $e');
       // Continue with defaults if migration fails
     }
   }
@@ -122,9 +124,9 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
       final settingsJson = json.encode(settingsToSave.toJson());
       await prefs.setString(_storageKey, settingsJson);
       
-      debugLog('Bible app settings saved successfully', 'BIBLE_SETTINGS');
+      _logDebug('Settings saved successfully');
     } catch (e) {
-      debugLog('Error saving Bible app settings: $e', 'BIBLE_SETTINGS');
+      _logDebug('Error saving settings: $e');
     }
   }
 
@@ -140,21 +142,21 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
   Future<void> setBibleTranslation(BibleTranslation translation) async {
     state = state.copyWith(selectedBibleTranslation: translation);
     await _saveSettings();
-    debugLog('Bible translation updated to: ${translation.name}', 'BIBLE_SETTINGS');
+    _logDebug('Bible translation updated to: ${translation.name}');
   }
 
   /// Update verse numbers visibility
   Future<void> setShowVerseNumbers(bool show) async {
     state = state.copyWith(showVerseNumbers: show);
     await _saveSettings();
-    debugLog('Show verse numbers updated to: $show', 'BIBLE_SETTINGS');
+    _logDebug('Show verse numbers updated to: $show');
   }
 
   /// Update current verse highlighting
   Future<void> setHighlightCurrentVerse(bool highlight) async {
     state = state.copyWith(highlightCurrentVerse: highlight);
     await _saveSettings();
-    debugLog('Highlight current verse updated to: $highlight', 'BIBLE_SETTINGS');
+    _logDebug('Highlight current verse updated to: $highlight');
   }
 
 
@@ -162,12 +164,17 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
   Future<void> setDailyReadingNotificationsEnabled(bool enabled) async {
     state = state.copyWith(dailyReadingNotificationsEnabled: enabled);
     await _saveSettings();
-    debugLog('Daily reading notifications updated to: $enabled', 'BIBLE_SETTINGS');
+    _logDebug('Daily reading notifications updated to: $enabled');
   }
 
   /// Update font size (delegates to base settings)
   Future<void> setFontSize(double fontSize) async {
-    await _ref.read(baseSettingsProvider.notifier).setFontSize(fontSize);
+    // Validate font size range
+    final clampedSize = fontSize.clamp(12.0, 32.0);
+    if (clampedSize != fontSize) {
+      _logDebug('Font size $fontSize clamped to $clampedSize');
+    }
+    await _ref.read(baseSettingsProvider.notifier).setFontSize(clampedSize);
     // Base settings listener will update our state automatically
   }
 
@@ -184,6 +191,41 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
   /// Update notifications (delegates to base settings)
   Future<void> setNotificationsEnabled(bool enabled) async {
     await _ref.read(baseSettingsProvider.notifier).setNotificationsEnabled(enabled);
+  }
+
+  /// Reset all settings to defaults
+  Future<void> resetToDefaults() async {
+    _logDebug('Resetting settings to defaults');
+    final defaultSettings = BibleAppSettings.defaults();
+    state = defaultSettings;
+    await _saveSettings();
+    
+    // Also reset base settings
+    await _ref.read(baseSettingsProvider.notifier)
+        .updateSettings(defaultSettings.baseSettings);
+  }
+
+  /// Export settings for backup
+  Map<String, dynamic> exportSettings() {
+    return state.toJson();
+  }
+
+  /// Import settings from backup
+  Future<void> importSettings(Map<String, dynamic> settingsJson) async {
+    try {
+      final importedSettings = BibleAppSettings.fromJson(settingsJson);
+      state = importedSettings;
+      await _saveSettings();
+      
+      // Also update base settings
+      await _ref.read(baseSettingsProvider.notifier)
+          .updateSettings(importedSettings.baseSettings);
+      
+      _logDebug('Settings imported successfully');
+    } catch (e) {
+      _logDebug('Error importing settings: $e');
+      rethrow;
+    }
   }
 }
 
