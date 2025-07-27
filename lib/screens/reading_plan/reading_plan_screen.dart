@@ -1163,6 +1163,12 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
     }
   }
 
+  /// Helper method to normalize DateTime to midnight of the same day
+  /// This ensures predictable daily advancement behavior for reading plans
+  static DateTime _normalizeToMidnight(DateTime dateTime) {
+    return DateTime(dateTime.year, dateTime.month, dateTime.day);
+  }
+  
   void _createReadingPlan() {
     if (!_canCreatePlan()) return;
     
@@ -1179,7 +1185,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
       remindersEnabled: remindersEnabled,
       reminderTime: reminderTime,
       progress: ReadingProgress.start(selectedCollection),
-      createdAt: DateTime.now(),
+      createdAt: _normalizeToMidnight(DateTime.now()),
     );
 
     try {

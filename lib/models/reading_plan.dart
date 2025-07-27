@@ -502,8 +502,22 @@ class ReadingPlanManager {
     return ReadingPlanManager(
       plans: [],
       lastUpdated: now,
-      lastDailyReset: now,
+      lastDailyReset: _normalizeToMidnight(now),
     );
+  }
+  
+  /// Helper method to normalize DateTime to midnight of the same day
+  /// 
+  /// **FIX FOR DAY ADVANCEMENT BUG:**
+  /// Reading plans should start at midnight of the creation day, not at the exact
+  /// creation time. This ensures that daily reset logic works predictably and
+  /// plans advance at consistent times (midnight) rather than at the time the
+  /// plan was created (e.g., 3 PM).
+  /// 
+  /// This fixes the issue where plans created during the day wouldn't reset
+  /// properly until the following day, causing unpredictable advancement timing.
+  static DateTime _normalizeToMidnight(DateTime dateTime) {
+    return DateTime(dateTime.year, dateTime.month, dateTime.day);
   }
 
   List<ReadingPlan> get activePlans => plans.where((plan) => plan.isActive && !plan.isCompleted).toList();

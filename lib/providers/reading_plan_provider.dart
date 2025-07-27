@@ -147,6 +147,12 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
 
   static const String _storageKey = 'reading_plan_manager';
   static const String _legacyStorageKey = 'reading_plan'; // Old single plan key
+  
+  /// Helper method to normalize DateTime to midnight of the same day
+  /// This ensures predictable daily advancement behavior for reading plans
+  static DateTime _normalizeToMidnight(DateTime dateTime) {
+    return DateTime(dateTime.year, dateTime.month, dateTime.day);
+  }
 
   Future<void> _loadPlans() async {
     try {
@@ -317,7 +323,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     
     state = state.copyWith(
       plans: updatedPlans,
-      lastDailyReset: DateTime.now(),
+      lastDailyReset: _normalizeToMidnight(DateTime.now()),
     );
     await _savePlans();
   }
