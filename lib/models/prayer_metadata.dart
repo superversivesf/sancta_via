@@ -1,3 +1,39 @@
+import 'prayer_category.dart';
+import 'prayer_category_group.dart';
+
+/// Complete metadata structure wrapper for parsing prayers_metadata.json
+class FullPrayerMetadata {
+  final String version;
+  final String generatedAt;
+  final List<PrayerCategoryGroup> categoryGroups;
+  final List<PrayerCategory> categories;
+  final List<PrayerMetadata> prayers;
+
+  FullPrayerMetadata({
+    required this.version,
+    required this.generatedAt,
+    required this.categoryGroups,
+    required this.categories,
+    required this.prayers,
+  });
+
+  factory FullPrayerMetadata.fromJson(Map<String, dynamic> json) {
+    return FullPrayerMetadata(
+      version: json['version'] ?? '',
+      generatedAt: json['generatedAt'] ?? '',
+      categoryGroups: (json['categoryGroups'] as List<dynamic>?)
+          ?.map((item) => PrayerCategoryGroup.fromJson(item))
+          .toList() ?? [],
+      categories: (json['categories'] as List<dynamic>?)
+          ?.map((item) => PrayerCategory.fromJson(item))
+          .toList() ?? [],
+      prayers: (json['prayers'] as List<dynamic>?)
+          ?.map((item) => PrayerMetadata.fromJson(item))
+          .toList() ?? [],
+    );
+  }
+}
+
 class PrayerMetadata {
   final String id;
   final String title;
@@ -23,12 +59,12 @@ class PrayerMetadata {
 
   factory PrayerMetadata.fromJson(Map<String, dynamic> json) {
     return PrayerMetadata(
-      id: json['id'],
-      title: json['title'],
+      id: json['id'] ?? '',
+      title: json['title'] ?? '',
       categories: List<String>.from(json['categories'] ?? []),
-      description: json['description'],
+      description: json['description'] ?? '',
       tags: List<String>.from(json['tags'] ?? []),
-      fileName: json['fileName'],
+      fileName: json['fileName'] ?? '',
       isLiturgical: json['isLiturgical'] ?? false,
       liturgicalPriority: json['liturgicalPriority'] ?? 0,
       liturgicalSeason: json['liturgicalSeason'],
