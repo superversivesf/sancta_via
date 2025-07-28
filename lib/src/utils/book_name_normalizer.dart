@@ -20,8 +20,8 @@ class BookNameNormalizer {
   /// Common book name variations that need normalization
   static const Map<String, String> _bookNameVariations = {
     // Ensure consistent naming
-    'Revelation of John': 'Revelation',
-    'The Revelation of John': 'Revelation',
+    // 'Revelation of John': 'Revelation', // Removed - database uses full name
+    // 'The Revelation of John': 'Revelation', // Removed - database uses full name
     // Add more variations as needed
   };
 
