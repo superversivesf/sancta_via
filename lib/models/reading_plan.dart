@@ -49,9 +49,9 @@ enum BookCollection {
   String get description {
     switch (this) {
       case BookCollection.wholeBible:
-        return 'Read through the entire Bible from Genesis to Revelation';
+        return 'Read through the entire Bible from Genesis to Revelation of John';
       case BookCollection.newTestament:
-        return 'Focus on the New Testament books (Matthew to Revelation)';
+        return 'Focus on the New Testament books (Matthew to Revelation of John)';
       case BookCollection.oldTestament:
         return 'Focus on the Old Testament books (Genesis to Malachi)';
       case BookCollection.gospels:
@@ -92,7 +92,7 @@ enum BookCollection {
           'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians',
           'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians',
           '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews',
-          'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation'
+          'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation of John'
         ];
       case BookCollection.newTestament:
         return [
@@ -100,7 +100,7 @@ enum BookCollection {
           'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians',
           'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians',
           '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews',
-          'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation'
+          'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation of John'
         ];
       case BookCollection.oldTestament:
         return [

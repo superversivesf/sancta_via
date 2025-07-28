@@ -63,19 +63,21 @@ This app is part of the Sancta Via ecosystem and depends on several shared packa
 ### **Data Structure**
 ```
 assets/
-├── bibles/              # Bible translation files (compressed)
-│   ├── cpdv.json.gz    # Catholic Public Domain Version (compressed)
-│   ├── drc.json.gz     # Douay-Rheims Catholic Bible (compressed)
-│   └── engwebc.json.gz # English Web Bible Catholic (compressed)
 ├── bibles.db           # Pre-built SQLite database for fast access
 └── app_icon.png        # Application icon
+
+dev_resources/          # Development-only resources (NOT shipped)
+└── bibles/             # Bible translation files (compressed)
+    ├── cpdv.json.gz    # Catholic Public Domain Version (compressed)
+    ├── drc.json.gz     # Douay-Rheims Catholic Bible (compressed)
+    └── engwebc.json.gz # English Web Bible Catholic (compressed)
 ```
 
 ### **Compression & Performance**
-- **Compressed Bible Data**: JSON files are gzipped to reduce app bundle size by ~82%
-- **Space Savings**: ~25.7MB reduction (from 31.2MB to 5.5MB for JSON files)
+- **Development-Only Compression**: JSON files are gzipped for version control (~82% space savings)
+- **App Bundle Optimization**: Only SQLite database shipped (~5.5MB reduction in app size)
 - **Runtime Performance**: Uses SQLite database for fast Bible access
-- **One-time Decompression**: JSON files decompressed only during first-run setup
+- **No Runtime Decompression**: App startup consistently fast (no JSON processing)
 
 ### **⚡ Performance Optimizations**
 - **Fast App Startup**: Optimized Bible service loads instantly (no full Bible loading)
@@ -131,14 +133,16 @@ assets/
 
 ### Building for Production
 
-#### Compress Bible Data (if needed)
+#### Compress Bible Data (development only)
 ```bash
-# Compress JSON files to reduce app size
+# Compress JSON files for version control (development only)
 ./scripts/compress_bibles.sh
 
-# Decompress a file for editing
+# Decompress a file for editing (stored in dev_resources/bibles/)
 ./scripts/compress_bibles.sh decompress cpdv.json.gz
 ```
+
+**Note**: Compressed files in `dev_resources/bibles/` are for development only and are NOT shipped with the app.
 
 #### Android
 ```bash

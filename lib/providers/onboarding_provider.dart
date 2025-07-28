@@ -3,7 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bible_data_riverpod/bible_data_riverpod.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:archive/archive.dart';
+// COMMENTED OUT: Archive import no longer needed since we don't ship compressed files
+// import 'package:archive/archive.dart';
 
 /// Debug logging utility
 void debugLog(String message, [String? tag]) {
@@ -81,6 +82,8 @@ class OnboardingService {
   }
 
   /// Load and decompress gzipped JSON file content
+  /// COMMENTED OUT: We no longer ship compressed files with the app
+  /*
   static Future<Map<String, dynamic>> loadCompressedJsonFile(String path) async {
     try {
       debugLog('Loading compressed JSON file: $path', 'ONBOARDING');
@@ -109,6 +112,7 @@ class OnboardingService {
       rethrow;
     }
   }
+  */
 
   /// Load JSON file content (legacy method for uncompressed files)
   static Future<Map<String, dynamic>> loadJsonFile(String path) async {
@@ -131,6 +135,8 @@ class OnboardingService {
   }
 
   /// Verify compressed Bible files can be decompressed
+  /// COMMENTED OUT: We no longer ship compressed files with the app
+  /*
   static Future<void> verifyCompressedBibleFiles() async {
     final translations = await getAvailableBibleTranslations();
     
@@ -145,6 +151,7 @@ class OnboardingService {
       }
     }
   }
+  */
 }
 
 /// Onboarding notifier that manages the onboarding process
@@ -216,6 +223,8 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
       debugLog('Found ${translations.length} translations to load', 'ONBOARDING');
 
       // Step 3: Verify compressed Bible files
+      // COMMENTED OUT: We no longer ship compressed files
+      /*
       state = state.copyWith(
         message: 'Verifying Bible data...',
         progress: 0.4,
@@ -224,6 +233,10 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
 
       await OnboardingService.verifyCompressedBibleFiles();
       debugLog('All compressed Bible files verified successfully', 'ONBOARDING');
+      */
+      
+      // Skip verification step since we only use the SQLite database
+      debugLog('Skipping compressed file verification - using SQLite database only', 'ONBOARDING');
 
       // Step 4: Initialize Bible service and load data
       state = state.copyWith(

@@ -2,16 +2,17 @@
 
 # Bible JSON Compression Script
 # This script compresses Bible JSON files for the Sancta Via Bible Reading App
-# to reduce app bundle size and improve download performance.
+# These compressed files are used for development and database rebuilding only.
+# They are NOT shipped with the app (only bibles.db is shipped).
 
 set -e  # Exit on any error
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-BIBLES_DIR="$PROJECT_ROOT/assets/bibles"
+BIBLES_DIR="$PROJECT_ROOT/dev_resources/bibles"
 
-echo "🔄 Bible JSON Compression Script"
-echo "================================="
+echo "🔄 Bible JSON Compression Script (Development Only)"
+echo "================================================="
 echo "Project root: $PROJECT_ROOT"
 echo "Bibles directory: $BIBLES_DIR"
 echo ""
