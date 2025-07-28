@@ -81,39 +81,6 @@ class OnboardingService {
     return prefs.getBool(_databaseInitializedKey) ?? false;
   }
 
-  /// Load and decompress gzipped JSON file content
-  /// COMMENTED OUT: We no longer ship compressed files with the app
-  /*
-  static Future<Map<String, dynamic>> loadCompressedJsonFile(String path) async {
-    try {
-      debugLog('Loading compressed JSON file: $path', 'ONBOARDING');
-      
-      // Load the compressed file as bytes
-      final ByteData data = await rootBundle.load(path);
-      final Uint8List compressedBytes = data.buffer.asUint8List(
-        data.offsetInBytes, 
-        data.lengthInBytes
-      );
-      
-      debugLog('Loaded ${compressedBytes.length} compressed bytes', 'ONBOARDING');
-      
-      // Decompress the data
-      final decompressedBytes = GZipDecoder().decodeBytes(compressedBytes);
-      debugLog('Decompressed to ${decompressedBytes.length} bytes', 'ONBOARDING');
-      
-      // Convert to string and parse JSON
-      final jsonString = utf8.decode(decompressedBytes);
-      final jsonData = json.decode(jsonString) as Map<String, dynamic>;
-      
-      debugLog('Successfully parsed JSON from $path', 'ONBOARDING');
-      return jsonData;
-    } catch (e) {
-      debugLog('Error loading compressed JSON file $path: $e', 'ONBOARDING');
-      rethrow;
-    }
-  }
-  */
-
   /// Load JSON file content (legacy method for uncompressed files)
   static Future<Map<String, dynamic>> loadJsonFile(String path) async {
     try {
@@ -133,25 +100,6 @@ class OnboardingService {
       BibleTranslation.engwebc,
     ];
   }
-
-  /// Verify compressed Bible files can be decompressed
-  /// COMMENTED OUT: We no longer ship compressed files with the app
-  /*
-  static Future<void> verifyCompressedBibleFiles() async {
-    final translations = await getAvailableBibleTranslations();
-    
-    for (final translation in translations) {
-      final path = 'assets/bibles/${translation.id}.json.gz';
-      try {
-        final data = await loadCompressedJsonFile(path);
-        debugLog('✓ Verified ${translation.id}: ${data['metadata']?['name'] ?? 'Unknown'}', 'ONBOARDING');
-      } catch (e) {
-        debugLog('✗ Failed to verify ${translation.id}: $e', 'ONBOARDING');
-        rethrow;
-      }
-    }
-  }
-  */
 }
 
 /// Onboarding notifier that manages the onboarding process
