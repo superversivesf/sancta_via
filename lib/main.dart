@@ -3,13 +3,9 @@ import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_ca
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import 'config/routes.dart';
-import 'services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize notification service
-  await NotificationService.initialize();
   
   runApp(const ProviderScope(child: BibleReadingApp()));
 }

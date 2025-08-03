@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Added for clipboard functionality
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
@@ -111,6 +112,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       _navigateToChapter(currentBookName, currentChapter - 1);
     }
   }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +285,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
             ),
             const SizedBox(height: 24),
             
-            // Chapter text with verse formatting
+            // Chapter text with verse formatting and selection capability
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -292,7 +297,52 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                   width: 1,
                 ),
               ),
-              child: _buildFormattedChapterText(context, scripture.text, themeColor),
+              child: _buildSelectableChapterText(context, scripture.text, themeColor),
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Selection instructions
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
+                ),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.content_copy,
+                        size: 16,
+                        color: themeColor ?? Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'How to copy verses:',
+                          style: textScaling.scaledBodySmall(context).copyWith(
+                            color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.8),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '1. Tap any verse to copy it\n2. The entire verse will be copied to clipboard\n3. Paste in any other app to share',
+                    style: textScaling.scaledBodySmall(context).copyWith(
+                      color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.7),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
             
             const SizedBox(height: 100), // Space for floating action buttons
@@ -335,6 +385,119 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     ),
   );
   }
+
+  /// Build selectable chapter text with verse formatting
+  Widget _buildSelectableChapterText(BuildContext context, String chapterText, Color? themeColor) {
+    final verses = _parseVersesFromChapter(chapterText);
+    
+    // Generate keys for each verse if needed
+    _generateVerseKeys(verses.length);
+    _currentVerses = verses;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: verses.asMap().entries.map((entry) {
+        final verseNumber = entry.key + 1;
+        final verseText = entry.value;
+        
+        return _buildTappableVerse(context, verseNumber, verseText, themeColor, entry.key);
+      }).toList(),
+    );
+  }
+  
+  /// Build a tappable verse that highlights and copies when tapped
+  Widget _buildTappableVerse(BuildContext context, int verseNumber, String verseText, Color? themeColor, int index) {
+    final textScaling = ref.watch(textScaleProvider);
+    
+    return Container(
+      key: _verseKeys[index], // Use GlobalKey for precise scrolling
+      margin: const EdgeInsets.only(bottom: 12),
+      child: InkWell(
+        onTap: () => _handleVerseTap(verseNumber, verseText),
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: Colors.transparent,
+              width: 2,
+            ),
+          ),
+          child: RichText(
+            text: TextSpan(
+              style: textScaling.scaledBibleText(context, lineHeight: 1.8),
+              children: [
+                TextSpan(
+                  text: '$verseNumber ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.8),
+                    fontSize: textScaling.scaledBibleText(context).fontSize! * 0.9,
+                  ),
+                ),
+                TextSpan(
+                  text: verseText,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  
+  /// Handle when a verse is tapped - highlight and copy
+  void _handleVerseTap(int verseNumber, String verseText) async {
+    final selectedTranslation = ref.read(appSelectedBibleTranslationProvider);
+    
+    // Create formatted text for clipboard
+    final translationAbbrev = selectedTranslation.abbreviation ?? 'Bible';
+    final formattedText = '$verseText ($currentBookName $currentChapter:$verseNumber, $translationAbbrev)';
+    
+    // Copy to clipboard
+    try {
+      await Clipboard.setData(ClipboardData(text: formattedText));
+      
+      // Provide haptic feedback
+      HapticFeedback.lightImpact();
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.content_copy, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('Copied verse $verseNumber to clipboard'),
+                ),
+              ],
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+        );
+      }
+      
+      debugLog('Successfully copied verse $verseNumber to clipboard', 'VERSE_TAP');
+    } catch (e) {
+      debugLog('Error copying verse to clipboard: $e', 'VERSE_TAP');
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to copy verse to clipboard'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+
 
   Widget _buildLoadingContent(BuildContext context, Color? themeColor) {
     final textScaling = ref.watch(textScaleProvider);
@@ -427,52 +590,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildFormattedChapterText(BuildContext context, String chapterText, Color? themeColor) {
-    final textScaling = ref.watch(textScaleProvider);
-    final verses = _parseVersesFromChapter(chapterText);
-    
-    // Generate keys for each verse if needed
-    _generateVerseKeys(verses.length);
-    _currentVerses = verses;
-    
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: verses.asMap().entries.map((entry) {
-        final verseNumber = entry.key + 1;
-        final verseText = entry.value;
-        
-        return Container(
-          key: _verseKeys[entry.key], // Use GlobalKey for precise scrolling
-          margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2), // Subtle padding
-          decoration: BoxDecoration(
-            // Borderless - completely transparent
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: RichText(
-            text: TextSpan(
-              style: textScaling.scaledBibleText(context, lineHeight: 1.8),
-              children: [
-                TextSpan(
-                  text: '$verseNumber ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.8),
-                    fontSize: textScaling.scaledBibleText(context).fontSize! * 0.9,
-                  ),
-                ),
-                TextSpan(
-                  text: verseText,
-                ),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
     );
   }
 

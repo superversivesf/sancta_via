@@ -6,7 +6,6 @@ import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import '../../providers/text_scaling_provider.dart';
 import '../../providers/reading_plan_provider.dart';
 import '../../models/reading_plan.dart';
-import '../../services/notification_service.dart';
 
 class ReadingPlanScreen extends ConsumerStatefulWidget {
   const ReadingPlanScreen({super.key});
@@ -1083,59 +1082,14 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
                   style: textScaling.scaledBodyMedium(context),
                 ),
                 subtitle: Text(
-                  'Get notified when it\'s time to read',
-                  style: textScaling.scaledBodySmall(context).copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
+                'Note: Reminders have been disabled in this version',
+                style: textScaling.scaledBodySmall(context).copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
-                value: remindersEnabled,
-                activeColor: themeColor ?? Theme.of(context).colorScheme.primary,
-                onChanged: (bool value) async {
-                  if (value) {
-                    // Check if permissions are already granted first
-                    bool hasPermission = await NotificationService.hasPermissions();
-                    
-                    if (!hasPermission) {
-                      // Request notification permissions when enabling reminders
-                      hasPermission = await NotificationService.requestPermissions();
-                    }
-                    
-                    if (!hasPermission) {
-                      // Show error if permission denied
-                      if (mounted && context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Notification permission is required for reminders'),
-                            backgroundColor: Colors.orange,
-                          ),
-                        );
-                      }
-                      return;
-                    }
-                  }
-                  
-                  setState(() {
-                    remindersEnabled = value;
-                  });
-                },
+                ),
+                value: false, // Disabled since notifications were removed
+                onChanged: null, // Disable the switch
               ),
-              if (remindersEnabled) ...[
-                const SizedBox(height: 12),
-                ListTile(
-                  title: Text(
-                    'Reminder time',
-                    style: textScaling.scaledBodyMedium(context),
-                  ),
-                  subtitle: Text(
-                    reminderTime?.format(context) ?? 'Tap to set time',
-                    style: textScaling.scaledBodySmall(context).copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                    ),
-                  ),
-                  trailing: const Icon(Icons.access_time),
-                  onTap: _selectReminderTime,
-                ),
-              ],
             ],
           ),
         ),
@@ -1175,17 +1129,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
     return '${date.day}/${date.month}/${date.year}';
   }
 
-  Future<void> _selectReminderTime() async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: reminderTime ?? TimeOfDay.now(),
-    );
-    if (picked != null) {
-      setState(() {
-        reminderTime = picked;
-      });
-    }
-  }
+
 
   /// Helper method to normalize DateTime to midnight of the same day
   /// This ensures predictable daily advancement behavior for reading plans
@@ -1206,8 +1150,8 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
       frequency: selectedFrequency,
       scheduledDays: selectedDays,
       chaptersPerDay: chaptersPerDay,
-      remindersEnabled: remindersEnabled,
-      reminderTime: reminderTime,
+      remindersEnabled: false, // Always false since notifications were removed
+      reminderTime: null, // Always null since reminders are disabled
       progress: ReadingProgress.start(selectedCollection),
       createdAt: _normalizeToMidnight(DateTime.now()),
     );

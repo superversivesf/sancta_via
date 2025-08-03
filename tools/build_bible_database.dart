@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
-import 'package:archive/archive.dart';
+// import 'package:archive/archive.dart'; // Development tool only - not shipped with app
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 /// Build script to convert Bible JSON files to SQLite database
@@ -154,11 +154,8 @@ Future<void> _convertJsonFiles(Directory assetsDir, Database db) async {
     // Handle both .json and .json.gz files
     String jsonContent;
     if (file.path.endsWith('.gz')) {
-      // ignore: avoid_slow_async_io
-      final gzBytes = await file.readAsBytes();
-      final decompressed = GZipDecoder().decodeBytes(gzBytes);
-      jsonContent = String.fromCharCodes(decompressed);
-      print('  📦 Decompressed ${file.path}');
+      // Compression support disabled - development tool limitation
+      throw Exception('Compressed files not supported in this build tool. Use uncompressed .json files.');
     } else {
       // ignore: avoid_slow_async_io
       jsonContent = await file.readAsString();

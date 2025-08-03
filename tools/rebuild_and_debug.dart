@@ -1,7 +1,7 @@
 #!/usr/bin/env dart
 
-/// Quick script to rebuild the Bible database and check for Revelation
-/// This combines the build and debug steps for convenience
+// Quick script to rebuild the Bible database and check for Revelation
+// This combines the build and debug steps for convenience
 
 import 'dart:io';
 

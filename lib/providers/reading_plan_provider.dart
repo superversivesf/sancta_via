@@ -4,13 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/reading_plan.dart';
-import '../services/notification_service.dart';
 
 /// Provider for the reading plan manager (multiple plans)
 final readingPlanManagerProvider = StateNotifierProvider<ReadingPlanManagerNotifier, ReadingPlanManager>((ref) {
   final notifier = ReadingPlanManagerNotifier();
-  // Automatically check for daily reset when provider is accessed
-  notifier.checkDailyResetIfNeeded();
+  // Automatically check for daily reset and app state when provider is accessed
+  notifier.checkDailyResetAndAppState();
   return notifier;
 });
 
@@ -78,6 +77,26 @@ final todaysReadingsProvider = Provider<List<TodaysReading>>((ref) {
 final todaysReadingsOrderedProvider = Provider<List<TodaysReading>>((ref) {
   final orderedPlans = ref.watch(todaysPlansOrderedProvider);
   return orderedPlans.map((plan) => TodaysReading.fromPlan(plan)).toList();
+});
+
+/// Provider to get the current reading position (where user should read next)
+final currentReadingPositionProvider = Provider<TodaysReading?>((ref) {
+  final activePlans = ref.watch(activeReadingPlansProvider);
+  
+  // Get the first active plan as the primary reading position
+  if (activePlans.isEmpty) return null;
+  
+  final primaryPlan = activePlans.first;
+  return TodaysReading.fromPlan(primaryPlan);
+});
+
+/// Provider to determine if user should auto-navigate to reading
+final shouldAutoNavigateToReadingProvider = Provider<bool>((ref) {
+  final currentPosition = ref.watch(currentReadingPositionProvider);
+  final todaysUnread = ref.watch(todaysUnreadPlansProvider);
+  
+  // Auto-navigate if there are unread plans for today or if user has active plans
+  return currentPosition != null && todaysUnread.isNotEmpty;
 });
 
 /// BACKWARD COMPATIBILITY: Provider for the first active reading plan (mimics old single plan behavior)
@@ -167,9 +186,6 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
         
         // Check if we need to automatically reset daily status
         await _checkAndResetDailyStatus();
-        
-        // Re-schedule notifications for all active plans with reminders
-        await _rescheduleAllNotifications();
         return;
       }
       
@@ -178,7 +194,6 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       if (legacyPlanJson != null) {
         await _migrateLegacyPlan(legacyPlanJson, prefs);
         await _checkAndResetDailyStatus();
-        await _rescheduleAllNotifications();
         return;
       }
       
@@ -199,26 +214,23 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     }
   }
 
-  /// Public method to manually trigger daily reset check
-  Future<void> checkDailyResetIfNeeded() async {
+  /// Public method to manually trigger daily reset check and app state management
+  Future<void> checkDailyResetAndAppState() async {
     await _checkAndResetDailyStatus();
+    await _handleAppReopen();
   }
   
-  /// Re-schedule notifications for all active plans with reminders enabled
-  /// This is called on app startup to ensure notifications persist across app restarts
-  Future<void> _rescheduleAllNotifications() async {
-    try {
-      for (final plan in state.activePlans) {
-        if (plan.remindersEnabled) {
-          await NotificationService.scheduleReadingReminder(plan);
-        }
-      }
-    } catch (e) {
-      // Silently handle notification errors to avoid blocking app startup
-      // ignore: avoid_print
-      print('Error rescheduling notifications: $e');
-    }
+  /// Handle when app is reopened from background - check if we should advance to next reading
+  Future<void> _handleAppReopen() async {
+    // This method will be called whenever the app is opened or provider is accessed
+    // It ensures the user sees their current reading position
+    // The actual navigation will be handled by the UI layer
+    
+    // For now, just ensure daily status is current
+    // UI components can check todaysReadingsProvider to know what to show
   }
+  
+
 
   Future<void> _migrateLegacyPlan(String legacyPlanJson, SharedPreferences prefs) async {
     try {
@@ -255,11 +267,6 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     try {
       state = state.addPlan(plan);
       await _savePlans();
-      
-      // Schedule notifications if reminders are enabled
-      if (plan.remindersEnabled && plan.isActive) {
-        await NotificationService.scheduleReadingReminder(plan);
-      }
     } catch (e) {
       // Re-throw to let UI handle the error
       rethrow;
@@ -269,24 +276,15 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   Future<void> updatePlan(ReadingPlan plan) async {
     state = state.updatePlan(plan);
     await _savePlans();
-    
-    // Update notifications for this plan
-    await NotificationService.updatePlanNotifications(plan);
   }
 
   Future<void> removePlan(String planId) async {
-    // Cancel notifications for this plan before removing
-    await NotificationService.cancelPlanNotifications(planId);
-    
     state = state.removePlan(planId);
     await _savePlans();
   }
 
   Future<void> pausePlan(String planId) async {
     final plan = state.plans.firstWhere((p) => p.id == planId);
-    // Cancel notifications when pausing
-    await NotificationService.cancelPlanNotifications(planId);
-    
     final pausedPlan = plan.copyWith(isActive: false);
     await updatePlan(pausedPlan);
   }
@@ -295,7 +293,6 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     final plan = state.plans.firstWhere((p) => p.id == planId);
     final resumedPlan = plan.copyWith(isActive: true);
     await updatePlan(resumedPlan);
-    // Notifications will be scheduled by updatePlan if reminders are enabled
   }
 
   Future<void> markPlanReadToday(String planId) async {
