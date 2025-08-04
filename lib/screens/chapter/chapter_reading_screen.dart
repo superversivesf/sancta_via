@@ -163,13 +163,16 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       ),
       body: GestureDetector(
         onHorizontalDragEnd: (details) {
-          // Swipe left to go to next chapter
-          if (details.primaryVelocity! < -500) {
-            _navigateToNextChapter();
-          }
-          // Swipe right to go to previous chapter
-          else if (details.primaryVelocity! > 500) {
-            _navigateToPreviousChapter();
+          final velocity = details.primaryVelocity;
+          if (velocity != null) {
+            // Swipe left to go to next chapter
+            if (velocity < -500) {
+              _navigateToNextChapter();
+            }
+            // Swipe right to go to previous chapter
+            else if (velocity > 500) {
+              _navigateToPreviousChapter();
+            }
           }
         },
         child: SafeArea(
@@ -452,8 +455,8 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     final selectedTranslation = ref.read(appSelectedBibleTranslationProvider);
     
     // Create formatted text for clipboard
-    final translationAbbrev = selectedTranslation.abbreviation ?? 'Bible';
-    final formattedText = '$verseText ($currentBookName $currentChapter:$verseNumber, $translationAbbrev)';
+    final translationAbbrev = selectedTranslation.abbreviation;
+    final formattedText = '$verseText ($currentBookName $currentChapter:$verseNumber, ${translationAbbrev ?? 'Bible'})';
     
     // Copy to clipboard
     try {

@@ -90,6 +90,12 @@ final currentReadingPositionProvider = Provider<TodaysReading?>((ref) {
   return TodaysReading.fromPlan(primaryPlan);
 });
 
+/// Provider to get where the user should continue reading (current progress position)
+final continueReadingPositionProvider = Provider<List<ContinueReading>>((ref) {
+  final activePlans = ref.watch(activeReadingPlansProvider);
+  return activePlans.map((plan) => ContinueReading.fromPlan(plan)).toList();
+});
+
 /// Provider to determine if user should auto-navigate to reading
 final shouldAutoNavigateToReadingProvider = Provider<bool>((ref) {
   final currentPosition = ref.watch(currentReadingPositionProvider);
@@ -114,9 +120,16 @@ final todaysReadingProvider = Provider<TodaysReading?>((ref) {
 class TodaysReading {
   final String planId;
   final String planName;
+  
+  // These represent what SHOULD be read today according to schedule
   final String book;
   final int startChapter;
   final int chaptersToRead;
+  
+  // These represent where the user actually is in their reading
+  final String currentBook;
+  final int currentChapter;
+  
   final bool hasReadToday;
   final BookCollection collection;
 
@@ -126,17 +139,22 @@ class TodaysReading {
     required this.book,
     required this.startChapter,
     required this.chaptersToRead,
+    required this.currentBook,
+    required this.currentChapter,
     required this.hasReadToday,
     required this.collection,
   });
 
   factory TodaysReading.fromPlan(ReadingPlan plan) {
+    // Use the scheduled position for "today's reading"
     return TodaysReading(
       planId: plan.id,
       planName: plan.name,
-      book: plan.progress.currentBook,
-      startChapter: plan.progress.currentChapter,
+      book: plan.progress.scheduledBook, 
+      startChapter: plan.progress.scheduledChapter,
       chaptersToRead: plan.chaptersPerDay,
+      currentBook: plan.progress.currentBook,
+      currentChapter: plan.progress.currentChapter,
       hasReadToday: plan.hasReadToday,
       collection: plan.collection,
     );
@@ -153,6 +171,64 @@ class TodaysReading {
       final endChapter = startChapter + chaptersToRead - 1;
       return '$book $startChapter-$endChapter';
     }
+  }
+
+  String get planDisplayText {
+    return '$planName: $displayText';
+  }
+  
+  // Display text for where user actually is
+  String get currentPositionText {
+    return '$currentBook $currentChapter';
+  }
+
+  // Check if the user has read ahead of today's scheduled reading
+  bool get hasReadAhead {
+    if (currentBook != book) {
+      // Different books - need to check book order (simplified for now)
+      return true; // Assume ahead if different book
+    }
+    return currentChapter > startChapter;
+  }
+
+  // Check if the user has fallen behind the scheduled reading
+  bool get hasFallenBehind {
+    if (currentBook != book) {
+      // Different books - need to check book order (simplified for now)
+      return false; // Assume not behind if different book
+    }
+    return currentChapter < startChapter;
+  }
+}
+
+class ContinueReading {
+  final String planId;
+  final String planName;
+  final String book;
+  final int chapter;
+  final BookCollection collection;
+
+  const ContinueReading({
+    required this.planId,
+    required this.planName,
+    required this.book,
+    required this.chapter,
+    required this.collection,
+  });
+
+  factory ContinueReading.fromPlan(ReadingPlan plan) {
+    // Use the current reading position (where they should continue)
+    return ContinueReading(
+      planId: plan.id,
+      planName: plan.name,
+      book: plan.progress.currentBook,
+      chapter: plan.progress.currentChapter,
+      collection: plan.collection,
+    );
+  }
+
+  String get displayText {
+    return '$book $chapter';
   }
 
   String get planDisplayText {
@@ -218,6 +294,54 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   Future<void> checkDailyResetAndAppState() async {
     await _checkAndResetDailyStatus();
     await _handleAppReopen();
+  }
+  
+  /// Check if we need to perform daily reset and do it if necessary
+  /// This should be called when app resumes from background
+  Future<void> checkAndPerformDailyReset() async {
+    if (state.needsDailyReset) {
+      await _performDailyReset();
+    }
+  }
+
+  /// Perform the actual daily reset with enhanced logging
+  Future<void> _performDailyReset() async {
+    final now = DateTime.now();
+    final resetMidnight = _normalizeToMidnight(now);
+    
+    // Reset hasReadToday to false for all plans and advance scheduled reading
+    final resetPlans = state.plans.map((plan) {
+      if (!plan.isActive || plan.isCompleted) {
+        // Just reset the daily status for inactive/completed plans
+        return plan.copyWith(hasReadToday: false);
+      }
+      
+      // For active plans, advance the scheduled reading
+      final updatedProgress = _advanceScheduledProgress(plan.progress, plan.chaptersPerDay);
+      return plan.copyWith(
+        hasReadToday: false,
+        progress: updatedProgress,
+      );
+    }).toList();
+
+    // Update state with reset plans and new reset date
+    state = state.copyWith(
+      plans: resetPlans,
+      lastDailyReset: resetMidnight,
+      lastUpdated: now,
+    );
+
+    // Save to persistent storage
+    await _savePlans();
+    
+    // Enhanced logging for debugging
+    final activePlanCount = resetPlans.where((p) => p.isActive && !p.isCompleted).length;
+    // ignore: avoid_print
+    print('🔄 Daily reset performed at $now');
+    // ignore: avoid_print
+    print('   Reset $activePlanCount active plans to hasReadToday: false');
+    // ignore: avoid_print
+    print('   New daily reset date: $resetMidnight');
   }
   
   /// Handle when app is reopened from background - check if we should advance to next reading
@@ -349,16 +473,8 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   Future<void> resetDailyStatus() async {
-    // Reset hasReadToday for all plans (call this at start of new day)
-    final updatedPlans = state.plans.map((plan) {
-      return plan.copyWith(hasReadToday: false);
-    }).toList();
-    
-    state = state.copyWith(
-      plans: updatedPlans,
-      lastDailyReset: _normalizeToMidnight(DateTime.now()),
-    );
-    await _savePlans();
+    // This is the public API method - delegate to the internal reset method
+    await _performDailyReset();
   }
 
   Future<void> resetProgress(String planId) async {
@@ -411,6 +527,45 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     'Philemon': 1, 'Hebrews': 13, 'James': 5, '1 Peter': 5, '2 Peter': 3,
     '1 John': 5, '2 John': 1, '3 John': 1, 'Jude': 1, 'Revelation': 22,
   };
+
+  /// Advance only the scheduled reading position (used during daily reset)
+  ReadingProgress _advanceScheduledProgress(ReadingProgress current, int chaptersToAdvance) {
+    var scheduledChapter = current.scheduledChapter;
+    var scheduledBookIndex = current.scheduledBookIndex;
+    var scheduledBook = current.scheduledBook;
+    var chaptersRemaining = chaptersToAdvance;
+
+    while (chaptersRemaining > 0 && scheduledBookIndex < current.books.length) {
+      final bookChapterCount = _chapterCounts[scheduledBook] ?? 30; // Fallback to 30
+      
+      // Check if we can complete the remaining chapters in the current book
+      if (scheduledChapter + chaptersRemaining <= bookChapterCount) {
+        // Stay in current book
+        scheduledChapter += chaptersRemaining;
+        chaptersRemaining = 0;
+      } else {
+        // Need to move to next book(s)
+        chaptersRemaining -= (bookChapterCount - scheduledChapter + 1);
+        
+        // Move to next book
+        scheduledBookIndex++;
+        if (scheduledBookIndex < current.books.length) {
+          scheduledBook = current.books[scheduledBookIndex];
+          scheduledChapter = 1;
+        } else {
+          // We've completed all books in the schedule
+          break;
+        }
+      }
+    }
+
+    return current.copyWith(
+      scheduledBook: scheduledBook,
+      scheduledChapter: scheduledChapter,
+      scheduledBookIndex: scheduledBookIndex,
+      lastScheduleAdvancement: DateTime.now(),
+    );
+  }
 
   ReadingProgress _advanceProgress(ReadingProgress current, int chaptersToAdvance) {
     var currentChapter = current.currentChapter;

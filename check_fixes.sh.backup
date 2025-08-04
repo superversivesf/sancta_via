@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Quick test to check if the major build errors are fixed
+cd /Users/jason/Repos/SanctaVia/sancta_via_bible_reading_app
+
+echo "Checking if major build errors are resolved..."
+
+# Check if the demo file exists (should be moved to backup)
+if [ -f "lib/models/reading_plan_fix.dart" ]; then
+    echo "❌ Demo file still exists - should be moved to backup"
+else
+    echo "✅ Demo file properly moved"
+fi
+
+# Check for syntax errors in continue_reading_screen
+if grep -q "\.\.\..*\[" lib/screens/continue_reading/continue_reading_screen.dart; then
+    echo "❌ Still has spread operator syntax errors"
+else 
+    echo "✅ Spread operator syntax fixed"
+fi
+
+# Check if TodaysReading constructor has required fields
+if grep -q "currentBook.*currentChapter" lib/providers/reading_plan_provider.dart; then
+    echo "✅ TodaysReading constructor has required fields"
+else
+    echo "❌ TodaysReading constructor missing required fields"
+fi
+
+echo "Basic error check complete."

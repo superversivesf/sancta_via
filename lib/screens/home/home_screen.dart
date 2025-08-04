@@ -131,129 +131,7 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildQuickReadSection(BuildContext context, WidgetRef ref, Color? themeColor) {
-    final textScaling = ref.watch(textScaleProvider);
-    final currentPosition = ref.watch(currentReadingPositionProvider);
-    final todaysUnread = ref.watch(todaysUnreadPlansProvider);
-    final activePlans = ref.watch(activeReadingPlansProvider);
-    
-    // Don't show if no active plans
-    if (activePlans.isEmpty) {
-      return const SizedBox.shrink();
-    }
-    
-    // Determine what to show
-    final hasUnreadToday = todaysUnread.isNotEmpty;
-    final primaryReading = currentPosition;
-    
-    if (primaryReading == null) {
-      return const SizedBox.shrink();
-    }
-    
-    final buttonText = hasUnreadToday 
-        ? 'Read Today: ${primaryReading.displayText}'
-        : 'Continue Reading: ${primaryReading.displayText}';
-    
-    final subtitle = hasUnreadToday
-        ? 'Today\'s reading from ${primaryReading.planName}'
-        : 'Continue where you left off';
-        
-    final icon = hasUnreadToday ? Icons.today : Icons.auto_stories;
-    
-    return Card(
-      elevation: hasUnreadToday ? 4 : 2,
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: themeColor != null ? Border.all(
-            color: themeColor.withValues(alpha: hasUnreadToday ? 0.6 : 0.3),
-            width: hasUnreadToday ? 3 : 2,
-          ) : null,
-          gradient: hasUnreadToday && themeColor != null ? LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              themeColor.withValues(alpha: 0.1),
-              themeColor.withValues(alpha: 0.05),
-            ],
-          ) : null,
-        ),
-        child: InkWell(
-          onTap: () {
-            // Navigate directly to the current reading position
-            context.push('/chapter/${Uri.encodeComponent(primaryReading.book)}/${primaryReading.startChapter}');
-          },
-          borderRadius: BorderRadius.circular(12),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    icon,
-                    size: 32,
-                    color: themeColor ?? Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        buttonText,
-                        style: textScaling.scaledTitleMedium(context).copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: themeColor?.withValues(alpha: 0.9) ?? 
-                                 Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        subtitle,
-                        style: textScaling.scaledBodyMedium(context).copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                        ),
-                      ),
-                      if (hasUnreadToday) ...[
-                        const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.15),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            'Tap to start reading',
-                            style: textScaling.scaledLabelSmall(context).copyWith(
-                              color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.8),
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.6),
-                  size: 20,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+
 
   Widget _buildNavigationGrid(BuildContext context, WidgetRef ref, Color? themeColor) {
     final textScaling = ref.watch(textScaleProvider);
@@ -596,6 +474,8 @@ class HomeScreen extends ConsumerWidget {
         book: nextBook,
         startChapter: nextChapter,
         chaptersToRead: plan.chaptersPerDay,
+        currentBook: plan.progress.currentBook,
+        currentChapter: plan.progress.currentChapter,
         hasReadToday: plan.hasReadToday,
         collection: plan.collection,
       );

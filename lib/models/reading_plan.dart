@@ -271,6 +271,12 @@ class ReadingProgress {
   final List<String> books;
   final bool isCompleted;
   final DateTime? lastReadDate;
+  
+  // NEW: Track the scheduled reading position separately from actual progress
+  final String scheduledBook;
+  final int scheduledChapter;
+  final int scheduledBookIndex;
+  final DateTime? lastScheduleAdvancement; // When did we last advance the schedule
 
   const ReadingProgress({
     required this.currentBook,
@@ -279,7 +285,14 @@ class ReadingProgress {
     required this.books,
     this.isCompleted = false,
     this.lastReadDate,
-  });
+    // Initialize scheduled position to match current position
+    String? scheduledBook,
+    int? scheduledChapter,
+    int? scheduledBookIndex,
+    this.lastScheduleAdvancement,
+  }) : scheduledBook = scheduledBook ?? currentBook,
+       scheduledChapter = scheduledChapter ?? currentChapter,
+       scheduledBookIndex = scheduledBookIndex ?? bookIndex;
 
   factory ReadingProgress.start(BookCollection collection) {
     final books = collection.bookNames;
@@ -290,6 +303,10 @@ class ReadingProgress {
       books: books,
       isCompleted: false,
       lastReadDate: null,
+      scheduledBook: books.first,
+      scheduledChapter: 1,
+      scheduledBookIndex: 0,
+      lastScheduleAdvancement: DateTime.now(),
     );
   }
 
@@ -300,6 +317,10 @@ class ReadingProgress {
     List<String>? books,
     bool? isCompleted,
     DateTime? lastReadDate,
+    String? scheduledBook,
+    int? scheduledChapter,
+    int? scheduledBookIndex,
+    DateTime? lastScheduleAdvancement,
   }) {
     return ReadingProgress(
       currentBook: currentBook ?? this.currentBook,
@@ -308,6 +329,10 @@ class ReadingProgress {
       books: books ?? this.books,
       isCompleted: isCompleted ?? this.isCompleted,
       lastReadDate: lastReadDate ?? this.lastReadDate,
+      scheduledBook: scheduledBook ?? this.scheduledBook,
+      scheduledChapter: scheduledChapter ?? this.scheduledChapter,
+      scheduledBookIndex: scheduledBookIndex ?? this.scheduledBookIndex,
+      lastScheduleAdvancement: lastScheduleAdvancement ?? this.lastScheduleAdvancement,
     );
   }
 
@@ -319,6 +344,10 @@ class ReadingProgress {
       'books': books,
       'isCompleted': isCompleted,
       'lastReadDate': lastReadDate?.toIso8601String(),
+      'scheduledBook': scheduledBook,
+      'scheduledChapter': scheduledChapter,
+      'scheduledBookIndex': scheduledBookIndex,
+      'lastScheduleAdvancement': lastScheduleAdvancement?.toIso8601String(),
     };
   }
 
@@ -330,6 +359,13 @@ class ReadingProgress {
       books: List<String>.from(json['books']),
       isCompleted: json['isCompleted'] ?? false,
       lastReadDate: json['lastReadDate'] != null ? DateTime.parse(json['lastReadDate']) : null,
+      // Handle backward compatibility - if scheduled fields don't exist, use current position
+      scheduledBook: json['scheduledBook'] ?? json['currentBook'],
+      scheduledChapter: json['scheduledChapter'] ?? json['currentChapter'],
+      scheduledBookIndex: json['scheduledBookIndex'] ?? json['bookIndex'],
+      lastScheduleAdvancement: json['lastScheduleAdvancement'] != null 
+          ? DateTime.parse(json['lastScheduleAdvancement']) 
+          : null,
     );
   }
 }
@@ -616,6 +652,20 @@ class ReadingPlanManager {
     final now = DateTime.now();
     final resetDate = DateTime(lastDailyReset.year, lastDailyReset.month, lastDailyReset.day);
     final currentDate = DateTime(now.year, now.month, now.day);
-    return currentDate.isAfter(resetDate);
+    final needsReset = currentDate.isAfter(resetDate);
+    
+    // Enhanced logging for debugging the original issue
+    if (needsReset) {
+      // ignore: avoid_print
+      print('📅 Daily reset needed:');
+      // ignore: avoid_print
+      print('   Last reset: $resetDate');
+      // ignore: avoid_print
+      print('   Current date: $currentDate');
+      // ignore: avoid_print
+      print('   App lifecycle triggered reset check at $now');
+    }
+    
+    return needsReset;
   }
 }

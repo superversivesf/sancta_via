@@ -351,6 +351,57 @@ class ContinueReadingScreen extends ConsumerWidget {
                         ),
                         textAlign: TextAlign.center,
                       ),
+                      
+                      // Show reading status if user has read ahead or behind
+                      if (todaysReading.hasReadAhead) ...[
+                        const SizedBox(height: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.trending_up, size: 16, color: Colors.green.shade700),
+                              const SizedBox(width: 4),
+                              Text(
+                                'You\'re ahead! Continue at ${todaysReading.currentPositionText}',
+                                style: textScaling.scaledBodySmall(context).copyWith(
+                                  color: Colors.green.shade700,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ] else if (todaysReading.hasFallenBehind) ...[
+                        const SizedBox(height: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.schedule, size: 16, color: Colors.orange.shade700),
+                              const SizedBox(width: 4),
+                              Text(
+                                'Currently at ${todaysReading.currentPositionText}',
+                                style: textScaling.scaledBodySmall(context).copyWith(
+                                  color: Colors.orange.shade700,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -396,26 +447,65 @@ class ContinueReadingScreen extends ConsumerWidget {
                     
                     const SizedBox(height: 16),
                     
-                    // Get ahead button
-                    Center(
-                      child: ElevatedButton.icon(
-                        onPressed: () => _getAhead(context, ref, plan.id),
-                        icon: const Icon(Icons.arrow_forward, size: 18),
-                        label: Text(
-                          'Get Ahead',
-                          style: textScaling.scaledBodyMedium(context).copyWith(
-                            fontWeight: FontWeight.w600,
+                    // Action buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // Continue reading button (where user left off)
+                        if (todaysReading.hasReadAhead)
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: ElevatedButton.icon(
+                                onPressed: () => _navigateToChapter(
+                                  context, 
+                                  todaysReading.currentBook, 
+                                  todaysReading.currentChapter
+                                ),
+                                icon: const Icon(Icons.play_arrow, size: 18),
+                                label: Text(
+                                  'Continue Reading',
+                                  style: textScaling.scaledBodyMedium(context).copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        
+                        // Get ahead button
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: todaysReading.hasReadAhead ? 8 : 0),
+                            child: ElevatedButton.icon(
+                              onPressed: () => _getAhead(context, ref, plan.id),
+                              icon: const Icon(Icons.arrow_forward, size: 18),
+                              label: Text(
+                                'Get Ahead',
+                                style: textScaling.scaledBodyMedium(context).copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
