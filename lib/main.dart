@@ -5,9 +5,16 @@ import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import 'config/routes.dart';
 import 'providers/reading_plan_provider.dart';
+import 'services/user_message_service.dart';
+
+// Global navigator key for user messages
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Set up user message service
+  UserMessageService.navigatorKey = navigatorKey;
   
   runApp(const ProviderScope(child: BibleReadingApp()));
 }
@@ -31,6 +38,8 @@ class _BibleReadingAppState extends ConsumerState<BibleReadingApp>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    // FIXED: Clean up user message service
+    UserMessageService().clearQueue();
     super.dispose();
   }
 
@@ -38,17 +47,28 @@ class _BibleReadingAppState extends ConsumerState<BibleReadingApp>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     
-    // When app comes back to foreground, check for daily reset
+    // FIXED: Only trigger daily reset on resume, with safety checks
     if (state == AppLifecycleState.resumed) {
-      // ignore: avoid_print
-      print('🔆 App resumed from background - checking for daily reset');
-      _checkForDailyReset();
+      print('🔆 App resumed from background - safely checking for daily reset');
+      _safeCheckForDailyReset();
+    } else if (state == AppLifecycleState.paused) {
+      print('⏸️ App paused - cleaning up message queue');
+      UserMessageService().clearQueue();
     }
   }
 
-  void _checkForDailyReset() {
-    // Trigger daily reset check in reading plan provider
-    ref.read(readingPlanManagerProvider.notifier).checkAndPerformDailyReset();
+  /// FIXED: Safe daily reset check without racing
+  void _safeCheckForDailyReset() {
+    // Use a short delay to ensure provider is fully initialized
+    Future.delayed(const Duration(milliseconds: 100), () {
+      try {
+        if (mounted) {
+          ref.read(readingPlanManagerProvider.notifier).checkAndPerformDailyReset();
+        }
+      } catch (e) {
+        print('❌ Error checking daily reset: $e');
+      }
+    });
   }
 
   @override

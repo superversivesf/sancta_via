@@ -4,12 +4,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/reading_plan.dart';
+import '../services/user_message_service.dart';
+
+/// Custom exception for reading plan errors
+class ReadingPlanException implements Exception {
+  final String message;
+  ReadingPlanException(this.message);
+  
+  @override
+  String toString() => message;
+}
 
 /// Provider for the reading plan manager (multiple plans)
 final readingPlanManagerProvider = StateNotifierProvider<ReadingPlanManagerNotifier, ReadingPlanManager>((ref) {
   final notifier = ReadingPlanManagerNotifier();
-  // Automatically check for daily reset and app state when provider is accessed
-  notifier.checkDailyResetAndAppState();
+  // FIXED: Removed automatic daily reset to prevent race conditions
+  // Daily reset will be triggered by app lifecycle events only
   return notifier;
 });
 
@@ -237,6 +247,10 @@ class ContinueReading {
 }
 
 class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
+  // FIXED: Add mutex locks to prevent race conditions and data corruption
+  bool _isPerformingDailyReset = false;
+  bool _isSaving = false;
+  
   ReadingPlanManagerNotifier() : super(ReadingPlanManager.empty()) {
     _loadPlans();
   }
@@ -250,6 +264,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     return DateTime(dateTime.year, dateTime.month, dateTime.day);
   }
 
+  /// FIXED: Enhanced data loading with corruption detection
   Future<void> _loadPlans() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -257,12 +272,26 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       // Check for new multi-plan format first
       final managerJson = prefs.getString(_storageKey);
       if (managerJson != null) {
-        final managerMap = jsonDecode(managerJson);
-        state = ReadingPlanManager.fromJson(managerMap);
-        
-        // Check if we need to automatically reset daily status
-        await _checkAndResetDailyStatus();
-        return;
+        try {
+          final managerMap = jsonDecode(managerJson);
+          
+          // Validate data integrity before loading
+          if (!_validateManagerData(managerMap)) {
+            throw Exception('Corrupted manager data detected');
+          }
+          
+          state = ReadingPlanManager.fromJson(managerMap);
+          print('📖 Reading plans loaded successfully');
+          
+          // Check if we need to automatically reset daily status
+          await _checkAndResetDailyStatus();
+          return;
+          
+        } catch (e) {
+          print('⚠️ Corrupted multi-plan data detected: $e');
+          await _handleCorruptedData(prefs);
+          return;
+        }
       }
       
       // Check for legacy single plan format and migrate
@@ -275,11 +304,66 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       
       // No plans found, start with empty manager
       state = ReadingPlanManager.empty();
+      print('📱 Started with empty reading plan manager');
+      
     } catch (e) {
-      // If there's an error loading, keep empty state
-      // ignore: avoid_print
-      print('Error loading reading plans: $e');
+      print('❌ Error loading reading plans: $e');
       state = ReadingPlanManager.empty();
+      _showErrorMessage('Failed to load reading plans. Starting fresh.');
+    }
+  }
+
+  /// NEW: Validate manager data integrity
+  bool _validateManagerData(Map<String, dynamic> data) {
+    try {
+      // Check required fields
+      if (!data.containsKey('plans') || !data.containsKey('lastUpdated')) {
+        return false;
+      }
+      
+      // Validate plans array
+      final plans = data['plans'] as List?;
+      if (plans == null) return false;
+      
+      // Check each plan has required fields
+      for (final plan in plans) {
+        if (plan is! Map<String, dynamic>) return false;
+        if (!plan.containsKey('id') || 
+            !plan.containsKey('progress') || 
+            !plan.containsKey('collection')) {
+          return false;
+        }
+      }
+      
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// NEW: Handle corrupted data gracefully
+  Future<void> _handleCorruptedData(SharedPreferences prefs) async {
+    try {
+      // Backup corrupted data for debugging
+      final corruptedData = prefs.getString(_storageKey);
+      await prefs.setString('${_storageKey}_corrupted_${DateTime.now().millisecondsSinceEpoch}', 
+                           corruptedData ?? '');
+      
+      // Clear corrupted data
+      await prefs.remove(_storageKey);
+      
+      // Start fresh
+      state = ReadingPlanManager.empty();
+      
+      _showErrorMessage(
+        'Reading plan data was corrupted and has been reset. '
+        'Please recreate your reading plans. Sorry for the inconvenience!'
+      );
+      
+      print('🔄 Corrupted data cleared, starting fresh');
+      
+    } catch (e) {
+      print('❌ Error handling corrupted data: $e');
     }
   }
 
@@ -296,52 +380,71 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     await _handleAppReopen();
   }
   
-  /// Check if we need to perform daily reset and do it if necessary
-  /// This should be called when app resumes from background
+  /// FIXED: Public method with enhanced safety
   Future<void> checkAndPerformDailyReset() async {
-    if (state.needsDailyReset) {
+    if (state.needsDailyReset && !_isPerformingDailyReset) {
+      print('📅 Daily reset needed - triggering safe reset');
       await _performDailyReset();
+    } else if (_isPerformingDailyReset) {
+      print('⏳ Daily reset already in progress');
+    } else {
+      print('✅ No daily reset needed');
     }
   }
 
-  /// Perform the actual daily reset with enhanced logging
+  /// FIXED: Perform the actual daily reset with mutex protection
   Future<void> _performDailyReset() async {
-    final now = DateTime.now();
-    final resetMidnight = _normalizeToMidnight(now);
+    // Prevent concurrent daily resets
+    if (_isPerformingDailyReset) {
+      print('🔒 Daily reset already in progress, skipping...');
+      return;
+    }
     
-    // Reset hasReadToday to false for all plans and advance scheduled reading
-    final resetPlans = state.plans.map((plan) {
-      if (!plan.isActive || plan.isCompleted) {
-        // Just reset the daily status for inactive/completed plans
-        return plan.copyWith(hasReadToday: false);
-      }
+    _isPerformingDailyReset = true;
+    print('🔄 Starting daily reset with mutex protection');
+    
+    try {
+      final now = DateTime.now();
+      final resetMidnight = _normalizeToMidnight(now);
       
-      // For active plans, advance the scheduled reading
-      final updatedProgress = _advanceScheduledProgress(plan.progress, plan.chaptersPerDay);
-      return plan.copyWith(
-        hasReadToday: false,
-        progress: updatedProgress,
+      // Reset hasReadToday to false for all plans and advance scheduled reading
+      final resetPlans = state.plans.map((plan) {
+        if (!plan.isActive || plan.isCompleted) {
+          // Just reset the daily status for inactive/completed plans
+          return plan.copyWith(hasReadToday: false);
+        }
+        
+        // For active plans, advance the scheduled reading
+        final updatedProgress = _advanceScheduledProgress(plan.progress, plan.chaptersPerDay);
+        return plan.copyWith(
+          hasReadToday: false,
+          progress: updatedProgress,
+        );
+      }).toList();
+
+      // Update state with reset plans and new reset date
+      state = state.copyWith(
+        plans: resetPlans,
+        lastDailyReset: resetMidnight,
+        lastUpdated: now,
       );
-    }).toList();
 
-    // Update state with reset plans and new reset date
-    state = state.copyWith(
-      plans: resetPlans,
-      lastDailyReset: resetMidnight,
-      lastUpdated: now,
-    );
-
-    // Save to persistent storage
-    await _savePlans();
-    
-    // Enhanced logging for debugging
-    final activePlanCount = resetPlans.where((p) => p.isActive && !p.isCompleted).length;
-    // ignore: avoid_print
-    print('🔄 Daily reset performed at $now');
-    // ignore: avoid_print
-    print('   Reset $activePlanCount active plans to hasReadToday: false');
-    // ignore: avoid_print
-    print('   New daily reset date: $resetMidnight');
+      // Save to persistent storage with mutex protection
+      await _savePlansWithLock();
+      
+      print('✅ Daily reset completed successfully');
+      
+      // Enhanced logging for debugging
+      final activePlanCount = resetPlans.where((p) => p.isActive && !p.isCompleted).length;
+      print('   Reset $activePlanCount active plans to hasReadToday: false');
+      print('   New daily reset date: $resetMidnight');
+      
+    } catch (e) {
+      print('❌ Error during daily reset: $e');
+      _showErrorMessage('Failed to perform daily reset. Please restart the app.');
+    } finally {
+      _isPerformingDailyReset = false;
+    }
   }
   
   /// Handle when app is reopened from background - check if we should advance to next reading
@@ -376,15 +479,43 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     }
   }
 
-  Future<void> _savePlans() async {
+  /// FIXED: Safe save operation with mutex protection
+  Future<void> _savePlansWithLock() async {
+    if (_isSaving) {
+      print('🔒 Save operation already in progress, queuing...');
+      // Wait for current save to complete
+      while (_isSaving) {
+        await Future.delayed(const Duration(milliseconds: 10));
+      }
+      return;
+    }
+    
+    _isSaving = true;
+    
     try {
       final prefs = await SharedPreferences.getInstance();
       final managerJson = jsonEncode(state.toJson());
+      
+      // Add data validation before saving
+      if (managerJson.isEmpty || managerJson == '{}') {
+        throw Exception('Invalid data - refusing to save empty state');
+      }
+      
       await prefs.setString(_storageKey, managerJson);
+      print('💾 Reading plans saved successfully');
+      
     } catch (e) {
-      // ignore: avoid_print
-      print('Error saving reading plans: $e');
+      print('❌ Error saving reading plans: $e');
+      _showErrorMessage('Failed to save reading progress. Changes may be lost.');
+      rethrow;
+    } finally {
+      _isSaving = false;
     }
+  }
+
+  /// FIXED: Replace old _savePlans with protected version
+  Future<void> _savePlans() async {
+    await _savePlansWithLock();
   }
 
   Future<void> createPlan(ReadingPlan plan) async {
@@ -419,14 +550,51 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     await updatePlan(resumedPlan);
   }
 
-  Future<void> markPlanReadToday(String planId) async {
-    final plan = state.plans.firstWhere((p) => p.id == planId);
-    final updatedProgress = _advanceProgress(plan.progress, plan.chaptersPerDay);
-    final updatedPlan = plan.copyWith(
-      progress: updatedProgress,
-      hasReadToday: true,
-    );
-    await updatePlan(updatedPlan);
+  /// Enhanced method for marking today's reading complete with better validation
+  Future<void> markPlanReadToday(String planId, {String? fromChapter}) async {
+    try {
+      final plan = state.plans.firstWhere(
+        (p) => p.id == planId,
+        orElse: () => throw ReadingPlanException('Reading plan not found'),
+      );
+      
+      // NEW: Validate plan health before marking
+      if (!_isPlanHealthy(plan)) {
+        await _repairOrRecreatePlan(plan);
+        return;
+      }
+      
+      // NEW: Don't advance if already marked for today (prevents double-advancement)
+      if (plan.hasReadToday) {
+        _showInfoMessage('Already marked as read for today! 📖✅');
+        return;
+      }
+      
+      final updatedProgress = _advanceProgress(plan.progress, plan.chaptersPerDay);
+      final updatedPlan = plan.copyWith(
+        progress: updatedProgress,
+        hasReadToday: true,
+      );
+      
+      await updatePlan(updatedPlan);
+      
+      final readingText = plan.chaptersPerDay == 1 
+        ? '${plan.progress.currentBook} ${plan.progress.currentChapter}'
+        : '${plan.progress.currentBook} ${plan.progress.currentChapter}-${plan.progress.currentChapter + plan.chaptersPerDay - 1}';
+      
+      _showSuccessMessage('✅ Completed today\'s reading: $readingText');
+      
+    } catch (e) {
+      debugPrint('❌ Error marking plan as read today: $e');
+      
+      if (e is ReadingPlanException) {
+        _showErrorMessage(e.message);
+      } else {
+        _showErrorMessage('Unable to mark reading as complete. Please try again.');
+      }
+      
+      rethrow;
+    }
   }
 
   /// Continue reading - advance to next reading for getting ahead (resets daily status)
@@ -458,17 +626,83 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     await updatePlan(updatedPlan);
   }
 
+  /// Enhanced chapter completion with better validation and error messages
   Future<void> markChapterComplete(String planId, String book, int chapter) async {
-    final plan = state.plans.firstWhere((p) => p.id == planId);
-    
-    // If this is the current chapter, advance progress
-    if (plan.progress.currentBook == book && plan.progress.currentChapter == chapter) {
-      final updatedProgress = _advanceProgress(plan.progress, 1);
-      final updatedPlan = plan.copyWith(
-        progress: updatedProgress,
-        hasReadToday: true,
+    try {
+      final plan = state.plans.firstWhere(
+        (p) => p.id == planId,
+        orElse: () => throw ReadingPlanException('Reading plan not found'),
       );
-      await updatePlan(updatedPlan);
+      
+      // Validate chapter data
+      if (book.isEmpty || chapter <= 0) {
+        throw ReadingPlanException('Invalid chapter: $book $chapter');
+      }
+      
+      // NEW: Check if book is in the plan's collection
+      if (!plan.collection.bookNames.contains(book)) {
+        // Show helpful error message instead of silently failing
+        throw ReadingPlanException(
+          'Book "$book" is not part of your ${plan.collection.displayName} reading plan.\n\n'
+          'This might happen if:\n'
+          '• You have an old reading plan from a previous version\n'
+          '• The book belongs to a different collection\n\n'
+          'Suggestion: Create a new reading plan for the correct collection.'
+        );
+      }
+      
+      // NEW: More flexible matching - mark as read if it's close to current position
+      final isCurrentChapter = plan.progress.currentBook == book && 
+                               plan.progress.currentChapter == chapter;
+      
+      final isReasonablyClose = plan.progress.currentBook == book && 
+                               (chapter >= plan.progress.currentChapter - 2 && 
+                                chapter <= plan.progress.currentChapter + 2);
+      
+      if (isCurrentChapter) {
+        // Exact match - advance normally
+        final updatedProgress = _advanceProgress(plan.progress, 1);
+        final updatedPlan = plan.copyWith(
+          progress: updatedProgress,
+          hasReadToday: true,
+        );
+        await updatePlan(updatedPlan);
+        
+        // Success message
+        _showSuccessMessage('✅ Completed $book $chapter');
+        
+      } else if (isReasonablyClose) {
+        // Close enough - just mark as read for today without advancing
+        final updatedPlan = plan.copyWith(hasReadToday: true);
+        await updatePlan(updatedPlan);
+        
+        // Info message
+        _showInfoMessage('📖 Marked reading as complete for today\n(You\'re reading $book $chapter, plan expects ${plan.progress.currentBook} ${plan.progress.currentChapter})');
+        
+      } else {
+        // Too far off - give helpful guidance
+        throw ReadingPlanException(
+          'Chapter $book $chapter doesn\'t match your current reading position.\n\n'
+          'Your plan expects: ${plan.progress.currentBook} ${plan.progress.currentChapter}\n'
+          'You\'re trying to mark: $book $chapter\n\n'
+          'Options:\n'
+          '• Read ${plan.progress.currentBook} ${plan.progress.currentChapter} to stay on track\n'
+          '• Use "Continue Reading" to jump to $book $chapter\n'
+          '• Create a new reading plan starting from $book $chapter'
+        );
+      }
+      
+    } catch (e) {
+      debugPrint('❌ Error marking chapter complete: $e');
+      
+      // Show user-friendly error message
+      if (e is ReadingPlanException) {
+        _showErrorMessage(e.message);
+      } else {
+        _showErrorMessage('Unable to mark chapter complete. Please try again.');
+      }
+      
+      rethrow;
     }
   }
 
@@ -625,6 +859,94 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     final todaysPlans = state.getPlansForToday();
     if (todaysPlans.isNotEmpty) {
       await markPlanReadToday(todaysPlans.first.id);
+    }
+  }
+
+  // NEW: Plan health validation and user messaging methods
+  
+  /// Check if a reading plan is healthy (no data corruption)
+  bool _isPlanHealthy(ReadingPlan plan) {
+    try {
+      // Check 1: Current book should be in the collection
+      if (!plan.collection.bookNames.contains(plan.progress.currentBook)) {
+        debugPrint('⚠️ Plan health check failed: Current book "${plan.progress.currentBook}" not in ${plan.collection.displayName}');
+        return false;
+      }
+      
+      // Check 2: Book index should be valid
+      if (plan.progress.bookIndex < 0 || plan.progress.bookIndex >= plan.progress.books.length) {
+        debugPrint('⚠️ Plan health check failed: Invalid book index ${plan.progress.bookIndex}');
+        return false;
+      }
+      
+      // Check 3: Current chapter should be positive
+      if (plan.progress.currentChapter <= 0) {
+        debugPrint('⚠️ Plan health check failed: Invalid chapter ${plan.progress.currentChapter}');
+        return false;
+      }
+      
+      // Check 4: Books list should match collection
+      if (plan.progress.books.length != plan.collection.bookNames.length) {
+        debugPrint('⚠️ Plan health check failed: Books list length mismatch');
+        return false;
+      }
+      
+      return true;
+      
+    } catch (e) {
+      debugPrint('⚠️ Plan health check failed with error: $e');
+      return false;
+    }
+  }
+  
+  /// Repair or suggest recreating a corrupted plan
+  Future<void> _repairOrRecreatePlan(ReadingPlan plan) async {
+    final errorMessage = '''
+Your reading plan "${plan.name}" has data inconsistencies and needs to be recreated.
+
+Current situation:
+• Plan collection: ${plan.collection.displayName}
+• Current book: ${plan.progress.currentBook}
+• Current chapter: ${plan.progress.currentChapter}
+
+This usually happens with plans created in older app versions.
+
+Recommendation: Create a new reading plan and manually set it to your current position.
+''';
+
+    _showErrorMessage(errorMessage);
+    
+    // Could automatically delete the corrupted plan
+    // await removePlan(plan.id);
+  }
+  
+  /// Show success message to user
+  void _showSuccessMessage(String message) {
+    UserMessageService().showSuccess(message);
+  }
+
+  /// Show info message to user  
+  void _showInfoMessage(String message) {
+    UserMessageService().showInfo(message);
+  }
+
+  /// Show error message to user
+  void _showErrorMessage(String message) {
+    UserMessageService().showError(message);
+  }
+  
+  /// Clear all reading plans (useful for corrupted data)
+  Future<void> clearAllPlans() async {
+    try {
+      state = ReadingPlanManager.empty();
+      await _savePlans();
+      
+      _showSuccessMessage('All reading plans cleared. You can now create new plans.');
+      debugPrint('🗑️ All reading plans cleared by user');
+      
+    } catch (e) {
+      debugPrint('❌ Error clearing plans: $e');
+      _showErrorMessage('Failed to clear reading plans. Please try restarting the app.');
     }
   }
 }

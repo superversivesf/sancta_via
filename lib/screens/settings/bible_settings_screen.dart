@@ -143,6 +143,14 @@ class BibleSettingsScreen extends ConsumerWidget {
           subtitle: const Text('Reset all settings to default values'),
           onTap: () => _showResetDialog(context, ref),
         ),
+        
+        // NEW: Clear Reading Plans option
+        ListTile(
+          leading: const Icon(Icons.delete_sweep),
+          title: const Text('Clear All Reading Plans'),
+          subtitle: const Text('Remove all reading plans (useful for corrupted data)'),
+          onTap: () => _showClearPlansDialog(context, ref),
+        ),
 
         if (kDebugMode) ...[  
           const Divider(),
@@ -274,6 +282,54 @@ class BibleSettingsScreen extends ConsumerWidget {
             },
             child: const Text('Reset'),
           ),
+        ],
+      ),
+    );
+  }
+  
+  // NEW: Dialog to clear all reading plans
+  void _showClearPlansDialog(BuildContext context, WidgetRef ref) {
+    final activePlans = ref.read(activeReadingPlansProvider);
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Clear All Reading Plans'),
+        content: Text(
+          activePlans.isEmpty 
+            ? 'No reading plans to clear.'
+            : 'Are you sure you want to remove all ${activePlans.length} reading plan${activePlans.length != 1 ? 's' : ''}?\n\n'
+              'This will permanently delete:\n'
+              '${activePlans.map((p) => '• ${p.name}').join('\n')}\n\n'
+              'This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          if (activePlans.isNotEmpty)
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                try {
+                  await ref.read(readingPlanManagerProvider.notifier).clearAllPlans();
+                  // Success message is shown by the provider
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Error clearing plans: $e'),
+                        backgroundColor: Colors.red,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  }
+                }
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: const Text('Clear All Plans', style: TextStyle(color: Colors.white)),
+            ),
         ],
       ),
     );
