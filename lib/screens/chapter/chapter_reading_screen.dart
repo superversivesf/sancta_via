@@ -69,20 +69,39 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     final activePlans = ref.read(activeReadingPlansProvider);
     
     for (final plan in activePlans) {
-      // Check if this chapter matches the plan's current reading
+      // Check if this chapter is the next chapter in any reading plan
       if (plan.progress.currentBook == currentBookName && 
-          !plan.hasReadToday) {
+          plan.progress.currentChapter == currentChapter) {
         
-        // Check if the current chapter is within the plan's reading range for today
-        final startChapter = plan.progress.currentChapter;
-        final endChapter = startChapter + plan.chaptersPerDay - 1;
+        // This chapter matches the next chapter to read in this plan
+        ref.read(readingPlanManagerProvider.notifier).markChapterRead(
+          plan.id, 
+          currentBookName, 
+          currentChapter
+        );
         
-        if (currentChapter >= startChapter && currentChapter <= endChapter) {
-          // This chapter visit counts toward this reading plan
-          ref.read(readingPlanManagerProvider.notifier).markCurrentReadingAsComplete(plan.id);
-          debugLog('Marked reading plan "${plan.name}" as complete for visiting $currentBookName $currentChapter', 'CHAPTER');
-          break; // Only mark one plan to avoid conflicts
+        debugLog('Marked chapter read for plan "${plan.name}": $currentBookName $currentChapter', 'CHAPTER');
+        
+        // Show success message
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.check_circle, color: Colors.white),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text('✅ Advanced "${plan.name}" reading plan!'),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.green,
+              duration: const Duration(seconds: 3),
+            ),
+          );
         }
+        
+        break; // Only advance one plan to avoid conflicts
       }
     }
   }
@@ -112,10 +131,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       _navigateToChapter(currentBookName, currentChapter - 1);
     }
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -414,12 +429,12 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     
     return Container(
       key: _verseKeys[index], // Use GlobalKey for precise scrolling
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 6),
       child: InkWell(
-        onTap: () => _handleVerseTap(verseNumber, verseText),
+        onTap: () => _handleVerseTap(verseNumber, verseText, themeColor),
         borderRadius: BorderRadius.circular(8),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
@@ -451,12 +466,12 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
   }
   
   /// Handle when a verse is tapped - highlight and copy
-  void _handleVerseTap(int verseNumber, String verseText) async {
+  void _handleVerseTap(int verseNumber, String verseText, Color? themeColor) async {
     final selectedTranslation = ref.read(appSelectedBibleTranslationProvider);
     
     // Create formatted text for clipboard
     final translationAbbrev = selectedTranslation.abbreviation;
-    final formattedText = '$verseText ($currentBookName $currentChapter:$verseNumber, ${translationAbbrev ?? 'Bible'})';
+    final formattedText = '$verseText ($currentBookName $currentChapter:$verseNumber, $translationAbbrev)';
     
     // Copy to clipboard
     try {
@@ -477,7 +492,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                 ),
               ],
             ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
             duration: const Duration(seconds: 2),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -499,8 +514,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       }
     }
   }
-
-
 
   Widget _buildLoadingContent(BuildContext context, Color? themeColor) {
     final textScaling = ref.watch(textScaleProvider);

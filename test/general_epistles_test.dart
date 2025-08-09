@@ -57,10 +57,6 @@ void main() {
         id: 'test-general-epistles-plan',
         name: 'General Epistles Study',
         collection: BookCollection.generalEpistles,
-        frequency: ReadingFrequency.daily,
-        scheduledDays: {DayOfWeek.monday, DayOfWeek.wednesday, DayOfWeek.friday, DayOfWeek.sunday},
-        chaptersPerDay: 2,
-        remindersEnabled: true,
         progress: ReadingProgress.start(BookCollection.generalEpistles),
         createdAt: DateTime.now(),
       );
@@ -69,7 +65,6 @@ void main() {
       expect(plan.progress.currentBook, 'Hebrews');
       expect(plan.progress.currentChapter, 1);
       expect(plan.progress.books.length, 8);
-      expect(plan.chaptersPerDay, 2);
     });
 
     test('should serialize and deserialize correctly', () {
@@ -77,10 +72,6 @@ void main() {
         id: 'test-general-epistles-plan',
         name: 'Non-Pauline Letters Study',
         collection: BookCollection.generalEpistles,
-        frequency: ReadingFrequency.weekdays,
-        scheduledDays: DayOfWeek.fromFrequency(ReadingFrequency.weekdays).toSet(),
-        chaptersPerDay: 1,
-        remindersEnabled: false,
         progress: ReadingProgress.start(BookCollection.generalEpistles),
         createdAt: DateTime.now(),
       );
@@ -95,8 +86,7 @@ void main() {
       expect(restoredPlan.id, originalPlan.id);
       expect(restoredPlan.name, originalPlan.name);
       expect(restoredPlan.collection, BookCollection.generalEpistles);
-      expect(restoredPlan.frequency, ReadingFrequency.weekdays);
-      expect(restoredPlan.chaptersPerDay, 1);
+      expect(restoredPlan.isActive, true);
       expect(restoredPlan.progress.books, [
         'Hebrews', 'James', '1 Peter', '2 Peter', 
         '1 John', '2 John', '3 John', 'Jude'

@@ -29,10 +29,6 @@ void main() {
         id: 'test-pastoral-plan',
         name: 'My Pastoral Epistles Plan',
         collection: BookCollection.pastoralEpistles,
-        frequency: ReadingFrequency.daily,
-        scheduledDays: {DayOfWeek.monday, DayOfWeek.wednesday, DayOfWeek.friday},
-        chaptersPerDay: 1,
-        remindersEnabled: true,
         progress: ReadingProgress.start(BookCollection.pastoralEpistles),
         createdAt: DateTime.now(),
       );
@@ -48,10 +44,6 @@ void main() {
         id: 'test-pastoral-plan',
         name: 'Pastoral Epistles Study',
         collection: BookCollection.pastoralEpistles,
-        frequency: ReadingFrequency.weekdays,
-        scheduledDays: DayOfWeek.fromFrequency(ReadingFrequency.weekdays).toSet(),
-        chaptersPerDay: 2,
-        remindersEnabled: false,
         progress: ReadingProgress.start(BookCollection.pastoralEpistles),
         createdAt: DateTime.now(),
       );
@@ -66,8 +58,7 @@ void main() {
       expect(restoredPlan.id, originalPlan.id);
       expect(restoredPlan.name, originalPlan.name);
       expect(restoredPlan.collection, BookCollection.pastoralEpistles);
-      expect(restoredPlan.frequency, ReadingFrequency.weekdays);
-      expect(restoredPlan.chaptersPerDay, 2);
+      expect(restoredPlan.isActive, true);
       expect(restoredPlan.progress.books, ['1 Timothy', '2 Timothy', 'Titus']);
     });
   });

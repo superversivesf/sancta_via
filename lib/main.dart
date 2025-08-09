@@ -4,7 +4,6 @@ import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_ca
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import 'config/routes.dart';
-import 'providers/reading_plan_provider.dart';
 import 'services/user_message_service.dart';
 
 // Global navigator key for user messages
@@ -63,7 +62,9 @@ class _BibleReadingAppState extends ConsumerState<BibleReadingApp>
     Future.delayed(const Duration(milliseconds: 100), () {
       try {
         if (mounted) {
-          ref.read(readingPlanManagerProvider.notifier).checkAndPerformDailyReset();
+          // The daily reset check is now handled automatically in _loadPlans
+          // No need for explicit daily reset calls
+          print('✅ Daily status check handled automatically by provider');
         }
       } catch (e) {
         print('❌ Error checking daily reset: $e');

@@ -1,0 +1,7 @@
+Analyzing sancta_via_bible_reading_app...                       
+
+   info • The import of 'package:flutter_riverpod/flutter_riverpod.dart' is unnecessary because all of the used elements are also provided by the import of 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart' • lib/screens/continue_reading/continue_reading_screen.dart:2:8 • unnecessary_import
+   info • Use 'const' with the constructor to improve performance • lib/screens/continue_reading/continue_reading_screen.dart:594:29 • prefer_const_constructors
+   info • Use of an async 'dart:io' method • tools/build_bible_database.dart:56:25 • avoid_slow_async_io
+
+3 issues found. (ran in 2.0s)

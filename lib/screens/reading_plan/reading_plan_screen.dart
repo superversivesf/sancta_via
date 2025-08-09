@@ -18,11 +18,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
   // Form state for creating new plans
   String planName = '';
   BookCollection selectedCollection = BookCollection.wholeBible;
-  ReadingFrequency selectedFrequency = ReadingFrequency.daily;
-  Set<DayOfWeek> selectedDays = Set.from(DayOfWeek.values);
-  int chaptersPerDay = 1;
-  bool remindersEnabled = false;
-  TimeOfDay? reminderTime;
   bool isCreatingPlan = false;
   late TextEditingController _planNameController;
 
@@ -43,10 +38,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
     final currentColor = ref.watch(currentLiturgicalColorProvider);
     final colorIntensity = ref.watch(colorIntensityProvider);
     final textScaling = ref.watch(textScaleProvider);
-    final activePlans = ref.watch(activeReadingPlansProvider);
-    final completedPlans = ref.watch(completedReadingPlansProvider);
-    final pausedPlans = ref.watch(pausedReadingPlansProvider);
-    final canAddNew = ref.watch(canAddNewPlanProvider);
+    final manager = ref.watch(readingPlanManagerProvider);
     
     // Parse liturgical color and convert to Flutter color
     final liturgicalColor = currentColor != null 
@@ -62,7 +54,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
         ),
         backgroundColor: themeColor?.withValues(alpha: 0.1),
         actions: [
-          if (canAddNew && !isCreatingPlan)
+          if (manager.canAddNewPlan() && !isCreatingPlan)
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
@@ -85,7 +77,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
               _buildCreatePlanForm(context, themeColor),
             ] else ...[
               // Plan management dashboard
-              _buildPlanDashboard(context, activePlans, completedPlans, pausedPlans, themeColor, canAddNew),
+              _buildPlanDashboard(context, manager, themeColor),
             ],
           ],
         ),
@@ -93,8 +85,12 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
     );
   }
 
-  Widget _buildPlanDashboard(BuildContext context, List<ReadingPlan> activePlans, List<ReadingPlan> completedPlans, List<ReadingPlan> pausedPlans, Color? themeColor, bool canAddNew) {
+  Widget _buildPlanDashboard(BuildContext context, ReadingPlanManager manager, Color? themeColor) {
     final textScaling = ref.watch(textScaleProvider);
+
+    final completedPlans = manager.completedPlans;
+    final pausedPlans = manager.pausedPlans;
+    final canAddNew = manager.canAddNewPlan();
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,23 +104,27 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
         ),
         const SizedBox(height: 8),
         Text(
-          'Manage your Bible reading journey with multiple simultaneous plans.',
+          'Simple Bible reading plans. Read as much or as little as you want each day.',
           style: textScaling.scaledBodyLarge(context).copyWith(
             color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
           ),
         ),
         const SizedBox(height: 24),
 
+        // Reading status for today
+        _buildTodayStatusCard(context, manager, themeColor),
+        const SizedBox(height: 24),
+
         // Plan capacity indicator
-        _buildPlanCapacityCard(context, activePlans.length, themeColor, canAddNew),
+        _buildPlanCapacityCard(context, manager.activePlans.length, themeColor, canAddNew),
         const SizedBox(height: 24),
 
         // Active Plans
-        if (activePlans.isNotEmpty) ...[
+        if (manager.activePlans.isNotEmpty) ...[
           _buildPlanSection(
             context,
             'Active Plans',
-            activePlans,
+            manager.activePlans,
             Icons.auto_stories,
             themeColor ?? Colors.green,
             _buildActivePlanCard,
@@ -152,14 +152,14 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
             'Completed Plans',
             completedPlans,
             Icons.celebration,
-            Colors.green,
+            themeColor ?? Colors.green,
             _buildCompletedPlanCard,
           ),
           const SizedBox(height: 24),
         ],
 
         // Empty state
-        if (activePlans.isEmpty && pausedPlans.isEmpty && completedPlans.isEmpty) ...[
+        if (manager.activePlans.isEmpty && pausedPlans.isEmpty && completedPlans.isEmpty) ...[
           _buildEmptyState(context, themeColor),
         ],
 
@@ -167,6 +167,67 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
         if (canAddNew)
           _buildAddNewPlanCard(context, themeColor),
       ],
+    );
+  }
+
+  Widget _buildTodayStatusCard(BuildContext context, ReadingPlanManager manager, Color? themeColor) {
+    final textScaling = ref.watch(textScaleProvider);
+    final hasReadToday = manager.hasReadAnythingToday;
+    
+    return Card(
+      child: Container(
+        decoration: BoxDecoration(
+          color: hasReadToday 
+            ? (themeColor ?? Colors.green).withValues(alpha: 0.1)
+            : (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: hasReadToday 
+              ? (themeColor ?? Colors.green).withValues(alpha: 0.3)
+              : (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
+            width: 2,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Icon(
+                hasReadToday ? Icons.check_circle : Icons.menu_book,
+                color: hasReadToday 
+                  ? (themeColor ?? Colors.green)
+                  : themeColor ?? Theme.of(context).colorScheme.primary,
+                size: 32,
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      hasReadToday ? 'You\'ve read today! 📖✅' : 'Ready to read today?',
+                      style: textScaling.scaledTitleMedium(context).copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: hasReadToday 
+                          ? (themeColor ?? Colors.green).withValues(alpha: 0.9)
+                          : (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.9),
+                      ),
+                    ),
+                    Text(
+                      hasReadToday 
+                        ? 'Great job! You can keep reading if you want to get ahead.'
+                        : 'Pick any plan below and read the next chapter to get started.',
+                      style: textScaling.scaledBodyMedium(context).copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -214,13 +275,13 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: canAddNew ? Colors.green.withValues(alpha: 0.1) : Colors.orange.withValues(alpha: 0.1),
+                  color: canAddNew ? (themeColor ?? Colors.green).withValues(alpha: 0.1) : Colors.orange.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
                   canAddNew ? '$remainingSlots slot${remainingSlots != 1 ? 's' : ''} left' : 'Full',
                   style: textScaling.scaledLabelMedium(context).copyWith(
-                    color: canAddNew ? Colors.green.shade700 : Colors.orange.shade700,
+                    color: canAddNew ? (themeColor ?? Colors.green).withValues(alpha: 0.8) : Colors.orange.shade700,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -324,16 +385,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
                     onSelected: (value) => _handlePlanAction(plan, value),
                     itemBuilder: (context) => [
                       const PopupMenuItem(
-                        value: 'edit',
-                        child: Row(
-                          children: [
-                            Icon(Icons.edit, size: 18),
-                            SizedBox(width: 8),
-                            Text('Edit Plan'),
-                          ],
-                        ),
-                      ),
-                      const PopupMenuItem(
                         value: 'pause',
                         child: Row(
                           children: [
@@ -369,6 +420,39 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
               ),
               const SizedBox(height: 12),
               
+              // Next chapter to read
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      'Next chapter to read:',
+                      style: textScaling.scaledBodySmall(context).copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      plan.nextChapterText,
+                      style: textScaling.scaledTitleLarge(context).copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: themeColor ?? Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 12),
+              
               // Progress bar
               LinearProgressIndicator(
                 value: plan.progressPercentage,
@@ -397,13 +481,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
                     ),
                   ),
                 ],
-              ),
-              const SizedBox(height: 4),
-              Text(
-                '${plan.chaptersPerDay} chapters • ${plan.scheduledDaysText}',
-                style: textScaling.scaledBodySmall(context).copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                ),
               ),
             ],
           ),
@@ -467,10 +544,10 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
     return Card(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.green.withValues(alpha: 0.05),
+          color: (themeColor ?? Colors.green).withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: Colors.green.withValues(alpha: 0.3),
+            color: (themeColor ?? Colors.green).withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -478,7 +555,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              const Icon(Icons.celebration, color: Colors.green),
+              Icon(Icons.celebration, color: themeColor ?? Colors.green),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -565,7 +642,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Create your first reading plan to start your Bible reading journey with structure and guidance.',
+                'Create reading plans to track your progress through different parts of the Bible. Read at your own pace!',
                 style: textScaling.scaledBodyLarge(context).copyWith(
                   color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
@@ -687,18 +764,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
 
         // Book Collection Selection
         _buildCollectionCard(context, themeColor),
-        const SizedBox(height: 16),
-
-        // Schedule Selection
-        _buildScheduleCard(context, themeColor),
-        const SizedBox(height: 16),
-
-        // Chapters per Day
-        _buildChaptersCard(context, themeColor),
-        const SizedBox(height: 16),
-
-        // Reminders
-        _buildRemindersCard(context, themeColor),
         const SizedBox(height: 24),
 
         // Create Plan Button
@@ -845,283 +910,16 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
     );
   }
 
-  Widget _buildScheduleCard(BuildContext context, Color? themeColor) {
-    final textScaling = ref.watch(textScaleProvider);
-    
-    return Card(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: themeColor != null ? Border.all(
-            color: themeColor.withValues(alpha: 0.3),
-            width: 1,
-          ) : null,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.calendar_today,
-                    color: themeColor ?? Theme.of(context).colorScheme.primary,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Reading Schedule',
-                    style: textScaling.scaledTitleMedium(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              
-              // Frequency presets
-              Text(
-                'Quick Presets:',
-                style: textScaling.scaledBodyMedium(context).copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 8),
-              ...ReadingFrequency.values.map((frequency) => RadioListTile<ReadingFrequency>(
-                title: Text(
-                  frequency.displayName,
-                  style: textScaling.scaledBodyMedium(context),
-                ),
-                subtitle: Text(
-                  frequency.description,
-                  style: textScaling.scaledBodySmall(context).copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
-                ),
-                value: frequency,
-                groupValue: selectedFrequency,
-                activeColor: themeColor ?? Theme.of(context).colorScheme.primary,
-                onChanged: (ReadingFrequency? value) {
-                  setState(() {
-                    selectedFrequency = value!;
-                    selectedDays = DayOfWeek.fromFrequency(value).toSet();
-                  });
-                },
-              )),
-              
-              const SizedBox(height: 16),
-              
-              // Custom day selection
-              Text(
-                'Custom Days (tap to toggle):',
-                style: textScaling.scaledBodyMedium(context).copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: DayOfWeek.values.map((day) {
-                  final isSelected = selectedDays.contains(day);
-                  return FilterChip(
-                    label: Text(day.shortName),
-                    selected: isSelected,
-                    selectedColor: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.2),
-                    onSelected: (selected) {
-                      setState(() {
-                        if (selected) {
-                          selectedDays.add(day);
-                        } else {
-                          selectedDays.remove(day);
-                        }
-                        // Update frequency to custom if needed
-                        selectedFrequency = ReadingFrequency.daily; // Keep as daily for simplicity
-                      });
-                    },
-                  );
-                }).toList(),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildChaptersCard(BuildContext context, Color? themeColor) {
-    final textScaling = ref.watch(textScaleProvider);
-    
-    return Card(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: themeColor != null ? Border.all(
-            color: themeColor.withValues(alpha: 0.3),
-            width: 1,
-          ) : null,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.speed,
-                    color: themeColor ?? Theme.of(context).colorScheme.primary,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Reading Pace',
-                    style: textScaling.scaledTitleMedium(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Chapters per reading session:',
-                style: textScaling.scaledBodyMedium(context).copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: chaptersPerDay > 1 ? () {
-                      setState(() {
-                        chaptersPerDay--;
-                      });
-                    } : null,
-                    icon: const Icon(Icons.remove),
-                  ),
-                  Container(
-                    width: 80,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (themeColor ?? Theme.of(context).colorScheme.primary)
-                            .withValues(alpha: 0.3),
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      chaptersPerDay.toString(),
-                      style: textScaling.scaledTitleMedium(context).copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: chaptersPerDay < 10 ? () {
-                      setState(() {
-                        chaptersPerDay++;
-                      });
-                    } : null,
-                    icon: const Icon(Icons.add),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Text(
-                      _getEstimatedTimeText(),
-                      style: textScaling.scaledBodySmall(context).copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRemindersCard(BuildContext context, Color? themeColor) {
-    final textScaling = ref.watch(textScaleProvider);
-    
-    return Card(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: themeColor != null ? Border.all(
-            color: themeColor.withValues(alpha: 0.3),
-            width: 1,
-          ) : null,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.notifications,
-                    color: themeColor ?? Theme.of(context).colorScheme.primary,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Reminders',
-                    style: textScaling.scaledTitleMedium(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              SwitchListTile(
-                title: Text(
-                  'Enable reading reminders',
-                  style: textScaling.scaledBodyMedium(context),
-                ),
-                subtitle: Text(
-                'Note: Reminders have been disabled in this version',
-                style: textScaling.scaledBodySmall(context).copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                ),
-                ),
-                value: false, // Disabled since notifications were removed
-                onChanged: null, // Disable the switch
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   void _resetFormState() {
     planName = '';
     _planNameController.clear();
     selectedCollection = BookCollection.wholeBible;
-    selectedFrequency = ReadingFrequency.daily;
-    selectedDays = Set.from(DayOfWeek.values);
-    chaptersPerDay = 1;
-    remindersEnabled = false;
-    reminderTime = null;
   }
 
   bool _canCreatePlan() {
     // Allow creation if name is not empty OR if we can auto-generate from collection
     final effectiveName = planName.trim().isNotEmpty ? planName.trim() : selectedCollection.displayName;
-    return effectiveName.isNotEmpty && selectedDays.isNotEmpty;
-  }
-
-  String _getEstimatedTimeText() {
-    final baseMinutes = chaptersPerDay * 4; // Roughly 4 minutes per chapter
-    if (baseMinutes < 60) {
-      return 'Est. $baseMinutes minutes reading time';
-    } else {
-      final hours = baseMinutes / 60;
-      return 'Est. ${hours.toStringAsFixed(1)} hours reading time';
-    }
+    return effectiveName.isNotEmpty;
   }
 
   String _formatDate(DateTime? date) {
@@ -1129,14 +927,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
     return '${date.day}/${date.month}/${date.year}';
   }
 
-
-
-  /// Helper method to normalize DateTime to midnight of the same day
-  /// This ensures predictable daily advancement behavior for reading plans
-  static DateTime _normalizeToMidnight(DateTime dateTime) {
-    return DateTime(dateTime.year, dateTime.month, dateTime.day);
-  }
-  
   void _createReadingPlan() {
     if (!_canCreatePlan()) return;
     
@@ -1147,24 +937,12 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: effectiveName,
       collection: selectedCollection,
-      frequency: selectedFrequency,
-      scheduledDays: selectedDays,
-      chaptersPerDay: chaptersPerDay,
-      remindersEnabled: false, // Always false since notifications were removed
-      reminderTime: null, // Always null since reminders are disabled
       progress: ReadingProgress.start(selectedCollection),
-      createdAt: _normalizeToMidnight(DateTime.now()),
+      createdAt: DateTime.now(),
     );
 
     try {
       ref.read(readingPlanManagerProvider.notifier).createPlan(plan);
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Reading plan "${plan.name}" created successfully!'),
-          backgroundColor: Colors.green,
-        ),
-      );
       
       setState(() {
         isCreatingPlan = false;
@@ -1181,23 +959,11 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
 
   void _handlePlanAction(ReadingPlan plan, String action) {
     switch (action) {
-      case 'edit':
-        // TODO: Implement edit plan functionality
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Edit plan functionality coming soon!')),
-        );
-        break;
       case 'pause':
         ref.read(readingPlanManagerProvider.notifier).pausePlan(plan.id);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Plan "${plan.name}" paused')),
-        );
         break;
       case 'resume':
         ref.read(readingPlanManagerProvider.notifier).resumePlan(plan.id);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Plan "${plan.name}" resumed')),
-        );
         break;
       case 'reset':
         _showResetDialog(plan);
@@ -1228,9 +994,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
             onPressed: () {
               Navigator.of(context).pop();
               ref.read(readingPlanManagerProvider.notifier).resetProgress(plan.id);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Progress reset for "${plan.name}"')),
-              );
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
             child: const Text('Reset'),
@@ -1258,9 +1021,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
               Navigator.of(context).pop();
               ref.read(readingPlanManagerProvider.notifier).resetProgress(plan.id);
               ref.read(readingPlanManagerProvider.notifier).resumePlan(plan.id);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Plan "${plan.name}" restarted!')),
-              );
             },
             child: const Text('Restart'),
           ),
@@ -1286,9 +1046,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
             onPressed: () {
               Navigator.of(context).pop();
               ref.read(readingPlanManagerProvider.notifier).removePlan(plan.id);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Plan "${plan.name}" deleted')),
-              );
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Delete'),

@@ -74,7 +74,7 @@ class UserMessageService {
       builder: (context) => AlertDialog(
         title: Row(
           children: [
-            Icon(Icons.error, color: Colors.red),
+            const Icon(Icons.error, color: Colors.red),
             const SizedBox(width: 8),
             Expanded(child: Text(title)),
           ],

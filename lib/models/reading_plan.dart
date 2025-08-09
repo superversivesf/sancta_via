@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+
 
 /// Maximum number of simultaneous reading plans allowed
 const int maxSimultaneousPlans = 5;
@@ -149,121 +149,6 @@ enum BookCollection {
   }
 }
 
-enum ReadingFrequency {
-  daily,
-  weekdays,
-  weekends,
-  weekly;
-
-  String get displayName {
-    switch (this) {
-      case ReadingFrequency.daily:
-        return 'Daily';
-      case ReadingFrequency.weekdays:
-        return 'Weekdays Only';
-      case ReadingFrequency.weekends:
-        return 'Weekends Only';
-      case ReadingFrequency.weekly:
-        return 'Weekly';
-    }
-  }
-
-  String get description {
-    switch (this) {
-      case ReadingFrequency.daily:
-        return 'Read every day of the week';
-      case ReadingFrequency.weekdays:
-        return 'Read Monday through Friday only';
-      case ReadingFrequency.weekends:
-        return 'Read Saturday and Sunday only';
-      case ReadingFrequency.weekly:
-        return 'Read once per week';
-    }
-  }
-
-  bool shouldReadToday(DateTime date) {
-    switch (this) {
-      case ReadingFrequency.daily:
-        return true;
-      case ReadingFrequency.weekdays:
-        return date.weekday >= 1 && date.weekday <= 5; // Monday to Friday
-      case ReadingFrequency.weekends:
-        return date.weekday == 6 || date.weekday == 7; // Saturday and Sunday
-      case ReadingFrequency.weekly:
-        return true; // Let user decide when to read weekly
-    }
-  }
-}
-
-/// Days of the week for scheduling reading plans
-enum DayOfWeek {
-  monday(1),
-  tuesday(2),
-  wednesday(3),
-  thursday(4),
-  friday(5),
-  saturday(6),
-  sunday(7);
-
-  const DayOfWeek(this.value);
-  final int value;
-
-  String get displayName {
-    switch (this) {
-      case DayOfWeek.monday:
-        return 'Monday';
-      case DayOfWeek.tuesday:
-        return 'Tuesday';
-      case DayOfWeek.wednesday:
-        return 'Wednesday';
-      case DayOfWeek.thursday:
-        return 'Thursday';
-      case DayOfWeek.friday:
-        return 'Friday';
-      case DayOfWeek.saturday:
-        return 'Saturday';
-      case DayOfWeek.sunday:
-        return 'Sunday';
-    }
-  }
-
-  String get shortName {
-    switch (this) {
-      case DayOfWeek.monday:
-        return 'Mon';
-      case DayOfWeek.tuesday:
-        return 'Tue';
-      case DayOfWeek.wednesday:
-        return 'Wed';
-      case DayOfWeek.thursday:
-        return 'Thu';
-      case DayOfWeek.friday:
-        return 'Fri';
-      case DayOfWeek.saturday:
-        return 'Sat';
-      case DayOfWeek.sunday:
-        return 'Sun';
-    }
-  }
-
-  static DayOfWeek fromDateTime(DateTime date) {
-    return DayOfWeek.values.firstWhere((day) => day.value == date.weekday);
-  }
-
-  static List<DayOfWeek> fromFrequency(ReadingFrequency frequency) {
-    switch (frequency) {
-      case ReadingFrequency.daily:
-        return DayOfWeek.values;
-      case ReadingFrequency.weekdays:
-        return [DayOfWeek.monday, DayOfWeek.tuesday, DayOfWeek.wednesday, DayOfWeek.thursday, DayOfWeek.friday];
-      case ReadingFrequency.weekends:
-        return [DayOfWeek.saturday, DayOfWeek.sunday];
-      case ReadingFrequency.weekly:
-        return [DayOfWeek.sunday]; // Default to Sunday, user can change
-    }
-  }
-}
-
 class ReadingProgress {
   final String currentBook;
   final int currentChapter;
@@ -271,12 +156,6 @@ class ReadingProgress {
   final List<String> books;
   final bool isCompleted;
   final DateTime? lastReadDate;
-  
-  // NEW: Track the scheduled reading position separately from actual progress
-  final String scheduledBook;
-  final int scheduledChapter;
-  final int scheduledBookIndex;
-  final DateTime? lastScheduleAdvancement; // When did we last advance the schedule
 
   const ReadingProgress({
     required this.currentBook,
@@ -285,14 +164,7 @@ class ReadingProgress {
     required this.books,
     this.isCompleted = false,
     this.lastReadDate,
-    // Initialize scheduled position to match current position
-    String? scheduledBook,
-    int? scheduledChapter,
-    int? scheduledBookIndex,
-    this.lastScheduleAdvancement,
-  }) : scheduledBook = scheduledBook ?? currentBook,
-       scheduledChapter = scheduledChapter ?? currentChapter,
-       scheduledBookIndex = scheduledBookIndex ?? bookIndex;
+  });
 
   factory ReadingProgress.start(BookCollection collection) {
     final books = collection.bookNames;
@@ -303,10 +175,6 @@ class ReadingProgress {
       books: books,
       isCompleted: false,
       lastReadDate: null,
-      scheduledBook: books.first,
-      scheduledChapter: 1,
-      scheduledBookIndex: 0,
-      lastScheduleAdvancement: DateTime.now(),
     );
   }
 
@@ -317,10 +185,6 @@ class ReadingProgress {
     List<String>? books,
     bool? isCompleted,
     DateTime? lastReadDate,
-    String? scheduledBook,
-    int? scheduledChapter,
-    int? scheduledBookIndex,
-    DateTime? lastScheduleAdvancement,
   }) {
     return ReadingProgress(
       currentBook: currentBook ?? this.currentBook,
@@ -329,11 +193,11 @@ class ReadingProgress {
       books: books ?? this.books,
       isCompleted: isCompleted ?? this.isCompleted,
       lastReadDate: lastReadDate ?? this.lastReadDate,
-      scheduledBook: scheduledBook ?? this.scheduledBook,
-      scheduledChapter: scheduledChapter ?? this.scheduledChapter,
-      scheduledBookIndex: scheduledBookIndex ?? this.scheduledBookIndex,
-      lastScheduleAdvancement: lastScheduleAdvancement ?? this.lastScheduleAdvancement,
     );
+  }
+
+  String get nextChapterText {
+    return '$currentBook $currentChapter';
   }
 
   Map<String, dynamic> toJson() {
@@ -344,10 +208,6 @@ class ReadingProgress {
       'books': books,
       'isCompleted': isCompleted,
       'lastReadDate': lastReadDate?.toIso8601String(),
-      'scheduledBook': scheduledBook,
-      'scheduledChapter': scheduledChapter,
-      'scheduledBookIndex': scheduledBookIndex,
-      'lastScheduleAdvancement': lastScheduleAdvancement?.toIso8601String(),
     };
   }
 
@@ -359,90 +219,52 @@ class ReadingProgress {
       books: List<String>.from(json['books']),
       isCompleted: json['isCompleted'] ?? false,
       lastReadDate: json['lastReadDate'] != null ? DateTime.parse(json['lastReadDate']) : null,
-      // Handle backward compatibility - if scheduled fields don't exist, use current position
-      scheduledBook: json['scheduledBook'] ?? json['currentBook'],
-      scheduledChapter: json['scheduledChapter'] ?? json['currentChapter'],
-      scheduledBookIndex: json['scheduledBookIndex'] ?? json['bookIndex'],
-      lastScheduleAdvancement: json['lastScheduleAdvancement'] != null 
-          ? DateTime.parse(json['lastScheduleAdvancement']) 
-          : null,
     );
   }
 }
 
 class ReadingPlan {
   final String id;
-  final String name; // User-defined name for the plan
+  final String name;
   final BookCollection collection;
-  final ReadingFrequency frequency;
-  final Set<DayOfWeek> scheduledDays; // Days when this plan is active
-  final int chaptersPerDay;
-  final bool remindersEnabled;
-  final TimeOfDay? reminderTime;
   final ReadingProgress progress;
   final DateTime createdAt;
   final DateTime? completedAt;
-  final bool isActive; // Whether this plan is currently active
-  final bool hasReadToday; // Whether this plan has been read today
+  final bool isActive;
 
   const ReadingPlan({
     required this.id,
     required this.name,
     required this.collection,
-    required this.frequency,
-    required this.scheduledDays,
-    required this.chaptersPerDay,
-    required this.remindersEnabled,
     required this.progress, 
     required this.createdAt, 
-    this.reminderTime,
     this.completedAt,
     this.isActive = true,
-    this.hasReadToday = false,
   });
 
   ReadingPlan copyWith({
     String? id,
     String? name,
     BookCollection? collection,
-    ReadingFrequency? frequency,
-    Set<DayOfWeek>? scheduledDays,
-    int? chaptersPerDay,
-    bool? remindersEnabled,
-    TimeOfDay? reminderTime,
     ReadingProgress? progress,
     DateTime? createdAt,
     DateTime? completedAt,
     bool? isActive,
-    bool? hasReadToday,
   }) {
     return ReadingPlan(
       id: id ?? this.id,
       name: name ?? this.name,
       collection: collection ?? this.collection,
-      frequency: frequency ?? this.frequency,
-      scheduledDays: scheduledDays ?? this.scheduledDays,
-      chaptersPerDay: chaptersPerDay ?? this.chaptersPerDay,
-      remindersEnabled: remindersEnabled ?? this.remindersEnabled,
-      reminderTime: reminderTime ?? this.reminderTime,
       progress: progress ?? this.progress,
       createdAt: createdAt ?? this.createdAt,
       completedAt: completedAt ?? this.completedAt,
       isActive: isActive ?? this.isActive,
-      hasReadToday: hasReadToday ?? this.hasReadToday,
     );
   }
 
   bool get isCompleted => progress.isCompleted;
 
-  bool shouldReadToday([DateTime? date]) {
-    final targetDate = date ?? DateTime.now();
-    final dayOfWeek = DayOfWeek.fromDateTime(targetDate);
-    return isActive && 
-           !isCompleted && 
-           scheduledDays.contains(dayOfWeek) &&
-           frequency.shouldReadToday(targetDate);
-  }
+  String get nextChapterText => progress.nextChapterText;
 
   double get progressPercentage {
     if (progress.books.isEmpty) return 0.0;
@@ -456,81 +278,43 @@ class ReadingPlan {
     return (completedBooks + currentBookProgress) / totalBooks;
   }
 
-  String get scheduledDaysText {
-    if (scheduledDays.length == 7) {
-      return 'Every day';
-    } else if (scheduledDays.length == 5 && 
-               scheduledDays.containsAll([DayOfWeek.monday, DayOfWeek.tuesday, DayOfWeek.wednesday, DayOfWeek.thursday, DayOfWeek.friday])) {
-      return 'Weekdays';
-    } else if (scheduledDays.length == 2 && 
-               scheduledDays.containsAll([DayOfWeek.saturday, DayOfWeek.sunday])) {
-      return 'Weekends';
-    } else {
-      return scheduledDays.map((day) => day.shortName).join(', ');
-    }
-  }
-
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
       'collection': collection.name,
-      'frequency': frequency.name,
-      'scheduledDays': scheduledDays.map((day) => day.name).toList(),
-      'chaptersPerDay': chaptersPerDay,
-      'remindersEnabled': remindersEnabled,
-      'reminderTime': reminderTime != null ? {
-        'hour': reminderTime!.hour,
-        'minute': reminderTime!.minute,
-      } : null,
       'progress': progress.toJson(),
       'createdAt': createdAt.toIso8601String(),
       'completedAt': completedAt?.toIso8601String(),
       'isActive': isActive,
-      'hasReadToday': hasReadToday,
     };
   }
 
   factory ReadingPlan.fromJson(Map<String, dynamic> json) {
     return ReadingPlan(
       id: json['id'],
-      name: json['name'] ?? 'Reading Plan', // Default name for backward compatibility
+      name: json['name'] ?? 'Reading Plan',
       collection: BookCollection.values.firstWhere((e) => e.name == json['collection']),
-      frequency: ReadingFrequency.values.firstWhere((e) => e.name == json['frequency']),
-      scheduledDays: json['scheduledDays'] != null 
-        ? Set<DayOfWeek>.from(
-            (json['scheduledDays'] as List).map((dayName) => 
-              DayOfWeek.values.firstWhere((day) => day.name == dayName)
-            )
-          )
-        : DayOfWeek.fromFrequency(ReadingFrequency.values.firstWhere((e) => e.name == json['frequency'])).toSet(),
-      chaptersPerDay: json['chaptersPerDay'],
-      remindersEnabled: json['remindersEnabled'],
-      reminderTime: json['reminderTime'] != null 
-        ? TimeOfDay(
-            hour: json['reminderTime']['hour'],
-            minute: json['reminderTime']['minute'],
-          )
-        : null,
       progress: ReadingProgress.fromJson(json['progress']),
       createdAt: DateTime.parse(json['createdAt']),
       completedAt: json['completedAt'] != null ? DateTime.parse(json['completedAt']) : null,
       isActive: json['isActive'] ?? true,
-      hasReadToday: json['hasReadToday'] ?? false,
     );
   }
 }
 
-/// Manager class for handling multiple reading plans
+/// Simplified manager class for handling multiple reading plans
 class ReadingPlanManager {
   final List<ReadingPlan> plans;
   final DateTime lastUpdated;
-  final DateTime lastDailyReset; // Track when we last reset daily status
+  final bool hasReadAnythingToday;
+  final DateTime lastResetDate;
 
   const ReadingPlanManager({
     required this.plans,
     required this.lastUpdated,
-    required this.lastDailyReset,
+    required this.hasReadAnythingToday,
+    required this.lastResetDate,
   });
 
   factory ReadingPlanManager.empty() {
@@ -538,20 +322,12 @@ class ReadingPlanManager {
     return ReadingPlanManager(
       plans: [],
       lastUpdated: now,
-      lastDailyReset: _normalizeToMidnight(now),
+      hasReadAnythingToday: false,
+      lastResetDate: _normalizeToMidnight(now),
     );
   }
   
   /// Helper method to normalize DateTime to midnight of the same day
-  /// 
-  /// **FIX FOR DAY ADVANCEMENT BUG:**
-  /// Reading plans should start at midnight of the creation day, not at the exact
-  /// creation time. This ensures that daily reset logic works predictably and
-  /// plans advance at consistent times (midnight) rather than at the time the
-  /// plan was created (e.g., 3 PM).
-  /// 
-  /// This fixes the issue where plans created during the day wouldn't reset
-  /// properly until the following day, causing unpredictable advancement timing.
   static DateTime _normalizeToMidnight(DateTime dateTime) {
     return DateTime(dateTime.year, dateTime.month, dateTime.day);
   }
@@ -559,26 +335,6 @@ class ReadingPlanManager {
   List<ReadingPlan> get activePlans => plans.where((plan) => plan.isActive && !plan.isCompleted).toList();
   List<ReadingPlan> get completedPlans => plans.where((plan) => plan.isCompleted).toList();
   List<ReadingPlan> get pausedPlans => plans.where((plan) => !plan.isActive && !plan.isCompleted).toList();
-
-  List<ReadingPlan> getPlansForToday([DateTime? date]) {
-    final targetDate = date ?? DateTime.now();
-    return activePlans.where((plan) => plan.shouldReadToday(targetDate)).toList();
-  }
-
-  List<ReadingPlan> getTodaysUnreadPlans([DateTime? date]) {
-    return getPlansForToday(date).where((plan) => !plan.hasReadToday).toList();
-  }
-
-  List<ReadingPlan> getTodaysReadPlans([DateTime? date]) {
-    return getPlansForToday(date).where((plan) => plan.hasReadToday).toList();
-  }
-
-  /// Get today's reading plans sorted by status (unread first, then read)
-  List<ReadingPlan> getTodaysPlansOrderedByStatus([DateTime? date]) {
-    final unreadPlans = getTodaysUnreadPlans(date);
-    final readPlans = getTodaysReadPlans(date);
-    return [...unreadPlans, ...readPlans];
-  }
 
   bool canAddNewPlan() {
     return activePlans.length < maxSimultaneousPlans;
@@ -613,15 +369,24 @@ class ReadingPlanManager {
     );
   }
 
+  ReadingPlanManager markReadToday() {
+    return copyWith(
+      hasReadAnythingToday: true,
+      lastUpdated: DateTime.now(),
+    );
+  }
+
   ReadingPlanManager copyWith({
     List<ReadingPlan>? plans,
     DateTime? lastUpdated,
-    DateTime? lastDailyReset,
+    bool? hasReadAnythingToday,
+    DateTime? lastResetDate,
   }) {
     return ReadingPlanManager(
       plans: plans ?? this.plans,
       lastUpdated: lastUpdated ?? this.lastUpdated,
-      lastDailyReset: lastDailyReset ?? this.lastDailyReset,
+      hasReadAnythingToday: hasReadAnythingToday ?? this.hasReadAnythingToday,
+      lastResetDate: lastResetDate ?? this.lastResetDate,
     );
   }
 
@@ -629,7 +394,8 @@ class ReadingPlanManager {
     return {
       'plans': plans.map((plan) => plan.toJson()).toList(),
       'lastUpdated': lastUpdated.toIso8601String(),
-      'lastDailyReset': lastDailyReset.toIso8601String(),
+      'hasReadAnythingToday': hasReadAnythingToday,
+      'lastResetDate': lastResetDate.toIso8601String(),
     };
   }
 
@@ -640,32 +406,18 @@ class ReadingPlanManager {
           .map((planJson) => ReadingPlan.fromJson(planJson))
           .toList(),
       lastUpdated: lastUpdated,
-      // For backward compatibility, use lastUpdated if lastDailyReset doesn't exist
-      lastDailyReset: json['lastDailyReset'] != null 
-          ? DateTime.parse(json['lastDailyReset']) 
-          : lastUpdated,
+      hasReadAnythingToday: json['hasReadAnythingToday'] ?? false,
+      lastResetDate: json['lastResetDate'] != null 
+          ? DateTime.parse(json['lastResetDate']) 
+          : _normalizeToMidnight(lastUpdated),
     );
   }
 
   /// Check if we need to reset daily status (new day detected)
   bool get needsDailyReset {
     final now = DateTime.now();
-    final resetDate = DateTime(lastDailyReset.year, lastDailyReset.month, lastDailyReset.day);
+    final resetDate = DateTime(lastResetDate.year, lastResetDate.month, lastResetDate.day);
     final currentDate = DateTime(now.year, now.month, now.day);
-    final needsReset = currentDate.isAfter(resetDate);
-    
-    // Enhanced logging for debugging the original issue
-    if (needsReset) {
-      // ignore: avoid_print
-      print('📅 Daily reset needed:');
-      // ignore: avoid_print
-      print('   Last reset: $resetDate');
-      // ignore: avoid_print
-      print('   Current date: $currentDate');
-      // ignore: avoid_print
-      print('   App lifecycle triggered reset check at $now');
-    }
-    
-    return needsReset;
+    return currentDate.isAfter(resetDate);
   }
 }

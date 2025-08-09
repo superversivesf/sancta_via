@@ -27,8 +27,7 @@ void main() async {
   
   // Clean up old database
   final dbFile = File(dbPath);
-  // ignore: avoid_slow_async_io
-  if (await dbFile.exists()) {
+  if (dbFile.existsSync()) {
     await dbFile.delete();
     print('🗑️  Removed existing database');
   }
@@ -157,7 +156,6 @@ Future<void> _convertJsonFiles(Directory assetsDir, Database db) async {
       // Compression support disabled - development tool limitation
       throw Exception('Compressed files not supported in this build tool. Use uncompressed .json files.');
     } else {
-      // ignore: avoid_slow_async_io
       jsonContent = await file.readAsString();
     }
     
