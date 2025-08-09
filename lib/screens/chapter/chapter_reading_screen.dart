@@ -67,6 +67,14 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
   /// Check if visiting this chapter should mark any reading plan as complete
   void _checkAndMarkReadingPlanComplete() {
     final activePlans = ref.read(activeReadingPlansProvider);
+    final currentColor = ref.read(currentLiturgicalColorProvider);
+    final colorIntensity = ref.read(colorIntensityProvider);
+    
+    // Parse liturgical color and convert to Flutter color
+    final liturgicalColor = currentColor != null 
+        ? LiturgicalColor.fromString(currentColor)
+        : null;
+    final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
     
     for (final plan in activePlans) {
       // Check if this chapter is the next chapter in any reading plan
@@ -77,29 +85,13 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         ref.read(readingPlanManagerProvider.notifier).markChapterRead(
           plan.id, 
           currentBookName, 
-          currentChapter
+          currentChapter,
+          successColor: themeColor,
         );
         
         debugLog('Marked chapter read for plan "${plan.name}": $currentBookName $currentChapter', 'CHAPTER');
         
-        // Show success message
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  const Icon(Icons.check_circle, color: Colors.white),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text('✅ Advanced "${plan.name}" reading plan!'),
-                  ),
-                ],
-              ),
-              backgroundColor: Colors.green,
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        }
+        // Note: Success message is now handled by the UserMessageService with liturgical color
         
         break; // Only advance one plan to avoid conflicts
       }

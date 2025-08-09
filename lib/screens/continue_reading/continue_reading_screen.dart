@@ -632,14 +632,8 @@ class ContinueReadingScreen extends ConsumerWidget {
   }
 
   void _advancePlan(BuildContext context, WidgetRef ref, String planId, Color? themeColor) {
-    ref.read(readingPlanManagerProvider.notifier).advancePlan(planId);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('📚 Great job! Plan advanced to next chapter.'),
-        backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
-        duration: const Duration(seconds: 2),
-      ),
-    );
+    ref.read(readingPlanManagerProvider.notifier).advancePlan(planId, successColor: themeColor);
+    // Note: Success message is now handled by the UserMessageService with liturgical color
   }
 
   void _showResetDailyDialog(BuildContext context, WidgetRef ref) {
@@ -658,7 +652,15 @@ class ContinueReadingScreen extends ConsumerWidget {
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              ref.read(readingPlanManagerProvider.notifier).resetDailyStatus();
+              // Get the current liturgical color for success message
+              final currentColor = ref.read(currentLiturgicalColorProvider);
+              final colorIntensity = ref.read(colorIntensityProvider);
+              final liturgicalColor = currentColor != null 
+                  ? LiturgicalColor.fromString(currentColor)
+                  : null;
+              final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
+              
+              ref.read(readingPlanManagerProvider.notifier).resetDailyStatus(successColor: themeColor);
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
             child: const Text('Reset'),

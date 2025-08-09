@@ -942,7 +942,15 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
     );
 
     try {
-      ref.read(readingPlanManagerProvider.notifier).createPlan(plan);
+      // Get the current liturgical color
+      final currentColor = ref.read(currentLiturgicalColorProvider);
+      final colorIntensity = ref.read(colorIntensityProvider);
+      final liturgicalColor = currentColor != null 
+          ? LiturgicalColor.fromString(currentColor)
+          : null;
+      final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
+      
+      ref.read(readingPlanManagerProvider.notifier).createPlan(plan, successColor: themeColor);
       
       setState(() {
         isCreatingPlan = false;
@@ -958,12 +966,20 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
   }
 
   void _handlePlanAction(ReadingPlan plan, String action) {
+    // Get the current liturgical color for success messages
+    final currentColor = ref.read(currentLiturgicalColorProvider);
+    final colorIntensity = ref.read(colorIntensityProvider);
+    final liturgicalColor = currentColor != null 
+        ? LiturgicalColor.fromString(currentColor)
+        : null;
+    final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
+    
     switch (action) {
       case 'pause':
-        ref.read(readingPlanManagerProvider.notifier).pausePlan(plan.id);
+        ref.read(readingPlanManagerProvider.notifier).pausePlan(plan.id, successColor: themeColor);
         break;
       case 'resume':
-        ref.read(readingPlanManagerProvider.notifier).resumePlan(plan.id);
+        ref.read(readingPlanManagerProvider.notifier).resumePlan(plan.id, successColor: themeColor);
         break;
       case 'reset':
         _showResetDialog(plan);
@@ -993,7 +1009,15 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              ref.read(readingPlanManagerProvider.notifier).resetProgress(plan.id);
+              // Get the current liturgical color for success message
+              final currentColor = ref.read(currentLiturgicalColorProvider);
+              final colorIntensity = ref.read(colorIntensityProvider);
+              final liturgicalColor = currentColor != null 
+                  ? LiturgicalColor.fromString(currentColor)
+                  : null;
+              final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
+              
+              ref.read(readingPlanManagerProvider.notifier).resetProgress(plan.id, successColor: themeColor);
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
             child: const Text('Reset'),
@@ -1019,8 +1043,16 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              ref.read(readingPlanManagerProvider.notifier).resetProgress(plan.id);
-              ref.read(readingPlanManagerProvider.notifier).resumePlan(plan.id);
+              // Get the current liturgical color for success messages
+              final currentColor = ref.read(currentLiturgicalColorProvider);
+              final colorIntensity = ref.read(colorIntensityProvider);
+              final liturgicalColor = currentColor != null 
+                  ? LiturgicalColor.fromString(currentColor)
+                  : null;
+              final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
+              
+              ref.read(readingPlanManagerProvider.notifier).resetProgress(plan.id, successColor: themeColor);
+              ref.read(readingPlanManagerProvider.notifier).resumePlan(plan.id, successColor: themeColor);
             },
             child: const Text('Restart'),
           ),
@@ -1045,7 +1077,15 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              ref.read(readingPlanManagerProvider.notifier).removePlan(plan.id);
+              // Get the current liturgical color for success message
+              final currentColor = ref.read(currentLiturgicalColorProvider);
+              final colorIntensity = ref.read(colorIntensityProvider);
+              final liturgicalColor = currentColor != null 
+                  ? LiturgicalColor.fromString(currentColor)
+                  : null;
+              final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
+              
+              ref.read(readingPlanManagerProvider.notifier).removePlan(plan.id, successColor: themeColor);
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Delete'),

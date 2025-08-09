@@ -28,10 +28,10 @@ class UserMessageService {
   }
 
   /// FIXED: Queue-based message showing
-  void showSuccess(String message) {
+  void showSuccess(String message, {Color? backgroundColor}) {
     _queueMessage(_QueuedMessage(
       message: message,
-      backgroundColor: Colors.green,
+      backgroundColor: backgroundColor ?? Colors.green,
       icon: Icons.check_circle,
     ));
   }

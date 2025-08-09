@@ -104,7 +104,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       await prefs.remove(_legacyStorageKey);
       
       print('✅ Successfully migrated legacy reading plans to simplified format');
-      _showSuccessMessage('Reading plans updated to new simplified system!');
+      _showSuccessMessage('Reading plans updated to new simplified system!', backgroundColor: null);
       
     } catch (e) {
       print('❌ Error migrating legacy data: $e');
@@ -140,11 +140,11 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Create a new reading plan
-  Future<void> createPlan(ReadingPlan plan) async {
+  Future<void> createPlan(ReadingPlan plan, {Color? successColor}) async {
     try {
       state = state.addPlan(plan);
       await _savePlans();
-      _showSuccessMessage('Reading plan "${plan.name}" created!');
+      _showSuccessMessage('Reading plan "${plan.name}" created!', backgroundColor: successColor);
     } catch (e) {
       _showErrorMessage('Failed to create reading plan: $e');
       rethrow;
@@ -163,12 +163,12 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Remove a reading plan
-  Future<void> removePlan(String planId) async {
+  Future<void> removePlan(String planId, {Color? successColor}) async {
     try {
       final plan = state.plans.firstWhere((p) => p.id == planId);
       state = state.removePlan(planId);
       await _savePlans();
-      _showSuccessMessage('Reading plan "${plan.name}" removed.');
+      _showSuccessMessage('Reading plan "${plan.name}" removed.', backgroundColor: successColor);
     } catch (e) {
       _showErrorMessage('Failed to remove reading plan.');
       rethrow;
@@ -176,12 +176,12 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Pause a reading plan
-  Future<void> pausePlan(String planId) async {
+  Future<void> pausePlan(String planId, {Color? successColor}) async {
     try {
       final plan = state.plans.firstWhere((p) => p.id == planId);
       final pausedPlan = plan.copyWith(isActive: false);
       await updatePlan(pausedPlan);
-      _showSuccessMessage('Reading plan "${plan.name}" paused.');
+      _showSuccessMessage('Reading plan "${plan.name}" paused.', backgroundColor: successColor);
     } catch (e) {
       _showErrorMessage('Failed to pause reading plan.');
       rethrow;
@@ -189,12 +189,12 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Resume a reading plan
-  Future<void> resumePlan(String planId) async {
+  Future<void> resumePlan(String planId, {Color? successColor}) async {
     try {
       final plan = state.plans.firstWhere((p) => p.id == planId);
       final resumedPlan = plan.copyWith(isActive: true);
       await updatePlan(resumedPlan);
-      _showSuccessMessage('Reading plan "${plan.name}" resumed.');
+      _showSuccessMessage('Reading plan "${plan.name}" resumed.', backgroundColor: successColor);
     } catch (e) {
       _showErrorMessage('Failed to resume reading plan.');
       rethrow;
@@ -202,7 +202,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Mark that the user has read a chapter from a specific plan
-  Future<void> markChapterRead(String planId, String book, int chapter) async {
+  Future<void> markChapterRead(String planId, String book, int chapter, {Color? successColor}) async {
     try {
       await _checkAndResetDailyStatus(); // Ensure daily status is current
       
@@ -232,13 +232,13 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
         state = state.updatePlan(updatedPlan).markReadToday();
         await _savePlans();
         
-        _showSuccessMessage('✅ Completed $book $chapter');
+        _showSuccessMessage('✅ Completed $book $chapter', backgroundColor: successColor);
       } else {
         // Just mark as read today without advancing the plan
         state = state.markReadToday();
         await _savePlans();
         
-        _showSuccessMessage('📖 Marked as read for today');
+        _showSuccessMessage('📖 Marked as read for today', backgroundColor: successColor);
       }
       
     } catch (e) {
@@ -255,7 +255,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Advance a plan to the next chapter regardless of which chapter was read
-  Future<void> advancePlan(String planId) async {
+  Future<void> advancePlan(String planId, {Color? successColor}) async {
     try {
       await _checkAndResetDailyStatus();
       
@@ -270,7 +270,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       state = state.updatePlan(updatedPlan).markReadToday();
       await _savePlans();
       
-      _showSuccessMessage('✅ Advanced to ${updatedProgress.nextChapterText}');
+      _showSuccessMessage('✅ Advanced to ${updatedProgress.nextChapterText}', backgroundColor: successColor);
       
     } catch (e) {
       debugPrint('❌ Error advancing plan: $e');
@@ -280,7 +280,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Reset a plan's progress to the beginning
-  Future<void> resetProgress(String planId) async {
+  Future<void> resetProgress(String planId, {Color? successColor}) async {
     try {
       final plan = state.plans.firstWhere((p) => p.id == planId);
       final newProgress = ReadingProgress.start(plan.collection);
@@ -289,7 +289,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
         completedAt: null,
       );
       await updatePlan(resetPlan);
-      _showSuccessMessage('Reading plan "${plan.name}" progress reset.');
+      _showSuccessMessage('Reading plan "${plan.name}" progress reset.', backgroundColor: successColor);
     } catch (e) {
       _showErrorMessage('Failed to reset reading plan progress.');
       rethrow;
@@ -297,11 +297,11 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Clear all reading plans
-  Future<void> clearAllPlans() async {
+  Future<void> clearAllPlans({Color? successColor}) async {
     try {
       state = ReadingPlanManager.empty();
       await _savePlans();
-      _showSuccessMessage('All reading plans cleared.');
+      _showSuccessMessage('All reading plans cleared.', backgroundColor: successColor);
     } catch (e) {
       _showErrorMessage('Failed to clear reading plans.');
       rethrow;
@@ -309,11 +309,11 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Reset daily reading status to false
-  Future<void> resetDailyStatus() async {
+  Future<void> resetDailyStatus({Color? successColor}) async {
     try {
       state = state.copyWith(hasReadAnythingToday: false);
       await _savePlans();
-      _showSuccessMessage('Daily reading status has been reset.');
+      _showSuccessMessage('Daily reading status has been reset.', backgroundColor: successColor);
     } catch (e) {
       _showErrorMessage('Failed to reset daily status.');
       rethrow;
@@ -378,8 +378,8 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Show success message to user
-  void _showSuccessMessage(String message) {
-    UserMessageService().showSuccess(message);
+  void _showSuccessMessage(String message, {Color? backgroundColor}) {
+    UserMessageService().showSuccess(message, backgroundColor: backgroundColor);
   }
 
   /// Show error message to user

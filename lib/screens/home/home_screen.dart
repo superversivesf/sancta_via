@@ -195,9 +195,11 @@ class HomeScreen extends ConsumerWidget {
         const SizedBox(height: 16),
         
         // Individual plan cards
-        ...activePlans.map((plan) => Padding(
-          padding: const EdgeInsets.only(bottom: 16),
-          child: _buildIndividualPlanCard(context, ref, plan, themeColor, hasReadToday),
+        ...activePlans.map((plan) => Center(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: _buildIndividualPlanCard(context, ref, plan, themeColor, hasReadToday),
+          ),
         )),
         
         const SizedBox(height: 8),
@@ -208,85 +210,87 @@ class HomeScreen extends ConsumerWidget {
   Widget _buildIndividualPlanCard(BuildContext context, WidgetRef ref, ReadingPlan plan, Color? themeColor, bool hasReadToday) {
     final textScaling = ref.watch(textScaleProvider);
     
-    return Card(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: themeColor != null ? Border.all(
-            color: themeColor.withValues(alpha: 0.3),
-            width: 2,
-          ) : null,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Plan header
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    plan.name,
-                    style: textScaling.scaledTitleMedium(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: themeColor?.withValues(alpha: 0.9) ?? 
-                             Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  Text(
-                    plan.collection.displayName,
-                    style: textScaling.scaledBodyMedium(context).copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 12),
-              
-              // Next chapter highlight
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
-                  ),
-                ),
-                child: Row(
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 600), // Make cards narrower
+      child: Card(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: themeColor != null ? Border.all(
+              color: themeColor.withValues(alpha: 0.3),
+              width: 2,
+            ) : null,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Plan header with next chapter box side by side
+                Row(
                   children: [
-                    Icon(
-                      Icons.menu_book,
-                      color: themeColor ?? Theme.of(context).colorScheme.primary,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
+                    // Plan titles (left side)
                     Expanded(
+                      flex: 2,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Next to read:',
-                            style: textScaling.scaledBodySmall(context).copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                            plan.name,
+                            style: textScaling.scaledTitleMedium(context).copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: themeColor?.withValues(alpha: 0.9) ?? 
+                                     Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           Text(
-                            plan.nextChapterText,
-                            style: textScaling.scaledTitleMedium(context).copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: themeColor ?? Theme.of(context).colorScheme.primary,
+                            plan.collection.displayName,
+                            style: textScaling.scaledBodyMedium(context).copyWith(
+                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                             ),
                           ),
                         ],
                       ),
                     ),
+                    
+                    const SizedBox(width: 12),
+                    
+                    // Next chapter box (right side)
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Next to read:',
+                              style: textScaling.scaledBodySmall(context).copyWith(
+                                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              plan.nextChapterText,
+                              style: textScaling.scaledTitleSmall(context).copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: themeColor ?? Theme.of(context).colorScheme.primary,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-              ),
               
               const SizedBox(height: 12),
               
@@ -332,7 +336,7 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildCreateFirstPlanCard(BuildContext context, WidgetRef ref, Color? themeColor) {
