@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/novena.dart';
+import '../../../services/date_change_service.dart';
 
 import '../../../utils/logger.dart';
 
@@ -179,32 +180,42 @@ final novenaStateProvider = StateNotifierProvider<NovenaStateNotifier, ActiveNov
   return NovenaStateNotifier();
 });
 
-// Computed providers for convenience
+// Computed providers for convenience - these watch date changes to auto-refresh
 final hasActiveNovenaProvider = Provider<bool>((ref) {
   return ref.watch(novenaStateProvider) != null;
 });
 
 final novenaProgressProvider = Provider<double>((ref) {
+  // Watch date changes to refresh progress calculation
+  ref.watch(currentDateProvider);
   final activeNovena = ref.watch(novenaStateProvider);
   return activeNovena?.progressPercentage ?? 0.0;
 });
 
 final currentNovenaSpiritualDayProvider = Provider<int?>((ref) {
+  // Watch date changes to refresh spiritual day calculation
+  ref.watch(currentDateProvider);
   final activeNovena = ref.watch(novenaStateProvider);
   return activeNovena?.spiritualDay;
 });
 
 final isTodayCompleteProvider = Provider<bool>((ref) {
+  // Watch date changes to refresh completion status
+  ref.watch(currentDateProvider);
   final activeNovena = ref.watch(novenaStateProvider);
   return activeNovena?.isTodayComplete ?? false;
 });
 
 final accessibleCompletedCountProvider = Provider<int>((ref) {
+  // Watch date changes to refresh accessible count
+  ref.watch(currentDateProvider);
   final activeNovena = ref.watch(novenaStateProvider);
   return activeNovena?.accessibleCompletedCount ?? 0;
 });
 
 final canAccessTodayProvider = Provider<bool>((ref) {
+  // Watch date changes to refresh access permission
+  ref.watch(currentDateProvider);
   final activeNovena = ref.watch(novenaStateProvider);
   if (activeNovena == null) return false;
   return activeNovena.canAccessDay(activeNovena.spiritualDay);

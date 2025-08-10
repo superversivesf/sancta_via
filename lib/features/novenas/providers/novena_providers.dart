@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/novena.dart';
 import '../repositories/novena_repository.dart';
 import 'novena_state_provider.dart';
+import '../../../services/date_change_service.dart';
 import '../../../utils/logger.dart';
 
 // Repository provider
@@ -28,6 +29,8 @@ final novenaByIdProvider = FutureProvider.family<Novena?, String>((ref, novenaId
 
 // Current spiritual day of active novena provider
 final currentNovenaDayProvider = FutureProvider<NovenaDay?>((ref) async {
+  // Watch date changes to refresh current day calculation
+  ref.watch(currentDateProvider);
   final activeNovena = ref.watch(novenaStateProvider);
   if (activeNovena == null) return null;
 
