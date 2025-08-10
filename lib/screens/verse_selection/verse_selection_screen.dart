@@ -65,47 +65,50 @@ class VerseSelectionScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: chapterAsync.when(
-        data: (scripture) => _buildVerseGrid(context, ref, scripture, themeColor),
-        loading: () => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(
-                color: themeColor ?? Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Loading verses for $bookName $chapter...',
-                style: textScaling.scaledBodyLarge(context),
-              ),
-            ],
-          ),
-        ),
-        error: (error, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.error_outline,
-                size: 48,
-                color: Colors.red,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Error loading verses',
-                style: textScaling.scaledTitleMedium(context).copyWith(
-                  color: Colors.red.shade700,
-                  fontWeight: FontWeight.bold,
+      body: SafeArea(
+        top: false, // Let AppBar handle top
+        child: chapterAsync.when(
+          data: (scripture) => _buildVerseGrid(context, ref, scripture, themeColor),
+          loading: () => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  color: themeColor ?? Theme.of(context).colorScheme.primary,
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                error.toString(),
-                style: textScaling.scaledBodyMedium(context),
-                textAlign: TextAlign.center,
-              ),
-            ],
+                const SizedBox(height: 16),
+                Text(
+                  'Loading verses for $bookName $chapter...',
+                  style: textScaling.scaledBodyLarge(context),
+                ),
+              ],
+            ),
+          ),
+          error: (error, stack) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.error_outline,
+                  size: 48,
+                  color: Colors.red,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Error loading verses',
+                  style: textScaling.scaledTitleMedium(context).copyWith(
+                    color: Colors.red.shade700,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  error.toString(),
+                  style: textScaling.scaledBodyMedium(context),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -67,11 +67,13 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
             ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: SafeArea(
+        top: false, // Let AppBar handle top
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             if (isCreatingPlan) ...[
               // Plan creation form
               _buildCreatePlanForm(context, themeColor),
@@ -79,7 +81,8 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
               // Plan management dashboard
               _buildPlanDashboard(context, manager, themeColor),
             ],
-          ],
+            ],
+          ),
         ),
       ),
     );

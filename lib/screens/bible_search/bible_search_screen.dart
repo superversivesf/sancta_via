@@ -87,8 +87,10 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
+      body: SafeArea(
+        top: false, // Let AppBar handle top
+        child: Column(
+          children: [
           // Search Header
           Container(
             padding: const EdgeInsets.all(16),
@@ -204,11 +206,12 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
             ),
           ),
 
-          // Search Results
-          Expanded(
-            child: _buildSearchContent(context, searchState, themeColor),
-          ),
-        ],
+            // Search Results
+            Expanded(
+              child: _buildSearchContent(context, searchState, themeColor),
+            ),
+          ],
+        ),
       ),
     );
   }

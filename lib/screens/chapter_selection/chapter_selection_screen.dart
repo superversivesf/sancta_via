@@ -61,47 +61,50 @@ class ChapterSelectionScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: maxChaptersAsync.when(
-        data: (maxChapters) => _buildChapterGrid(context, ref, maxChapters, themeColor),
-        loading: () => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(
-                color: themeColor ?? Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Loading chapters for $bookName...',
-                style: textScaling.scaledBodyLarge(context),
-              ),
-            ],
-          ),
-        ),
-        error: (error, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.error_outline,
-                size: 48,
-                color: Colors.red,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Error loading chapters',
-                style: textScaling.scaledTitleMedium(context).copyWith(
-                  color: Colors.red.shade700,
-                  fontWeight: FontWeight.bold,
+      body: SafeArea(
+        top: false, // Let AppBar handle top
+        child: maxChaptersAsync.when(
+          data: (maxChapters) => _buildChapterGrid(context, ref, maxChapters, themeColor),
+          loading: () => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  color: themeColor ?? Theme.of(context).colorScheme.primary,
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                error.toString(),
-                style: textScaling.scaledBodyMedium(context),
-                textAlign: TextAlign.center,
-              ),
-            ],
+                const SizedBox(height: 16),
+                Text(
+                  'Loading chapters for $bookName...',
+                  style: textScaling.scaledBodyLarge(context),
+                ),
+              ],
+            ),
+          ),
+          error: (error, stack) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.error_outline,
+                  size: 48,
+                  color: Colors.red,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Error loading chapters',
+                  style: textScaling.scaledTitleMedium(context).copyWith(
+                    color: Colors.red.shade700,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  error.toString(),
+                  style: textScaling.scaledBodyMedium(context),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),

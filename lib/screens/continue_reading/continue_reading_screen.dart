@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
@@ -34,11 +33,13 @@ class ContinueReadingScreen extends ConsumerWidget {
         ),
         backgroundColor: themeColor?.withValues(alpha: 0.1),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: SafeArea(
+        top: false, // Let AppBar handle top
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             // Header
             Text(
               'Your Reading Plans',
@@ -73,7 +74,8 @@ class ContinueReadingScreen extends ConsumerWidget {
 
             const SizedBox(height: 24),
             _buildQuickActionsCard(context, ref, activePlans, themeColor),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -196,7 +198,7 @@ class ContinueReadingScreen extends ConsumerWidget {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
                   ),
                 ),
               ),

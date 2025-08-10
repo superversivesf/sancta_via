@@ -231,7 +231,7 @@ class HomeScreen extends ConsumerWidget {
                   children: [
                     // Plan titles (left side)
                     Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -255,9 +255,9 @@ class HomeScreen extends ConsumerWidget {
                     
                     const SizedBox(width: 12),
                     
-                    // Next chapter box (right side)
+                    // Next chapter box (right side) - now wider
                     Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
@@ -268,6 +268,7 @@ class HomeScreen extends ConsumerWidget {
                           ),
                         ),
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
                               'Next to read:',
@@ -275,8 +276,10 @@ class HomeScreen extends ConsumerWidget {
                                 color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                               ),
                               textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 2),
+                            const SizedBox(height: 4),
                             Text(
                               plan.nextChapterText,
                               style: textScaling.scaledTitleSmall(context).copyWith(
@@ -284,6 +287,8 @@ class HomeScreen extends ConsumerWidget {
                                 color: themeColor ?? Theme.of(context).colorScheme.primary,
                               ),
                               textAlign: TextAlign.center,
+                              maxLines: 2, // Allow 2 lines for longer book names
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
