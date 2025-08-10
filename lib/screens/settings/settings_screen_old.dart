@@ -196,16 +196,21 @@ class SettingsScreen extends ConsumerWidget {
           Consumer(
             builder: (context, ref, child) {
               final textScaling = ref.watch(textScaleProvider);
-              return ListTile(
-                leading: const Icon(Icons.code),
-                title: Text(
-                  'Version',
-                  style: textScaling.scaledTitleMedium(context),
-                ),
-                subtitle: Text(
-                  AppConstants.appVersion,
-                  style: textScaling.scaledBodyMedium(context),
-                ),
+              return FutureBuilder<String>(
+                future: AppConstants.appVersion,
+                builder: (context, snapshot) {
+                  return ListTile(
+                    leading: const Icon(Icons.code),
+                    title: Text(
+                      'Version',
+                      style: textScaling.scaledTitleMedium(context),
+                    ),
+                    subtitle: Text(
+                      snapshot.data ?? 'Loading...',
+                      style: textScaling.scaledBodyMedium(context),
+                    ),
+                  );
+                },
               );
             },
           ),

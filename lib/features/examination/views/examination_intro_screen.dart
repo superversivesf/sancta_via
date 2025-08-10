@@ -84,54 +84,85 @@ class ExaminationIntroScreen extends ConsumerWidget {
                 const SizedBox(height: 32),
 
                 Center(
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      AppLogger.examination('Begin Examination button pressed for examinationId: $examinationId');
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final currentSession = ref.watch(examinationSessionProvider);
+                      final isResumable = currentSession?.examinationId == examinationId;
                       
-                      // Before starting the examination
-                      final beforeSession = ref.read(examinationSessionProvider);
-                      AppLogger.examination("Before starting - Current session: ${beforeSession?.id ?? 'null'}");
-                      
-                      await ref.read(examinationSessionProvider.notifier)
-                          .startExamination(examinationId);
-                      
-                      // After starting the examination  
-                      final afterSession = ref.read(examinationSessionProvider);
-                      AppLogger.examination("After starting - Current session: ${afterSession?.id ?? 'null'}");
-                      
-                      if (context.mounted) {
-                        // Get the first category ID to use for navigation
-                        final firstCategoryId = examination.categories.isNotEmpty 
-                            ? examination.categories.first.id 
-                            : '';
+                      return ElevatedButton.icon(
+                        onPressed: () async {
+                          AppLogger.examination('Begin/Resume Examination button pressed for examinationId: $examinationId');
+                          
+                          if (isResumable && currentSession != null) {
+                            // Resume existing session
+                            AppLogger.examination('Resuming existing session: ${currentSession.id}');
                             
-                        AppLogger.examination('Context is mounted, attempting navigation with first category: $firstCategoryId');
-                        
-                        // Update the session with the first category
-                        if (firstCategoryId.isNotEmpty) {
-                          await ref.read(examinationSessionProvider.notifier)
-                              .updatePosition(
-                                firstCategoryId, 
-                                examination.categories.first.items.first.id
-                              );
-                        }
-                        
-                        // Now navigate
-                        if (context.mounted) {
-                          context.push('/examination/$examinationId/category/$firstCategoryId');
-                        }
-                      } else {
-                        AppLogger.warning('Context is NOT mounted after starting examination', 'EXAM');
-                      }
+                            String targetCategoryId;
+                            String targetItemId;
+                            
+                            if (currentSession.currentCategoryId != null && 
+                                currentSession.currentItemId != null) {
+                              // Resume from saved position
+                              targetCategoryId = currentSession.currentCategoryId!;
+                              targetItemId = currentSession.currentItemId!;
+                              AppLogger.examination('Resuming from saved position - Category: $targetCategoryId, Item: $targetItemId');
+                            } else {
+                              // No saved position, start from beginning
+                              targetCategoryId = examination.categories.first.id;
+                              targetItemId = examination.categories.first.items.first.id;
+                              AppLogger.examination('No saved position, starting from beginning');
+                              
+                              // Update session with starting position
+                              await ref.read(examinationSessionProvider.notifier)
+                                  .updatePosition(targetCategoryId, targetItemId);
+                            }
+                            
+                            if (context.mounted) {
+                              context.push('/examination/$examinationId/category/$targetCategoryId');
+                            }
+                          } else {
+                            // Start new session
+                            AppLogger.examination('Starting new examination session');
+                            
+                            await ref.read(examinationSessionProvider.notifier)
+                                .startExamination(examinationId);
+                            
+                            if (context.mounted) {
+                              // Get the first category ID to use for navigation
+                              final firstCategoryId = examination.categories.isNotEmpty 
+                                  ? examination.categories.first.id 
+                                  : '';
+                                  
+                              AppLogger.examination('Context is mounted, attempting navigation with first category: $firstCategoryId');
+                              
+                              // Update the session with the first category
+                              if (firstCategoryId.isNotEmpty) {
+                                await ref.read(examinationSessionProvider.notifier)
+                                    .updatePosition(
+                                      firstCategoryId, 
+                                      examination.categories.first.items.first.id
+                                    );
+                              }
+                              
+                              // Now navigate
+                              if (context.mounted) {
+                                context.push('/examination/$examinationId/category/$firstCategoryId');
+                              }
+                            } else {
+                              AppLogger.warning('Context is NOT mounted after starting examination', 'EXAM');
+                            }
+                          }
+                        },
+                        icon: Icon(isResumable ? Icons.replay : Icons.play_arrow),
+                        label: Text(isResumable ? 'Resume Examination' : 'Begin Examination'),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 32,
+                            vertical: 16,
+                          ),
+                        ),
+                      );
                     },
-                    icon: const Icon(Icons.play_arrow),
-                    label: const Text('Begin Examination'),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 32,
-                        vertical: 16,
-                      ),
-                    ),
                   ),
                 ),
 

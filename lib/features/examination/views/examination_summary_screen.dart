@@ -140,46 +140,49 @@ class ExaminationSummaryScreen extends ConsumerWidget {
                 ),
               ),
 
-              // Bottom action buttons
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withAlpha(25),
-                      blurRadius: 8,
-                      offset: const Offset(0, -2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    // Continue examination button
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: const Icon(Icons.chevron_left),
-                        label: const Text('Continue Examination'),
+              // Bottom action buttons - wrapped in SafeArea for bottom safe area
+              SafeArea(
+                top: false, // Don't add top padding, we only want bottom
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(25),
+                        blurRadius: 8,
+                        offset: const Offset(0, -2),
                       ),
-                    ),
-                    const SizedBox(width: 16),
-
-                    // Complete button
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () => _showCompletionDialog(context, ref),
-                        icon: const Icon(Icons.check),
-                        label: const Text('Complete'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      // Continue examination button
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: const Icon(Icons.chevron_left),
+                          label: const Text('Continue Examination'),
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 16),
+
+                      // Complete button
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () => _showCompletionDialog(context, ref),
+                          icon: const Icon(Icons.check),
+                          label: const Text('Complete'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

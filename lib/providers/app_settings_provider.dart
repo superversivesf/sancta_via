@@ -42,8 +42,8 @@ class AppSettings {
         languageString = 'Spanish';
         break;
       case AppLanguage.english:
-      default:
         languageString = 'English';
+        break;
     }
 
     return AppSettings(

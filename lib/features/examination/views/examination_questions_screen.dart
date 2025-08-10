@@ -280,55 +280,58 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                 ),
               ),
 
-              // Navigation buttons
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Previous button
-                    if (currentIndex > 0)
+              // Navigation buttons - wrapped in SafeArea for bottom safe area
+              SafeArea(
+                top: false, // Don't add top padding, we only want bottom
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Previous button
+                      if (currentIndex > 0)
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            final prevItem = items[currentIndex - 1];
+                            setState(() {
+                              _currentItemId = prevItem.id;
+                            });
+
+                            // Save position
+                            ref.read(examinationSessionProvider.notifier)
+                                .updatePosition(category.id, prevItem.id);
+                          },
+                          icon: const Icon(Icons.chevron_left),
+                          label: const Text('Previous'),
+                        )
+                      else
+                        const SizedBox(width: 100),
+
+                      // Next button
                       ElevatedButton.icon(
                         onPressed: () {
-                          final prevItem = items[currentIndex - 1];
-                          setState(() {
-                            _currentItemId = prevItem.id;
-                          });
+                          if (currentIndex < items.length - 1) {
+                            // Go to next question
+                            final nextItem = items[currentIndex + 1];
+                            setState(() {
+                              _currentItemId = nextItem.id;
+                            });
 
-                          // Save position
-                          ref.read(examinationSessionProvider.notifier)
-                              .updatePosition(category.id, prevItem.id);
+                            // Save position
+                            ref.read(examinationSessionProvider.notifier)
+                                .updatePosition(category.id, nextItem.id);
+                          } else {
+                            // Last question in category - show completion dialog
+                            _showCategoryCompletionDialog(context, examination, category);
+                          }
                         },
-                        icon: const Icon(Icons.chevron_left),
-                        label: const Text('Previous'),
-                      )
-                    else
-                      const SizedBox(width: 100),
-
-                    // Next button
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        if (currentIndex < items.length - 1) {
-                          // Go to next question
-                          final nextItem = items[currentIndex + 1];
-                          setState(() {
-                            _currentItemId = nextItem.id;
-                          });
-
-                          // Save position
-                          ref.read(examinationSessionProvider.notifier)
-                              .updatePosition(category.id, nextItem.id);
-                        } else {
-                          // Last question in category - show completion dialog
-                          _showCategoryCompletionDialog(context, examination, category);
-                        }
-                      },
-                      icon: const Icon(Icons.arrow_forward),
-                      label: Text(
-                        currentIndex < items.length - 1 ? 'Next' : 'Complete Section',
+                        icon: const Icon(Icons.arrow_forward),
+                        label: Text(
+                          currentIndex < items.length - 1 ? 'Next' : 'Complete Section',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

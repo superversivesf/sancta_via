@@ -21,7 +21,6 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
   Widget build(BuildContext context) {
     final examinationsAsync = ref.watch(examinationsProvider);
     final preferences = ref.watch(examinationPreferencesProvider);
-    final textScaling = ref.watch(textScaleProvider);
 
     return Scaffold(
       appBar: AppBar(

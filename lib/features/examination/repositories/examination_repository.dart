@@ -54,6 +54,7 @@ class ExaminationRepository {
       final appDir = await getApplicationDocumentsDirectory();
       final metadataFile = File('${appDir.path}/$_examinationsFolder/$_metadataFileName');
 
+      // ignore: avoid_slow_async_io
       if (await metadataFile.exists()) {
         // Load from local storage (might be an updated version)
         final jsonString = await metadataFile.readAsString();
@@ -142,6 +143,7 @@ class ExaminationRepository {
       final examinationFile = File('${appDir.path}/$_examinationsFolder/${metadata.fileName}');
 
       String jsonString;
+      // ignore: avoid_slow_async_io
       if (await examinationFile.exists()) {
         // Load from local storage (might be an updated version)
         AppLogger.repository('Loading examination from local storage: ${examinationFile.path}');
@@ -233,6 +235,7 @@ class ExaminationRepository {
       // TODO: Implement download functionality
       final appDir = await getApplicationDocumentsDirectory();
       final examinationsDir = Directory('${appDir.path}/$_examinationsFolder');
+      // ignore: avoid_slow_async_io
       if (!await examinationsDir.exists()) {
         await examinationsDir.create(recursive: true);
       }
