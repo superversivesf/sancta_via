@@ -153,9 +153,7 @@ class HomeScreen extends ConsumerWidget {
           children: [
             Icon(
               hasReadToday ? Icons.check_circle : Icons.auto_stories,
-              color: hasReadToday 
-                ? Colors.green
-                : (themeColor ?? Theme.of(context).colorScheme.primary),
+              color: themeColor ?? Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(width: 8),
             Expanded(
@@ -165,27 +163,21 @@ class HomeScreen extends ConsumerWidget {
                   : 'Your Reading Plans',
                 style: textScaling.scaledTitleMedium(context).copyWith(
                   fontWeight: FontWeight.bold,
-                  color: hasReadToday 
-                    ? Colors.green.shade700
-                    : (themeColor?.withValues(alpha: 0.8) ?? 
-                       Theme.of(context).colorScheme.primary),
+                  color: themeColor?.withValues(alpha: 0.8) ?? 
+                         Theme.of(context).colorScheme.primary,
                 ),
               ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: hasReadToday 
-                  ? Colors.green.withValues(alpha: 0.1)
-                  : (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
+                color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
                 hasReadToday ? 'Completed!' : '${activePlans.length} plan${activePlans.length != 1 ? 's' : ''}',
                 style: textScaling.scaledLabelSmall(context).copyWith(
-                  color: hasReadToday 
-                    ? Colors.green.shade700
-                    : (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.8),
+                  color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.8),
                   fontWeight: FontWeight.bold,
                 ),
               ),
