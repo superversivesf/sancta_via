@@ -122,41 +122,33 @@ get_current_version() {
     grep "^version:" "$project_dir/pubspec.yaml" | sed 's/version: *//' | tr -d ' '
 }
 
-# Function to bump version using cider (common Flutter version plugin)
+# Function to bump version using cider
 bump_version() {
     local project_dir=$1
     local bump_type=$2
     
     cd "$project_dir" || return 1
     
-    # Check if cider is available
-    if flutter pub deps | grep -q "cider"; then
+    # Check if cider is available in dev_dependencies
+    if grep -q "cider:" "$project_dir/pubspec.yaml"; then
         log "INFO" "Using cider to bump $bump_type version in $(basename $project_dir)"
+        
+        # Ensure dependencies are up to date
         flutter pub get > /dev/null 2>&1
-        flutter pub run cider bump "$bump_type"
-        return $?
+        
+        # Bump version with cider
+        if flutter pub run cider bump "$bump_type" >> "$RELEASE_DIR/build.log" 2>&1; then
+            log "SUCCESS" "Version bumped successfully with cider"
+            return 0
+        else
+            log "ERROR" "Failed to bump version with cider"
+            return 1
+        fi
+    else
+        log "WARNING" "Cider not found in $(basename $project_dir). Please run: flutter pub add --dev cider"
+        log "WARNING" "Skipping version bump for this project."
+        return 1
     fi
-    
-    # Check if pubspec_version is available
-    if flutter pub deps | grep -q "pubspec_version"; then
-        log "INFO" "Using pubspec_version to bump $bump_type version in $(basename $project_dir)"
-        flutter pub get > /dev/null 2>&1
-        case $bump_type in
-            "major")
-                flutter pub run pubspec_version:bump major
-                ;;
-            "minor")
-                flutter pub run pubspec_version:bump minor
-                ;;
-            "patch")
-                flutter pub run pubspec_version:bump patch
-                ;;
-        esac
-        return $?
-    fi
-    
-    log "WARNING" "No version bumping plugin found in $(basename $project_dir). Skipping version bump."
-    return 1
 }
 
 # Function to build Flutter app for both platforms
