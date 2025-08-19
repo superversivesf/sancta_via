@@ -208,7 +208,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      hasReadToday ? 'You\'ve read today! 📖✅' : 'Ready to read today?',
+                      hasReadToday ? 'You\'ve read today! 📖' : 'Ready to read today?',
                       style: textScaling.scaledTitleMedium(context).copyWith(
                         fontWeight: FontWeight.bold,
                         color: hasReadToday 

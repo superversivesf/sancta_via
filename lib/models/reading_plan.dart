@@ -408,7 +408,7 @@ class ReadingPlanManager {
       lastUpdated: lastUpdated,
       hasReadAnythingToday: json['hasReadAnythingToday'] ?? false,
       lastResetDate: json['lastResetDate'] != null 
-          ? DateTime.parse(json['lastResetDate']) 
+          ? _normalizeToMidnight(DateTime.parse(json['lastResetDate']))
           : _normalizeToMidnight(lastUpdated),
     );
   }

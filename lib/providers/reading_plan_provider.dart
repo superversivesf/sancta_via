@@ -232,13 +232,13 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
         state = state.updatePlan(updatedPlan).markReadToday();
         await _savePlans();
         
-        _showSuccessMessage('✅ Completed $book $chapter', backgroundColor: successColor);
+        _showSuccessMessage('Completed $book $chapter', backgroundColor: successColor);
       } else {
         // Just mark as read today without advancing the plan
         state = state.markReadToday();
         await _savePlans();
         
-        _showSuccessMessage('📖 Marked as read for today', backgroundColor: successColor);
+        _showSuccessMessage('Marked as read for today', backgroundColor: successColor);
       }
       
     } catch (e) {
@@ -270,7 +270,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       state = state.updatePlan(updatedPlan).markReadToday();
       await _savePlans();
       
-      _showSuccessMessage('✅ Advanced to ${updatedProgress.nextChapterText}', backgroundColor: successColor);
+      _showSuccessMessage('Advanced to ${updatedProgress.nextChapterText}', backgroundColor: successColor);
       
     } catch (e) {
       debugPrint('❌ Error advancing plan: $e');

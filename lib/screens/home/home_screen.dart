@@ -159,7 +159,7 @@ class HomeScreen extends ConsumerWidget {
             Expanded(
               child: Text(
                 hasReadToday 
-                  ? 'Reading Progress Today ✅' 
+                  ? 'Reading Progress Today '
                   : 'Your Reading Plans',
                 style: textScaling.scaledTitleMedium(context).copyWith(
                   fontWeight: FontWeight.bold,
