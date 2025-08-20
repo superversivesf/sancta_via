@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 
 import '../models/reading_plan.dart';
 import '../services/user_message_service.dart';
@@ -228,9 +229,21 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
         final updatedProgress = _advanceProgress(plan.progress);
         final updatedPlan = plan.copyWith(progress: updatedProgress);
         
+        // ✨ NEW: Completion detection logic
+        final wasCompleted = plan.isCompleted;
+        final isNowCompleted = updatedPlan.isCompleted;
+        
         // Mark as read today and update plan
         state = state.updatePlan(updatedPlan).markReadToday();
         await _savePlans();
+        
+        // ✨ NEW: Show completion dialog if plan just completed
+        if (!wasCompleted && isNowCompleted) {
+          // Small delay to ensure UI updates before dialog
+          Future.delayed(const Duration(milliseconds: 500), () {
+            _showCompletionDialog(updatedPlan);
+          });
+        }
         
         _showSuccessMessage('Completed $book $chapter', backgroundColor: successColor);
       } else {
@@ -267,8 +280,20 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       final updatedProgress = _advanceProgress(plan.progress);
       final updatedPlan = plan.copyWith(progress: updatedProgress);
       
+      // ✨ NEW: Completion detection logic
+      final wasCompleted = plan.isCompleted;
+      final isNowCompleted = updatedPlan.isCompleted;
+      
       state = state.updatePlan(updatedPlan).markReadToday();
       await _savePlans();
+      
+      // ✨ NEW: Show completion dialog if plan just completed
+      if (!wasCompleted && isNowCompleted) {
+        // Small delay to ensure UI updates before dialog
+        Future.delayed(const Duration(milliseconds: 500), () {
+          _showCompletionDialog(updatedPlan);
+        });
+      }
       
       _showSuccessMessage('Advanced to ${updatedProgress.nextChapterText}', backgroundColor: successColor);
       
@@ -317,6 +342,149 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     } catch (e) {
       _showErrorMessage('Failed to reset daily status.');
       rethrow;
+    }
+  }
+
+  /// Show completion dialog when a plan is completed
+  void _showCompletionDialog(ReadingPlan completedPlan) {
+    final context = UserMessageService.navigatorKey?.currentContext;
+    if (context == null) return;
+
+    // Calculate stats
+    final daysElapsed = completedPlan.completedAt != null 
+        ? completedPlan.completedAt!.difference(completedPlan.createdAt).inDays + 1
+        : 0;
+    final totalCompletedPlans = state.completedPlans.length;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Require user action
+      builder: (dialogContext) {
+        // Get theme colors for the dialog
+        final theme = Theme.of(dialogContext);
+        final primaryColor = theme.colorScheme.primary;
+        
+        return AlertDialog(
+          title: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('🎉 Plan Completed! 🎉'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Plan name and collection
+              Text(
+                '"${completedPlan.name}"',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              
+              // Stats
+              _buildStatRow('Collection:', completedPlan.collection.displayName),
+              const SizedBox(height: 8),
+              _buildStatRow('Started:', _formatDate(completedPlan.createdAt)),
+              const SizedBox(height: 8),
+              _buildStatRow('Completed:', _formatDate(completedPlan.completedAt)),
+              const SizedBox(height: 8),
+              _buildStatRow('Time taken:', '$daysElapsed day${daysElapsed != 1 ? 's' : ''}'),
+              const SizedBox(height: 16),
+              
+              // Achievement
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: primaryColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: primaryColor.withValues(alpha: 0.3)),
+                ),
+                child: Text(
+                  totalCompletedPlans == 1 
+                      ? 'Your first completed reading plan! 🌟'
+                      : 'This is your ${_getOrdinalNumber(totalCompletedPlans)} completed plan! 🌟',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: primaryColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Continue Reading'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                // Navigate to reading plans to create a new one
+                if (context.mounted) {
+                  context.push('/reading-plan');
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryColor,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Start New Plan'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Helper method to build stat rows
+  Widget _buildStatRow(String label, String value) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 80,
+          child: Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.w500),
+          ),
+        ),
+        Expanded(
+          child: Text(value),
+        ),
+      ],
+    );
+  }
+
+  /// Helper method to format dates
+  String _formatDate(DateTime? date) {
+    if (date == null) return 'Unknown';
+    final months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    return '${months[date.month - 1]} ${date.day}, ${date.year}';
+  }
+
+  /// Helper method to get ordinal numbers (1st, 2nd, 3rd, etc.)
+  String _getOrdinalNumber(int number) {
+    if (number >= 11 && number <= 13) {
+      return '${number}th';
+    }
+    switch (number % 10) {
+      case 1:
+        return '${number}st';
+      case 2:
+        return '${number}nd';
+      case 3:
+        return '${number}rd';
+      default:
+        return '${number}th';
     }
   }
 

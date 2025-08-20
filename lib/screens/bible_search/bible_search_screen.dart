@@ -310,7 +310,7 @@ class _BibleSearchScreenState extends ConsumerState<BibleSearchScreen> {
           Switch(
             value: value,
             onChanged: (_) => onChanged(),
-            activeColor: themeColor ?? Theme.of(context).colorScheme.primary,
+            activeThumbColor: themeColor ?? Theme.of(context).colorScheme.primary,
           ),
           const SizedBox(width: 8),
           Text(

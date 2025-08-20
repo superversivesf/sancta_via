@@ -309,7 +309,7 @@ class HomeScreen extends ConsumerWidget {
                     // Go directly to this plan's next chapter
                     context.push('/chapter/${Uri.encodeComponent(plan.progress.currentBook)}/${plan.progress.currentChapter}');
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.play_arrow,
                     size: 18,
                   ),

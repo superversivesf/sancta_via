@@ -881,7 +881,40 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
                 ],
               ),
               const SizedBox(height: 16),
-              ...BookCollection.values.map((collection) => RadioListTile<BookCollection>(
+              ...BookCollection.values.map((collection) => ListTile(
+                leading: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedCollection = collection;
+                      // Auto-fill plan name if it's empty
+                      if (planName.trim().isEmpty) {
+                        planName = collection.displayName;
+                        _planNameController.text = planName; // Update the text field
+                      }
+                    });
+                  },
+                  child: Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: themeColor ?? Theme.of(context).colorScheme.primary,
+                        width: 2,
+                      ),
+                      color: selectedCollection == collection 
+                          ? (themeColor ?? Theme.of(context).colorScheme.primary)
+                          : Colors.transparent,
+                    ),
+                    child: selectedCollection == collection
+                        ? const Icon(
+                            Icons.check,
+                            size: 12,
+                            color: Colors.white,
+                          )
+                        : null,
+                  ),
+                ),
                 title: Text(
                   collection.displayName,
                   style: textScaling.scaledBodyMedium(context),
@@ -892,15 +925,12 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen> {
                     color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                 ),
-                value: collection,
-                groupValue: selectedCollection,
-                activeColor: themeColor ?? Theme.of(context).colorScheme.primary,
-                onChanged: (BookCollection? value) {
+                onTap: () {
                   setState(() {
-                    selectedCollection = value!;
+                    selectedCollection = collection;
                     // Auto-fill plan name if it's empty
                     if (planName.trim().isEmpty) {
-                      planName = value.displayName;
+                      planName = collection.displayName;
                       _planNameController.text = planName; // Update the text field
                     }
                   });
