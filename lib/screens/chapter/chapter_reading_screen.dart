@@ -37,6 +37,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
   late String currentBookName;
   late int currentChapter;
   bool _hasScrolledToInitialVerse = false; // Track if we've scrolled to the initial verse
+  bool _hasMarkedChapterAsRead = false; // NEW: Track if we've already marked this chapter as read
   
   // Verse scrolling management
   final List<GlobalKey> _verseKeys = [];
@@ -49,23 +50,66 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     currentChapter = widget.chapter;
     _pageController = PageController();
     _scrollController = ScrollController();
+    
+    // NEW: Add scroll listener to detect when user reaches the end
+    _scrollController.addListener(_handleScroll);
+    
     debugLog('ChapterReadingScreen initialized: $currentBookName $currentChapter${widget.startVerse != null ? ' (starting at verse ${widget.startVerse})' : ''}', 'CHAPTER');
     
-    // Check if this chapter visit should mark a reading plan as complete
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkAndMarkReadingPlanComplete();
-    });
+    // REMOVED: No longer marking chapter as read immediately when opening
+    // The chapter will be marked as read only when user scrolls to the end
   }
 
   @override
   void dispose() {
+    _scrollController.removeListener(_handleScroll); // NEW: Remove scroll listener
     _pageController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
-  /// Check if visiting this chapter should mark any reading plan as complete
-  void _checkAndMarkReadingPlanComplete() {
+  /// NEW: Handle scroll events to detect when user reaches end of chapter
+  void _handleScroll() {
+    if (_hasMarkedChapterAsRead) return; // Already marked as read, no need to check again
+    
+    final scrollController = _scrollController;
+    
+    // Check if user has scrolled to near the end (95% or more)
+    if (scrollController.hasClients) {
+      final maxScroll = scrollController.position.maxScrollExtent;
+      final currentScroll = scrollController.position.pixels;
+      
+      // Handle case where content fits on screen (maxScroll is 0 or very small)
+      if (maxScroll <= 50) {
+        // Chapter is short enough to fit on one screen, wait a moment then mark as read
+        Future.delayed(const Duration(seconds: 2), () {
+          if (mounted && !_hasMarkedChapterAsRead) {
+            _markChapterAsRead();
+          }
+        });
+        return;
+      }
+      
+      // Calculate scroll percentage
+      final scrollPercentage = currentScroll / maxScroll;
+      
+      debugLog('Scroll progress: ${(scrollPercentage * 100).toStringAsFixed(1)}%', 'SCROLL');
+      
+      // Mark as read when user reaches 95% of the way through
+      if (scrollPercentage >= 0.95) {
+        _markChapterAsRead();
+      }
+    }
+  }
+
+  /// NEW: Mark the current chapter as read and advance reading plans
+  void _markChapterAsRead() {
+    if (_hasMarkedChapterAsRead) return; // Prevent multiple calls
+    
+    _hasMarkedChapterAsRead = true;
+    
+    debugLog('User has finished reading chapter, marking as complete', 'CHAPTER');
+    
     final activePlans = ref.read(activeReadingPlansProvider);
     final currentColor = ref.read(currentLiturgicalColorProvider);
     final colorIntensity = ref.read(colorIntensityProvider);
@@ -75,6 +119,8 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         ? LiturgicalColor.fromString(currentColor)
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
+    
+    bool foundMatchingPlan = false;
     
     for (final plan in activePlans) {
       // Check if this chapter is the next chapter in any reading plan
@@ -89,12 +135,39 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
           successColor: themeColor,
         );
         
+        foundMatchingPlan = true;
         debugLog('Marked chapter read for plan "${plan.name}": $currentBookName $currentChapter', 'CHAPTER');
         
-        // Note: Success message is now handled by the UserMessageService with liturgical color
+        // Note: Success message and plan completion handling is done by the UserMessageService
         
         break; // Only advance one plan to avoid conflicts
       }
+    }
+    
+    // If no reading plan matched, still give feedback that they finished the chapter
+    if (!foundMatchingPlan) {
+      // Show a simple completion message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.check_circle, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('Finished reading $currentBookName $currentChapter'),
+                ),
+              ],
+            ),
+            backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
+            duration: const Duration(seconds: 3),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+        );
+      }
+      
+      debugLog('Chapter reading completed (no matching reading plan): $currentBookName $currentChapter', 'CHAPTER');
     }
   }
 
@@ -105,6 +178,8 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       // Reset the scroll flag when navigating to a different chapter
       // so we don't scroll to the original startVerse in the new chapter
       _hasScrolledToInitialVerse = true;
+      // NEW: Reset the read status for the new chapter
+      _hasMarkedChapterAsRead = false;
       // Clear verse keys for new chapter
       _verseKeys.clear();
       _currentVerses.clear();
@@ -309,86 +384,8 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
               ),
               child: _buildSelectableChapterText(context, scripture.text, themeColor),
             ),
-            
-            const SizedBox(height: 24),
-            
-            // Selection instructions
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.content_copy,
-                        size: 16,
-                        color: themeColor ?? Theme.of(context).colorScheme.primary,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'How to copy verses:',
-                          style: textScaling.scaledBodySmall(context).copyWith(
-                            color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.8),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '1. Tap any verse to copy it\n2. The entire verse will be copied to clipboard\n3. Paste in any other app to share',
-                    style: textScaling.scaledBodySmall(context).copyWith(
-                      color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.7),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-            
-            const SizedBox(height: 100), // Space for floating action buttons
-            
-            // Navigation hint
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.grey.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.swipe_left,
-                    size: textScaling.scaleFactor * 16,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Swipe left/right to navigate chapters',
-                    style: textScaling.scaledBodySmall(context).copyWith(
-                      color: Colors.grey,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Icon(
-                    Icons.swipe_right,
-                    size: textScaling.scaleFactor * 16,
-                    color: Colors.grey,
-                  ),
-                ],
-              ),
-            ),
+
+            const SizedBox(height: 50), // Space for floating action buttons
           ],
         ),
       ),
@@ -421,7 +418,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     
     return Container(
       key: _verseKeys[index], // Use GlobalKey for precise scrolling
-      margin: const EdgeInsets.only(bottom: 6),
       child: InkWell(
         onTap: () => _handleVerseTap(verseNumber, verseText, themeColor),
         borderRadius: BorderRadius.circular(8),

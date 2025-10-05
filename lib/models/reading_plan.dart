@@ -79,12 +79,13 @@ enum BookCollection {
     switch (this) {
       case BookCollection.wholeBible:
         return [
-          // Old Testament
+          // Old Testament (Catholic Canon with Deuterocanonical Books)
           'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy',
           'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings',
-          '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther',
-          'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs',
-          'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel',
+          '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Tobit', 'Judith', 'Esther', 
+          '1 Maccabees', '2 Maccabees',
+          'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs', 'Wisdom', 'Sirach',
+          'Isaiah', 'Jeremiah', 'Lamentations', 'Baruch', 'Ezekiel', 'Daniel',
           'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum',
           'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi',
           // New Testament
@@ -104,11 +105,13 @@ enum BookCollection {
         ];
       case BookCollection.oldTestament:
         return [
+          // Catholic Old Testament (including Deuterocanonical Books)
           'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy',
           'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings',
-          '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther',
-          'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs',
-          'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel',
+          '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Tobit', 'Judith', 'Esther',
+          '1 Maccabees', '2 Maccabees',
+          'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs', 'Wisdom', 'Sirach',
+          'Isaiah', 'Jeremiah', 'Lamentations', 'Baruch', 'Ezekiel', 'Daniel',
           'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum',
           'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi'
         ];
@@ -132,18 +135,26 @@ enum BookCollection {
       case BookCollection.psalmsProverbs:
         return ['Psalms', 'Proverbs'];
       case BookCollection.majorProphets:
-        return ['Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel'];
+        return [
+          // Catholic Major Prophets (including Deuterocanonical Books)
+          'Isaiah', 'Jeremiah', 'Lamentations', 'Baruch', 'Ezekiel', 'Daniel'
+        ];
       case BookCollection.minorProphets:
         return [
           'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum',
           'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi'
         ];
       case BookCollection.wisdom:
-        return ['Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs'];
+        return [
+          // Catholic Wisdom Books (including Deuterocanonical Books)
+          'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs', 'Wisdom', 'Sirach'
+        ];
       case BookCollection.history:
         return [
+          // Catholic Historical Books (including Deuterocanonical Books)
           'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings',
-          '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther'
+          '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Tobit', 'Judith', 'Esther',
+          '1 Maccabees', '2 Maccabees'
         ];
     }
   }

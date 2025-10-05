@@ -142,12 +142,24 @@ final appRouter = GoRouter(
 
 /// NEW: Validate book names against known Bible books
 bool _isValidBookName(String bookName) {
+  // DEBUGGING: Log the book name being validated
+  print('🔍 Validating book name: "$bookName"');
+  
   // Check against all possible book collections
   for (final collection in BookCollection.values) {
     if (collection.bookNames.contains(bookName)) {
+      print('✅ Book "$bookName" found in collection: ${collection.name}');
       return true;
     }
   }
+  
+  // DEBUGGING: Log all books in collections to help debug
+  print('❌ Book "$bookName" not found in any collection!');
+  print('📚 Available books in collections:');
+  for (final collection in BookCollection.values) {
+    print('   ${collection.name}: ${collection.bookNames.take(5).join(", ")}${collection.bookNames.length > 5 ? "..." : ""}');
+  }
+  
   return false;
 }
 
