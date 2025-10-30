@@ -738,6 +738,61 @@
       "isLiturgical": true,
       "liturgicalPriority": 4,
       "liturgicalSeason": null
+    },
+    {
+      "id": "adoro_te_devote",
+      "title": "Adoro Te Devote",
+      "categories": ["saints", "mass"],
+      "description": "A profound Eucharistic hymn by St. Thomas Aquinas meditating on the Real Presence of Christ in the Blessed Sacrament",
+      "tags": ["eucharist", "adoration", "real_presence", "thomas_aquinas", "hymn"],
+      "fileName": "adoro_te_devote.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 8,
+      "liturgicalSeason": "corpus_christi"
+    },
+    {
+      "id": "st_patrick_breastplate",
+      "title": "St. Patrick's Breastplate",
+      "categories": ["saints", "morning"],
+      "description": "A powerful prayer of protection by St. Patrick invoking the Trinity and Christ's presence in all circumstances",
+      "tags": ["protection", "celtic", "patrick", "trinity", "morning", "armor"],
+      "fileName": "st_patrick_breastplate.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_of_abandonment",
+      "title": "Prayer of Abandonment",
+      "categories": ["saints"],
+      "description": "A powerful prayer of complete surrender and trust in God's will by Blessed Charles de Foucauld",
+      "tags": ["abandonment", "trust", "surrender", "gods_will", "charles_de_foucauld", "contemplative"],
+      "fileName": "prayer_of_abandonment.json",
+      "isLiturgical": false,
+      "liturgicalPriority": 0,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "st_ephrem_lenten_prayer",
+      "title": "Prayer of St. Ephrem the Syrian",
+      "categories": ["saints"],
+      "description": "A powerful Lenten prayer by St. Ephrem the Syrian seeking freedom from vice and growth in virtue",
+      "tags": ["lent", "repentance", "virtue", "humility", "ephrem", "eastern"],
+      "fileName": "st_ephrem_lenten_prayer.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 9,
+      "liturgicalSeason": "lent"
+    },
+    {
+      "id": "st_gertrude_holy_souls",
+      "title": "Prayer of St. Gertrude for the Holy Souls",
+      "categories": ["saints"],
+      "description": "A powerful prayer by St. Gertrude the Great offering Christ's Precious Blood for the souls in Purgatory and sinners",
+      "tags": ["purgatory", "holy_souls", "precious_blood", "gertrude", "intercession", "mercy"],
+      "fileName": "st_gertrude_holy_souls.json",
+      "isLiturgical": false,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": null
     }
   ]
 }

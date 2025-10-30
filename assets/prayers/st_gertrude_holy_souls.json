@@ -1,0 +1,27 @@
+{
+  "id": "st_gertrude_holy_souls",
+  "title": "Prayer of St. Gertrude for the Holy Souls",
+  "text": "Eternal Father,\nI offer Thee the Most Precious Blood\nof Thy Divine Son, Jesus,\nin union with the Masses said\nthroughout the world today,\nfor all the holy souls in Purgatory,\nfor sinners everywhere,\nfor sinners in the universal Church,\nthose in my own home\nand within my family.\nAmen.",
+  "translation": {
+    "latin": "Æterne Pater,\noffero Tibi Pretiosissimum Sanguinem\nDivini Filii Tui, Jesu,\nin unione cum Missis hodie\nper totum mundum celebratis,\npro omnibus sanctis animabus in Purgatorio,\npro peccatoribus ubique terrarum,\npro peccatoribus in Ecclesia universali,\npro his qui sunt in domo mea\net in familia mea.\nAmen."
+  },
+  "attribution": "St. Gertrude the Great (13th century)",
+  "notes": "St. Gertrude the Great was a German Benedictine nun and mystic. According to tradition, Our Lord revealed to St. Gertrude that this prayer releases 1,000 souls from Purgatory each time it is said with devotion. While the Church has not officially confirmed this promise, the prayer remains a powerful intercession for the holy souls and has been treasured by the faithful for centuries. St. Gertrude is one of the few female saints given the title 'the Great.'",
+  "categories": [
+    "saints",
+    "purgatory",
+    "mercy"
+  ],
+  "description": "A powerful prayer by St. Gertrude the Great offering Christ's Precious Blood for the souls in Purgatory and sinners",
+  "tags": [
+    "purgatory",
+    "holy_souls",
+    "precious_blood",
+    "gertrude",
+    "intercession",
+    "mercy"
+  ],
+  "isLiturgical": false,
+  "liturgicalPriority": 7,
+  "liturgicalSeason": null
+}
