@@ -7,14 +7,14 @@ environment:
 
 dependencies:
   meta: ^1.9.1
-  sqflite: ^2.3.6
+  sqflite: ^2.3.3+1
   path: ^1.9.0
   flutter:
     sdk: flutter
 
 dev_dependencies:
   test: ^1.24.0
-  lints: ^3.0.0
+  lints: ^4.0.0
 
 homepage: https://sancta-via.net
 repository: https://github.com/superversivesf/sancta_via_bible_data
