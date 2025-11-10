@@ -14,13 +14,13 @@ app_store:
   age_rating: "4+"
 
 # Version: major.minor.patch+build
-version: 1.1.7
+version: 1.1.14
 repository: https://github.com/superversivesf/sancta_via_liturgical_calendar_app
 homepage: https://sancta-via.net
 
 environment:
-  sdk: ^3.8.1
-  flutter: ">=3.8.1"
+  sdk: ^3.9.2
+  flutter: ">=3.9.2"
 
 dependencies:
   cupertino_icons: ^1.0.8
@@ -38,9 +38,10 @@ dependencies:
     path: ../sancta_via_liturgical_calendar_riverpod
   sancta_via_shared_ui:
     path: ../sancta_via_shared_ui
-  shared_preferences: ^2.3.2
+  shared_preferences: ^2.5.3
   
 dev_dependencies:
+  cider: ^0.2.8
   flutter_launcher_icons: ^0.14.4
   flutter_lints: ^6.0.0
   flutter_test:
