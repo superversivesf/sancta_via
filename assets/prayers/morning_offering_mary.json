@@ -27,5 +27,6 @@
   "description": "Offering the day through the Immaculate Heart of Mary",
   "isLiturgical": true,
   "liturgicalPriority": 6,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "morning"
 }

@@ -26,5 +26,6 @@
   "description": "Prayer emphasizing St. Anthony's miraculous powers and relationship with the Infant Jesus",
   "isLiturgical": true,
   "liturgicalPriority": 5,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

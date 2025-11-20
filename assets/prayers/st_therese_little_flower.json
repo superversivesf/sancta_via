@@ -27,5 +27,6 @@
   "description": "Traditional prayer to the Little Flower asking for roses and favors",
   "isLiturgical": true,
   "liturgicalPriority": 5,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

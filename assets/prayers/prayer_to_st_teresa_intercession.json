@@ -23,5 +23,6 @@
   "description": "Prayer asking for St. Teresa's intercession to grow in divine love",
   "isLiturgical": true,
   "liturgicalPriority": 6,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

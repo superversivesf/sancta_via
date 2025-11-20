@@ -13,6 +13,9 @@ class Prayer {
   final bool isLiturgical;
   final int liturgicalPriority;
   final String? liturgicalSeason;
+  
+  // Time of day categorization for time-appropriate prayer selection
+  final String timeOfDay;
 
   Prayer({
     required this.id,
@@ -27,6 +30,7 @@ class Prayer {
     this.isLiturgical = false,
     this.liturgicalPriority = 0,
     this.liturgicalSeason,
+    this.timeOfDay = 'anytime',
   });
 
   factory Prayer.fromJson(Map<String, dynamic> json) {
@@ -49,6 +53,7 @@ class Prayer {
       isLiturgical: json['isLiturgical'] ?? false,
       liturgicalPriority: json['liturgicalPriority'] ?? 0,
       liturgicalSeason: json['liturgicalSeason'],
+      timeOfDay: json['timeOfDay'] ?? 'anytime',
     );
   }
 
@@ -66,6 +71,49 @@ class Prayer {
       'isLiturgical': isLiturgical,
       'liturgicalPriority': liturgicalPriority,
       'liturgicalSeason': liturgicalSeason,
+      'timeOfDay': timeOfDay,
     };
   }
+
+  /// Create a copy of this prayer with updated fields
+  Prayer copyWith({
+    String? id,
+    String? title,
+    String? text,
+    Map<String, String>? translations,
+    String? attribution,
+    String? notes,
+    List<String>? categories,
+    String? description,
+    List<String>? tags,
+    bool? isLiturgical,
+    int? liturgicalPriority,
+    String? liturgicalSeason,
+    String? timeOfDay,
+  }) {
+    return Prayer(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      text: text ?? this.text,
+      translations: translations ?? this.translations,
+      attribution: attribution ?? this.attribution,
+      notes: notes ?? this.notes,
+      categories: categories ?? this.categories,
+      description: description ?? this.description,
+      tags: tags ?? this.tags,
+      isLiturgical: isLiturgical ?? this.isLiturgical,
+      liturgicalPriority: liturgicalPriority ?? this.liturgicalPriority,
+      liturgicalSeason: liturgicalSeason ?? this.liturgicalSeason,
+      timeOfDay: timeOfDay ?? this.timeOfDay,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Prayer && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
 }

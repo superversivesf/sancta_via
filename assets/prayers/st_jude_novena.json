@@ -26,5 +26,6 @@
   "description": "Traditional novena prayer to St. Jude for hopeless causes",
   "isLiturgical": true,
   "liturgicalPriority": 5,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

@@ -22,5 +22,6 @@
   ],
   "isLiturgical": true,
   "liturgicalPriority": 7,
-  "liturgicalSeason": "ordinary"
+  "liturgicalSeason": "ordinary",
+  "timeOfDay": "afternoon"
 }

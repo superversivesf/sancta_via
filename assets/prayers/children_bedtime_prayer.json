@@ -23,5 +23,6 @@
   "description": "Traditional children's prayer asking for angelic protection during sleep",
   "isLiturgical": true,
   "liturgicalPriority": 3,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "night"
 }

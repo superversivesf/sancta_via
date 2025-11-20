@@ -5,6 +5,7 @@ import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import '../../providers/prayer_providers.dart';
 import '../../providers/text_scaling_provider.dart';
+import '../../widgets/time_of_day_prayer_card.dart';
 import '../settings/settings_screen.dart';
 import '../categories/categories_screen.dart';
 import '../search/search_screen.dart';
@@ -134,6 +135,7 @@ class HomeScreen extends ConsumerWidget {
               childAspectRatio: textScaling.scaleFactor > 1.2 ? 0.85 : 1.0,
               children: [
                 _buildPrayerOfTheDayCard(context, ref, themeColor),
+                TimeOfDayPrayerCard(themeColor: themeColor),
                 _buildActionCard(
                   context,
                   icon: Icons.favorite,

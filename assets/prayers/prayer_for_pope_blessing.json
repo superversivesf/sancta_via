@@ -27,5 +27,6 @@
   "description": "Prayer combining biblical blessings for the Pope's protection and peace",
   "isLiturgical": true,
   "liturgicalPriority": 4,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

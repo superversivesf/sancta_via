@@ -26,5 +26,6 @@
   "description": "Formal evening prayer with thanksgiving, forgiveness, and intercession",
   "isLiturgical": true,
   "liturgicalPriority": 5,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "evening"
 }

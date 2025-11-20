@@ -25,5 +25,6 @@
   "description": "St. Thérèse's own morning offering prayer from her writings",
   "isLiturgical": true,
   "liturgicalPriority": 5,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "morning"
 }

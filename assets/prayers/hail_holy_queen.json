@@ -18,5 +18,6 @@
   ],
   "isLiturgical": true,
   "liturgicalPriority": 7,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

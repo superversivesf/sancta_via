@@ -25,5 +25,6 @@
   "description": "Bedtime prayer combining examination of conscience with thanksgiving",
   "isLiturgical": true,
   "liturgicalPriority": 4,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "night"
 }

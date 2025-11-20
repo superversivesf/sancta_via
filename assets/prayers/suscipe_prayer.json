@@ -27,5 +27,6 @@
   "description": "St. Ignatius' prayer of complete surrender to God's will",
   "isLiturgical": true,
   "liturgicalPriority": 6,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

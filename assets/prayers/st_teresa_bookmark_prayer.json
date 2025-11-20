@@ -27,5 +27,6 @@
   "description": "St. Teresa's famous prayer of abandonment to God's will",
   "isLiturgical": true,
   "liturgicalPriority": 6,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

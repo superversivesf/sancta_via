@@ -25,5 +25,6 @@
   "description": "A simple, child-friendly morning offering",
   "isLiturgical": true,
   "liturgicalPriority": 4,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "morning"
 }

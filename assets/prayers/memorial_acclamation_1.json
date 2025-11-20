@@ -27,5 +27,6 @@
   "description": "We proclaim your Death, O Lord, and profess your Resurrection",
   "isLiturgical": true,
   "liturgicalPriority": 8,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

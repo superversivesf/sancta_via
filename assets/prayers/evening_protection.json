@@ -27,5 +27,6 @@
   "description": "Prayer asking for God's protection during the night hours",
   "isLiturgical": true,
   "liturgicalPriority": 4,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "evening"
 }

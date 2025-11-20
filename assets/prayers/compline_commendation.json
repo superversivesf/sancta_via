@@ -26,5 +26,6 @@
   "description": "Traditional responsory from Compline echoing Christ's final words",
   "isLiturgical": true,
   "liturgicalPriority": 7,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "night"
 }

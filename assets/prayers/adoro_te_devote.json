@@ -22,5 +22,6 @@
   ],
   "isLiturgical": true,
   "liturgicalPriority": 8,
-  "liturgicalSeason": "corpus_christi"
+  "liturgicalSeason": "corpus_christi",
+  "timeOfDay": "anytime"
 }

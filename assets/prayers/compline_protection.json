@@ -26,5 +26,6 @@
   "description": "Compline antiphon asking for protection during waking and sleeping",
   "isLiturgical": true,
   "liturgicalPriority": 6,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "night"
 }

@@ -27,5 +27,6 @@
   "description": "When we eat this Bread and drink this Cup",
   "isLiturgical": true,
   "liturgicalPriority": 8,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

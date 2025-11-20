@@ -26,5 +26,6 @@
   "description": "Traditional prayer asking St. Anthony's help in finding lost things",
   "isLiturgical": true,
   "liturgicalPriority": 5,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

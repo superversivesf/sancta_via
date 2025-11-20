@@ -24,5 +24,6 @@
   "description": "Prayer emphasizing our role as Christ's hands, feet, and eyes in the world",
   "isLiturgical": true,
   "liturgicalPriority": 5,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

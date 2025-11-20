@@ -7,6 +7,7 @@ import '../models/prayer.dart';
 import '../models/prayer_category.dart';
 import '../models/prayer_category_group.dart';
 import '../models/prayer_app_settings.dart';
+import '../models/prayer_time_of_day.dart';
 import '../utils/logger.dart';
 
 // Create a logger instance for consistency
@@ -237,6 +238,33 @@ class PrayerRepository {
     } catch (e) {
       AppLogger.error('Error getting prayer of the day', e, null, 'REPO');
       return null;
+    }
+  }
+
+  /// Get prayers for a specific time of day
+  /// Returns two lists: time-specific prayers and anytime prayers
+  /// This allows the caller to apply weighted selection
+  Future<({List<Prayer> timePrayers, List<Prayer> anytimePrayers})> getPrayersForTimeOfDay(
+    PrayerTimeOfDay timeOfDay,
+  ) async {
+    try {
+      await _ensureMigrationComplete();
+      
+      // Get prayers specifically for this time of day
+      final timePrayers = await _database.getPrayersForExactTimeOfDay(timeOfDay.toStringValue());
+      
+      // Get anytime prayers
+      final anytimePrayers = await _database.getPrayersForExactTimeOfDay('anytime');
+      
+      AppLogger.info(
+        'Found ${timePrayers.length} ${timeOfDay.displayName.toLowerCase()} prayers and ${anytimePrayers.length} anytime prayers',
+        'REPO',
+      );
+      
+      return (timePrayers: timePrayers, anytimePrayers: anytimePrayers);
+    } catch (e) {
+      AppLogger.error('Error getting prayers for time of day: ${timeOfDay.displayName}', e, null, 'REPO');
+      return (timePrayers: <Prayer>[], anytimePrayers: <Prayer>[]);
     }
   }
 

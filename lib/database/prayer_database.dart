@@ -11,7 +11,7 @@ import '../utils/logger.dart';
 /// SQLite database helper for the prayer companion app
 class PrayerDatabase {
   static const String _databaseName = 'prayers.db';
-  static const int _databaseVersion = 1;
+  static const int _databaseVersion = 2; // Bumped for time_of_day field
 
   // Singleton pattern
   static PrayerDatabase? _instance;
@@ -52,7 +52,7 @@ class PrayerDatabase {
   /// Handle database upgrades
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     // Handle database migrations here when needed
-    // For now, we'll recreate all tables
+    // For now, we'll recreate all tables (data will be re-migrated from JSON)
     await _dropTables(db);
     await _createTables(db);
   }
@@ -81,7 +81,7 @@ class PrayerDatabase {
       )
     ''');
 
-    // Prayers table
+    // Prayers table (with time_of_day field)
     await db.execute('''
       CREATE TABLE prayers (
         id TEXT PRIMARY KEY,
@@ -92,7 +92,8 @@ class PrayerDatabase {
         description TEXT NOT NULL,
         is_liturgical INTEGER NOT NULL DEFAULT 0,
         liturgical_priority INTEGER NOT NULL DEFAULT 0,
-        liturgical_season TEXT
+        liturgical_season TEXT,
+        time_of_day TEXT NOT NULL DEFAULT 'anytime'
       )
     ''');
 
@@ -131,6 +132,7 @@ class PrayerDatabase {
     // Create indexes for better performance
     await db.execute('CREATE INDEX idx_prayers_liturgical ON prayers (is_liturgical, liturgical_priority)');
     await db.execute('CREATE INDEX idx_prayers_season ON prayers (liturgical_season)');
+    await db.execute('CREATE INDEX idx_prayers_time_of_day ON prayers (time_of_day)');
     await db.execute('CREATE INDEX idx_prayer_categories_prayer ON prayer_categories (prayer_id)');
     await db.execute('CREATE INDEX idx_prayer_categories_category ON prayer_categories (category_id)');
     await db.execute('CREATE INDEX idx_prayer_tags_prayer ON prayer_tags (prayer_id)');
@@ -199,6 +201,7 @@ class PrayerDatabase {
           'is_liturgical': prayer.isLiturgical ? 1 : 0,
           'liturgical_priority': prayer.liturgicalPriority,
           'liturgical_season': prayer.liturgicalSeason,
+          'time_of_day': prayer.timeOfDay,
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
@@ -342,6 +345,7 @@ class PrayerDatabase {
         isLiturgical: prayerMap['is_liturgical'] == 1,
         liturgicalPriority: prayerMap['liturgical_priority'],
         liturgicalSeason: prayerMap['liturgical_season'],
+        timeOfDay: prayerMap['time_of_day'] ?? 'anytime',
       ));
     }
     
@@ -403,6 +407,7 @@ class PrayerDatabase {
       isLiturgical: prayerMap['is_liturgical'] == 1,
       liturgicalPriority: prayerMap['liturgical_priority'],
       liturgicalSeason: prayerMap['liturgical_season'],
+      timeOfDay: prayerMap['time_of_day'] ?? 'anytime',
     );
   }
 
@@ -423,6 +428,51 @@ class PrayerDatabase {
       final prayerId = prayerMap['id'] as String;
       
       // Get categories, tags, and translations for each prayer
+      final prayer = await getPrayerById(prayerId);
+      if (prayer != null) prayers.add(prayer);
+    }
+    
+    return prayers;
+  }
+
+  /// Get prayers by time of day
+  /// Returns prayers that match the specified time OR are marked as 'anytime'
+  Future<List<Prayer>> getPrayersByTimeOfDay(String timeOfDay) async {
+    final db = await database;
+    
+    final List<Map<String, dynamic>> maps = await db.query(
+      'prayers',
+      where: 'time_of_day = ? OR time_of_day = ?',
+      whereArgs: [timeOfDay, 'anytime'],
+      orderBy: 'title',
+    );
+    
+    final List<Prayer> prayers = [];
+    
+    for (final prayerMap in maps) {
+      final prayerId = prayerMap['id'] as String;
+      final prayer = await getPrayerById(prayerId);
+      if (prayer != null) prayers.add(prayer);
+    }
+    
+    return prayers;
+  }
+
+  /// Get prayers for a specific time of day only (not including 'anytime')
+  Future<List<Prayer>> getPrayersForExactTimeOfDay(String timeOfDay) async {
+    final db = await database;
+    
+    final List<Map<String, dynamic>> maps = await db.query(
+      'prayers',
+      where: 'time_of_day = ?',
+      whereArgs: [timeOfDay],
+      orderBy: 'title',
+    );
+    
+    final List<Prayer> prayers = [];
+    
+    for (final prayerMap in maps) {
+      final prayerId = prayerMap['id'] as String;
       final prayer = await getPrayerById(prayerId);
       if (prayer != null) prayers.add(prayer);
     }

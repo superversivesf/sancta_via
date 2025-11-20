@@ -24,5 +24,6 @@
   "description": "Beloved bedtime prayer from the Christmas carol 'Away in a Manger'",
   "isLiturgical": true,
   "liturgicalPriority": 3,
-  "liturgicalSeason": "christmas"
+  "liturgicalSeason": "christmas",
+  "timeOfDay": "night"
 }

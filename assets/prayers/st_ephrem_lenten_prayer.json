@@ -24,5 +24,6 @@
   ],
   "isLiturgical": true,
   "liturgicalPriority": 9,
-  "liturgicalSeason": "lent"
+  "liturgicalSeason": "lent",
+  "timeOfDay": "anytime"
 }

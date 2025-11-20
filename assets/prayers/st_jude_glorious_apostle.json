@@ -24,5 +24,6 @@
   "description": "Prayer acknowledging St. Jude's special privilege to help in desperate situations",
   "isLiturgical": true,
   "liturgicalPriority": 5,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
 }

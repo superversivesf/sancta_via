@@ -26,5 +26,6 @@
   "description": "A prayer of gratitude for safe rest and the gift of a new day",
   "isLiturgical": true,
   "liturgicalPriority": 5,
-  "liturgicalSeason": null
+  "liturgicalSeason": null,
+  "timeOfDay": "morning"
 }
