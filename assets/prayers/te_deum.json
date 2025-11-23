@@ -1,0 +1,9 @@
+{
+  "id": "te_deum",
+  "title": "Te Deum",
+  "description": "Ancient hymn of praise and thanksgiving, the Ambrosian Hymn",
+  "text": "We praise Thee, O God: we acknowledge Thee to be the Lord.\nThee, the Father everlasting, all the earth doth worship.\nTo Thee all angels; to Thee the Heavens and all the Powers:\nTo Thee the Cherubim and Seraphim continually cry:\nHoly, Holy, Holy, Lord God of Sabaoth.\nHeaven and earth art full of the majesty of Thy glory.\nThee, the glorious choir of the Apostles,\nThee, the admirable company of Prophets,\nThee, the white-robed army of Martyrs, praise.\nThee, the holy Church throughout the world doth acknowledge:\nThe Father of infinite Majesty;\nThy adorable, true, and only Son;\nAlso, the Holy Ghost, the Comforter.\nThou, O Christ, art the King of glory,\nThou art the everlasting Son of the Father.\nWhen Thou didst take upon Thee to deliver man,\nThou didst not disdain the Virgin's womb.\nHaving overcome the sting of death,\nThou didst open the Kingdom of Heaven to all believers.\nThou sittest at the right hand of God, in the glory of the Father.\nWe believe that Thou shalt come to be our Judge.\nWe therefore pray Thee to help Thy servants,\nwhom Thou hast redeemed with Thy Precious Blood.\nMake them to be numbered with Thy saints in glory everlasting.",
+  "categories": ["praise", "liturgical", "thanksgiving"],
+  "tags": ["praise", "liturgical", "thanksgiving", "ambrosian"],
+  "timeOfDay": "evening"
+}
