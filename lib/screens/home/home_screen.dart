@@ -134,8 +134,8 @@ class HomeScreen extends ConsumerWidget {
               // Make cards taller when text is larger to prevent overflow
               childAspectRatio: textScaling.scaleFactor > 1.2 ? 0.85 : 1.0,
               children: [
-                _buildPrayerOfTheDayCard(context, ref, themeColor),
-                TimeOfDayPrayerCard(themeColor: themeColor),
+                _buildPrayerOfTheDayCard(context, ref),
+                const TimeOfDayPrayerCard(),
                 _buildActionCard(
                   context,
                   icon: Icons.favorite,
@@ -187,9 +187,8 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildPrayerOfTheDayCard(BuildContext context, WidgetRef ref, Color? themeColor) {
+  Widget _buildPrayerOfTheDayCard(BuildContext context, WidgetRef ref) {
     final prayerOfTheDayAsync = ref.watch(prayerOfTheDayProvider);
-    final prayerContext = ref.watch(prayerOfTheDayContextProvider);
     final textScaling = ref.watch(textScaleProvider);
 
     return prayerOfTheDayAsync.when(
@@ -218,81 +217,33 @@ class HomeScreen extends ConsumerWidget {
                 ),
               );
             },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: themeColor != null ? Border.all(
-                  color: themeColor.withValues(alpha: 0.3),
-                  width: 2,
-                ) : null,
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(textScaling.scaleFactor > 1.2 ? 12 : 16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.auto_awesome,
-                          size: textScaling.scaleFactor > 1.2 ? 16 : 20,
-                          color: themeColor ?? Theme.of(context).colorScheme.primary,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            'Prayer of the Day',
-                            style: textScaling.scaledLabelLarge(context).copyWith(
-                              color: themeColor?.withValues(alpha: 0.8) ?? 
-                                     Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
+            child: Padding(
+              padding: EdgeInsets.all(textScaling.scaleFactor > 1.2 ? 12 : 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Icon(
+                      Icons.auto_awesome,
+                      size: textScaling.scaleFactor > 1.2 ? 24 : 32,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                    SizedBox(height: textScaling.scaleFactor > 1.2 ? 8 : 12),
-                    Flexible(
-                      child: Text(
-                        prayer.title,
-                        style: textScaling.scaledTitleSmall(context).copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: textScaling.scaleFactor > 1.2 ? 1 : 2,
-                        overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: textScaling.scaleFactor > 1.2 ? 8 : 12),
+                  Flexible(
+                    flex: 2,
+                    child: Text(
+                      'Prayer of the Day',
+                      style: textScaling.scaledTitleMedium(context).copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: textScaling.scaleFactor > 1.2 ? 4 : 8),
-                    Flexible(
-                      child: Text(
-                        prayer.description,
-                        style: textScaling.scaledLabelMedium(context).copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    if (prayerContext['reason']?.isNotEmpty == true && textScaling.scaleFactor <= 1.2) ...[
-                      SizedBox(height: textScaling.scaleFactor > 1.2 ? 4 : 8),
-                      Flexible(
-                        child: Text(
-                          prayerContext['reason']!,
-                          style: textScaling.scaledLabelSmall(context).copyWith(
-                            color: themeColor?.withValues(alpha: 0.7) ?? 
-                                   Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                            fontStyle: FontStyle.italic,
-                          ),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -352,6 +303,7 @@ class HomeScreen extends ConsumerWidget {
                     child: Text(
                       title,
                       style: textScaling.scaledTitleMedium(context).copyWith(
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
