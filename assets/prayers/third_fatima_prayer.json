@@ -1,0 +1,9 @@
+{
+  "id": "third_fatima_prayer",
+  "title": "3rd Fatima Prayer (Pardon Prayer)",
+  "description": "A prayer of faith and reparation taught by Our Lady at Fatima",
+  "text": "My God I believe in, I adore, I hope in, and I love Thee.\nI beg pardon for all those that do not believe in, do not adore,\ndo not hope in, and do not love Thee.",
+  "categories": ["fatima", "reparation", "essential"],
+  "tags": ["fatima", "reparation", "belief", "love"],
+  "timeOfDay": "anytime"
+}

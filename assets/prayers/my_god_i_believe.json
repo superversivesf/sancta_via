@@ -1,0 +1,9 @@
+{
+  "id": "my_god_i_believe",
+  "title": "My God, I Believe in Thee",
+  "description": "Traditional prayer expressing the theological virtues of faith, hope, and charity with contrition",
+  "text": "O my God, I believe in Thee, I hope in Thee, I love Thee above all things with all my soul, with all my heart and with all my strength; I love Thee because Thou art infinitely good and worthy of being loved; and because I love Thee, I repent with all my heart of having offended Thee; have mercy on me, a sinner. Amen.",
+  "categories": ["acts", "faith", "hope", "charity", "contrition"],
+  "tags": ["faith", "hope", "charity", "contrition", "essential"],
+  "timeOfDay": "anytime"
+}
