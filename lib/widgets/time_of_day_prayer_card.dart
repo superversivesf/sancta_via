@@ -86,7 +86,7 @@ class TimeOfDayPrayerCard extends ConsumerWidget {
                     Expanded(
                       child: Text(
                         panelLabel,
-                        style: textScaling.scaledTitleSmall(context).copyWith(
+                        style: textScaling.scaledLabelLarge(context).copyWith(
                           color: themeColor?.withValues(alpha: 0.8) ??
                               Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
@@ -99,7 +99,7 @@ class TimeOfDayPrayerCard extends ConsumerWidget {
                 Flexible(
                   child: Text(
                     prayer.title,
-                    style: textScaling.scaledTitleMedium(context).copyWith(
+                    style: textScaling.scaledTitleSmall(context).copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
@@ -111,7 +111,7 @@ class TimeOfDayPrayerCard extends ConsumerWidget {
                 Flexible(
                   child: Text(
                     prayer.description,
-                    style: textScaling.scaledBodySmall(context).copyWith(
+                    style: textScaling.scaledLabelMedium(context).copyWith(
                       color: Theme.of(context)
                           .colorScheme
                           .onSurface
