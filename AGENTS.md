@@ -7,6 +7,11 @@
 - **Lint**: `flutter analyze`
 - **Build**: `flutter build apk --release` (or `ios`, `web`)
 
+## Testing Notes
+- Repository tests show database errors - this is expected since database isn't initialized in test environment
+- Tests verify error handling works correctly (returns empty lists instead of throwing)
+- All tests pass despite error messages - this confirms graceful degradation
+
 ## Code Style (analysis_options.yaml)
 - **Strings**: Single quotes (`'text'`)
 - **Trailing commas**: Required on all function/constructor calls
