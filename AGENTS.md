@@ -8,9 +8,9 @@
 - **Build**: `flutter build apk --release` (or `ios`, `web`)
 
 ## Testing Notes
-- Repository tests show database errors - this is expected since database isn't initialized in test environment
-- Tests verify error handling works correctly (returns empty lists instead of throwing)
-- All tests pass despite error messages - this confirms graceful degradation
+- Repository tests use mocked database via dependency injection
+- Only 2 intentional error messages appear (from error handling tests that verify graceful degradation)
+- All 69 tests pass cleanly
 
 ## Code Style (analysis_options.yaml)
 - **Strings**: Single quotes (`'text'`)
