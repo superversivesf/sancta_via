@@ -8,87 +8,152 @@ Sancta Via Prayer Companion is a Flutter-based Catholic prayer app featuring 60+
 
 ## Development Commands
 
-### Setup
+### Setup & Dependencies
 ```bash
-flutter pub get                    # Install dependencies
+flutter pub get                         # Install dependencies
+make deps                               # Alias via Makefile
 ```
 
-### Running
+### Running the App
 ```bash
-flutter run                        # Run on connected device/emulator
-flutter run -d chrome              # Run on web
-flutter run -d macos               # Run on macOS
+flutter run                             # Run on connected device/emulator
+flutter run -d chrome                   # Run on web (hot reload supported)
+flutter run -d macos                    # Run on macOS
+flutter run -d windows                  # Run on Windows
 ```
 
-### Building
+### Building for Release
 ```bash
-flutter build apk --release        # Android APK
-flutter build ios --release        # iOS build
-flutter build web --release        # Web build
+flutter build apk --release             # Android APK (release)
+flutter build ios --release             # iOS build (release)
+flutter build web --release             # Web production build
+make build-android                      # Alias via Makefile
+make build-ios                          # Alias via Makefile
+make build-web                          # Alias via Makefile
 ```
 
-### Code Quality
+### Code Quality & Testing
 ```bash
-flutter analyze                    # Run static analysis
-flutter test                       # Run all tests
-flutter test test/path/to/test.dart  # Run single test file
+flutter analyze                         # Run static analysis (lints & type checking)
+flutter test                            # Run all tests
+flutter test test/path/to/test.dart     # Run single test file
+flutter test --name "pattern"           # Run tests matching name pattern
+make analyze                            # Alias via Makefile
+make test                               # Alias via Makefile
 ```
 
-### Icons
+### Formatting & Cleanup
+```bash
+dart format .                           # Auto-format code (required before commits)
+make format                             # Alias via Makefile
+flutter clean                           # Delete build artifacts
+make clean                              # Alias via Makefile
+```
+
+### Other Commands
 ```bash
 flutter pub run flutter_launcher_icons  # Generate app icons
+flutter pub run cider bump patch        # Bump patch version (1.0.0 → 1.0.1)
+flutter pub run cider bump minor        # Bump minor version (1.0.0 → 1.1.0)
+flutter pub run cider bump major        # Bump major version (1.0.0 → 2.0.0)
 ```
 
 ## Architecture
 
-### Layered Architecture
+### Layered Architecture (Bottom to Top)
 
-**Provider Layer (Riverpod)**
-- `lib/providers/prayer_providers.dart` - Central provider definitions for prayers, categories, search, favorites
-- `lib/providers/prayer_app_settings_provider.dart` - Unified settings management (NEW system)
-- `lib/providers/text_scaling_provider.dart` - Text scaling for accessibility
-- Integrates with `sancta_via_liturgical_calendar_riverpod` for liturgical data
-- Uses `sancta_via_shared_ui` providers for theming (themeModeProvider, colorIntensityProvider)
+```
+┌─────────────────────────────────────────────┐
+│ UI Layer (Screens & Widgets)                │ lib/screens/, lib/widgets/
+├─────────────────────────────────────────────┤
+│ Provider Layer (Riverpod State)             │ lib/providers/
+├─────────────────────────────────────────────┤
+│ Service Layer (Business Logic)              │ lib/services/
+├─────────────────────────────────────────────┤
+│ Repository Layer (Data Access)              │ lib/repositories/
+├─────────────────────────────────────────────┤
+│ Database Layer (SQLite)                     │ lib/database/
+├─────────────────────────────────────────────┤
+│ Model Layer (Data Structures)               │ lib/models/
+└─────────────────────────────────────────────┘
+```
 
-**Repository Layer**
-- `lib/repositories/prayer_repository.dart` - SQLite database access with caching
-- Handles database migration from JSON assets to SQLite on first run
-- Singleton pattern for database connection
-- Deprecated SharedPreferences methods (use PrayerAppSettingsProvider instead)
+**Model Layer** (`lib/models/`)
+- `prayer.dart` - Prayer entity with translations, liturgical metadata, timeOfDay field
+- `prayer_category.dart` - Prayer categorization
+- `prayer_category_group.dart` - Top-level category groupings
+- `prayer_app_settings.dart` - User preferences (favorites, recent, font size, etc.)
+- `prayer_time_of_day.dart` - Enum for time-of-day categorization (morning/afternoon/evening/night/anytime)
 
-**Database Layer**
-- `lib/database/prayer_database.dart` - SQLite schema and queries
-- `lib/database/database_migration_service.dart` - One-time migration from JSON to SQLite
-- Tables: `prayers`, `categories`, `category_groups`, junction tables for many-to-many relationships
-- Migration checks occur on first repository call via `_ensureMigrationComplete()`
+**Database Layer** (`lib/database/`)
+- `prayer_database.dart` - SQLite schema and query methods
+  - Tables: `prayers`, `categories`, `category_groups`, `prayer_categories`, `prayer_tags`, `prayer_translations`
+  - Indexes on frequently queried columns (category, tags, time_of_day)
+  - Database version 2 (added time_of_day support)
+- `database_migration_service.dart` - One-time JSON→SQLite migration on first app launch
+  - Checks via `isMigrationNeeded()`, executes via `migrateJsonToDatabase()`
+  - Handles new fields gracefully (defaults applied for prayers without new fields)
 
-**Service Layer**
-- `lib/services/prayer_of_the_day_service.dart` - Liturgical prayer selection logic
-  - Priority: Feast days > Seasonal prayers > Ordinary time rotation
-  - Uses `LiturgicalDayData` from `sancta_via_liturgical_calendar`
+**Repository Layer** (`lib/repositories/`)
+- `prayer_repository.dart` - Singleton data access layer with built-in caching
+  - Automatically triggers migration on first data access
+  - Methods: `getPrayers()`, `getCategoryGroups()`, `getPrayersByCategory()`, `getPrayersForTimeOfDay()`, etc.
+  - Caches results in memory (`_cachedPrayers`, `_cachedCategories`, etc.)
+  - Never query database directly—always use repository
 
-**Model Layer**
-- `lib/models/prayer.dart` - Prayer with translations, liturgical metadata
-- `lib/models/prayer_category.dart` - Prayer categorization
-- `lib/models/prayer_category_group.dart` - Category grouping
-- `lib/models/prayer_app_settings.dart` - User preferences and settings
+**Service Layer** (`lib/services/`)
+- `prayer_of_the_day_service.dart` - Liturgical prayer selection logic
+  - Priority: Feast days/solemnities > Seasonal prayers (Advent/Lent/Easter) > Ordinary time daily rotation
+  - Uses `LiturgicalDayData` from `sancta_via_liturgical_calendar` for date-aware selection
+- `time_of_day_prayer_service.dart` - Random prayer selection by current time of day
+  - Date-seeded selection for consistency within a day
+  - Only selects from exact time-of-day category (no anytime fallback during specific times)
+  - Timestamp-seeded selection for manual refresh
 
-**UI Layer**
-- `lib/screens/` - Screen components organized by feature
-- `lib/widgets/` - Reusable widgets (PrayerCard, EnhancedPrayerText, FontSizeSelector)
-- `lib/config/routes.dart` - GoRouter navigation setup
+**Provider Layer** (`lib/providers/`) - Riverpod 2.6.1 state management
+- `prayer_providers.dart` - Core data providers
+  - `allPrayersProvider` - Fetches all prayers from repository
+  - `categoriesProvider`, `categoryGroupsProvider` - Category data
+  - `prayerSearchProvider` - Search/filter state and results
+  - `selectedCategoryProvider` - UI state for selected category
+- `prayer_app_settings_provider.dart` - Unified settings management (NotifierProvider)
+  - Methods: `toggleFavorite()`, `addRecentPrayer()`, `updateFontSize()`, etc.
+  - Auto-persists to SharedPreferences
+  - Single source of truth for all user preferences
+- `text_scaling_provider.dart` - Accessibility text scaling
+- `time_of_day_prayer_providers.dart` - Time-of-day specific providers
+  - `currentTimeOfDayProvider`, `timeOfDayPrayersProvider`, `dailyTimeOfDayPrayerProvider`
+  - Integrates with `TimeOfDayPrayerService` for selection logic
+- Integrates with `sancta_via_liturgical_calendar_riverpod` for liturgical calendar data
+- Integrates with `sancta_via_shared_ui` providers for theming (themeModeProvider, colorIntensityProvider)
+
+**UI Layer** (`lib/screens/` & `lib/widgets/`)
+- Screens: home, prayer (list/detail), categories, search, settings
+- Reusable widgets: `PrayerCard`, `TimeOfDayPrayerCard`, `FontSizeSelector`, `EnhancedPrayerText`
+- Navigation via GoRouter (`lib/config/routes.dart`)
 
 ### Dependency Structure
 
-This app depends on sibling packages in the Sancta Via ecosystem:
-- `sancta_via_shared_ui` (../sancta_via_shared_ui) - Shared UI components, AppTheme with liturgical colors
-- `sancta_via_liturgical_calendar` (../sancta_via_liturgical_calendar) - Catholic liturgical calendar data
-- `sancta_via_liturgical_calendar_riverpod` (../sancta_via_liturgical_calendar_riverpod) - Riverpod providers for calendar
+**Core Framework**
+- `flutter_riverpod: ^2.6.1` - State management (never use StatefulWidget for business logic)
+- `go_router: ^15.1.2` - Navigation (GoRouter in lib/config/routes.dart)
+- `sqflite: ^2.3.3` - SQLite database access
+- `shared_preferences: ^2.5.3` - User preferences persistence
 
-**IMPORTANT**: When working with these dependencies:
-1. Changes to shared packages require `flutter pub get` in this app to update
-2. Liturgical theming flows from `currentLiturgicalColorProvider` (lib/main.dart:17)
-3. Use `AppTheme.lightTheme()` and `AppTheme.darkTheme()` from shared_ui with liturgical color parameter
+**Sancta Via Ecosystem (path dependencies - monorepo)**
+- `sancta_via_shared_ui` - Shared UI components, AppTheme with liturgical colors
+  - Provides: `AppTheme.lightTheme()`, `AppTheme.darkTheme()`, reusable widgets, liturgical color definitions
+  - Providers: `themeModeProvider`, `colorIntensityProvider`
+- `sancta_via_liturgical_calendar` - Pure Dart library with Catholic liturgical calendar data (12 years)
+  - Provides: `LiturgicalDayData`, liturgical season/color lookup by date
+- `sancta_via_liturgical_calendar_riverpod` - Riverpod providers wrapping liturgical calendar
+  - Provides: `currentLiturgicalColorProvider`, `currentLiturgicalSeasonProvider`, etc.
+
+**IMPORTANT - Shared Package Integration**:
+1. When modifying shared packages, run `flutter pub get` in this app to sync path dependencies
+2. Liturgical theming is automatic: `main.dart` watches `currentLiturgicalColorProvider` and applies theme
+3. Always import from shared packages via `package:` imports, not relative paths
+4. Do not mock liturgical calendar providers—they're essential for app function and color selection
 
 ### Prayer Data Flow
 
@@ -114,79 +179,209 @@ This app depends on sibling packages in the Sancta Via ecosystem:
 
 ## Key Implementation Details
 
-### Liturgical Integration
+### Liturgical Integration & Dynamic Theming
 
-The app's theming and prayer selection dynamically respond to the liturgical calendar:
+The app responds dynamically to the Catholic liturgical calendar:
 
 ```dart
-// main.dart - Dynamic liturgical theming
+// main.dart - Automatic liturgical theming
 final currentLiturgicalColor = ref.watch(currentLiturgicalColorProvider);
-final liturgicalColor = LiturgicalColor.fromString(currentLiturgicalColor);
-theme: AppTheme.lightTheme(liturgicalColor, colorIntensity)
+final liturgicalColor = currentLiturgicalColor != null
+    ? LiturgicalColor.fromString(currentLiturgicalColor)
+    : null;
+theme: AppTheme.lightTheme(liturgicalColor, colorIntensity),
+darkTheme: AppTheme.darkTheme(liturgicalColor, colorIntensity),
 ```
 
-Prayer of the Day selection (lib/services/prayer_of_the_day_service.dart):
-1. Checks for major feast days/solemnities
-2. Falls back to seasonal prayers (Advent, Lent, Easter, etc.)
-3. Uses day-of-year rotation for Ordinary Time
+App colors change based on liturgical season:
+- **Green** (Ordinary Time), **Purple** (Advent/Lent), **Rose** (special Sundays), **White** (Christmas/Easter), **Red** (Pentecost/Martyrs), **Gold** (High Feasts)
+- User can select "vibrant" or "muted" intensity via settings
+- All providers automatically reflect color/season changes
 
-### Settings Management (IMPORTANT)
+**Prayer of the Day Selection** (`lib/services/prayer_of_the_day_service.dart`):
+1. Checks for major feast days/solemnities (highest priority)
+2. Falls back to seasonal prayers (Advent, Lent, Easter, Pentecost, etc.)
+3. Uses day-of-year rotation for Ordinary Time (consistent daily prayer)
+4. Caches result per date to avoid recalculation
 
-**NEW SYSTEM (Use this)**:
-- `prayerAppSettingsProvider` from `lib/providers/prayer_app_settings_provider.dart`
-- Unified NotifierProvider managing favorites, recent prayers, font size, language, reading mode
-- Persists to SharedPreferences automatically
+**Time of Day Prayers** (`lib/services/time_of_day_prayer_service.dart`):
+- Categorizes prayers by time: morning (5AM-9AM), afternoon (11AM-5PM), evening (5PM-9PM), night (9PM-5AM), anytime (9AM-11AM)
+- Date-seeded random selection ensures same prayer shown throughout the day
+- Manually refresh with timestamp seeding for different prayer
+- Each prayer belongs to exactly ONE time category
 
-**DEPRECATED (Do not use)**:
-- `PrayerRepository.getUserPreferences()`, `.toggleFavorite()`, etc. are marked @Deprecated
-- Old `prayerPreferencesProvider` wraps new system for backward compatibility
+### Settings Management
 
-When adding new settings:
-1. Update `PrayerAppSettings` model (lib/models/prayer_app_settings.dart)
-2. Add methods to `PrayerAppSettingsNotifier` (lib/providers/prayer_app_settings_provider.dart)
-3. Never use repository methods for preferences
+**Current System** (use this):
+- `prayerAppSettingsProvider` from `lib/providers/prayer_app_settings_provider.dart` (NotifierProvider)
+- Unified settings: favorites, recent prayers, font size, language, reading mode
+- Auto-persists to SharedPreferences via `PrayerAppSettings.save()`
+- Single source of truth for all user preferences
 
-### Database Migration
+**Deprecated** (do not use):
+- `PrayerRepository.getUserPreferences()`, `.toggleFavorite()`, etc. marked @Deprecated
+- `prayerPreferencesProvider` wrapper maintained for backward compatibility only
 
-Migration runs automatically on first app launch:
-- `DatabaseMigrationService.isMigrationNeeded()` checks if database is empty
-- `DatabaseMigrationService.migrateJsonToDatabase()` loads JSON assets and populates SQLite
-- Flag `_migrationChecked` in PrayerRepository prevents redundant checks
-- For testing: `repository.forceMigration()` to re-run migration
+When adding settings:
+1. Add field to `PrayerAppSettings` model (lib/models/prayer_app_settings.dart)
+2. Add method to `PrayerAppSettingsNotifier` (lib/providers/prayer_app_settings_provider.dart)
+3. Update `save()` and `fromSharedPreferences()` serialization
+4. Never use repository methods for preferences
 
-### Code Standards
+### Database & Migration
 
-From analysis_options.yaml:
-- Use single quotes for strings
-- Require trailing commas
-- Prefer const constructors and final fields
-- No implicit casts or dynamic
-- Allow print statements (for development/debugging)
+**One-Time Automatic Migration**:
+- First app launch: `DatabaseMigrationService.isMigrationNeeded()` checks if database is empty
+- If needed: `migrateJsonToDatabase()` loads JSON assets → SQLite
+- Repository flag `_migrationChecked` prevents redundant checks per session
+- New fields added to prayers default gracefully (e.g., `timeOfDay` defaults to 'anytime')
+
+**For Development**:
+- Call `repository.forceMigration()` to re-run migration after JSON changes
+- Or delete app and reinstall to trigger automatic migration
+- Or restart app with debug settings (if implemented)
+
+**Schema Evolution**:
+- Database version 2 added `time_of_day` column to `prayers` table
+- Migration service handles missing columns via Prayer model defaults
+- Add indexes when adding frequently-queried columns
+
+### Code Standards & Style
+
+From `analysis_options.yaml` and project conventions:
+- **Strings**: Single quotes (`'text'`) not double quotes
+- **Trailing commas**: Required on all function/constructor calls and collections
+- **Immutability**: Prefer `const` constructors and `final` fields/locals
+- **Types**: Explicit types (no `var` or `dynamic`), implicit casts disabled
+- **Imports**: Group by dart → package → relative, with blank lines between
+- **Prints**: Allowed for debugging (prefer `AppLogger` in `lib/utils/logger.dart` for production)
 
 ## Adding New Prayers
 
-1. Create `assets/prayers/{prayer_id}.json` with required fields:
-   - id, title, text, categories, description, tags
-   - Optional: translation (map), attribution, notes, isLiturgical, liturgicalPriority, liturgicalSeason
+**Process**:
+1. Create prayer JSON file: `assets/prayers/{prayer_id}.json`
+2. Include required fields:
+   ```json
+   {
+     "id": "unique_id",
+     "title": "Prayer Title",
+     "text": "Prayer text in English",
+     "categories": ["category1", "category2"],
+     "description": "Brief description for UI",
+     "tags": ["tag1", "tag2"],
+     "timeOfDay": "morning"
+   }
+   ```
+3. Optional fields (with defaults if omitted):
+   - `translation`: Object with language keys mapping to translated text (e.g., `{"latin": "..."}`)
+   - `attribution`: Prayer author or source
+   - `notes`: Additional context
+   - `isLiturgical`: Boolean, whether prayer is liturgical
+   - `liturgicalPriority`: Priority level for prayer selection
+   - `liturgicalSeason`: Seasonal association ("advent", "lent", "easter", etc.)
+   - `timeOfDay`: Time category ("morning", "afternoon", "evening", "night", "anytime"); defaults to "anytime"
 
-2. On next app launch, call `repository.forceMigration()` to update database, OR:
-   - Delete the app and reinstall to trigger automatic migration
-   - Use debug settings to force re-migration (if implemented)
+4. Trigger migration:
+   - **Development**: Call `repository.forceMigration()` or restart app
+   - **Testing**: Delete app and reinstall
+   - **Automated**: Happens automatically on first data access if database is empty
 
-3. Prayer will automatically appear in app based on categories/tags
+5. Prayer appears automatically in app—category pages, search, time-of-day rotation, etc.
 
-## Common Pitfalls
+**Example Prayer JSON** (act_of_contrition.json):
+```json
+{
+  "id": "act_of_contrition",
+  "title": "Act of Contrition",
+  "text": "O my God, I am heartily sorry for having offended You...",
+  "translation": {
+    "latin": "Deus meus, ex toto corde meum me paenitet..."
+  },
+  "categories": ["core_prayers", "sacramental"],
+  "description": "Traditional expression of repentance",
+  "tags": ["repentance", "confession", "contrition"],
+  "timeOfDay": "anytime",
+  "isLiturgical": true
+}
+```
 
-1. **Don't bypass the repository** - Always use PrayerRepository for data access, never query PrayerDatabase directly
-2. **Migration state** - Repository migration check only runs once per session; restart app or call forceMigration() after JSON changes
-3. **Shared package changes** - Run `flutter pub get` after modifying sibling packages
-4. **Provider caching** - Repository caches prayers/categories; call `clearCache()` to force refresh
-5. **Liturgical providers** - Don't mock liturgical calendar providers; they're essential for theming/prayer selection
-6. **Settings** - Use PrayerAppSettingsProvider, not deprecated repository methods
+## Common Pitfalls & Troubleshooting
 
-## Testing
+1. **Repository as Single Source of Truth**
+   - WRONG: Query `PrayerDatabase` directly in widgets or services
+   - RIGHT: Always use `PrayerRepository.instance.getPrayers()` or related methods
+   - Why: Repository handles caching, ensures data consistency, and manages migration state
 
-- Tests located in `test/`
-- Run specific test: `flutter test test/widget_test.dart`
-- Test database: Use in-memory SQLite for fast, isolated tests
-- Mock providers: Use ProviderContainer with overrides for Riverpod providers
+2. **Migration & JSON Changes**
+   - Issue: Added new prayer JSON but it doesn't appear in app
+   - Cause: Migration runs once per session and only checks if database is empty
+   - Solution: Call `repository.forceMigration()` in debug, or restart app, or delete/reinstall app
+
+3. **Shared Package Updates**
+   - After modifying `sancta_via_shared_ui`, `sancta_via_liturgical_calendar`, or related packages:
+   - Run `flutter pub get` to sync path dependencies
+   - Rebuild/reload the app
+   - Without this, changes won't be visible
+
+4. **Provider Caching**
+   - Repository caches prayers/categories in memory (`_cachedPrayers`, etc.)
+   - After direct database changes: Call `repository.clearCache()` to force refresh
+   - Provider watchers automatically update when repository returns new data
+
+5. **Liturgical Calendar Providers**
+   - WRONG: Mocking `currentLiturgicalColorProvider` in tests
+   - RIGHT: Let liturgical providers run naturally (they're fast, essential for app function)
+   - Why: Prayer selection, theming, and seasonal content depend on accurate liturgical data
+   - If needed: Override with specific date via `LiturgicalCalendar.instance.getDayData(DateTime.parse('2024-12-25'))`
+
+6. **Settings Management**
+   - WRONG: Using `repository.toggleFavorite()` or `getUserPreferences()`
+   - RIGHT: Using `ref.read(prayerAppSettingsProvider.notifier).toggleFavorite(prayerId)`
+   - Why: Old methods are deprecated; new NotifierProvider is the single source of truth
+
+7. **Testing Strategy**
+   - Unit tests: No app context needed (test services, models)
+   - Integration tests: Use in-memory SQLite database via dependency injection
+   - Provider tests: Use `ProviderContainer` with carefully chosen overrides
+   - Widget tests: Mock only necessary providers; let liturgical providers run
+
+## Testing Guide
+
+**Running Tests**:
+```bash
+flutter test                              # All tests
+flutter test test/models/prayer_test.dart # Specific file
+flutter test --name "Prayer"              # By name pattern
+flutter test test/ -k "not widget"        # Exclude tests by pattern
+```
+
+**Test Structure**:
+- `test/models/` - Model serialization/deserialization tests
+- `test/repositories/` - Repository with mocked database tests
+- `test/services/` - Business logic (prayer selection, time-of-day logic)
+- `test/providers/` - Riverpod provider tests with ProviderContainer
+- `test/widgets/` - Widget tests with test-specific overrides
+
+**Mocking Database**:
+```dart
+// For repository tests, inject in-memory SQLite via constructor
+final testDb = await openDatabaseSync(':memory:');
+await PrayerDatabase(testDb).createTables();
+final repository = PrayerRepository.withDatabase(testDb);
+```
+
+**Mocking Providers**:
+```dart
+// Use ProviderContainer with overrides
+final container = ProviderContainer(
+  overrides: [
+    selectedCategoryProvider.overrideWithValue('category1'),
+    // Let other providers run naturally
+  ],
+);
+expect(container.read(someProvider), expectedValue);
+```
+
+**Current Test Coverage**: 69 tests, all passing
+- Repository tests use dependency-injected mock database
+- Only 2 intentional error messages (from error handling tests)
