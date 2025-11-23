@@ -18,8 +18,11 @@ final logger = AppLogger;
 class PrayerRepository {
   static const String _preferencesKey = 'prayer_preferences';
 
-  // Singleton pattern for database connection
-  static PrayerDatabase get _database => PrayerDatabase.instance;
+  // Database instance (can be injected for testing)
+  final PrayerDatabase _database;
+  
+  // Flag to skip migration (when database is injected for testing)
+  final bool _skipMigration;
 
   // Cache for loaded prayers to improve performance
   List<Prayer>? _cachedPrayers;
@@ -29,9 +32,14 @@ class PrayerRepository {
   // Flag to track if migration has been attempted
   bool _migrationChecked = false;
 
+  /// Create a repository with optional database injection (for testing)
+  PrayerRepository({PrayerDatabase? database}) 
+      : _database = database ?? PrayerDatabase.instance,
+        _skipMigration = database != null;
+
   /// Ensure database migration is complete before any data access
   Future<void> _ensureMigrationComplete() async {
-    if (_migrationChecked) return;
+    if (_migrationChecked || _skipMigration) return;
     
     try {
       AppLogger.info('Checking database migration status...');
