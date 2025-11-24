@@ -1,0 +1,37 @@
+name: bible_data_riverpod
+description: Riverpod providers for bible_data with reactive state management, caching, and Flutter integration.
+version: 1.0.0
+publish_to: none
+repository: https://github.com/superversivesf/sancta_via_bible_data_riverpod
+homepage: https://sancta-via.net
+
+# Package metadata for pub.dev
+topics:
+  - catholic
+  - bible
+  - riverpod
+  - providers
+  - scripture
+
+# Funding information
+funding:
+  - https://github.com/sponsors/superversive-ca
+
+environment:
+  sdk: ^3.9.2
+  flutter: ">=3.9.2"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.6.1
+  bible_data:
+    path: ../sancta_via_bible_data
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  lints: ^4.0.0
+  mocktail: ^1.0.0
+
+flutter:

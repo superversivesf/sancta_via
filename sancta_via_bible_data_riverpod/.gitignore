@@ -1,0 +1,71 @@
+# Dart & Flutter Package .gitignore
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+
+# Packages
+pubspec.lock  # For library packages; apps should commit this file
+
+# Test Coverage
+coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Exception files
+*.pid
+
+# Web specific
+web/packages/
+
+# macOS
+*.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Linux
+*~
+
+# Logs
+*.log
+
+# Generated files
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+
+# Documentation output
+doc/api/
