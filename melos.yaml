@@ -28,10 +28,6 @@ scripts:
     run: melos exec -- flutter clean
     description: Clean all packages.
 
-  version:bump:
-    run: melos exec --depends-on=cider -- flutter pub run cider bump
-    description: Bump version in packages that have cider.
-    
   version:bump:patch:
     run: melos exec --depends-on=cider -- flutter pub run cider bump patch
     description: Bump patch version in all packages using Cider.

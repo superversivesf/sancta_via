@@ -14,6 +14,7 @@
       ],
       "devDependencies": [
         "build_runner",
+        "cider",
         "flutter_lints",
         "flutter_test",
         "riverpod_generator",
@@ -32,11 +33,6 @@
       ]
     },
     {
-      "name": "sancta_via_liturgical_calendar",
-      "version": "2.0.0",
-      "dependencies": []
-    },
-    {
       "name": "flutter",
       "version": "0.0.0",
       "dependencies": [
@@ -46,6 +42,26 @@
         "meta",
         "sky_engine",
         "vector_math"
+      ]
+    },
+    {
+      "name": "sancta_via_liturgical_calendar",
+      "version": "2.0.0",
+      "dependencies": []
+    },
+    {
+      "name": "cider",
+      "version": "0.2.8",
+      "dependencies": [
+        "args",
+        "change",
+        "markdown",
+        "path",
+        "pub_semver",
+        "pubspec_parse",
+        "rfc_6901",
+        "version_manipulation",
+        "yaml"
       ]
     },
     {
@@ -141,7 +157,7 @@
     },
     {
       "name": "test_api",
-      "version": "0.7.6",
+      "version": "0.7.7",
       "dependencies": [
         "async",
         "boolean_selector",
@@ -173,7 +189,7 @@
     },
     {
       "name": "meta",
-      "version": "1.16.0",
+      "version": "1.17.0",
       "dependencies": []
     },
     {
@@ -211,6 +227,41 @@
         "source_span",
         "string_scanner"
       ]
+    },
+    {
+      "name": "version_manipulation",
+      "version": "0.2.0",
+      "dependencies": [
+        "pub_semver"
+      ]
+    },
+    {
+      "name": "pubspec_parse",
+      "version": "1.5.0",
+      "dependencies": [
+        "checked_yaml",
+        "collection",
+        "json_annotation",
+        "pub_semver",
+        "yaml"
+      ]
+    },
+    {
+      "name": "pub_semver",
+      "version": "2.2.0",
+      "dependencies": [
+        "collection"
+      ]
+    },
+    {
+      "name": "path",
+      "version": "1.9.1",
+      "dependencies": []
+    },
+    {
+      "name": "args",
+      "version": "2.7.0",
+      "dependencies": []
     },
     {
       "name": "web_socket_channel",
@@ -277,35 +328,12 @@
       ]
     },
     {
-      "name": "pubspec_parse",
-      "version": "1.5.0",
-      "dependencies": [
-        "checked_yaml",
-        "collection",
-        "json_annotation",
-        "pub_semver",
-        "yaml"
-      ]
-    },
-    {
-      "name": "pub_semver",
-      "version": "2.2.0",
-      "dependencies": [
-        "collection"
-      ]
-    },
-    {
       "name": "pool",
       "version": "1.5.1",
       "dependencies": [
         "async",
         "stack_trace"
       ]
-    },
-    {
-      "name": "path",
-      "version": "1.9.1",
-      "dependencies": []
     },
     {
       "name": "package_config",
@@ -520,11 +548,6 @@
       ]
     },
     {
-      "name": "args",
-      "version": "2.7.0",
-      "dependencies": []
-    },
-    {
       "name": "analyzer",
       "version": "7.4.5",
       "dependencies": [
@@ -648,17 +671,26 @@
       ]
     },
     {
-      "name": "web_socket",
-      "version": "1.0.1",
-      "dependencies": [
-        "web"
-      ]
-    },
-    {
       "name": "json_annotation",
       "version": "4.9.0",
       "dependencies": [
         "meta"
+      ]
+    },
+    {
+      "name": "checked_yaml",
+      "version": "2.0.4",
+      "dependencies": [
+        "json_annotation",
+        "source_span",
+        "yaml"
+      ]
+    },
+    {
+      "name": "web_socket",
+      "version": "1.0.1",
+      "dependencies": [
+        "web"
       ]
     },
     {
@@ -669,15 +701,6 @@
         "source_span",
         "string_scanner",
         "typed_data"
-      ]
-    },
-    {
-      "name": "checked_yaml",
-      "version": "2.0.4",
-      "dependencies": [
-        "json_annotation",
-        "source_span",
-        "yaml"
       ]
     },
     {
@@ -762,6 +785,17 @@
       ]
     },
     {
+      "name": "leak_tracker",
+      "version": "11.0.2",
+      "dependencies": [
+        "clock",
+        "collection",
+        "meta",
+        "path",
+        "vm_service"
+      ]
+    },
+    {
       "name": "fixnum",
       "version": "1.1.1",
       "dependencies": []
@@ -796,25 +830,53 @@
       ]
     },
     {
+      "name": "vm_service",
+      "version": "15.0.0",
+      "dependencies": []
+    },
+    {
       "name": "sprintf",
       "version": "7.0.0",
       "dependencies": []
     },
     {
-      "name": "leak_tracker",
-      "version": "11.0.2",
+      "name": "rfc_6901",
+      "version": "0.2.1",
+      "dependencies": []
+    },
+    {
+      "name": "change",
+      "version": "0.7.5",
       "dependencies": [
-        "clock",
-        "collection",
-        "meta",
-        "path",
-        "vm_service"
+        "intl",
+        "markdown",
+        "marker",
+        "pub_semver"
       ]
     },
     {
-      "name": "vm_service",
-      "version": "15.0.0",
-      "dependencies": []
+      "name": "marker",
+      "version": "0.6.0",
+      "dependencies": [
+        "markdown"
+      ]
+    },
+    {
+      "name": "intl",
+      "version": "0.20.2",
+      "dependencies": [
+        "clock",
+        "meta",
+        "path"
+      ]
+    },
+    {
+      "name": "markdown",
+      "version": "7.3.0",
+      "dependencies": [
+        "args",
+        "meta"
+      ]
     },
     {
       "name": "webkit_inspection_protocol",
@@ -849,40 +911,8 @@
       "dependencies": []
     },
     {
-      "name": "coverage",
-      "version": "1.14.1",
-      "dependencies": [
-        "args",
-        "cli_config",
-        "glob",
-        "logging",
-        "meta",
-        "package_config",
-        "path",
-        "source_maps",
-        "stack_trace",
-        "vm_service",
-        "yaml"
-      ]
-    },
-    {
-      "name": "source_maps",
-      "version": "0.10.13",
-      "dependencies": [
-        "source_span"
-      ]
-    },
-    {
-      "name": "cli_config",
-      "version": "0.2.0",
-      "dependencies": [
-        "args",
-        "yaml"
-      ]
-    },
-    {
       "name": "test",
-      "version": "1.26.2",
+      "version": "1.26.3",
       "dependencies": [
         "analyzer",
         "async",
@@ -914,7 +944,7 @@
     },
     {
       "name": "test_core",
-      "version": "0.6.11",
+      "version": "0.6.12",
       "dependencies": [
         "analyzer",
         "args",
@@ -940,12 +970,44 @@
       ]
     },
     {
+      "name": "coverage",
+      "version": "1.14.1",
+      "dependencies": [
+        "args",
+        "cli_config",
+        "glob",
+        "logging",
+        "meta",
+        "package_config",
+        "path",
+        "source_maps",
+        "stack_trace",
+        "vm_service",
+        "yaml"
+      ]
+    },
+    {
+      "name": "source_maps",
+      "version": "0.10.13",
+      "dependencies": [
+        "source_span"
+      ]
+    },
+    {
       "name": "source_map_stack_trace",
       "version": "2.1.2",
       "dependencies": [
         "path",
         "source_maps",
         "stack_trace"
+      ]
+    },
+    {
+      "name": "cli_config",
+      "version": "0.2.0",
+      "dependencies": [
+        "args",
+        "yaml"
       ]
     }
   ],
