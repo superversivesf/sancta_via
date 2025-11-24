@@ -1,0 +1,22 @@
+# Melos
+.melos_tool/
+pubspec.lock
+
+# Build artifacts
+build/
+.dart_tool/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Node
+node_modules/
+package-lock.json
+
+# System
+.DS_Store
+
+# Local overrides
+local.properties
