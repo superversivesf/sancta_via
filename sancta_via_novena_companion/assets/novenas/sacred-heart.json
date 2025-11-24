@@ -1,0 +1,107 @@
+{
+  "id": "sacred-heart",
+  "title": "Novena to the Sacred Heart of Jesus",
+  "description": "A nine-day devotion to the Sacred Heart of Jesus, focusing on His infinite love and mercy for humanity. This novena emphasizes reparation for sins, trust in divine providence, and consecration to the loving Heart of our Savior.",
+  "saint": "Sacred Heart of Jesus",
+  "feast_day": "Varies (Friday after Corpus Christi)",
+  "intention_category": "Divine Love & Mercy",
+  "difficulty": "Intermediate",
+  "duration_minutes": 20,
+  "intention": "For divine love and mercy, reparation for sins against the Sacred Heart, conversion of sinners, and peace in families",
+  "instructions": "Pray this novena for 9 consecutive days, ideally beginning on a Friday. The Sacred Heart devotion is especially connected to First Fridays and the promises Jesus made to St. Margaret Mary Alacoque. This novena involves both personal prayer and reparation for the sins of the world. Include your personal intentions while also offering prayers of reparation.",
+  "background_info": "Devotion to the Sacred Heart of Jesus was revealed to St. Margaret Mary Alacoque in the 17th century. Jesus showed her His Heart burning with love for humanity but also wounded by sin and ingratitude. He made twelve promises to those who honor His Sacred Heart, including the promise that His Heart will be their refuge in life and especially at the hour of death. The Sacred Heart represents God's infinite love, mercy, and desire for a personal relationship with each soul.",
+  "days": [
+    {
+      "day": 1,
+      "title": "Day 1: The Love of the Sacred Heart",
+      "opening_prayer": "In the name of the Father, and of the Son, and of the Holy Spirit. Amen. \n\nO Sacred Heart of Jesus, fountain of eternal life, Your Heart is a glowing furnace of Love. You are my refuge and my sanctuary. O my adorable and loving Savior, consume my heart with the burning fire with which Yours is aflame. Pour down on my soul those graces which flow from Your love. Let my heart be so united with Yours that our wills may be one, and mine may be conformed to Yours in all things. Amen.",
+      "daily_prayer": "Most Sacred Heart of Jesus, I believe in Your infinite love for me. From all eternity You have loved me with an everlasting love. Your Heart beats with tender compassion for every soul, yet many people remain indifferent to Your love or even reject it entirely. I come before You today to adore Your Sacred Heart and to make reparation for all the sins committed against Your love. Help me to understand the depth of Your love for me personally. Open my heart to receive this love more fully and to respond with my own love in return. May I never take Your love for granted but always treasure it as the greatest gift of my life. Sacred Heart of Jesus, inflame my heart with love for You. Amen.",
+      "closing_prayer": "Sacred Heart of Jesus, I trust in You.",
+      "reflection": "The Sacred Heart represents God's passionate love for each of us. This love is not distant or abstract, but personal and intimate. Jesus desires to have a relationship with each soul, and His Heart burns with longing for our love in return. Today, meditate on the truth that you are personally loved by God.",
+      "intention_prayer": "Sacred Heart of Jesus, I place my intentions in Your loving Heart: [pause for personal intentions]. May all I ask for be according to Your will and for Your greater glory.",
+      "scripture": "\"As the Father has loved me, so have I loved you. Now remain in my love.\" - John 15:9"
+    },
+    {
+      "day": 2,
+      "title": "Day 2: Reparation for Sins",
+      "opening_prayer": "In the name of the Father, and of the Son, and of the Holy Spirit. Amen. \n\nO Sacred Heart of Jesus, fountain of eternal life, Your Heart is a glowing furnace of Love. You are my refuge and my sanctuary. O my adorable and loving Savior, consume my heart with the burning fire with which Yours is aflame. Pour down on my soul those graces which flow from Your love. Let my heart be so united with Yours that our wills may be one, and mine may be conformed to Yours in all things. Amen.",
+      "daily_prayer": "Most Sacred Heart of Jesus, Your Heart is pierced not only by the lance of the soldier but by the sins of humanity. You showed St. Margaret Mary how Your Heart suffers from the coldness, ingratitude, and outrages You receive from those You love so much. I come before You to make reparation for my own sins and for the sins of the whole world. I am sorry for every time I have wounded Your Heart through my thoughts, words, and actions. I offer You acts of love, praise, and adoration to console Your Sacred Heart. Accept my prayers, sacrifices, and good works as reparation for all sins committed against You. Help me to live in such a way that my life brings You joy rather than sorrow. Sacred Heart of Jesus, may I never wound You again by sin. Amen.",
+      "closing_prayer": "Sacred Heart of Jesus, I trust in You.",
+      "reflection": "Reparation means making amends for wrongs committed. While we cannot undo our sins, we can offer acts of love and devotion to console the Heart of Jesus. Our prayers and sacrifices, united with His infinite merits, can help repair the damage done by sin.",
+      "intention_prayer": "Sacred Heart of Jesus, accept my acts of reparation for all sins. Help me to console Your Heart through my love and to encourage others to turn away from sin and toward Your mercy.",
+      "scripture": "\"He was pierced for our transgressions, he was crushed for our iniquities; the punishment that brought us peace was on him, and by his wounds we are healed.\" - Isaiah 53:5"
+    },
+    {
+      "day": 3,
+      "title": "Day 3: Trust and Abandonment",
+      "opening_prayer": "In the name of the Father, and of the Son, and of the Holy Spirit. Amen. \n\nO Sacred Heart of Jesus, fountain of eternal life, Your Heart is a glowing furnace of Love. You are my refuge and my sanctuary. O my adorable and loving Savior, consume my heart with the burning fire with which Yours is aflame. Pour down on my soul those graces which flow from Your love. Let my heart be so united with Yours that our wills may be one, and mine may be conformed to Yours in all things. Amen.",
+      "daily_prayer": "Most Sacred Heart of Jesus, You have promised to be our refuge, especially in times of trouble. Your Heart is a sanctuary where we can find peace, comfort, and strength. I come to You today with complete trust, abandoning myself entirely to Your divine providence. You know what is best for me better than I know myself. I place all my worries, fears, and anxieties into Your Sacred Heart. Help me to trust You completely, even when I cannot understand Your ways. When faced with difficulties, may I turn to You first and find my peace in Your Heart. I abandon my will to Yours, knowing that You desire only what is best for my soul. Sacred Heart of Jesus, I trust in Your infinite wisdom and love. Amen.",
+      "closing_prayer": "Sacred Heart of Jesus, I trust in You.",
+      "reflection": "True devotion to the Sacred Heart involves complete trust and abandonment to God's will. This doesn't mean we become passive, but rather that we align our desires with God's desires and trust His providence even in difficult circumstances.",
+      "intention_prayer": "Sacred Heart of Jesus, I abandon all my concerns to You. Help me to trust You completely and to find peace in surrendering my will to Yours.",
+      "scripture": "\"Trust in the Lord with all your heart and lean not on your own understanding.\" - Proverbs 3:5"
+    },
+    {
+      "day": 4,
+      "title": "Day 4: The Eucharistic Heart",
+      "opening_prayer": "In the name of the Father, and of the Son, and of the Holy Spirit. Amen. \n\nO Sacred Heart of Jesus, fountain of eternal life, Your Heart is a glowing furnace of Love. You are my refuge and my sanctuary. O my adorable and loving Savior, consume my heart with the burning fire with which Yours is aflame. Pour down on my soul those graces which flow from Your love. Let my heart be so united with Yours that our wills may be one, and mine may be conformed to Yours in all things. Amen.",
+      "daily_prayer": "Most Sacred Heart of Jesus, in the Eucharist You give us the greatest gift possible - Yourself. Your Heart, which beat with love for us during Your earthly life, continues to beat with that same love in the Blessed Sacrament. You remain with us always, hidden under the appearances of bread and wine. Increase my faith in Your Real Presence in the Eucharist. Help me to approach You with reverence and love when I receive Holy Communion. May I never receive You unworthily, but always prepare my heart to be a fitting dwelling place for You. Give me a deep appreciation for the Mass and a burning desire to spend time with You in Eucharistic adoration. May Your Eucharistic Heart transform my heart to be more like Yours. Sacred Heart of Jesus, inflame my love for You in the Eucharist. Amen.",
+      "closing_prayer": "Sacred Heart of Jesus, I trust in You.",
+      "reflection": "The Eucharist is the great gift of the Sacred Heart. In every Mass, Jesus gives us His Body, Blood, Soul, and Divinity - His very Heart. Our love for the Sacred Heart should deepen our appreciation for this incredible gift and draw us to frequent reception of the Eucharist.",
+      "intention_prayer": "Sacred Heart of Jesus, deepen my love for You in the Eucharist. May every Mass and every Holy Communion draw me closer to Your Heart.",
+      "scripture": "\"Whoever eats my flesh and drinks my blood remains in me, and I in them.\" - John 6:56"
+    },
+    {
+      "day": 5,
+      "title": "Day 5: Conversion of Sinners",
+      "opening_prayer": "In the name of the Father, and of the Son, and of the Holy Spirit. Amen. \n\nO Sacred Heart of Jesus, fountain of eternal life, Your Heart is a glowing furnace of Love. You are my refuge and my sanctuary. O my adorable and loving Savior, consume my heart with the burning fire with which Yours is aflame. Pour down on my soul those graces which flow from Your love. Let my heart be so united with Yours that our wills may be one, and mine may be conformed to Yours in all things. Amen.",
+      "daily_prayer": "Most Sacred Heart of Jesus, Your Heart grieves over every soul that is lost to sin. You desire the salvation of all people and You call each sinner to conversion with infinite patience and mercy. I pray today for the conversion of sinners, especially those closest to my heart. I think of family members, friends, and acquaintances who have wandered from You or who have never known You. Pour out Your grace upon them and touch their hearts with Your love. Help me to be an instrument of Your grace in their lives through my prayers, example, and words. May I never judge or condemn, but always show Your mercy and compassion. I offer my prayers and sacrifices for their conversion, trusting in the power of Your Sacred Heart to transform even the hardest hearts. Sacred Heart of Jesus, convert all sinners to Your love. Amen.",
+      "closing_prayer": "Sacred Heart of Jesus, I trust in You.",
+      "reflection": "The Sacred Heart burns with desire for the salvation of souls. Our prayers and sacrifices, united with the infinite merits of Jesus, can be powerful instruments in bringing about conversions. We are called to be partners with Christ in His work of salvation.",
+      "intention_prayer": "Sacred Heart of Jesus, I pray for the conversion of [mention specific people]. Touch their hearts with Your grace and help me to be a faithful witness to Your love.",
+      "scripture": "\"The Lord is not slow in keeping his promise, as some understand slowness. Instead he is patient with you, not wanting anyone to perish, but everyone to come to repentance.\" - 2 Peter 3:9"
+    },
+    {
+      "day": 6,
+      "title": "Day 6: Peace in Families",
+      "opening_prayer": "In the name of the Father, and of the Son, and of the Holy Spirit. Amen. \n\nO Sacred Heart of Jesus, fountain of eternal life, Your Heart is a glowing furnace of Love. You are my refuge and my sanctuary. O my adorable and loving Savior, consume my heart with the burning fire with which Yours is aflame. Pour down on my soul those graces which flow from Your love. Let my heart be so united with Yours that our wills may be one, and mine may be conformed to Yours in all things. Amen.",
+      "daily_prayer": "Most Sacred Heart of Jesus, You promised to bless the homes where Your image is honored and Your Heart is loved. I pray today for peace in all families, beginning with my own. Where there is discord, bring harmony. Where there is misunderstanding, bring clarity. Where there is anger, bring forgiveness. Where there is distance, bring closeness. Help families to see You as the heart of their home and to turn to You in times of joy and sorrow. Protect children from harm and guide parents in wisdom. Strengthen marriages and heal broken relationships. May Your Sacred Heart reign in every home, bringing the peace that only You can give. I consecrate my family to Your Sacred Heart and ask for Your special protection and blessing. Sacred Heart of Jesus, bring peace to all families. Amen.",
+      "closing_prayer": "Sacred Heart of Jesus, I trust in You.",
+      "reflection": "Jesus promised special blessings for families that honor His Sacred Heart. When Christ is truly the center of family life, His love can heal wounds, bridge differences, and create lasting peace. Families that pray together and center themselves on the Sacred Heart find strength and unity.",
+      "intention_prayer": "Sacred Heart of Jesus, I consecrate my family to You. Bless our home with Your peace and love, and help us to be a reflection of Your Heart to each other.",
+      "scripture": "\"As for me and my household, we will serve the Lord.\" - Joshua 24:15"
+    },
+    {
+      "day": 7,
+      "title": "Day 7: Mercy and Forgiveness",
+      "opening_prayer": "In the name of the Father, and of the Son, and of the Holy Spirit. Amen. \n\nO Sacred Heart of Jesus, fountain of eternal life, Your Heart is a glowing furnace of Love. You are my refuge and my sanctuary. O my adorable and loving Savior, consume my heart with the burning fire with which Yours is aflame. Pour down on my soul those graces which flow from Your love. Let my heart be so united with Yours that our wills may be one, and mine may be conformed to Yours in all things. Amen.",
+      "daily_prayer": "Most Sacred Heart of Jesus, Your Heart is an ocean of mercy that can wash away any sin, no matter how great. You do not remember our past faults when we come to You with sincere repentance. Your mercy is new every morning and Your forgiveness knows no limits. I come to You asking for mercy for my own sins and failures. Help me to trust completely in Your forgiveness and not to be burdened by guilt when You have already pardoned me. Teach me to extend this same mercy to others who have hurt or offended me. May I forgive as You forgive - completely and without keeping a record of wrongs. Fill my heart with Your mercy so that I may be merciful to others. Sacred Heart of Jesus, have mercy on us and on the whole world. Amen.",
+      "closing_prayer": "Sacred Heart of Jesus, I trust in You.",
+      "reflection": "The mercy of the Sacred Heart is infinite and available to all who approach with sincere repentance. This mercy not only forgives our sins but also heals our hearts and empowers us to forgive others. True devotion to the Sacred Heart makes us instruments of mercy.",
+      "intention_prayer": "Sacred Heart of Jesus, thank You for Your infinite mercy. Help me to experience Your forgiveness fully and to extend that same mercy to all who have hurt me.",
+      "scripture": "\"Come to me, all you who are weary and burdened, and I will give you rest.\" - Matthew 11:28"
+    },
+    {
+      "day": 8,
+      "title": "Day 8: Devotion and Consecration",
+      "opening_prayer": "In the name of the Father, and of the Son, and of the Holy Spirit. Amen. \n\nO Sacred Heart of Jesus, fountain of eternal life, Your Heart is a glowing furnace of Love. You are my refuge and my sanctuary. O my adorable and loving Savior, consume my heart with the burning fire with which Yours is aflame. Pour down on my soul those graces which flow from Your love. Let my heart be so united with Yours that our wills may be one, and mine may be conformed to Yours in all things. Amen.",
+      "daily_prayer": "Most Sacred Heart of Jesus, I want to give myself completely to You. I consecrate my entire life to Your Sacred Heart - my thoughts, words, actions, joys, and sorrows. Take everything I am and everything I have and use it for Your glory. Help me to live each day in conscious awareness of this consecration. May my heart beat in rhythm with Yours, loving what You love and rejecting what offends You. I promise to honor Your Sacred Heart through frequent prayer, reception of the sacraments, and acts of love and reparation. Make my heart a reflection of Yours - gentle, humble, compassionate, and pure. I want to belong entirely to You, Sacred Heart of Jesus, now and for all eternity. Accept my consecration and make me truly Yours. Sacred Heart of Jesus, I give You my heart. Amen.",
+      "closing_prayer": "Sacred Heart of Jesus, I trust in You.",
+      "reflection": "Consecration to the Sacred Heart means giving our entire lives to Jesus, holding nothing back. This is not a one-time act but a daily recommitment to live for Christ alone. When we truly belong to the Sacred Heart, our lives are transformed from within.",
+      "intention_prayer": "Sacred Heart of Jesus, I renew my consecration to You. Take my heart and make it like Yours. May my whole life be an offering of love to You.",
+      "scripture": "\"I have been crucified with Christ and I no longer live, but Christ lives in me.\" - Galatians 2:20"
+    },
+    {
+      "day": 9,
+      "title": "Day 9: The Promises of the Sacred Heart",
+      "opening_prayer": "In the name of the Father, and of the Son, and of the Holy Spirit. Amen. \n\nO Sacred Heart of Jesus, fountain of eternal life, Your Heart is a glowing furnace of Love. You are my refuge and my sanctuary. O my adorable and loving Savior, consume my heart with the burning fire with which Yours is aflame. Pour down on my soul those graces which flow from Your love. Let my heart be so united with Yours that our wills may be one, and mine may be conformed to Yours in all things. Amen.",
+      "daily_prayer": "Most Sacred Heart of Jesus, You have made wonderful promises to those who honor and love Your Heart. You have promised to give peace to families, to bless every undertaking, to be our refuge in life and especially in death, to bestow abundant graces on those who work for the salvation of souls, and to grant the grace of final repentance to those who communicate on nine consecutive First Fridays. I place my complete trust in these promises, knowing that Your words are truth itself. Help me to fulfill my part through faithful devotion, frequent reception of the sacraments, and a life lived in imitation of Your love. May Your Sacred Heart be my strength in temptation, my comfort in sorrow, my refuge in danger, and my guide to eternal life. I thank You for Your infinite goodness and for the privilege of loving and honoring Your Sacred Heart. May this devotion bear fruit in my life and in the lives of all who practice it. Sacred Heart of Jesus, Your promises are my hope. Amen.",
+      "closing_prayer": "Sacred Heart of Jesus, I trust in You.",
+      "reflection": "The promises Jesus made regarding devotion to His Sacred Heart are not magical formulas but expressions of His desire to bless those who truly love Him. These promises give us hope and confidence, knowing that a Heart that loves us so much will never fail to care for us.",
+      "intention_prayer": "Sacred Heart of Jesus, I trust in Your promises and place my hope in Your love. May my devotion to Your Heart continue to grow throughout my life and bring me safely to eternal life with You.",
+      "scripture": "\"For I know the plans I have for you,' declares the Lord, 'plans to prosper you and not to harm you, to give you hope and a future.'\" - Jeremiah 29:11"
+    }
+  ],
+  "source": "Traditional Catholic Novena to the Sacred Heart of Jesus",
+  "notes": "This novena can be prayed at any time but is especially meaningful when begun on a Friday, in preparation for the Feast of the Sacred Heart, or as part of First Friday devotions. The Sacred Heart devotion includes the practice of receiving Communion on nine consecutive First Fridays, which Jesus promised would ensure the grace of final repentance. Those devoted to the Sacred Heart often also practice the daily offering of the morning offering prayer."
+}

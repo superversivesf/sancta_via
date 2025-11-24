@@ -1,0 +1,14 @@
+# Android Keystore Configuration Template
+# Copy this file to key.properties and fill in your keystore details
+# DO NOT commit key.properties to version control!
+
+storePassword=your_store_password_here
+keyPassword=your_key_password_here
+keyAlias=your_key_alias_here
+storeFile=../keystores/sancta_via_novena.jks
+
+# Instructions:
+# 1. Copy this file to key.properties (remove .template)
+# 2. Create a keystore using: keytool -genkey -v -keystore sancta_via_novena.jks -keyalg RSA -keysize 2048 -validity 10000 -alias sancta_via_novena
+# 3. Fill in the actual values above
+# 4. Add key.properties to .gitignore
