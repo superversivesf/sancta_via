@@ -1,0 +1,58 @@
+name: sancta_via_shared_ui
+description: Shared UI components for Sancta Via ecosystem with liturgical theming and responsive design
+version: 1.0.0
+repository: https://github.com/superversivesf/sancta_via_shared_ui
+homepage: https://sancta-via.net
+
+# Package metadata for pub.dev
+topics:
+  - catholic
+  - flutter
+  - ui
+  - theme
+  - liturgical
+  - sancta-via
+
+# Funding information
+funding:
+  - https://github.com/sponsors/superversive-ca
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.6.1
+  shared_preferences: ^2.5.3
+  url_launcher: ^6.2.6
+  sancta_via_liturgical_calendar:
+    path: ../sancta_via_liturgical_calendar
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  assets:
+    - assets/fonts/
+  fonts:
+    - family: Crimson
+      fonts:
+        - asset: assets/fonts/CrimsonText-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/CrimsonText-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/CrimsonText-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/CrimsonText-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/CrimsonText-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/CrimsonText-SemiBoldItalic.ttf
+          weight: 600
+          style: italic
