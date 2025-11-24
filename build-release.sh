@@ -11,7 +11,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-BASE_DIR="/Users/jason/Repos/SanctaVia"
+BASE_DIR="$HOME/Repos/sancta_via"
 RELEASES_DIR="$BASE_DIR/releases"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 RELEASE_DIR="$RELEASES_DIR/$TIMESTAMP"
