@@ -1,0 +1,23 @@
+{
+  "id": "eternal_rest",
+  "title": "Eternal Rest (Prayer for the Dead)",
+  "text": "Eternal rest grant unto them, O Lord,\nand let perpetual light shine upon them.\nMay the souls of the faithful departed,\nthrough the mercy of God,\nrest in peace.\nAmen.",
+  "translation": {
+    "latin": "Requiem aeternam dona eis, Domine,\net lux perpetua luceat eis.\nAnimae fidelium defunctorum,\nper misericordiam Dei,\nrequiescant in pace.\nAmen."
+  },
+  "attribution": "Traditional Catholic Prayer",
+  "notes": "This prayer is offered for the souls of the deceased, asking God to grant them eternal rest and the light of His presence. It is commonly prayed at funerals, during the Month of the Holy Souls (November), and whenever we remember the dead.",
+  "categories": [
+    "essential"
+  ],
+  "description": "This prayer is offered for the souls of the deceased, asking God to grant them eternal rest and the light of His presence",
+  "tags": [
+    "essential",
+    "deceased",
+    "mercy"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 4,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

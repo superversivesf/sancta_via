@@ -1,0 +1,31 @@
+{
+  "id": "prayer_for_pope_formal",
+  "title": "Formal Prayer for the Pope",
+  "text": "O God, shepherd and ruler of all the faithful,\nlook favorably on your servant N.,\nwhom you have chosen as shepherd\nto preside over your Church.\nGrant him, we beseech you,\nthat by his word and example,\nhe may edify those over whom he presides,\nso that together with the flock entrusted to him,\nhe may attain everlasting life.\nThrough Christ our Lord.\nAmen.",
+  "translation": {
+    "latin": "Deus, omnium fidelium pastor et rector,\nfamulum tuum N., quem pastorem\nEcclesiae tuae praeesse voluisti,\npropitius respice:\nda ei, quaesumus, verbo et exemplo,\nquibus praeest, proficere,\nut ad vitam, una cum grege sibi credito,\nperveniat sempiternam.\nPer Christum Dominum nostrum.\nAmen."
+  },
+  "attribution": "Roman Missal",
+  "notes": "This formal prayer for the Pope comes from the Roman Missal and is often used in liturgical contexts. It asks God to guide and bless the Holy Father in his role as shepherd of the universal Church. The 'N.' represents the Pope's name (currently Francis).",
+  "tags": [
+    "pope",
+    "church",
+    "liturgical",
+    "shepherd"
+  ],
+  "difficulty": "moderate",
+  "audience": [
+    "adults",
+    "teens"
+  ],
+  "liturgical_season": null,
+  "feast_day": null,
+  "categories": [
+    "saints"
+  ],
+  "description": "Formal liturgical prayer for the Pope from the Roman Missal",
+  "isLiturgical": true,
+  "liturgicalPriority": 4,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

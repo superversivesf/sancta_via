@@ -1,0 +1,30 @@
+{
+  "id": "bedtime_examination",
+  "title": "Bedtime Examination of Conscience",
+  "text": "O my God, I adore you\nand I love you with all my heart.\nI thank you for having created me,\nmade me a Christian,\nand preserved me this day.\nForgive me the evil I have done this day\nand if I have done any good,\naccept it.\nWatch over me as I take my rest\nand deliver me from all danger.\nMay your grace be always with me\nand with all those dear to me.\nAmen.",
+  "translation": null,
+  "attribution": "Traditional Catholic Evening Prayer",
+  "notes": "This bedtime prayer combines a brief examination of conscience with thanksgiving and petition for protection. It's perfect for those who want to end their day with reflection on their relationship with God, seeking forgiveness for failures and expressing gratitude for blessings.",
+  "tags": [
+    "bedtime",
+    "examination",
+    "forgiveness",
+    "thanksgiving"
+  ],
+  "difficulty": "simple",
+  "audience": [
+    "adults",
+    "teens",
+    "children"
+  ],
+  "liturgical_season": null,
+  "feast_day": null,
+  "categories": [
+    "evening"
+  ],
+  "description": "Bedtime prayer combining examination of conscience with thanksgiving",
+  "isLiturgical": true,
+  "liturgicalPriority": 4,
+  "liturgicalSeason": null,
+  "timeOfDay": "night"
+}

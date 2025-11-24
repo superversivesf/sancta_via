@@ -1,0 +1,32 @@
+{
+  "id": "memorial_acclamation_3",
+  "title": "Memorial Acclamation C",
+  "text": "Save us, Savior of the world,\nfor by your Cross and Resurrection\nyou have set us free.",
+  "translation": {
+    "latin": "Salvator mundi, salva nos,\nqui per crucem et resurrectionem tuam\nliberasti nos."
+  },
+  "attribution": "Roman Missal (1970, revised 2011)",
+  "notes": "This third Memorial Acclamation directly addresses Christ as 'Savior of the world' and proclaims that through His Cross and Resurrection, He has set us free. It emphasizes the soteriological (salvation) aspect of the Paschal Mystery and our liberation through Christ's sacrifice.",
+  "tags": [
+    "liturgical",
+    "mass",
+    "eucharist",
+    "memorial"
+  ],
+  "difficulty": "simple",
+  "audience": [
+    "adults",
+    "teens",
+    "children"
+  ],
+  "liturgical_season": null,
+  "feast_day": null,
+  "categories": [
+    "mass"
+  ],
+  "description": "Save us, Savior of the world",
+  "isLiturgical": true,
+  "liturgicalPriority": 8,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

@@ -1,0 +1,30 @@
+{
+  "id": "morning_offering_simple",
+  "title": "Simple Morning Offering",
+  "text": "My God, I offer you my day:\neverything I think and do and say,\nuniting it with what was done\non earth by Jesus Christ, your Son.\nAmen.",
+  "translation": null,
+  "attribution": "Traditional Catholic Children's Prayer",
+  "notes": "A simple, child-friendly morning offering that is easy to memorize and perfect for busy mornings. This prayer teaches the fundamental concept of offering our daily actions to God in union with Christ.",
+  "tags": [
+    "morning",
+    "offering",
+    "simple",
+    "children"
+  ],
+  "difficulty": "simple",
+  "audience": [
+    "children",
+    "adults",
+    "teens"
+  ],
+  "liturgical_season": null,
+  "feast_day": null,
+  "categories": [
+    "morning"
+  ],
+  "description": "A simple, child-friendly morning offering",
+  "isLiturgical": true,
+  "liturgicalPriority": 4,
+  "liturgicalSeason": null,
+  "timeOfDay": "morning"
+}

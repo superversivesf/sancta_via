@@ -1,0 +1,32 @@
+{
+  "id": "prayer_for_pope_blessing",
+  "title": "Biblical Blessing for the Pope",
+  "text": "Let us pray for Francis, our Pope.\nMay the Lord preserve him, give him life,\nmake him blessed upon the earth,\nand not hand him over to the will of his enemies.\n\nMay the Lord bless him and keep him.\nMay the Lord make his face shine upon him\nand be gracious to him.\nMay the Lord turn his face toward him\nand give him peace.\nAmen.",
+  "translation": {
+    "latin": "Oremus pro Francisco Papa nostro.\nDominus conservet eum, et vivificet eum,\net beatum faciat eum in terra,\net non tradat eum in animam inimicorum eius.\n\nBenedicat illum Dominus, et custodiat eum.\nOstendat Dominus faciem suam illi,\net misereatur eius.\nConvertat Dominus vultum suum ad illum,\net det ei pacem.\nAmen."
+  },
+  "attribution": "Traditional Catholic Prayer (based on Psalm 41:2 and Numbers 6:24-26)",
+  "notes": "This prayer combines biblical blessings for the Pope. The first part is based on Psalm 41:2, and the second part is the ancient Aaronic blessing from Numbers 6:24-26. It asks for God's protection, blessing, and peace upon the Holy Father in his ministry.",
+  "tags": [
+    "pope",
+    "blessing",
+    "biblical",
+    "protection"
+  ],
+  "difficulty": "simple",
+  "audience": [
+    "adults",
+    "teens",
+    "children"
+  ],
+  "liturgical_season": null,
+  "feast_day": null,
+  "categories": [
+    "saints"
+  ],
+  "description": "Prayer combining biblical blessings for the Pope's protection and peace",
+  "isLiturgical": true,
+  "liturgicalPriority": 4,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

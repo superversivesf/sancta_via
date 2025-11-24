@@ -1,0 +1,31 @@
+{
+  "id": "anima_christi",
+  "title": "Anima Christi (Soul of Christ)",
+  "text": "Soul of Christ, sanctify me.\nBody of Christ, save me.\nBlood of Christ, inebriate me.\nWater from the side of Christ, wash me.\nPassion of Christ, strengthen me.\nO good Jesus, hear me.\nWithin your wounds hide me.\nSuffer me not to be separated from you.\nFrom the malicious enemy defend me.\nIn the hour of my death call me,\nand bid me come unto you,\nthat I may praise you with your saints\nand angels forever and ever.\nAmen.",
+  "translation": {
+    "latin": "Anima Christi, sanctifica me.\nCorpus Christi, salva me.\nSanguis Christi, inebria me.\nAqua lateris Christi, lava me.\nPassio Christi, conforta me.\nO bone Iesu, exaudi me.\nIntra tua vulnera absconde me.\nNe permittas me separari a te.\nAb hoste maligno defende me.\nIn hora mortis meae voca me,\net iube me venire ad te,\nut cum Sanctis tuis laudem te\nin saecula saeculorum.\nAmen."
+  },
+  "attribution": "14th century, popularized by St. Ignatius of Loyola",
+  "notes": "The Anima Christi (Soul of Christ) is one of the most beloved prayers of thanksgiving after Holy Communion. It asks for intimate union with Jesus through His Body, Blood, Soul, and Divinity. St. Ignatius of Loyola was particularly devoted to this prayer.",
+  "tags": [
+    "communion",
+    "eucharist",
+    "thanksgiving",
+    "union"
+  ],
+  "difficulty": "moderate",
+  "audience": [
+    "adults",
+    "teens"
+  ],
+  "liturgical_season": null,
+  "feast_day": null,
+  "categories": [
+    "mass"
+  ],
+  "description": "The beloved prayer asking for intimate union with Jesus after Communion",
+  "isLiturgical": true,
+  "liturgicalPriority": 7,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

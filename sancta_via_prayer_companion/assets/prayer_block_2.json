@@ -1,0 +1,255 @@
+[
+  {
+    "id": "third_fatima_prayer",
+    "title": "3rd Fatima Prayer (Pardon Prayer)",
+    "text": "MY GOD I believe in, I adore, I hope in, and I love Thee.\nI beg pardon for all those that do not believe in, do not adore,\ndo not hope in, and do not love Thee.",
+    "translation": {
+      "latin": "DEUS meus, in te credo, te adoro, in te confido, te amo ;\nveniam peto pro his qui in te non credunt, te non adorant,\nin te non confidunt, te non amant."
+    },
+    "attribution": "Our Lady of Fatima",
+    "notes": "Often repeated thrice before commencing prayer. This prayer was taught by Our Lady to the children at Fatima.",
+    "categories": [
+      "fatima",
+      "reparation",
+      "essential"
+    ],
+    "description": "A prayer of faith and reparation taught by Our Lady at Fatima",
+    "tags": [
+      "fatima",
+      "reparation",
+      "belief",
+      "love"
+    ],
+    "isLiturgical": false,
+    "liturgicalPriority": 4
+  },
+  {
+    "id": "blessed_trinity_morning",
+    "title": "Blessed be the Holy Trinity (Morning Prayer)",
+    "text": "BLESSED be the holy Creator and Ruler of all things, O holy and undivided Trinity,\nnow, always, and throughout all the ages.",
+    "translation": {
+      "latin": "BENEDÍCTA sit sancta Creátrix et Gubernátrix ómnium, sancta et indivídua Trínitas,\nnunc, semper, et per infiníta sæcula sæculórum."
+    },
+    "attribution": "Traditional",
+    "notes": "From the Morning Prayer (Laudes). Traditional indulgence attached.",
+    "categories": [
+      "trinity",
+      "morning",
+      "praise"
+    ],
+    "description": "A traditional morning prayer blessing the Holy Trinity",
+    "tags": [
+      "trinity",
+      "morning",
+      "blessing",
+      "praise"
+    ],
+    "isLiturgical": true,
+    "liturgicalPriority": 3,
+    "liturgicalSeason": "ordinary"
+  },
+  {
+    "id": "second_fatima_prayer",
+    "title": "2nd Fatima Prayer (Angel's Prayer)",
+    "text": "MOST Holy Trinity, Father, Son and Holy Ghost, I adore Thee profoundly. I offer Thee the most precious Body, Blood, Soul and Divinity of Jesus Christ, present in all the tabernacles of the world, in reparation for the outrages, sacrileges and indifferences whereby He is offended. And through the infinite merits of His Most Sacred Heart and the Immaculate Heart of Mary, I beg of Thee the conversion of poor sinners. Amen.",
+    "translation": {
+      "latin": "SANCTÍSSIMA Trinitas : Pater, Filius et Spiritus Sanctus, profundissime te adoro. Offero tibi pretiosissimum Corpus et Sanguinem, animam et divinitatem Jesu Christi qui præsens est in omnibus tabernaculis totius mundi, in reparationem contumeliarum omnium, sacrilegiorum et indifferentiæ quibus offenditur. Per infinita merita Sacratissimi Cordis Jesu et Immaculatæ Cordis Mariæ conversionem peccatorum peto. Amen."
+    },
+    "attribution": "Angel of Fatima",
+    "notes": "Prayer taught by the Angel to the children at Fatima. 500 days traditional indulgence.",
+    "categories": [
+      "fatima",
+      "reparation",
+      "eucharist",
+      "trinity"
+    ],
+    "description": "Prayer of reparation taught by the Angel at Fatima",
+    "tags": [
+      "fatima",
+      "angel",
+      "reparation",
+      "eucharist",
+      "trinity"
+    ],
+    "isLiturgical": false,
+    "liturgicalPriority": 5
+  },
+  {
+    "id": "my_god_i_believe",
+    "title": "My God, I Believe in Thee",
+    "text": "O MY God, I believe in Thee, I hope in Thee, I love Thee above all things with all my soul, with all my heart and with all my strength; I love Thee because Thou art infinitely good and worthy of being loved; and because I love Thee, I repent with all my heart of having offended Thee; have mercy on me, a sinner. Amen.",
+    "translation": {
+      "latin": "DEUS meus, credo in te, spero in te, in te confido, amo te super ómina ex tota ánima mea, ex toto corde meo, ex totis víribus meis : amo te quia es infiníte bonus et dignis qui améris ; et quia amo te, me pænitet ex toto corde te offendísse : miserére mihi peccatóri. Amen."
+    },
+    "attribution": "Traditional",
+    "notes": "300 days traditional indulgence. See PART I, p.6 for Acts of Faith, Hope, Charity, Contrition & the Confiteor.",
+    "categories": [
+      "acts",
+      "faith",
+      "hope",
+      "charity",
+      "contrition"
+    ],
+    "description": "Traditional prayer expressing the theological virtues of faith, hope, and charity with contrition",
+    "tags": [
+      "faith",
+      "hope",
+      "charity",
+      "contrition",
+      "essential"
+    ],
+    "isLiturgical": true,
+    "liturgicalPriority": 5
+  },
+  {
+    "id": "veni_sancte_spiritus",
+    "title": "Come Holy Ghost",
+    "text": "COME Holy Ghost, fill the hearts of Thy faithful\nand kindle in them the fire of Thy love.\n℣. Send forth Thy Spirit and they shall be created,\n℟. And Thou shalt renew the face of the earth.\n\nLet us pray. O GOD, Who hast taught the hearts of the faithful by the light of the Holy Ghost, grant, we beseech Thee, that by the gift of the same Spirit, we may be always truly wise, and ever rejoice in His consolation. Through Christ our Lord.",
+    "translation": {
+      "latin": "VENI, Sancte Spíritus, reple tuórum corda fidélium,\net tui amóris in eis ignem accénde.\n℣. Emítte Spíritum tuum et creabúntur ;\n℟. Et renovábis fáciem terræ.\n\nOrémus. DEUS, qui corda fidélium Sancti Spíritus illustratióne docuísti : da nobis in eódem Spíritu recta sápere, et de eius semper consolatióne gaudére. Per Christum Dóminum nostrum. Amen."
+    },
+    "attribution": "Traditional",
+    "notes": "5 years traditional indulgence. Glory be follows.",
+    "categories": [
+      "holy_ghost",
+      "pentecost",
+      "essential"
+    ],
+    "description": "Traditional invocation to the Holy Ghost",
+    "tags": [
+      "holy_ghost",
+      "pentecost",
+      "essential",
+      "wisdom"
+    ],
+    "isLiturgical": true,
+    "liturgicalPriority": 5,
+    "liturgicalSeason": "pentecost"
+  },
+  {
+    "id": "apostles_creed",
+    "title": "Apostles' Creed",
+    "text": "I BELIEVE in God the Father almighty,\nCreator of heaven and earth.\nAnd in Jesus Christ, His only Son, our Lord:\nWho was conceived by the Holy Ghost,\nborn of the Virgin Mary,\nsuffered under Pontius Pilate,\nwas crucified, dead, and buried:\nHe descended into hell:\nthe third day He rose from the dead:\nand ascended into heaven:\nand sitteth at the right hand of God, the Father almighty:\nfrom thence He shall come to judge the quick and the dead.\nI believe in the Holy Ghost,\nthe holy Catholic Church,\nthe Communion of Saints,\nthe forgiveness of sins,\nthe resurrection of the body,\nand the life everlasting. Amen.",
+    "translation": {
+      "latin": "CREDO in Deum Patrem omnipoténtem,\nCreatórem cœli et terræ.\nEt in Iesum Chrístum, Fílium éius unicum, Dóminum nostrum :\nqui concéptus est de Spíritu Sancto,\nnatus ex María Vírgine,\npassus sub Póntio Piláto,\ncrucifíxus, mórtuus, et sepúltus :\ndescéndit ad ínferos:\ntértia die resurréxit a mórtuis :\nascéndit ad cœlos :\nsedet ad déxteram Dei Patris omnipoténtis :\ninde ventúrus est iudicáre vivos et mórtuos.\nCredo in Spíritum Sanctum,\nsanctam Ecclésiam Cathólicam,\nSanctórum Communiónem,\nremissiónem peccatórum,\ncarnis resurrectiónem,\nvitam ætérnam. Amen."
+    },
+    "attribution": "Traditional",
+    "notes": "5 years traditional indulgence. One of the fundamental prayers of the Catholic faith.",
+    "categories": [
+      "creed",
+      "essential",
+      "doctrine"
+    ],
+    "description": "The fundamental statement of Catholic faith",
+    "tags": [
+      "creed",
+      "essential",
+      "doctrine",
+      "faith"
+    ],
+    "isLiturgical": true,
+    "liturgicalPriority": 5
+  },
+  {
+    "id": "te_deum",
+    "title": "Te Deum (Ambrosian Hymn)",
+    "text": "WE PRAISE Thee, O God: we acknowledge Thee to be the Lord.\nThee, the Father everlasting, all the earth doth worship.\nTo Thee all angels; to Thee the Heavens and all the Powers:\nTo Thee the Cherubim and Seraphim continually cry:\nHoly, Holy, Holy, Lord God of Sabaoth.\nHeaven and earth art full of the majesty of Thy glory.\nThee, the glorious choir of the Apostles,\nThee, the admirable company of Prophets,\nThee, the white-robed army of Martyrs, praise.\nThee, the holy Church throughout the world doth acknowledge:\nThe Father of infinite Majesty;\nThy adorable, true, and only Son;\nAlso, the Holy Ghost, the Comforter.\nThou, O Christ, art the King of glory,\nThou art the everlasting Son of the Father.\nWhen Thou didst take upon Thee to deliver man,\nThou didst not disdain the Virgin's womb.\nHaving overcome the sting of death,\nThou didst open the Kingdom of Heaven to all believers.\nThou sittest at the right hand of God, in the glory of the Father.\nWe believe that Thou shalt come to be our Judge.\nWe therefore pray Thee to help Thy servants,\nwhom Thou hast redeemed with Thy Precious Blood.\nMake them to be numbered with Thy saints in glory everlasting.",
+    "translation": {
+      "latin": "TE DEUM laudámus : te Dóminum confitémur.\nTe ætérnum Patrem omnis terra venerátur.\nTibi omnes Angeli ; tibi Cœli et univérsæ potestates.\nTibi Chérubim et Séraphim incessábili voce proclámant :\nSanctus, Sanctus, Sanctus, Dóminus Deus Sábaoth.\nPleni sunt cœli et terra maiestátis gloriæ tuæ.\nTe gloriósus Apostolórum chorus ;\nTe Prophetárum laudábilis númerus ;\nTe Mártyrum candidátus laudat exércitus.\nTe per orbem terrárum sancta confitétur Ecclésia,\nPatrem imménsæ maiestátis ;\nVenerándum tuum verum et únicum Fílium ;\nSanctum quoque Paráclitum Spíritum.\nTu Rex glóriæ, Christe.\nTu Patris sempitérnus es Fílius.\nTu ad liberándum susceptúrus hóminem,\nnon horruísti Vírginis úterum.\nTu, devícto mortis acúleo,\naperuísti credéntibus regna cœlórum.\nTu ad déxteram Dei sedes, in glória Patris.\nIudex créderis esse ventúrus.\nTe ergo quæsumus, tuis fámulis súbveni :\nquos Pretióso Sánguine redemísti.\nÆterna fac cum sanctis tuis in glória numerári."
+    },
+    "attribution": "St. Ambrose (attributed)",
+    "notes": "Traditional Indulgence: 5 years when recited devoutly, giving thanks to God for blessings received; 10 years when assisting in the public singing of this hymn in a church; plenary with the addition of Confession, Communion and prayers for the intentions of the Holy Father.",
+    "categories": [
+      "hymn",
+      "praise",
+      "trinity",
+      "liturgical"
+    ],
+    "description": "Ancient hymn of praise to the Trinity, traditionally attributed to St. Ambrose",
+    "tags": [
+      "hymn",
+      "praise",
+      "trinity",
+      "ancient",
+      "liturgical"
+    ],
+    "isLiturgical": true,
+    "liturgicalPriority": 4,
+    "liturgicalSeason": "ordinary"
+  },
+  {
+    "id": "magnificat",
+    "title": "Magnificat",
+    "text": "MY soul doth magnify the Lord. And my spirit hath rejoiced in God, my Saviour. Because He hath regarded the humility of his handmaid; for behold from henceforth all generations shall call me blessed. Because He that is mighty, hath done great things to me; and holy is His Name. And His mercy is from generation unto generations, to them that fear Him.\n\nHe hath shewed might in his arm: He hath scattered the proud in the conceit of their heart. He hath put down the mighty from their seat, and hath exalted the humble. He hath filled the hungry with good things; and the rich He hath sent empty away. He hath received Israël his servant, being mindful of his mercy: As He spoke to our fathers, to Abraham and to his seed forever.",
+    "translation": {
+      "latin": "MAGNÍFICAT ánima mea Dóminum. Et exsultávit spíritus meus in Deo, salutári meo. Quia respéxit humilitátem ancíllæ suæ : ecce enim ex hoc beátam me dicent omnes generatiónes. Quia fecit mihi magna, qui pótens est : et sanctum Nómen eius. Et misericórdia eius, a progénie in progénies timéntibus eum.\n\nFecit poténtiam in bráchio suo, dispérsit supérbos mente cordis sui. Depósuit poténtes de sede, et exaltávit húmiles. Esuriéntes implévit bonis, et dívites dimísit inánes. Suscépit Israël púerum suum, recordátus misericórdiæ suæ. Sicut locútus est ad patres nostros : Ábraham, et sémini eius in sæcula."
+    },
+    "attribution": "Blessed Virgin Mary (St. Luke 1:46-55)",
+    "notes": "3 years traditional indulgence; 5 years on Saturdays & feast of the Visitation. The canticle of the Blessed Virgin Mary.",
+    "categories": [
+      "marian",
+      "canticle",
+      "scripture",
+      "vespers"
+    ],
+    "description": "The canticle of the Blessed Virgin Mary, traditionally sung at Vespers",
+    "tags": [
+      "marian",
+      "canticle",
+      "vespers",
+      "scripture",
+      "praise"
+    ],
+    "isLiturgical": true,
+    "liturgicalPriority": 5,
+    "liturgicalSeason": "ordinary"
+  },
+  {
+    "id": "ave_maria",
+    "title": "Hail Mary",
+    "text": "Hail Mary, full of grace, the Lord is with thee. Blessed art thou amongst women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.",
+    "translation": {
+      "latin": "Ave María, grátia plena, Dóminus tecum. Benedícta tu in muliéribus, et benedíctus fructus ventris tui, Iesus. Sancta María, Mater Dei, ora pro nobis peccatóribus, nunc et in hora mortis nostræ. Amen."
+    },
+    "attribution": "Traditional (based on Luke 1:28, 42)",
+    "notes": "The Ave Maria should be committed to memory; it can be found in PART I: p.4. One of the most fundamental Catholic prayers.",
+    "categories": [
+      "marian",
+      "essential",
+      "rosary"
+    ],
+    "description": "The fundamental Marian prayer based on the Annunciation",
+    "tags": [
+      "marian",
+      "essential",
+      "rosary",
+      "annunciation"
+    ],
+    "isLiturgical": true,
+    "liturgicalPriority": 5
+  },
+  {
+    "id": "anima_christi",
+    "title": "Soul of Christ",
+    "text": "SOUL of Christ, sanctify me.\nBody of Christ, save me.\nBlood of Christ, inebriate me.\nWater from the side of Christ, wash me.\nPassion of Christ, strengthen me.\nO good Jesus, hear me.\nWithin Thy wounds, hide me.\nSuffer me not to be separated from Thee.\nFrom the malignant enemy, defend me.\nAt the hour of death, call me.\nAnd bid me come to Thee,\nthat with Thy saints I may praise Thee,\nforever and ever. Amen.",
+    "translation": {
+      "latin": "ANIMA Christi, sanctífica me.\nCorpus Christi, salva me.\nSanguis Christi, inébria me.\nAqua láteris Christi, lava me.\nPássio Christi, confórta me.\nO bone Iesu, exáudi me.\nIntra tua vúlnera abscónde me.\nNe permíttas me separári a te.\nAb hoste malígno defénde me.\nIn hora mortis meæ voca me.\nEt iube me veníre ad te,\nUt cum Sanctis tuis laudem te\nin sæcula sæculórum. Amen."
+    },
+    "attribution": "Pope John XXII (attributed)",
+    "notes": "300 days traditional indulgence; or 7 years after Holy Communion. A beloved prayer to Jesus in the Blessed Sacrament.",
+    "categories": [
+      "eucharist",
+      "jesus",
+      "communion"
+    ],
+    "description": "A prayer to Jesus focusing on His Body, Blood, Soul and Divinity in the Eucharist",
+    "tags": [
+      "eucharist",
+      "jesus",
+      "communion",
+      "beloved"
+    ],
+    "isLiturgical": false,
+    "liturgicalPriority": 4
+  }
+]

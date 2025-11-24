@@ -1,0 +1,32 @@
+{
+  "id": "morning_offering_mary",
+  "title": "Morning Offering Through Mary",
+  "text": "O Jesus, through the most pure heart of Mary,\nI offer you all the prayers, works, sufferings, and joys\nof this day,\nfor all the intentions of your most Sacred Heart,\nin union with the holy sacrifice of the Mass\nthroughout the world,\nand in reparation for my sins.\nAmen.",
+  "translation": {
+    "latin": "O Iesu, per purissimum cor Mariae,\ntibi offero omnes orationes, opera, passiones et gaudia\nhuius diei,\npro omnibus intentionibus Cordis tui Sacratissimi,\nin unione cum sancto Missae sacrificio\nper totum mundum,\net in reparationem peccatorum meorum.\nAmen."
+  },
+  "attribution": "Traditional Catholic Morning Offering",
+  "notes": "This beautiful morning offering unites our daily actions with the sacrifice of the Mass and the intentions of the Sacred Heart of Jesus, offered through the Immaculate Heart of Mary. It transforms ordinary activities into prayers.",
+  "tags": [
+    "morning",
+    "offering",
+    "mary",
+    "sacred_heart"
+  ],
+  "difficulty": "moderate",
+  "audience": [
+    "adults",
+    "teens"
+  ],
+  "liturgical_season": null,
+  "feast_day": null,
+  "categories": [
+    "morning",
+    "marian"
+  ],
+  "description": "Offering the day through the Immaculate Heart of Mary",
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null,
+  "timeOfDay": "morning"
+}

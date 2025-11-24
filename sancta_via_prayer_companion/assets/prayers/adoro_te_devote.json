@@ -1,0 +1,27 @@
+{
+  "id": "adoro_te_devote",
+  "title": "Adoro Te Devote",
+  "text": "Godhead here in hiding, whom I do adore,\nMasked by these bare shadows, shape and nothing more,\nSee, Lord, at thy service low lies here a heart\nLost, all lost in wonder at the God thou art.\n\nSeeing, touching, tasting are in thee deceived:\nHow says trusty hearing? that shall be believed;\nWhat God's Son has told me, take for truth I do;\nTruth himself speaks truly or there's nothing true.\n\nOn the cross thy godhead made no sign to men,\nHere thy very manhood steals from human ken:\nBoth are my confession, both are my belief,\nAnd I pray the prayer of the dying thief.\n\nI am not like Thomas, wounds I cannot see,\nBut can plainly call thee Lord and God as he;\nLet me to a deeper faith daily nearer move,\nDaily make me harder hope and dearer love.\n\nO thou our reminder of Christ crucified,\nLiving Bread, the life of us for whom he died,\nLend this life to me then: feed and feast my mind,\nThere be thou the sweetness man was meant to find.\n\nBring the tender tale true of the Pelican;\nBathe me, Jesus Lord, in what thy bosom ran—\nBlood whereof a single drop has power to win\nAll the world forgiveness of its world of sin.\n\nJesus, whom I look at shrouded here below,\nI beseech thee send me what I thirst for so,\nSome day to gaze on thee face to face in light\nAnd be blest for ever with thy glory's sight.\nAmen.",
+  "translation": {
+    "latin": "Adoro te devote, latens Deitas,\nQuae sub his figuris vere latitas:\nTibi se cor meum totum subiicit,\nQuia te contemplans totum deficit.\n\nVisus, tactus, gustus in te fallitur,\nSed auditu solo tuto creditur:\nCredo quidquid dixit Dei Filius:\nNil hoc verbo veritatis verius.\n\nIn cruce latebat sola Deitas,\nAt hic latet simul et humanitas:\nAmbo tamen credens atque confitens,\nPeto quod petivit latro paenitens.\n\nPlagas, sicut Thomas, non intueor,\nDeum tamen meum te confiteor:\nFac me tibi semper magis credere,\nIn te spem habere, te diligere.\n\nO memoriale mortis Domini!\nPanis vivus vitam praestans homini!\nPraesta meae menti de te vivere,\nEt te illi semper dulce sapere.\n\nPie pellicane, Iesu Domine,\nMe immundum munda tuo sanguine:\nCuius una stilla salvum facere\nTotum mundum quit ab omni scelere.\n\nIesu, quem velatum nunc aspicio,\nOro, fiat illud quod tam sitio:\nUt te revelata cernens facie,\nVisu sim beatus tuae gloriae.\nAmen."
+  },
+  "attribution": "St. Thomas Aquinas (c. 1264)",
+  "notes": "This Eucharistic hymn was composed by St. Thomas Aquinas for the Feast of Corpus Christi. It is a profound meditation on the Real Presence of Christ in the Eucharist. The English translation is by Gerard Manley Hopkins. This prayer expresses the paradox of faith in the hidden presence of God under the appearances of bread and wine.",
+  "categories": [
+    "eucharistic",
+    "liturgical",
+    "saints"
+  ],
+  "description": "A profound Eucharistic hymn by St. Thomas Aquinas meditating on the Real Presence of Christ in the Blessed Sacrament",
+  "tags": [
+    "eucharist",
+    "adoration",
+    "real_presence",
+    "thomas_aquinas",
+    "hymn"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 8,
+  "liturgicalSeason": "corpus_christi",
+  "timeOfDay": "anytime"
+}

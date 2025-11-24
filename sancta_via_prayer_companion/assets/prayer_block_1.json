@@ -1,0 +1,273 @@
+[
+  {
+    "id": "our_father",
+    "title": "Our Father",
+    "text": "Our Father,\nWho art in heaven,\nhallowed be Thy Name.\nThy kingdom come,\nThy will be done,\non earth as it is in heaven.\nGive us this day our daily bread,\nand forgive us our trespasses,\nas we forgive those who trespass against us.\nAnd lead us not into temptation:\nbut deliver us from evil.\nAmen.",
+    "translation": {
+      "latin": "Pater noster,\nQui es in cœlis,\nsanctificétur nomen tuum.\nAdvéniat regnum tuum,\nfiat volúntus tua,\nsicut in cœlo et in terra.\nPanem nostrum quotidiánum da nobis hódie,\net dimítte nobis débita nostra,\nsicut et nos dimíttimus debitóribus nostris.\nEt ne nos indúcas in tentatiónem:\nsed líbera nos a malo.\nAmen."
+    },
+    "attribution": "Traditional",
+    "notes": "The Lord's Prayer, taught by Jesus Christ to His disciples",
+    "categories": ["essential", "daily"],
+    "description": "The fundamental Christian prayer taught by Jesus Christ",
+    "tags": ["essential", "daily", "jesus"],
+    "isLiturgical": true,
+    "liturgicalPriority": 10
+  },
+  {
+    "id": "hail_mary",
+    "title": "Hail Mary",
+    "text": "Hail Mary,\nfull of grace,\nthe Lord is with thee.\nBlessed art thou amongst women,\nand blessed is the fruit of thy womb, Jesus.\nHoly Mary,\nMother of God,\npray for us sinners,\nnow, and at the hour of our death.\nAmen.",
+    "translation": {
+      "latin": "Ave María,\ngrátia plena,\nDóminus tecum.\nBenedícta tu in muliéribus,\net benedíctus fructus ventris tui, Iesus.\nSancta María,\nMater Dei,\noro pro nobis peccatóribus,\nnunc, et in hora mortis nostræ.\nAmen."
+    },
+    "attribution": "Traditional",
+    "notes": "The Angelic Salutation, based on the Archangel Gabriel's greeting to Mary and Elizabeth's words",
+    "categories": ["essential", "marian", "daily"],
+    "description": "The principal Marian prayer of the Catholic Church",
+    "tags": ["essential", "mary", "daily", "rosary"],
+    "isLiturgical": true,
+    "liturgicalPriority": 10
+  },
+  {
+    "id": "glory_be",
+    "title": "Glory Be",
+    "text": "Glory be to the Father, and to the Son, and to the Holy Ghost.\nAs it was in the beginning,\nis now, and ever shall be,\nworld without end.\nAmen.",
+    "translation": {
+      "latin": "Glória Patri, et Fílio, et Spíritui Sancto.\nSicut erat in princípio,\net nunc, et semper,\net in sæcula sæculórum.\nAmen."
+    },
+    "attribution": "Traditional",
+    "notes": "The Lesser Doxology, a short hymn of praise to the Trinity",
+    "categories": ["essential", "trinity", "daily"],
+    "description": "A short prayer of praise to the Holy Trinity",
+    "tags": ["essential", "trinity", "daily", "doxology"],
+    "isLiturgical": true,
+    "liturgicalPriority": 9
+  },
+  {
+    "id": "apostles_creed",
+    "title": "Apostles' Creed",
+    "text": "I believe in God the Father almighty,\nCreator of heaven and earth.\nAnd in Jesus Christ, His only Son, our Lord:\nWho was conceived by the Holy Ghost,\nborn of the Virgin Mary,\nsuffered under Pontius Pilate,\nwas crucified, dead, and buried:\nHe descended into hell:\nthe third day He rose from the dead:\nand ascended into heaven:\nand sitteth at the right hand of God, the Father almighty:\nfrom thence He shall come to judge the quick and the dead.\nI believe in the Holy Ghost,\nthe holy Catholic Church,\nthe Communion of Saints,\nthe forgiveness of sins,\nthe resurrection of the body,\nand the life everlasting. Amen.",
+    "translation": {
+      "latin": "Credo in Deum Patrem omnipoténtem,\nCreatórem cœli et terræ.\nEt in Iesum Chrístum, Fílium éius unícum, Dóminum nostrum:\nqui concéptus est de Spíritu Sancto,\nnatus ex María Vírgine,\npassus sub Póntio Piláto,\ncrucifíxus, mórtuus, et sepúltus:\ndescéndit ad ínferos:\ntértia die resurréxit a mórtuis:\nascéndit ad cœlos:\nsedet ad déxteram Dei Patris omnipoténtis:\ninde ventúrus est iudicáre vivos et mórtuos.\nCredo in Spíritum Sanctum,\nsanctam Ecclésiam Cathólicam,\nSanctórum Communiónem,\nremissiónem peccatórum,\ncarnis resurrectiónem,\nvitam ætérnam. Amen."
+    },
+    "attribution": "Traditional",
+    "notes": "The ancient summary of Christian faith, traditionally attributed to the Twelve Apostles",
+    "categories": ["essential", "creed", "faith"],
+    "description": "The fundamental statement of Catholic faith",
+    "tags": ["essential", "creed", "faith", "doctrine"],
+    "isLiturgical": true,
+    "liturgicalPriority": 8
+  },
+  {
+    "id": "act_of_contrition",
+    "title": "Act of Contrition",
+    "text": "O my God, from all my heart I am sorry for all my sins, and I detest them, not only because in sinning, I deserve the penalties that Thou hast justly established, but especially because I have offended Thee, Who art the greatest good, and worthy beyond all my love. Therefore I firmly purpose, with the help of Thy grace, from henceforth to sin no more and flee the next occasions of sinning. Amen.",
+    "translation": {
+      "latin": "Deus meus, ex toto corde pænitet me ómnium meórum peccatórum, éaque detéstor, quia peccándo, non solum pœnas a te iuste statútas proméritus sum, sed præsértim quia offéndi te, summum bonum, ac dignum qui super ómnia diligáris. Ídeo fírmiter propóno, adiuvánte grátia tua, de cétero me non peccatúrum peccandíque occasiónes próximas fugitúrum. Amen."
+    },
+    "attribution": "Traditional",
+    "notes": "3 years traditional indulgence for each act of theological virtue or contrition made devoutly",
+    "categories": ["essential", "confession", "contrition"],
+    "description": "A prayer expressing sorrow for sin and firm purpose of amendment",
+    "tags": ["essential", "confession", "contrition", "sin"],
+    "isLiturgical": true,
+    "liturgicalPriority": 7
+  },
+  {
+    "id": "hail_holy_queen",
+    "title": "Hail Holy Queen",
+    "text": "Hail Holy Queen, Mother of Mercy!\nHail our life, our sweetness, and our hope.\nTo thee do we cry, poor banished children of Eve.\nTo thee do we send up our sighs,\nmourning and weeping in this valley of tears.\nTurn then, most gracious Advocate,\nthine eyes of mercy towards us,\nand after this, our exile, show unto us\nthe blessed fruit of thy womb, Jesus.\nO clement, O loving, O sweet Virgin Mary!\nPray for us, O Holy Mother of God.\nThat we may be made worthy of the promises of Christ. Amen.",
+    "translation": {
+      "latin": "Salve Regína, Mater misericórdiæ!\nVíta, dulcédo, et spes nostra, salve.\nAd te clamámus, éxsules fílii Hevæ.\nAd te suspirámus,\ngeméntes et flentes in hac lacrimárum valle.\nEia ergo, Advocáta nostra,\nillos tuos misericórdes óculos ad nos convérte.\nEt Iesum, benedíctum fructum ventris tui,\nnobis post hoc exsílium osténde.\nO clemens, o pia, o dulcis Virgo María!\nOra pro nobis, Sancta Dei Génitrix.\nUt digni efficiámur promissiónibus Christi. Amen."
+    },
+    "attribution": "Traditional",
+    "notes": "5 years traditional indulgence. One of the four Marian antiphons",
+    "categories": ["essential", "marian", "daily"],
+    "description": "A beloved Marian prayer and antiphon",
+    "tags": ["essential", "mary", "daily", "antiphon"],
+    "isLiturgical": true,
+    "liturgicalPriority": 7
+  },
+  {
+    "id": "angel_of_god",
+    "title": "Angel of God",
+    "text": "Angel of God, my Guardian dear, to whom His love commits me here;\never this day be at my side, to light, to guard, to rule and guide. Amen.\nFrom stain of sin please keep me free; and at my death my helper be.",
+    "translation": {
+      "latin": "Angele Dei, qui custos es mei, me tibi commíssum pietáte supérna\nhodie illúmina, custódi, rege et gubérna. Amen.\nCustódi a peccáti macula me líbera; et in morte mea sit adiútor meus."
+    },
+    "attribution": "Traditional",
+    "notes": "300 days traditional indulgence. Prayer to one's Guardian Angel",
+    "categories": ["essential", "daily", "angels"],
+    "description": "Prayer to one's Guardian Angel for protection and guidance",
+    "tags": ["essential", "daily", "angels", "guardian"],
+    "isLiturgical": true,
+    "liturgicalPriority": 6
+  },
+  {
+    "id": "st_michael_prayer",
+    "title": "St. Michael the Archangel",
+    "text": "Saint Michael the Archangel, defend us in battle,\nbe our safe-guard against the wickedness and snares of the devil.\nMay God restrain him, we humbly pray:\nand do thou, O Prince of the heavenly host,\nby the power of God, thrust Satan down to hell,\nand with him all the other wicked spirits,\nwho wander through the world,\nseeking the ruin of souls. Amen.",
+    "translation": {
+      "latin": "Sancte Míchaël Archángele, defénde nos in prœlio,\ncontra nequítiam et insídias diáboli esto præsídium.\nImpéret illi Deus, súpplices deprecámur:\ntuque, Prínceps milítiæ cœléstis,\nSátanam aliósque spíritus malígnos,\nqui ad perditiónem animárum pervagántur in mundo,\ndivína virtúte, in inférnum detrúde.\nAmen."
+    },
+    "attribution": "Pope Leo XIII",
+    "notes": "3 years traditional indulgence. Composed by Pope Leo XIII",
+    "categories": ["essential", "angels", "protection"],
+    "description": "Prayer to St. Michael for protection against evil",
+    "tags": ["essential", "angels", "protection", "michael"],
+    "isLiturgical": true,
+    "liturgicalPriority": 6
+  },
+  {
+    "id": "morning_offering",
+    "title": "Morning Offering",
+    "text": "O Lord Jesus Christ, in union with that divine intention wherewith on earth Thou didst offer to God praises through Thy Most Sacred Heart, and dost now offer them in the Sacrament of the Eucharist everywhere on earth even to the end of time, I most gladly offer Thee throughout this entire day, all my affections and desires, all my words and deeds, in imitation of the most sacred Heart of the blessed and ever Virgin Mary Immaculate. Amen.\nJesus, my God, I love Thee above all things.",
+    "translation": {
+      "latin": "O Dómine Iesu Christe, in unióne illíus divínæ intentiónis, qua in terris per sanctíssimum Cor tuum laudes Deo persolvísti et nunc in Eucharístiæ Sacraménto ubíque terrárum persólvis usque ad consummatiónen sæculi, ego per hanc diem integram, ad imitatiónem sacratíssimi Cordis beátæ Maríæ semper Vírginis Immaculátæ, tibi libentíssime óffero omnes meas intentiónes at cogitatiónes, omnes meos afféctus et desidéria, omni mea ópera et verba. Amen.\nIesu, Deus meus, super ómnia amo te."
+    },
+    "attribution": "Traditional",
+    "notes": "3 years traditional indulgence for the Morning Offering, 300 days for the concluding aspiration",
+    "categories": ["daily", "morning", "offering"],
+    "description": "A prayer to offer the day to God through the Sacred Heart",
+    "tags": ["daily", "morning", "offering", "sacred_heart"],
+    "isLiturgical": false,
+    "liturgicalPriority": 5
+  },
+  {
+    "id": "angelus",
+    "title": "The Angelus",
+    "text": "The Angel of the Lord declared unto Mary;\nAnd she conceived of the Holy Ghost.\nHail Mary...\n\nBehold the hand-maid of the Lord.\nBe it done unto me according to Thy Word.\nHail Mary...\n\nAnd the Word was made flesh.\nAnd dwelt amongst us.\nHail Mary...\n\nPray for us, O holy Mother of God.\nThat we may be made worthy of the promises of Christ.\n\nLet us pray.\nPour forth, we beseech Thee, O Lord, Thy grace into our hearts; that we, to whom the incarnation of Christ Thy Son, wast made known by the message of an Angel, may, by His Passion and Cross, be brought to the glory of His Resurrection. Through the same Christ our Lord. Amen.",
+    "translation": {
+      "latin": "Angelus Dómini nuntiávit Maríæ;\nEt concépit de Spíritu Sancto.\nAve María...\n\nEcce ancílla Dómini.\nFiat mihi secúndum verbum tuum.\nAve María...\n\nEt Verbum caro factum est.\nEt habitávit in nobis.\nAve María...\n\nOra pro nobis, sancta Dei Génitrix.\nUt digni efficiámur promissiónibus Christi.\n\nOrémus.\nGrátiam tuam, quæsumus, Dómine, méntibus nostris infúnde; ut qui, Angelo nuntiánte, Christi Fílii tui incarnatiónem cognóvimus, per passiónem eius et crucem, ad resurrectiónis glóriam perducámur. Per eúndem Christum Dóminum nostrum. Amen."
+    },
+    "attribution": "Traditional",
+    "notes": "10 years indulgence each time; plenary on usual conditions if persevered for a month. Traditionally prayed at 6 AM, 12 PM, and 6 PM",
+    "categories": ["daily", "marian", "liturgical"],
+    "description": "Traditional prayer commemorating the Incarnation, prayed three times daily",
+    "tags": ["daily", "marian", "incarnation", "liturgical"],
+    "isLiturgical": true,
+    "liturgicalPriority": 8
+  },
+  {
+    "id": "confiteor",
+    "title": "Confiteor",
+    "text": "I confess to Almighty God, to blessed Mary ever-Virgin, to blessed Michael the Archangel, to blessed John the Baptist, to the holy Apostles Peter and Paul, and to all the Saints that I have sinned exceedingly, in thought, word and deed: through my fault, through my fault, through my most grievous fault. Therefore I beseech blessed Mary ever-Virgin, blessed Michael the Archangel, blessed John the Baptist, the holy Apostles Peter and Paul, and all the Saints, to pray to the Lord our God for me.",
+    "translation": {
+      "latin": "Confíteor Deo omnipoténti, beátæ Maríæ semper Vírgini, beáto Michaëli Archángelo, beáto Joanni Baptístæ, sanctis Apóstolis Petro et Paulo, et ómnibus Sanctis: quia peccávi nimis cogitatióne, verbo et ópere: mea culpa, mea culpa, mea máxima culpa. Ideo precor beátam Maríam semper Vírginem, beátum Michaëlem Archángelum, beátum Joánnem Baptístam, sanctos Apóstolos Petrum et Paulum, et omnes Sanctos, oráre pro me ad Dóminum Deum nostrum."
+    },
+    "attribution": "Traditional",
+    "notes": "300 days if said with contrite heart; 500 days before Communion. Traditional general confession of sins",
+    "categories": ["confession", "penitential", "liturgical"],
+    "description": "General confession of sins invoking the intercession of saints",
+    "tags": ["confession", "penitential", "saints", "liturgical"],
+    "isLiturgical": true,
+    "liturgicalPriority": 7
+  },
+  {
+    "id": "veni_creator_spiritus",
+    "title": "Veni, Creator Spiritus",
+    "text": "Come, Holy Ghost, Creator blest,\nand in our souls take up Thy rest,\ncome with Thy grace and heavenly aid,\nand fill the hearts which Thou hast made.\n\nTo Thee, the Comforter, we cry,\nto Thee, the gift of God most high,\nthe fount of life, the fire of love,\nthe soul's anointing from above.\n\nThe sevenfold gifts of grace are Thine,\nO Finger of the hand Divine;\ntrue promise of the Father Thou,\nWho dost the tongue with speech endow.\n\nThy light and every thought impart,\nand shed Thy love in every heart;\nour body's poor infirmity\nwith strength perpetual fortify.\n\nOur mortal foe afar repel,\ngrant us henceforth in peace to dwell;\nif Thou be our preventing guide,\nno evil can our steps bedite.\n\nMake Thou to us the Father known;\nteach us th' Eternal Son to own,\nand Thee, Whose name we ever bless,\nof Both the Spirit to confess.\n\nAll glory while the ages run\nbe to the Father and the Son,\nWho rose from death; the same to Thee,\nO Holy Ghost, eternally. Amen.",
+    "translation": {
+      "latin": "Veni, Creátor Spíritus,\nmentes tuórum vísita,\nimple supérna grátia\nquæ Tu creásti péctora.\n\nQui díceris Paráclitus,\naltíssimi donum Dei,\nfons vivus, ignis, cáritas,\net spiritális únctio.\n\nTu, septifórmis múnere,\ndígitus patérnæ déxteræ,\nTu rite promíssum Patris,\nsermóne ditans gúttura.\n\nAccénde lumen sénsibus:\ninfúnde amórem córdibus:\ninfírma nostri córporis\nvirtúte firmans pérpeti.\n\nHostem répellas lóngius,\npacémque dones prótinus:\nductóre sic te prævio\nvitémus omne nóxium.\n\nPer te sciámus da Patrem,\nnoscámus atque Fílium;\nTeque utriúsque Spíritum\ncredámus omni témpore.\n\nDeo Patri sit glória,\net Fílio, qui a mórtuis\nsurréxit, ac Paráclito,\nin sæculórum sæcula. Amen."
+    },
+    "attribution": "Traditional",
+    "notes": "5 years traditional indulgence. Ancient hymn to the Holy Ghost, traditionally sung at important occasions",
+    "categories": ["holy_spirit", "liturgical", "hymn"],
+    "description": "Ancient hymn invoking the Holy Spirit",
+    "tags": ["holy_spirit", "liturgical", "hymn", "pentecost"],
+    "isLiturgical": true,
+    "liturgicalPriority": 8
+  },
+  {
+    "id": "te_deum",
+    "title": "Te Deum",
+    "text": "We praise Thee, O God: we acknowledge Thee to be the Lord.\nThee, the Father everlasting, all the earth doth worship.\nTo Thee all angels; to Thee the Heavens and all the Powers:\nTo Thee the Cherubim and Seraphim continually cry:\nHoly, Holy, Holy, Lord God of Sabaoth.\nHeaven and earth art full of the majesty of Thy glory.\nThee, the glorious choir of the Apostles,\nThee, the admirable company of Prophets,\nThee, the white-robed army of Martyrs, praise.\nThee, the holy Church throughout the world doth acknowledge:\nThe Father of infinite Majesty;\nThy adorable, true, and only Son;\nAlso, the Holy Ghost, the Comforter.\nThou, O Christ, art the King of glory,\nThou art the everlasting Son of the Father.\nWhen Thou didst take upon Thee to deliver man,\nThou didst not disdain the Virgin's womb.\nHaving overcome the sting of death,\nThou didst open the Kingdom of Heaven to all believers.\nThou sittest at the right hand of God, in the glory of the Father.\nWe believe that Thou shalt come to be our Judge.\nWe therefore pray Thee to help Thy servants,\nwhom Thou hast redeemed with Thy Precious Blood.\nMake them to be numbered with Thy saints in glory everlasting.",
+    "translation": {
+      "latin": "Te Deum laudámus: te Dóminum confitémur.\nTe ætérnum Patrem omnis terra venerátur.\nTibi omnes Angeli; tibi Cœli et univérsæ potestátes.\nTibi Chérubim et Séraphim incessábili voce proclámant:\nSanctus, Sanctus, Sanctus, Dóminus Deus Sábaoth.\nPleni sunt cœli et terra maiestátis glóriæ tuæ.\nTe gloriósus Apostolórum chorus;\nTe Prophetárum laudábilis númerus;\nTe Mártyrum candidátus laudat exércitus.\nTe per orbem terrárum sancta confitétur Ecclésia,\nPatrem imménsæ maiestátis;\nVenerándum tuum verum et únicum Fílium;\nSanctum quoque Paráclitum Spíritum.\nTu Rex glóriæ, Christe.\nTu Patris sempitérnus es Fílius.\nTu ad liberándum susceptúrus hóminem,\nnon horruísti Vírginis úterum.\nTu, devícto mortis acúleo,\naperuísti credéntibus regna cœlórum.\nTu ad déxteram Dei sedes, in glória Patris.\nIudex créderis esse ventúrus.\nTe ergo quæsumus, tuis fámulis súbveni:\nquos Pretióso Sánguine redemísti.\nÆterna fac cum sanctis tuis in glória numerári."
+    },
+    "attribution": "St. Ambrose (attributed)",
+    "notes": "5 years when recited devoutly giving thanks; 10 years when sung publicly; plenary with usual conditions. The Ambrosian Hymn",
+    "categories": ["praise", "liturgical", "thanksgiving"],
+    "description": "Ancient hymn of praise and thanksgiving, the Ambrosian Hymn",
+    "tags": ["praise", "liturgical", "thanksgiving", "ambrosian"],
+    "isLiturgical": true,
+    "liturgicalPriority": 8
+  },
+  {
+    "id": "sacred_heart_consecration",
+    "title": "Daily Consecration to the Sacred Heart",
+    "text": "My loving Jesus! out of the grateful love I bear Thee, and as a reparation for all my unfaithfulness, I give Thee my heart and I consecrate myself wholly to Thee, and with Thy aid, I purpose never to sin again.\nJesus, meek and humble of heart, make our hearts like unto Thine.\nHeart of Jesus, burning with love for us, set our hearts on fire with love of Thee.",
+    "translation": {
+      "latin": "O mi Jesu amantíssime, ego N. N., ut gratitúdinem tibi exhibeam nec non infidelitátes meas resárciam, tibi cor meum dono, et ex íntegro me tibi dédico et consécro, atque te auxiliánte mihi propóno, non ámplius peccáre.\nJesu, mitis et húmilis Corde, fac cor nostrum secúndum Cor tuum.\nCor Iesu, flagrans amóre nostri, inflámma cor nostrum amóre tui."
+    },
+    "attribution": "Traditional",
+    "notes": "300 days for the consecration, 500 days for each aspiration. Daily offering to the Sacred Heart",
+    "categories": ["sacred_heart", "daily", "consecration"],
+    "description": "Daily consecration prayer to the Sacred Heart of Jesus",
+    "tags": ["sacred_heart", "daily", "consecration", "june"],
+    "isLiturgical": false,
+    "liturgicalPriority": 6
+  },
+  {
+    "id": "st_andrew_novena",
+    "title": "St. Andrew Miraculous Christmas Novena",
+    "text": "Hail and blessed be the hour and moment in which the Son of God was born of the most pure Virgin Mary, at midnight, in Bethlehem, in the piercing cold. In that hour vouchsafe, I beseech Thee, O my God, to hear my prayer and grant my desires:\n[Mention your request]\nThrough the merits of our Saviour Jesus Christ, and of His blessed Mother. Amen.\n\nOur Father... Hail Mary... Glory be...\n\nAnd the Word was made Flesh and dwelt amongst us.\nGod hath visited His people.\nSt. Andrew, pray for us.",
+    "translation": {
+      "latin": "Qua hora momentúmque grándine benedíctus Dei Fílius natus ex María Vírgine puríssimum média in Bethléem penetrábile frigus. In illa hora, dignáre, Dómine Deus meus, exáudi oratiónem meam, ad oratiónem servi tui et dona:\n[Mentio petitiónem tuam]\nPer meríta Salvatóris nostri Jesu Christi et eiús sanctíssimæ Matris promóvit. Amen.\n\nPater noster... Ave Maria... Gloria Patri...\n\nEt Verbum caro factum est et habitávit in nobis.\nDeus visitávit plebem suam.\nSancte Andrea, ora pro nobis."
+    },
+    "attribution": "Traditional",
+    "notes": "Prayed 15 times daily from November 30 to Christmas Eve. Traditionally believed to obtain the requested favor",
+    "categories": ["novena", "advent", "christmas", "petition"],
+    "description": "Traditional Christmas novena beginning on the Feast of St. Andrew",
+    "tags": ["novena", "advent", "christmas", "andrew", "petition"],
+    "isLiturgical": false,
+    "liturgicalPriority": 4,
+    "liturgicalSeason": "advent"
+  },
+  {
+    "id": "prayer_to_st_joseph",
+    "title": "Prayer to St. Joseph for Purity",
+    "text": "Guardian of virgins, and holy father Joseph, to whose faithful custody Christ Jesus, Innocence itself, and Mary, Virgin of virgins, were committed; I pray and beseech thee, by these dear pledges, Jesus and Mary, that, being preserved from all uncleanness, I may with spotless mind, pure heart and chaste body, ever serve Jesus and Mary most chastely all the days of my life. Amen.\nHelp us, Saint Joseph, in our earthly strife, ever to lead a pure and blameless life.",
+    "translation": {
+      "latin": "Vírginum Custos et Pater, Sancte Ioseph, cuius fidéli custódiæ ipsa Innocéntia, Christus Iesus, et Virgo vírginum María commíssa fuit, te per hoc utrúmque caríssimum pignus Iesum et Maríam óbsecro et obtéstor, ut me ab omni immundítia præservátum mente incontamináta, puro corde et casto córpore Iesu et Maríæ semper fácias castíssime famulári. Amen.\nFac nos innócuam, Ioseph, decúrrere vitam, sitque tuo semper tuta patrocínio."
+    },
+    "attribution": "Traditional",
+    "notes": "3 years; 7 years on Wednesdays and during March. Prayer for purity through St. Joseph's intercession",
+    "categories": ["saints", "joseph", "purity", "protection"],
+    "description": "Prayer to St. Joseph for protection of purity and chastity",
+    "tags": ["saints", "joseph", "purity", "protection", "march"],
+    "isLiturgical": false,
+    "liturgicalPriority": 5
+  },
+  {
+    "id": "o_mary_conceived_without_sin",
+    "title": "O Mary, Conceived Without Sin",
+    "text": "O Mary, conceived without sin, pray for us who have recourse to thee!",
+    "translation": {
+      "latin": "O María, sine labe concépta, ora pro nobis, qui confúgimus ad te!"
+    },
+    "attribution": "Miraculous Medal",
+    "notes": "Prayer from the Miraculous Medal apparition. Associated with the Immaculate Conception",
+    "categories": ["marian", "miraculous_medal", "immaculate_conception"],
+    "description": "Prayer from the Miraculous Medal apparition to St. Catherine Labouré",
+    "tags": ["marian", "miraculous_medal", "immaculate_conception", "december"],
+    "isLiturgical": false,
+    "liturgicalPriority": 6
+  },
+  {
+    "id": "jesus_mary_joseph",
+    "title": "Jesus, Mary, and Joseph",
+    "text": "Jesus, Mary, and Joseph, I give thee my heart and my soul.\nJesus, Mary, and Joseph, assist me in my last agony.\nJesus, Mary, and Joseph, let me breathe forth my spirit in peace with thee.",
+    "translation": {
+      "latin": "Iesu, María, Ioseph, vobis cor et ánimam meam dono.\nIesu, María, Ioseph, adstáte mihi in extrémo agóne.\nIesu, María, Ioseph, in pace vobíscum dórmiam et requiéscam."
+    },
+    "attribution": "Traditional",
+    "notes": "7 years each time. Invocation of the Holy Family for protection in life and death",
+    "categories": ["holy_family", "protection", "death"],
+    "description": "Traditional invocation of the Holy Family for protection",
+    "tags": ["holy_family", "protection", "death", "february"],
+    "isLiturgical": false,
+    "liturgicalPriority": 6
+  }
+]

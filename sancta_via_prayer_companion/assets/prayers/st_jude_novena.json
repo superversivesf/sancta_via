@@ -1,0 +1,31 @@
+{
+  "id": "st_jude_novena",
+  "title": "Novena Prayer to St. Jude",
+  "text": "Most holy Apostle, St. Jude,\nfaithful servant and friend of Jesus,\nthe Church honors and invokes you universally\nas the patron of hopeless cases,\nof things almost despaired of.\nPray for me, I am so helpless and alone.\n\nIntercede with God for me\nthat He bring visible and speedy help\nwhere help is almost despaired of.\nCome to my assistance in this great need\nthat I may receive the consolation\nand help of heaven in all my necessities,\ntribulations, and sufferings,\nparticularly [mention your request],\nand that I may praise God with you and all the saints\nforever.\n\nI promise, O blessed St. Jude,\nto be ever mindful of this great favor\ngranted me by God\nand to always honor you\nas my special and powerful patron,\nand to gratefully encourage devotion to you.\nAmen.",
+  "translation": {
+    "latin": "Sanctissime Apostole, Sancte Iuda,\nfidelis serve et amice Iesu,\nEcclesia te honorat et invocat universaliter\ntanquam patronum casuum desperatorum,\nrerum fere desperatarum.\nOra pro me, tam inops et solus sum.\n\nIntercede apud Deum pro me\nut Ipse adferat visibile et veloce auxilium\nubi auxilium fere desperatur.\nVeni in auxilium meum in hac magna necessitate\nut consolationem accipiam\net auxilium caeli in omnibus necessitatibus meis,\ntribulationibus et passionibus,\npraesertim [mentio petitionem tuam],\net ut Deum laudem tecum et omnibus sanctis\nin perpetuum.\nAmen."
+  },
+  "attribution": "Traditional Novena Prayer to St. Jude",
+  "notes": "St. Jude Thaddeus, one of the twelve apostles, is the patron saint of hopeless causes and desperate situations. This is the traditional novena prayer, often prayed for nine consecutive days for urgent needs. St. Jude's name was often confused with Judas Iscariot, leading to his being 'forgotten,' which is why he became the saint to turn to when all else fails.",
+  "tags": [
+    "st_jude",
+    "hopeless_cases",
+    "novena",
+    "desperate"
+  ],
+  "difficulty": "moderate",
+  "audience": [
+    "adults",
+    "teens"
+  ],
+  "liturgical_season": null,
+  "feast_day": "October 28",
+  "categories": [
+    "saints"
+  ],
+  "description": "Traditional novena prayer to St. Jude for hopeless causes",
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

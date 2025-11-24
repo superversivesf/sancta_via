@@ -1,0 +1,29 @@
+{
+  "id": "st_ephrem_lenten_prayer",
+  "title": "Prayer of St. Ephrem the Syrian",
+  "text": "O Lord and Master of my life,\ntake from me the spirit of sloth,\nfaint-heartedness,\nlust of power,\nand idle talk.\n\nBut give rather the spirit of chastity,\nhumility,\npatience,\nand love to Thy servant.\n\nYea, O Lord and King,\ngrant me to see my own errors\nand not to judge my brother;\nfor Thou art blessed\nfrom all ages to all ages.\nAmen.",
+  "translation": {
+    "slavonic": "Господи и Владыко живота моего,\nдух праздности, уныния,\nлюбоначалия и празднословия не даждь ми.\n\nДух же целомудрия, смиренномудрия,\nтерпения и любве даруй ми, рабу Твоему.\n\nЕй, Господи, Царю,\nдаруй ми зрети моя прегрешения\nи не осуждати брата моего,\nяко благословен еси\nво веки веков.\nАминь.",
+    "greek": "Κύριε καὶ Δέσποτα τῆς ζωῆς μου,\nπνεῦμα ἀργίας, περιεργίας, φιλαρχίας,\nκαὶ ἀργολογίας μή μοι δῷς.\n\nΠνεῦμα δὲ σωφροσύνης, ταπεινοφροσύνης,\nὑπομονῆς καὶ ἀγάπης χάρισαί μοι τῷ σῷ δούλῳ.\n\nΝαί, Κύριε Βασιλεῦ,\nδώρησαί μοι τοῦ ὁρᾶν τὰ ἐμὰ πταίσματα,\nκαὶ μὴ κατακρίνειν τὸν ἀδελφόν μου·\nὅτι εὐλογητὸς εἶ\nεἰς τοὺς αἰῶνας τῶν αἰώνων.\nἈμήν."
+  },
+  "attribution": "St. Ephrem the Syrian (4th century)",
+  "notes": "This prayer is traditionally prayed during Great Lent in the Eastern Orthodox and Eastern Catholic Churches, often accompanied by prostrations. It is considered one of the most important Lenten prayers in Eastern Christianity. St. Ephrem was a Syrian deacon and prolific hymn writer, honored as a Doctor of the Church. The prayer identifies the chief vices to avoid and the virtues to pursue during the penitential season.",
+  "categories": [
+    "saints",
+    "lent",
+    "liturgical"
+  ],
+  "description": "A powerful Lenten prayer by St. Ephrem the Syrian seeking freedom from vice and growth in virtue",
+  "tags": [
+    "lent",
+    "repentance",
+    "virtue",
+    "humility",
+    "ephrem",
+    "eastern"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 9,
+  "liturgicalSeason": "lent",
+  "timeOfDay": "anytime"
+}

@@ -1,0 +1,31 @@
+{
+  "id": "st_francis_peace_prayer",
+  "title": "Prayer of St. Francis (Peace Prayer)",
+  "text": "Lord, make me an instrument of your peace:\nwhere there is hatred, let me sow love;\nwhere there is injury, pardon;\nwhere there is doubt, faith;\nwhere there is despair, hope;\nwhere there is darkness, light;\nwhere there is sadness, joy.\n\nO divine Master, grant that I may not so much seek\nto be consoled as to console,\nto be understood as to understand,\nto be loved as to love.\nFor it is in giving that we receive,\nit is in pardoning that we are pardoned,\nand it is in dying that we are born to eternal life.\nAmen.",
+  "translation": {
+    "latin": "Domine, fac me instrumentum pacis tuae:\nubi odium, amorem seram;\nubi iniuria, veniam;\nubi dubium, fidem;\nubi desperatio, spem;\nubi tenebrae, lucem;\nubi tristitia, gaudium.\n\nO divine Magister, da ut non tam quaeram\nconsolari quam consolari,\nintelligi quam intelligere,\namari quam amare.\nNam dando recipimus,\nignoscendo ignoscimur,\net moriendo in vitam aeternam nascimur.\nAmen."
+  },
+  "attribution": "Attributed to St. Francis of Assisi (Franciscan tradition)",
+  "notes": "The famous Peace Prayer captures the spirit of St. Francis perfectly - his dedication to peace, poverty, and service to others. Though not found in his earliest writings, it embodies his spirituality and has become one of the most beloved prayers in Christianity. St. Francis is the patron saint of animals, ecology, and Italy.",
+  "tags": [
+    "st_francis",
+    "peace",
+    "service",
+    "love"
+  ],
+  "difficulty": "moderate",
+  "audience": [
+    "adults",
+    "teens"
+  ],
+  "liturgical_season": null,
+  "feast_day": "October 4",
+  "categories": [
+    "saints"
+  ],
+  "description": "The famous Peace Prayer capturing St. Francis' spirit of peace and service",
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

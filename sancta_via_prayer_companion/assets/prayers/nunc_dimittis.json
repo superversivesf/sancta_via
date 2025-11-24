@@ -1,0 +1,31 @@
+{
+  "id": "nunc_dimittis",
+  "title": "Nunc Dimittis (Song of Simeon)",
+  "text": "Lord, now you let your servant go in peace;\nyour word has been fulfilled:\nmy own eyes have seen the salvation\nwhich you prepared in the sight of every people,\na light to reveal you to the nations\nand the glory of your people Israel.\n\nGlory to the Father, and to the Son, and to the Holy Spirit,\nas it was in the beginning, is now, and ever shall be,\nworld without end. Amen.",
+  "translation": {
+    "latin": "Nunc dimittis servum tuum, Domine,\nsecundum verbum tuum in pace:\nquia viderunt oculi mei salutare tuum\nquod parasti ante faciem omnium populorum:\nlumen ad revelationem gentium,\net gloriam plebis tuae Israel.\n\nGloria Patri, et Filio, et Spiritui Sancto,\nsicut erat in principio, et nunc, et semper,\net in saecula saeculorum. Amen."
+  },
+  "attribution": "The Canticle of Simeon (Luke 2:29-32) - Liturgy of the Hours",
+  "notes": "The Nunc Dimittis is the canticle of Simeon when he held the infant Jesus in the Temple (Luke 2:29-32). It's traditionally prayed at Compline as we prepare for sleep, expressing the peace that comes from having encountered Christ. Simeon was ready to die in peace having seen the Messiah.",
+  "tags": [
+    "nunc_dimittis",
+    "simeon",
+    "canticle",
+    "peace"
+  ],
+  "difficulty": "moderate",
+  "audience": [
+    "adults",
+    "teens"
+  ],
+  "liturgical_season": null,
+  "feast_day": null,
+  "categories": [
+    "evening"
+  ],
+  "description": "The canticle of Simeon when he held the infant Jesus in the Temple",
+  "isLiturgical": true,
+  "liturgicalPriority": 7,
+  "liturgicalSeason": null,
+  "timeOfDay": "night"
+}

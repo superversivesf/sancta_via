@@ -1,0 +1,20 @@
+{
+  "id": "prayer_before_sleep",
+  "title": "Prayer Before Sleep",
+  "text": "Now I lay me down to sleep,\nI pray the Lord my soul to keep.\nIf I should die before I wake,\nI pray the Lord my soul to take.\nBless my family through the night,\nand wake me with the morning light.\nAmen.",
+  "attribution": "Traditional Catholic Evening Prayer",
+  "notes": "A simple evening prayer entrusting oneself to God's care during sleep. This prayer teaches children and adults to end the day with trust in God's protection and care.",
+  "categories": [
+    "evening"
+  ],
+  "description": "A simple evening prayer entrusting oneself to God's care during sleep",
+  "tags": [
+    "evening",
+    "sleep",
+    "protection"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 4,
+  "liturgicalSeason": null,
+  "timeOfDay": "night"
+}

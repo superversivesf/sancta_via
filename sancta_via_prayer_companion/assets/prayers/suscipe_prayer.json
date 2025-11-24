@@ -1,0 +1,32 @@
+{
+  "id": "suscipe_prayer",
+  "title": "Suscipe Prayer (Take and Receive)",
+  "text": "Lord Jesus Christ,\ntake all my freedom, my memory, my understanding, and my will.\nAll that I have and cherish you have given me.\nI surrender it all to be guided by your will.\nYour grace and your love\nare wealth enough for me.\nGive me these, Lord Jesus,\nand I ask for nothing more.\nAmen.",
+  "translation": {
+    "latin": "Suscipe, Domine, universam meam libertatem.\nAccipe memoriam, intellectum atque voluntatem omnem.\nQuidquid habeo vel possideo, mihi largitus es;\nid tibi totum restituo, ac tuae prorsus voluntati trado gubernandum.\nAmorem tui solum cum gratia tua mihi dones,\net dives sum satis, nec aliud quidquam ultra posco.\nAmen."
+  },
+  "attribution": "St. Ignatius of Loyola, Spiritual Exercises",
+  "notes": "The Suscipe (Latin for 'Take and Receive') is St. Ignatius of Loyola's prayer of complete surrender to God's will. It expresses total abandonment to Divine Providence and is often prayed after Communion as an act of thanksgiving and offering.",
+  "tags": [
+    "communion",
+    "surrender",
+    "st_ignatius",
+    "abandonment"
+  ],
+  "difficulty": "moderate",
+  "audience": [
+    "adults",
+    "teens"
+  ],
+  "liturgical_season": null,
+  "feast_day": null,
+  "categories": [
+    "mass",
+    "saints"
+  ],
+  "description": "St. Ignatius' prayer of complete surrender to God's will",
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

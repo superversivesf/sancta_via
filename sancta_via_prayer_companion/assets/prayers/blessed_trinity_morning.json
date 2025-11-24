@@ -1,0 +1,9 @@
+{
+  "id": "blessed_trinity_morning",
+  "title": "Blessed be the Holy Trinity (Morning Prayer)",
+  "description": "A traditional morning prayer blessing the Holy Trinity",
+  "text": "Blessed be the holy Creator and Ruler of all things, O holy and undivided Trinity, now, always, and throughout all the ages.",
+  "categories": ["trinity", "morning", "praise"],
+  "tags": ["trinity", "morning", "blessing", "praise"],
+  "timeOfDay": "morning"
+}
