@@ -1,0 +1,62 @@
+name: liturgical_calendar_app
+description: A focused Catholic liturgical calendar app with beautiful interface and detailed feast information
+publish_to: 'none'
+
+# App Store Information
+app_store:
+  display_name: "Sancta Via Calendar"
+  short_description: "Catholic liturgical calendar with feast information"
+  full_description: |
+    Sancta Via Calendar is a beautiful Catholic liturgical calendar app that helps you stay connected 
+    to the Church year. Features detailed feast information, seasonal themes, and traditional Catholic celebrations.
+  keywords: "catholic, liturgical, calendar, feast, saints, church year, seasons"
+  category: "Reference"
+  age_rating: "4+"
+
+# Version: major.minor.patch+build
+version: 1.1.14
+repository: https://github.com/superversivesf/sancta_via_liturgical_calendar_app
+homepage: https://sancta-via.net
+
+environment:
+  sdk: ^3.9.2
+  flutter: ">=3.9.2"
+
+dependencies:
+  cupertino_icons: ^1.0.8
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.6.1
+  flutter_staggered_animations: ^1.1.1
+  go_router: ^15.1.2
+  intl: ^0.20.2
+  material_color_utilities: ^0.11.1
+  package_info_plus: ^8.3.0
+  sancta_via_liturgical_calendar:
+    path: ../sancta_via_liturgical_calendar
+  sancta_via_liturgical_calendar_riverpod:
+    path: ../sancta_via_liturgical_calendar_riverpod
+  sancta_via_shared_ui:
+    path: ../sancta_via_shared_ui
+  shared_preferences: ^2.5.3
+  
+dev_dependencies:
+  cider: ^0.2.8
+  flutter_launcher_icons: ^0.14.4
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/app_icon.png
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_icon.png"
+  min_sdk_android: 21
