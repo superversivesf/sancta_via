@@ -1,0 +1,199 @@
+// This file contains the fixed version of the reading plan logic
+// The key changes are in ReadingPlan and ReadingProgress classes
+
+import 'package:flutter/material.dart';
+
+// Add this new field to ReadingProgress class
+class ReadingProgressFixed {
+  final String currentBook;
+  final int currentChapter;
+  final int bookIndex;
+  final List<String> books;
+  final bool isCompleted;
+  final DateTime? lastReadDate;
+  
+  // NEW: Track the scheduled reading position separately from actual progress
+  final String scheduledBook;
+  final int scheduledChapter;
+  final int scheduledBookIndex;
+  final DateTime? lastScheduleAdvancement; // When did we last advance the schedule
+
+  const ReadingProgressFixed({
+    required this.currentBook,
+    required this.currentChapter,
+    required this.bookIndex,
+    required this.books,
+    this.isCompleted = false,
+    this.lastReadDate,
+    // Initialize scheduled position to match current position
+    String? scheduledBook,
+    int? scheduledChapter,
+    int? scheduledBookIndex,
+    this.lastScheduleAdvancement,
+  }) : scheduledBook = scheduledBook ?? currentBook,
+       scheduledChapter = scheduledChapter ?? currentChapter,
+       scheduledBookIndex = scheduledBookIndex ?? bookIndex;
+
+  factory ReadingProgressFixed.start(BookCollection collection) {
+    final books = collection.bookNames;
+    return ReadingProgressFixed(
+      currentBook: books.first,
+      currentChapter: 1,
+      bookIndex: 0,
+      books: books,
+      isCompleted: false,
+      lastReadDate: null,
+      scheduledBook: books.first,
+      scheduledChapter: 1,
+      scheduledBookIndex: 0,
+      lastScheduleAdvancement: DateTime.now(),
+    );
+  }
+
+  ReadingProgressFixed copyWith({
+    String? currentBook,
+    int? currentChapter,
+    int? bookIndex,
+    List<String>? books,
+    bool? isCompleted,
+    DateTime? lastReadDate,
+    String? scheduledBook,
+    int? scheduledChapter,
+    int? scheduledBookIndex,
+    DateTime? lastScheduleAdvancement,
+  }) {
+    return ReadingProgressFixed(
+      currentBook: currentBook ?? this.currentBook,
+      currentChapter: currentChapter ?? this.currentChapter,
+      bookIndex: bookIndex ?? this.bookIndex,
+      books: books ?? this.books,
+      isCompleted: isCompleted ?? this.isCompleted,
+      lastReadDate: lastReadDate ?? this.lastReadDate,
+      scheduledBook: scheduledBook ?? this.scheduledBook,
+      scheduledChapter: scheduledChapter ?? this.scheduledChapter,
+      scheduledBookIndex: scheduledBookIndex ?? this.scheduledBookIndex,
+      lastScheduleAdvancement: lastScheduleAdvancement ?? this.lastScheduleAdvancement,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'currentBook': currentBook,
+      'currentChapter': currentChapter,
+      'bookIndex': bookIndex,
+      'books': books,
+      'isCompleted': isCompleted,
+      'lastReadDate': lastReadDate?.toIso8601String(),
+      'scheduledBook': scheduledBook,
+      'scheduledChapter': scheduledChapter,
+      'scheduledBookIndex': scheduledBookIndex,
+      'lastScheduleAdvancement': lastScheduleAdvancement?.toIso8601String(),
+    };
+  }
+
+  factory ReadingProgressFixed.fromJson(Map<String, dynamic> json) {
+    final books = List<String>.from(json['books']);
+    return ReadingProgressFixed(
+      currentBook: json['currentBook'],
+      currentChapter: json['currentChapter'],
+      bookIndex: json['bookIndex'],
+      books: books,
+      isCompleted: json['isCompleted'] ?? false,
+      lastReadDate: json['lastReadDate'] != null ? DateTime.parse(json['lastReadDate']) : null,
+      // Handle backward compatibility - if scheduled fields don't exist, use current position
+      scheduledBook: json['scheduledBook'] ?? json['currentBook'],
+      scheduledChapter: json['scheduledChapter'] ?? json['currentChapter'],
+      scheduledBookIndex: json['scheduledBookIndex'] ?? json['bookIndex'],
+      lastScheduleAdvancement: json['lastScheduleAdvancement'] != null 
+          ? DateTime.parse(json['lastScheduleAdvancement']) 
+          : null,
+    );
+  }
+}
+
+// Add this new class to handle today's reading calculation
+class TodaysReadingFixed {
+  final String planId;
+  final String planName;
+  
+  // These represent what SHOULD be read today according to schedule
+  final String scheduledBook;
+  final int scheduledStartChapter;
+  final int scheduledChaptersToRead;
+  
+  // These represent where the user actually is in their reading
+  final String currentBook;
+  final int currentChapter;
+  
+  final bool hasReadToday;
+  final BookCollection collection;
+
+  const TodaysReadingFixed({
+    required this.planId,
+    required this.planName,
+    required this.scheduledBook,
+    required this.scheduledStartChapter,
+    required this.scheduledChaptersToRead,
+    required this.currentBook,
+    required this.currentChapter,
+    required this.hasReadToday,
+    required this.collection,
+  });
+
+  factory TodaysReadingFixed.fromPlan(ReadingPlan plan) {
+    // Use the scheduled position for "today's reading"
+    return TodaysReadingFixed(
+      planId: plan.id,
+      planName: plan.name,
+      scheduledBook: plan.progress.scheduledBook, 
+      scheduledStartChapter: plan.progress.scheduledChapter,
+      scheduledChaptersToRead: plan.chaptersPerDay,
+      currentBook: plan.progress.currentBook,
+      currentChapter: plan.progress.currentChapter,
+      hasReadToday: plan.hasReadToday,
+      collection: plan.collection,
+    );
+  }
+
+  // What chapters should be read today according to schedule
+  List<int> get scheduledChapterRange {
+    return List.generate(scheduledChaptersToRead, (index) => scheduledStartChapter + index);
+  }
+
+  // Display text for today's scheduled reading
+  String get scheduledDisplayText {
+    if (scheduledChaptersToRead == 1) {
+      return '$scheduledBook $scheduledStartChapter';
+    } else {
+      final endChapter = scheduledStartChapter + scheduledChaptersToRead - 1;
+      return '$scheduledBook $scheduledStartChapter-$endChapter';
+    }
+  }
+
+  // Display text for where user actually is
+  String get currentPositionText {
+    return '$currentBook $currentChapter';
+  }
+
+  String get planDisplayText {
+    return '$planName: $scheduledDisplayText';
+  }
+
+  // Check if the user has read ahead of today's scheduled reading
+  bool get hasReadAhead {
+    if (currentBook != scheduledBook) {
+      // Different books - need to check book order (simplified for now)
+      return true; // Assume ahead if different book
+    }
+    return currentChapter > scheduledStartChapter;
+  }
+
+  // Check if the user has fallen behind the scheduled reading
+  bool get hasFallenBehind {
+    if (currentBook != scheduledBook) {
+      // Different books - need to check book order (simplified for now)
+      return false; // Assume not behind if different book
+    }
+    return currentChapter < scheduledStartChapter;
+  }
+}
