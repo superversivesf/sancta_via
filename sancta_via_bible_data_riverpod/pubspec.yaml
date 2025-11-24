@@ -29,6 +29,7 @@ dependencies:
     path: ../sancta_via_bible_data
 
 dev_dependencies:
+  cider: ^0.2.8
   flutter_test:
     sdk: flutter
   lints: ^4.0.0
