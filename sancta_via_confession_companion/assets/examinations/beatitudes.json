@@ -1,0 +1,329 @@
+{
+  "id": "beatitudes",
+  "title": "Examination Based on the Beatitudes",
+  "description": "A spiritual examination of conscience structured around Jesus's teachings on the Beatitudes from the Sermon on the Mount, guiding reflection on how we embody these teachings in daily life.",
+  "source": "Gospel of Matthew 5:3-10",
+  "target_audience": "All Catholics",
+  "categories": [
+    {
+      "id": "poor-in-spirit",
+      "title": "Blessed are the poor in spirit, for theirs is the kingdom of heaven.",
+      "description": "Being poor in spirit means recognizing our complete dependence on God and acknowledging that all good things come from Him.",
+      "items": [
+        {
+          "id": "poor-1",
+          "text": "Have I approached God with an attitude of entitlement rather than gratitude?",
+          "clarification": "Being poor in spirit is about spiritual humility and dependence on God, not material poverty."
+        },
+        {
+          "id": "poor-2",
+          "text": "Have I attempted to control situations rather than surrendering to God's will?"
+        },
+        {
+          "id": "poor-3",
+          "text": "Have I placed my trust in material possessions, talents, or achievements rather than in God?"
+        },
+        {
+          "id": "poor-4",
+          "text": "Have I been self-sufficient to the point of excluding God from my decisions and actions?"
+        },
+        {
+          "id": "poor-5",
+          "text": "Have I approached prayer with a humble heart, acknowledging my need for God's grace?"
+        },
+        {
+          "id": "poor-6",
+          "text": "Have I sought status, recognition, or superiority over others?"
+        },
+        {
+          "id": "poor-7",
+          "text": "Have I been grateful for God's blessings, recognizing them as gifts rather than entitlements or personal accomplishments?"
+        },
+        {
+          "id": "poor-8",
+          "text": "Have I been willing to admit my mistakes, sins, and need for forgiveness?"
+        }
+      ]
+    },
+    {
+      "id": "mourn",
+      "title": "Blessed are those who mourn, for they shall be comforted.",
+      "description": "This Beatitude encompasses sorrow for sin, empathy with others' suffering, and righteous grief over injustice in the world.",
+      "items": [
+        {
+          "id": "mourn-1",
+          "text": "Have I been indifferent to my own sinfulness or failed to experience sorrow for my sins?",
+          "clarification": "Mourning includes sorrow for sin, compassion for suffering, and righteous grief over injustice."
+        },
+        {
+          "id": "mourn-2",
+          "text": "Have I been insensitive to the pain and suffering of others?"
+        },
+        {
+          "id": "mourn-3",
+          "text": "Have I been indifferent to injustice and evil in the world?"
+        },
+        {
+          "id": "mourn-4",
+          "text": "Have I avoided situations that might expose me to others' suffering?"
+        },
+        {
+          "id": "mourn-5",
+          "text": "Have I comforted those who are grieving, lonely, or troubled?"
+        },
+        {
+          "id": "mourn-6",
+          "text": "Have I been quick to offer platitudes rather than genuine compassion to those who suffer?"
+        },
+        {
+          "id": "mourn-7",
+          "text": "Have I prayed for those who are suffering or in distress?"
+        },
+        {
+          "id": "mourn-8",
+          "text": "Have I sought comfort only in worldly things rather than turning to God in times of sorrow?"
+        }
+      ]
+    },
+    {
+      "id": "meek",
+      "title": "Blessed are the meek, for they shall inherit the earth.",
+      "description": "Meekness is not weakness, but strength under control. It means being gentle, patient, and humble in our dealings with others.",
+      "items": [
+        {
+          "id": "meek-1",
+          "text": "Have I insisted on my own way rather than being willing to yield to others?",
+          "clarification": "Meekness is strength under control - power exercised with gentleness and patience."
+        },
+        {
+          "id": "meek-2",
+          "text": "Have I been harsh, domineering, or controlling in my relationships?"
+        },
+        {
+          "id": "meek-3",
+          "text": "Have I responded to criticism or correction with defensiveness or anger rather than humility?"
+        },
+        {
+          "id": "meek-4",
+          "text": "Have I sought to impose my views on others rather than respecting their freedom and dignity?"
+        },
+        {
+          "id": "meek-5",
+          "text": "Have I been impatient or irritable rather than gentle and understanding?"
+        },
+        {
+          "id": "meek-6",
+          "text": "Have I used my position, authority, or strength to dominate rather than to serve others?"
+        },
+        {
+          "id": "meek-7",
+          "text": "Have I been willing to listen to others' perspectives with an open mind?"
+        },
+        {
+          "id": "meek-8",
+          "text": "Have I practiced self-control in my words, actions, and reactions to others?"
+        }
+      ]
+    },
+    {
+      "id": "hunger-righteousness",
+      "title": "Blessed are those who hunger and thirst for righteousness, for they shall be satisfied.",
+      "description": "This Beatitude calls us to deeply desire holiness and justice, both in our own lives and in society.",
+      "items": [
+        {
+          "id": "hunger-1",
+          "text": "Have I grown complacent in my spiritual life, satisfied with mediocrity rather than striving for holiness?",
+          "clarification": "This hunger compels us to seek holiness in our own lives and justice in society."
+        },
+        {
+          "id": "hunger-2",
+          "text": "Have I been more concerned with following rules than with growing in love for God and neighbor?"
+        },
+        {
+          "id": "hunger-3",
+          "text": "Have I been indifferent to injustice in my community or world?"
+        },
+        {
+          "id": "hunger-4",
+          "text": "Have I been reluctant to stand up for what is right when it was difficult or unpopular?"
+        },
+        {
+          "id": "hunger-5",
+          "text": "Have I worked and prayed for justice and the common good?"
+        },
+        {
+          "id": "hunger-6",
+          "text": "Have I sought to grow in virtue and holiness through prayer, sacraments, and spiritual practices?"
+        },
+        {
+          "id": "hunger-7",
+          "text": "Have I been content with superficial changes rather than deep conversion in areas of sin or weakness?"
+        },
+        {
+          "id": "hunger-8",
+          "text": "Have I been willing to sacrifice comfort, convenience, or status to pursue what is right?"
+        }
+      ]
+    },
+    {
+      "id": "merciful",
+      "title": "Blessed are the merciful, for they shall obtain mercy.",
+      "description": "Mercy involves compassion, forgiveness, and a willingness to help others in their need, as God has been merciful to us.",
+      "items": [
+        {
+          "id": "mercy-1",
+          "text": "Have I been harsh or judgmental toward others while seeking leniency for myself?",
+          "clarification": "Mercy is love's response to suffering - extending to others the compassion we've received from God."
+        },
+        {
+          "id": "mercy-2",
+          "text": "Have I withheld forgiveness from those who have hurt me?"
+        },
+        {
+          "id": "mercy-3",
+          "text": "Have I been indifferent to the needs of the poor, the sick, or the marginalized?"
+        },
+        {
+          "id": "mercy-4",
+          "text": "Have I practiced the corporal and spiritual works of mercy?"
+        },
+        {
+          "id": "mercy-5",
+          "text": "Have I been quick to criticize and slow to understand others' struggles?"
+        },
+        {
+          "id": "mercy-6",
+          "text": "Have I given others the benefit of the doubt, or jumped to negative conclusions about their motives?"
+        },
+        {
+          "id": "mercy-7",
+          "text": "Have I prayed for those who have wronged me?"
+        },
+        {
+          "id": "mercy-8",
+          "text": "Have I shown compassion to those suffering, even when inconvenient or costly to me?"
+        }
+      ]
+    },
+    {
+      "id": "pure-heart",
+      "title": "Blessed are the pure in heart, for they shall see God.",
+      "description": "Purity of heart means integrity, sincerity, and singleness of purpose in seeking God above all else.",
+      "items": [
+        {
+          "id": "pure-1",
+          "text": "Have I been hypocritical, presenting one face to the world while harboring different thoughts and intentions?",
+          "clarification": "Purity of heart is more than sexual purity - it encompasses integrity, sincerity, and single-minded devotion to God."
+        },
+        {
+          "id": "pure-2",
+          "text": "Have I been dishonest in my words or actions?"
+        },
+        {
+          "id": "pure-3",
+          "text": "Have I harbored impure thoughts, images, or desires instead of guarding my heart and mind?"
+        },
+        {
+          "id": "pure-4",
+          "text": "Have I sought to purify my intentions, doing good for God's glory rather than for recognition or reward?"
+        },
+        {
+          "id": "pure-5",
+          "text": "Have I entertained media, conversations, or activities that have corrupted my mind or heart?"
+        },
+        {
+          "id": "pure-6",
+          "text": "Have I been authentic and transparent in my relationships with others?"
+        },
+        {
+          "id": "pure-7",
+          "text": "Have I maintained healthy boundaries to protect my heart and mind from corruption?"
+        },
+        {
+          "id": "pure-8",
+          "text": "Have I practiced simplicity of intention, seeking to please God in all things?"
+        }
+      ]
+    },
+    {
+      "id": "peacemakers",
+      "title": "Blessed are the peacemakers, for they shall be called children of God.",
+      "description": "Peacemaking goes beyond avoiding conflict to actively building harmony, reconciliation, and understanding in our relationships and communities.",
+      "items": [
+        {
+          "id": "peace-1",
+          "text": "Have I stirred up conflict, gossip, or division rather than promoting peace and unity?",
+          "clarification": "Peacemaking is not merely avoiding conflict, but actively building harmony and reconciliation."
+        },
+        {
+          "id": "peace-2",
+          "text": "Have I been willing to take the first step toward reconciliation when relationships are strained?"
+        },
+        {
+          "id": "peace-3",
+          "text": "Have I sought to understand others' perspectives or dismissed them without consideration?"
+        },
+        {
+          "id": "peace-4",
+          "text": "Have I used my words to heal and unite rather than to wound and divide?"
+        },
+        {
+          "id": "peace-5",
+          "text": "Have I prayed for peace and unity in my family, Church, community, and world?"
+        },
+        {
+          "id": "peace-6",
+          "text": "Have I worked to resolve conflicts through dialogue and understanding rather than force or manipulation?"
+        },
+        {
+          "id": "peace-7",
+          "text": "Have I cultivated peace in my own heart through prayer, forgiveness, and trust in God?"
+        },
+        {
+          "id": "peace-8",
+          "text": "Have I been a voice of moderation and charity in polarized discussions or situations?"
+        }
+      ]
+    },
+    {
+      "id": "persecuted",
+      "title": "Blessed are those who are persecuted for righteousness' sake, for theirs is the kingdom of heaven.",
+      "description": "This Beatitude calls us to remain faithful to Christ and his teachings even when it brings opposition, ridicule, or suffering.",
+      "items": [
+        {
+          "id": "persecuted-1",
+          "text": "Have I compromised my faith or values to avoid criticism or conflict?",
+          "clarification": "This beatitude calls us to faithfulness even when it brings opposition or suffering."
+        },
+        {
+          "id": "persecuted-2",
+          "text": "Have I remained silent about my faith when I should have spoken up?"
+        },
+        {
+          "id": "persecuted-3",
+          "text": "Have I supported fellow Christians who face persecution or discrimination?"
+        },
+        {
+          "id": "persecuted-4",
+          "text": "Have I complained about minor inconveniences while ignoring the severe persecution others face for their faith?"
+        },
+        {
+          "id": "persecuted-5",
+          "text": "Have I been willing to accept criticism or misunderstanding for adhering to Church teaching?"
+        },
+        {
+          "id": "persecuted-6",
+          "text": "Have I prayed for those who oppose or persecute the Church?"
+        },
+        {
+          "id": "persecuted-7",
+          "text": "Have I prayed for the strength to remain faithful to Christ regardless of the cost?"
+        },
+        {
+          "id": "persecuted-8",
+          "text": "Have I responded to opposition with patience and love rather than anger or retaliation?"
+        }
+      ]
+    }
+  ]
+}

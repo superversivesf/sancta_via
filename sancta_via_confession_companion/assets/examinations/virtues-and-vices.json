@@ -1,0 +1,430 @@
+{
+  "id": "virtues-and-vices",
+  "title": "Examination Based on Seven Virtues and Vices",
+  "description": "A thorough examination of conscience structured around the seven virtues (theological and cardinal) and the seven deadly sins, helping you reflect on your internal dispositions.",
+  "source": "Traditional Catholic Teaching",
+  "target_audience": "Adults and Young Adults",
+  "categories": [
+    {
+      "id": "theological-virtues",
+      "title": "Theological Virtues",
+      "description": "The theological virtues (Faith, Hope, and Charity) relate directly to God and are infused by Him into the faithful.",
+      "items": [
+        {
+          "id": "faith-1",
+          "text": "Have I neglected to deepen my understanding of the faith through Scripture, Catechism, or spiritual reading?",
+          "clarification": "Faith seeks understanding and grows through ongoing formation."
+        },
+        {
+          "id": "faith-2",
+          "text": "Have I doubted God's truths or teachings of the Church without sincerely seeking answers?"
+        },
+        {
+          "id": "faith-3",
+          "text": "Have I been reluctant to share my faith when opportunities arose?"
+        },
+        {
+          "id": "faith-4",
+          "text": "Have I been ashamed of my Catholic identity in certain environments or company?"
+        },
+        {
+          "id": "faith-5",
+          "text": "Have I engaged with content (media, conversations, reading) that undermines my faith without discernment?"
+        },
+        {
+          "id": "hope-1",
+          "text": "Have I given in to despair, believing that my sins are too great for God's mercy?",
+          "clarification": "Hope trusts in Christ's promises and God's mercy, even when we fail."
+        },
+        {
+          "id": "hope-2",
+          "text": "Have I presumed on God's mercy, sinning with the expectation of easy forgiveness?"
+        },
+        {
+          "id": "hope-3",
+          "text": "Have I placed my ultimate hope in worldly things (wealth, success, relationships) rather than in God?"
+        },
+        {
+          "id": "hope-4",
+          "text": "Have I lost trust in God's providence during difficult times?"
+        },
+        {
+          "id": "hope-5",
+          "text": "Have I succumbed to anxiety and worry rather than trusting God with my future?"
+        },
+        {
+          "id": "charity-1",
+          "text": "Have I failed to love God above all things, placing other priorities before my relationship with Him?",
+          "clarification": "Charity (love) is the greatest virtue, directing all other virtues to their proper end in God."
+        },
+        {
+          "id": "charity-2",
+          "text": "Have I failed to see and serve Christ in others, especially the poor, vulnerable, or difficult people?"
+        },
+        {
+          "id": "charity-3",
+          "text": "Have I withheld forgiveness from others while seeking it for myself?"
+        },
+        {
+          "id": "charity-4",
+          "text": "Have I been indifferent to the physical, emotional, or spiritual needs of those around me?"
+        },
+        {
+          "id": "charity-5",
+          "text": "Have I failed to pray for others, especially those with whom I have difficulty?"
+        }
+      ]
+    },
+    {
+      "id": "cardinal-virtues",
+      "title": "Cardinal Virtues",
+      "description": "The cardinal virtues (Prudence, Justice, Fortitude, and Temperance) are human virtues that can be acquired through human effort, aided by grace.",
+      "items": [
+        {
+          "id": "prudence-1",
+          "text": "Have I made important decisions impulsively, without prayer and careful consideration?",
+          "clarification": "Prudence is right reason in action - discerning the true good in every circumstance and choosing the right means of achieving it."
+        },
+        {
+          "id": "prudence-2",
+          "text": "Have I sought wise counsel when needed, or insisted on my own judgment alone?"
+        },
+        {
+          "id": "prudence-3",
+          "text": "Have I failed to consider the consequences of my actions on myself and others?"
+        },
+        {
+          "id": "prudence-4",
+          "text": "Have I neglected to form my conscience properly according to Church teaching?"
+        },
+        {
+          "id": "justice-1",
+          "text": "Have I been dishonest in my work, studies, or business dealings?",
+          "clarification": "Justice is the constant and firm will to give God and neighbor their due."
+        },
+        {
+          "id": "justice-2",
+          "text": "Have I failed to make restitution for damage I've caused to others' property or reputation?"
+        },
+        {
+          "id": "justice-3",
+          "text": "Have I given God the worship and time that is His due?"
+        },
+        {
+          "id": "justice-4",
+          "text": "Have I treated others with the respect and dignity they deserve as children of God?"
+        },
+        {
+          "id": "justice-5",
+          "text": "Have I been complicit in unjust systems or practices without working for change?"
+        },
+        {
+          "id": "fortitude-1",
+          "text": "Have I given up in the face of difficulty rather than persevering in doing what is right?",
+          "clarification": "Fortitude ensures firmness in difficulties and constancy in pursuing the good."
+        },
+        {
+          "id": "fortitude-2",
+          "text": "Have I chosen what is easy over what is right?"
+        },
+        {
+          "id": "fortitude-3",
+          "text": "Have I avoided defending the truth out of fear of criticism or rejection?"
+        },
+        {
+          "id": "fortitude-4",
+          "text": "Have I neglected to stand up for the vulnerable when I could have helped?"
+        },
+        {
+          "id": "temperance-1",
+          "text": "Have I overindulged in food, drink, entertainment, or other pleasures?",
+          "clarification": "Temperance moderates the attraction of pleasures and provides balance in the use of created goods."
+        },
+        {
+          "id": "temperance-2",
+          "text": "Have I used alcohol or other substances to escape my problems?"
+        },
+        {
+          "id": "temperance-3",
+          "text": "Have I allowed my devices and digital media to consume excessive time or attention?"
+        },
+        {
+          "id": "temperance-4",
+          "text": "Have I practiced moderation in all areas of my life, including work and leisure?"
+        }
+      ]
+    },
+    {
+      "id": "pride",
+      "title": "Pride",
+      "description": "Pride is the excessive love of self and one's own excellence, placing oneself above others and even God.",
+      "items": [
+        {
+          "id": "pride-1",
+          "text": "Have I been unwilling to admit when I'm wrong?",
+          "clarification": "Pride is considered the root of all sin, from which other vices grow."
+        },
+        {
+          "id": "pride-2",
+          "text": "Have I refused to accept criticism or correction?"
+        },
+        {
+          "id": "pride-3",
+          "text": "Have I been boastful about my achievements or possessions?"
+        },
+        {
+          "id": "pride-4",
+          "text": "Have I been stubborn or argumentative rather than open to others' perspectives?"
+        },
+        {
+          "id": "pride-5",
+          "text": "Have I been overly concerned with my appearance or reputation?"
+        },
+        {
+          "id": "pride-6",
+          "text": "Have I presumed myself to be better than others?"
+        },
+        {
+          "id": "pride-7",
+          "text": "Have I taken credit for gifts and abilities without acknowledging God as their source?"
+        },
+        {
+          "id": "pride-8",
+          "text": "Have I thought I could achieve holiness or solve problems through my own efforts alone, without God's grace?"
+        }
+      ]
+    },
+    {
+      "id": "envy",
+      "title": "Envy",
+      "description": "Envy is sorrow at another's good fortune and the desire to possess what others have.",
+      "items": [
+        {
+          "id": "envy-1",
+          "text": "Have I resented others' success, talents, or possessions?",
+          "clarification": "Envy sees another's good as a diminishment of oneself, rather than rejoicing in others' blessings."
+        },
+        {
+          "id": "envy-2",
+          "text": "Have I taken pleasure in hearing of others' failures or problems?"
+        },
+        {
+          "id": "envy-3",
+          "text": "Have I compared myself with others in ways that lead to discontent?"
+        },
+        {
+          "id": "envy-4",
+          "text": "Have I spoken critically of those I envy in an attempt to diminish them?"
+        },
+        {
+          "id": "envy-5",
+          "text": "Have I failed to celebrate others' achievements and joys?"
+        },
+        {
+          "id": "envy-6",
+          "text": "Have I allowed myself to become bitter about my own circumstances when seeing others' blessings?"
+        },
+        {
+          "id": "envy-7",
+          "text": "Have I been competitive in unhealthy ways that harm relationships?"
+        }
+      ]
+    },
+    {
+      "id": "wrath",
+      "title": "Wrath (Anger)",
+      "description": "Wrath is uncontrolled feelings of hatred and anger that can lead to a desire for revenge.",
+      "items": [
+        {
+          "id": "wrath-1",
+          "text": "Have I allowed anger to control my actions or words?",
+          "clarification": "While anger itself can be justified, wrath refers to excessive or misdirected anger that harms self and others."
+        },
+        {
+          "id": "wrath-2",
+          "text": "Have I harbored resentment or refused to forgive others?"
+        },
+        {
+          "id": "wrath-3",
+          "text": "Have I used harsh or hostile language that hurts others?"
+        },
+        {
+          "id": "wrath-4",
+          "text": "Have I wished harm or revenge on those who hurt me?"
+        },
+        {
+          "id": "wrath-5",
+          "text": "Have I been impatient or irritable with others over minor matters?"
+        },
+        {
+          "id": "wrath-6",
+          "text": "Have I allowed my anger to erupt in rage or violent behavior?"
+        },
+        {
+          "id": "wrath-7",
+          "text": "Have I been passive-aggressive rather than addressing conflicts directly and charitably?"
+        },
+        {
+          "id": "wrath-8",
+          "text": "Have I been easily triggered into anger rather than maintaining peace in difficult situations?"
+        }
+      ]
+    },
+    {
+      "id": "sloth",
+      "title": "Sloth (Acedia)",
+      "description": "Sloth is spiritual laziness that leads to neglect of spiritual growth and duties toward God and neighbor.",
+      "items": [
+        {
+          "id": "sloth-1",
+          "text": "Have I been lukewarm in my spiritual life, doing the minimum or acting out of mere routine?",
+          "clarification": "Sloth is not merely laziness, but a spiritual apathy that neglects love of God and neighbor."
+        },
+        {
+          "id": "sloth-2",
+          "text": "Have I neglected prayer, sacraments, or spiritual reading due to indifference?"
+        },
+        {
+          "id": "sloth-3",
+          "text": "Have I procrastinated in doing good or fulfilling my responsibilities?"
+        },
+        {
+          "id": "sloth-4",
+          "text": "Have I wasted time in excessive entertainment, social media, or other distractions?"
+        },
+        {
+          "id": "sloth-5",
+          "text": "Have I been careless or halfhearted in my work or service to others?"
+        },
+        {
+          "id": "sloth-6",
+          "text": "Have I avoided spiritual or moral challenges that would lead to growth?"
+        },
+        {
+          "id": "sloth-7",
+          "text": "Have I neglected my duties to family, church, or community?"
+        },
+        {
+          "id": "sloth-8",
+          "text": "Have I given up on the pursuit of holiness because it seems too difficult?"
+        }
+      ]
+    },
+    {
+      "id": "greed",
+      "title": "Greed (Avarice)",
+      "description": "Greed is the excessive desire for material possessions and wealth.",
+      "items": [
+        {
+          "id": "greed-1",
+          "text": "Have I been excessively concerned with acquiring money or possessions?",
+          "clarification": "Greed distorts our relationship with material goods, turning means into ends."
+        },
+        {
+          "id": "greed-2",
+          "text": "Have I failed to be generous with my resources, time, and talents?"
+        },
+        {
+          "id": "greed-3",
+          "text": "Have I been so focused on financial security that I failed to trust in God's providence?"
+        },
+        {
+          "id": "greed-4",
+          "text": "Have I been wasteful or extravagant while neglecting to help those in need?"
+        },
+        {
+          "id": "greed-5",
+          "text": "Have I been dishonest or unethical in financial matters?"
+        },
+        {
+          "id": "greed-6",
+          "text": "Have I envied others' possessions or resented their prosperity?"
+        },
+        {
+          "id": "greed-7",
+          "text": "Have I measured my worth or others' worth by material standards?"
+        },
+        {
+          "id": "greed-8",
+          "text": "Have I failed to detach myself from material things, allowing them to become too important?"
+        }
+      ]
+    },
+    {
+      "id": "gluttony",
+      "title": "Gluttony",
+      "description": "Gluttony is the overindulgence or overconsumption of food, drink, or other things to the point of waste and excess.",
+      "items": [
+        {
+          "id": "gluttony-1",
+          "text": "Have I eaten or drunk to excess, beyond what is reasonable for health and pleasure?",
+          "clarification": "Gluttony is not just about quantity but also about an inordinate attachment to the pleasure of eating and drinking."
+        },
+        {
+          "id": "gluttony-2",
+          "text": "Have I used food or alcohol as a means of escape or comfort rather than dealing with problems?"
+        },
+        {
+          "id": "gluttony-3",
+          "text": "Have I neglected moderation and discipline in my consumption habits?"
+        },
+        {
+          "id": "gluttony-4",
+          "text": "Have I been wasteful with food while others go hungry?"
+        },
+        {
+          "id": "gluttony-5",
+          "text": "Have I been overly concerned with food, spending excessive time or money on it?"
+        },
+        {
+          "id": "gluttony-6",
+          "text": "Have I neglected fasting or abstinence as prescribed by the Church?"
+        },
+        {
+          "id": "gluttony-7",
+          "text": "Have I sought instant gratification in other areas of life, unable to delay satisfaction or practice self-denial?"
+        }
+      ]
+    },
+    {
+      "id": "lust",
+      "title": "Lust",
+      "description": "Lust is the disordered desire for sexual pleasure outside the context of marriage.",
+      "items": [
+        {
+          "id": "lust-1",
+          "text": "Have I deliberately entertained impure thoughts or desires?",
+          "clarification": "Lust reduces persons to objects for pleasure rather than recognizing their inherent dignity."
+        },
+        {
+          "id": "lust-2",
+          "text": "Have I viewed pornography or other media that degrades the dignity of the human person?"
+        },
+        {
+          "id": "lust-3",
+          "text": "Have I engaged in impure conversations, jokes, or entertainment?"
+        },
+        {
+          "id": "lust-4",
+          "text": "Have I failed to guard my eyes, heart, and mind from temptations to impurity?"
+        },
+        {
+          "id": "lust-5",
+          "text": "Have I engaged in inappropriate physical intimacy outside of marriage?"
+        },
+        {
+          "id": "lust-6",
+          "text": "Have I treated others as objects for pleasure rather than as persons made in God's image?"
+        },
+        {
+          "id": "lust-7",
+          "text": "Have I dressed or behaved in ways intended to tempt others to lust?"
+        },
+        {
+          "id": "lust-8",
+          "text": "Have I neglected to cultivate the virtue of chastity according to my state in life?"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,473 @@
+{
+  "id": "ten-commandments",
+  "title": "Traditional Examination Based on Ten Commandments",
+  "description": "A thorough examination of conscience based on the Ten Commandments, suitable for adults preparing for confession.",
+  "source": "Traditional Catholic Examination",
+  "target_audience": "Adults",
+  "categories": [
+    {
+      "id": "commandment-1",
+      "title": "First Commandment: \"I am the Lord your God, you shall not have strange gods before me.\"",
+      "description": "This commandment asks us to put God first in our lives and to avoid idolatry in all its forms.",
+      "items": [
+        {
+          "id": "cmd1-item1",
+          "text": "Have I neglected to pray daily?",
+          "clarification": "Prayer is our lifeline to God. Daily prayer helps us maintain our relationship with Him."
+        },
+        {
+          "id": "cmd1-item2",
+          "text": "Have I denied my faith or doubted God's existence?"
+        },
+        {
+          "id": "cmd1-item3",
+          "text": "Have I dabbled in occult practices, horoscopes, tarot cards, or superstitions?",
+          "clarification": "These practices attribute power to created things rather than to God, the Creator."
+        },
+        {
+          "id": "cmd1-item4",
+          "text": "Have I been involved with New Age practices, witchcraft, or consulted psychics or mediums?"
+        },
+        {
+          "id": "cmd1-item5",
+          "text": "Have I put material possessions, career, relationships, or pleasure ahead of God in my life?"
+        },
+        {
+          "id": "cmd1-item6",
+          "text": "Have I been lukewarm in my faith or spiritual life?"
+        },
+        {
+          "id": "cmd1-item7",
+          "text": "Have I presumed on God's mercy by sinning deliberately with the intention of going to confession later?"
+        },
+        {
+          "id": "cmd1-item8",
+          "text": "Have I despaired of God's mercy or His willingness to forgive me?"
+        },
+        {
+          "id": "cmd1-item9",
+          "text": "Have I received Holy Communion in a state of mortal sin?"
+        },
+        {
+          "id": "cmd1-item10",
+          "text": "Have I deliberately omitted a mortal sin in a previous confession?"
+        },
+        {
+          "id": "cmd1-item11",
+          "text": "Have I failed to perform the penance given to me in confession?"
+        }
+      ]
+    },
+    {
+      "id": "commandment-2",
+      "title": "Second Commandment: \"You shall not take the name of the Lord your God in vain.\"",
+      "description": "This commandment requires us to show respect for God's name and avoid misusing it.",
+      "items": [
+        {
+          "id": "cmd2-item1",
+          "text": "Have I used God's name carelessly or in anger?"
+        },
+        {
+          "id": "cmd2-item2",
+          "text": "Have I used Jesus' name as an expression of surprise or anger rather than in prayer?"
+        },
+        {
+          "id": "cmd2-item3",
+          "text": "Have I spoken irreverently about God, saints, or sacred things?"
+        },
+        {
+          "id": "cmd2-item4",
+          "text": "Have I used profane or vulgar language?"
+        },
+        {
+          "id": "cmd2-item5",
+          "text": "Have I made promises in God's name that I didn't keep?"
+        },
+        {
+          "id": "cmd2-item6",
+          "text": "Have I shown disrespect for priests, religious, or others consecrated to God?"
+        },
+        {
+          "id": "cmd2-item7",
+          "text": "Have I spoken disrespectfully about the Church or her teachings?"
+        }
+      ]
+    },
+    {
+      "id": "commandment-3",
+      "title": "Third Commandment: \"Remember to keep holy the Sabbath day.\"",
+      "description": "This commandment calls us to worship God together as a community and to make Sunday a day of rest and renewal.",
+      "items": [
+        {
+          "id": "cmd3-item1",
+          "text": "Have I deliberately missed Mass on Sundays or Holy Days of Obligation without a serious reason?",
+          "clarification": "Missing Mass on Sundays or Holy Days of Obligation without a serious reason (such as illness or caring for the sick) is a mortal sin."
+        },
+        {
+          "id": "cmd3-item2",
+          "text": "Have I arrived late to Mass or left early without serious reason?"
+        },
+        {
+          "id": "cmd3-item3",
+          "text": "Have I been inattentive, willfully distracted, or irreverent at Mass?"
+        },
+        {
+          "id": "cmd3-item4",
+          "text": "Have I done unnecessary work on Sundays?"
+        },
+        {
+          "id": "cmd3-item5",
+          "text": "Have I failed to make Sunday a day of rest, prayer, and family time?"
+        },
+        {
+          "id": "cmd3-item6",
+          "text": "Have I failed to dress appropriately and modestly for Mass?"
+        },
+        {
+          "id": "cmd3-item7",
+          "text": "Have I failed to contribute to the support of the Church according to my means?"
+        }
+      ]
+    },
+    {
+      "id": "commandment-4",
+      "title": "Fourth Commandment: \"Honor your father and your mother.\"",
+      "description": "This commandment requires us to respect and care for our parents and all legitimate authority.",
+      "items": [
+        {
+          "id": "cmd4-item1",
+          "text": "Have I disobeyed or disrespected my parents or guardians?"
+        },
+        {
+          "id": "cmd4-item2",
+          "text": "Have I neglected to care for elderly or ill parents?"
+        },
+        {
+          "id": "cmd4-item3",
+          "text": "Have I failed to help with household responsibilities when able?"
+        },
+        {
+          "id": "cmd4-item4",
+          "text": "Have I treated my children with disrespect, impatience, or excessive anger?"
+        },
+        {
+          "id": "cmd4-item5",
+          "text": "Have I neglected the religious education and formation of my children?",
+          "clarification": "Parents are the primary educators of their children, especially in matters of faith."
+        },
+        {
+          "id": "cmd4-item6",
+          "text": "Have I failed to spend quality time with my family?"
+        },
+        {
+          "id": "cmd4-item7",
+          "text": "Have I been disrespectful to teachers, employers, or others in legitimate authority?"
+        },
+        {
+          "id": "cmd4-item8",
+          "text": "Have I failed to foster vocations to priesthood or religious life in my family?"
+        }
+      ]
+    },
+    {
+      "id": "commandment-5",
+      "title": "Fifth Commandment: \"You shall not kill.\"",
+      "description": "This commandment forbids unjust harm to human life and requires us to foster the physical, spiritual, and emotional well-being of ourselves and others.",
+      "items": [
+        {
+          "id": "cmd5-item1",
+          "text": "Have I harbored anger, resentment, or hatred in my heart toward anyone?"
+        },
+        {
+          "id": "cmd5-item2",
+          "text": "Have I deliberately wished evil upon another person?"
+        },
+        {
+          "id": "cmd5-item3",
+          "text": "Have I physically harmed anyone or wished to do so?"
+        },
+        {
+          "id": "cmd5-item4",
+          "text": "Have I verbally abused others through insults, harsh words, gossip, or ridicule?"
+        },
+        {
+          "id": "cmd5-item5",
+          "text": "Have I encouraged or assisted in an abortion, or advised someone to have one?"
+        },
+        {
+          "id": "cmd5-item6",
+          "text": "Have I supported euthanasia or assisted suicide?"
+        },
+        {
+          "id": "cmd5-item7",
+          "text": "Have I abused alcohol or drugs?"
+        },
+        {
+          "id": "cmd5-item8",
+          "text": "Have I failed to take care of my physical and mental health?"
+        },
+        {
+          "id": "cmd5-item9",
+          "text": "Have I deliberately harmed myself or contemplated suicide?"
+        },
+        {
+          "id": "cmd5-item10",
+          "text": "Have I been reckless in driving or endangered lives through careless behavior?"
+        },
+        {
+          "id": "cmd5-item11",
+          "text": "Have I been uncharitable to the poor and needy?"
+        },
+        {
+          "id": "cmd5-item12",
+          "text": "Have I failed to forgive someone or refused to seek reconciliation?"
+        }
+      ]
+    },
+    {
+      "id": "commandment-6",
+      "title": "Sixth Commandment: \"You shall not commit adultery.\"",
+      "description": "This commandment calls us to respect the dignity of our bodies, the sanctity of marriage, and the gift of sexuality.",
+      "items": [
+        {
+          "id": "cmd6-item1",
+          "text": "Have I willfully entertained impure thoughts or desires?",
+          "clarification": "Deliberately dwelling on impure thoughts rather than dismissing them."
+        },
+        {
+          "id": "cmd6-item2",
+          "text": "Have I looked at pornographic material (magazines, videos, websites)?"
+        },
+        {
+          "id": "cmd6-item3",
+          "text": "Have I engaged in impure conversations or told inappropriate jokes?"
+        },
+        {
+          "id": "cmd6-item4",
+          "text": "Have I engaged in impure acts alone (masturbation)?"
+        },
+        {
+          "id": "cmd6-item5",
+          "text": "Have I engaged in impure acts with another person outside of marriage?"
+        },
+        {
+          "id": "cmd6-item6",
+          "text": "Have I been unfaithful to my spouse in thought or deed?"
+        },
+        {
+          "id": "cmd6-item7",
+          "text": "Have I used artificial contraception or been sterilized for contraceptive purposes?",
+          "clarification": "The Church teaches that artificial contraception violates the procreative purpose of marriage."
+        },
+        {
+          "id": "cmd6-item8",
+          "text": "Have I engaged in or supported in vitro fertilization or other reproductive technologies contrary to Church teaching?"
+        },
+        {
+          "id": "cmd6-item9",
+          "text": "Have I dressed immodestly or behaved in a way that could lead others to sin?"
+        },
+        {
+          "id": "cmd6-item10",
+          "text": "Have I failed to respect the dignity of marriage in my speech or attitudes?"
+        }
+      ]
+    },
+    {
+      "id": "commandment-7",
+      "title": "Seventh Commandment: \"You shall not steal.\"",
+      "description": "This commandment requires respect for others' property and for economic justice.",
+      "items": [
+        {
+          "id": "cmd7-item1",
+          "text": "Have I stolen anything or helped someone else to do so?"
+        },
+        {
+          "id": "cmd7-item2",
+          "text": "Have I damaged others' property without making reparation?"
+        },
+        {
+          "id": "cmd7-item3",
+          "text": "Have I cheated in business dealings or taken unfair advantage of others?"
+        },
+        {
+          "id": "cmd7-item4",
+          "text": "Have I failed to return borrowed items?"
+        },
+        {
+          "id": "cmd7-item5",
+          "text": "Have I wasted food or resources that could have helped others?"
+        },
+        {
+          "id": "cmd7-item6",
+          "text": "Have I failed to give to the Church and to the poor according to my means?"
+        },
+        {
+          "id": "cmd7-item7",
+          "text": "Have I been envious of others' possessions?"
+        },
+        {
+          "id": "cmd7-item8",
+          "text": "Have I paid my employees a fair wage?"
+        },
+        {
+          "id": "cmd7-item9",
+          "text": "Have I been lazy at work or school, or failed to fulfill my duties?"
+        },
+        {
+          "id": "cmd7-item10",
+          "text": "Have I cheated on my taxes or avoided legitimate fees?"
+        },
+        {
+          "id": "cmd7-item11",
+          "text": "Have I gambled excessively or irresponsibly?"
+        },
+        {
+          "id": "cmd7-item12",
+          "text": "Have I practiced good stewardship of creation and the environment?"
+        }
+      ]
+    },
+    {
+      "id": "commandment-8",
+      "title": "Eighth Commandment: \"You shall not bear false witness against your neighbor.\"",
+      "description": "This commandment calls us to be truthful and to avoid damaging others' reputations.",
+      "items": [
+        {
+          "id": "cmd8-item1",
+          "text": "Have I lied or exaggerated the truth?"
+        },
+        {
+          "id": "cmd8-item2",
+          "text": "Have I engaged in gossip or spread rumors about others?"
+        },
+        {
+          "id": "cmd8-item3",
+          "text": "Have I damaged someone's reputation through revealing their faults without necessity?"
+        },
+        {
+          "id": "cmd8-item4",
+          "text": "Have I engaged in slander (saying something false about someone) or detraction (revealing someone's true faults without necessity)?"
+        },
+        {
+          "id": "cmd8-item5",
+          "text": "Have I failed to defend someone's reputation when I could have?"
+        },
+        {
+          "id": "cmd8-item6",
+          "text": "Have I betrayed others' trust or revealed confidential information?"
+        },
+        {
+          "id": "cmd8-item7",
+          "text": "Have I been guilty of rash judgment (assuming the worst of others without evidence)?"
+        },
+        {
+          "id": "cmd8-item8",
+          "text": "Have I failed to speak up for the truth, especially in defense of the faith or moral values?"
+        }
+      ]
+    },
+    {
+      "id": "commandment-9",
+      "title": "Ninth Commandment: \"You shall not covet your neighbor's wife.\"",
+      "description": "This commandment calls us to purity of heart and respect for the marriage covenant.",
+      "items": [
+        {
+          "id": "cmd9-item1",
+          "text": "Have I consented to impure or lustful thoughts about someone who is not my spouse?"
+        },
+        {
+          "id": "cmd9-item2",
+          "text": "Have I been envious of others' marriages or relationships?"
+        },
+        {
+          "id": "cmd9-item3",
+          "text": "Have I read books, magazines, or watched movies that lead to impure thoughts?"
+        },
+        {
+          "id": "cmd9-item4",
+          "text": "Have I deliberately sought out impure content on television, the internet, or social media?"
+        },
+        {
+          "id": "cmd9-item5",
+          "text": "Have I failed to guard my senses and imagination from impure influences?"
+        },
+        {
+          "id": "cmd9-item6",
+          "text": "Have I failed to pray for the virtue of chastity and purity of heart?"
+        }
+      ]
+    },
+    {
+      "id": "commandment-10",
+      "title": "Tenth Commandment: \"You shall not covet your neighbor's goods.\"",
+      "description": "This commandment calls us to detachment from material goods and freedom from envy and greed.",
+      "items": [
+        {
+          "id": "cmd10-item1",
+          "text": "Have I been greedy or materialistic, desiring excessive wealth or possessions?"
+        },
+        {
+          "id": "cmd10-item2",
+          "text": "Have I been envious of others' success, talents, or possessions?"
+        },
+        {
+          "id": "cmd10-item3",
+          "text": "Have I been discontent with what God has given me?"
+        },
+        {
+          "id": "cmd10-item4",
+          "text": "Have I been jealous of others or resentful of their good fortune?"
+        },
+        {
+          "id": "cmd10-item5",
+          "text": "Have I failed to trust in God's providence and care for my needs?"
+        },
+        {
+          "id": "cmd10-item6",
+          "text": "Have I been overly concerned with material success at the expense of spiritual growth?"
+        },
+        {
+          "id": "cmd10-item7",
+          "text": "Have I failed to share my blessings with others in need?"
+        },
+        {
+          "id": "cmd10-item8",
+          "text": "Have I been ungrateful for what I have?"
+        }
+      ]
+    },
+    {
+      "id": "precepts",
+      "title": "Precepts of the Church",
+      "description": "Catholics are also called to follow these specific precepts established by the Church.",
+      "items": [
+        {
+          "id": "precept-item1",
+          "text": "Have I failed to attend Mass on Sundays and Holy Days of Obligation?"
+        },
+        {
+          "id": "precept-item2",
+          "text": "Have I failed to confess my sins at least once a year?"
+        },
+        {
+          "id": "precept-item3",
+          "text": "Have I failed to receive Holy Communion at least during the Easter season?"
+        },
+        {
+          "id": "precept-item4",
+          "text": "Have I failed to observe the prescribed days of fasting and abstinence?",
+          "clarification": "Ash Wednesday and Good Friday are days of fast and abstinence; Fridays of Lent are days of abstinence from meat."
+        },
+        {
+          "id": "precept-item5",
+          "text": "Have I failed to contribute to the support of the Church according to my means?"
+        },
+        {
+          "id": "precept-item6",
+          "text": "Have I entered into marriage without following the laws of the Church regarding marriage?"
+        }
+      ]
+    }
+  ]
+}

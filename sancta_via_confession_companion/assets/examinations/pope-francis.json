@@ -1,0 +1,329 @@
+{
+  "id": "pope-francis",
+  "title": "Pope Francis Examination of Conscience",
+  "description": "An examination inspired by Pope Francis' teachings on mercy, care for creation, family, social justice, and the joy of the Gospel.",
+  "source": "Based on Pope Francis' Teachings and Writings",
+  "target_audience": "All Catholics",
+  "categories": [
+    {
+      "id": "mercy",
+      "title": "Mercy and Compassion",
+      "description": "Reflecting on how we extend God's mercy to others, a central theme of Pope Francis' papacy.",
+      "items": [
+        {
+          "id": "mercy-1",
+          "text": "Have I been quick to judge others rather than offering understanding and mercy?",
+          "clarification": "Pope Francis: 'A little bit of mercy makes the world less cold and more just.'"
+        },
+        {
+          "id": "mercy-2",
+          "text": "Have I gossiped about others, damaging their reputation?"
+        },
+        {
+          "id": "mercy-3",
+          "text": "Have I held grudges instead of offering forgiveness?"
+        },
+        {
+          "id": "mercy-4",
+          "text": "Have I been indifferent to others' suffering, especially the marginalized?"
+        },
+        {
+          "id": "mercy-5",
+          "text": "Have I shown compassion to those who have made mistakes or are struggling?"
+        },
+        {
+          "id": "mercy-6",
+          "text": "Have I recognized my own need for God's mercy while being stringent with others?"
+        },
+        {
+          "id": "mercy-7",
+          "text": "Have I practiced the corporal and spiritual works of mercy in concrete ways?"
+        },
+        {
+          "id": "mercy-8",
+          "text": "Have I reached out to those who feel excluded from the Church or society?"
+        }
+      ]
+    },
+    {
+      "id": "ecological",
+      "title": "Care for Our Common Home",
+      "description": "Examining our stewardship of creation based on Laudato Si'.",
+      "items": [
+        {
+          "id": "eco-1",
+          "text": "Have I recognized the earth as a gift from God that requires my responsible stewardship?",
+          "clarification": "Pope Francis in Laudato Si': 'The earth, our home, is beginning to look more and more like an immense pile of filth.'"
+        },
+        {
+          "id": "eco-2",
+          "text": "Have I been wasteful of resources like food, water, or energy?"
+        },
+        {
+          "id": "eco-3",
+          "text": "Have I made lifestyle choices that unnecessarily harm the environment?"
+        },
+        {
+          "id": "eco-4",
+          "text": "Have I considered how my consumption affects the poor and future generations?"
+        },
+        {
+          "id": "eco-5",
+          "text": "Have I taken concrete steps to reduce waste, pollution, and my carbon footprint?"
+        },
+        {
+          "id": "eco-6",
+          "text": "Have I cultivated gratitude and wonder for God's creation?"
+        },
+        {
+          "id": "eco-7",
+          "text": "Have I educated myself about environmental issues from a Catholic perspective?"
+        },
+        {
+          "id": "eco-8",
+          "text": "Have I advocated for environmental justice, especially for poor communities most affected by environmental degradation?"
+        }
+      ]
+    },
+    {
+      "id": "poor",
+      "title": "Option for the Poor",
+      "description": "Reflecting on our solidarity with and service to those in poverty.",
+      "items": [
+        {
+          "id": "poor-1",
+          "text": "Have I been indifferent to the plight of the poor and marginalized?",
+          "clarification": "Pope Francis: 'The measure of the greatness of a society is found in the way it treats those most in need.'"
+        },
+        {
+          "id": "poor-2",
+          "text": "Have I viewed the poor as objects of my charity rather than brothers and sisters with dignity?"
+        },
+        {
+          "id": "poor-3",
+          "text": "Have I accumulated possessions excessively while others lack necessities?"
+        },
+        {
+          "id": "poor-4",
+          "text": "Have I made the needs of the poor a priority in my charitable giving?"
+        },
+        {
+          "id": "poor-5",
+          "text": "Have I advocated for just social structures that address the causes of poverty?"
+        },
+        {
+          "id": "poor-6",
+          "text": "Have I recognized Christ in the face of the poor and suffering?"
+        },
+        {
+          "id": "poor-7",
+          "text": "Have I invested time in personally serving and building relationships with the poor?"
+        },
+        {
+          "id": "poor-8",
+          "text": "Have I simplified my lifestyle to share more generously with others?"
+        }
+      ]
+    },
+    {
+      "id": "family",
+      "title": "Family Life and Relationships",
+      "description": "Examining our faithfulness in family relationships, based on Amoris Laetitia.",
+      "items": [
+        {
+          "id": "family-1",
+          "text": "Have I made time for my family, or have I allowed work or other activities to take priority?",
+          "clarification": "Pope Francis in Amoris Laetitia: 'The welfare of the family is decisive for the future of the world.'"
+        },
+        {
+          "id": "family-2",
+          "text": "Have I been patient and kind with family members, especially when they make mistakes?"
+        },
+        {
+          "id": "family-3",
+          "text": "Have I expressed appreciation and gratitude to family members?"
+        },
+        {
+          "id": "family-4",
+          "text": "Have I brought prayer and faith discussions into family life?"
+        },
+        {
+          "id": "family-5",
+          "text": "Have I made our home a place of love, forgiveness, and understanding?"
+        },
+        {
+          "id": "family-6",
+          "text": "Have I been faithful to my marriage vows in thought and action?"
+        },
+        {
+          "id": "family-7",
+          "text": "As a parent, have I prioritized passing on the faith to my children through word and example?"
+        },
+        {
+          "id": "family-8",
+          "text": "Have I shown respect and care for elderly family members?"
+        },
+        {
+          "id": "family-9",
+          "text": "Have I worked to heal family conflicts through dialogue and forgiveness?"
+        }
+      ]
+    },
+    {
+      "id": "culture-encounter",
+      "title": "Culture of Encounter",
+      "description": "Reflecting on how we build relationships and break down walls of division, based on Fratelli Tutti.",
+      "items": [
+        {
+          "id": "encounter-1",
+          "text": "Have I closed myself off from people who are different from me in culture, politics, or beliefs?",
+          "clarification": "Pope Francis in Fratelli Tutti: 'No one can experience the true beauty of life without relating to others.'"
+        },
+        {
+          "id": "encounter-2",
+          "text": "Have I made an effort to genuinely listen to and understand those with whom I disagree?"
+        },
+        {
+          "id": "encounter-3",
+          "text": "Have I allowed political or ideological differences to damage relationships?"
+        },
+        {
+          "id": "encounter-4",
+          "text": "Have I engaged in polarizing debates rather than dignified dialogue?"
+        },
+        {
+          "id": "encounter-5",
+          "text": "Have I dehumanized others or reduced them to a single aspect of their identity?"
+        },
+        {
+          "id": "encounter-6",
+          "text": "Have I worked to build bridges across religious, cultural, or social divisions?"
+        },
+        {
+          "id": "encounter-7",
+          "text": "Have I welcomed migrants and refugees as brothers and sisters?"
+        },
+        {
+          "id": "encounter-8",
+          "text": "Have I participated in or remained silent about nationalism, racism, or xenophobia?"
+        }
+      ]
+    },
+    {
+      "id": "digital",
+      "title": "Digital World",
+      "description": "Examining our presence and behavior in the digital environment.",
+      "items": [
+        {
+          "id": "digital-1",
+          "text": "Have I used social media in ways that build up rather than tear down others?",
+          "clarification": "Pope Francis: 'The digital world can be an environment rich in humanity, a network not of wires but of people.'"
+        },
+        {
+          "id": "digital-2",
+          "text": "Have I spread misinformation, gossip, or falsehoods online?"
+        },
+        {
+          "id": "digital-3",
+          "text": "Have I engaged in online arguments that damage dignity and unity?"
+        },
+        {
+          "id": "digital-4",
+          "text": "Have I allowed digital devices to distract from present relationships and responsibilities?"
+        },
+        {
+          "id": "digital-5",
+          "text": "Have I maintained appropriate boundaries with technology to protect family time and prayer?"
+        },
+        {
+          "id": "digital-6",
+          "text": "Have I used digital tools to spread faith, hope, and love?"
+        },
+        {
+          "id": "digital-7",
+          "text": "Have I fostered authentic connection rather than superficial online interaction?"
+        }
+      ]
+    },
+    {
+      "id": "joy-gospel",
+      "title": "Joy of the Gospel",
+      "description": "Reflecting on our witness to the joy that comes from knowing Christ, based on Evangelii Gaudium.",
+      "items": [
+        {
+          "id": "joy-1",
+          "text": "Have I allowed worries, problems, or negativity to overshadow the joy of the Gospel?",
+          "clarification": "Pope Francis in Evangelii Gaudium: 'The joy of the gospel fills the hearts and lives of all who encounter Jesus.'"
+        },
+        {
+          "id": "joy-2",
+          "text": "Have I been a joyful witness to others of Christ's love and mercy?"
+        },
+        {
+          "id": "joy-3",
+          "text": "Have I shared my faith with others when opportunities arise?"
+        },
+        {
+          "id": "joy-4",
+          "text": "Have I allowed routine or complacency to diminish my enthusiasm for the Gospel?"
+        },
+        {
+          "id": "joy-5",
+          "text": "Have I cultivated gratitude for God's gifts rather than focusing on what I lack?"
+        },
+        {
+          "id": "joy-6",
+          "text": "Have I maintained hope and perseverance in difficult circumstances?"
+        },
+        {
+          "id": "joy-7",
+          "text": "Have I allowed the Gospel to challenge my comfort and complacency?"
+        },
+        {
+          "id": "joy-8",
+          "text": "Have I participated actively in the Church's mission of evangelization?"
+        }
+      ]
+    },
+    {
+      "id": "holiness",
+      "title": "Everyday Holiness",
+      "description": "Examining our lived holiness in ordinary circumstances, based on Gaudete et Exsultate.",
+      "items": [
+        {
+          "id": "holiness-1",
+          "text": "Have I recognized God's call to holiness in my ordinary life and daily activities?",
+          "clarification": "Pope Francis in Gaudete et Exsultate: 'We are all called to be holy by living our lives with love and by bearing witness in everything we do.'"
+        },
+        {
+          "id": "holiness-2",
+          "text": "Have I sought holiness in my specific state of life (as parent, spouse, single, religious, etc.)?"
+        },
+        {
+          "id": "holiness-3",
+          "text": "Have I avoided the extremes of intellectual pride or mere external observance in my spiritual life?"
+        },
+        {
+          "id": "holiness-4",
+          "text": "Have I practiced the Beatitudes as a path to holiness?"
+        },
+        {
+          "id": "holiness-5",
+          "text": "Have I incorporated prayer, Scripture, and sacraments into my daily life?"
+        },
+        {
+          "id": "holiness-6",
+          "text": "Have I been attentive to discerning God's will in daily decisions?"
+        },
+        {
+          "id": "holiness-7",
+          "text": "Have I accepted life's challenges and sufferings as opportunities for growth?"
+        },
+        {
+          "id": "holiness-8",
+          "text": "Have I sought to grow in the fruits of the Holy Spirit (love, joy, peace, patience, kindness, etc.)?"
+        }
+      ]
+    }
+  ]
+}

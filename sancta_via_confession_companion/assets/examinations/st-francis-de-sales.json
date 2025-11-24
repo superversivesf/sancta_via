@@ -1,0 +1,394 @@
+{
+  "id": "st-francis-de-sales",
+  "title": "St. Francis de Sales Examination of Conscience",
+  "description": "A gentle but thorough examination focusing on everyday virtues and habits, based on the spirituality of St. Francis de Sales and his 'Introduction to the Devout Life'.",
+  "source": "St. Francis de Sales",
+  "target_audience": "All Catholics",
+  "categories": [
+    {
+      "id": "relationship-with-god",
+      "title": "Relationship with God",
+      "description": "St. Francis de Sales emphasized that devotion consists in doing ordinary actions with extraordinary love for God.",
+      "items": [
+        {
+          "id": "god-item1",
+          "text": "Have I failed to make time for daily prayer and meditation?",
+          "clarification": "St. Francis taught that even 15 minutes of meditation each day can transform our spiritual life."
+        },
+        {
+          "id": "god-item2",
+          "text": "Have I prayed merely out of habit, without attention or love?",
+          "clarification": "The saint advised, 'It is better to say one Our Father with devotion than many without attention.'"
+        },
+        {
+          "id": "god-item3",
+          "text": "Have I neglected to offer my daily actions to God?",
+          "clarification": "St. Francis encouraged offering each day and all its activities to God each morning."
+        },
+        {
+          "id": "god-item4",
+          "text": "Have I failed to seek God's presence throughout my day?",
+          "clarification": "Francis advised frequently recalling God's presence during ordinary activities."
+        },
+        {
+          "id": "god-item5",
+          "text": "Have I neglected to thank God for His blessings and graces?"
+        },
+        {
+          "id": "god-item6",
+          "text": "Have I doubted God's love for me or His providence in my life?"
+        },
+        {
+          "id": "god-item7",
+          "text": "Have I approached the sacraments without proper preparation or thanksgiving?"
+        },
+        {
+          "id": "god-item8",
+          "text": "Have I been lukewarm in my devotion to God?"
+        },
+        {
+          "id": "god-item9",
+          "text": "Have I neglected spiritual reading that would nurture my faith?"
+        },
+        {
+          "id": "god-item10",
+          "text": "Have I been silent about my faith when I should have spoken up for it?"
+        }
+      ]
+    },
+    {
+      "id": "gentleness-and-humility",
+      "title": "Gentleness and Humility",
+      "description": "Central virtues in St. Francis de Sales' spirituality are gentleness (particularly with ourselves) and humility.",
+      "items": [
+        {
+          "id": "gentle-item1",
+          "text": "Have I been harsh or impatient with myself when I've made mistakes?",
+          "clarification": "St. Francis particularly emphasized being gentle with ourselves: 'Be patient with everyone, but above all with yourself.'"
+        },
+        {
+          "id": "gentle-item2",
+          "text": "Have I been impatient or irritable with others?",
+          "clarification": "He advised, 'Nothing is so strong as gentleness, nothing so gentle as real strength.'"
+        },
+        {
+          "id": "gentle-item3",
+          "text": "Have I given in to anger or acted with harshness towards anyone?"
+        },
+        {
+          "id": "gentle-item4",
+          "text": "Have I spoken unkindly or raised my voice unnecessarily?"
+        },
+        {
+          "id": "gentle-item5",
+          "text": "Have I been prideful or arrogant, considering myself better than others?"
+        },
+        {
+          "id": "gentle-item6",
+          "text": "Have I sought praise or recognition for my actions?"
+        },
+        {
+          "id": "gentle-item7",
+          "text": "Have I been unwilling to acknowledge my faults or accept correction?"
+        },
+        {
+          "id": "gentle-item8",
+          "text": "Have I been overly concerned with what others think of me?"
+        },
+        {
+          "id": "gentle-item9",
+          "text": "Have I allowed anxiety, frustration, or discouragement to prevail over trust in God?"
+        }
+      ]
+    },
+    {
+      "id": "charity-towards-neighbor",
+      "title": "Charity Towards Neighbor",
+      "description": "St. Francis taught that our love for God should be expressed in practical charity towards our neighbors.",
+      "items": [
+        {
+          "id": "charity-item1",
+          "text": "Have I failed to be kind and considerate to everyone I meet?",
+          "clarification": "St. Francis said, 'When you encounter your neighbor, think, \"God has created this person to love me, and me to love them.\"'"
+        },
+        {
+          "id": "charity-item2",
+          "text": "Have I spoken unkindly about others in their absence?",
+          "clarification": "St. Francis strongly condemned detraction (speaking ill of others)."
+        },
+        {
+          "id": "charity-item3",
+          "text": "Have I judged others harshly in my thoughts?"
+        },
+        {
+          "id": "charity-item4",
+          "text": "Have I neglected to help those in need when I could have done so?"
+        },
+        {
+          "id": "charity-item5",
+          "text": "Have I been impatient with the faults and limitations of others?"
+        },
+        {
+          "id": "charity-item6",
+          "text": "Have I failed to forgive someone who has hurt me?"
+        },
+        {
+          "id": "charity-item7",
+          "text": "Have I neglected the needs of my family members?"
+        },
+        {
+          "id": "charity-item8",
+          "text": "Have I failed to treat others with respect and dignity as children of God?"
+        },
+        {
+          "id": "charity-item9",
+          "text": "Have I been overly critical or complaining?"
+        },
+        {
+          "id": "charity-item10",
+          "text": "Have I been unwilling to bear with the shortcomings of others charitably?"
+        }
+      ]
+    },
+    {
+      "id": "simplicity",
+      "title": "Simplicity and Truthfulness",
+      "description": "St. Francis valued simplicity of life and truthfulness in all things.",
+      "items": [
+        {
+          "id": "simplicity-item1",
+          "text": "Have I been dishonest or insincere in my words or actions?",
+          "clarification": "St. Francis taught that 'a heart that loves God loves simplicity.'"
+        },
+        {
+          "id": "simplicity-item2",
+          "text": "Have I embellished stories or exaggerated to make myself look better?"
+        },
+        {
+          "id": "simplicity-item3",
+          "text": "Have I been artificial in my behavior, trying to impress others?"
+        },
+        {
+          "id": "simplicity-item4",
+          "text": "Have I spent too much time worrying about appearances and what others think?"
+        },
+        {
+          "id": "simplicity-item5",
+          "text": "Have I been overly attached to possessions or comforts?"
+        },
+        {
+          "id": "simplicity-item6",
+          "text": "Have I been wasteful or extravagant?"
+        },
+        {
+          "id": "simplicity-item7",
+          "text": "Have I lived beyond my means or been irresponsible with resources?"
+        },
+        {
+          "id": "simplicity-item8",
+          "text": "Have I failed to be grateful for what I have?"
+        }
+      ]
+    },
+    {
+      "id": "daily-duties",
+      "title": "Fulfillment of Daily Duties",
+      "description": "St. Francis taught that holiness is found in fulfilling our daily responsibilities with love and attention.",
+      "items": [
+        {
+          "id": "duties-item1",
+          "text": "Have I neglected my responsibilities at home, work, or school?",
+          "clarification": "St. Francis emphasized sanctification through our ordinary duties: 'Bloom where you are planted.'"
+        },
+        {
+          "id": "duties-item2",
+          "text": "Have I carried out my work without attention or care?"
+        },
+        {
+          "id": "duties-item3",
+          "text": "Have I wasted time that should have been devoted to my responsibilities?"
+        },
+        {
+          "id": "duties-item4",
+          "text": "Have I neglected to serve my family with love and patience?"
+        },
+        {
+          "id": "duties-item5",
+          "text": "Have I failed to balance work with proper rest and recreation?"
+        },
+        {
+          "id": "duties-item6",
+          "text": "Have I been lazy or procrastinated in important matters?"
+        },
+        {
+          "id": "duties-item7",
+          "text": "Have I neglected to develop my talents and abilities?"
+        },
+        {
+          "id": "duties-item8",
+          "text": "Have I failed to offer up difficulties and challenges to God?"
+        }
+      ]
+    },
+    {
+      "id": "interior-peace",
+      "title": "Interior Peace and Trust",
+      "description": "St. Francis emphasized maintaining a peaceful heart amidst the challenges of life.",
+      "items": [
+        {
+          "id": "peace-item1",
+          "text": "Have I allowed worry, anxiety, or fear to dominate my thoughts?",
+          "clarification": "St. Francis said, 'Do not lose your inner peace for anything whatsoever, even if your whole world seems upset.'"
+        },
+        {
+          "id": "peace-item2",
+          "text": "Have I failed to trust in God's providence in difficult circumstances?"
+        },
+        {
+          "id": "peace-item3",
+          "text": "Have I responded to challenges with impatience rather than calm trust?"
+        },
+        {
+          "id": "peace-item4",
+          "text": "Have I given way to discouragement or despair?"
+        },
+        {
+          "id": "peace-item5",
+          "text": "Have I allowed my emotions to control me rather than maintaining self-discipline?"
+        },
+        {
+          "id": "peace-item6",
+          "text": "Have I cultivated resentment or bitterness over past hurts?"
+        },
+        {
+          "id": "peace-item7",
+          "text": "Have I spent excessive time worrying about the future instead of trusting God?"
+        },
+        {
+          "id": "peace-item8",
+          "text": "Have I allowed busyness and haste to replace calm and mindfulness?"
+        }
+      ]
+    },
+    {
+      "id": "spiritual-joy",
+      "title": "Spiritual Joy and Contentment",
+      "description": "St. Francis emphasized joy as a hallmark of authentic devotion.",
+      "items": [
+        {
+          "id": "joy-item1",
+          "text": "Have I failed to cultivate a spirit of joy and gratitude?",
+          "clarification": "St. Francis said, 'A sad saint would be a sorry saint.'"
+        },
+        {
+          "id": "joy-item2",
+          "text": "Have I given in to a spirit of complaint or negativity?"
+        },
+        {
+          "id": "joy-item3",
+          "text": "Have I failed to notice and appreciate God's gifts in daily life?"
+        },
+        {
+          "id": "joy-item4",
+          "text": "Have I spread discouragement rather than encouragement to others?"
+        },
+        {
+          "id": "joy-item5",
+          "text": "Have I dwelled on past mistakes instead of accepting God's forgiveness?"
+        },
+        {
+          "id": "joy-item6",
+          "text": "Have I allowed envy to rob me of contentment with what I have?"
+        },
+        {
+          "id": "joy-item7",
+          "text": "Have I focused more on problems than on blessings?"
+        },
+        {
+          "id": "joy-item8",
+          "text": "Have I allowed myself to become overly serious or rigid in my spiritual life?"
+        }
+      ]
+    },
+    {
+      "id": "moderation",
+      "title": "Moderation and Self-Control",
+      "description": "St. Francis advocated balanced living and moderation in all things.",
+      "items": [
+        {
+          "id": "moderation-item1",
+          "text": "Have I been immoderate in eating, drinking, or entertainment?",
+          "clarification": "St. Francis recommended balance, not extremes: 'A moderation which leans toward kindness is always preferable to one which leans toward severity.'"
+        },
+        {
+          "id": "moderation-item2",
+          "text": "Have I acted impulsively without proper reflection?"
+        },
+        {
+          "id": "moderation-item3",
+          "text": "Have I wasted time with excessive social media, television, or internet use?"
+        },
+        {
+          "id": "moderation-item4",
+          "text": "Have I been overly rigid or scrupulous in my spiritual practices?"
+        },
+        {
+          "id": "moderation-item5",
+          "text": "Have I neglected proper care for my physical health?"
+        },
+        {
+          "id": "moderation-item6",
+          "text": "Have I failed to practice detachment from material goods and comforts?"
+        },
+        {
+          "id": "moderation-item7",
+          "text": "Have I given in to laziness or excessive comfort-seeking?"
+        },
+        {
+          "id": "moderation-item8",
+          "text": "Have I neglected to balance work with proper rest and recreation?"
+        }
+      ]
+    },
+    {
+      "id": "guidance",
+      "title": "Spiritual Direction and Growth",
+      "description": "St. Francis emphasized the importance of spiritual guidance and continuous growth.",
+      "items": [
+        {
+          "id": "guidance-item1",
+          "text": "Have I been closed to guidance or spiritual direction?",
+          "clarification": "St. Francis highly valued spiritual direction, saying, 'Everyone needs a guide to lead them in the spiritual life.'"
+        },
+        {
+          "id": "guidance-item2",
+          "text": "Have I neglected opportunities for spiritual growth or learning?"
+        },
+        {
+          "id": "guidance-item3",
+          "text": "Have I been unwilling to examine my conscience regularly and honestly?"
+        },
+        {
+          "id": "guidance-item4",
+          "text": "Have I resisted making necessary changes in my life?"
+        },
+        {
+          "id": "guidance-item5",
+          "text": "Have I been complacent in my spiritual life, not striving to grow in virtue?"
+        },
+        {
+          "id": "guidance-item6",
+          "text": "Have I neglected to read Scripture or spiritual books that would help me grow?"
+        },
+        {
+          "id": "guidance-item7",
+          "text": "Have I failed to prepare properly for the sacrament of Confession?"
+        },
+        {
+          "id": "guidance-item8",
+          "text": "Have I made excuses for my faults rather than working to overcome them?"
+        }
+      ]
+    }
+  ]
+}
