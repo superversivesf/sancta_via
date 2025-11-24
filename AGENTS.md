@@ -1,6 +1,44 @@
 # AGENTS.md - SanctaVia Development Guide
 
-## Build & Test Commands
+## Monorepo Structure
+
+This project is now a monorepo managed with [Melos](https://melos.invertase.dev/). All packages are located in the root directory and can be managed collectively.
+
+## Setup
+
+1. Install Melos:
+   ```bash
+   dart pub global activate melos
+   ```
+
+2. Bootstrap the workspace:
+   ```bash
+   melos bootstrap
+   ```
+
+## Available Melos Commands
+
+```bash
+# Bootstrap all packages
+melos bootstrap
+
+# Run static analysis on all packages
+melos run analyze
+
+# Format all packages
+melos run format
+
+# Run tests in packages that have them
+melos run test
+
+# Build Android APKs for all apps
+melos run build:android
+
+# Clean all packages
+melos run clean
+```
+
+## Build & Test Commands (Per Package)
 
 ```bash
 # In any app directory (sancta_via_prayer_companion, etc.)

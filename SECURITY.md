@@ -12,15 +12,15 @@ Instead, please send an email to `security@example.com` (Note: This is a placeho
 
 Please include the following with your report:
 *   A description of the vulnerability and its potential impact.
-*   The repository and specific files affected.
+*   The package(s) and specific files affected.
 *   Steps to reproduce the vulnerability.
 *   Any proof-of-concept code.
 
 We will work with you to resolve the issue promptly and will publicly acknowledge your contribution if you wish.
 
-## Security Analysis & Findings (as of 2025-11-19)
+## Security Analysis & Findings (as of 2024-11-24)
 
-A security analysis of the monorepo was conducted. The following areas were investigated: hardcoded secrets, data storage practices, network security, and URL handling.
+A security analysis of the monorepo was conducted after migration. The following areas were investigated: hardcoded secrets, data storage practices, network security, and URL handling.
 
 ### High Priority Findings
 
@@ -48,7 +48,7 @@ A security analysis of the monorepo was conducted. The following areas were inve
 *   **Impact:** A malicious URL could direct a user to a phishing site to steal credentials or to a site that attempts to exploit browser vulnerabilities.
 
 *   **Recommendation:**
-    1.  **Audit Usage:** Review all calls to `url_launcher`.
+    1.  **Audit Usage:** Review all calls to `url_launcher` across all packages in the monorepo.
     2.  **Enforce Hardcoded URLs:** Ensure that all launched URLs are hardcoded, constant strings within the application and cannot be influenced by remote or user-provided data.
     3.  **Validate URLs:** If dynamic URLs are absolutely necessary, implement strict validation to ensure they conform to an expected format and domain whitelist.
 
@@ -56,3 +56,4 @@ A security analysis of the monorepo was conducted. The following areas were inve
 
 *   **Dependency Auditing:** Regularly audit all third-party dependencies in `pubspec.yaml` for known security vulnerabilities. Use tools like the `dart pub outdated` command and check against vulnerability databases.
 *   **Platform-Specific Hardening:** Continuously review and apply platform-specific security best practices for Android and iOS, such as those recommended by OWASP Mobile Application Security (MASVS).
+*   **Monorepo Benefits:** The monorepo structure allows for centralized security updates - when a vulnerability is found in a shared package, it can be fixed once and propagated to all dependent applications through Melos.

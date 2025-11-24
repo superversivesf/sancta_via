@@ -1,0 +1,12 @@
+# melos_managed_dependency_overrides: bible_data,bible_data_riverpod,sancta_via_liturgical_calendar,sancta_via_liturgical_calendar_riverpod,sancta_via_shared_ui
+dependency_overrides:
+  bible_data:
+    path: ../sancta_via_bible_data
+  bible_data_riverpod:
+    path: ../sancta_via_bible_data_riverpod
+  sancta_via_liturgical_calendar:
+    path: ../sancta_via_liturgical_calendar
+  sancta_via_liturgical_calendar_riverpod:
+    path: ../sancta_via_liturgical_calendar_riverpod
+  sancta_via_shared_ui:
+    path: ../sancta_via_shared_ui
