@@ -29,20 +29,6 @@ void main() async {
     }
   }
 
-  void testAsync(String description, Future<bool> Function() testFunc) async {
-    total++;
-    try {
-      final result = await testFunc();
-      if (result) {
-        print('✅ $description');
-        passed++;
-      } else {
-        print('❌ $description');
-      }
-    } catch (e) {
-      print('❌ $description - Error: $e');
-    }
-  }
 
   print('\n📊 Testing Generated Data Availability...');
   

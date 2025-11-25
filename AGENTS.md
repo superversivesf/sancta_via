@@ -40,6 +40,7 @@ melos run clean
 
 ## Build & Test Commands (Per Package)
 
+### For Flutter Apps
 ```bash
 # In any app directory (sancta_via_prayer_companion, etc.)
 make deps                                    # Install dependencies (flutter pub get)
@@ -52,6 +53,18 @@ make build-android                          # Build Android APK
 make build-web                              # Build web version
 flutter run                                  # Run app on connected device
 flutter run -d chrome                       # Run on web browser
+```
+
+### For sancta_via_liturgical_calendar (Pure Dart Library)
+```bash
+# In sancta_via_liturgical_calendar directory:
+dart pub get                                 # Install dependencies
+dart analyze                                 # Static analysis
+dart format .                               # Format code
+dart test                                   # Run all tests
+dart test test/liturgical_calendar_test.dart  # Run specific test file
+dart test --name "test description"          # Run specific test by name
+dart compile exe example/liturgical_calendar_example.dart  # Build example
 ```
 
 ## Code Style Guidelines
