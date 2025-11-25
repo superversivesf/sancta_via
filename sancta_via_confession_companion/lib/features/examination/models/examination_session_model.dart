@@ -8,7 +8,8 @@ class ExaminationSession {
   final String examinationId;
   final DateTime createdAt;
 
-  final Map<String, ExaminationResponseStatus> itemResponses; // Track status of each item
+  final Map<String, ExaminationResponseStatus>
+  itemResponses; // Track status of each item
   final Map<String, String> notes; // User notes for specific items
 
   // Current position tracking
@@ -18,25 +19,29 @@ class ExaminationSession {
   bool isCompleted;
 
   ExaminationSession({
-    required this.examinationId, String? id,
+    required this.examinationId,
+    String? id,
     Map<String, ExaminationResponseStatus>? itemResponses,
     Map<String, String>? notes,
     DateTime? createdAt,
     this.currentCategoryId,
     this.currentItemId,
     this.isCompleted = false,
-  }) :
-        id = id ?? const Uuid().v4(),
-        itemResponses = itemResponses ?? {},
-        notes = notes ?? {},
-        createdAt = createdAt ?? DateTime.now();
+  }) : id = id ?? const Uuid().v4(),
+       itemResponses = itemResponses ?? {},
+       notes = notes ?? {},
+       createdAt = createdAt ?? DateTime.now();
 
   // Calculate progress as percentage
   double getProgress(ExaminationModel examination) {
     final int totalItems = examination.totalItems;
-    final int reviewedItems = itemResponses.values.where((status) =>
-    status == ExaminationResponseStatus.needConfess ||
-        status == ExaminationResponseStatus.noIssue).length;
+    final int reviewedItems = itemResponses.values
+        .where(
+          (status) =>
+              status == ExaminationResponseStatus.needConfess ||
+              status == ExaminationResponseStatus.noIssue,
+        )
+        .length;
     return totalItems > 0 ? reviewedItems / totalItems : 0.0;
   }
 
@@ -90,7 +95,9 @@ class ExaminationSession {
 
     if (json.containsKey('responses')) {
       // Use Map.from for safer conversion
-      final Map<String, dynamic> oldResponses = Map<String, dynamic>.from(json['responses'] as Map);
+      final Map<String, dynamic> oldResponses = Map<String, dynamic>.from(
+        json['responses'] as Map,
+      );
       oldResponses.forEach((key, value) {
         convertedResponses[key] = (value as bool)
             ? ExaminationResponseStatus.needConfess
@@ -98,9 +105,12 @@ class ExaminationSession {
       });
     } else if (json.containsKey('itemResponses')) {
       // Use Map.from for safer conversion
-      final Map<String, dynamic> savedResponses = Map<String, dynamic>.from(json['itemResponses'] as Map);
+      final Map<String, dynamic> savedResponses = Map<String, dynamic>.from(
+        json['itemResponses'] as Map,
+      );
       savedResponses.forEach((key, value) {
-        convertedResponses[key] = ExaminationResponseStatus.values[value as int];
+        convertedResponses[key] =
+            ExaminationResponseStatus.values[value as int];
       });
     }
 
@@ -115,7 +125,7 @@ class ExaminationSession {
       isCompleted: json['isCompleted'] as bool,
     );
   }
-  
+
   // Convert to JSON
   Map<String, dynamic> toJson() {
     // Convert enum values to integers for storage

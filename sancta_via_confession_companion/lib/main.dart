@@ -6,11 +6,7 @@ import 'config/routes.dart';
 import 'config/constants.dart';
 
 void main() {
-  runApp(
-    const ProviderScope(
-      child: ConfessionCompanionApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: ConfessionCompanionApp()));
 }
 
 class ConfessionCompanionApp extends ConsumerWidget {
@@ -25,11 +21,17 @@ class ConfessionCompanionApp extends ConsumerWidget {
     return MaterialApp.router(
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
-      theme: liturgicalData != null 
-          ? AppTheme.lightTheme(LiturgicalColor.fromString(liturgicalData.celebration.color), colorIntensity)
+      theme: liturgicalData != null
+          ? AppTheme.lightTheme(
+              LiturgicalColor.fromString(liturgicalData.celebration.color),
+              colorIntensity,
+            )
           : AppTheme.lightTheme(null, colorIntensity),
-      darkTheme: liturgicalData != null 
-          ? AppTheme.darkTheme(LiturgicalColor.fromString(liturgicalData.celebration.color), colorIntensity)
+      darkTheme: liturgicalData != null
+          ? AppTheme.darkTheme(
+              LiturgicalColor.fromString(liturgicalData.celebration.color),
+              colorIntensity,
+            )
           : AppTheme.darkTheme(null, colorIntensity),
       themeMode: themeMode,
       routerConfig: appRouter,

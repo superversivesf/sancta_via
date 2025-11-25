@@ -9,23 +9,18 @@ import '../../../utils/logger.dart';
 class DailyNovenaScreen extends ConsumerWidget {
   final int dayNumber;
 
-  const DailyNovenaScreen({
-    required this.dayNumber,
-    super.key,
-  });
+  const DailyNovenaScreen({required this.dayNumber, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final activeNovena = ref.watch(novenaStateProvider);
-    
+
     if (activeNovena == null) {
       // No active novena, redirect to list
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.goNamed(RouteNames.novenas);
       });
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final novenaAsync = ref.watch(novenaByIdProvider(activeNovena.novenaId));
 
@@ -54,7 +49,7 @@ class DailyNovenaScreen extends ConsumerWidget {
           final isDayComplete = activeNovena.isDayComplete(dayNumber);
           final isAccessible = activeNovena.canAccessDay(dayNumber);
           final isCurrentSpiritualDay = dayNumber == activeNovena.spiritualDay;
-          
+
           // Button is enabled if the day is accessible and not complete
           final buttonEnabled = isAccessible && !isDayComplete;
 
@@ -65,7 +60,7 @@ class DailyNovenaScreen extends ConsumerWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: isDayComplete 
+                  color: isDayComplete
                       ? Theme.of(context).colorScheme.tertiaryContainer
                       : Theme.of(context).colorScheme.primaryContainer,
                 ),
@@ -75,26 +70,28 @@ class DailyNovenaScreen extends ConsumerWidget {
                     Row(
                       children: [
                         Icon(
-                          isDayComplete ? Icons.check_circle : Icons.auto_awesome,
-                          color: isDayComplete 
+                          isDayComplete
+                              ? Icons.check_circle
+                              : Icons.auto_awesome,
+                          color: isDayComplete
                               ? Theme.of(context).colorScheme.tertiary
                               : Theme.of(context).colorScheme.primary,
                         ),
                         const SizedBox(width: 8),
                         Text(
                           'Day $dayNumber of 9',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         if (isDayComplete) ...[
                           const SizedBox(width: 8),
                           Text(
                             '• Complete',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).colorScheme.tertiary,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
                         ],
                       ],
@@ -187,18 +184,28 @@ class DailyNovenaScreen extends ConsumerWidget {
                 child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
-                    onPressed: buttonEnabled ? () {
-                      _markAsComplete(context, ref);
-                    } : null,
+                    onPressed: buttonEnabled
+                        ? () {
+                            _markAsComplete(context, ref);
+                          }
+                        : null,
                     icon: Icon(
-                      isDayComplete 
-                          ? Icons.check_circle 
+                      isDayComplete
+                          ? Icons.check_circle
                           : Icons.check_circle_outline,
                       size: 20,
                     ),
-                    label: Text(_getButtonText(buttonEnabled, isDayComplete, isAccessible, isCurrentSpiritualDay, activeNovena.spiritualDay)),
+                    label: Text(
+                      _getButtonText(
+                        buttonEnabled,
+                        isDayComplete,
+                        isAccessible,
+                        isCurrentSpiritualDay,
+                        activeNovena.spiritualDay,
+                      ),
+                    ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: isDayComplete 
+                      backgroundColor: isDayComplete
                           ? Theme.of(context).colorScheme.tertiaryContainer
                           : null,
                       foregroundColor: isDayComplete
@@ -264,9 +271,9 @@ class DailyNovenaScreen extends ConsumerWidget {
             ),
             child: Text(
               content,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                height: 1.5,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(height: 1.5),
             ),
           ),
         ],
@@ -274,37 +281,58 @@ class DailyNovenaScreen extends ConsumerWidget {
     );
   }
 
-  String _getButtonText(bool buttonEnabled, bool isDayComplete, bool isAccessible, bool isCurrentSpiritualDay, int spiritualDay) {
+  String _getButtonText(
+    bool buttonEnabled,
+    bool isDayComplete,
+    bool isAccessible,
+    bool isCurrentSpiritualDay,
+    int spiritualDay,
+  ) {
     if (isDayComplete) {
       return 'Complete';
     }
-    
+
     if (buttonEnabled) {
       return 'Mark as Complete';
     }
-    
+
     if (!isAccessible) {
       return 'Available on Day $spiritualDay';
     }
-    
+
     return 'Already Complete';
   }
 
   Future<void> _markAsComplete(BuildContext context, WidgetRef ref) async {
     final activeNovena = ref.read(novenaStateProvider);
-    
-    AppLogger.debug('📦 MARK COMPLETE - Day $dayNumber clicked', 'DAILY_NOVENA');
-    AppLogger.debug('📅 Active novena start date: ${activeNovena?.startDate}', 'DAILY_NOVENA');
-    AppLogger.debug('🎯 Current spiritual day: ${activeNovena?.spiritualDay}', 'DAILY_NOVENA');
-    AppLogger.debug('📊 Completed days before: ${activeNovena?.completedDays}', 'DAILY_NOVENA');
-    
+
+    AppLogger.debug(
+      '📦 MARK COMPLETE - Day $dayNumber clicked',
+      'DAILY_NOVENA',
+    );
+    AppLogger.debug(
+      '📅 Active novena start date: ${activeNovena?.startDate}',
+      'DAILY_NOVENA',
+    );
+    AppLogger.debug(
+      '🎯 Current spiritual day: ${activeNovena?.spiritualDay}',
+      'DAILY_NOVENA',
+    );
+    AppLogger.debug(
+      '📊 Completed days before: ${activeNovena?.completedDays}',
+      'DAILY_NOVENA',
+    );
+
     try {
       await ref.read(novenaStateProvider.notifier).markDayComplete(dayNumber);
-      
+
       // Log the state after completion
       final updatedNovena = ref.read(novenaStateProvider);
-      AppLogger.debug('✅ Completed days after: ${updatedNovena?.completedDays}', 'DAILY_NOVENA');
-      
+      AppLogger.debug(
+        '✅ Completed days after: ${updatedNovena?.completedDays}',
+        'DAILY_NOVENA',
+      );
+
       if (context.mounted) {
         // Show brief success message
         ScaffoldMessenger.of(context).showSnackBar(
@@ -313,7 +341,7 @@ class DailyNovenaScreen extends ConsumerWidget {
             duration: Duration(seconds: 1),
           ),
         );
-        
+
         // Navigate back to dashboard after brief delay
         await Future.delayed(const Duration(milliseconds: 800));
         if (context.mounted) {
@@ -332,5 +360,4 @@ class DailyNovenaScreen extends ConsumerWidget {
       }
     }
   }
-
 }

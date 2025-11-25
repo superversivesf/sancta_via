@@ -8,15 +8,14 @@ import '../../providers/calendar_providers.dart' as local_providers;
 class DayDetailScreen extends ConsumerWidget {
   final DateTime date;
 
-  const DayDetailScreen({
-    required this.date,
-    super.key,
-  });
+  const DayDetailScreen({required this.date, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final liturgicalDay = ref.watch(local_providers.liturgicalDayForDateProvider(date));
-    
+    final liturgicalDay = ref.watch(
+      local_providers.liturgicalDayForDateProvider(date),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(DateFormat('MMMM d, yyyy').format(date)),
@@ -31,11 +30,17 @@ class DayDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildDayDetail(BuildContext context, WidgetRef ref, LiturgicalDayData liturgicalDay) {
+  Widget _buildDayDetail(
+    BuildContext context,
+    WidgetRef ref,
+    LiturgicalDayData liturgicalDay,
+  ) {
     final theme = Theme.of(context);
     final colorIntensity = ref.watch(colorIntensityProvider);
-    final liturgicalColor = liturgicalDay.celebration.color.toLiturgicalColor(colorIntensity);
-    
+    final liturgicalColor = liturgicalDay.celebration.color.toLiturgicalColor(
+      colorIntensity,
+    );
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -76,7 +81,7 @@ class DayDetailScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Season
                   _buildInfoRow(
                     context,
@@ -84,7 +89,7 @@ class DayDetailScreen extends ConsumerWidget {
                     liturgicalDay.season,
                     Icons.calendar_today,
                   ),
-                  
+
                   // Celebration
                   if (liturgicalDay.celebration.name.isNotEmpty)
                     _buildInfoRow(
@@ -93,7 +98,7 @@ class DayDetailScreen extends ConsumerWidget {
                       liturgicalDay.celebration.name,
                       _getCelebrationIcon(liturgicalDay),
                     ),
-                  
+
                   // Rank
                   if (liturgicalDay.celebration.rank != 'WEEKDAY')
                     _buildInfoRow(
@@ -102,7 +107,7 @@ class DayDetailScreen extends ConsumerWidget {
                       _formatRank(liturgicalDay.celebration.rank),
                       Icons.military_tech,
                     ),
-                  
+
                   // Liturgical Color
                   _buildInfoRow(
                     context,
@@ -115,9 +120,9 @@ class DayDetailScreen extends ConsumerWidget {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 20),
-          
+
           // Liturgical Year Information
           Card(
             child: Padding(
@@ -132,14 +137,14 @@ class DayDetailScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  
+
                   _buildInfoRow(
                     context,
                     'Liturgical Year',
                     liturgicalDay.liturgicalYear.cycle.value,
                     Icons.refresh,
                   ),
-                  
+
                   _buildInfoRow(
                     context,
                     'Psalter Week',
@@ -150,7 +155,7 @@ class DayDetailScreen extends ConsumerWidget {
               ),
             ),
           ),
-          
+
           // Prioritized celebration indicator
           if (liturgicalDay.celebration.prioritized) ...[
             const SizedBox(height: 20),
@@ -164,11 +169,7 @@ class DayDetailScreen extends ConsumerWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.star,
-                      color: Colors.amber[700],
-                      size: 24,
-                    ),
+                    Icon(Icons.star, color: Colors.amber[700], size: 24),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
@@ -196,17 +197,13 @@ class DayDetailScreen extends ConsumerWidget {
     Color? colorIndicator,
   }) {
     final theme = Theme.of(context);
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            icon,
-            size: 20,
-            color: theme.colorScheme.primary,
-          ),
+          Icon(icon, size: 20, color: theme.colorScheme.primary),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -279,8 +276,8 @@ class DayDetailScreen extends ConsumerWidget {
       case 'OPT_MEMORIAL':
         return Icons.circle_outlined;
       default:
-        return liturgicalDay.celebration.prioritized 
-            ? Icons.star_outline 
+        return liturgicalDay.celebration.prioritized
+            ? Icons.star_outline
             : Icons.event;
     }
   }

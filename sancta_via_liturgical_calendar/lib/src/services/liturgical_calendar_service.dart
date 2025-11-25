@@ -2,7 +2,7 @@ import '../models/liturgical_day_data.dart';
 import '../data/generated/generated_liturgical_data.dart';
 
 /// High-performance liturgical calendar service using embedded Dart data
-/// 
+///
 /// This service provides zero-overhead access to liturgical calendar data
 /// by using pre-generated Dart objects directly, with no external dependencies.
 class LiturgicalCalendarService {
@@ -10,10 +10,11 @@ class LiturgicalCalendarService {
   static bool get isInitialized => true; // Always ready - data is embedded
 
   /// Get the total number of available years
-  static int get totalYears => GeneratedLiturgicalData.getAvailableYears().length;
+  static int get totalYears =>
+      GeneratedLiturgicalData.getAvailableYears().length;
 
   /// Get liturgical day for a specific date
-  /// 
+  ///
   /// Returns null if the date is outside the available range.
   /// This is the fastest possible liturgical data access.
   static LiturgicalDayData? getDayForDate(DateTime date) {
@@ -31,16 +32,18 @@ class LiturgicalCalendarService {
     DateTime endDate,
   ) {
     final days = <LiturgicalDayData>[];
-    
-    for (var date = startDate; 
-         date.isBefore(endDate.add(const Duration(days: 1))); 
-         date = date.add(const Duration(days: 1))) {
+
+    for (
+      var date = startDate;
+      date.isBefore(endDate.add(const Duration(days: 1)));
+      date = date.add(const Duration(days: 1))
+    ) {
       final day = getDayForDate(date);
       if (day != null) {
         days.add(day);
       }
     }
-    
+
     return days;
   }
 
@@ -51,25 +54,26 @@ class LiturgicalCalendarService {
   }) {
     final start = fromDate ?? DateTime.now();
     final end = start.add(Duration(days: daysAhead));
-    
+
     final days = getDaysInRange(start, end);
-    
-    return days.where((day) => 
-      day.celebration.prioritized ||
-      day.celebration.rank == 'SOLEMNITY' ||
-      day.celebration.rank == 'FEAST' ||
-      day.celebration.rank == 'MEMORIAL'
-    ).toList();
+
+    return days
+        .where(
+          (day) =>
+              day.celebration.prioritized ||
+              day.celebration.rank == 'SOLEMNITY' ||
+              day.celebration.rank == 'FEAST' ||
+              day.celebration.rank == 'MEMORIAL',
+        )
+        .toList();
   }
 
   /// Get all prioritized celebrations in a year
   static List<LiturgicalDayData> getPrioritizedCelebrationsForYear(int year) {
     final yearData = GeneratedLiturgicalData.getYearData(year);
     if (yearData == null) return [];
-    
-    return yearData.values
-        .where((day) => day.celebration.prioritized)
-        .toList();
+
+    return yearData.values.where((day) => day.celebration.prioritized).toList();
   }
 
   /// Get all available years
@@ -91,7 +95,7 @@ class LiturgicalCalendarService {
   static List<LiturgicalDayData> getAllDaysForYear(int year) {
     final yearData = GeneratedLiturgicalData.getYearData(year);
     if (yearData == null) return [];
-    
+
     return yearData.values.toList()..sort((a, b) => a.date.compareTo(b.date));
   }
 
@@ -99,25 +103,20 @@ class LiturgicalCalendarService {
   static List<LiturgicalDayData> getDaysForSeason(int year, String season) {
     final yearData = GeneratedLiturgicalData.getYearData(year);
     if (yearData == null) return [];
-    
+
     return yearData.values
         .where((day) => day.season.toLowerCase() == season.toLowerCase())
         .toList()
-        ..sort((a, b) => a.date.compareTo(b.date));
+      ..sort((a, b) => a.date.compareTo(b.date));
   }
 
   /// Get liturgical days by rank
-  static List<LiturgicalDayData> getDaysByRank(
-    int year, 
-    String rank,
-  ) {
+  static List<LiturgicalDayData> getDaysByRank(int year, String rank) {
     final yearData = GeneratedLiturgicalData.getYearData(year);
     if (yearData == null) return [];
-    
-    return yearData.values
-        .where((day) => day.celebration.rank == rank)
-        .toList()
-        ..sort((a, b) => a.date.compareTo(b.date));
+
+    return yearData.values.where((day) => day.celebration.rank == rank).toList()
+      ..sort((a, b) => a.date.compareTo(b.date));
   }
 
   /// Get total statistics across all years
@@ -125,7 +124,8 @@ class LiturgicalCalendarService {
     return {
       'totalYears': GeneratedLiturgicalData.getAvailableYears().length,
       'totalDays': GeneratedLiturgicalData.getTotalDays(),
-      'totalPrioritizedCelebrations': GeneratedLiturgicalData.getTotalPrioritizedCelebrations(),
+      'totalPrioritizedCelebrations':
+          GeneratedLiturgicalData.getTotalPrioritizedCelebrations(),
       'yearStart': GeneratedLiturgicalData.yearRange.start,
       'yearEnd': GeneratedLiturgicalData.yearRange.end,
     };
@@ -135,15 +135,15 @@ class LiturgicalCalendarService {
   static List<LiturgicalDayData> searchCelebrations(String query, {int? year}) {
     final searchQuery = query.toLowerCase();
     final results = <LiturgicalDayData>[];
-    
+
     if (year != null) {
       // Search in specific year
       final yearData = GeneratedLiturgicalData.getYearData(year);
       if (yearData != null) {
         results.addAll(
-          yearData.values.where((day) => 
-            day.celebration.name.toLowerCase().contains(searchQuery)
-          )
+          yearData.values.where(
+            (day) => day.celebration.name.toLowerCase().contains(searchQuery),
+          ),
         );
       }
     } else {
@@ -152,14 +152,14 @@ class LiturgicalCalendarService {
         final yearData = GeneratedLiturgicalData.getYearData(searchYear);
         if (yearData != null) {
           results.addAll(
-            yearData.values.where((day) => 
-              day.celebration.name.toLowerCase().contains(searchQuery)
-            )
+            yearData.values.where(
+              (day) => day.celebration.name.toLowerCase().contains(searchQuery),
+            ),
           );
         }
       }
     }
-    
+
     return results..sort((a, b) => a.date.compareTo(b.date));
   }
 
@@ -170,25 +170,27 @@ class LiturgicalCalendarService {
   }) {
     final start = fromDate ?? DateTime.now();
     final searchQuery = celebrationName.toLowerCase();
-    
+
     // Search in the current year and next year
     for (var year = start.year; year <= start.year + 1; year++) {
       final yearData = GeneratedLiturgicalData.getYearData(year);
       if (yearData == null) continue;
-      
-      final matches = yearData.values
-          .where((day) => 
-            day.celebration.name.toLowerCase().contains(searchQuery) &&
-            day.dateTime.isAfter(start)
-          )
-          .toList()
-          ..sort((a, b) => a.date.compareTo(b.date));
-      
+
+      final matches =
+          yearData.values
+              .where(
+                (day) =>
+                    day.celebration.name.toLowerCase().contains(searchQuery) &&
+                    day.dateTime.isAfter(start),
+              )
+              .toList()
+            ..sort((a, b) => a.date.compareTo(b.date));
+
       if (matches.isNotEmpty) {
         return matches.first;
       }
     }
-    
+
     return null;
   }
 }

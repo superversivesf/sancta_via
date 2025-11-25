@@ -122,7 +122,7 @@ class Novena {
 // Active novena state management models
 enum ReminderInterval {
   oneHour(1, 'Every hour'),
-  threeHours(3, 'Every 3 hours'), 
+  threeHours(3, 'Every 3 hours'),
   sixHours(6, 'Every 6 hours'),
   twelveHours(12, 'Every 12 hours');
 
@@ -159,7 +159,8 @@ class ActiveNovena {
         minute: json['reminder_minute'] as int,
       ),
       reminderFrequency: ReminderInterval.values.firstWhere(
-        (interval) => interval.hours == (json['reminder_frequency_hours'] as int),
+        (interval) =>
+            interval.hours == (json['reminder_frequency_hours'] as int),
         orElse: () => ReminderInterval.threeHours,
       ),
       personalIntention: json['personal_intention'] as String?,
@@ -186,42 +187,44 @@ class ActiveNovena {
   }
 
   // Helper methods
-  
+
   /// The spiritual day the user should be on based on calendar time
   /// This is the primary day calculation - what day they "should" be on
   int get spiritualDay {
     final today = DateTime.now();
     final daysSinceStart = today.difference(startDate).inDays;
     final calculatedDay = (daysSinceStart + 1).clamp(1, 9);
-    
+
     // Debug logging for day calculation
     print('🔍 SPIRITUAL DAY DEBUG:');
     print('  Start Date: ${startDate.toString()}');
-    print('  Start Time: ${startDate.hour}:${startDate.minute.toString().padLeft(2, '0')}:${startDate.second.toString().padLeft(2, '0')}');
+    print(
+      '  Start Time: ${startDate.hour}:${startDate.minute.toString().padLeft(2, '0')}:${startDate.second.toString().padLeft(2, '0')}',
+    );
     print('  Today: ${today.toString()}');
     print('  Days Since Start: $daysSinceStart');
     print('  Calculated Day: $calculatedDay');
     print('  Completed Days: $completedDays');
-    
+
     return calculatedDay;
   }
-  
+
   /// Check if a specific day can be accessed (up to current spiritual day)
   bool canAccessDay(int dayNumber) {
     return dayNumber >= 1 && dayNumber <= spiritualDay && dayNumber <= 9;
   }
-  
+
   /// Check if a specific day is completed
   bool isDayComplete(int dayNumber) {
     if (dayNumber < 1 || dayNumber > 9) return false;
     return dayNumber <= completedDays.length && completedDays[dayNumber - 1];
   }
-  
+
   /// Check if today's spiritual day is complete
   bool get isTodayComplete {
     return isDayComplete(spiritualDay);
   }
-  
+
   /// Get the next incomplete day that can be accessed
   int get nextIncompleteDay {
     for (int day = 1; day <= spiritualDay && day <= 9; day++) {
@@ -232,7 +235,7 @@ class ActiveNovena {
     // If all accessible days are complete, return current spiritual day
     return spiritualDay;
   }
-  
+
   /// Get count of completed days that are accessible (up to spiritual day)
   int get accessibleCompletedCount {
     int count = 0;
@@ -244,11 +247,12 @@ class ActiveNovena {
     return count;
   }
 
-  bool get isComplete => completedDays.length >= 9 && completedDays.every((day) => day);
+  bool get isComplete =>
+      completedDays.length >= 9 && completedDays.every((day) => day);
 
   double get progressPercentage {
     if (completedDays.isEmpty) return 0.0;
-    
+
     // Count only completed days that are accessible (up to spiritual day)
     int accessibleCompletedCount = 0;
     for (int day = 1; day <= spiritualDay && day <= 9; day++) {
@@ -256,7 +260,7 @@ class ActiveNovena {
         accessibleCompletedCount++;
       }
     }
-    
+
     return accessibleCompletedCount / 9.0;
   }
 

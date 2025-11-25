@@ -59,26 +59,19 @@ class _PinLockoutWidgetState extends State<PinLockoutWidget> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: colorScheme.errorContainer,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: colorScheme.error.withAlpha(77),
-          width: 1,
-        ),
+        border: Border.all(color: colorScheme.error.withAlpha(77), width: 1),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.lock_clock,
-            size: 48,
-            color: colorScheme.onErrorContainer,
-          ),
+          Icon(Icons.lock_clock, size: 48, color: colorScheme.onErrorContainer),
           const SizedBox(height: 16),
           Text(
             'PIN Entry Locked',
@@ -112,11 +105,7 @@ class _PinLockoutWidgetState extends State<PinLockoutWidget> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.timer,
-                  color: colorScheme.error,
-                  size: 20,
-                ),
+                Icon(Icons.timer, color: colorScheme.error, size: 20),
                 const SizedBox(width: 8),
                 Text(
                   _formatTime(_remainingTime),
@@ -157,9 +146,8 @@ class PinLockoutModal {
       enableDrag: true,
       backgroundColor: Colors.transparent,
       useSafeArea: true,
-      builder: (context) => _PinLockoutBottomSheet(
-        lockoutDuration: lockoutDuration,
-      ),
+      builder: (context) =>
+          _PinLockoutBottomSheet(lockoutDuration: lockoutDuration),
     );
   }
 }
@@ -167,24 +155,22 @@ class PinLockoutModal {
 class _PinLockoutBottomSheet extends StatelessWidget {
   final Duration lockoutDuration;
 
-  const _PinLockoutBottomSheet({
-    required this.lockoutDuration,
-  });
+  const _PinLockoutBottomSheet({required this.lockoutDuration});
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Container(
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom + 
-                 MediaQuery.of(context).padding.bottom + 16,
+        bottom:
+            MediaQuery.of(context).viewInsets.bottom +
+            MediaQuery.of(context).padding.bottom +
+            16,
         left: 16,
         right: 16,
         top: 16,
@@ -206,18 +192,14 @@ class _PinLockoutBottomSheet extends StatelessWidget {
           // Header
           Row(
             children: [
-              Icon(
-                Icons.security,
-                color: colorScheme.error,
-                size: 24,
-              ),
+              Icon(Icons.security, color: colorScheme.error, size: 24),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   'Security Lockout',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
                 ),
               ),
               IconButton(

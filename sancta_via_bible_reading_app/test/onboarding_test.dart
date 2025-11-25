@@ -12,10 +12,10 @@ void main() {
     test('should detect first run correctly', () async {
       // Should be first run initially
       expect(await OnboardingService.isFirstRun(), true);
-      
+
       // Mark as completed
       await OnboardingService.markOnboardingCompleted();
-      
+
       // Should no longer be first run
       expect(await OnboardingService.isFirstRun(), false);
     });
@@ -23,24 +23,22 @@ void main() {
     test('should handle database initialization state', () async {
       // Should not be initialized initially
       expect(await OnboardingService.isDatabaseInitialized(), false);
-      
+
       // Mark as completed (which also marks DB as initialized)
       await OnboardingService.markOnboardingCompleted();
-      
+
       // Should be initialized now
       expect(await OnboardingService.isDatabaseInitialized(), true);
     });
 
     test('should get available bible translations', () async {
-      final translations = await OnboardingService.getAvailableBibleTranslations();
-      
+      final translations =
+          await OnboardingService.getAvailableBibleTranslations();
+
       expect(translations.length, 3);
-      expect(translations.map((t) => t.id).toList(), 
-             contains('cpdv'));
-      expect(translations.map((t) => t.id).toList(), 
-             contains('drc'));
-      expect(translations.map((t) => t.id).toList(), 
-             contains('engwebc'));
+      expect(translations.map((t) => t.id).toList(), contains('cpdv'));
+      expect(translations.map((t) => t.id).toList(), contains('drc'));
+      expect(translations.map((t) => t.id).toList(), contains('engwebc'));
     });
   });
 }

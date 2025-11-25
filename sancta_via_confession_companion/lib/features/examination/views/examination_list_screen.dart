@@ -10,7 +10,8 @@ class ExaminationListScreen extends ConsumerStatefulWidget {
   const ExaminationListScreen({super.key});
 
   @override
-  ConsumerState<ExaminationListScreen> createState() => _ExaminationListScreenState();
+  ConsumerState<ExaminationListScreen> createState() =>
+      _ExaminationListScreenState();
 }
 
 class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
@@ -41,7 +42,10 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
       body: examinationsAsync.when(
         data: (examinations) {
           // Sort examinations: default first, then favorites, then others
-          final sortedExaminations = _sortExaminations(examinations, preferences);
+          final sortedExaminations = _sortExaminations(
+            examinations,
+            preferences,
+          );
 
           return ListView(
             children: [
@@ -52,7 +56,7 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
                   context,
                   ref,
                   sortedExaminations.firstWhere(
-                        (exam) => exam.id == preferences.defaultExaminationId,
+                    (exam) => exam.id == preferences.defaultExaminationId,
                   ),
                   isDefault: true,
                 ),
@@ -62,19 +66,32 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
               if (preferences.favoriteExaminationIds.isNotEmpty) ...[
                 _buildSectionHeader(context, 'Favorites'),
                 ...sortedExaminations
-                    .where((exam) =>
-                preferences.favoriteExaminationIds.contains(exam.id) &&
-                    exam.id != preferences.defaultExaminationId)
-                    .map((exam) => _buildExaminationCard(context, ref, exam, isFavorite: true)),
+                    .where(
+                      (exam) =>
+                          preferences.favoriteExaminationIds.contains(
+                            exam.id,
+                          ) &&
+                          exam.id != preferences.defaultExaminationId,
+                    )
+                    .map(
+                      (exam) => _buildExaminationCard(
+                        context,
+                        ref,
+                        exam,
+                        isFavorite: true,
+                      ),
+                    ),
               ],
 
               // All examinations section
               _buildSectionHeader(context, 'All Examinations'),
               ...sortedExaminations
-                  .where((exam) =>
-              // Exclude favorites and default examination (they're shown in their own sections)
-              !preferences.favoriteExaminationIds.contains(exam.id) &&
-                  exam.id != preferences.defaultExaminationId)
+                  .where(
+                    (exam) =>
+                        // Exclude favorites and default examination (they're shown in their own sections)
+                        !preferences.favoriteExaminationIds.contains(exam.id) &&
+                        exam.id != preferences.defaultExaminationId,
+                  )
                   .map((exam) => _buildExaminationCard(context, ref, exam)),
             ],
           );
@@ -92,9 +109,9 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
 
   // Helper method to sort examinations
   List<ExaminationModel> _sortExaminations(
-      List<ExaminationModel> examinations,
-      ExaminationPreferences preferences
-      ) {
+    List<ExaminationModel> examinations,
+    ExaminationPreferences preferences,
+  ) {
     return [...examinations]..sort((a, b) {
       // Default examination comes first
       if (a.id == preferences.defaultExaminationId) return -1;
@@ -119,22 +136,24 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       child: Text(
         title,
-        style: textScaling.scaledTitleMedium(context).copyWith(
-          color: Theme.of(context).colorScheme.primary,
-          fontWeight: FontWeight.bold,
-        ),
+        style: textScaling
+            .scaledTitleMedium(context)
+            .copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
       ),
     );
   }
 
   // Helper method to build an examination card with favorite/default functionality
   Widget _buildExaminationCard(
-      BuildContext context,
-      WidgetRef ref,
-      ExaminationModel examination, {
-        bool isFavorite = false,
-        bool isDefault = false,
-      }) {
+    BuildContext context,
+    WidgetRef ref,
+    ExaminationModel examination, {
+    bool isFavorite = false,
+    bool isDefault = false,
+  }) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
@@ -152,7 +171,9 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
                   Expanded(
                     child: Text(
                       examination.title,
-                      style: ref.watch(textScaleProvider).scaledTitleLarge(context),
+                      style: ref
+                          .watch(textScaleProvider)
+                          .scaledTitleLarge(context),
                     ),
                   ),
                   // Favorite toggle button
@@ -161,16 +182,28 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
                       isFavorite ? Icons.favorite : Icons.favorite_border,
                       color: isFavorite ? Colors.red : null,
                     ),
-                    onPressed: _isProcessingFavorite ? null : () => _handleFavoriteToggle(examination.id),
-                    tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
+                    onPressed: _isProcessingFavorite
+                        ? null
+                        : () => _handleFavoriteToggle(examination.id),
+                    tooltip: isFavorite
+                        ? 'Remove from favorites'
+                        : 'Add to favorites',
                   ),
                   // Default toggle menu
                   PopupMenuButton<String>(
                     icon: Icon(
                       Icons.more_vert,
-                      color: isDefault ? Theme.of(context).colorScheme.primary : null,
+                      color: isDefault
+                          ? Theme.of(context).colorScheme.primary
+                          : null,
                     ),
-                    onSelected: _isProcessingDefault ? null : (value) => _handleMenuSelection(value, examination.id, isDefault),
+                    onSelected: _isProcessingDefault
+                        ? null
+                        : (value) => _handleMenuSelection(
+                            value,
+                            examination.id,
+                            isDefault,
+                          ),
                     itemBuilder: (context) => [
                       PopupMenuItem(
                         value: 'default',
@@ -178,10 +211,16 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
                           children: [
                             Icon(
                               isDefault ? Icons.star : Icons.star_border,
-                              color: isDefault ? Theme.of(context).colorScheme.primary : null,
+                              color: isDefault
+                                  ? Theme.of(context).colorScheme.primary
+                                  : null,
                             ),
                             const SizedBox(width: 8),
-                            Text(isDefault ? 'Remove as default' : 'Set as default'),
+                            Text(
+                              isDefault
+                                  ? 'Remove as default'
+                                  : 'Set as default',
+                            ),
                           ],
                         ),
                       ),
@@ -201,16 +240,22 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
                 children: [
                   Chip(
                     label: Text(examination.targetAudience),
-                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.primaryContainer,
                   ),
                   Chip(
                     label: Text('${examination.totalItems} questions'),
-                    backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.secondaryContainer,
                   ),
                   if (isDefault)
                     Chip(
                       label: const Text('Default'),
-                      backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.tertiaryContainer,
                       avatar: const Icon(Icons.star, size: 16),
                     ),
                 ],
@@ -231,7 +276,8 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
     });
 
     try {
-      await ref.read(examinationPreferencesProvider.notifier)
+      await ref
+          .read(examinationPreferencesProvider.notifier)
           .toggleFavorite(examinationId);
     } catch (e) {
       if (mounted) {
@@ -252,7 +298,11 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
   }
 
   // Helper method to handle menu selection with debouncing
-  Future<void> _handleMenuSelection(String value, String examinationId, bool isDefault) async {
+  Future<void> _handleMenuSelection(
+    String value,
+    String examinationId,
+    bool isDefault,
+  ) async {
     if (_isProcessingDefault) return;
 
     if (value == 'default') {
@@ -261,7 +311,8 @@ class _ExaminationListScreenState extends ConsumerState<ExaminationListScreen> {
       });
 
       try {
-        await ref.read(examinationPreferencesProvider.notifier)
+        await ref
+            .read(examinationPreferencesProvider.notifier)
             .setDefaultExamination(isDefault ? null : examinationId);
       } catch (e) {
         if (mounted) {

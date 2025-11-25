@@ -1,7 +1,7 @@
 /// High-performance Catholic liturgical calendar library with embedded Dart data.
 ///
 /// This library provides zero-overhead access to Catholic liturgical calendar data
-/// by embedding all data directly as Dart objects, eliminating JSON parsing and 
+/// by embedding all data directly as Dart objects, eliminating JSON parsing and
 /// providing unprecedented performance.
 ///
 /// ## Basic Usage

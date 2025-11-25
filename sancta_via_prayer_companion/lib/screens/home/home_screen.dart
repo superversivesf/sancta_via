@@ -21,9 +21,9 @@ class HomeScreen extends ConsumerWidget {
     final currentColor = ref.watch(currentLiturgicalColorProvider);
     final colorIntensity = ref.watch(colorIntensityProvider);
     final textScaling = ref.watch(textScaleProvider);
-    
+
     // Parse liturgical color and convert to Flutter color
-    final liturgicalColor = currentColor != null 
+    final liturgicalColor = currentColor != null
         ? LiturgicalColor.fromString(currentColor)
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
@@ -39,9 +39,9 @@ class HomeScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              );
+              Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const SettingsScreen()));
             },
           ),
         ],
@@ -51,135 +51,140 @@ class HomeScreen extends ConsumerWidget {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Liturgical Day Card
-            if (currentDay != null) ...[
-              Card(
-                margin: const EdgeInsets.only(bottom: 16),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: themeColor != null ? Border.all(
-                      color: themeColor.withValues(alpha: 0.3),
-                      width: 2,
-                    ) : null,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            if (themeColor != null) ...[
-                              Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  color: themeColor,
-                                  shape: BoxShape.circle,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Liturgical Day Card
+              if (currentDay != null) ...[
+                Card(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: themeColor != null
+                          ? Border.all(
+                              color: themeColor.withValues(alpha: 0.3),
+                              width: 2,
+                            )
+                          : null,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              if (themeColor != null) ...[
+                                Container(
+                                  width: 20,
+                                  height: 20,
+                                  decoration: BoxDecoration(
+                                    color: themeColor,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                              ],
+                              Expanded(
+                                child: Text(
+                                  'Today\'s Liturgical Season',
+                                  style: textScaling
+                                      .scaledTitleMedium(context)
+                                      .copyWith(
+                                        color: themeColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                               ),
-                              const SizedBox(width: 12),
                             ],
-                            Expanded(
-                              child: Text(
-                                'Today\'s Liturgical Season',
-                                style: textScaling.scaledTitleMedium(context).copyWith(
-                                  color: themeColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            currentDay.season,
+                            style: textScaling
+                                .scaledHeadlineSmall(context)
+                                .copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          if (currentDay.celebration.name.isNotEmpty &&
+                              currentDay.celebration.name !=
+                                  currentDay.season) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              currentDay.celebration.name,
+                              style: textScaling.scaledBodyLarge(context),
                             ),
                           ],
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          currentDay.season,
-                          style: textScaling.scaledHeadlineSmall(context).copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        if (currentDay.celebration.name.isNotEmpty && 
-                            currentDay.celebration.name != currentDay.season) ...[
-                          const SizedBox(height: 4),
-                          Text(
-                            currentDay.celebration.name,
-                            style: textScaling.scaledBodyLarge(context),
-                          ),
                         ],
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-
-            // Quick Actions
-            Text(
-              'Quick Actions',
-              style: textScaling.scaledHeadlineSmall(context).copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              // Make cards taller when text is larger to prevent overflow
-              childAspectRatio: textScaling.scaleFactor > 1.2 ? 0.85 : 1.0,
-              children: [
-                _buildPrayerOfTheDayCard(context, ref),
-                const TimeOfDayPrayerCard(),
-                _buildActionCard(
-                  context,
-                  icon: Icons.favorite,
-                  title: 'Favorites',
-                  subtitle: 'Your saved prayers',
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const PrayerListScreen(
-                          title: 'Favorite Prayers',
-                          showFavorites: true,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                _buildActionCard(
-                  context,
-                  icon: Icons.category,
-                  title: 'Browse Categories',
-                  subtitle: 'Explore prayer types',
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const CategoriesScreen(),
-                      ),
-                    );
-                  },
-                ),
-                _buildActionCard(
-                  context,
-                  icon: Icons.search,
-                  title: 'Search Prayers',
-                  subtitle: 'Find specific prayers',
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const SearchScreen(),
-                      ),
-                    );
-                  },
-                ),
               ],
-            ),
+
+              // Quick Actions
+              Text(
+                'Quick Actions',
+                style: textScaling
+                    .scaledHeadlineSmall(context)
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                // Make cards taller when text is larger to prevent overflow
+                childAspectRatio: textScaling.scaleFactor > 1.2 ? 0.85 : 1.0,
+                children: [
+                  _buildPrayerOfTheDayCard(context, ref),
+                  const TimeOfDayPrayerCard(),
+                  _buildActionCard(
+                    context,
+                    icon: Icons.favorite,
+                    title: 'Favorites',
+                    subtitle: 'Your saved prayers',
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const PrayerListScreen(
+                            title: 'Favorite Prayers',
+                            showFavorites: true,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  _buildActionCard(
+                    context,
+                    icon: Icons.category,
+                    title: 'Browse Categories',
+                    subtitle: 'Explore prayer types',
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const CategoriesScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  _buildActionCard(
+                    context,
+                    icon: Icons.search,
+                    title: 'Search Prayers',
+                    subtitle: 'Find specific prayers',
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SearchScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -234,10 +239,12 @@ class HomeScreen extends ConsumerWidget {
                     flex: 2,
                     child: Text(
                       'Prayer of the Day',
-                      style: textScaling.scaledTitleMedium(context).copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: textScaling
+                          .scaledTitleMedium(context)
+                          .copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -286,26 +293,34 @@ class HomeScreen extends ConsumerWidget {
           builder: (context, ref, child) {
             final textScaling = ref.watch(textScaleProvider);
             return Padding(
-              padding: EdgeInsets.all(textScaling.scaleFactor > 1.2 ? 12 : 16), // Less padding for larger text
+              padding: EdgeInsets.all(
+                textScaling.scaleFactor > 1.2 ? 12 : 16,
+              ), // Less padding for larger text
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Flexible(
                     child: Icon(
                       icon,
-                      size: textScaling.scaleFactor > 1.2 ? 24 : 32, // Smaller icon for larger text
+                      size: textScaling.scaleFactor > 1.2
+                          ? 24
+                          : 32, // Smaller icon for larger text
                       color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                  SizedBox(height: textScaling.scaleFactor > 1.2 ? 8 : 12), // Less spacing for larger text
+                  SizedBox(
+                    height: textScaling.scaleFactor > 1.2 ? 8 : 12,
+                  ), // Less spacing for larger text
                   Flexible(
                     flex: 2,
                     child: Text(
                       title,
-                      style: textScaling.scaledTitleMedium(context).copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: textScaling
+                          .scaledTitleMedium(context)
+                          .copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -316,9 +331,13 @@ class HomeScreen extends ConsumerWidget {
                     Flexible(
                       child: Text(
                         subtitle,
-                        style: textScaling.scaledBodySmall(context).copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                        ),
+                        style: textScaling
+                            .scaledBodySmall(context)
+                            .copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.7),
+                            ),
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,

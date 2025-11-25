@@ -31,7 +31,9 @@ class LanguageSelector extends ConsumerWidget {
         value: currentLanguage,
         onChanged: (AppLanguage? newValue) {
           if (newValue != null) {
-            ref.read(baseSettingsProvider.notifier).setDefaultLanguage(newValue);
+            ref
+                .read(baseSettingsProvider.notifier)
+                .setDefaultLanguage(newValue);
           }
         },
         isExpanded: false,
@@ -64,7 +66,9 @@ class LanguageSelector extends ConsumerWidget {
         value: currentLanguage,
         onChanged: (AppLanguage? newValue) {
           if (newValue != null) {
-            ref.read(baseSettingsProvider.notifier).setDefaultLanguage(newValue);
+            ref
+                .read(baseSettingsProvider.notifier)
+                .setDefaultLanguage(newValue);
           }
         },
         items: languages.map((language) {
@@ -98,7 +102,7 @@ class LanguageSelector extends ConsumerWidget {
         flag = '🇪🇸';
         break;
     }
-    
+
     return Text(
       flag,
       style: const TextStyle(fontSize: 16),
@@ -144,7 +148,7 @@ class LanguageDisplay extends ConsumerWidget {
         flag = '🇪🇸';
         break;
     }
-    
+
     return Text(
       flag,
       style: const TextStyle(fontSize: 14),
@@ -224,7 +228,7 @@ class LanguagePickerDialog extends ConsumerWidget {
         flag = '🇪🇸';
         break;
     }
-    
+
     return Text(
       flag,
       style: const TextStyle(fontSize: 20),

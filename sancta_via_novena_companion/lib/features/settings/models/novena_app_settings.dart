@@ -6,19 +6,19 @@ import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 class NovenaAppSettings {
   /// Base settings common to all Sancta Via apps
   final BaseSettingsModel baseSettings;
-  
+
   /// Whether PIN code is enabled for protecting examination data
   final bool hasPinCode;
-  
+
   /// Notification preferences for novena reminders
   final bool novenaNotificationsEnabled;
-  
+
   /// Daily reminder time for novena prayers (in minutes from midnight)
   final int dailyReminderTime;
-  
+
   /// Whether to show completion celebrations
   final bool showCompletionCelebrations;
-  
+
   /// Whether to allow multiple active novenas (future feature)
   final bool allowMultipleNovenas;
 
@@ -33,9 +33,7 @@ class NovenaAppSettings {
 
   /// Create default Novena app settings
   factory NovenaAppSettings.defaults() {
-    return NovenaAppSettings(
-      baseSettings: BaseSettingsModel.defaults(),
-    );
+    return NovenaAppSettings(baseSettings: BaseSettingsModel.defaults());
   }
 
   /// Create from JSON map - handles migration from old format
@@ -43,11 +41,13 @@ class NovenaAppSettings {
     // Handle base settings
     BaseSettingsModel baseSettings;
     if (json.containsKey('baseSettings')) {
-      baseSettings = BaseSettingsModel.fromJson(json['baseSettings'] as Map<String, dynamic>);
+      baseSettings = BaseSettingsModel.fromJson(
+        json['baseSettings'] as Map<String, dynamic>,
+      );
     } else {
       // Migration: create base settings from old individual values
       double fontSize = 18.0; // Default
-      
+
       // Handle old fontSize field (might be stored as scaling factor)
       if (json['fontSize'] != null) {
         final fontSizeValue = (json['fontSize'] as num).toDouble();
@@ -58,11 +58,11 @@ class NovenaAppSettings {
           fontSize = fontSizeValue.clamp(12.0, 32.0);
         }
       }
-      
+
       // Handle color scheme style migration
       final AppLanguage language = AppLanguage.english;
       bool showLiturgicalColors = true;
-      
+
       // Map old color scheme style to show liturgical colors
       if (json['colorSchemeStyle'] != null) {
         // 0 = vibrant, 1 = muted - both should show liturgical colors
@@ -80,9 +80,11 @@ class NovenaAppSettings {
     return NovenaAppSettings(
       baseSettings: baseSettings,
       hasPinCode: json['hasPinCode'] as bool? ?? false,
-      novenaNotificationsEnabled: json['novenaNotificationsEnabled'] as bool? ?? false,
+      novenaNotificationsEnabled:
+          json['novenaNotificationsEnabled'] as bool? ?? false,
       dailyReminderTime: json['dailyReminderTime'] as int? ?? 480,
-      showCompletionCelebrations: json['showCompletionCelebrations'] as bool? ?? true,
+      showCompletionCelebrations:
+          json['showCompletionCelebrations'] as bool? ?? true,
       allowMultipleNovenas: json['allowMultipleNovenas'] as bool? ?? false,
     );
   }
@@ -111,9 +113,11 @@ class NovenaAppSettings {
     return NovenaAppSettings(
       baseSettings: baseSettings ?? this.baseSettings,
       hasPinCode: hasPinCode ?? this.hasPinCode,
-      novenaNotificationsEnabled: novenaNotificationsEnabled ?? this.novenaNotificationsEnabled,
+      novenaNotificationsEnabled:
+          novenaNotificationsEnabled ?? this.novenaNotificationsEnabled,
       dailyReminderTime: dailyReminderTime ?? this.dailyReminderTime,
-      showCompletionCelebrations: showCompletionCelebrations ?? this.showCompletionCelebrations,
+      showCompletionCelebrations:
+          showCompletionCelebrations ?? this.showCompletionCelebrations,
       allowMultipleNovenas: allowMultipleNovenas ?? this.allowMultipleNovenas,
     );
   }

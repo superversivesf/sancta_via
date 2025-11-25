@@ -7,9 +7,13 @@ final selectedBibleTranslationProvider = StateProvider<BibleTranslation>((ref) {
 });
 
 /// Provider for Bible reading preferences
-final bibleReadingPreferencesProvider = StateNotifierProvider<BibleReadingPreferencesNotifier, BibleReadingPreferences>((ref) {
-  return BibleReadingPreferencesNotifier();
-});
+final bibleReadingPreferencesProvider =
+    StateNotifierProvider<
+      BibleReadingPreferencesNotifier,
+      BibleReadingPreferences
+    >((ref) {
+      return BibleReadingPreferencesNotifier();
+    });
 
 /// Bible reading preferences model
 class BibleReadingPreferences {
@@ -58,7 +62,8 @@ class BibleReadingPreferences {
       fontFamily: fontFamily ?? this.fontFamily,
       lineHeight: lineHeight ?? this.lineHeight,
       darkMode: darkMode ?? this.darkMode,
-      enableParallelTranslations: enableParallelTranslations ?? this.enableParallelTranslations,
+      enableParallelTranslations:
+          enableParallelTranslations ?? this.enableParallelTranslations,
       parallelTranslations: parallelTranslations ?? this.parallelTranslations,
     );
   }
@@ -96,7 +101,8 @@ class BibleReadingPreferences {
 }
 
 /// StateNotifier for managing Bible reading preferences
-class BibleReadingPreferencesNotifier extends StateNotifier<BibleReadingPreferences> {
+class BibleReadingPreferencesNotifier
+    extends StateNotifier<BibleReadingPreferences> {
   BibleReadingPreferencesNotifier() : super(const BibleReadingPreferences());
 
   /// Update preferred translation
@@ -141,7 +147,9 @@ class BibleReadingPreferencesNotifier extends StateNotifier<BibleReadingPreferen
 
   /// Toggle parallel translations
   void toggleParallelTranslations() {
-    state = state.copyWith(enableParallelTranslations: !state.enableParallelTranslations);
+    state = state.copyWith(
+      enableParallelTranslations: !state.enableParallelTranslations,
+    );
   }
 
   /// Update parallel translations list
@@ -229,9 +237,10 @@ class SearchSettings {
 }
 
 /// Provider for search settings
-final searchSettingsProvider = StateNotifierProvider<SearchSettingsNotifier, SearchSettings>((ref) {
-  return SearchSettingsNotifier();
-});
+final searchSettingsProvider =
+    StateNotifierProvider<SearchSettingsNotifier, SearchSettings>((ref) {
+      return SearchSettingsNotifier();
+    });
 
 /// StateNotifier for managing search settings
 class SearchSettingsNotifier extends StateNotifier<SearchSettings> {

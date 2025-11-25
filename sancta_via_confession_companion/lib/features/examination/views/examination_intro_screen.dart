@@ -9,9 +9,7 @@ import '../../../utils/logger.dart';
 class ExaminationIntroScreen extends ConsumerWidget {
   final String examinationId;
 
-  const ExaminationIntroScreen({
-    required this.examinationId, super.key,
-  });
+  const ExaminationIntroScreen({required this.examinationId, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,9 +17,7 @@ class ExaminationIntroScreen extends ConsumerWidget {
     final textScaling = ref.watch(textScaleProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Prepare for Examination'),
-      ),
+      appBar: AppBar(title: const Text('Prepare for Examination')),
       body: examinationAsync.when(
         data: (examination) {
           if (examination == null) {
@@ -35,27 +31,26 @@ class ExaminationIntroScreen extends ConsumerWidget {
               children: [
                 Text(
                   examination.title,
-                  style: textScaling.scaledHeadlineMedium(context).copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                  style: textScaling
+                      .scaledHeadlineMedium(context)
+                      .copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Source: ${examination.source}',
-                  style: textScaling.scaledBodyMedium(context).copyWith(
-                    fontStyle: FontStyle.italic,
-                  ),
+                  style: textScaling
+                      .scaledBodyMedium(context)
+                      .copyWith(fontStyle: FontStyle.italic),
                 ),
                 const SizedBox(height: 24),
 
                 // Introduction to the examination
                 const Text(
                   'Before you begin:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
 
@@ -63,21 +58,24 @@ class ExaminationIntroScreen extends ConsumerWidget {
                 _buildSection(
                   context,
                   title: 'Prayer for Guidance',
-                  content: 'Begin with a moment of prayer, asking the Holy Spirit to guide your reflection and bring to mind the ways you need to grow in love of God and neighbor.',
+                  content:
+                      'Begin with a moment of prayer, asking the Holy Spirit to guide your reflection and bring to mind the ways you need to grow in love of God and neighbor.',
                   icon: Icons.favorite,
                 ),
 
                 _buildSection(
                   context,
                   title: 'Examination Process',
-                  content: 'You will review different areas of your life based on ${examination.categories.length} categories. For each question, reflect honestly and mark any areas where you believe you have fallen short.',
+                  content:
+                      'You will review different areas of your life based on ${examination.categories.length} categories. For each question, reflect honestly and mark any areas where you believe you have fallen short.',
                   icon: Icons.checklist,
                 ),
 
                 _buildSection(
                   context,
                   title: 'Be Thorough but Gentle',
-                  content: "Examine your conscience thoroughly but avoid unhealthy scrupulosity. Focus on growth rather than shame, remembering God's mercy is infinite.",
+                  content:
+                      "Examine your conscience thoroughly but avoid unhealthy scrupulosity. Focus on growth rather than shame, remembering God's mercy is infinite.",
                   icon: Icons.healing,
                 ),
 
@@ -86,75 +84,118 @@ class ExaminationIntroScreen extends ConsumerWidget {
                 Center(
                   child: Consumer(
                     builder: (context, ref, child) {
-                      final currentSession = ref.watch(examinationSessionProvider);
-                      final isResumable = currentSession?.examinationId == examinationId;
-                      
+                      final currentSession = ref.watch(
+                        examinationSessionProvider,
+                      );
+                      final isResumable =
+                          currentSession?.examinationId == examinationId;
+
                       return ElevatedButton.icon(
                         onPressed: () async {
-                          AppLogger.examination('Begin/Resume Examination button pressed for examinationId: $examinationId');
-                          
+                          AppLogger.examination(
+                            'Begin/Resume Examination button pressed for examinationId: $examinationId',
+                          );
+
                           if (isResumable && currentSession != null) {
                             // Resume existing session
-                            AppLogger.examination('Resuming existing session: ${currentSession.id}');
-                            
+                            AppLogger.examination(
+                              'Resuming existing session: ${currentSession.id}',
+                            );
+
                             String targetCategoryId;
                             String targetItemId;
-                            
-                            if (currentSession.currentCategoryId != null && 
+
+                            if (currentSession.currentCategoryId != null &&
                                 currentSession.currentItemId != null) {
                               // Resume from saved position
-                              targetCategoryId = currentSession.currentCategoryId!;
+                              targetCategoryId =
+                                  currentSession.currentCategoryId!;
                               targetItemId = currentSession.currentItemId!;
-                              AppLogger.examination('Resuming from saved position - Category: $targetCategoryId, Item: $targetItemId');
+                              AppLogger.examination(
+                                'Resuming from saved position - Category: $targetCategoryId, Item: $targetItemId',
+                              );
                             } else {
                               // No saved position, start from beginning
-                              targetCategoryId = examination.categories.first.id;
-                              targetItemId = examination.categories.first.items.first.id;
-                              AppLogger.examination('No saved position, starting from beginning');
-                              
+                              targetCategoryId =
+                                  examination.categories.first.id;
+                              targetItemId =
+                                  examination.categories.first.items.first.id;
+                              AppLogger.examination(
+                                'No saved position, starting from beginning',
+                              );
+
                               // Update session with starting position
-                              await ref.read(examinationSessionProvider.notifier)
-                                  .updatePosition(targetCategoryId, targetItemId);
+                              await ref
+                                  .read(examinationSessionProvider.notifier)
+                                  .updatePosition(
+                                    targetCategoryId,
+                                    targetItemId,
+                                  );
                             }
-                            
+
                             if (context.mounted) {
-                              context.push('/examination/$examinationId/category/$targetCategoryId');
+                              context.push(
+                                '/examination/$examinationId/category/$targetCategoryId',
+                              );
                             }
                           } else {
                             // Start new session
-                            AppLogger.examination('Starting new examination session');
-                            
-                            await ref.read(examinationSessionProvider.notifier)
+                            AppLogger.examination(
+                              'Starting new examination session',
+                            );
+
+                            await ref
+                                .read(examinationSessionProvider.notifier)
                                 .startExamination(examinationId);
-                            
+
                             if (context.mounted) {
                               // Get the first category ID to use for navigation
-                              final firstCategoryId = examination.categories.isNotEmpty 
-                                  ? examination.categories.first.id 
+                              final firstCategoryId =
+                                  examination.categories.isNotEmpty
+                                  ? examination.categories.first.id
                                   : '';
-                                  
-                              AppLogger.examination('Context is mounted, attempting navigation with first category: $firstCategoryId');
-                              
+
+                              AppLogger.examination(
+                                'Context is mounted, attempting navigation with first category: $firstCategoryId',
+                              );
+
                               // Update the session with the first category
                               if (firstCategoryId.isNotEmpty) {
-                                await ref.read(examinationSessionProvider.notifier)
+                                await ref
+                                    .read(examinationSessionProvider.notifier)
                                     .updatePosition(
-                                      firstCategoryId, 
-                                      examination.categories.first.items.first.id
+                                      firstCategoryId,
+                                      examination
+                                          .categories
+                                          .first
+                                          .items
+                                          .first
+                                          .id,
                                     );
                               }
-                              
+
                               // Now navigate
                               if (context.mounted) {
-                                context.push('/examination/$examinationId/category/$firstCategoryId');
+                                context.push(
+                                  '/examination/$examinationId/category/$firstCategoryId',
+                                );
                               }
                             } else {
-                              AppLogger.warning('Context is NOT mounted after starting examination', 'EXAM');
+                              AppLogger.warning(
+                                'Context is NOT mounted after starting examination',
+                                'EXAM',
+                              );
                             }
                           }
                         },
-                        icon: Icon(isResumable ? Icons.replay : Icons.play_arrow),
-                        label: Text(isResumable ? 'Resume Examination' : 'Begin Examination'),
+                        icon: Icon(
+                          isResumable ? Icons.replay : Icons.play_arrow,
+                        ),
+                        label: Text(
+                          isResumable
+                              ? 'Resume Examination'
+                              : 'Begin Examination',
+                        ),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 32,
@@ -178,16 +219,14 @@ class ExaminationIntroScreen extends ConsumerWidget {
                       children: [
                         Text(
                           'Suggested Opening Prayer',
-                          style: textScaling.scaledTitleMedium(context).copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: textScaling
+                              .scaledTitleMedium(context)
+                              .copyWith(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
                         const Text(
                           'Come Holy Spirit, enlighten my mind to see my sins, strengthen my heart to regret them sincerely, and give me the courage to confess them honestly. Merciful Father, guide me to true sorrow for having offended You, who are all good and deserving of all my love. Amen.',
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                          ),
+                          style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ],
                     ),
@@ -209,11 +248,11 @@ class ExaminationIntroScreen extends ConsumerWidget {
   }
 
   Widget _buildSection(
-      BuildContext context, {
-        required String title,
-        required String content,
-        required IconData icon,
-      }) {
+    BuildContext context, {
+    required String title,
+    required String content,
+    required IconData icon,
+  }) {
     return Consumer(
       builder: (context, ref, child) {
         final textScaling = ref.watch(textScaleProvider);
@@ -228,10 +267,7 @@ class ExaminationIntroScreen extends ConsumerWidget {
                   color: Theme.of(context).colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(
-                  icon,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                child: Icon(icon, color: Theme.of(context).colorScheme.primary),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -240,15 +276,12 @@ class ExaminationIntroScreen extends ConsumerWidget {
                   children: [
                     Text(
                       title,
-                      style: textScaling.scaledTitleMedium(context).copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: textScaling
+                          .scaledTitleMedium(context)
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      content,
-                      style: textScaling.scaledBodyMedium(context),
-                    ),
+                    Text(content, style: textScaling.scaledBodyMedium(context)),
                   ],
                 ),
               ),

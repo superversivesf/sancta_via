@@ -7,19 +7,19 @@ import '../features/examination/models/user_preferences_model.dart';
 class ConfessionAppSettings {
   /// Base settings common to all Sancta Via apps
   final BaseSettingsModel baseSettings;
-  
+
   /// User preferences for examination of conscience features
   final ExaminationPreferences examinationPreferences;
-  
+
   /// Whether to show completion progress
   final bool showProgress;
-  
+
   /// Whether to use guided examination mode
   final bool useGuidedMode;
-  
+
   /// Whether to save examination history
   final bool saveExaminationHistory;
-  
+
   /// Number of days to keep examination history
   final int historyRetentionDays;
 
@@ -45,20 +45,22 @@ class ConfessionAppSettings {
     // Handle base settings
     BaseSettingsModel baseSettings;
     if (json.containsKey('baseSettings')) {
-      baseSettings = BaseSettingsModel.fromJson(json['baseSettings'] as Map<String, dynamic>);
+      baseSettings = BaseSettingsModel.fromJson(
+        json['baseSettings'] as Map<String, dynamic>,
+      );
     } else {
       // Migration: create base settings from old individual values
       double fontSize = 18.0; // Default base
-      
+
       // Convert old textScale to fontSize if present
       if (json['textScale'] != null) {
         final textScale = (json['textScale'] as num).toDouble().clamp(0.8, 1.5);
         fontSize = textScale * 18.0; // Base size was 18pt
       }
-      
+
       // Handle deprecated darkMode by defaulting to system theme
       // (actual theme will be handled by theme provider)
-      
+
       // Handle old defaultLanguage
       AppLanguage language = AppLanguage.english;
       if (json['defaultLanguage'] != null) {
@@ -82,11 +84,15 @@ class ConfessionAppSettings {
     ExaminationPreferences examinationPrefs = ExaminationPreferences();
     if (json.containsKey('examinationPreferences')) {
       examinationPrefs = ExaminationPreferences.fromJson(
-          json['examinationPreferences'] as Map<String, dynamic>);
-    } else if (json.containsKey('favoriteExaminationIds') || json.containsKey('defaultExaminationId')) {
+        json['examinationPreferences'] as Map<String, dynamic>,
+      );
+    } else if (json.containsKey('favoriteExaminationIds') ||
+        json.containsKey('defaultExaminationId')) {
       // Migrate old format where examination preferences were at root level
       examinationPrefs = ExaminationPreferences(
-        favoriteExaminationIds: List<String>.from(json['favoriteExaminationIds'] ?? []),
+        favoriteExaminationIds: List<String>.from(
+          json['favoriteExaminationIds'] ?? [],
+        ),
         defaultExaminationId: json['defaultExaminationId'],
       );
     }
@@ -124,10 +130,12 @@ class ConfessionAppSettings {
   }) {
     return ConfessionAppSettings(
       baseSettings: baseSettings ?? this.baseSettings,
-      examinationPreferences: examinationPreferences ?? this.examinationPreferences,
+      examinationPreferences:
+          examinationPreferences ?? this.examinationPreferences,
       showProgress: showProgress ?? this.showProgress,
       useGuidedMode: useGuidedMode ?? this.useGuidedMode,
-      saveExaminationHistory: saveExaminationHistory ?? this.saveExaminationHistory,
+      saveExaminationHistory:
+          saveExaminationHistory ?? this.saveExaminationHistory,
       historyRetentionDays: historyRetentionDays ?? this.historyRetentionDays,
     );
   }
@@ -138,7 +146,9 @@ class ConfessionAppSettings {
   }
 
   /// Update examination preferences
-  ConfessionAppSettings updateExaminationPreferences(ExaminationPreferences newPreferences) {
+  ConfessionAppSettings updateExaminationPreferences(
+    ExaminationPreferences newPreferences,
+  ) {
     return copyWith(examinationPreferences: newPreferences);
   }
 
@@ -148,13 +158,15 @@ class ConfessionAppSettings {
   AppLanguage get defaultLanguage => baseSettings.defaultLanguage;
   bool get notificationsEnabled => baseSettings.notificationsEnabled;
   double get effectiveTextScaleFactor => baseSettings.effectiveTextScaleFactor;
-  
+
   /// Get text scale factor for backward compatibility with existing TextScaling class
   double get textScale => effectiveTextScaleFactor;
-  
+
   /// Convenience getters for examination preferences
-  List<String> get favoriteExaminationIds => examinationPreferences.favoriteExaminationIds;
-  String? get defaultExaminationId => examinationPreferences.defaultExaminationId;
+  List<String> get favoriteExaminationIds =>
+      examinationPreferences.favoriteExaminationIds;
+  String? get defaultExaminationId =>
+      examinationPreferences.defaultExaminationId;
 
   @override
   bool operator ==(Object other) {

@@ -21,15 +21,21 @@ class FullPrayerMetadata {
     return FullPrayerMetadata(
       version: json['version'] ?? '',
       generatedAt: json['generatedAt'] ?? '',
-      categoryGroups: (json['categoryGroups'] as List<dynamic>?)
-          ?.map((item) => PrayerCategoryGroup.fromJson(item))
-          .toList() ?? [],
-      categories: (json['categories'] as List<dynamic>?)
-          ?.map((item) => PrayerCategory.fromJson(item))
-          .toList() ?? [],
-      prayers: (json['prayers'] as List<dynamic>?)
-          ?.map((item) => PrayerMetadata.fromJson(item))
-          .toList() ?? [],
+      categoryGroups:
+          (json['categoryGroups'] as List<dynamic>?)
+              ?.map((item) => PrayerCategoryGroup.fromJson(item))
+              .toList() ??
+          [],
+      categories:
+          (json['categories'] as List<dynamic>?)
+              ?.map((item) => PrayerCategory.fromJson(item))
+              .toList() ??
+          [],
+      prayers:
+          (json['prayers'] as List<dynamic>?)
+              ?.map((item) => PrayerMetadata.fromJson(item))
+              .toList() ??
+          [],
     );
   }
 }

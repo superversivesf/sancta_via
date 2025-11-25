@@ -12,7 +12,9 @@ void main() async {
   final yearRange = LiturgicalCalendarService.getYearRange();
   print('Year range: ${yearRange.start} - ${yearRange.end}');
   print('Total days in dataset: ${GeneratedLiturgicalData.getTotalDays()}');
-  print('Total prioritized celebrations: ${GeneratedLiturgicalData.getTotalPrioritizedCelebrations()}');
+  print(
+    'Total prioritized celebrations: ${GeneratedLiturgicalData.getTotalPrioritizedCelebrations()}',
+  );
 
   // Example: Get Christmas Day 2025
   final christmas = LiturgicalCalendarService.getDayForDate(
@@ -44,12 +46,17 @@ void main() async {
   print('\n⭐ Upcoming major celebrations (next 30 days):');
   final upcomingFeasts = LiturgicalCalendarService.getUpcomingFeasts();
   for (final feast in upcomingFeasts.take(5)) {
-    print('  ${feast.date}: ${feast.celebration.name} (${feast.celebration.rank})');
+    print(
+      '  ${feast.date}: ${feast.celebration.name} (${feast.celebration.rank})',
+    );
   }
 
   // Example: Search for specific celebrations
   print('\n🔍 Search for "Mary" celebrations in 2025:');
-  final maryFeasts = LiturgicalCalendarService.searchCelebrations('Mary', year: 2025);
+  final maryFeasts = LiturgicalCalendarService.searchCelebrations(
+    'Mary',
+    year: 2025,
+  );
   for (final feast in maryFeasts.take(3)) {
     print('  ${feast.date}: ${feast.celebration.name}');
   }
@@ -73,5 +80,7 @@ void main() async {
   print('  ✅ Instant data access');
 
   print('\n🎉 Example completed successfully!');
-  print('The liturgical calendar data is embedded as native Dart objects for maximum performance.');
+  print(
+    'The liturgical calendar data is embedded as native Dart objects for maximum performance.',
+  );
 }

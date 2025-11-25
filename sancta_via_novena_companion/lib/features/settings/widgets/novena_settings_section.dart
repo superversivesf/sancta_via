@@ -29,7 +29,8 @@ class NovenaSettingsSection extends ConsumerWidget {
           ),
           isThreeLine: false,
           trailing: Semantics(
-            label: 'Current reminder time: ${settings.dailyReminderTimeOfDay.format(context)}',
+            label:
+                'Current reminder time: ${settings.dailyReminderTimeOfDay.format(context)}',
             child: Text(
               settings.dailyReminderTimeOfDay.format(context),
               style: Theme.of(context).textTheme.titleMedium,
@@ -46,9 +47,9 @@ class NovenaSettingsSection extends ConsumerWidget {
           subtitle: const Text('Show celebrations when completing novena days'),
           value: settings.showCompletionCelebrations,
           onChanged: (value) => _toggleCompletionCelebrations(
-            context, 
-            ref, 
-            settingsService, 
+            context,
+            ref,
+            settingsService,
             value,
           ),
         ),
@@ -72,12 +73,12 @@ class NovenaSettingsSection extends ConsumerWidget {
     SettingsService settingsService,
   ) async {
     final currentTime = settingsService.currentReminderTime;
-    
+
     final pickedTime = await custom_time_picker.CustomTimePickerDialog.show(
       context: context,
       initialTime: currentTime,
     );
-    
+
     if (pickedTime != null && pickedTime != currentTime && context.mounted) {
       try {
         await settingsService.updateReminderTime(pickedTime);
@@ -110,7 +111,7 @@ class NovenaSettingsSection extends ConsumerWidget {
       if (context.mounted) {
         SettingsErrorHandler.showSuccess(
           context,
-          value 
+          value
               ? 'Completion celebrations enabled'
               : 'Completion celebrations disabled',
         );

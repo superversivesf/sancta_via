@@ -1,10 +1,10 @@
 import '../widgets/enhanced_prayer_text.dart';
 
 /// DEPRECATED: Model for prayer preferences
-/// 
+///
 /// This class is deprecated in favor of the new unified settings system.
 /// Use PrayerAppSettings from '../models/prayer_app_settings.dart' instead.
-/// 
+///
 /// This class is maintained for backward compatibility only.
 @Deprecated('Use PrayerAppSettings with the unified settings system instead')
 class PrayerPreferences {
@@ -22,15 +22,14 @@ class PrayerPreferences {
     this.defaultLanguage = 'English',
     this.readingMode = PrayerReadingMode.normal,
     this.verseHighlighting = false,
-  }) :
-        favoritePrayerIds = favoritePrayerIds ?? [],
-        recentPrayerIds = recentPrayerIds ?? [];
+  }) : favoritePrayerIds = favoritePrayerIds ?? [],
+       recentPrayerIds = recentPrayerIds ?? [];
 
   factory PrayerPreferences.fromJson(Map<String, dynamic> json) {
     double fontSize = json['fontSize']?.toDouble() ?? 18.0;
     // Clamp font size to new maximum of 27pt
     fontSize = fontSize.clamp(12.0, 27.0);
-    
+
     // Parse reading mode
     PrayerReadingMode readingMode = PrayerReadingMode.normal;
     if (json['readingMode'] != null) {
@@ -45,7 +44,7 @@ class PrayerPreferences {
           readingMode = PrayerReadingMode.normal;
       }
     }
-    
+
     return PrayerPreferences(
       favoritePrayerIds: List<String>.from(json['favoritePrayerIds'] ?? []),
       recentPrayerIds: List<String>.from(json['recentPrayerIds'] ?? []),
@@ -68,7 +67,7 @@ class PrayerPreferences {
       default:
         readingModeString = 'normal';
     }
-    
+
     return {
       'favoritePrayerIds': favoritePrayerIds,
       'recentPrayerIds': recentPrayerIds,

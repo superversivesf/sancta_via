@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class AppLogger {
   static const String _prefix = '[SanctaVia]';
-  
+
   /// Log debug information (only in debug mode)
   static void debug(String message, [String? tag]) {
     if (kDebugMode) {
@@ -10,7 +10,7 @@ class AppLogger {
       print('$_prefix$tagStr DEBUG: $message');
     }
   }
-  
+
   /// Log info messages (only in debug mode)
   static void info(String message, [String? tag]) {
     if (kDebugMode) {
@@ -18,7 +18,7 @@ class AppLogger {
       print('$_prefix$tagStr INFO: $message');
     }
   }
-  
+
   /// Log warnings (appears in both debug and release for important issues)
   static void warning(String message, [String? tag]) {
     final tagStr = tag != null ? '[$tag]' : '';
@@ -29,9 +29,14 @@ class AppLogger {
       // FirebaseCrashlytics.instance.log('WARNING: $message');
     }
   }
-  
+
   /// Log errors (always logged, even in release)
-  static void error(String message, [dynamic error, StackTrace? stackTrace, String? tag]) {
+  static void error(
+    String message, [
+    dynamic error,
+    StackTrace? stackTrace,
+    String? tag,
+  ]) {
     final tagStr = tag != null ? '[$tag]' : '';
     if (kDebugMode) {
       print('$_prefix$tagStr ERROR: $message');
@@ -42,17 +47,17 @@ class AppLogger {
       // FirebaseCrashlytics.instance.recordError(error, stackTrace, reason: message);
     }
   }
-  
+
   /// Log examination-specific operations
   static void examination(String message) {
     debug(message, 'EXAM');
   }
-  
+
   /// Log repository operations
   static void repository(String message) {
     debug(message, 'REPO');
   }
-  
+
   /// Log authentication operations
   static void auth(String message) {
     debug(message, 'AUTH');

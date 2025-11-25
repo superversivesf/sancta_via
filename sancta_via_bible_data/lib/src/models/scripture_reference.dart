@@ -5,16 +5,16 @@ import 'package:meta/meta.dart';
 class ScriptureReference {
   /// Book name (e.g., "Genesis", "Psalms", "Matthew")
   final String book;
-  
+
   /// Chapter number
   final int chapter;
-  
+
   /// Starting verse number (null for entire chapter)
   final int? startVerse;
-  
+
   /// Ending verse number (null for single verse or entire chapter)
   final int? endVerse;
-  
+
   /// Full reference text for display (e.g., "Genesis 1:1-5")
   final String displayText;
 
@@ -51,7 +51,7 @@ class ScriptureReference {
   /// Parse a reference string like "Genesis 1:1-5" or "Psalm 23"
   static ScriptureReference parse(String referenceText) {
     final trimmed = referenceText.trim();
-    
+
     // Handle cases like "1 Corinthians 12:4-11" or "2 Samuel 7:1-17"
     final parts = trimmed.split(' ');
     if (parts.length < 2) {
@@ -71,7 +71,8 @@ class ScriptureReference {
     }
 
     if (chapterVerseIndex == -1) {
-      throw ArgumentError('No chapter/verse found in reference: $referenceText');
+      throw ArgumentError(
+          'No chapter/verse found in reference: $referenceText');
     }
 
     book = parts.take(chapterVerseIndex).join(' ');
@@ -85,10 +86,10 @@ class ScriptureReference {
 
     final colonParts = chapterAndVerse.split(':');
     final chapter = int.parse(colonParts[0]);
-    
+
     int? startVerse;
     int? endVerse;
-    
+
     if (colonParts.length > 1) {
       final verseParts = colonParts[1].split('-');
       startVerse = int.parse(verseParts[0]);
@@ -131,7 +132,8 @@ class ScriptureReference {
   }
 
   /// Create a reference for a verse range
-  factory ScriptureReference.range(String book, int chapter, int startVerse, int endVerse) {
+  factory ScriptureReference.range(
+      String book, int chapter, int startVerse, int endVerse) {
     return ScriptureReference(
       book: book,
       chapter: chapter,
@@ -142,7 +144,8 @@ class ScriptureReference {
   }
 
   /// Create a unique key for caching
-  String get cacheKey => '${book.toLowerCase()}_${chapter}_${startVerse}_$endVerse';
+  String get cacheKey =>
+      '${book.toLowerCase()}_${chapter}_${startVerse}_$endVerse';
 
   /// Check if this reference is for an entire chapter
   bool get isEntireChapter => startVerse == null && endVerse == null;
@@ -151,7 +154,8 @@ class ScriptureReference {
   bool get isSingleVerse => startVerse != null && startVerse == endVerse;
 
   /// Check if this reference is for a verse range
-  bool get isVerseRange => startVerse != null && endVerse != null && startVerse != endVerse;
+  bool get isVerseRange =>
+      startVerse != null && endVerse != null && startVerse != endVerse;
 
   /// Get the number of verses in this reference (1 for single verse, null for entire chapter)
   int? get verseCount {
@@ -171,7 +175,8 @@ class ScriptureReference {
   }
 
   @override
-  int get hashCode => Object.hash(book, chapter, startVerse, endVerse, displayText);
+  int get hashCode =>
+      Object.hash(book, chapter, startVerse, endVerse, displayText);
 
   @override
   String toString() => 'ScriptureReference($displayText)';

@@ -24,7 +24,9 @@ class CustomTimePickerDialog {
               dayPeriodTextColor: Theme.of(context).colorScheme.primary,
               dialHandColor: Theme.of(context).colorScheme.primary,
               dialTextColor: Theme.of(context).colorScheme.onSurface,
-              entryModeIconColor: Theme.of(context).colorScheme.onSurfaceVariant,
+              entryModeIconColor: Theme.of(
+                context,
+              ).colorScheme.onSurfaceVariant,
             ),
           ),
           child: child!,

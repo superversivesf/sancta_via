@@ -8,10 +8,8 @@ import '../../../providers/text_scaling_provider.dart';
 
 class ExaminationSummaryScreen extends ConsumerWidget {
   final String examinationId;
-  
-  const ExaminationSummaryScreen({
-    required this.examinationId, super.key,
-  });
+
+  const ExaminationSummaryScreen({required this.examinationId, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,14 +20,20 @@ class ExaminationSummaryScreen extends ConsumerWidget {
     if (sessionState == null) {
       AppLogger.examination('Session state is null in summary screen');
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        AppLogger.examination('Navigating back to first route due to null session');
+        AppLogger.examination(
+          'Navigating back to first route due to null session',
+        );
         Navigator.of(context).popUntil((route) => route.isFirst);
       });
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    AppLogger.examination('Session ID: ${sessionState.id}, Examination ID: ${sessionState.examinationId}');
-    AppLogger.examination('Response count: ${sessionState.itemResponses.length}, Notes count: ${sessionState.notes.length}');
+    AppLogger.examination(
+      'Session ID: ${sessionState.id}, Examination ID: ${sessionState.examinationId}',
+    );
+    AppLogger.examination(
+      'Response count: ${sessionState.itemResponses.length}, Notes count: ${sessionState.notes.length}',
+    );
 
     final examinationAsync = ref.watch(
       examinationByIdProvider(sessionState.examinationId),
@@ -95,10 +99,12 @@ class ExaminationSummaryScreen extends ConsumerWidget {
                       // Header
                       Text(
                         'Items to Confess',
-                        style: textScaling.scaledHeadlineSmall(context).copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                        style: textScaling
+                            .scaledHeadlineSmall(context)
+                            .copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                       ),
                       const SizedBox(height: 8),
                       const Text(
@@ -109,7 +115,7 @@ class ExaminationSummaryScreen extends ConsumerWidget {
 
                       // List of items to confess
                       ...confessionItems.map(
-                            (item) => _buildConfessionItem(context, item),
+                        (item) => _buildConfessionItem(context, item),
                       ),
 
                       const SizedBox(height: 32),
@@ -124,7 +130,9 @@ class ExaminationSummaryScreen extends ConsumerWidget {
                             children: [
                               Text(
                                 'Act of Contrition',
-                                style: textScaling.scaledTitleMedium(context).copyWith(fontWeight: FontWeight.bold),
+                                style: textScaling
+                                    .scaledTitleMedium(context)
+                                    .copyWith(fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 8),
                               const Text(
@@ -176,8 +184,12 @@ class ExaminationSummaryScreen extends ConsumerWidget {
                           icon: const Icon(Icons.check),
                           label: const Text('Complete'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            foregroundColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
                           ),
                         ),
                       ),
@@ -220,17 +232,21 @@ class ExaminationSummaryScreen extends ConsumerWidget {
                   children: [
                     Text(
                       item.getDisplayText(),
-                      style: textScaling.scaledBodyLarge(context).copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: textScaling
+                          .scaledBodyLarge(context)
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
                     if (item.note != null && item.note!.isNotEmpty) ...[
                       const SizedBox(height: 4),
                       Text(
                         item.note!,
-                        style: textScaling.scaledBodySmall(context).copyWith(
-                          color: Theme.of(context).textTheme.bodySmall?.color,
-                        ),
+                        style: textScaling
+                            .scaledBodySmall(context)
+                            .copyWith(
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.color,
+                            ),
                       ),
                     ],
                   ],
@@ -243,7 +259,10 @@ class ExaminationSummaryScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _showCompletionDialog(BuildContext context, WidgetRef ref) async {
+  Future<void> _showCompletionDialog(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
     AppLogger.examination('Showing completion dialog');
 
     return showDialog<void>(
@@ -273,20 +292,24 @@ class ExaminationSummaryScreen extends ConsumerWidget {
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Examination completed. May God bless your confession.'),
+                    content: Text(
+                      'Examination completed. May God bless your confession.',
+                    ),
                     duration: Duration(seconds: 3),
                   ),
                 );
               }
 
               // Complete the session
-              await ref.read(examinationSessionProvider.notifier).completeExamination();
+              await ref
+                  .read(examinationSessionProvider.notifier)
+                  .completeExamination();
 
               // Navigate back to home - pop multiple times to get back to main screen
               if (context.mounted) {
                 AppLogger.examination('Using multiple pops to return home');
                 Navigator.of(context).pop(); // Pop summary screen
-                Navigator.of(context).pop(); // Pop category screen  
+                Navigator.of(context).pop(); // Pop category screen
                 Navigator.of(context).pop(); // Pop intro screen
               }
             },

@@ -11,18 +11,28 @@ final novenaRepositoryProvider = Provider<NovenaRepository>((ref) {
 });
 
 // Novena metadata list provider
-final novenaMetadataListProvider = FutureProvider<List<NovenaMetadata>>((ref) async {
+final novenaMetadataListProvider = FutureProvider<List<NovenaMetadata>>((
+  ref,
+) async {
   final repository = ref.read(novenaRepositoryProvider);
   return repository.loadNovenaMetadata();
 });
 
 // Individual novena provider by ID
-final novenaByIdProvider = FutureProvider.family<Novena?, String>((ref, novenaId) async {
+final novenaByIdProvider = FutureProvider.family<Novena?, String>((
+  ref,
+  novenaId,
+) async {
   final repository = ref.read(novenaRepositoryProvider);
   try {
     return await repository.loadNovena(novenaId);
   } catch (e) {
-    AppLogger.error('Failed to load novena "$novenaId"', e, null, 'NOVENA_PROVIDER');
+    AppLogger.error(
+      'Failed to load novena "$novenaId"',
+      e,
+      null,
+      'NOVENA_PROVIDER',
+    );
     return null;
   }
 });
@@ -38,7 +48,7 @@ final currentNovenaDayProvider = FutureProvider<NovenaDay?>((ref) async {
   try {
     final novena = await repository.loadNovena(activeNovena.novenaId);
     final spiritualDay = activeNovena.spiritualDay;
-    
+
     if (spiritualDay > 0 && spiritualDay <= novena.days.length) {
       return novena.days[spiritualDay - 1];
     }
@@ -56,7 +66,12 @@ final novenasCategoriesProvider = FutureProvider<List<String>>((ref) async {
   try {
     return await repository.getAllCategories();
   } catch (e) {
-    AppLogger.error('Failed to load novena categories', e, null, 'NOVENA_PROVIDER');
+    AppLogger.error(
+      'Failed to load novena categories',
+      e,
+      null,
+      'NOVENA_PROVIDER',
+    );
     return [];
   }
 });
@@ -67,48 +82,77 @@ final novenasDifficultiesProvider = FutureProvider<List<String>>((ref) async {
   try {
     return await repository.getAllDifficulties();
   } catch (e) {
-    AppLogger.error('Failed to load novena difficulties', e, null, 'NOVENA_PROVIDER');
+    AppLogger.error(
+      'Failed to load novena difficulties',
+      e,
+      null,
+      'NOVENA_PROVIDER',
+    );
     return [];
   }
 });
 
 // Novenas by category provider
-final novenasByCategoryProvider = FutureProvider.family<List<NovenaMetadata>, String>((ref, category) async {
-  final repository = ref.read(novenaRepositoryProvider);
-  try {
-    return await repository.getNovenasByCategory(category);
-  } catch (e) {
-    AppLogger.error('Failed to load novenas for category "$category"', e, null, 'NOVENA_PROVIDER');
-    return [];
-  }
-});
+final novenasByCategoryProvider =
+    FutureProvider.family<List<NovenaMetadata>, String>((ref, category) async {
+      final repository = ref.read(novenaRepositoryProvider);
+      try {
+        return await repository.getNovenasByCategory(category);
+      } catch (e) {
+        AppLogger.error(
+          'Failed to load novenas for category "$category"',
+          e,
+          null,
+          'NOVENA_PROVIDER',
+        );
+        return [];
+      }
+    });
 
 // Novenas by difficulty provider
-final novenasByDifficultyProvider = FutureProvider.family<List<NovenaMetadata>, String>((ref, difficulty) async {
-  final repository = ref.read(novenaRepositoryProvider);
-  try {
-    return await repository.getNovenasByDifficulty(difficulty);
-  } catch (e) {
-    AppLogger.error('Failed to load novenas for difficulty "$difficulty"', e, null, 'NOVENA_PROVIDER');
-    return [];
-  }
-});
+final novenasByDifficultyProvider =
+    FutureProvider.family<List<NovenaMetadata>, String>((
+      ref,
+      difficulty,
+    ) async {
+      final repository = ref.read(novenaRepositoryProvider);
+      try {
+        return await repository.getNovenasByDifficulty(difficulty);
+      } catch (e) {
+        AppLogger.error(
+          'Failed to load novenas for difficulty "$difficulty"',
+          e,
+          null,
+          'NOVENA_PROVIDER',
+        );
+        return [];
+      }
+    });
 
 // Search novenas provider
-final novenaSearchProvider = FutureProvider.family<List<NovenaMetadata>, String>((ref, searchTerm) async {
-  if (searchTerm.trim().isEmpty) {
-    // Return all novenas if search term is empty
-    return ref.read(novenaMetadataListProvider.future);
-  }
-  
-  final repository = ref.read(novenaRepositoryProvider);
-  try {
-    return await repository.searchNovenas(searchTerm);
-  } catch (e) {
-    AppLogger.error('Failed to search novenas for "$searchTerm"', e, null, 'NOVENA_PROVIDER');
-    return [];
-  }
-});
+final novenaSearchProvider =
+    FutureProvider.family<List<NovenaMetadata>, String>((
+      ref,
+      searchTerm,
+    ) async {
+      if (searchTerm.trim().isEmpty) {
+        // Return all novenas if search term is empty
+        return ref.read(novenaMetadataListProvider.future);
+      }
+
+      final repository = ref.read(novenaRepositoryProvider);
+      try {
+        return await repository.searchNovenas(searchTerm);
+      } catch (e) {
+        AppLogger.error(
+          'Failed to search novenas for "$searchTerm"',
+          e,
+          null,
+          'NOVENA_PROVIDER',
+        );
+        return [];
+      }
+    });
 
 // Database statistics provider (useful for debugging/admin)
 final databaseStatsProvider = FutureProvider<Map<String, int>>((ref) async {
@@ -126,42 +170,53 @@ final databaseStatsProvider = FutureProvider<Map<String, int>>((ref) async {
 // Current selected category filter (for UI state)
 final selectedCategoryFilterProvider = StateProvider<String?>((ref) => null);
 
-// Current selected difficulty filter (for UI state)  
+// Current selected difficulty filter (for UI state)
 final selectedDifficultyFilterProvider = StateProvider<String?>((ref) => null);
 
 // Current search term (for UI state)
 final searchTermProvider = StateProvider<String>((ref) => '');
 
 // Filtered novenas provider (combines search and filters)
-final filteredNovenaMetadataProvider = FutureProvider<List<NovenaMetadata>>((ref) async {
+final filteredNovenaMetadataProvider = FutureProvider<List<NovenaMetadata>>((
+  ref,
+) async {
   final searchTerm = ref.watch(searchTermProvider);
   final selectedCategory = ref.watch(selectedCategoryFilterProvider);
   final selectedDifficulty = ref.watch(selectedDifficultyFilterProvider);
-  
+
   // If no filters applied, return all novenas
-  if (searchTerm.trim().isEmpty && selectedCategory == null && selectedDifficulty == null) {
+  if (searchTerm.trim().isEmpty &&
+      selectedCategory == null &&
+      selectedDifficulty == null) {
     return ref.read(novenaMetadataListProvider.future);
   }
-  
+
   List<NovenaMetadata> results;
-  
+
   // Start with search results if there's a search term
   if (searchTerm.trim().isNotEmpty) {
     results = await ref.read(novenaSearchProvider(searchTerm).future);
   } else {
     results = await ref.read(novenaMetadataListProvider.future);
   }
-  
+
   // Apply category filter
   if (selectedCategory != null) {
-    results = results.where((novena) => novena.intentionCategory == selectedCategory).toList();
+    results = results
+        .where((novena) => novena.intentionCategory == selectedCategory)
+        .toList();
   }
-  
+
   // Apply difficulty filter
   if (selectedDifficulty != null) {
-    results = results.where((novena) => novena.difficulty == selectedDifficulty).toList();
+    results = results
+        .where((novena) => novena.difficulty == selectedDifficulty)
+        .toList();
   }
-  
-  AppLogger.debug('Filtered novenas: ${results.length} results for search="$searchTerm", category=$selectedCategory, difficulty=$selectedDifficulty', 'NOVENA_PROVIDER');
+
+  AppLogger.debug(
+    'Filtered novenas: ${results.length} results for search="$searchTerm", category=$selectedCategory, difficulty=$selectedDifficulty',
+    'NOVENA_PROVIDER',
+  );
   return results;
 });

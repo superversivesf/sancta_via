@@ -24,13 +24,16 @@ class SecuritySettingsSection extends ConsumerWidget {
         ListTile(
           leading: const Icon(Icons.lock),
           title: Text(settings.hasPinCode ? 'Change PIN Code' : 'Set PIN Code'),
-          subtitle: Text(settings.hasPinCode 
-              ? 'PIN is currently set for examination data protection'
-              : 'Create a ${AppConstants.pinLength}-digit PIN to protect examination data'),
-          trailing: settings.hasPinCode 
+          subtitle: Text(
+            settings.hasPinCode
+                ? 'PIN is currently set for examination data protection'
+                : 'Create a ${AppConstants.pinLength}-digit PIN to protect examination data',
+          ),
+          trailing: settings.hasPinCode
               ? const Icon(Icons.edit)
               : const Icon(Icons.add),
-          onTap: () => _handlePinAction(context, ref, isChange: settings.hasPinCode),
+          onTap: () =>
+              _handlePinAction(context, ref, isChange: settings.hasPinCode),
         ),
         const SizedBox(height: 4),
 
@@ -72,7 +75,8 @@ class SecuritySettingsSection extends ConsumerWidget {
       final confirmed = await SettingsErrorHandler.showConfirmationDialog(
         context,
         title: 'Remove PIN Code',
-        message: 'Are you sure you want to remove PIN protection? This is not recommended.',
+        message:
+            'Are you sure you want to remove PIN protection? This is not recommended.',
         confirmText: 'Remove PIN',
         confirmColor: Colors.orange,
       );

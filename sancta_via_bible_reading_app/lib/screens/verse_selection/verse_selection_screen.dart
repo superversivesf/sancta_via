@@ -13,7 +13,9 @@ class VerseSelectionScreen extends ConsumerWidget {
   final int chapter;
 
   const VerseSelectionScreen({
-    required this.bookName, required this.chapter, super.key,
+    required this.bookName,
+    required this.chapter,
+    super.key,
   });
 
   @override
@@ -22,16 +24,18 @@ class VerseSelectionScreen extends ConsumerWidget {
     final colorIntensity = ref.watch(colorIntensityProvider);
     final textScaling = ref.watch(textScaleProvider);
     final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
-    
+
     // Get chapter content to count verses
     final reference = ScriptureReference.chapter(bookName, chapter);
-    final chapterAsync = ref.watch(scriptureByReferenceProvider((
-      reference: reference,
-      translation: selectedTranslation,
-    )));
-    
+    final chapterAsync = ref.watch(
+      scriptureByReferenceProvider((
+        reference: reference,
+        translation: selectedTranslation,
+      )),
+    );
+
     // Parse liturgical color and convert to Flutter color
-    final liturgicalColor = currentColor != null 
+    final liturgicalColor = currentColor != null
         ? LiturgicalColor.fromString(currentColor)
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
@@ -49,18 +53,22 @@ class VerseSelectionScreen extends ConsumerWidget {
             margin: const EdgeInsets.only(right: 16),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
+              color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                  .withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
+                color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                    .withValues(alpha: 0.3),
               ),
             ),
             child: Text(
               selectedTranslation.abbreviation,
-              style: textScaling.scaledBodySmall(context).copyWith(
-                fontWeight: FontWeight.w600,
-                color: themeColor ?? Theme.of(context).colorScheme.primary,
-              ),
+              style: textScaling
+                  .scaledBodySmall(context)
+                  .copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: themeColor ?? Theme.of(context).colorScheme.primary,
+                  ),
             ),
           ),
         ],
@@ -68,7 +76,8 @@ class VerseSelectionScreen extends ConsumerWidget {
       body: SafeArea(
         top: false, // Let AppBar handle top
         child: chapterAsync.when(
-          data: (scripture) => _buildVerseGrid(context, ref, scripture, themeColor),
+          data: (scripture) =>
+              _buildVerseGrid(context, ref, scripture, themeColor),
           loading: () => Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -88,18 +97,16 @@ class VerseSelectionScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.error_outline,
-                  size: 48,
-                  color: Colors.red,
-                ),
+                const Icon(Icons.error_outline, size: 48, color: Colors.red),
                 const SizedBox(height: 16),
                 Text(
                   'Error loading verses',
-                  style: textScaling.scaledTitleMedium(context).copyWith(
-                    color: Colors.red.shade700,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: textScaling
+                      .scaledTitleMedium(context)
+                      .copyWith(
+                        color: Colors.red.shade700,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -115,36 +122,39 @@ class VerseSelectionScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildVerseGrid(BuildContext context, WidgetRef ref, ScriptureContent scripture, Color? themeColor) {
+  Widget _buildVerseGrid(
+    BuildContext context,
+    WidgetRef ref,
+    ScriptureContent scripture,
+    Color? themeColor,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     if (!scripture.found || scripture.text.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.search_off,
-              size: 48,
-              color: Colors.orange,
-            ),
+            const Icon(Icons.search_off, size: 48, color: Colors.orange),
             const SizedBox(height: 16),
             Text(
               'Chapter not found',
-              style: textScaling.scaledTitleMedium(context).copyWith(
-                color: Colors.orange.shade700,
-                fontWeight: FontWeight.bold,
-              ),
+              style: textScaling
+                  .scaledTitleMedium(context)
+                  .copyWith(
+                    color: Colors.orange.shade700,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ],
         ),
       );
     }
-    
+
     // Parse actual verses from the Bible text
     final verses = _parseVerses(scripture.text);
     final verseCount = verses.length;
-    
+
     return Column(
       children: [
         // Header
@@ -152,10 +162,12 @@ class VerseSelectionScreen extends ConsumerWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.05),
+            color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                .withValues(alpha: 0.05),
             border: Border(
               bottom: BorderSide(
-                color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.2),
+                color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                    .withValues(alpha: 0.2),
               ),
             ),
           ),
@@ -163,22 +175,30 @@ class VerseSelectionScreen extends ConsumerWidget {
             children: [
               Text(
                 'Select Verse',
-                style: textScaling.scaledTitleMedium(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: themeColor?.withValues(alpha: 0.8) ?? Theme.of(context).colorScheme.primary,
-                ),
+                style: textScaling
+                    .scaledTitleMedium(context)
+                    .copyWith(
+                      fontWeight: FontWeight.bold,
+                      color:
+                          themeColor?.withValues(alpha: 0.8) ??
+                          Theme.of(context).colorScheme.primary,
+                    ),
               ),
               const SizedBox(height: 4),
               Text(
                 '$bookName $chapter has $verseCount verses',
-                style: textScaling.scaledBodyMedium(context).copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                ),
+                style: textScaling
+                    .scaledBodyMedium(context)
+                    .copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
               ),
             ],
           ),
         ),
-        
+
         // Verse Grid
         Expanded(
           child: GridView.builder(
@@ -192,27 +212,35 @@ class VerseSelectionScreen extends ConsumerWidget {
             itemCount: verseCount,
             itemBuilder: (context, index) {
               final verseNumber = index + 1;
-              
+
               return Card(
                 elevation: 2,
                 child: InkWell(
-                  onTap: () => _navigateToChapterWithVerse(context, verseNumber),
+                  onTap: () =>
+                      _navigateToChapterWithVerse(context, verseNumber),
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
+                        color:
+                            (themeColor ??
+                                    Theme.of(context).colorScheme.primary)
+                                .withValues(alpha: 0.3),
                         width: 1,
                       ),
                     ),
                     child: Center(
                       child: Text(
                         verseNumber.toString(),
-                        style: textScaling.scaledBodyLarge(context).copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: themeColor ?? Theme.of(context).colorScheme.primary,
-                        ),
+                        style: textScaling
+                            .scaledBodyLarge(context)
+                            .copyWith(
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  themeColor ??
+                                  Theme.of(context).colorScheme.primary,
+                            ),
                       ),
                     ),
                   ),
@@ -221,7 +249,7 @@ class VerseSelectionScreen extends ConsumerWidget {
             },
           ),
         ),
-        
+
         // Quick actions
         Container(
           padding: const EdgeInsets.all(16),
@@ -229,7 +257,8 @@ class VerseSelectionScreen extends ConsumerWidget {
             color: Theme.of(context).colorScheme.surface,
             border: Border(
               top: BorderSide(
-                color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.2),
+                color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                    .withValues(alpha: 0.2),
               ),
             ),
           ),
@@ -241,9 +270,12 @@ class VerseSelectionScreen extends ConsumerWidget {
                   icon: const Icon(Icons.first_page),
                   label: const Text('Start at Verse 1'),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
+                    foregroundColor:
+                        themeColor ?? Theme.of(context).colorScheme.primary,
                     side: BorderSide(
-                      color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.5),
+                      color:
+                          (themeColor ?? Theme.of(context).colorScheme.primary)
+                              .withValues(alpha: 0.5),
                     ),
                   ),
                 ),
@@ -255,7 +287,8 @@ class VerseSelectionScreen extends ConsumerWidget {
                   icon: const Icon(Icons.menu_book),
                   label: const Text('Read Whole Chapter'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
+                    backgroundColor:
+                        themeColor ?? Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
                   ),
                 ),
@@ -270,13 +303,16 @@ class VerseSelectionScreen extends ConsumerWidget {
   List<String> _parseVerses(String chapterText) {
     // Parse actual verses from the Bible text
     // Most Bible texts start verses with numbers like "1 In the beginning..." or have verse markers
-    
+
     final verses = <String>[];
-    
+
     // Try to split by verse numbers (pattern: number followed by space at start of line or after whitespace)
-    final versePattern = RegExp(r'(?:^|\s)(\d+)\s+([^0-9]*?)(?=\s\d+\s|$)', multiLine: true);
+    final versePattern = RegExp(
+      r'(?:^|\s)(\d+)\s+([^0-9]*?)(?=\s\d+\s|$)',
+      multiLine: true,
+    );
     final matches = versePattern.allMatches(chapterText);
-    
+
     if (matches.isNotEmpty) {
       // Found verse patterns, use them
       for (final match in matches) {
@@ -288,16 +324,19 @@ class VerseSelectionScreen extends ConsumerWidget {
     } else {
       // Fallback: split by sentences and group them
       final sentences = chapterText.split(RegExp(r'[.!?]+\s+'));
-      
+
       // Group sentences into reasonable verse-like chunks
       for (int i = 0; i < sentences.length; i += 2) {
-        final verseText = sentences.sublist(i, (i + 2).clamp(0, sentences.length)).join('. ').trim();
+        final verseText = sentences
+            .sublist(i, (i + 2).clamp(0, sentences.length))
+            .join('. ')
+            .trim();
         if (verseText.isNotEmpty) {
           verses.add(verseText);
         }
       }
     }
-    
+
     // Ensure we have at least some verses
     if (verses.isEmpty) {
       // If all else fails, just split by periods and hope for the best
@@ -309,17 +348,19 @@ class VerseSelectionScreen extends ConsumerWidget {
         }
       }
     }
-    
+
     // Ensure we have at least one verse
     if (verses.isEmpty) {
       verses.add(chapterText.isNotEmpty ? chapterText : 'Chapter text');
     }
-    
+
     return verses;
   }
 
   void _navigateToChapterWithVerse(BuildContext context, int startVerse) {
-    context.push('/chapter/${Uri.encodeComponent(bookName)}/$chapter?startVerse=$startVerse');
+    context.push(
+      '/chapter/${Uri.encodeComponent(bookName)}/$chapter?startVerse=$startVerse',
+    );
   }
 
   void _navigateToChapterFromBeginning(BuildContext context) {

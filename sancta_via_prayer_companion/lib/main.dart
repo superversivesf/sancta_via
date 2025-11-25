@@ -15,13 +15,13 @@ class PrayerCompanionApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch liturgical color for dynamic theming
     final currentLiturgicalColor = ref.watch(currentLiturgicalColorProvider);
-    
+
     // Watch user preferences
     final themeMode = ref.watch(themeModeProvider);
     final colorIntensity = ref.watch(colorIntensityProvider);
-    
+
     // Parse liturgical color from string
-    final liturgicalColor = currentLiturgicalColor != null 
+    final liturgicalColor = currentLiturgicalColor != null
         ? LiturgicalColor.fromString(currentLiturgicalColor)
         : null;
 

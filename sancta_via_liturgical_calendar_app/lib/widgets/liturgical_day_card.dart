@@ -20,8 +20,10 @@ class LiturgicalDayCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorIntensity = ref.watch(colorIntensityProvider);
-    final liturgicalColor = liturgicalDay.celebration.color.toLiturgicalColor(colorIntensity);
-    
+    final liturgicalColor = liturgicalDay.celebration.color.toLiturgicalColor(
+      colorIntensity,
+    );
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
@@ -43,10 +45,7 @@ class LiturgicalDayCard extends ConsumerWidget {
             // Date and liturgical color indicator
             Row(
               children: [
-                CircleAvatar(
-                  backgroundColor: liturgicalColor,
-                  radius: 8,
-                ),
+                CircleAvatar(backgroundColor: liturgicalColor, radius: 8),
                 const SizedBox(width: 8),
                 Text(
                   DateFormat('EEEE, MMMM d, yyyy').format(selectedDate),
@@ -56,15 +55,11 @@ class LiturgicalDayCard extends ConsumerWidget {
                 ),
                 const Spacer(),
                 if (_isSignificantCelebration())
-                  Icon(
-                    _getCelebrationIcon(),
-                    color: liturgicalColor,
-                    size: 20,
-                  ),
+                  Icon(_getCelebrationIcon(), color: liturgicalColor, size: 20),
               ],
             ),
             const SizedBox(height: 8),
-            
+
             // Season
             Text(
               liturgicalDay.season,
@@ -72,24 +67,24 @@ class LiturgicalDayCard extends ConsumerWidget {
                 color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
-            
+
             // Celebration name if significant
-            if (liturgicalDay.celebration.name.isNotEmpty && 
+            if (liturgicalDay.celebration.name.isNotEmpty &&
                 liturgicalDay.celebration.name != liturgicalDay.season) ...[
               const SizedBox(height: 4),
               Text(
                 liturgicalDay.celebration.name,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontStyle: FontStyle.italic,
-                  fontWeight: liturgicalDay.celebration.rank == 'SOLEMNITY' 
-                      ? FontWeight.bold 
+                  fontWeight: liturgicalDay.celebration.rank == 'SOLEMNITY'
+                      ? FontWeight.bold
                       : FontWeight.normal,
                 ),
               ),
             ],
-            
+
             // Rank if applicable
-            if (liturgicalDay.celebration.rank != 'WEEKDAY' && 
+            if (liturgicalDay.celebration.rank != 'WEEKDAY' &&
                 liturgicalDay.celebration.rank.isNotEmpty) ...[
               const SizedBox(height: 4),
               Text(
@@ -100,7 +95,7 @@ class LiturgicalDayCard extends ConsumerWidget {
                 ),
               ),
             ],
-            
+
             // "View details" indicator if onTap is provided
             if (onTap != null) ...[
               const SizedBox(height: 8),
@@ -130,9 +125,9 @@ class LiturgicalDayCard extends ConsumerWidget {
 
   bool _isSignificantCelebration() {
     return liturgicalDay.celebration.prioritized ||
-           liturgicalDay.celebration.rank == 'SOLEMNITY' ||
-           liturgicalDay.celebration.rank == 'FEAST' ||
-           liturgicalDay.celebration.rank == 'MEMORIAL';
+        liturgicalDay.celebration.rank == 'SOLEMNITY' ||
+        liturgicalDay.celebration.rank == 'FEAST' ||
+        liturgicalDay.celebration.rank == 'MEMORIAL';
   }
 
   IconData _getCelebrationIcon() {
@@ -146,8 +141,8 @@ class LiturgicalDayCard extends ConsumerWidget {
       case 'OPT_MEMORIAL':
         return Icons.circle_outlined;
       default:
-        return liturgicalDay.celebration.prioritized 
-            ? Icons.star_outline 
+        return liturgicalDay.celebration.prioritized
+            ? Icons.star_outline
             : Icons.circle_outlined;
     }
   }

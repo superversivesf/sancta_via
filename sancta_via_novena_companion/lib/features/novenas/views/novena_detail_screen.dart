@@ -8,10 +8,7 @@ import '../providers/novena_state_provider.dart';
 class NovenaDetailScreen extends ConsumerWidget {
   final String novenaId;
 
-  const NovenaDetailScreen({
-    required this.novenaId,
-    super.key,
-  });
+  const NovenaDetailScreen({required this.novenaId, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,9 +16,7 @@ class NovenaDetailScreen extends ConsumerWidget {
     final hasActiveNovena = ref.watch(hasActiveNovenaProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Novena Details'),
-      ),
+      appBar: AppBar(title: const Text('Novena Details')),
       body: novenaAsync.when(
         data: (novena) {
           if (novena == null) {
@@ -52,19 +47,16 @@ class NovenaDetailScreen extends ConsumerWidget {
                 const SizedBox(height: 4),
                 Text(
                   'Feast Day: ${novena.feastDay}',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontStyle: FontStyle.italic,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(fontStyle: FontStyle.italic),
                 ),
                 const SizedBox(height: 24),
 
                 // Before you begin section
                 const Text(
                   'Before you begin:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
 
@@ -87,7 +79,8 @@ class NovenaDetailScreen extends ConsumerWidget {
                 _buildSection(
                   context,
                   title: 'What to Expect',
-                  content: 'This novena consists of 9 days of prayer and reflection. Each day includes prayers, reflections, and scripture readings to deepen your devotion and strengthen your intentions.',
+                  content:
+                      'This novena consists of 9 days of prayer and reflection. Each day includes prayers, reflections, and scripture readings to deepen your devotion and strengthen your intentions.',
                   icon: Icons.schedule,
                 ),
 
@@ -145,9 +138,10 @@ class NovenaDetailScreen extends ConsumerWidget {
                         const SizedBox(height: 8),
                         Text(
                           'Complete or cancel your current novena before starting a new one',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.outline,
+                              ),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 16),
@@ -175,16 +169,13 @@ class NovenaDetailScreen extends ConsumerWidget {
                         children: [
                           Text(
                             'Additional Notes',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 8),
                           Text(
                             novena.notes!,
-                            style: const TextStyle(
-                              fontStyle: FontStyle.italic,
-                            ),
+                            style: const TextStyle(fontStyle: FontStyle.italic),
                           ),
                         ],
                       ),
@@ -223,10 +214,7 @@ class NovenaDetailScreen extends ConsumerWidget {
               color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              icon,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+            child: Icon(icon, color: Theme.of(context).colorScheme.primary),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -241,10 +229,7 @@ class NovenaDetailScreen extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  content,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+                Text(content, style: Theme.of(context).textTheme.bodyMedium),
               ],
             ),
           ),

@@ -6,7 +6,7 @@ import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.da
 
 void main() {
   print('🔍 Testing Liturgical Calendar Service...\n');
-  
+
   // Test 1: Get current day
   print('📅 Testing getCurrentDay():');
   final currentDay = LiturgicalCalendarService.getCurrentDay();
@@ -21,12 +21,14 @@ void main() {
   } else {
     print('  ❌ FAILED: Could not get current day');
   }
-  
-  print('\n${'='*50}\n');
-  
+
+  print('\n${'=' * 50}\n');
+
   // Test 2: Get specific date (Christmas 2025)
   print('🎄 Testing getDayForDate(Christmas 2025):');
-  final christmas = LiturgicalCalendarService.getDayForDate(DateTime(2025, 12, 25));
+  final christmas = LiturgicalCalendarService.getDayForDate(
+    DateTime(2025, 12, 25),
+  );
   if (christmas != null) {
     print('  ✅ SUCCESS: Got Christmas data');
     print('  🎭 Celebration: ${christmas.celebration.name}');
@@ -35,30 +37,34 @@ void main() {
   } else {
     print('  ❌ FAILED: Could not get Christmas day');
   }
-  
-  print('\n${'='*50}\n');
-  
+
+  print('\n${'=' * 50}\n');
+
   // Test 3: Search functionality
   print('🔍 Testing searchCelebrations("Easter"):');
   final easterResults = LiturgicalCalendarService.searchCelebrations('Easter');
   print('  ✅ Found ${easterResults.length} Easter-related celebrations');
   if (easterResults.isNotEmpty) {
-    print('  📅 Next Easter: ${easterResults.first.date} - ${easterResults.first.celebration.name}');
+    print(
+      '  📅 Next Easter: ${easterResults.first.date} - ${easterResults.first.celebration.name}',
+    );
   }
-  
-  print('\n${'='*50}\n');
-  
+
+  print('\n${'=' * 50}\n');
+
   // Test 4: Get upcoming feasts
   print('🎉 Testing getUpcomingFeasts(7 days):');
   final upcoming = LiturgicalCalendarService.getUpcomingFeasts(daysAhead: 7);
   print('  ✅ Found ${upcoming.length} upcoming feasts in next 7 days');
   for (final feast in upcoming.take(3)) {
-    final daysUntil = DateTime.parse(feast.date).difference(DateTime.now()).inDays;
+    final daysUntil = DateTime.parse(
+      feast.date,
+    ).difference(DateTime.now()).inDays;
     print('  📅 ${feast.date} ($daysUntil days): ${feast.celebration.name}');
   }
-  
-  print('\n${'='*50}\n');
-  
+
+  print('\n${'=' * 50}\n');
+
   // Test 5: Global statistics
   print('📊 Testing getGlobalStatistics():');
   final stats = LiturgicalCalendarService.getGlobalStatistics();
@@ -66,15 +72,20 @@ void main() {
   stats.forEach((key, value) {
     print('    $key: $value');
   });
-  
-  print('\n' '🎉 ALL TESTS COMPLETED! 🎉');
+
+  print(
+    '\n'
+    '🎉 ALL TESTS COMPLETED! 🎉',
+  );
   print('\n📋 SUMMARY:');
   print('✅ Liturgical Calendar Service is working correctly');
   print('✅ getCurrentDay() method returns current liturgical day');
   print('✅ All provider functionality is ready for use');
   print('✅ Zero-overhead performance with embedded data');
-  
+
   print('\n🚀 READY TO USE IN YOUR APPS!');
-  print('Import: package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart');
+  print(
+    'Import: package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart',
+  );
   print('Provider: currentLiturgicalDayProvider');
 }

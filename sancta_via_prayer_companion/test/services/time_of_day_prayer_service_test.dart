@@ -129,7 +129,7 @@ void main() {
         // These should be selected (both non-null)
         expect(result2024, isNotNull);
         expect(result2025, isNotNull);
-        
+
         // They may be different (different years = different seeds)
         // Just verify they're both from the list
         expect(prayers.contains(result2024), isTrue);
@@ -221,7 +221,7 @@ void main() {
         // Collect prayers for different timestamps
         final results = <Prayer>{};
         final baseTime = DateTime(2025, 1, 1, 10, 0);
-        
+
         for (int i = 0; i < 50; i++) {
           final prayer = TimeOfDayPrayerService.selectDifferentPrayer(
             prayers: prayers,
@@ -247,33 +247,43 @@ void main() {
 
         // Multiple calls with different timestamps should give variety
         final results = <Prayer>{};
-        
+
         final time1 = DateTime(2025, 1, 1, 10, 0, 0);
         final time2 = DateTime(2025, 1, 1, 10, 0, 1);
         final time3 = DateTime(2025, 1, 1, 10, 1, 0);
         final time4 = DateTime(2025, 1, 1, 11, 0, 0);
         final time5 = DateTime(2025, 1, 1, 15, 30, 45);
 
-        results.add(TimeOfDayPrayerService.selectDifferentPrayer(
-          prayers: prayers,
-          dateTime: time1,
-        )!);
-        results.add(TimeOfDayPrayerService.selectDifferentPrayer(
-          prayers: prayers,
-          dateTime: time2,
-        )!);
-        results.add(TimeOfDayPrayerService.selectDifferentPrayer(
-          prayers: prayers,
-          dateTime: time3,
-        )!);
-        results.add(TimeOfDayPrayerService.selectDifferentPrayer(
-          prayers: prayers,
-          dateTime: time4,
-        )!);
-        results.add(TimeOfDayPrayerService.selectDifferentPrayer(
-          prayers: prayers,
-          dateTime: time5,
-        )!);
+        results.add(
+          TimeOfDayPrayerService.selectDifferentPrayer(
+            prayers: prayers,
+            dateTime: time1,
+          )!,
+        );
+        results.add(
+          TimeOfDayPrayerService.selectDifferentPrayer(
+            prayers: prayers,
+            dateTime: time2,
+          )!,
+        );
+        results.add(
+          TimeOfDayPrayerService.selectDifferentPrayer(
+            prayers: prayers,
+            dateTime: time3,
+          )!,
+        );
+        results.add(
+          TimeOfDayPrayerService.selectDifferentPrayer(
+            prayers: prayers,
+            dateTime: time4,
+          )!,
+        );
+        results.add(
+          TimeOfDayPrayerService.selectDifferentPrayer(
+            prayers: prayers,
+            dateTime: time5,
+          )!,
+        );
 
         // Should get at least 2 different prayers
         expect(results.length, greaterThanOrEqualTo(2));
@@ -305,7 +315,7 @@ void main() {
     group('getCurrentTimeOfDay', () {
       test('returns a valid PrayerTimeOfDay', () {
         final result = TimeOfDayPrayerService.getCurrentTimeOfDay();
-        
+
         expect(result, isA<PrayerTimeOfDay>());
         expect(PrayerTimeOfDay.values.contains(result), isTrue);
       });

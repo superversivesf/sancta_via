@@ -52,7 +52,9 @@ class LiturgicalDayData {
   bool get isSolemnity => celebration.rank == 'SOLEMNITY';
   bool get isFeast => celebration.rank == 'FEAST';
   bool get isMemorial => celebration.rank == 'MEMORIAL';
-  bool get isOptionalMemorial => celebration.rank == 'OPT_MEMORIAL' || celebration.rank == 'OPTIONAL_MEMORIAL';
+  bool get isOptionalMemorial =>
+      celebration.rank == 'OPT_MEMORIAL' ||
+      celebration.rank == 'OPTIONAL_MEMORIAL';
   bool get isWeekday => celebration.rank == 'WEEKDAY';
 
   /// Get a short description for display

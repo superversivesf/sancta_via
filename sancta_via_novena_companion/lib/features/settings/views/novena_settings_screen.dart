@@ -21,8 +21,13 @@ class NovenaSettingsScreen extends ConsumerWidget {
         final appInfo = AppInfo(
           appName: 'Novena Companion',
           version: snapshot.hasData ? snapshot.data!.version : 'Loading...',
-          description: 'Catholic novena companion app with traditional nine-day prayer devotions and liturgical integration for spiritual growth.',
-          icon: const Icon(Icons.auto_stories, size: 48, color: Colors.deepPurple),
+          description:
+              'Catholic novena companion app with traditional nine-day prayer devotions and liturgical integration for spiritual growth.',
+          icon: const Icon(
+            Icons.auto_stories,
+            size: 48,
+            color: Colors.deepPurple,
+          ),
           onFeedback: () => _showComingSoon(context, 'Feedback'),
           onSupport: () => _showSupportDialog(context),
         );
@@ -32,7 +37,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
           children: [
             // Novena-specific settings
             const NovenaSettingsSection(),
-            const SizedBox(height: 16)
+            const SizedBox(height: 16),
           ],
         );
 
@@ -82,11 +87,13 @@ class NovenaSettingsScreen extends ConsumerWidget {
     bool enabled,
   ) async {
     try {
-      await ref.read(novenaAppSettingsProvider.notifier).updateNovenaNotificationsEnabled(enabled);
+      await ref
+          .read(novenaAppSettingsProvider.notifier)
+          .updateNovenaNotificationsEnabled(enabled);
       if (context.mounted) {
         SettingsErrorHandler.showSuccess(
           context,
-          enabled 
+          enabled
               ? 'Novena notifications enabled'
               : 'Novena notifications disabled',
         );

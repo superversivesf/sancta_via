@@ -52,8 +52,7 @@ class AppInfoSection extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Section header
-        if (showHeader)
-          const SettingsSectionHeader(title: 'About'),
+        if (showHeader) const SettingsSectionHeader(title: 'About'),
 
         // About the app
         if (showAbout)
@@ -79,9 +78,10 @@ class AppInfoSection extends ConsumerWidget {
             leading: const Icon(Icons.feedback),
             title: const Text('Send Feedback'),
             subtitle: const Text('Help us improve the app'),
-            onTap: appInfo.onFeedback ?? () {
-              _showComingSoonSnackBar(context, 'Feedback feature');
-            },
+            onTap: appInfo.onFeedback ??
+                () {
+                  _showComingSoonSnackBar(context, 'Feedback feature');
+                },
           ),
 
         // Privacy policy
@@ -90,9 +90,10 @@ class AppInfoSection extends ConsumerWidget {
             leading: const Icon(Icons.privacy_tip),
             title: const Text('Privacy Policy'),
             subtitle: const Text('How we protect your data'),
-            onTap: appInfo.onPrivacyPolicy ?? () {
-              _showComingSoonSnackBar(context, 'Privacy policy');
-            },
+            onTap: appInfo.onPrivacyPolicy ??
+                () {
+                  _showComingSoonSnackBar(context, 'Privacy policy');
+                },
           ),
 
         // Support
@@ -101,9 +102,10 @@ class AppInfoSection extends ConsumerWidget {
             leading: const Icon(Icons.support),
             title: const Text('Support Development'),
             subtitle: const Text('Help us continue building Catholic apps'),
-            onTap: appInfo.onSupport ?? () {
-              _showSupportDialog(context);
-            },
+            onTap: appInfo.onSupport ??
+                () {
+                  _showSupportDialog(context);
+                },
           ),
       ],
     );
@@ -208,8 +210,12 @@ class AppInfoCard extends ConsumerWidget {
             Text(
               appInfo.copyright,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
-              ),
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.color
+                        ?.withOpacity(0.6),
+                  ),
             ),
           ],
         ),
@@ -251,16 +257,24 @@ class AppHeader extends ConsumerWidget {
           Text(
             'Version ${appInfo.version}',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.6),
-            ),
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.color
+                      ?.withOpacity(0.6),
+                ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
           Text(
             appInfo.copyright,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
-            ),
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.color
+                      ?.withOpacity(0.6),
+                ),
             textAlign: TextAlign.center,
           ),
         ],

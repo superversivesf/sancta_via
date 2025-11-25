@@ -7,25 +7,25 @@ import '../widgets/enhanced_prayer_text.dart';
 class PrayerAppSettings {
   /// Base settings common to all Sancta Via apps
   final BaseSettingsModel baseSettings;
-  
+
   /// List of favorite prayer IDs
   final List<String> favoritePrayerIds;
-  
+
   /// List of recently accessed prayer IDs (most recent first)
   final List<String> recentPrayerIds;
-  
+
   /// Prayer reading mode for enhanced display
   final PrayerReadingMode readingMode;
-  
+
   /// Whether verse highlighting is enabled
   final bool verseHighlighting;
-  
+
   /// Maximum number of recent prayers to keep
   final int maxRecentPrayers;
-  
+
   /// Whether to auto-advance verses in contemplative mode
   final bool autoAdvanceVerses;
-  
+
   /// Auto-advance delay in seconds
   final int autoAdvanceDelaySeconds;
 
@@ -42,9 +42,7 @@ class PrayerAppSettings {
 
   /// Create default Prayer app settings
   factory PrayerAppSettings.defaults() {
-    return PrayerAppSettings(
-      baseSettings: BaseSettingsModel.defaults(),
-    );
+    return PrayerAppSettings(baseSettings: BaseSettingsModel.defaults());
   }
 
   /// Create from JSON map - handles migration from old format
@@ -52,16 +50,18 @@ class PrayerAppSettings {
     // Handle base settings
     BaseSettingsModel baseSettings;
     if (json.containsKey('baseSettings')) {
-      baseSettings = BaseSettingsModel.fromJson(json['baseSettings'] as Map<String, dynamic>);
+      baseSettings = BaseSettingsModel.fromJson(
+        json['baseSettings'] as Map<String, dynamic>,
+      );
     } else {
       // Migration: create base settings from old individual values
       double fontSize = 18.0; // Default
-      
+
       // Handle old fontSize field
       if (json['fontSize'] != null) {
         fontSize = (json['fontSize'] as num).toDouble().clamp(12.0, 32.0);
       }
-      
+
       // Handle old defaultLanguage
       AppLanguage language = AppLanguage.english;
       if (json['defaultLanguage'] != null) {
@@ -153,7 +153,8 @@ class PrayerAppSettings {
       verseHighlighting: verseHighlighting ?? this.verseHighlighting,
       maxRecentPrayers: maxRecentPrayers ?? this.maxRecentPrayers,
       autoAdvanceVerses: autoAdvanceVerses ?? this.autoAdvanceVerses,
-      autoAdvanceDelaySeconds: autoAdvanceDelaySeconds ?? this.autoAdvanceDelaySeconds,
+      autoAdvanceDelaySeconds:
+          autoAdvanceDelaySeconds ?? this.autoAdvanceDelaySeconds,
     );
   }
 
@@ -171,7 +172,9 @@ class PrayerAppSettings {
 
   /// Remove a prayer from favorites
   PrayerAppSettings removeFavorite(String prayerId) {
-    final newFavorites = favoritePrayerIds.where((id) => id != prayerId).toList();
+    final newFavorites = favoritePrayerIds
+        .where((id) => id != prayerId)
+        .toList();
     return copyWith(favoritePrayerIds: newFavorites);
   }
 

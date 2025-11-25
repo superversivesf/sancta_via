@@ -56,9 +56,14 @@ class HomeScreen extends ConsumerWidget {
                         children: [
                           Flexible(
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                                color: theme.colorScheme.primary.withValues(
+                                  alpha: 0.1,
+                                ),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Row(
@@ -73,10 +78,11 @@ class HomeScreen extends ConsumerWidget {
                                   Flexible(
                                     child: Text(
                                       liturgicalSeason,
-                                      style: theme.textTheme.bodySmall?.copyWith(
-                                        color: theme.colorScheme.primary,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                      style: theme.textTheme.bodySmall
+                                          ?.copyWith(
+                                            color: theme.colorScheme.primary,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                     ),
@@ -91,15 +97,12 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 24),
 
               // Active novena section
               if (activeNovena != null) ...[
-                Text(
-                  'Your Active Novena',
-                  style: theme.textTheme.titleLarge,
-                ),
+                Text('Your Active Novena', style: theme.textTheme.titleLarge),
                 const SizedBox(height: 12),
                 FeatureCard(
                   icon: Icons.auto_awesome,
@@ -113,33 +116,32 @@ class HomeScreen extends ConsumerWidget {
               ],
 
               // Main features
-              Text(
-                'Explore Novenas',
-                style: theme.textTheme.titleLarge,
-              ),
+              Text('Explore Novenas', style: theme.textTheme.titleLarge),
               const SizedBox(height: 12),
-              
+
               FeatureCard(
                 icon: Icons.favorite,
                 title: 'Browse Novenas',
                 subtitle: 'Find the perfect novena for your intention',
-                description: 'Explore our collection of traditional Catholic novenas',
+                description:
+                    'Explore our collection of traditional Catholic novenas',
                 onTap: () => context.pushNamed(RouteNames.novenas),
               ),
-              
+
               if (activeNovena == null) ...[
                 const SizedBox(height: 12),
                 FeatureCard(
                   icon: Icons.play_circle_outline,
                   title: 'Start a Novena',
                   subtitle: 'Begin your 9-day spiritual journey',
-                  description: 'Choose from novenas for various intentions and saints',
+                  description:
+                      'Choose from novenas for various intentions and saints',
                   onTap: () => context.pushNamed(RouteNames.novenas),
                 ),
               ],
 
               const SizedBox(height: 32),
-              
+
               // Footer
               Center(
                 child: Text(

@@ -13,11 +13,11 @@ class CategoriesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryGroupsAsync = ref.watch(prayerCategoryGroupsProvider);
-    
+
     // Get liturgical color for theming
     final currentColor = ref.watch(currentLiturgicalColorProvider);
     final colorIntensity = ref.watch(colorIntensityProvider);
-    final liturgicalColor = currentColor != null 
+    final liturgicalColor = currentColor != null
         ? LiturgicalColor.fromString(currentColor)
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
@@ -48,7 +48,7 @@ class CategoriesScreen extends ConsumerWidget {
                   () => _navigateToFavorites(context),
                 );
               }
-              
+
               if (index == 1) {
                 return _buildSpecialCard(
                   context,
@@ -109,14 +109,19 @@ class CategoriesScreen extends ConsumerWidget {
             Icon(
               Icons.category_outlined,
               size: 64,
-              color: themeColor?.withValues(alpha: 0.6) ?? 
-                     Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+              color:
+                  themeColor?.withValues(alpha: 0.6) ??
+                  Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
             const SizedBox(height: 16),
             Text(
               'No prayer categories found.\nCheck your prayer data.',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
               textAlign: TextAlign.center,
             ),
@@ -142,10 +147,9 @@ class CategoriesScreen extends ConsumerWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            border: themeColor != null ? Border.all(
-              color: themeColor.withValues(alpha: 0.2),
-              width: 1,
-            ) : null,
+            border: themeColor != null
+                ? Border.all(color: themeColor.withValues(alpha: 0.2), width: 1)
+                : null,
           ),
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -154,8 +158,9 @@ class CategoriesScreen extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: themeColor?.withValues(alpha: 0.1) ?? 
-                           Theme.of(context).colorScheme.primaryContainer,
+                    color:
+                        themeColor?.withValues(alpha: 0.1) ??
+                        Theme.of(context).colorScheme.primaryContainer,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
@@ -180,7 +185,9 @@ class CategoriesScreen extends ConsumerWidget {
                       Text(
                         description,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.7),
                         ),
                       ),
                     ],
@@ -189,8 +196,11 @@ class CategoriesScreen extends ConsumerWidget {
                 Icon(
                   Icons.arrow_forward_ios,
                   size: 16,
-                  color: themeColor?.withValues(alpha: 0.7) ?? 
-                         Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                  color:
+                      themeColor?.withValues(alpha: 0.7) ??
+                      Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
               ],
             ),
@@ -213,10 +223,9 @@ class CategoriesScreen extends ConsumerWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            border: themeColor != null ? Border.all(
-              color: themeColor.withValues(alpha: 0.2),
-              width: 1,
-            ) : null,
+            border: themeColor != null
+                ? Border.all(color: themeColor.withValues(alpha: 0.2), width: 1)
+                : null,
           ),
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -225,14 +234,17 @@ class CategoriesScreen extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: themeColor?.withValues(alpha: 0.1) ?? 
-                           Theme.of(context).colorScheme.secondaryContainer,
+                    color:
+                        themeColor?.withValues(alpha: 0.1) ??
+                        Theme.of(context).colorScheme.secondaryContainer,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
                     _getIconFromString(group.icon),
                     size: 28,
-                    color: themeColor ?? Theme.of(context).colorScheme.onSecondaryContainer,
+                    color:
+                        themeColor ??
+                        Theme.of(context).colorScheme.onSecondaryContainer,
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -251,7 +263,9 @@ class CategoriesScreen extends ConsumerWidget {
                       Text(
                         group.description,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.7),
                         ),
                       ),
                     ],
@@ -260,8 +274,11 @@ class CategoriesScreen extends ConsumerWidget {
                 Icon(
                   Icons.arrow_forward_ios,
                   size: 16,
-                  color: themeColor?.withValues(alpha: 0.7) ?? 
-                         Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                  color:
+                      themeColor?.withValues(alpha: 0.7) ??
+                      Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
               ],
             ),
@@ -322,10 +339,8 @@ class CategoriesScreen extends ConsumerWidget {
   void _navigateToRecent(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const PrayerListScreen(
-          title: 'Recent Prayers',
-          showRecent: true,
-        ),
+        builder: (context) =>
+            const PrayerListScreen(title: 'Recent Prayers', showRecent: true),
       ),
     );
   }
@@ -333,10 +348,8 @@ class CategoriesScreen extends ConsumerWidget {
   void _navigateToGroup(BuildContext context, PrayerCategoryGroup group) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => PrayerListScreen(
-          title: group.title,
-          groupId: group.id,
-        ),
+        builder: (context) =>
+            PrayerListScreen(title: group.title, groupId: group.id),
       ),
     );
   }

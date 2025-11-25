@@ -44,11 +44,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final searchQuery = ref.watch(searchQueryProvider);
     final searchResultsAsync = ref.watch(searchResultsProvider);
     final availableTags = ref.watch(availableTagsProvider);
-    
+
     // Get liturgical color for theming
     final currentColor = ref.watch(currentLiturgicalColorProvider);
     final colorIntensity = ref.watch(colorIntensityProvider);
-    final liturgicalColor = currentColor != null 
+    final liturgicalColor = currentColor != null
         ? LiturgicalColor.fromString(currentColor)
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
@@ -78,8 +78,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(
-                    color: themeColor?.withValues(alpha: 0.3) ?? 
-                           Theme.of(context).colorScheme.outline,
+                    color:
+                        themeColor?.withValues(alpha: 0.3) ??
+                        Theme.of(context).colorScheme.outline,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -106,7 +107,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     );
   }
 
-  Widget _buildSuggestions(BuildContext context, List<String> availableTags, Color? themeColor) {
+  Widget _buildSuggestions(
+    BuildContext context,
+    List<String> availableTags,
+    Color? themeColor,
+  ) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -120,24 +125,19 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Popular searches
-          _buildSuggestionSection(
-            context,
-            'Popular Searches',
-            [
-              'Our Father',
-              'Hail Mary',
-              'Morning Prayer',
-              'Evening Prayer',
-              'Guardian Angel',
-              'St. Michael',
-            ],
-            themeColor,
-          ),
-          
+          _buildSuggestionSection(context, 'Popular Searches', [
+            'Our Father',
+            'Hail Mary',
+            'Morning Prayer',
+            'Evening Prayer',
+            'Guardian Angel',
+            'St. Michael',
+          ], themeColor),
+
           const SizedBox(height: 24),
-          
+
           // Prayer tags
           _buildSuggestionSection(
             context,
@@ -181,10 +181,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 });
               },
               backgroundColor: themeColor?.withValues(alpha: 0.1),
-              side: themeColor != null ? BorderSide(
-                color: themeColor.withValues(alpha: 0.3),
-                width: 1,
-              ) : null,
+              side: themeColor != null
+                  ? BorderSide(
+                      color: themeColor.withValues(alpha: 0.3),
+                      width: 1,
+                    )
+                  : null,
             );
           }).toList(),
         ),
@@ -192,7 +194,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     );
   }
 
-  Widget _buildSearchResults(BuildContext context, AsyncValue searchResultsAsync, Color? themeColor) {
+  Widget _buildSearchResults(
+    BuildContext context,
+    AsyncValue searchResultsAsync,
+    Color? themeColor,
+  ) {
     return searchResultsAsync.when(
       data: (prayers) {
         if (prayers.isEmpty) {
@@ -222,7 +228,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 ],
               ),
             ),
-            
+
             // Results list
             Expanded(
               child: ListView.builder(
@@ -270,7 +276,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   Widget _buildNoResults(BuildContext context, Color? themeColor) {
     final searchQuery = ref.watch(searchQueryProvider);
-    
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -280,21 +286,26 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             Icon(
               Icons.search_off,
               size: 64,
-              color: themeColor?.withValues(alpha: 0.6) ?? 
-                     Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+              color:
+                  themeColor?.withValues(alpha: 0.6) ??
+                  Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
             const SizedBox(height: 16),
             Text(
               'No prayers found',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               'No results for "$searchQuery"',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
               textAlign: TextAlign.center,
             ),
@@ -302,7 +313,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             Text(
               'Try searching for:\n• Prayer titles or keywords\n• Saints or feast days\n• Prayer types or occasions',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
               ),
               textAlign: TextAlign.center,
             ),
@@ -325,9 +338,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   void _showFilterDialog(BuildContext context) {
     // Similar to the filter dialog in prayer list screen
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Search filters coming soon')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Search filters coming soon')));
   }
 
   void _navigateToPrayer(BuildContext context, String prayerId) {

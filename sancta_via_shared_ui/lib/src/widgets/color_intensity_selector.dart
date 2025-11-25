@@ -26,7 +26,9 @@ class ColorIntensitySelector extends ConsumerWidget {
         value: colorIntensity,
         onChanged: (ColorIntensity? newValue) {
           if (newValue != null) {
-            ref.read(colorIntensityProvider.notifier).setColorIntensity(newValue);
+            ref
+                .read(colorIntensityProvider.notifier)
+                .setColorIntensity(newValue);
           }
         },
         isExpanded: false,
@@ -47,12 +49,15 @@ class ColorIntensitySelector extends ConsumerWidget {
     return ListTile(
       leading: leading ?? const Icon(Icons.palette),
       title: Text(title ?? 'Color Intensity'),
-      subtitle: Text(subtitle ?? '${colorIntensity.displayName} liturgical colors'),
+      subtitle:
+          Text(subtitle ?? '${colorIntensity.displayName} liturgical colors'),
       trailing: DropdownButton<ColorIntensity>(
         value: colorIntensity,
         onChanged: (ColorIntensity? newValue) {
           if (newValue != null) {
-            ref.read(colorIntensityProvider.notifier).setColorIntensity(newValue);
+            ref
+                .read(colorIntensityProvider.notifier)
+                .setColorIntensity(newValue);
           }
         },
         items: ColorIntensity.values.map((intensity) {

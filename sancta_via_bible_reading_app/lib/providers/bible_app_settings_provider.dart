@@ -24,7 +24,7 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
 
   BibleAppSettingsNotifier(this._ref) : super(BibleAppSettings.defaults()) {
     _loadSettings();
-    
+
     // Listen to base settings changes and sync them
     _ref.listen(baseSettingsProvider, (previous, next) {
       if (previous != next) {
@@ -38,37 +38,39 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
     try {
       _logDebug('Loading Bible app settings...');
       final prefs = await SharedPreferences.getInstance();
-      
+
       // Check if we need to migrate from old format
       final needsMigration = prefs.getBool(_legacyMigrationKey) != true;
-      
+
       if (needsMigration) {
         await _migrateFromLegacySettings(prefs);
       }
-      
+
       // Load unified settings
       final settingsJson = prefs.getString(_storageKey);
-      
+
       if (settingsJson != null) {
         final settingsMap = json.decode(settingsJson) as Map<String, dynamic>;
         final settings = BibleAppSettings.fromJson(settingsMap);
-        
+
         if (mounted) {
           state = settings;
-          
+
           // Also sync the base settings provider
-          await _ref.read(baseSettingsProvider.notifier)
+          await _ref
+              .read(baseSettingsProvider.notifier)
               .updateSettings(settings.baseSettings);
         }
-        
+
         _logDebug('Settings loaded successfully');
       } else {
         // No settings found, use defaults and sync base settings
         final defaultSettings = BibleAppSettings.defaults();
         state = defaultSettings;
-        await _ref.read(baseSettingsProvider.notifier)
+        await _ref
+            .read(baseSettingsProvider.notifier)
             .updateSettings(defaultSettings.baseSettings);
-        
+
         _logDebug('Using default settings');
       }
     } catch (e) {
@@ -82,13 +84,16 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
   Future<void> _migrateFromLegacySettings(SharedPreferences prefs) async {
     try {
       _logDebug('Migrating from legacy settings...');
-      
+
       // Load old individual settings
       final oldFontSize = prefs.getDouble('fontSize') ?? 18.0;
-      final oldTranslationId = prefs.getString('selectedBibleTranslation') ?? 'cpdv';
-      
-      _logDebug('Found legacy settings - fontSize: $oldFontSize, translation: $oldTranslationId');
-      
+      final oldTranslationId =
+          prefs.getString('selectedBibleTranslation') ?? 'cpdv';
+
+      _logDebug(
+        'Found legacy settings - fontSize: $oldFontSize, translation: $oldTranslationId',
+      );
+
       // Create new settings with migrated values
       final translation = BibleTranslation.fromId(oldTranslationId);
       final migratedSettings = BibleAppSettings(
@@ -98,17 +103,17 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
         ),
         selectedBibleTranslation: translation,
       );
-      
+
       // Save in new format
       await _saveSettings(migratedSettings);
-      
+
       // Mark migration as complete
       await prefs.setBool(_legacyMigrationKey, true);
-      
+
       // Clean up old keys
       await prefs.remove('fontSize');
       await prefs.remove('selectedBibleTranslation');
-      
+
       _logDebug('Legacy settings migration completed');
     } catch (e) {
       _logDebug('Error during migration: $e');
@@ -123,7 +128,7 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
       final prefs = await SharedPreferences.getInstance();
       final settingsJson = json.encode(settingsToSave.toJson());
       await prefs.setString(_storageKey, settingsJson);
-      
+
       _logDebug('Settings saved successfully');
     } catch (e) {
       _logDebug('Error saving settings: $e');
@@ -159,7 +164,6 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
     _logDebug('Highlight current verse updated to: $highlight');
   }
 
-
   /// Update daily reading notifications
   Future<void> setDailyReadingNotificationsEnabled(bool enabled) async {
     state = state.copyWith(dailyReadingNotificationsEnabled: enabled);
@@ -190,7 +194,9 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
 
   /// Update notifications (delegates to base settings)
   Future<void> setNotificationsEnabled(bool enabled) async {
-    await _ref.read(baseSettingsProvider.notifier).setNotificationsEnabled(enabled);
+    await _ref
+        .read(baseSettingsProvider.notifier)
+        .setNotificationsEnabled(enabled);
   }
 
   /// Reset all settings to defaults
@@ -199,9 +205,10 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
     final defaultSettings = BibleAppSettings.defaults();
     state = defaultSettings;
     await _saveSettings();
-    
+
     // Also reset base settings
-    await _ref.read(baseSettingsProvider.notifier)
+    await _ref
+        .read(baseSettingsProvider.notifier)
         .updateSettings(defaultSettings.baseSettings);
   }
 
@@ -216,11 +223,12 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
       final importedSettings = BibleAppSettings.fromJson(settingsJson);
       state = importedSettings;
       await _saveSettings();
-      
+
       // Also update base settings
-      await _ref.read(baseSettingsProvider.notifier)
+      await _ref
+          .read(baseSettingsProvider.notifier)
           .updateSettings(importedSettings.baseSettings);
-      
+
       _logDebug('Settings imported successfully');
     } catch (e) {
       _logDebug('Error importing settings: $e');
@@ -230,9 +238,10 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
 }
 
 /// Provider for Bible app settings
-final bibleAppSettingsProvider = StateNotifierProvider<BibleAppSettingsNotifier, BibleAppSettings>((ref) {
-  return BibleAppSettingsNotifier(ref);
-});
+final bibleAppSettingsProvider =
+    StateNotifierProvider<BibleAppSettingsNotifier, BibleAppSettings>((ref) {
+      return BibleAppSettingsNotifier(ref);
+    });
 
 /// Convenience providers for backward compatibility and easy access
 
@@ -241,7 +250,7 @@ final fontSizeProvider = Provider<double>((ref) {
   return ref.watch(bibleAppSettingsProvider).fontSize;
 });
 
-/// Provider for Bible translation - backward compatibility  
+/// Provider for Bible translation - backward compatibility
 final appSelectedBibleTranslationProvider = Provider<BibleTranslation>((ref) {
   return ref.watch(bibleAppSettingsProvider).selectedBibleTranslation;
 });
@@ -260,7 +269,6 @@ final showVerseNumbersProvider = Provider<bool>((ref) {
 final highlightCurrentVerseProvider = Provider<bool>((ref) {
   return ref.watch(bibleAppSettingsProvider).highlightCurrentVerse;
 });
-
 
 /// Provider for default language - convenience access
 final bibleDefaultLanguageProvider = Provider<AppLanguage>((ref) {

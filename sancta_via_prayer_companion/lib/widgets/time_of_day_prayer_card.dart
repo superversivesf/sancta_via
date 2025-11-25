@@ -7,17 +7,15 @@ import '../providers/text_scaling_provider.dart';
 import '../screens/prayer/prayer_detail_screen.dart';
 
 /// A card widget that displays a prayer appropriate for the current time of day
-/// 
+///
 /// This widget matches the style of the Prayer of the Day card and shows:
 /// - The current time period label (e.g., "Morning Prayer")
 /// - The selected prayer title
 /// - A brief description
-/// 
+///
 /// Tapping the card navigates to the full prayer view.
 class TimeOfDayPrayerCard extends ConsumerWidget {
-  const TimeOfDayPrayerCard({
-    super.key,
-  });
+  const TimeOfDayPrayerCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,7 +28,13 @@ class TimeOfDayPrayerCard extends ConsumerWidget {
         if (prayer == null) {
           return _buildEmptyCard(context, ref, prayerContext);
         }
-        return _buildPrayerCard(context, ref, prayer, prayerContext, textScaling);
+        return _buildPrayerCard(
+          context,
+          ref,
+          prayer,
+          prayerContext,
+          textScaling,
+        );
       },
       loading: () => _buildLoadingCard(context, ref, prayerContext),
       error: (error, stack) => _buildErrorCard(context, ref, prayerContext),
@@ -73,10 +77,12 @@ class TimeOfDayPrayerCard extends ConsumerWidget {
                 flex: 2,
                 child: Text(
                   panelLabel,
-                  style: textScaling.scaledTitleMedium(context).copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: textScaling
+                      .scaledTitleMedium(context)
+                      .copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -101,9 +107,9 @@ class TimeOfDayPrayerCard extends ConsumerWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('No $panelLabel available')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('No $panelLabel available')));
         },
         child: Padding(
           padding: EdgeInsets.all(textScaling.scaleFactor > 1.2 ? 12 : 16),
@@ -119,9 +125,9 @@ class TimeOfDayPrayerCard extends ConsumerWidget {
               Flexible(
                 child: Text(
                   panelLabel,
-                  style: textScaling.scaledTitleMedium(context).copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: textScaling
+                      .scaledTitleMedium(context)
+                      .copyWith(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -132,12 +138,13 @@ class TimeOfDayPrayerCard extends ConsumerWidget {
                 Flexible(
                   child: Text(
                     'No prayer available',
-                    style: textScaling.scaledBodySmall(context).copyWith(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.7),
-                    ),
+                    style: textScaling
+                        .scaledBodySmall(context)
+                        .copyWith(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.7),
+                        ),
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -174,9 +181,9 @@ class TimeOfDayPrayerCard extends ConsumerWidget {
             Flexible(
               child: Text(
                 panelLabel,
-                style: textScaling.scaledTitleMedium(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: textScaling
+                    .scaledTitleMedium(context)
+                    .copyWith(fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -187,12 +194,13 @@ class TimeOfDayPrayerCard extends ConsumerWidget {
               Flexible(
                 child: Text(
                   'Loading...',
-                  style: textScaling.scaledBodySmall(context).copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.7),
-                  ),
+                  style: textScaling
+                      .scaledBodySmall(context)
+                      .copyWith(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.7),
+                      ),
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -233,9 +241,9 @@ class TimeOfDayPrayerCard extends ConsumerWidget {
               Flexible(
                 child: Text(
                   panelLabel,
-                  style: textScaling.scaledTitleMedium(context).copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: textScaling
+                      .scaledTitleMedium(context)
+                      .copyWith(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -246,12 +254,13 @@ class TimeOfDayPrayerCard extends ConsumerWidget {
                 Flexible(
                   child: Text(
                     'Error loading prayer',
-                    style: textScaling.scaledBodySmall(context).copyWith(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.7),
-                    ),
+                    style: textScaling
+                        .scaledBodySmall(context)
+                        .copyWith(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.7),
+                        ),
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

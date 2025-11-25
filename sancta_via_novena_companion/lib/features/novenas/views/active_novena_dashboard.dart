@@ -15,15 +15,12 @@ class ActiveNovenaDashboard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final activeNovena = ref.watch(novenaStateProvider);
 
-    
     if (activeNovena == null) {
       // No active novena, redirect to list
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.goNamed(RouteNames.novenas);
       });
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     final novenaAsync = ref.watch(novenaByIdProvider(activeNovena.novenaId));
@@ -83,8 +80,6 @@ class ActiveNovenaDashboard extends ConsumerWidget {
                 _buildProgressSection(context, activeNovena),
                 const SizedBox(height: 24),
 
-
-
                 // Days grid
                 _buildDaysGrid(context, activeNovena),
               ],
@@ -102,7 +97,11 @@ class ActiveNovenaDashboard extends ConsumerWidget {
     );
   }
 
-  Widget _buildHeaderSection(BuildContext context, ActiveNovena activeNovena, Novena novena) {
+  Widget _buildHeaderSection(
+    BuildContext context,
+    ActiveNovena activeNovena,
+    Novena novena,
+  ) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -139,7 +138,9 @@ class ActiveNovenaDashboard extends ConsumerWidget {
           const SizedBox(height: 8),
           LinearProgressIndicator(
             value: activeNovena.progressPercentage,
-            backgroundColor: Theme.of(context).colorScheme.outline.withAlpha(77),
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.outline.withAlpha(77),
             valueColor: AlwaysStoppedAnimation<Color>(
               Theme.of(context).colorScheme.primary,
             ),
@@ -156,19 +157,24 @@ class ActiveNovenaDashboard extends ConsumerWidget {
     );
   }
 
-  Widget _buildTodaySection(BuildContext context, WidgetRef ref, ActiveNovena activeNovena) {
+  Widget _buildTodaySection(
+    BuildContext context,
+    WidgetRef ref,
+    ActiveNovena activeNovena,
+  ) {
     final spiritualDay = activeNovena.spiritualDay;
     final isTodayComplete = activeNovena.isTodayComplete;
     final nextIncompleteDay = activeNovena.nextIncompleteDay;
-    
+
     // If all accessible days are complete, show encouraging message
-    final allAccessibleComplete = nextIncompleteDay == spiritualDay && isTodayComplete;
+    final allAccessibleComplete =
+        nextIncompleteDay == spiritualDay && isTodayComplete;
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isTodayComplete 
+        color: isTodayComplete
             ? Theme.of(context).colorScheme.tertiaryContainer
             : Theme.of(context).colorScheme.secondaryContainer,
         borderRadius: BorderRadius.circular(16),
@@ -180,25 +186,25 @@ class ActiveNovenaDashboard extends ConsumerWidget {
             children: [
               Icon(
                 isTodayComplete ? Icons.check_circle : Icons.schedule,
-                color: isTodayComplete 
+                color: isTodayComplete
                     ? Theme.of(context).colorScheme.tertiary
                     : Theme.of(context).colorScheme.secondary,
               ),
               const SizedBox(width: 8),
               Text(
                 'Today\'s Prayer',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
-            isTodayComplete 
+            isTodayComplete
                 ? allAccessibleComplete
-                    ? 'You\'ve completed Day $spiritualDay! You\'re up to date with your novena.'
-                    : 'You\'ve completed Day $spiritualDay! You can catch up on previous days if needed.'
+                      ? 'You\'ve completed Day $spiritualDay! You\'re up to date with your novena.'
+                      : 'You\'ve completed Day $spiritualDay! You can catch up on previous days if needed.'
                 : 'Day $spiritualDay prayer is ready for you.',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
@@ -206,20 +212,27 @@ class ActiveNovenaDashboard extends ConsumerWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
-              onPressed: spiritualDay <= 9 ? () {
-                AppLogger.debug('Navigating to daily prayer for day $nextIncompleteDay', 'NOVENA_UI');
-                context.pushNamed(
-                  RouteNames.dailyNovena,
-                  pathParameters: {'dayNumber': nextIncompleteDay.toString()},
-                );
-              } : null,
+              onPressed: spiritualDay <= 9
+                  ? () {
+                      AppLogger.debug(
+                        'Navigating to daily prayer for day $nextIncompleteDay',
+                        'NOVENA_UI',
+                      );
+                      context.pushNamed(
+                        RouteNames.dailyNovena,
+                        pathParameters: {
+                          'dayNumber': nextIncompleteDay.toString(),
+                        },
+                      );
+                    }
+                  : null,
               icon: Icon(isTodayComplete ? Icons.visibility : Icons.play_arrow),
               label: Text(
-                isTodayComplete 
-                    ? allAccessibleComplete 
-                        ? 'Review Today\'s Prayer' 
-                        : 'Continue Prayer Journey'
-                    : 'Begin Today\'s Prayer'
+                isTodayComplete
+                    ? allAccessibleComplete
+                          ? 'Review Today\'s Prayer'
+                          : 'Continue Prayer Journey'
+                    : 'Begin Today\'s Prayer',
               ),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 12),
@@ -231,15 +244,30 @@ class ActiveNovenaDashboard extends ConsumerWidget {
     );
   }
 
-  Widget _buildProgressSection(BuildContext context, ActiveNovena activeNovena) {
+  Widget _buildProgressSection(
+    BuildContext context,
+    ActiveNovena activeNovena,
+  ) {
     final completedCount = activeNovena.accessibleCompletedCount;
-    
+
     // Debug logging to understand the discrepancy
     AppLogger.debug('=== PROGRESS DEBUG ===', 'NOVENA_DEBUG');
-    AppLogger.debug('Spiritual Day: ${activeNovena.spiritualDay}', 'NOVENA_DEBUG');
-    AppLogger.debug('Completed Days Array: ${activeNovena.completedDays}', 'NOVENA_DEBUG');
-    AppLogger.debug('Raw Completed Count: ${activeNovena.completedDays.where((day) => day).length}', 'NOVENA_DEBUG');
-    AppLogger.debug('Accessible Completed Count: $completedCount', 'NOVENA_DEBUG');
+    AppLogger.debug(
+      'Spiritual Day: ${activeNovena.spiritualDay}',
+      'NOVENA_DEBUG',
+    );
+    AppLogger.debug(
+      'Completed Days Array: ${activeNovena.completedDays}',
+      'NOVENA_DEBUG',
+    );
+    AppLogger.debug(
+      'Raw Completed Count: ${activeNovena.completedDays.where((day) => day).length}',
+      'NOVENA_DEBUG',
+    );
+    AppLogger.debug(
+      'Accessible Completed Count: $completedCount',
+      'NOVENA_DEBUG',
+    );
     AppLogger.debug('Start Date: ${activeNovena.startDate}', 'NOVENA_DEBUG');
     AppLogger.debug('Current Date: ${DateTime.now()}', 'NOVENA_DEBUG');
     AppLogger.debug('==================', 'NOVENA_DEBUG');
@@ -256,9 +284,9 @@ class ActiveNovenaDashboard extends ConsumerWidget {
         children: [
           Text(
             'Progress Overview',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
           Row(
@@ -326,9 +354,9 @@ class ActiveNovenaDashboard extends ConsumerWidget {
       children: [
         Text(
           'Nine Days of Prayer',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
         GridView.builder(
@@ -345,27 +373,36 @@ class ActiveNovenaDashboard extends ConsumerWidget {
             final dayNumber = index + 1;
             final isCompleted = activeNovena.isDayComplete(dayNumber);
             final isAccessible = activeNovena.canAccessDay(dayNumber);
-            
-            final isToday = dayNumber == activeNovena.spiritualDay && !activeNovena.isTodayComplete;
+
+            final isToday =
+                dayNumber == activeNovena.spiritualDay &&
+                !activeNovena.isTodayComplete;
 
             return InkWell(
-              onTap: isAccessible ? () {
-                AppLogger.debug('Grid navigation to day $dayNumber', 'NOVENA_UI');
-                context.pushNamed(
-                  RouteNames.dailyNovena,
-                  pathParameters: {'dayNumber': dayNumber.toString()},
-                );
-              } : null,
+              onTap: isAccessible
+                  ? () {
+                      AppLogger.debug(
+                        'Grid navigation to day $dayNumber',
+                        'NOVENA_UI',
+                      );
+                      context.pushNamed(
+                        RouteNames.dailyNovena,
+                        pathParameters: {'dayNumber': dayNumber.toString()},
+                      );
+                    }
+                  : null,
               borderRadius: BorderRadius.circular(12),
               child: Container(
                 decoration: BoxDecoration(
                   color: isCompleted
                       ? Theme.of(context).colorScheme.tertiaryContainer
                       : isToday
-                          ? Theme.of(context).colorScheme.primaryContainer
-                          : isAccessible
-                              ? Theme.of(context).colorScheme.surfaceContainerHighest
-                              : Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(128),
+                      ? Theme.of(context).colorScheme.primaryContainer
+                      : isAccessible
+                      ? Theme.of(context).colorScheme.surfaceContainerHighest
+                      : Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest.withAlpha(128),
                   borderRadius: BorderRadius.circular(12),
                   border: isToday
                       ? Border.all(
@@ -378,20 +415,22 @@ class ActiveNovenaDashboard extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      isCompleted 
+                      isCompleted
                           ? Icons.check_circle
                           : isToday
-                              ? Icons.play_circle_filled
-                              : isAccessible
-                                  ? Icons.circle_outlined
-                                  : Icons.lock_outline,
+                          ? Icons.play_circle_filled
+                          : isAccessible
+                          ? Icons.circle_outlined
+                          : Icons.lock_outline,
                       color: isCompleted
                           ? Theme.of(context).colorScheme.tertiary
                           : isToday
-                              ? Theme.of(context).colorScheme.primary
-                              : isAccessible
-                                  ? Theme.of(context).colorScheme.outline
-                                  : Theme.of(context).colorScheme.outline.withAlpha(128),
+                          ? Theme.of(context).colorScheme.primary
+                          : isAccessible
+                          ? Theme.of(context).colorScheme.outline
+                          : Theme.of(
+                              context,
+                            ).colorScheme.outline.withAlpha(128),
                       size: 28,
                     ),
                     const SizedBox(height: 4),
@@ -401,7 +440,9 @@ class ActiveNovenaDashboard extends ConsumerWidget {
                         fontWeight: isToday ? FontWeight.bold : null,
                         color: isAccessible
                             ? null
-                            : Theme.of(context).colorScheme.outline.withAlpha(128),
+                            : Theme.of(
+                                context,
+                              ).colorScheme.outline.withAlpha(128),
                       ),
                     ),
                   ],
@@ -433,7 +474,9 @@ class ActiveNovenaDashboard extends ConsumerWidget {
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
-                await ref.read(novenaStateProvider.notifier).clearActiveNovena();
+                await ref
+                    .read(novenaStateProvider.notifier)
+                    .clearActiveNovena();
                 if (context.mounted) {
                   context.goNamed(RouteNames.novenas);
                 }
@@ -448,7 +491,4 @@ class ActiveNovenaDashboard extends ConsumerWidget {
       },
     );
   }
-
-
-
 }

@@ -16,10 +16,11 @@ class AppWrapper extends ConsumerWidget {
     // Watch the onboarding state
     final onboardingProgress = ref.watch(onboardingProvider);
     final bibleServiceAsync = ref.watch(bibleServiceNotifierProvider);
-    
+
     // Check if app is ready
-    final isAppReady = onboardingProgress.state == OnboardingState.completed &&
-                      bibleServiceAsync.hasValue;
+    final isAppReady =
+        onboardingProgress.state == OnboardingState.completed &&
+        bibleServiceAsync.hasValue;
 
     // Ensure daily reset check happens when app is ready
     if (isAppReady) {
@@ -29,9 +30,7 @@ class AppWrapper extends ConsumerWidget {
 
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
-      child: isAppReady 
-          ? const HomeScreen()
-          : const OnboardingScreen(),
+      child: isAppReady ? const HomeScreen() : const OnboardingScreen(),
     );
   }
 }

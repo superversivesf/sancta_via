@@ -14,7 +14,7 @@ class OnboardingScreen extends ConsumerStatefulWidget {
   ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends ConsumerState<OnboardingScreen> 
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -27,25 +27,17 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
       duration: const Duration(seconds: 2),
       vsync: this,
     );
-    
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-    
-    _scaleAnimation = Tween<double>(
-      begin: 0.8,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutBack,
-    ));
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+
+    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutBack),
+    );
 
     _animationController.forward();
-    
+
     // Start the onboarding process
     Future.microtask(() {
       ref.read(onboardingProvider.notifier).initialize();
@@ -66,11 +58,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
     final colorIntensity = ref.watch(colorIntensityProvider);
 
     // Parse liturgical color
-    final liturgicalColor = currentColor != null 
+    final liturgicalColor = currentColor != null
         ? LiturgicalColor.fromString(currentColor)
         : null;
-    final themeColor = liturgicalColor?.toFlutterColor(colorIntensity) ?? 
-                     Theme.of(context).colorScheme.primary;
+    final themeColor =
+        liturgicalColor?.toFlutterColor(colorIntensity) ??
+        Theme.of(context).colorScheme.primary;
 
     // Navigate to home when completed
     ref.listen(onboardingProvider, (previous, current) {
@@ -116,50 +109,70 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                           color: themeColor,
                         ),
                       ),
-                      
+
                       const SizedBox(height: 32),
-                      
+
                       // App Title
                       Text(
                         'Sancta Via Bible',
-                        style: textScaling.scaledHeadlineLarge(context).copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: themeColor,
-                        ),
+                        style: textScaling
+                            .scaledHeadlineLarge(context)
+                            .copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: themeColor,
+                            ),
                         textAlign: TextAlign.center,
                       ),
-                      
+
                       const SizedBox(height: 8),
-                      
+
                       // Subtitle
                       Text(
                         'Catholic Bible Reading App',
-                        style: textScaling.scaledTitleMedium(context).copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                        ),
+                        style: textScaling
+                            .scaledTitleMedium(context)
+                            .copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.7),
+                            ),
                         textAlign: TextAlign.center,
                       ),
-                      
+
                       const SizedBox(height: 48),
-                      
+
                       // Progress section
-                      _buildProgressSection(context, progress, themeColor, textScaling),
-                      
+                      _buildProgressSection(
+                        context,
+                        progress,
+                        themeColor,
+                        textScaling,
+                      ),
+
                       const SizedBox(height: 32),
-                      
+
                       // Error handling
                       if (progress.state == OnboardingState.error) ...[
-                        _buildErrorSection(context, progress, themeColor, textScaling),
+                        _buildErrorSection(
+                          context,
+                          progress,
+                          themeColor,
+                          textScaling,
+                        ),
                       ],
-                      
+
                       const SizedBox(height: 24),
-                      
+
                       // Footer
                       Text(
                         'Preparing your Catholic Bible reading experience...',
-                        style: textScaling.scaledBodySmall(context).copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
-                        ),
+                        style: textScaling
+                            .scaledBodySmall(context)
+                            .copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.5),
+                            ),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -197,33 +210,35 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   borderRadius: BorderRadius.circular(3),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 500),
-                    width: MediaQuery.of(context).size.width * progress.progress,
+                    width:
+                        MediaQuery.of(context).size.width * progress.progress,
                     height: 6,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [
-                          themeColor.withValues(alpha: 0.7),
-                          themeColor,
-                        ],
+                        colors: [themeColor.withValues(alpha: 0.7), themeColor],
                       ),
                     ),
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Progress text
               Text(
                 progress.message,
-                style: textScaling.scaledTitleMedium(context).copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
-                ),
+                style: textScaling
+                    .scaledTitleMedium(context)
+                    .copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.8),
+                    ),
                 textAlign: TextAlign.center,
               ),
-              
+
               const SizedBox(height: 8),
-              
+
               // Step indicator
               if (progress.totalSteps > 0) ...[
                 Row(
@@ -235,8 +250,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                         height: 12,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: i <= progress.currentStep 
-                              ? themeColor 
+                          color: i <= progress.currentStep
+                              ? themeColor
                               : themeColor.withValues(alpha: 0.3),
                         ),
                       ),
@@ -244,27 +259,31 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                         Container(
                           width: 24,
                           height: 2,
-                          color: i < progress.currentStep 
-                              ? themeColor 
+                          color: i < progress.currentStep
+                              ? themeColor
                               : themeColor.withValues(alpha: 0.3),
                         ),
                       ],
                     ],
                   ],
                 ),
-                
+
                 const SizedBox(height: 8),
-                
+
                 Text(
                   'Step ${progress.currentStep} of ${progress.totalSteps}',
-                  style: textScaling.scaledBodySmall(context).copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
+                  style: textScaling
+                      .scaledBodySmall(context)
+                      .copyWith(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.6),
+                      ),
                 ),
               ],
-              
+
               // Loading indicator
-              if (progress.state == OnboardingState.loading || 
+              if (progress.state == OnboardingState.loading ||
                   progress.state == OnboardingState.checking) ...[
                 const SizedBox(height: 24),
                 SizedBox(
@@ -276,7 +295,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   ),
                 ),
               ],
-              
+
               // Completion check
               if (progress.state == OnboardingState.completed) ...[
                 const SizedBox(height: 24),
@@ -287,11 +306,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                     shape: BoxShape.circle,
                     color: themeColor.withValues(alpha: 0.1),
                   ),
-                  child: Icon(
-                    Icons.check_circle,
-                    size: 32,
-                    color: themeColor,
-                  ),
+                  child: Icon(Icons.check_circle, size: 32, color: themeColor),
                 ),
               ],
             ],
@@ -316,37 +331,36 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             shape: BoxShape.circle,
             color: Colors.red.withValues(alpha: 0.1),
           ),
-          child: const Icon(
-            Icons.error_outline,
-            size: 32,
-            color: Colors.red,
-          ),
+          child: const Icon(Icons.error_outline, size: 32, color: Colors.red),
         ),
-        
+
         const SizedBox(height: 16),
-        
+
         Text(
           'Setup Error',
-          style: textScaling.scaledTitleMedium(context).copyWith(
-            color: Colors.red,
-            fontWeight: FontWeight.bold,
-          ),
+          style: textScaling
+              .scaledTitleMedium(context)
+              .copyWith(color: Colors.red, fontWeight: FontWeight.bold),
         ),
-        
+
         const SizedBox(height: 8),
-        
+
         if (progress.error != null) ...[
           Text(
             progress.error!,
-            style: textScaling.scaledBodyMedium(context).copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-            ),
+            style: textScaling
+                .scaledBodyMedium(context)
+                .copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
+                ),
             textAlign: TextAlign.center,
           ),
-          
+
           const SizedBox(height: 16),
         ],
-        
+
         ElevatedButton(
           onPressed: () {
             ref.read(onboardingProvider.notifier).retry();
@@ -356,10 +370,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
           ),
-          child: Text(
-            'Retry',
-            style: textScaling.scaledLabelLarge(context),
-          ),
+          child: Text('Retry', style: textScaling.scaledLabelLarge(context)),
         ),
       ],
     );

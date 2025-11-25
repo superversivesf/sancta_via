@@ -10,7 +10,7 @@ import '../screens/search/search_screen.dart';
 final appRouter = GoRouter(
   initialLocation: '/',
   debugLogDiagnostics: false,
-  
+
   routes: [
     // Home route
     GoRoute(

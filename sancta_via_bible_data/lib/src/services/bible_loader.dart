@@ -6,10 +6,10 @@ import '../models/bible_translation.dart';
 abstract class BibleLoader {
   /// Load a specific Bible translation
   Future<Bible> loadBible(BibleTranslation translation);
-  
+
   /// Check if a translation is available
   Future<bool> isTranslationAvailable(BibleTranslation translation);
-  
+
   /// Get list of available translations
   Future<List<BibleTranslation>> getAvailableTranslations();
 }
@@ -42,10 +42,10 @@ class EmbeddedBibleLoader implements BibleLoader {
     try {
       final Map<String, dynamic> jsonData = json.decode(jsonString);
       final bible = Bible.fromJson(jsonData);
-      
+
       // Cache the loaded bible
       _cache[translation] = bible;
-      
+
       return bible;
     } catch (e) {
       throw Exception('Failed to load ${translation.name}: $e');
@@ -92,13 +92,15 @@ class AssetBibleLoader implements BibleLoader {
     required this.assetBasePath,
     required this.assetLoader,
   }) {
-    _debugLog('AssetBibleLoader created with basePath: $assetBasePath', 'ASSET_LOADER');
+    _debugLog('AssetBibleLoader created with basePath: $assetBasePath',
+        'ASSET_LOADER');
   }
 
   @override
   Future<Bible> loadBible(BibleTranslation translation) async {
-    _debugLog('Loading Bible: ${translation.name} (${translation.id})', 'ASSET_LOADER');
-    
+    _debugLog('Loading Bible: ${translation.name} (${translation.id})',
+        'ASSET_LOADER');
+
     // Check cache first
     if (_cache.containsKey(translation)) {
       _debugLog('Found ${translation.name} in cache', 'ASSET_LOADER');
@@ -108,20 +110,24 @@ class AssetBibleLoader implements BibleLoader {
     try {
       final assetPath = '$assetBasePath/${translation.id}.json';
       _debugLog('Attempting to load asset: $assetPath', 'ASSET_LOADER');
-      
+
       final jsonString = await assetLoader(assetPath);
-      _debugLog('Asset loaded successfully: ${jsonString.length} characters', 'ASSET_LOADER');
-      
+      _debugLog('Asset loaded successfully: ${jsonString.length} characters',
+          'ASSET_LOADER');
+
       final Map<String, dynamic> jsonData = json.decode(jsonString);
-      _debugLog('JSON parsed successfully: ${jsonData.keys.join(', ')}', 'ASSET_LOADER');
-      
+      _debugLog('JSON parsed successfully: ${jsonData.keys.join(', ')}',
+          'ASSET_LOADER');
+
       final bible = Bible.fromJson(jsonData);
-      _debugLog('Bible created: ${bible.books.length} books, translation: ${bible.translation.name}', 'ASSET_LOADER');
-      
+      _debugLog(
+          'Bible created: ${bible.books.length} books, translation: ${bible.translation.name}',
+          'ASSET_LOADER');
+
       // Cache the loaded bible
       _cache[translation] = bible;
       _debugLog('Bible cached for ${translation.name}', 'ASSET_LOADER');
-      
+
       return bible;
     } catch (e) {
       _debugLog('ERROR loading ${translation.name}: $e', 'ASSET_LOADER');
@@ -134,12 +140,13 @@ class AssetBibleLoader implements BibleLoader {
     try {
       final assetPath = '$assetBasePath/${translation.id}.json';
       _debugLog('Checking availability of asset: $assetPath', 'ASSET_LOADER');
-      
+
       await assetLoader(assetPath);
       _debugLog('Asset available: ${translation.name}', 'ASSET_LOADER');
       return true;
     } catch (e) {
-      _debugLog('Asset NOT available: ${translation.name} - $e', 'ASSET_LOADER');
+      _debugLog(
+          'Asset NOT available: ${translation.name} - $e', 'ASSET_LOADER');
       return false;
     }
   }
@@ -148,20 +155,26 @@ class AssetBibleLoader implements BibleLoader {
   Future<List<BibleTranslation>> getAvailableTranslations() async {
     _debugLog('Checking available translations...', 'ASSET_LOADER');
     final available = <BibleTranslation>[];
-    
+
     for (final translation in BibleTranslation.values) {
-      _debugLog('Checking translation: ${translation.name} (${translation.id})', 'ASSET_LOADER');
+      _debugLog('Checking translation: ${translation.name} (${translation.id})',
+          'ASSET_LOADER');
       if (await isTranslationAvailable(translation)) {
         available.add(translation);
-        _debugLog('✓ Added available translation: ${translation.name}', 'ASSET_LOADER');
+        _debugLog('✓ Added available translation: ${translation.name}',
+            'ASSET_LOADER');
       } else {
-        _debugLog('✗ Translation not available: ${translation.name}', 'ASSET_LOADER');
+        _debugLog(
+            '✗ Translation not available: ${translation.name}', 'ASSET_LOADER');
       }
     }
-    
-    _debugLog('Total available translations: ${available.length} of ${BibleTranslation.values.length}', 'ASSET_LOADER');
-    _debugLog('Available: ${available.map((t) => t.name).join(', ')}', 'ASSET_LOADER');
-    
+
+    _debugLog(
+        'Total available translations: ${available.length} of ${BibleTranslation.values.length}',
+        'ASSET_LOADER');
+    _debugLog('Available: ${available.map((t) => t.name).join(', ')}',
+        'ASSET_LOADER');
+
     return available;
   }
 
@@ -195,13 +208,13 @@ class NetworkBibleLoader implements BibleLoader {
     try {
       final url = '$baseUrl/${translation.id}.json';
       final jsonString = await httpClient(url);
-      
+
       final Map<String, dynamic> jsonData = json.decode(jsonString);
       final bible = Bible.fromJson(jsonData);
-      
+
       // Cache the loaded bible
       _cache[translation] = bible;
-      
+
       return bible;
     } catch (e) {
       throw Exception('Failed to load ${translation.name} from network: $e');
@@ -222,13 +235,13 @@ class NetworkBibleLoader implements BibleLoader {
   @override
   Future<List<BibleTranslation>> getAvailableTranslations() async {
     final available = <BibleTranslation>[];
-    
+
     for (final translation in BibleTranslation.values) {
       if (await isTranslationAvailable(translation)) {
         available.add(translation);
       }
     }
-    
+
     return available;
   }
 

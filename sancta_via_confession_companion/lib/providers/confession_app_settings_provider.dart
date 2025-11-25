@@ -16,15 +16,17 @@ void debugLog(String message, [String? tag]) {
 }
 
 /// Provider for Confession app specific settings
-class ConfessionAppSettingsNotifier extends StateNotifier<ConfessionAppSettings> {
+class ConfessionAppSettingsNotifier
+    extends StateNotifier<ConfessionAppSettings> {
   static const String _unifiedStorageKey = 'confession_app_settings_unified';
   static const String _migrationKey = 'confession_settings_migrated_v2';
 
   final Ref _ref;
 
-  ConfessionAppSettingsNotifier(this._ref) : super(ConfessionAppSettings.defaults()) {
+  ConfessionAppSettingsNotifier(this._ref)
+    : super(ConfessionAppSettings.defaults()) {
     _loadSettings();
-    
+
     // Listen to base settings changes and sync them
     _ref.listen(baseSettingsProvider, (previous, next) {
       if (previous != next) {
@@ -38,41 +40,52 @@ class ConfessionAppSettingsNotifier extends StateNotifier<ConfessionAppSettings>
     try {
       debugLog('Loading Confession app settings...', 'CONFESSION_SETTINGS');
       final prefs = await SharedPreferences.getInstance();
-      
+
       // Check if we need to migrate from old format
       final needsMigration = prefs.getBool(_migrationKey) != true;
-      
+
       if (needsMigration) {
         await _migrateFromLegacySettings(prefs);
       }
-      
+
       // Load unified settings
       final settingsJson = prefs.getString(_unifiedStorageKey);
-      
+
       if (settingsJson != null) {
         final settingsMap = json.decode(settingsJson) as Map<String, dynamic>;
         final settings = ConfessionAppSettings.fromJson(settingsMap);
-        
+
         if (mounted) {
           state = settings;
-          
+
           // Also sync the base settings provider
-          await _ref.read(baseSettingsProvider.notifier)
+          await _ref
+              .read(baseSettingsProvider.notifier)
               .updateSettings(settings.baseSettings);
         }
-        
-        debugLog('Confession app settings loaded successfully', 'CONFESSION_SETTINGS');
+
+        debugLog(
+          'Confession app settings loaded successfully',
+          'CONFESSION_SETTINGS',
+        );
       } else {
         // No settings found, use defaults and sync base settings
         final defaultSettings = ConfessionAppSettings.defaults();
         state = defaultSettings;
-        await _ref.read(baseSettingsProvider.notifier)
+        await _ref
+            .read(baseSettingsProvider.notifier)
             .updateSettings(defaultSettings.baseSettings);
-        
-        debugLog('Using default Confession app settings', 'CONFESSION_SETTINGS');
+
+        debugLog(
+          'Using default Confession app settings',
+          'CONFESSION_SETTINGS',
+        );
       }
     } catch (e) {
-      debugLog('Error loading Confession app settings: $e', 'CONFESSION_SETTINGS');
+      debugLog(
+        'Error loading Confession app settings: $e',
+        'CONFESSION_SETTINGS',
+      );
       // If there's an error, use defaults
       state = ConfessionAppSettings.defaults();
     }
@@ -82,7 +95,7 @@ class ConfessionAppSettingsNotifier extends StateNotifier<ConfessionAppSettings>
   Future<void> _migrateFromLegacySettings(SharedPreferences prefs) async {
     try {
       debugLog('Migrating from legacy Confession app settings...', 'MIGRATION');
-      
+
       // Load old app settings (JSON format)
       Map<String, dynamic> oldAppSettings = {};
       final oldSettingsJson = prefs.getString(AppConstants.settingsKey);
@@ -90,44 +103,52 @@ class ConfessionAppSettingsNotifier extends StateNotifier<ConfessionAppSettings>
         oldAppSettings = json.decode(oldSettingsJson) as Map<String, dynamic>;
         debugLog('Found legacy app settings: $oldAppSettings', 'MIGRATION');
       }
-      
+
       // Load old examination preferences (separate storage)
       Map<String, dynamic> oldExaminationPrefs = {};
-      final oldPrefsJson = prefs.getString(AppConstants.examinationPreferencesKey);
+      final oldPrefsJson = prefs.getString(
+        AppConstants.examinationPreferencesKey,
+      );
       if (oldPrefsJson != null) {
         oldExaminationPrefs = json.decode(oldPrefsJson) as Map<String, dynamic>;
-        debugLog('Found legacy examination preferences: $oldExaminationPrefs', 'MIGRATION');
+        debugLog(
+          'Found legacy examination preferences: $oldExaminationPrefs',
+          'MIGRATION',
+        );
       }
-      
+
       // Combine old settings for migration
       final combinedOldSettings = <String, dynamic>{
         ...oldAppSettings,
         ...oldExaminationPrefs,
       };
-      
+
       if (combinedOldSettings.isNotEmpty) {
         // Create new settings with migrated values
-        final migratedSettings = ConfessionAppSettings.fromJson(combinedOldSettings);
-        
+        final migratedSettings = ConfessionAppSettings.fromJson(
+          combinedOldSettings,
+        );
+
         // Handle theme migration: if old darkMode was true, set theme to dark
         if (oldAppSettings['darkMode'] == true) {
           debugLog('Migrating darkMode=true to dark theme', 'MIGRATION');
-          await _ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.dark);
+          await _ref
+              .read(themeModeProvider.notifier)
+              .setThemeMode(ThemeMode.dark);
         }
-        
+
         // Save in new unified format
         await _saveSettings(migratedSettings);
-        
+
         debugLog('Legacy settings migration completed', 'MIGRATION');
       }
-      
+
       // Mark migration as complete
       await prefs.setBool(_migrationKey, true);
-      
+
       // Clean up old keys
       await prefs.remove(AppConstants.settingsKey);
       await prefs.remove(AppConstants.examinationPreferencesKey);
-      
     } catch (e) {
       debugLog('Error during migration: $e', 'MIGRATION');
       // Continue with defaults if migration fails
@@ -141,10 +162,16 @@ class ConfessionAppSettingsNotifier extends StateNotifier<ConfessionAppSettings>
       final prefs = await SharedPreferences.getInstance();
       final settingsJson = json.encode(settingsToSave.toJson());
       await prefs.setString(_unifiedStorageKey, settingsJson);
-      
-      debugLog('Confession app settings saved successfully', 'CONFESSION_SETTINGS');
+
+      debugLog(
+        'Confession app settings saved successfully',
+        'CONFESSION_SETTINGS',
+      );
     } catch (e) {
-      debugLog('Error saving Confession app settings: $e', 'CONFESSION_SETTINGS');
+      debugLog(
+        'Error saving Confession app settings: $e',
+        'CONFESSION_SETTINGS',
+      );
     }
   }
 
@@ -177,7 +204,9 @@ class ConfessionAppSettingsNotifier extends StateNotifier<ConfessionAppSettings>
 
   /// Update notifications (delegates to base settings)
   Future<void> setNotificationsEnabled(bool enabled) async {
-    await _ref.read(baseSettingsProvider.notifier).setNotificationsEnabled(enabled);
+    await _ref
+        .read(baseSettingsProvider.notifier)
+        .setNotificationsEnabled(enabled);
   }
 
   /// Update text scale for backward compatibility with existing TextScaling class
@@ -201,7 +230,10 @@ class ConfessionAppSettingsNotifier extends StateNotifier<ConfessionAppSettings>
       );
       state = state.updateExaminationPreferences(newPreferences);
       await _saveSettings();
-      debugLog('Added favorite examination: $examinationId', 'CONFESSION_SETTINGS');
+      debugLog(
+        'Added favorite examination: $examinationId',
+        'CONFESSION_SETTINGS',
+      );
     }
   }
 
@@ -214,7 +246,10 @@ class ConfessionAppSettingsNotifier extends StateNotifier<ConfessionAppSettings>
       );
       state = state.updateExaminationPreferences(newPreferences);
       await _saveSettings();
-      debugLog('Removed favorite examination: $examinationId', 'CONFESSION_SETTINGS');
+      debugLog(
+        'Removed favorite examination: $examinationId',
+        'CONFESSION_SETTINGS',
+      );
     }
   }
 
@@ -229,7 +264,7 @@ class ConfessionAppSettingsNotifier extends StateNotifier<ConfessionAppSettings>
   }
 
   // ===========================================
-  // APP-SPECIFIC SETTINGS METHODS  
+  // APP-SPECIFIC SETTINGS METHODS
   // ===========================================
 
   /// Update progress visibility
@@ -250,7 +285,10 @@ class ConfessionAppSettingsNotifier extends StateNotifier<ConfessionAppSettings>
   Future<void> setSaveExaminationHistory(bool save) async {
     state = state.copyWith(saveExaminationHistory: save);
     await _saveSettings();
-    debugLog('Save examination history updated to: $save', 'CONFESSION_SETTINGS');
+    debugLog(
+      'Save examination history updated to: $save',
+      'CONFESSION_SETTINGS',
+    );
   }
 
   /// Update history retention period
@@ -262,9 +300,12 @@ class ConfessionAppSettingsNotifier extends StateNotifier<ConfessionAppSettings>
 }
 
 /// Provider for Confession app settings
-final confessionAppSettingsProvider = StateNotifierProvider<ConfessionAppSettingsNotifier, ConfessionAppSettings>((ref) {
-  return ConfessionAppSettingsNotifier(ref);
-});
+final confessionAppSettingsProvider =
+    StateNotifierProvider<ConfessionAppSettingsNotifier, ConfessionAppSettings>(
+      (ref) {
+        return ConfessionAppSettingsNotifier(ref);
+      },
+    );
 
 /// Convenience providers for backward compatibility and easy access
 
@@ -278,7 +319,7 @@ final confessionDefaultLanguageProvider = Provider<AppLanguage>((ref) {
   return ref.watch(confessionAppSettingsProvider).defaultLanguage;
 });
 
-/// Provider for notifications enabled - convenience access  
+/// Provider for notifications enabled - convenience access
 final confessionNotificationsEnabledProvider = Provider<bool>((ref) {
   return ref.watch(confessionAppSettingsProvider).notificationsEnabled;
 });

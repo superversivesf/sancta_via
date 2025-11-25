@@ -24,10 +24,12 @@ class LiturgicalColorPreview extends ConsumerWidget {
     return ListTile(
       leading: leading ?? const Icon(Icons.color_lens),
       title: Text(title ?? 'Preview Liturgical Colors'),
-      subtitle: Text(subtitle ?? 'See how the app looks in different liturgical seasons'),
-      onTap: onTap ?? () {
-        _showColorPreview(context, ref);
-      },
+      subtitle: Text(
+          subtitle ?? 'See how the app looks in different liturgical seasons'),
+      onTap: onTap ??
+          () {
+            _showColorPreview(context, ref);
+          },
     );
   }
 
@@ -54,9 +56,10 @@ class LiturgicalColorPreview extends ConsumerWidget {
                   children: [
                     Text(
                       'Liturgical Color Preview',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
                     ),
                     IconButton(
                       onPressed: () => Navigator.of(context).pop(),
@@ -69,12 +72,18 @@ class LiturgicalColorPreview extends ConsumerWidget {
                   child: ListView(
                     controller: scrollController,
                     children: [
-                      _buildColorPreviewCard(context, ref, LiturgicalColor.green, 'Ordinary Time'),
-                      _buildColorPreviewCard(context, ref, LiturgicalColor.purple, 'Advent & Lent'),
-                      _buildColorPreviewCard(context, ref, LiturgicalColor.rose, 'Gaudete & Laetare Sundays'),
-                      _buildColorPreviewCard(context, ref, LiturgicalColor.white, 'Christmas & Easter'),
-                      _buildColorPreviewCard(context, ref, LiturgicalColor.red, 'Pentecost & Martyrs'),
-                      _buildColorPreviewCard(context, ref, LiturgicalColor.gold, 'High Feasts'),
+                      _buildColorPreviewCard(
+                          context, ref, LiturgicalColor.green, 'Ordinary Time'),
+                      _buildColorPreviewCard(context, ref,
+                          LiturgicalColor.purple, 'Advent & Lent'),
+                      _buildColorPreviewCard(context, ref, LiturgicalColor.rose,
+                          'Gaudete & Laetare Sundays'),
+                      _buildColorPreviewCard(context, ref,
+                          LiturgicalColor.white, 'Christmas & Easter'),
+                      _buildColorPreviewCard(context, ref, LiturgicalColor.red,
+                          'Pentecost & Martyrs'),
+                      _buildColorPreviewCard(
+                          context, ref, LiturgicalColor.gold, 'High Feasts'),
                     ],
                   ),
                 ),
@@ -86,10 +95,11 @@ class LiturgicalColorPreview extends ConsumerWidget {
     );
   }
 
-  Widget _buildColorPreviewCard(BuildContext context, WidgetRef ref, LiturgicalColor liturgicalColor, String description) {
+  Widget _buildColorPreviewCard(BuildContext context, WidgetRef ref,
+      LiturgicalColor liturgicalColor, String description) {
     final colorIntensity = ref.watch(colorIntensityProvider);
     final color = liturgicalColor.toFlutterColor(colorIntensity);
-    
+
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Container(

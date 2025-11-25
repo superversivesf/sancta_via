@@ -13,12 +13,7 @@ void debugLog(String message, [String? tag]) {
 }
 
 /// Onboarding state
-enum OnboardingState {
-  checking,
-  loading,
-  completed,
-  error,
-}
+enum OnboardingState { checking, loading, completed, error }
 
 /// Onboarding progress information
 class OnboardingProgress {
@@ -104,18 +99,21 @@ class OnboardingService {
 
 /// Onboarding notifier that manages the onboarding process
 class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
-  OnboardingNotifier() : super(const OnboardingProgress(
-    state: OnboardingState.checking,
-    message: 'Checking app status...',
-    progress: 0.0,
-    currentStep: 0,
-    totalSteps: 5,
-  ));
+  OnboardingNotifier()
+    : super(
+        const OnboardingProgress(
+          state: OnboardingState.checking,
+          message: 'Checking app status...',
+          progress: 0.0,
+          currentStep: 0,
+          totalSteps: 5,
+        ),
+      );
 
   /// Initialize the onboarding process
   Future<void> initialize() async {
     debugLog('Starting onboarding initialization...', 'ONBOARDING');
-    
+
     try {
       // Step 1: Check if this is first run
       state = state.copyWith(
@@ -126,9 +124,13 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
       );
 
       final isFirstRun = await OnboardingService.isFirstRun();
-      final isDatabaseInitialized = await OnboardingService.isDatabaseInitialized();
+      final isDatabaseInitialized =
+          await OnboardingService.isDatabaseInitialized();
 
-      debugLog('First run: $isFirstRun, Database initialized: $isDatabaseInitialized', 'ONBOARDING');
+      debugLog(
+        'First run: $isFirstRun, Database initialized: $isDatabaseInitialized',
+        'ONBOARDING',
+      );
 
       if (!isFirstRun && isDatabaseInitialized) {
         // App already initialized
@@ -143,7 +145,6 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
 
       // Need to initialize the database
       await _initializeBibleDatabase();
-
     } catch (e) {
       debugLog('Onboarding initialization error: $e', 'ONBOARDING');
       state = state.copyWith(
@@ -157,7 +158,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
   /// Initialize the Bible database from compressed JSON files
   Future<void> _initializeBibleDatabase() async {
     debugLog('Starting Bible database initialization...', 'ONBOARDING');
-    
+
     try {
       // Step 2: Load available translations
       state = state.copyWith(
@@ -167,8 +168,12 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
         currentStep: 2,
       );
 
-      final translations = await OnboardingService.getAvailableBibleTranslations();
-      debugLog('Found ${translations.length} translations to load', 'ONBOARDING');
+      final translations =
+          await OnboardingService.getAvailableBibleTranslations();
+      debugLog(
+        'Found ${translations.length} translations to load',
+        'ONBOARDING',
+      );
 
       // Step 3: Verify compressed Bible files
       // COMMENTED OUT: We no longer ship compressed files
@@ -182,9 +187,12 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
       await OnboardingService.verifyCompressedBibleFiles();
       debugLog('All compressed Bible files verified successfully', 'ONBOARDING');
       */
-      
+
       // Skip verification step since we only use the SQLite database
-      debugLog('Skipping compressed file verification - using SQLite database only', 'ONBOARDING');
+      debugLog(
+        'Skipping compressed file verification - using SQLite database only',
+        'ONBOARDING',
+      );
 
       // Step 4: Initialize Bible service and load data
       state = state.copyWith(
@@ -196,9 +204,11 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
       // The Bible service will automatically handle database initialization
       // when it's accessed for the first time. We just need to make sure
       // it's properly initialized by accessing it.
-      
+
       // This will be handled by the Bible service provider
-      await Future.delayed(const Duration(milliseconds: 500)); // Small delay for UI
+      await Future.delayed(
+        const Duration(milliseconds: 500),
+      ); // Small delay for UI
 
       // Step 5: Complete initialization
       state = state.copyWith(
@@ -217,7 +227,6 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
       );
 
       debugLog('Bible database initialization completed', 'ONBOARDING');
-
     } catch (e) {
       debugLog('Bible database initialization error: $e', 'ONBOARDING');
       state = state.copyWith(
@@ -243,17 +252,17 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
 }
 
 /// Provider for onboarding state
-final onboardingProvider = StateNotifierProvider<OnboardingNotifier, OnboardingProgress>((ref) {
-  return OnboardingNotifier();
-});
+final onboardingProvider =
+    StateNotifierProvider<OnboardingNotifier, OnboardingProgress>((ref) {
+      return OnboardingNotifier();
+    });
 
 /// Provider to check if app is ready
 final appReadyProvider = Provider<bool>((ref) {
   final onboarding = ref.watch(onboardingProvider);
   final bibleService = ref.watch(bibleServiceNotifierProvider);
-  
-  return onboarding.state == OnboardingState.completed && 
-         bibleService.hasValue;
+
+  return onboarding.state == OnboardingState.completed && bibleService.hasValue;
 });
 
 /// Provider to check if this is first run

@@ -15,56 +15,63 @@ class SettingsScreen extends ConsumerWidget {
         final appInfo = AppInfo(
           appName: 'Sancta Via Calendar',
           version: snapshot.hasData ? snapshot.data!.version : 'Loading...',
-          description: 'A focused Catholic liturgical calendar app with beautiful interface and detailed feast information.',
-          icon: const Icon(Icons.calendar_month, size: 48, color: Colors.deepPurple),
+          description:
+              'A focused Catholic liturgical calendar app with beautiful interface and detailed feast information.',
+          icon: const Icon(
+            Icons.calendar_month,
+            size: 48,
+            color: Colors.deepPurple,
+          ),
           onFeedback: () => _showComingSoon(context, 'Feedback'),
           onSupport: () => _showSupportDialog(context),
         );
 
         // Calendar-specific settings section
-        final calendarSpecificSettings = _buildCalendarSpecificSettings(context, ref);
+        final calendarSpecificSettings = _buildCalendarSpecificSettings(
+          context,
+          ref,
+        );
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text('Settings'),
-          ),
+          appBar: AppBar(title: const Text('Settings')),
           body: ListView(
             children: [
               // ═══════════════════════════════════════
               // APPEARANCE SECTION (from shared UI)
               // ═══════════════════════════════════════
               const SettingsSectionHeader(title: 'Appearance'),
-              
+
               // Theme mode selection (Light/Dark/System)
               const ThemeModeSelector(),
-              
+
               // Color intensity selection (Vibrant/Muted)
               const ColorIntensitySelector(),
-              
+
               // Liturgical color preview
               const LiturgicalColorPreview(),
-              
+
               const Divider(),
 
               // ═══════════════════════════════════════
               // ACCESSIBILITY SECTION (WITH working font size)
               // ═══════════════════════════════════════
               const AccessibilitySettings(
-                fontPreviewText: 'Sample prayer text: "Hail Mary, full of grace..."',
+                fontPreviewText:
+                    'Sample prayer text: "Hail Mary, full of grace..."',
                 showFontSize: true, // Font size now works throughout the app!
               ),
-              
+
               const Divider(),
 
               // ═══════════════════════════════════════
               // LANGUAGE & LOCALIZATION
               // ═══════════════════════════════════════
               const SettingsSectionHeader(title: 'Language & Localization'),
-              
+
               const LanguageSelector(
                 subtitle: 'Choose language for prayers and interface',
               ),
-              
+
               const Divider(),
 
               // ═══════════════════════════════════════
@@ -74,14 +81,18 @@ class SettingsScreen extends ConsumerWidget {
                 subtitle: 'Prayer reminders and liturgical notifications',
                 customOptions: [
                   CatholicNotificationOptions.liturgicalCalendar(
-                    enabled: false, // TODO: Connect to liturgical notifications when implemented
+                    enabled:
+                        false, // TODO: Connect to liturgical notifications when implemented
                     onChanged: (enabled) {
-                      _showComingSoon(context, 'Liturgical calendar notifications');
+                      _showComingSoon(
+                        context,
+                        'Liturgical calendar notifications',
+                      );
                     },
                   ),
                 ],
               ),
-              
+
               const Divider(),
 
               // ═══════════════════════════════════════
@@ -93,9 +104,7 @@ class SettingsScreen extends ConsumerWidget {
               // ═══════════════════════════════════════
               // ABOUT SECTION
               // ═══════════════════════════════════════
-              AppInfoSection(
-                appInfo: appInfo,
-              ),
+              AppInfoSection(appInfo: appInfo),
             ],
           ),
         );

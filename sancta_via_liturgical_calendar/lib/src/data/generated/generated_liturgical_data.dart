@@ -18,7 +18,7 @@ import 'liturgical_calendar_2034.dart';
 import 'liturgical_calendar_2035.dart';
 
 /// Master index for all generated liturgical calendar data
-/// 
+///
 /// Provides access to 12 years of liturgical data (2024-2035)
 /// covering 4383 total days.
 class GeneratedLiturgicalData {
@@ -35,7 +35,7 @@ class GeneratedLiturgicalData {
     2032,
     2033,
     2034,
-    2035
+    2035,
   ];
 
   /// Year range of available data
@@ -118,7 +118,7 @@ class GeneratedLiturgicalData {
         totalDays: 365,
         prioritizedCelebrations: 71,
         file: 'liturgical_calendar_2035.dart',
-      )
+      ),
     ],
     totalYears: 12,
   );
@@ -162,7 +162,8 @@ class GeneratedLiturgicalData {
         return {
           'year': LiturgicalCalendarData2024.year,
           'totalDays': LiturgicalCalendarData2024.totalDays,
-          'prioritizedCelebrations': LiturgicalCalendarData2024.prioritizedCelebrations,
+          'prioritizedCelebrations':
+              LiturgicalCalendarData2024.prioritizedCelebrations,
           'generatedAt': LiturgicalCalendarData2024.generatedAt,
           'dataVersion': LiturgicalCalendarData2024.dataVersion,
           'romcalVersion': LiturgicalCalendarData2024.romcalVersion,
@@ -171,7 +172,8 @@ class GeneratedLiturgicalData {
         return {
           'year': LiturgicalCalendarData2025.year,
           'totalDays': LiturgicalCalendarData2025.totalDays,
-          'prioritizedCelebrations': LiturgicalCalendarData2025.prioritizedCelebrations,
+          'prioritizedCelebrations':
+              LiturgicalCalendarData2025.prioritizedCelebrations,
           'generatedAt': LiturgicalCalendarData2025.generatedAt,
           'dataVersion': LiturgicalCalendarData2025.dataVersion,
           'romcalVersion': LiturgicalCalendarData2025.romcalVersion,
@@ -180,7 +182,8 @@ class GeneratedLiturgicalData {
         return {
           'year': LiturgicalCalendarData2026.year,
           'totalDays': LiturgicalCalendarData2026.totalDays,
-          'prioritizedCelebrations': LiturgicalCalendarData2026.prioritizedCelebrations,
+          'prioritizedCelebrations':
+              LiturgicalCalendarData2026.prioritizedCelebrations,
           'generatedAt': LiturgicalCalendarData2026.generatedAt,
           'dataVersion': LiturgicalCalendarData2026.dataVersion,
           'romcalVersion': LiturgicalCalendarData2026.romcalVersion,
@@ -189,7 +192,8 @@ class GeneratedLiturgicalData {
         return {
           'year': LiturgicalCalendarData2027.year,
           'totalDays': LiturgicalCalendarData2027.totalDays,
-          'prioritizedCelebrations': LiturgicalCalendarData2027.prioritizedCelebrations,
+          'prioritizedCelebrations':
+              LiturgicalCalendarData2027.prioritizedCelebrations,
           'generatedAt': LiturgicalCalendarData2027.generatedAt,
           'dataVersion': LiturgicalCalendarData2027.dataVersion,
           'romcalVersion': LiturgicalCalendarData2027.romcalVersion,
@@ -198,7 +202,8 @@ class GeneratedLiturgicalData {
         return {
           'year': LiturgicalCalendarData2028.year,
           'totalDays': LiturgicalCalendarData2028.totalDays,
-          'prioritizedCelebrations': LiturgicalCalendarData2028.prioritizedCelebrations,
+          'prioritizedCelebrations':
+              LiturgicalCalendarData2028.prioritizedCelebrations,
           'generatedAt': LiturgicalCalendarData2028.generatedAt,
           'dataVersion': LiturgicalCalendarData2028.dataVersion,
           'romcalVersion': LiturgicalCalendarData2028.romcalVersion,
@@ -207,7 +212,8 @@ class GeneratedLiturgicalData {
         return {
           'year': LiturgicalCalendarData2029.year,
           'totalDays': LiturgicalCalendarData2029.totalDays,
-          'prioritizedCelebrations': LiturgicalCalendarData2029.prioritizedCelebrations,
+          'prioritizedCelebrations':
+              LiturgicalCalendarData2029.prioritizedCelebrations,
           'generatedAt': LiturgicalCalendarData2029.generatedAt,
           'dataVersion': LiturgicalCalendarData2029.dataVersion,
           'romcalVersion': LiturgicalCalendarData2029.romcalVersion,
@@ -216,7 +222,8 @@ class GeneratedLiturgicalData {
         return {
           'year': LiturgicalCalendarData2030.year,
           'totalDays': LiturgicalCalendarData2030.totalDays,
-          'prioritizedCelebrations': LiturgicalCalendarData2030.prioritizedCelebrations,
+          'prioritizedCelebrations':
+              LiturgicalCalendarData2030.prioritizedCelebrations,
           'generatedAt': LiturgicalCalendarData2030.generatedAt,
           'dataVersion': LiturgicalCalendarData2030.dataVersion,
           'romcalVersion': LiturgicalCalendarData2030.romcalVersion,
@@ -225,7 +232,8 @@ class GeneratedLiturgicalData {
         return {
           'year': LiturgicalCalendarData2031.year,
           'totalDays': LiturgicalCalendarData2031.totalDays,
-          'prioritizedCelebrations': LiturgicalCalendarData2031.prioritizedCelebrations,
+          'prioritizedCelebrations':
+              LiturgicalCalendarData2031.prioritizedCelebrations,
           'generatedAt': LiturgicalCalendarData2031.generatedAt,
           'dataVersion': LiturgicalCalendarData2031.dataVersion,
           'romcalVersion': LiturgicalCalendarData2031.romcalVersion,
@@ -234,7 +242,8 @@ class GeneratedLiturgicalData {
         return {
           'year': LiturgicalCalendarData2032.year,
           'totalDays': LiturgicalCalendarData2032.totalDays,
-          'prioritizedCelebrations': LiturgicalCalendarData2032.prioritizedCelebrations,
+          'prioritizedCelebrations':
+              LiturgicalCalendarData2032.prioritizedCelebrations,
           'generatedAt': LiturgicalCalendarData2032.generatedAt,
           'dataVersion': LiturgicalCalendarData2032.dataVersion,
           'romcalVersion': LiturgicalCalendarData2032.romcalVersion,
@@ -243,7 +252,8 @@ class GeneratedLiturgicalData {
         return {
           'year': LiturgicalCalendarData2033.year,
           'totalDays': LiturgicalCalendarData2033.totalDays,
-          'prioritizedCelebrations': LiturgicalCalendarData2033.prioritizedCelebrations,
+          'prioritizedCelebrations':
+              LiturgicalCalendarData2033.prioritizedCelebrations,
           'generatedAt': LiturgicalCalendarData2033.generatedAt,
           'dataVersion': LiturgicalCalendarData2033.dataVersion,
           'romcalVersion': LiturgicalCalendarData2033.romcalVersion,
@@ -252,7 +262,8 @@ class GeneratedLiturgicalData {
         return {
           'year': LiturgicalCalendarData2034.year,
           'totalDays': LiturgicalCalendarData2034.totalDays,
-          'prioritizedCelebrations': LiturgicalCalendarData2034.prioritizedCelebrations,
+          'prioritizedCelebrations':
+              LiturgicalCalendarData2034.prioritizedCelebrations,
           'generatedAt': LiturgicalCalendarData2034.generatedAt,
           'dataVersion': LiturgicalCalendarData2034.dataVersion,
           'romcalVersion': LiturgicalCalendarData2034.romcalVersion,
@@ -261,7 +272,8 @@ class GeneratedLiturgicalData {
         return {
           'year': LiturgicalCalendarData2035.year,
           'totalDays': LiturgicalCalendarData2035.totalDays,
-          'prioritizedCelebrations': LiturgicalCalendarData2035.prioritizedCelebrations,
+          'prioritizedCelebrations':
+              LiturgicalCalendarData2035.prioritizedCelebrations,
           'generatedAt': LiturgicalCalendarData2035.generatedAt,
           'dataVersion': LiturgicalCalendarData2035.dataVersion,
           'romcalVersion': LiturgicalCalendarData2035.romcalVersion,

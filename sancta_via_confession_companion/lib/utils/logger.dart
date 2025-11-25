@@ -9,7 +9,12 @@ class AppLogger {
     }
   }
 
-  static void error(String message, dynamic error, StackTrace? stackTrace, [String? tag]) {
+  static void error(
+    String message,
+    dynamic error,
+    StackTrace? stackTrace, [
+    String? tag,
+  ]) {
     if (_isDebugMode) {
       developer.log(
         '$message: $error',

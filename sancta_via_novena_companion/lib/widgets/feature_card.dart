@@ -24,9 +24,7 @@ class FeatureCard extends StatelessWidget {
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -34,11 +32,7 @@ class FeatureCard extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
-              Icon(
-                icon,
-                size: 32,
-                color: theme.colorScheme.primary,
-              ),
+              Icon(icon, size: 32, color: theme.colorScheme.primary),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -73,10 +67,7 @@ class FeatureCard extends StatelessWidget {
                   ],
                 ),
               ),
-              if (trailing != null) ...[
-                const SizedBox(width: 8),
-                trailing!,
-              ],
+              if (trailing != null) ...[const SizedBox(width: 8), trailing!],
             ],
           ),
         ),

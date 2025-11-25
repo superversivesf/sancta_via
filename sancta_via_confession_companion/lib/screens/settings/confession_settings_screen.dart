@@ -21,15 +21,23 @@ class ConfessionSettingsScreen extends ConsumerWidget {
         final appInfo = AppInfo(
           appName: AppConstants.appName,
           version: snapshot.hasData ? snapshot.data!.version : 'Loading...',
-          description: 'A Catholic app providing guided examinations of conscience to help faithful Catholics '
+          description:
+              'A Catholic app providing guided examinations of conscience to help faithful Catholics '
               'prepare for the Sacrament of Confession with proper reflection and prayer.',
-          icon: const Icon(Icons.self_improvement, size: 48, color: Colors.purple),
+          icon: const Icon(
+            Icons.self_improvement,
+            size: 48,
+            color: Colors.purple,
+          ),
           onFeedback: () => _showComingSoon(context, 'Feedback'),
           onSupport: () => _showSupportDialog(context),
         );
 
         // Confession-specific settings section
-        final confessionSpecificSettings = _buildConfessionSpecificSettings(context, ref);
+        final confessionSpecificSettings = _buildConfessionSpecificSettings(
+          context,
+          ref,
+        );
 
         return UnifiedSettingsScreen(
           appInfo: appInfo,
@@ -38,11 +46,14 @@ class ConfessionSettingsScreen extends ConsumerWidget {
             CatholicNotificationOptions.examinations(
               enabled: ref.watch(confessionNotificationsEnabledProvider),
               onChanged: (enabled) {
-                ref.read(confessionAppSettingsProvider.notifier).setNotificationsEnabled(enabled);
+                ref
+                    .read(confessionAppSettingsProvider.notifier)
+                    .setNotificationsEnabled(enabled);
               },
             ),
             CatholicNotificationOptions.liturgicalCalendar(
-              enabled: false, // TODO: Implement liturgical calendar notifications
+              enabled:
+                  false, // TODO: Implement liturgical calendar notifications
               onChanged: (enabled) {
                 _showComingSoon(context, 'Liturgical calendar notifications');
               },
@@ -56,7 +67,7 @@ class ConfessionSettingsScreen extends ConsumerWidget {
   Widget _buildConfessionSpecificSettings(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(confessionAppSettingsProvider);
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return Column(
       children: [
         // ═══════════════════════════════════════
@@ -81,15 +92,22 @@ class ConfessionSettingsScreen extends ConsumerWidget {
                 value: settings.defaultLanguage,
                 onChanged: (AppLanguage? newValue) {
                   if (newValue != null) {
-                    ref.read(confessionAppSettingsProvider.notifier).setDefaultLanguage(newValue);
+                    ref
+                        .read(confessionAppSettingsProvider.notifier)
+                        .setDefaultLanguage(newValue);
                   }
                 },
-                items: [AppLanguage.english, AppLanguage.latin, AppLanguage.spanish].map((AppLanguage language) {
-                  return DropdownMenuItem(
-                    value: language,
-                    child: Text(language.displayName),
-                  );
-                }).toList(),
+                items:
+                    [
+                      AppLanguage.english,
+                      AppLanguage.latin,
+                      AppLanguage.spanish,
+                    ].map((AppLanguage language) {
+                      return DropdownMenuItem(
+                        value: language,
+                        child: Text(language.displayName),
+                      );
+                    }).toList(),
               ),
             );
           },
@@ -110,7 +128,9 @@ class ConfessionSettingsScreen extends ConsumerWidget {
               ),
               value: settings.useGuidedMode,
               onChanged: (bool value) {
-                ref.read(confessionAppSettingsProvider.notifier).setUseGuidedMode(value);
+                ref
+                    .read(confessionAppSettingsProvider.notifier)
+                    .setUseGuidedMode(value);
               },
             );
           },
@@ -131,7 +151,9 @@ class ConfessionSettingsScreen extends ConsumerWidget {
               ),
               value: settings.showProgress,
               onChanged: (bool value) {
-                ref.read(confessionAppSettingsProvider.notifier).setShowProgress(value);
+                ref
+                    .read(confessionAppSettingsProvider.notifier)
+                    .setShowProgress(value);
               },
             );
           },
@@ -154,9 +176,9 @@ class ConfessionSettingsScreen extends ConsumerWidget {
                   Expanded(
                     child: Text(
                       'Font Size',
-                      style: textScaling.scaledTitleMedium(context).copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: textScaling
+                          .scaledTitleMedium(context)
+                          .copyWith(fontWeight: FontWeight.w500),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -190,7 +212,9 @@ class ConfessionSettingsScreen extends ConsumerWidget {
               ),
               value: settings.saveExaminationHistory,
               onChanged: (bool value) {
-                ref.read(confessionAppSettingsProvider.notifier).setSaveExaminationHistory(value);
+                ref
+                    .read(confessionAppSettingsProvider.notifier)
+                    .setSaveExaminationHistory(value);
               },
             );
           },
@@ -214,7 +238,9 @@ class ConfessionSettingsScreen extends ConsumerWidget {
                   value: settings.historyRetentionDays,
                   onChanged: (int? newValue) {
                     if (newValue != null) {
-                      ref.read(confessionAppSettingsProvider.notifier).setHistoryRetentionDays(newValue);
+                      ref
+                          .read(confessionAppSettingsProvider.notifier)
+                          .setHistoryRetentionDays(newValue);
                     }
                   },
                   items: [7, 14, 30, 60, 90, 365].map((int days) {
@@ -286,7 +312,7 @@ class ConfessionSettingsScreen extends ConsumerWidget {
                 style: textScaling.scaledTitleMedium(context),
               ),
               subtitle: Text(
-                favoriteCount > 0 
+                favoriteCount > 0
                     ? '$favoriteCount examination${favoriteCount == 1 ? '' : 's'} favorited'
                     : 'No favorite examinations yet',
                 style: textScaling.scaledBodyMedium(context),
@@ -386,10 +412,12 @@ class ConfessionSettingsScreen extends ConsumerWidget {
                   Navigator.of(context).pop();
                   // TODO: Implement data clearing
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(
-                      'Data clearing - Coming Soon',
-                      style: textScaling.scaledBodyMedium(context),
-                    )),
+                    SnackBar(
+                      content: Text(
+                        'Data clearing - Coming Soon',
+                        style: textScaling.scaledBodyMedium(context),
+                      ),
+                    ),
                   );
                 },
                 style: TextButton.styleFrom(

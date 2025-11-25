@@ -4,10 +4,13 @@ import 'bible_providers.dart';
 import 'settings_providers.dart';
 
 /// Provider for getting scripture content by reference string
-final scriptureProvider = FutureProvider.family<ScriptureContent, String>((ref, reference) async {
+final scriptureProvider = FutureProvider.family<ScriptureContent, String>((
+  ref,
+  reference,
+) async {
   final serviceAsync = ref.watch(bibleServiceNotifierProvider);
   final translation = ref.watch(selectedBibleTranslationProvider);
-  
+
   return serviceAsync.when(
     data: (service) async {
       return await service.getScriptureByReference(reference, translation);
@@ -18,27 +21,37 @@ final scriptureProvider = FutureProvider.family<ScriptureContent, String>((ref, 
 });
 
 /// Provider for getting scripture content by parsed reference
-final scriptureByReferenceProvider = FutureProvider.family<ScriptureContent, ({ScriptureReference reference, BibleTranslation translation})>((ref, params) async {
-  final serviceAsync = ref.watch(bibleServiceNotifierProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      return await service.getScriptureContent(params.reference, params.translation);
-    },
-    loading: () => throw Exception('Bible service is loading'),
-    error: (error, stack) => throw error,
-  );
-});
+final scriptureByReferenceProvider =
+    FutureProvider.family<
+      ScriptureContent,
+      ({ScriptureReference reference, BibleTranslation translation})
+    >((ref, params) async {
+      final serviceAsync = ref.watch(bibleServiceNotifierProvider);
+
+      return serviceAsync.when(
+        data: (service) async {
+          return await service.getScriptureContent(
+            params.reference,
+            params.translation,
+          );
+        },
+        loading: () => throw Exception('Bible service is loading'),
+        error: (error, stack) => throw error,
+      );
+    });
 
 /// Provider for getting multiple scripture references at once
-final multipleScripturesProvider = FutureProvider.family<List<ScriptureContent>, ({List<String> references, BibleTranslation translation})>((ref, params) async {
-  final serviceAsync = ref.watch(bibleServiceNotifierProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      // Parse string references to ScriptureReference objects
-      final parsedReferences = params.references
-          .map((refString) {
+final multipleScripturesProvider =
+    FutureProvider.family<
+      List<ScriptureContent>,
+      ({List<String> references, BibleTranslation translation})
+    >((ref, params) async {
+      final serviceAsync = ref.watch(bibleServiceNotifierProvider);
+
+      return serviceAsync.when(
+        data: (service) async {
+          // Parse string references to ScriptureReference objects
+          final parsedReferences = params.references.map((refString) {
             try {
               return ScriptureReference.parse(refString);
             } catch (e) {
@@ -49,18 +62,23 @@ final multipleScripturesProvider = FutureProvider.family<List<ScriptureContent>,
                 displayText: refString,
               );
             }
-          })
-          .toList();
-      
-      return await service.getMultipleScriptures(parsedReferences, params.translation);
-    },
-    loading: () => throw Exception('Bible service is loading'),
-    error: (error, stack) => throw error,
-  );
-});
+          }).toList();
+
+          return await service.getMultipleScriptures(
+            parsedReferences,
+            params.translation,
+          );
+        },
+        loading: () => throw Exception('Bible service is loading'),
+        error: (error, stack) => throw error,
+      );
+    });
 
 /// Provider for parsing scripture references
-final parsedReferenceProvider = Provider.family<ScriptureReference?, String>((ref, referenceString) {
+final parsedReferenceProvider = Provider.family<ScriptureReference?, String>((
+  ref,
+  referenceString,
+) {
   try {
     return ScriptureReference.parse(referenceString);
   } catch (e) {
@@ -69,13 +87,17 @@ final parsedReferenceProvider = Provider.family<ScriptureReference?, String>((re
 });
 
 /// Provider for validating scripture references
-final referenceValidationProvider = Provider.family<bool, String>((ref, referenceString) {
+final referenceValidationProvider = Provider.family<bool, String>((
+  ref,
+  referenceString,
+) {
   final parsed = ref.watch(parsedReferenceProvider(referenceString));
   return parsed != null;
 });
 
 /// StateNotifier for managing current scripture reading state
-class CurrentScriptureNotifier extends StateNotifier<AsyncValue<ScriptureContent?>> {
+class CurrentScriptureNotifier
+    extends StateNotifier<AsyncValue<ScriptureContent?>> {
   CurrentScriptureNotifier(this._ref) : super(const AsyncValue.data(null));
 
   final Ref _ref;
@@ -83,16 +105,21 @@ class CurrentScriptureNotifier extends StateNotifier<AsyncValue<ScriptureContent
   BibleTranslation? _currentTranslation;
 
   /// Load scripture by reference string
-  Future<void> loadScripture(String reference, {BibleTranslation? translation}) async {
+  Future<void> loadScripture(
+    String reference, {
+    BibleTranslation? translation,
+  }) async {
     if (reference.isEmpty) {
       state = const AsyncValue.data(null);
       return;
     }
 
-    final BibleTranslation useTranslation = translation ?? _ref.read(selectedBibleTranslationProvider);
-    
+    final BibleTranslation useTranslation =
+        translation ?? _ref.read(selectedBibleTranslationProvider);
+
     // Avoid reloading the same scripture
-    if (_currentReference == reference && _currentTranslation == useTranslation) {
+    if (_currentReference == reference &&
+        _currentTranslation == useTranslation) {
       return;
     }
 
@@ -104,9 +131,13 @@ class CurrentScriptureNotifier extends StateNotifier<AsyncValue<ScriptureContent
       final serviceAsync = _ref.read(bibleServiceNotifierProvider);
       await serviceAsync.when(
         data: (service) async {
-          final content = await service.getScriptureByReference(reference, useTranslation);
+          final content = await service.getScriptureByReference(
+            reference,
+            useTranslation,
+          );
           // Only update state if this is still the current request
-          if (_currentReference == reference && _currentTranslation == useTranslation) {
+          if (_currentReference == reference &&
+              _currentTranslation == useTranslation) {
             state = AsyncValue.data(content);
           }
         },
@@ -114,7 +145,8 @@ class CurrentScriptureNotifier extends StateNotifier<AsyncValue<ScriptureContent
         error: (error, stack) => throw error,
       );
     } catch (error, stackTrace) {
-      if (_currentReference == reference && _currentTranslation == useTranslation) {
+      if (_currentReference == reference &&
+          _currentTranslation == useTranslation) {
         state = AsyncValue.error(error, stackTrace);
       }
     }
@@ -135,9 +167,13 @@ class CurrentScriptureNotifier extends StateNotifier<AsyncValue<ScriptureContent
 }
 
 /// Provider for managing current scripture reading
-final currentScriptureProvider = StateNotifierProvider<CurrentScriptureNotifier, AsyncValue<ScriptureContent?>>((ref) {
-  return CurrentScriptureNotifier(ref);
-});
+final currentScriptureProvider =
+    StateNotifierProvider<
+      CurrentScriptureNotifier,
+      AsyncValue<ScriptureContent?>
+    >((ref) {
+      return CurrentScriptureNotifier(ref);
+    });
 
 /// Provider for today's suggested scripture reading
 /// This could be integrated with lectionary data in the future
@@ -146,14 +182,22 @@ final todaysScriptureProvider = FutureProvider<ScriptureContent?>((ref) async {
   // This should be integrated with lectionary_data in a real app
   final serviceAsync = ref.watch(bibleServiceNotifierProvider);
   final translation = ref.watch(selectedBibleTranslationProvider);
-  
+
   return serviceAsync.when(
     data: (service) async {
       // Default to a psalm for daily reading
-      final psalms = ['Psalm 23', 'Psalm 91', 'Psalm 139', 'Psalm 121', 'Psalm 46'];
-      final dayOfYear = DateTime.now().difference(DateTime(DateTime.now().year, 1, 1)).inDays;
+      final psalms = [
+        'Psalm 23',
+        'Psalm 91',
+        'Psalm 139',
+        'Psalm 121',
+        'Psalm 46',
+      ];
+      final dayOfYear = DateTime.now()
+          .difference(DateTime(DateTime.now().year, 1, 1))
+          .inDays;
       final selectedPsalm = psalms[dayOfYear % psalms.length];
-      
+
       return await service.getScriptureByReference(selectedPsalm, translation);
     },
     loading: () => null,
@@ -162,9 +206,10 @@ final todaysScriptureProvider = FutureProvider<ScriptureContent?>((ref) async {
 });
 
 /// Provider for favorite scripture verses
-final favoriteScripturesProvider = StateNotifierProvider<FavoriteScripturesNotifier, List<String>>((ref) {
-  return FavoriteScripturesNotifier();
-});
+final favoriteScripturesProvider =
+    StateNotifierProvider<FavoriteScripturesNotifier, List<String>>((ref) {
+      return FavoriteScripturesNotifier();
+    });
 
 /// StateNotifier for managing favorite scriptures
 class FavoriteScripturesNotifier extends StateNotifier<List<String>> {
@@ -208,38 +253,45 @@ class FavoriteScripturesNotifier extends StateNotifier<List<String>> {
 }
 
 /// Provider for getting all favorite scripture contents
-final favoriteScriptureContentsProvider = FutureProvider<List<ScriptureContent>>((ref) async {
-  final favorites = ref.watch(favoriteScripturesProvider);
-  final translation = ref.watch(selectedBibleTranslationProvider);
-  
-  if (favorites.isEmpty) return [];
-  
-  final serviceAsync = ref.watch(bibleServiceNotifierProvider);
-  return serviceAsync.when(
-    data: (service) async {
-      // Parse string references to ScriptureReference objects
-      final parsedReferences = favorites
-          .map((refString) {
-            try {
-              return ScriptureReference.parse(refString);
-            } catch (e) {
-              // Return null for invalid references, filter them out
-              return null;
-            }
-          })
-          .where((ref) => ref != null)
-          .cast<ScriptureReference>()
-          .toList();
-      
-      return await service.getMultipleScriptures(parsedReferences, translation);
-    },
-    loading: () => <ScriptureContent>[],
-    error: (error, stack) => <ScriptureContent>[],
-  );
-});
+final favoriteScriptureContentsProvider =
+    FutureProvider<List<ScriptureContent>>((ref) async {
+      final favorites = ref.watch(favoriteScripturesProvider);
+      final translation = ref.watch(selectedBibleTranslationProvider);
+
+      if (favorites.isEmpty) return [];
+
+      final serviceAsync = ref.watch(bibleServiceNotifierProvider);
+      return serviceAsync.when(
+        data: (service) async {
+          // Parse string references to ScriptureReference objects
+          final parsedReferences = favorites
+              .map((refString) {
+                try {
+                  return ScriptureReference.parse(refString);
+                } catch (e) {
+                  // Return null for invalid references, filter them out
+                  return null;
+                }
+              })
+              .where((ref) => ref != null)
+              .cast<ScriptureReference>()
+              .toList();
+
+          return await service.getMultipleScriptures(
+            parsedReferences,
+            translation,
+          );
+        },
+        loading: () => <ScriptureContent>[],
+        error: (error, stack) => <ScriptureContent>[],
+      );
+    });
 
 /// Provider for checking if a reference is in favorites
-final isReferenceInFavoritesProvider = Provider.family<bool, String>((ref, reference) {
+final isReferenceInFavoritesProvider = Provider.family<bool, String>((
+  ref,
+  reference,
+) {
   final notifier = ref.watch(favoriteScripturesProvider.notifier);
   return notifier.isFavorite(reference);
 });
@@ -249,66 +301,89 @@ final isReferenceInFavoritesProvider = Provider.family<bool, String>((ref, refer
 // ============================================================================
 
 /// Provider for optimized scripture content by reference (much faster!)
-final optimizedScriptureByReferenceProvider = FutureProvider.family<OptimizedScriptureContent, ({ScriptureReference reference, BibleTranslation translation})>((ref, params) async {
-  final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      return await service.getScriptureContent(params.reference, params.translation);
-    },
-    loading: () => throw Exception('Optimized Bible service is loading'),
-    error: (error, stack) => throw error,
-  );
-});
+final optimizedScriptureByReferenceProvider =
+    FutureProvider.family<
+      OptimizedScriptureContent,
+      ({ScriptureReference reference, BibleTranslation translation})
+    >((ref, params) async {
+      final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
+
+      return serviceAsync.when(
+        data: (service) async {
+          return await service.getScriptureContent(
+            params.reference,
+            params.translation,
+          );
+        },
+        loading: () => throw Exception('Optimized Bible service is loading'),
+        error: (error, stack) => throw error,
+      );
+    });
 
 /// Fast provider that gets book names without loading full Bible content
-final optimizedBookNamesProvider = FutureProvider.family<List<String>, BibleTranslation>((ref, translation) async {
-  final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      return await service.getBookNames(translation);
-    },
-    loading: () => throw Exception('Optimized Bible service is loading'),
-    error: (error, stack) => throw error,
-  );
-});
+final optimizedBookNamesProvider =
+    FutureProvider.family<List<String>, BibleTranslation>((
+      ref,
+      translation,
+    ) async {
+      final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
+
+      return serviceAsync.when(
+        data: (service) async {
+          return await service.getBookNames(translation);
+        },
+        loading: () => throw Exception('Optimized Bible service is loading'),
+        error: (error, stack) => throw error,
+      );
+    });
 
 /// Fast provider that gets chapter count for a book
-final optimizedChapterCountProvider = FutureProvider.family<int, ({String bookName, BibleTranslation translation})>((ref, params) async {
-  final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      return await service.getChapterCount(params.bookName, params.translation);
-    },
-    loading: () => throw Exception('Optimized Bible service is loading'),
-    error: (error, stack) => throw error,
-  );
-});
+final optimizedChapterCountProvider =
+    FutureProvider.family<
+      int,
+      ({String bookName, BibleTranslation translation})
+    >((ref, params) async {
+      final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
+
+      return serviceAsync.when(
+        data: (service) async {
+          return await service.getChapterCount(
+            params.bookName,
+            params.translation,
+          );
+        },
+        loading: () => throw Exception('Optimized Bible service is loading'),
+        error: (error, stack) => throw error,
+      );
+    });
 
 /// Fast provider for checking if a book exists
-final optimizedBookExistsProvider = FutureProvider.family<bool, ({String bookName, BibleTranslation translation})>((ref, params) async {
-  final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      return await service.hasBook(params.bookName, params.translation);
-    },
-    loading: () => false,
-    error: (error, stack) => false,
-  );
-});
+final optimizedBookExistsProvider =
+    FutureProvider.family<
+      bool,
+      ({String bookName, BibleTranslation translation})
+    >((ref, params) async {
+      final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
+
+      return serviceAsync.when(
+        data: (service) async {
+          return await service.hasBook(params.bookName, params.translation);
+        },
+        loading: () => false,
+        error: (error, stack) => false,
+      );
+    });
 
 /// Fast provider for available translations (no content loading)
-final optimizedAvailableTranslationsProvider = FutureProvider<List<BibleTranslation>>((ref) async {
-  final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      return await service.getAvailableTranslations();
-    },
-    loading: () => <BibleTranslation>[],
-    error: (error, stack) => <BibleTranslation>[],
-  );
-});
+final optimizedAvailableTranslationsProvider =
+    FutureProvider<List<BibleTranslation>>((ref) async {
+      final serviceAsync = ref.watch(optimizedBibleServiceNotifierProvider);
+
+      return serviceAsync.when(
+        data: (service) async {
+          return await service.getAvailableTranslations();
+        },
+        loading: () => <BibleTranslation>[],
+        error: (error, stack) => <BibleTranslation>[],
+      );
+    });

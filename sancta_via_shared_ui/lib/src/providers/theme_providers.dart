@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Enum for color intensity preferences
-enum ColorIntensity { 
-  vibrant, 
+enum ColorIntensity {
+  vibrant,
   muted;
-  
+
   String get displayName {
     switch (this) {
       case ColorIntensity.vibrant:
@@ -27,7 +27,7 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final themeIndex = prefs.getInt('themeMode') ?? ThemeMode.system.index;
-      
+
       // Handle invalid indices gracefully
       if (themeIndex >= 0 && themeIndex < ThemeMode.values.length) {
         state = ThemeMode.values[themeIndex];
@@ -63,10 +63,12 @@ class ColorIntensityNotifier extends StateNotifier<ColorIntensity> {
   Future<void> _loadColorIntensity() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final intensityIndex = prefs.getInt('colorIntensity') ?? ColorIntensity.vibrant.index;
-      
+      final intensityIndex =
+          prefs.getInt('colorIntensity') ?? ColorIntensity.vibrant.index;
+
       // Handle invalid indices gracefully
-      if (intensityIndex >= 0 && intensityIndex < ColorIntensity.values.length) {
+      if (intensityIndex >= 0 &&
+          intensityIndex < ColorIntensity.values.length) {
         state = ColorIntensity.values[intensityIndex];
       } else {
         // Invalid index, default to vibrant and clear the invalid preference
@@ -92,11 +94,13 @@ class ColorIntensityNotifier extends StateNotifier<ColorIntensity> {
 }
 
 // Theme mode provider with persistence
-final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
+final themeModeProvider =
+    StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
   return ThemeModeNotifier();
 });
 
 // Color intensity provider with persistence
-final colorIntensityProvider = StateNotifierProvider<ColorIntensityNotifier, ColorIntensity>((ref) {
+final colorIntensityProvider =
+    StateNotifierProvider<ColorIntensityNotifier, ColorIntensity>((ref) {
   return ColorIntensityNotifier();
 });

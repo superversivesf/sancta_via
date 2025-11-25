@@ -32,8 +32,7 @@ class AccessibilitySettings extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Section header
-        if (showHeader)
-          const SettingsSectionHeader(title: 'Accessibility'),
+        if (showHeader) const SettingsSectionHeader(title: 'Accessibility'),
 
         // Font size setting
         if (showFontSize)
@@ -49,16 +48,17 @@ class AccessibilitySettings extends ConsumerWidget {
                     Expanded(
                       child: Text(
                         'Font Size',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
-                
+
                 // Slider with icons
                 Row(
                   children: [
@@ -69,16 +69,19 @@ class AccessibilitySettings extends ConsumerWidget {
                         min: 12.0,
                         max: 32.0,
                         divisions: 20,
-                        label: '${settings.fontSize.round()}pt (${settings.fontSizeLabel})',
+                        label:
+                            '${settings.fontSize.round()}pt (${settings.fontSizeLabel})',
                         onChanged: (value) {
-                          ref.read(baseSettingsProvider.notifier).setFontSize(value);
+                          ref
+                              .read(baseSettingsProvider.notifier)
+                              .setFontSize(value);
                         },
                       ),
                     ),
                     const Icon(Icons.text_increase, size: 20),
                   ],
                 ),
-                
+
                 // Current value display
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
@@ -87,7 +90,7 @@ class AccessibilitySettings extends ConsumerWidget {
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
-                
+
                 // Preview text
                 const SizedBox(height: 12),
                 Container(
@@ -108,10 +111,11 @@ class AccessibilitySettings extends ConsumerWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        fontPreviewText ?? 'Sample text: "Be it done unto me according to thy word."',
+                        fontPreviewText ??
+                            'Sample text: "Be it done unto me according to thy word."',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontSize: settings.fontSize,
-                        ),
+                              fontSize: settings.fontSize,
+                            ),
                       ),
                     ],
                   ),
@@ -125,12 +129,15 @@ class AccessibilitySettings extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.accessibility),
             title: const Text('Text Scaling'),
-            subtitle: Text('System accessibility scaling: ${settings.textScalingMode.displayName}'),
+            subtitle: Text(
+                'System accessibility scaling: ${settings.textScalingMode.displayName}'),
             trailing: DropdownButton<TextScalingMode>(
               value: settings.textScalingMode,
               onChanged: (TextScalingMode? newValue) {
                 if (newValue != null) {
-                  ref.read(baseSettingsProvider.notifier).setTextScalingMode(newValue);
+                  ref
+                      .read(baseSettingsProvider.notifier)
+                      .setTextScalingMode(newValue);
                 }
               },
               items: TextScalingMode.values.map((mode) {
@@ -149,8 +156,12 @@ class AccessibilitySettings extends ConsumerWidget {
             child: Text(
               'Effective text scale: ${effectiveScale.toStringAsFixed(2)}x',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
-              ),
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.color
+                        ?.withOpacity(0.6),
+                  ),
             ),
           ),
 
@@ -174,7 +185,9 @@ class AccessibilitySettings extends ConsumerWidget {
             subtitle: const Text('Vibration feedback for interactions'),
             value: settings.hapticFeedbackEnabled,
             onChanged: (bool value) {
-              ref.read(baseSettingsProvider.notifier).setHapticFeedbackEnabled(value);
+              ref
+                  .read(baseSettingsProvider.notifier)
+                  .setHapticFeedbackEnabled(value);
             },
           ),
       ],
@@ -204,7 +217,9 @@ class AccessibilityQuickToggles extends ConsumerWidget {
           label: const Text('Haptic Feedback'),
           selected: settings.hapticFeedbackEnabled,
           onSelected: (selected) {
-            ref.read(baseSettingsProvider.notifier).setHapticFeedbackEnabled(selected);
+            ref
+                .read(baseSettingsProvider.notifier)
+                .setHapticFeedbackEnabled(selected);
           },
         ),
       ],
@@ -243,8 +258,8 @@ class TextScalingInfo extends ConsumerWidget {
             Text(
               'Effective Scale: ${effectiveScale.toStringAsFixed(2)}x',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ],
         ),

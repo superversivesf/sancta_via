@@ -5,10 +5,13 @@ import '../repositories/examination_repository.dart';
 import '../../../utils/logger.dart';
 
 // Provider for the current examination session
-final examinationSessionProvider = StateNotifierProvider<ExaminationSessionNotifier, ExaminationSession?>((ref) {
-  final repository = ref.watch(examinationRepositoryProvider);
-  return ExaminationSessionNotifier(repository);
-});
+final examinationSessionProvider =
+    StateNotifierProvider<ExaminationSessionNotifier, ExaminationSession?>((
+      ref,
+    ) {
+      final repository = ref.watch(examinationRepositoryProvider);
+      return ExaminationSessionNotifier(repository);
+    });
 
 class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
   final ExaminationRepository repository;
@@ -33,18 +36,20 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
   // Start a new examination
   Future<void> startExamination(String examinationId) async {
     try {
-      AppLogger.examination('Starting new examination session for: $examinationId');
-      
-      final newSession = ExaminationSession(
-        examinationId: examinationId,
+      AppLogger.examination(
+        'Starting new examination session for: $examinationId',
       );
-      
+
+      final newSession = ExaminationSession(examinationId: examinationId);
+
       // Save immediately to secure storage
       await repository.saveActiveSession(newSession);
-      
+
       if (mounted) {
         state = newSession;
-        AppLogger.examination('New session created and set as state: ${newSession.id}');
+        AppLogger.examination(
+          'New session created and set as state: ${newSession.id}',
+        );
       }
     } catch (e) {
       AppLogger.error('Failed to start examination', e, null, 'EXAM');
@@ -67,7 +72,9 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
 
       if (mounted) {
         state = updatedSession;
-        AppLogger.examination('Updated position - Category: $categoryId, Item: $itemId');
+        AppLogger.examination(
+          'Updated position - Category: $categoryId, Item: $itemId',
+        );
       }
     } catch (e) {
       AppLogger.error('Failed to update examination position', e, null, 'EXAM');
@@ -75,11 +82,16 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
   }
 
   // Set response status for an item
-  Future<void> setResponseStatus(String itemId, ExaminationResponseStatus status) async {
+  Future<void> setResponseStatus(
+    String itemId,
+    ExaminationResponseStatus status,
+  ) async {
     if (state == null) return;
 
     try {
-      final updatedResponses = Map<String, ExaminationResponseStatus>.from(state!.itemResponses);
+      final updatedResponses = Map<String, ExaminationResponseStatus>.from(
+        state!.itemResponses,
+      );
       updatedResponses[itemId] = status;
 
       final updatedSession = state!.copyWith(itemResponses: updatedResponses);
@@ -128,7 +140,7 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
 
     try {
       AppLogger.examination('Completing examination session: ${state!.id}');
-      
+
       // Complete and archive the session
       await repository.completeSession(state!);
 
@@ -148,7 +160,7 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
 
     try {
       AppLogger.examination('Cancelling examination session: ${state!.id}');
-      
+
       // Just clear the active session without archiving
       await repository.deleteSession(state!.id);
 

@@ -11,15 +11,18 @@ import '../services/user_message_service.dart';
 class ReadingPlanException implements Exception {
   final String message;
   ReadingPlanException(this.message);
-  
+
   @override
   String toString() => message;
 }
 
 /// Main provider for the reading plan manager
-final readingPlanManagerProvider = StateNotifierProvider<ReadingPlanManagerNotifier, ReadingPlanManager>((ref) {
-  return ReadingPlanManagerNotifier();
-});
+final readingPlanManagerProvider =
+    StateNotifierProvider<ReadingPlanManagerNotifier, ReadingPlanManager>((
+      ref,
+    ) {
+      return ReadingPlanManagerNotifier();
+    });
 
 /// Provider to get all active reading plans (up to 5)
 final activeReadingPlansProvider = Provider<List<ReadingPlan>>((ref) {
@@ -39,13 +42,14 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   static const String _storageKey = 'reading_plan_manager_v2';
-  static const String _legacyStorageKey = 'reading_plan_manager'; // Previous version key
-  
+  static const String _legacyStorageKey =
+      'reading_plan_manager'; // Previous version key
+
   /// Load plans from storage with automatic daily reset check
   Future<void> _loadPlans() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       // Try new storage key first
       final managerJson = prefs.getString(_storageKey);
       if (managerJson != null) {
@@ -55,18 +59,17 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
         print('📖 Reading plans loaded successfully');
         return;
       }
-      
+
       // Try legacy storage and migrate
       final legacyJson = prefs.getString(_legacyStorageKey);
       if (legacyJson != null) {
         await _migrateLegacyData(legacyJson, prefs);
         return;
       }
-      
+
       // No plans found, start with empty manager
       state = ReadingPlanManager.empty();
       print('📱 Started with empty reading plan manager');
-      
     } catch (e) {
       print('❌ Error loading reading plans: $e');
       state = ReadingPlanManager.empty();
@@ -75,21 +78,30 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Migrate data from complex legacy format to simplified format
-  Future<void> _migrateLegacyData(String legacyJson, SharedPreferences prefs) async {
+  Future<void> _migrateLegacyData(
+    String legacyJson,
+    SharedPreferences prefs,
+  ) async {
     try {
       final legacyData = jsonDecode(legacyJson);
-      final legacyPlans = (legacyData['plans'] as List?)?.map((planJson) {
-        // Convert legacy plan format to simplified format
-        return ReadingPlan(
-          id: planJson['id'],
-          name: planJson['name'] ?? 'Reading Plan',
-          collection: BookCollection.values.firstWhere((e) => e.name == planJson['collection']),
-          progress: ReadingProgress.fromJson(planJson['progress']),
-          createdAt: DateTime.parse(planJson['createdAt']),
-          completedAt: planJson['completedAt'] != null ? DateTime.parse(planJson['completedAt']) : null,
-          isActive: planJson['isActive'] ?? true,
-        );
-      }).toList() ?? <ReadingPlan>[];
+      final legacyPlans =
+          (legacyData['plans'] as List?)?.map((planJson) {
+            // Convert legacy plan format to simplified format
+            return ReadingPlan(
+              id: planJson['id'],
+              name: planJson['name'] ?? 'Reading Plan',
+              collection: BookCollection.values.firstWhere(
+                (e) => e.name == planJson['collection'],
+              ),
+              progress: ReadingProgress.fromJson(planJson['progress']),
+              createdAt: DateTime.parse(planJson['createdAt']),
+              completedAt: planJson['completedAt'] != null
+                  ? DateTime.parse(planJson['completedAt'])
+                  : null,
+              isActive: planJson['isActive'] ?? true,
+            );
+          }).toList() ??
+          <ReadingPlan>[];
 
       // Create new simplified manager
       final now = DateTime.now();
@@ -103,10 +115,14 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       // Save in new format and remove legacy
       await _savePlans();
       await prefs.remove(_legacyStorageKey);
-      
-      print('✅ Successfully migrated legacy reading plans to simplified format');
-      _showSuccessMessage('Reading plans updated to new simplified system!', backgroundColor: null);
-      
+
+      print(
+        '✅ Successfully migrated legacy reading plans to simplified format',
+      );
+      _showSuccessMessage(
+        'Reading plans updated to new simplified system!',
+        backgroundColor: null,
+      );
     } catch (e) {
       print('❌ Error migrating legacy data: $e');
       state = ReadingPlanManager.empty();
@@ -145,7 +161,10 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     try {
       state = state.addPlan(plan);
       await _savePlans();
-      _showSuccessMessage('Reading plan "${plan.name}" created!', backgroundColor: successColor);
+      _showSuccessMessage(
+        'Reading plan "${plan.name}" created!',
+        backgroundColor: successColor,
+      );
     } catch (e) {
       _showErrorMessage('Failed to create reading plan: $e');
       rethrow;
@@ -169,7 +188,10 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       final plan = state.plans.firstWhere((p) => p.id == planId);
       state = state.removePlan(planId);
       await _savePlans();
-      _showSuccessMessage('Reading plan "${plan.name}" removed.', backgroundColor: successColor);
+      _showSuccessMessage(
+        'Reading plan "${plan.name}" removed.',
+        backgroundColor: successColor,
+      );
     } catch (e) {
       _showErrorMessage('Failed to remove reading plan.');
       rethrow;
@@ -182,7 +204,10 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       final plan = state.plans.firstWhere((p) => p.id == planId);
       final pausedPlan = plan.copyWith(isActive: false);
       await updatePlan(pausedPlan);
-      _showSuccessMessage('Reading plan "${plan.name}" paused.', backgroundColor: successColor);
+      _showSuccessMessage(
+        'Reading plan "${plan.name}" paused.',
+        backgroundColor: successColor,
+      );
     } catch (e) {
       _showErrorMessage('Failed to pause reading plan.');
       rethrow;
@@ -195,7 +220,10 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       final plan = state.plans.firstWhere((p) => p.id == planId);
       final resumedPlan = plan.copyWith(isActive: true);
       await updatePlan(resumedPlan);
-      _showSuccessMessage('Reading plan "${plan.name}" resumed.', backgroundColor: successColor);
+      _showSuccessMessage(
+        'Reading plan "${plan.name}" resumed.',
+        backgroundColor: successColor,
+      );
     } catch (e) {
       _showErrorMessage('Failed to resume reading plan.');
       rethrow;
@@ -203,40 +231,46 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Mark that the user has read a chapter from a specific plan
-  Future<void> markChapterRead(String planId, String book, int chapter, {Color? successColor}) async {
+  Future<void> markChapterRead(
+    String planId,
+    String book,
+    int chapter, {
+    Color? successColor,
+  }) async {
     try {
       await _checkAndResetDailyStatus(); // Ensure daily status is current
-      
+
       final plan = state.plans.firstWhere(
         (p) => p.id == planId,
         orElse: () => throw ReadingPlanException('Reading plan not found'),
       );
-      
+
       // Validate chapter
       if (book.isEmpty || chapter <= 0) {
         throw ReadingPlanException('Invalid chapter: $book $chapter');
       }
-      
+
       // Check if book is in the plan's collection
       if (!plan.collection.bookNames.contains(book)) {
         throw ReadingPlanException(
-          'Book "$book" is not part of your ${plan.collection.displayName} reading plan.'
+          'Book "$book" is not part of your ${plan.collection.displayName} reading plan.',
         );
       }
-      
+
       // If this is the next chapter in the plan, advance the plan
-      if (plan.progress.currentBook == book && plan.progress.currentChapter == chapter) {
+      if (plan.progress.currentBook == book &&
+          plan.progress.currentChapter == chapter) {
         final updatedProgress = _advanceProgress(plan.progress);
         final updatedPlan = plan.copyWith(progress: updatedProgress);
-        
+
         // ✨ NEW: Completion detection logic
         final wasCompleted = plan.isCompleted;
         final isNowCompleted = updatedPlan.isCompleted;
-        
+
         // Mark as read today and update plan
         state = state.updatePlan(updatedPlan).markReadToday();
         await _savePlans();
-        
+
         // ✨ NEW: Show completion dialog if plan just completed
         if (!wasCompleted && isNowCompleted) {
           // Small delay to ensure UI updates before dialog
@@ -244,25 +278,30 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
             _showCompletionDialog(updatedPlan);
           });
         }
-        
-        _showSuccessMessage('Completed $book $chapter', backgroundColor: successColor);
+
+        _showSuccessMessage(
+          'Completed $book $chapter',
+          backgroundColor: successColor,
+        );
       } else {
         // Just mark as read today without advancing the plan
         state = state.markReadToday();
         await _savePlans();
-        
-        _showSuccessMessage('Marked as read for today', backgroundColor: successColor);
+
+        _showSuccessMessage(
+          'Marked as read for today',
+          backgroundColor: successColor,
+        );
       }
-      
     } catch (e) {
       debugPrint('❌ Error marking chapter as read: $e');
-      
+
       if (e is ReadingPlanException) {
         _showErrorMessage(e.message);
       } else {
         _showErrorMessage('Unable to mark chapter as read. Please try again.');
       }
-      
+
       rethrow;
     }
   }
@@ -271,22 +310,22 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   Future<void> advancePlan(String planId, {Color? successColor}) async {
     try {
       await _checkAndResetDailyStatus();
-      
+
       final plan = state.plans.firstWhere(
         (p) => p.id == planId,
         orElse: () => throw ReadingPlanException('Reading plan not found'),
       );
-      
+
       final updatedProgress = _advanceProgress(plan.progress);
       final updatedPlan = plan.copyWith(progress: updatedProgress);
-      
+
       // ✨ NEW: Completion detection logic
       final wasCompleted = plan.isCompleted;
       final isNowCompleted = updatedPlan.isCompleted;
-      
+
       state = state.updatePlan(updatedPlan).markReadToday();
       await _savePlans();
-      
+
       // ✨ NEW: Show completion dialog if plan just completed
       if (!wasCompleted && isNowCompleted) {
         // Small delay to ensure UI updates before dialog
@@ -294,9 +333,11 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
           _showCompletionDialog(updatedPlan);
         });
       }
-      
-      _showSuccessMessage('Advanced to ${updatedProgress.nextChapterText}', backgroundColor: successColor);
-      
+
+      _showSuccessMessage(
+        'Advanced to ${updatedProgress.nextChapterText}',
+        backgroundColor: successColor,
+      );
     } catch (e) {
       debugPrint('❌ Error advancing plan: $e');
       _showErrorMessage('Unable to advance reading plan.');
@@ -309,12 +350,12 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     try {
       final plan = state.plans.firstWhere((p) => p.id == planId);
       final newProgress = ReadingProgress.start(plan.collection);
-      final resetPlan = plan.copyWith(
-        progress: newProgress,
-        completedAt: null,
-      );
+      final resetPlan = plan.copyWith(progress: newProgress, completedAt: null);
       await updatePlan(resetPlan);
-      _showSuccessMessage('Reading plan "${plan.name}" progress reset.', backgroundColor: successColor);
+      _showSuccessMessage(
+        'Reading plan "${plan.name}" progress reset.',
+        backgroundColor: successColor,
+      );
     } catch (e) {
       _showErrorMessage('Failed to reset reading plan progress.');
       rethrow;
@@ -326,7 +367,10 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     try {
       state = ReadingPlanManager.empty();
       await _savePlans();
-      _showSuccessMessage('All reading plans cleared.', backgroundColor: successColor);
+      _showSuccessMessage(
+        'All reading plans cleared.',
+        backgroundColor: successColor,
+      );
     } catch (e) {
       _showErrorMessage('Failed to clear reading plans.');
       rethrow;
@@ -338,7 +382,10 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     try {
       state = state.copyWith(hasReadAnythingToday: false);
       await _savePlans();
-      _showSuccessMessage('Daily reading status has been reset.', backgroundColor: successColor);
+      _showSuccessMessage(
+        'Daily reading status has been reset.',
+        backgroundColor: successColor,
+      );
     } catch (e) {
       _showErrorMessage('Failed to reset daily status.');
       rethrow;
@@ -351,8 +398,11 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     if (context == null) return;
 
     // Calculate stats
-    final daysElapsed = completedPlan.completedAt != null 
-        ? completedPlan.completedAt!.difference(completedPlan.createdAt).inDays + 1
+    final daysElapsed = completedPlan.completedAt != null
+        ? completedPlan.completedAt!
+                  .difference(completedPlan.createdAt)
+                  .inDays +
+              1
         : 0;
     final totalCompletedPlans = state.completedPlans.length;
 
@@ -363,13 +413,11 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
         // Get theme colors for the dialog
         final theme = Theme.of(dialogContext);
         final primaryColor = theme.colorScheme.primary;
-        
+
         return AlertDialog(
           title: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('🎉 Plan Completed! 🎉'),
-            ],
+            children: [Text('🎉 Plan Completed! 🎉')],
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -385,17 +433,26 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
-              
+
               // Stats
-              _buildStatRow('Collection:', completedPlan.collection.displayName),
+              _buildStatRow(
+                'Collection:',
+                completedPlan.collection.displayName,
+              ),
               const SizedBox(height: 8),
               _buildStatRow('Started:', _formatDate(completedPlan.createdAt)),
               const SizedBox(height: 8),
-              _buildStatRow('Completed:', _formatDate(completedPlan.completedAt)),
+              _buildStatRow(
+                'Completed:',
+                _formatDate(completedPlan.completedAt),
+              ),
               const SizedBox(height: 8),
-              _buildStatRow('Time taken:', '$daysElapsed day${daysElapsed != 1 ? 's' : ''}'),
+              _buildStatRow(
+                'Time taken:',
+                '$daysElapsed day${daysElapsed != 1 ? 's' : ''}',
+              ),
               const SizedBox(height: 16),
-              
+
               // Achievement
               Container(
                 width: double.infinity,
@@ -403,10 +460,12 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
                 decoration: BoxDecoration(
                   color: primaryColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: primaryColor.withValues(alpha: 0.3)),
+                  border: Border.all(
+                    color: primaryColor.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: Text(
-                  totalCompletedPlans == 1 
+                  totalCompletedPlans == 1
                       ? 'Your first completed reading plan! 🌟'
                       : 'This is your ${_getOrdinalNumber(totalCompletedPlans)} completed plan! 🌟',
                   style: TextStyle(
@@ -454,9 +513,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
             style: const TextStyle(fontWeight: FontWeight.w500),
           ),
         ),
-        Expanded(
-          child: Text(value),
-        ),
+        Expanded(child: Text(value)),
       ],
     );
   }
@@ -465,8 +522,18 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   String _formatDate(DateTime? date) {
     if (date == null) return 'Unknown';
     final months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
@@ -491,7 +558,11 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   /// Map of Bible book names to their chapter counts
   static const Map<String, int> _chapterCounts = {
     // Old Testament
-    'Genesis': 50, 'Exodus': 40, 'Leviticus': 27, 'Numbers': 36, 'Deuteronomy': 34,
+    'Genesis': 50,
+    'Exodus': 40,
+    'Leviticus': 27,
+    'Numbers': 36,
+    'Deuteronomy': 34,
     'Joshua': 24, 'Judges': 21, 'Ruth': 4, '1 Samuel': 31, '2 Samuel': 24,
     '1 Kings': 22, '2 Kings': 25, '1 Chronicles': 29, '2 Chronicles': 36,
     'Ezra': 10, 'Nehemiah': 13, 'Esther': 10, 'Job': 42, 'Psalms': 150,
@@ -516,7 +587,8 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     var currentBook = current.currentBook;
 
     // Get the chapter count for the current book
-    final bookChapterCount = _chapterCounts[currentBook] ?? 30; // Fallback to 30
+    final bookChapterCount =
+        _chapterCounts[currentBook] ?? 30; // Fallback to 30
 
     // Check if we can stay in the current book
     if (currentChapter < bookChapterCount) {

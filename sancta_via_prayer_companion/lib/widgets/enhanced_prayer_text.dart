@@ -3,11 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/text_scaling_provider.dart';
 
-enum PrayerReadingMode {
-  normal,
-  contemplative,
-  immersive,
-}
+enum PrayerReadingMode { normal, contemplative, immersive }
 
 class EnhancedPrayerText extends ConsumerStatefulWidget {
   final String text;
@@ -17,7 +13,8 @@ class EnhancedPrayerText extends ConsumerStatefulWidget {
   final bool enableVerseHighlighting;
 
   const EnhancedPrayerText({
-    required this.text, super.key,
+    required this.text,
+    super.key,
     this.language = 'English',
     this.themeColor,
     this.readingMode = PrayerReadingMode.normal,
@@ -56,19 +53,19 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
 
   TextStyle _getPrayerTextStyle(BuildContext context) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     // Determine appropriate text color based on theme and context
     Color textColor;
     final brightness = Theme.of(context).brightness;
     final onSurface = Theme.of(context).colorScheme.onSurface;
-    
+
     // Ensure good contrast regardless of liturgical background
     if (brightness == Brightness.dark) {
       textColor = onSurface; // Use theme's onSurface for dark theme
     } else {
       textColor = onSurface; // Use theme's onSurface for light theme
     }
-    
+
     // Base style with enhanced typography and proper color
     final TextStyle baseStyle = textScaling.scaledPrayerText(
       context,
@@ -131,20 +128,24 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
           child: Text(
             'Tap each verse to follow along',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: widget.themeColor?.withValues(alpha: 0.7) ?? 
-                     Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+              color:
+                  widget.themeColor?.withValues(alpha: 0.7) ??
+                  Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.6),
               fontStyle: FontStyle.italic,
             ),
             textAlign: TextAlign.center,
           ),
         ),
-        
+
         // Verses with highlighting
         ...verses.asMap().entries.map((entry) {
           final index = entry.key;
           final verse = entry.value;
           final isHighlighted = highlightedVerseIndex == index;
-          final isPreviouslyRead = highlightedVerseIndex != null && index < highlightedVerseIndex!;
+          final isPreviouslyRead =
+              highlightedVerseIndex != null && index < highlightedVerseIndex!;
 
           return GestureDetector(
             onTap: () {
@@ -155,7 +156,9 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
               // Auto-advance after a delay in contemplative mode
               if (widget.readingMode == PrayerReadingMode.contemplative) {
                 Future.delayed(const Duration(seconds: 8), () {
-                  if (mounted && highlightedVerseIndex == index && index < verses.length - 1) {
+                  if (mounted &&
+                      highlightedVerseIndex == index &&
+                      index < verses.length - 1) {
                     setState(() {
                       highlightedVerseIndex = index + 1;
                     });
@@ -168,12 +171,19 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
               margin: const EdgeInsets.symmetric(vertical: 8),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: _getVerseBackgroundColor(context, isHighlighted, isPreviouslyRead),
+                color: _getVerseBackgroundColor(
+                  context,
+                  isHighlighted,
+                  isPreviouslyRead,
+                ),
                 borderRadius: BorderRadius.circular(8),
                 border: isHighlighted
                     ? Border.all(
-                        color: widget.themeColor?.withValues(alpha: 0.5) ??
-                               Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
+                        color:
+                            widget.themeColor?.withValues(alpha: 0.5) ??
+                            Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.5),
                         width: 2,
                       )
                     : null,
@@ -181,13 +191,14 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
               child: AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 300),
                 style: _getPrayerTextStyle(context).copyWith(
-                  color: _getVerseTextColor(context, isHighlighted, isPreviouslyRead),
+                  color: _getVerseTextColor(
+                    context,
+                    isHighlighted,
+                    isPreviouslyRead,
+                  ),
                   fontWeight: isHighlighted ? FontWeight.w500 : FontWeight.w400,
                 ),
-                child: SelectableText(
-                  verse,
-                  textAlign: _getTextAlignment(),
-                ),
+                child: SelectableText(verse, textAlign: _getTextAlignment()),
               ),
             ),
           );
@@ -196,19 +207,29 @@ class _EnhancedPrayerTextState extends ConsumerState<EnhancedPrayerText> {
     );
   }
 
-  Color _getVerseBackgroundColor(BuildContext context, bool isHighlighted, bool isPreviouslyRead) {
+  Color _getVerseBackgroundColor(
+    BuildContext context,
+    bool isHighlighted,
+    bool isPreviouslyRead,
+  ) {
     if (isHighlighted) {
-      return widget.themeColor?.withValues(alpha: 0.15) ?? 
-             Theme.of(context).colorScheme.primary.withValues(alpha: 0.1);
+      return widget.themeColor?.withValues(alpha: 0.15) ??
+          Theme.of(context).colorScheme.primary.withValues(alpha: 0.1);
     } else if (isPreviouslyRead) {
-      return Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3);
+      return Theme.of(
+        context,
+      ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3);
     }
     return Colors.transparent;
   }
 
-  Color _getVerseTextColor(BuildContext context, bool isHighlighted, bool isPreviouslyRead) {
+  Color _getVerseTextColor(
+    BuildContext context,
+    bool isHighlighted,
+    bool isPreviouslyRead,
+  ) {
     final onSurface = Theme.of(context).colorScheme.onSurface;
-    
+
     if (isHighlighted) {
       return onSurface;
     } else if (isPreviouslyRead) {

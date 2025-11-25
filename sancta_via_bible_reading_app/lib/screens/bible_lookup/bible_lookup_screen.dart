@@ -17,7 +17,8 @@ class BibleLookupScreen extends ConsumerStatefulWidget {
   ConsumerState<BibleLookupScreen> createState() => _BibleLookupScreenState();
 }
 
-class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with TickerProviderStateMixin {
+class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen>
+    with TickerProviderStateMixin {
   late TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
@@ -25,17 +26,85 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
   // Bible book organization
   final Map<String, List<String>> bibleBooks = {
     'Law': ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy'],
-    'History': ['Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Tobit', 'Judith', 'Esther', '1 Maccabees', '2 Maccabees'],
-    'Wisdom': ['Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Wisdom', 'Sirach'],
-    'Major Prophets': ['Isaiah', 'Jeremiah', 'Lamentations', 'Baruch', 'Ezekiel', 'Daniel'],
-    'Minor Prophets': ['Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi'],
+    'History': [
+      'Joshua',
+      'Judges',
+      'Ruth',
+      '1 Samuel',
+      '2 Samuel',
+      '1 Kings',
+      '2 Kings',
+      '1 Chronicles',
+      '2 Chronicles',
+      'Ezra',
+      'Nehemiah',
+      'Tobit',
+      'Judith',
+      'Esther',
+      '1 Maccabees',
+      '2 Maccabees',
+    ],
+    'Wisdom': [
+      'Job',
+      'Psalms',
+      'Proverbs',
+      'Ecclesiastes',
+      'Song of Solomon',
+      'Wisdom',
+      'Sirach',
+    ],
+    'Major Prophets': [
+      'Isaiah',
+      'Jeremiah',
+      'Lamentations',
+      'Baruch',
+      'Ezekiel',
+      'Daniel',
+    ],
+    'Minor Prophets': [
+      'Hosea',
+      'Joel',
+      'Amos',
+      'Obadiah',
+      'Jonah',
+      'Micah',
+      'Nahum',
+      'Habakkuk',
+      'Zephaniah',
+      'Haggai',
+      'Zechariah',
+      'Malachi',
+    ],
   };
 
   final Map<String, List<String>> newTestamentBooks = {
     'Gospels': ['Matthew', 'Mark', 'Luke', 'John'],
     'History': ['Acts'],
-    'Paul\'s Letters': ['Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon'],
-    'General Letters': ['Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude'],
+    'Paul\'s Letters': [
+      'Romans',
+      '1 Corinthians',
+      '2 Corinthians',
+      'Galatians',
+      'Ephesians',
+      'Philippians',
+      'Colossians',
+      '1 Thessalonians',
+      '2 Thessalonians',
+      '1 Timothy',
+      '2 Timothy',
+      'Titus',
+      'Philemon',
+    ],
+    'General Letters': [
+      'Hebrews',
+      'James',
+      '1 Peter',
+      '2 Peter',
+      '1 John',
+      '2 John',
+      '3 John',
+      'Jude',
+    ],
     'Prophecy': ['Revelation of John'],
   };
 
@@ -53,9 +122,16 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
   }
 
   List<String> get filteredBooks {
-    final allBooks = [...bibleBooks.values.expand((books) => books), ...newTestamentBooks.values.expand((books) => books)];
+    final allBooks = [
+      ...bibleBooks.values.expand((books) => books),
+      ...newTestamentBooks.values.expand((books) => books),
+    ];
     if (_searchQuery.isEmpty) return allBooks;
-    return allBooks.where((book) => book.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
+    return allBooks
+        .where(
+          (book) => book.toLowerCase().contains(_searchQuery.toLowerCase()),
+        )
+        .toList();
   }
 
   @override
@@ -64,9 +140,9 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
     final colorIntensity = ref.watch(colorIntensityProvider);
     final textScaling = ref.watch(textScaleProvider);
     final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
-    
+
     // Parse liturgical color and convert to Flutter color
-    final liturgicalColor = currentColor != null 
+    final liturgicalColor = currentColor != null
         ? LiturgicalColor.fromString(currentColor)
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
@@ -84,17 +160,29 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
             children: [
               // Translation and Search Row
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: [
                     // Translation Chip
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
-                        color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
+                        color:
+                            (themeColor ??
+                                    Theme.of(context).colorScheme.primary)
+                                .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
+                          color:
+                              (themeColor ??
+                                      Theme.of(context).colorScheme.primary)
+                                  .withValues(alpha: 0.3),
                         ),
                       ),
                       child: DropdownButton<BibleTranslation>(
@@ -103,7 +191,9 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
                         isDense: true,
                         onChanged: (BibleTranslation? newValue) {
                           if (newValue != null) {
-                            ref.read(appSettingsNotifierProvider).setBibleTranslation(newValue);
+                            ref
+                                .read(appSettingsNotifierProvider)
+                                .setBibleTranslation(newValue);
                           }
                         },
                         items: BibleTranslation.values.map((translation) {
@@ -118,7 +208,7 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
                       ),
                     ),
                     const SizedBox(width: 12),
-                    
+
                     // Search Bar
                     Expanded(
                       child: TextField(
@@ -127,7 +217,10 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
                           hintText: 'Search books...',
                           prefixIcon: const Icon(Icons.search, size: 20),
                           isDense: true,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide.none,
@@ -145,13 +238,16 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
                   ],
                 ),
               ),
-              
+
               // Tabs
               TabBar(
                 controller: _tabController,
                 labelColor: themeColor ?? Theme.of(context).colorScheme.primary,
-                unselectedLabelColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                indicatorColor: themeColor ?? Theme.of(context).colorScheme.primary,
+                unselectedLabelColor: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
+                indicatorColor:
+                    themeColor ?? Theme.of(context).colorScheme.primary,
                 tabs: const [
                   Tab(text: 'Old Testament'),
                   Tab(text: 'New Testament'),
@@ -163,14 +259,16 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
       ),
       body: SafeArea(
         top: false, // Let AppBar handle top
-        child: _searchQuery.isNotEmpty ? _buildSearchResults(themeColor) : _buildTabView(themeColor),
+        child: _searchQuery.isNotEmpty
+            ? _buildSearchResults(themeColor)
+            : _buildTabView(themeColor),
       ),
     );
   }
 
   Widget _buildSearchResults(Color? themeColor) {
     final filtered = filteredBooks;
-    
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: filtered.length,
@@ -180,7 +278,9 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
           margin: const EdgeInsets.only(bottom: 8),
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
+              backgroundColor:
+                  (themeColor ?? Theme.of(context).colorScheme.primary)
+                      .withValues(alpha: 0.1),
               child: Text(
                 book[0],
                 style: TextStyle(
@@ -211,16 +311,19 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
     );
   }
 
-  Widget _buildTestamentView(Map<String, List<String>> books, Color? themeColor) {
+  Widget _buildTestamentView(
+    Map<String, List<String>> books,
+    Color? themeColor,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: books.keys.length,
       itemBuilder: (context, index) {
         final category = books.keys.elementAt(index);
         final categoryBooks = books[category]!;
-        
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -228,10 +331,14 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
               padding: const EdgeInsets.symmetric(vertical: 12),
               child: Text(
                 category,
-                style: textScaling.scaledTitleMedium(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: themeColor?.withValues(alpha: 0.8) ?? Theme.of(context).colorScheme.primary,
-                ),
+                style: textScaling
+                    .scaledTitleMedium(context)
+                    .copyWith(
+                      fontWeight: FontWeight.bold,
+                      color:
+                          themeColor?.withValues(alpha: 0.8) ??
+                          Theme.of(context).colorScheme.primary,
+                    ),
               ),
             ),
             GridView.builder(
@@ -239,14 +346,15 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 3.2, // Increased aspect ratio to make cards shorter
+                childAspectRatio:
+                    3.2, // Increased aspect ratio to make cards shorter
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
               ),
               itemCount: categoryBooks.length,
               itemBuilder: (context, bookIndex) {
                 final book = categoryBooks[bookIndex];
-                
+
                 return Card(
                   elevation: 2,
                   child: InkWell(
@@ -258,36 +366,52 @@ class _BibleLookupScreenState extends ConsumerState<BibleLookupScreen> with Tick
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
+                          color:
+                              (themeColor ??
+                                      Theme.of(context).colorScheme.primary)
+                                  .withValues(alpha: 0.3),
                           width: 1,
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6), // Reduced padding
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 6,
+                        ), // Reduced padding
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min, // Added to prevent overflow
+                          mainAxisSize:
+                              MainAxisSize.min, // Added to prevent overflow
                           children: [
-                            Flexible( // Made flexible to prevent overflow
+                            Flexible(
+                              // Made flexible to prevent overflow
                               child: Text(
                                 book,
-                                style: textScaling.scaledBodyMedium(context).copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 13, // Slightly smaller text
-                                ),
+                                style: textScaling
+                                    .scaledBodyMedium(context)
+                                    .copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 13, // Slightly smaller text
+                                    ),
                                 textAlign: TextAlign.center,
                                 maxLines: 2, // Allow 2 lines for longer names
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             const SizedBox(height: 2), // Reduced spacing
-                            Flexible( // Made flexible to prevent overflow
+                            Flexible(
+                              // Made flexible to prevent overflow
                               child: BookChapterCount(
                                 bookName: book,
-                                textStyle: textScaling.scaledBodySmall(context).copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                                  fontSize: 11, // Smaller info text
-                                ),
+                                textStyle: textScaling
+                                    .scaledBodySmall(context)
+                                    .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.6),
+                                      fontSize: 11, // Smaller info text
+                                    ),
                               ),
                             ),
                           ],
@@ -315,19 +439,17 @@ class BookChapterCount extends ConsumerWidget {
   final String bookName;
   final TextStyle? textStyle;
 
-  const BookChapterCount({
-    required this.bookName,
-    super.key,
-    this.textStyle,
-  });
+  const BookChapterCount({required this.bookName, super.key, this.textStyle});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
-    final chapterCountAsync = ref.watch(chapterCountProvider((
-      bookName: bookName,
-      translation: selectedTranslation,
-    )));
+    final chapterCountAsync = ref.watch(
+      chapterCountProvider((
+        bookName: bookName,
+        translation: selectedTranslation,
+      )),
+    );
 
     return chapterCountAsync.when(
       data: (count) => Text(
@@ -343,8 +465,8 @@ class BookChapterCount extends ConsumerWidget {
         child: CircularProgressIndicator(
           strokeWidth: 2,
           valueColor: AlwaysStoppedAnimation<Color>(
-            textStyle?.color?.withValues(alpha: 0.6) ?? 
-            Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+            textStyle?.color?.withValues(alpha: 0.6) ??
+                Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
           ),
         ),
       ),

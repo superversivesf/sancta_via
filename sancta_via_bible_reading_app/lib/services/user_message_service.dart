@@ -8,7 +8,7 @@ class UserMessageService {
 
   // FIXED: Use WeakReference instead of static reference
   static WeakReference<GlobalKey<NavigatorState>>? _navigatorKeyRef;
-  
+
   // Message queue to prevent overlapping snackbars
   final List<_QueuedMessage> _messageQueue = [];
   bool _isShowingMessage = false;
@@ -29,39 +29,47 @@ class UserMessageService {
 
   /// FIXED: Queue-based message showing
   void showSuccess(String message, {Color? backgroundColor}) {
-    _queueMessage(_QueuedMessage(
-      message: message,
-      backgroundColor: backgroundColor ?? Colors.green,
-      icon: Icons.check_circle,
-    ));
+    _queueMessage(
+      _QueuedMessage(
+        message: message,
+        backgroundColor: backgroundColor ?? Colors.green,
+        icon: Icons.check_circle,
+      ),
+    );
   }
 
   /// Show info message
   void showInfo(String message) {
-    _queueMessage(_QueuedMessage(
-      message: message,
-      backgroundColor: Colors.blue,
-      icon: Icons.info,
-    ));
+    _queueMessage(
+      _QueuedMessage(
+        message: message,
+        backgroundColor: Colors.blue,
+        icon: Icons.info,
+      ),
+    );
   }
 
   /// Show warning message
   void showWarning(String message) {
-    _queueMessage(_QueuedMessage(
-      message: message,
-      backgroundColor: Colors.orange,
-      icon: Icons.warning,
-    ));
+    _queueMessage(
+      _QueuedMessage(
+        message: message,
+        backgroundColor: Colors.orange,
+        icon: Icons.warning,
+      ),
+    );
   }
 
   /// Show error message
   void showError(String message) {
-    _queueMessage(_QueuedMessage(
-      message: message,
-      backgroundColor: Colors.red,
-      icon: Icons.error,
-      duration: const Duration(seconds: 5),
-    ));
+    _queueMessage(
+      _QueuedMessage(
+        message: message,
+        backgroundColor: Colors.red,
+        icon: Icons.error,
+        duration: const Duration(seconds: 5),
+      ),
+    );
   }
 
   /// Show detailed error dialog
@@ -79,9 +87,7 @@ class UserMessageService {
             Expanded(child: Text(title)),
           ],
         ),
-        content: SingleChildScrollView(
-          child: Text(message),
-        ),
+        content: SingleChildScrollView(child: Text(message)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -127,14 +133,14 @@ class UserMessageService {
   /// NEW: Process message queue safely
   Future<void> _processMessageQueue() async {
     if (_isShowingMessage || _messageQueue.isEmpty) return;
-    
+
     _isShowingMessage = true;
-    
+
     try {
       while (_messageQueue.isNotEmpty) {
         final message = _messageQueue.removeAt(0);
         await _showSnackBarSafe(message);
-        
+
         // Wait for current message to finish before showing next
         await Future.delayed(message.duration);
       }
@@ -159,7 +165,7 @@ class UserMessageService {
 
       final scaffold = ScaffoldMessenger.of(context);
       scaffold.clearSnackBars();
-      
+
       scaffold.showSnackBar(
         SnackBar(
           content: Row(
@@ -178,9 +184,7 @@ class UserMessageService {
           duration: message.duration,
           behavior: SnackBarBehavior.floating,
           margin: const EdgeInsets.all(16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       );
     } catch (e) {
@@ -214,7 +218,7 @@ class _QueuedMessage {
 class ReadingPlanException implements Exception {
   final String message;
   ReadingPlanException(this.message);
-  
+
   @override
   String toString() => message;
 }

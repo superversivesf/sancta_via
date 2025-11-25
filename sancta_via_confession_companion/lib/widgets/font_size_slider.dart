@@ -11,10 +11,10 @@ class FontSizeSlider extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(confessionAppSettingsProvider);
-    
+
     // Convert fontSize back to textScale for display (maintains same UI behavior)
     final textScale = settings.textScale;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -33,7 +33,9 @@ class FontSizeSlider extends ConsumerWidget {
           divisions: 7,
           onChanged: (value) {
             // Use the new provider method that handles conversion
-            ref.read(confessionAppSettingsProvider.notifier).updateTextScale(value);
+            ref
+                .read(confessionAppSettingsProvider.notifier)
+                .updateTextScale(value);
           },
         ),
         const SizedBox(height: 8),
@@ -47,7 +49,9 @@ class FontSizeSlider extends ConsumerWidget {
             Text(
               '${settings.fontSize.round()}pt',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
+                color: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
               ),
             ),
           ],

@@ -31,25 +31,45 @@ class NumberedBooksDebugScreen extends ConsumerWidget {
                 style: TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 24),
-              
+
               // Test numbered books
-              _buildTestSection('Old Testament Books', [
-                '1 Samuel', '2 Samuel', '1 Kings', '2 Kings',
-                '1 Chronicles', '2 Chronicles',
-              ], translation, ref),
-              
+              _buildTestSection(
+                'Old Testament Books',
+                [
+                  '1 Samuel',
+                  '2 Samuel',
+                  '1 Kings',
+                  '2 Kings',
+                  '1 Chronicles',
+                  '2 Chronicles',
+                ],
+                translation,
+                ref,
+              ),
+
               const SizedBox(height: 24),
-              
-              _buildTestSection('New Testament Books', [
-                '1 Corinthians', '2 Corinthians',
-                '1 Thessalonians', '2 Thessalonians',
-                '1 Timothy', '2 Timothy',
-                '1 Peter', '2 Peter',
-                '1 John', '2 John', '3 John',
-              ], translation, ref),
-              
+
+              _buildTestSection(
+                'New Testament Books',
+                [
+                  '1 Corinthians',
+                  '2 Corinthians',
+                  '1 Thessalonians',
+                  '2 Thessalonians',
+                  '1 Timothy',
+                  '2 Timothy',
+                  '1 Peter',
+                  '2 Peter',
+                  '1 John',
+                  '2 John',
+                  '3 John',
+                ],
+                translation,
+                ref,
+              ),
+
               const SizedBox(height: 24),
-              
+
               _buildBookNameNormalizationInfo(),
             ],
           ),
@@ -58,13 +78,22 @@ class NumberedBooksDebugScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildTestSection(String title, List<String> books, BibleTranslation translation, WidgetRef ref) {
+  Widget _buildTestSection(
+    String title,
+    List<String> books,
+    BibleTranslation translation,
+    WidgetRef ref,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue,
+          ),
         ),
         const SizedBox(height: 8),
         ...books.map((book) => _buildBookTest(book, translation, ref)),
@@ -72,11 +101,17 @@ class NumberedBooksDebugScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildBookTest(String bookName, BibleTranslation translation, WidgetRef ref) {
-    final chapterCountAsync = ref.watch(optimizedChapterCountProvider((
-      bookName: bookName,
-      translation: translation,
-    )));
+  Widget _buildBookTest(
+    String bookName,
+    BibleTranslation translation,
+    WidgetRef ref,
+  ) {
+    final chapterCountAsync = ref.watch(
+      optimizedChapterCountProvider((
+        bookName: bookName,
+        translation: translation,
+      )),
+    );
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
@@ -126,10 +161,7 @@ class NumberedBooksDebugScreen extends ConsumerWidget {
                   children: [
                     Icon(Icons.error, color: Colors.red, size: 20),
                     SizedBox(width: 8),
-                    Text(
-                      'Error',
-                      style: TextStyle(color: Colors.red),
-                    ),
+                    Text('Error', style: TextStyle(color: Colors.red)),
                   ],
                 ),
               ),

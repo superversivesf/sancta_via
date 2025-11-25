@@ -7,19 +7,15 @@ class AppException implements Exception {
   final String message;
   final String? userFriendlyMessage;
   final dynamic originalError;
-  
-  AppException(
-    this.message, {
-    this.userFriendlyMessage,
-    this.originalError,
-  });
-  
+
+  AppException(this.message, {this.userFriendlyMessage, this.originalError});
+
   @override
   String toString() => message;
 }
 
 class NetworkException extends AppException {
-  NetworkException([String? message]) 
+  NetworkException([String? message])
     : super(
         message ?? 'Network error occurred',
         userFriendlyMessage: AppConstants.networkErrorMessage,
@@ -27,7 +23,7 @@ class NetworkException extends AppException {
 }
 
 class DataException extends AppException {
-  DataException([String? message]) 
+  DataException([String? message])
     : super(
         message ?? 'Data error occurred',
         userFriendlyMessage: AppConstants.genericErrorMessage,
@@ -35,7 +31,7 @@ class DataException extends AppException {
 }
 
 class AuthenticationException extends AppException {
-  AuthenticationException([String? message]) 
+  AuthenticationException([String? message])
     : super(
         message ?? 'Authentication failed',
         userFriendlyMessage: AppConstants.pinIncorrectMessage,
@@ -43,7 +39,7 @@ class AuthenticationException extends AppException {
 }
 
 class SessionException extends AppException {
-  SessionException([String? message]) 
+  SessionException([String? message])
     : super(
         message ?? 'Session error occurred',
         userFriendlyMessage: AppConstants.sessionExpiredMessage,
@@ -69,7 +65,7 @@ class ErrorHandler {
         stackTrace,
         tag,
       );
-      
+
       // Show user-friendly message if context provided
       if (context != null && showUserMessage) {
         _showErrorSnackBar(
@@ -84,14 +80,14 @@ class ErrorHandler {
         stackTrace,
         tag,
       );
-      
+
       // Show generic message for unexpected errors
       if (context != null && showUserMessage) {
         _showErrorSnackBar(context, AppConstants.genericErrorMessage);
       }
     }
   }
-  
+
   /// Show error message to user via SnackBar
   static void _showErrorSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -115,11 +111,11 @@ class ErrorHandler {
       ),
     );
   }
-  
+
   /// Show error dialog for critical errors
   static void showErrorDialog(
-    BuildContext context, 
-    String title, 
+    BuildContext context,
+    String title,
     String message, {
     VoidCallback? onRetry,
   }) {
@@ -128,7 +124,10 @@ class ErrorHandler {
       builder: (context) => AlertDialog(
         title: Row(
           children: [
-            Icon(Icons.error_outline, color: Theme.of(context).colorScheme.error),
+            Icon(
+              Icons.error_outline,
+              color: Theme.of(context).colorScheme.error,
+            ),
             const SizedBox(width: 8),
             Text(title),
           ],
@@ -151,7 +150,7 @@ class ErrorHandler {
       ),
     );
   }
-  
+
   /// Wrap async operations with error handling
   static Future<T?> safeAsyncOperation<T>(
     Future<T> Function() operation, {
@@ -174,7 +173,7 @@ class ErrorHandler {
       return null;
     }
   }
-  
+
   /// Create a safe future builder that handles errors
   static Widget safeFutureBuilder<T>({
     required Future<T> future,
@@ -186,29 +185,29 @@ class ErrorHandler {
       future: future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return loadingWidget ?? const Center(
-            child: CircularProgressIndicator(),
-          );
+          return loadingWidget ??
+              const Center(child: CircularProgressIndicator());
         }
-        
+
         if (snapshot.hasError) {
           final errorMessage = snapshot.error is AppException
-              ? (snapshot.error as AppException).userFriendlyMessage ?? AppConstants.genericErrorMessage
+              ? (snapshot.error as AppException).userFriendlyMessage ??
+                    AppConstants.genericErrorMessage
               : AppConstants.genericErrorMessage;
-              
-          return errorBuilder?.call(context, errorMessage) ?? 
-                 _buildDefaultErrorWidget(context, errorMessage);
+
+          return errorBuilder?.call(context, errorMessage) ??
+              _buildDefaultErrorWidget(context, errorMessage);
         }
-        
+
         if (snapshot.hasData) {
           return builder(context, snapshot.data as T);
         }
-        
+
         return _buildDefaultErrorWidget(context, 'No data available');
       },
     );
   }
-  
+
   static Widget _buildDefaultErrorWidget(BuildContext context, String message) {
     return Center(
       child: Column(

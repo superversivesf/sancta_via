@@ -28,8 +28,7 @@ class NotificationsSettings extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Section header
-        if (showHeader)
-          const SettingsSectionHeader(title: 'Notifications'),
+        if (showHeader) const SettingsSectionHeader(title: 'Notifications'),
 
         // Main notifications toggle
         SwitchListTile(
@@ -38,7 +37,9 @@ class NotificationsSettings extends ConsumerWidget {
           subtitle: Text(subtitle ?? 'Enable app notifications'),
           value: notificationsEnabled,
           onChanged: (bool value) {
-            ref.read(baseSettingsProvider.notifier).setNotificationsEnabled(value);
+            ref
+                .read(baseSettingsProvider.notifier)
+                .setNotificationsEnabled(value);
           },
         ),
 
@@ -54,7 +55,8 @@ class NotificationsSettings extends ConsumerWidget {
 
         // Custom notification options
         if (notificationsEnabled && customOptions != null)
-          ...customOptions!.map((option) => NotificationOptionTile(option: option)),
+          ...customOptions!
+              .map((option) => NotificationOptionTile(option: option)),
 
         // Notification info (if disabled)
         if (!notificationsEnabled)
@@ -133,7 +135,9 @@ class NotificationsToggle extends ConsumerWidget {
         Switch(
           value: notificationsEnabled,
           onChanged: (value) {
-            ref.read(baseSettingsProvider.notifier).setNotificationsEnabled(value);
+            ref
+                .read(baseSettingsProvider.notifier)
+                .setNotificationsEnabled(value);
           },
         ),
       ],

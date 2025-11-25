@@ -43,7 +43,8 @@ enum CelebrationRank {
 
   /// Check if this is a memorial
   bool get isMemorial {
-    return this == CelebrationRank.memorial || this == CelebrationRank.optionalMemorial;
+    return this == CelebrationRank.memorial ||
+        this == CelebrationRank.optionalMemorial;
   }
 
   /// Get appropriate display symbol

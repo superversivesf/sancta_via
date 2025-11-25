@@ -1,12 +1,12 @@
 /// Utility for normalizing Bible book names between different formats
-/// 
+///
 /// Handles conversion between Roman numerals (I, II, III) and Arabic numerals (1, 2, 3)
 /// in Bible book names to ensure consistent database queries.
 class BookNameNormalizer {
   /// Map from Arabic to Roman numerals
   static const Map<String, String> _arabicToRoman = {
     '1': 'I',
-    '2': 'II', 
+    '2': 'II',
     '3': 'III',
   };
 
@@ -26,67 +26,67 @@ class BookNameNormalizer {
   };
 
   /// Convert book name from Arabic numerals to Roman numerals (for database queries)
-  /// 
+  ///
   /// Examples:
   /// - "1 Samuel" → "I Samuel"
   /// - "2 Corinthians" → "II Corinthians"
   /// - "3 John" → "III John"
   static String toRomanNumerals(String bookName) {
     String normalized = bookName.trim();
-    
+
     // Handle book name variations first
     if (_bookNameVariations.containsKey(normalized)) {
       normalized = _bookNameVariations[normalized]!;
     }
-    
+
     // Convert Arabic numerals to Roman numerals at the start of book names
     for (final entry in _arabicToRoman.entries) {
       final arabicPrefix = '${entry.key} ';
       final romanPrefix = '${entry.value} ';
-      
+
       if (normalized.startsWith(arabicPrefix)) {
         return normalized.replaceFirst(arabicPrefix, romanPrefix);
       }
     }
-    
+
     return normalized;
   }
 
   /// Convert book name from Roman numerals to Arabic numerals (for user display)
-  /// 
+  ///
   /// Examples:
   /// - "I Samuel" → "1 Samuel"
   /// - "II Corinthians" → "2 Corinthians"
   /// - "III John" → "3 John"
   static String toArabicNumerals(String bookName) {
     String normalized = bookName.trim();
-    
+
     // Convert Roman numerals to Arabic numerals at the start of book names
     for (final entry in _romanToArabic.entries) {
       final romanPrefix = '${entry.key} ';
       final arabicPrefix = '${entry.value} ';
-      
+
       if (normalized.startsWith(romanPrefix)) {
         return normalized.replaceFirst(romanPrefix, arabicPrefix);
       }
     }
-    
+
     return normalized;
   }
 
   /// Get all possible variations of a book name for fuzzy matching
   static List<String> getAllVariations(String bookName) {
     final variations = <String>{};
-    
+
     // Add original name
     variations.add(bookName.trim());
-    
+
     // Add Roman numeral version
     variations.add(toRomanNumerals(bookName));
-    
-    // Add Arabic numeral version  
+
+    // Add Arabic numeral version
     variations.add(toArabicNumerals(bookName));
-    
+
     // Add common variations
     for (final entry in _bookNameVariations.entries) {
       if (entry.value == bookName || entry.key == bookName) {
@@ -94,7 +94,7 @@ class BookNameNormalizer {
         variations.add(entry.value);
       }
     }
-    
+
     // Remove duplicates and empty strings
     return variations.where((name) => name.isNotEmpty).toSet().toList();
   }

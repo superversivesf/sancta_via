@@ -16,7 +16,7 @@ class PrayerAppSettingsNotifier extends StateNotifier<PrayerAppSettings> {
 
   PrayerAppSettingsNotifier(this._ref) : super(PrayerAppSettings.defaults()) {
     _loadSettings();
-    
+
     // Listen to base settings changes and sync them
     _ref.listen(baseSettingsProvider, (previous, next) {
       if (previous != next) {
@@ -28,29 +28,33 @@ class PrayerAppSettingsNotifier extends StateNotifier<PrayerAppSettings> {
   Future<void> _loadSettings() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       // Check if we need to migrate from old format
       final needsMigration = !(prefs.getBool(_migrationKey) ?? false);
-      
+
       if (needsMigration) {
         await _migrateFromLegacySettings(prefs);
       }
-      
+
       // Load unified settings
       final settingsJson = prefs.getString(_storageKey);
-      
+
       if (settingsJson != null) {
         final settingsMap = json.decode(settingsJson) as Map<String, dynamic>;
         final settings = PrayerAppSettings.fromJson(settingsMap);
-        
+
         if (mounted) {
           state = settings;
-          await _ref.read(baseSettingsProvider.notifier).updateSettings(settings.baseSettings);
+          await _ref
+              .read(baseSettingsProvider.notifier)
+              .updateSettings(settings.baseSettings);
         }
       } else {
         final defaultSettings = PrayerAppSettings.defaults();
         state = defaultSettings;
-        await _ref.read(baseSettingsProvider.notifier).updateSettings(defaultSettings.baseSettings);
+        await _ref
+            .read(baseSettingsProvider.notifier)
+            .updateSettings(defaultSettings.baseSettings);
       }
     } catch (e) {
       state = PrayerAppSettings.defaults();
@@ -60,13 +64,13 @@ class PrayerAppSettingsNotifier extends StateNotifier<PrayerAppSettings> {
   Future<void> _migrateFromLegacySettings(SharedPreferences prefs) async {
     try {
       final oldPrefsJson = prefs.getString(_legacyStorageKey);
-      
+
       if (oldPrefsJson != null) {
         final oldPrefs = json.decode(oldPrefsJson) as Map<String, dynamic>;
         final migratedSettings = PrayerAppSettings.fromJson(oldPrefs);
         await _saveSettings(migratedSettings);
       }
-      
+
       await prefs.setBool(_migrationKey, true);
       await prefs.remove(_legacyStorageKey);
     } catch (e) {
@@ -104,7 +108,9 @@ class PrayerAppSettingsNotifier extends StateNotifier<PrayerAppSettings> {
     } else if (language == 'Spanish') {
       appLanguage = AppLanguage.spanish;
     }
-    await _ref.read(baseSettingsProvider.notifier).setDefaultLanguage(appLanguage);
+    await _ref
+        .read(baseSettingsProvider.notifier)
+        .setDefaultLanguage(appLanguage);
   }
 
   // Prayer-specific methods
@@ -134,9 +140,10 @@ class PrayerAppSettingsNotifier extends StateNotifier<PrayerAppSettings> {
 }
 
 /// Provider for Prayer app settings
-final prayerAppSettingsProvider = StateNotifierProvider<PrayerAppSettingsNotifier, PrayerAppSettings>((ref) {
-  return PrayerAppSettingsNotifier(ref);
-});
+final prayerAppSettingsProvider =
+    StateNotifierProvider<PrayerAppSettingsNotifier, PrayerAppSettings>((ref) {
+      return PrayerAppSettingsNotifier(ref);
+    });
 
 /// Convenience providers
 final prayerFontSizeProvider = Provider<double>((ref) {

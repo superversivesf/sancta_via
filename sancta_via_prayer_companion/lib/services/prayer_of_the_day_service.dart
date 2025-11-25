@@ -4,14 +4,12 @@ import '../models/prayer.dart';
 class PrayerOfTheDayService {
   // Main method to get prayer of the day
   static Prayer? selectPrayerOfTheDay(
-      DateTime date,
-      LiturgicalDayData liturgicalDay,
-      List<Prayer> allPrayers
-      ) {
+    DateTime date,
+    LiturgicalDayData liturgicalDay,
+    List<Prayer> allPrayers,
+  ) {
     // Filter liturgical prayers for selection
-    final liturgicalPrayers = allPrayers
-        .where((p) => p.isLiturgical)
-        .toList();
+    final liturgicalPrayers = allPrayers.where((p) => p.isLiturgical).toList();
 
     if (liturgicalPrayers.isEmpty) return null;
 
@@ -20,7 +18,11 @@ class PrayerOfTheDayService {
     if (feastPrayer != null) return feastPrayer;
 
     // 2. MEDIUM PRIORITY: Liturgical Seasons
-    final seasonalPrayer = _getSeasonalPrayer(liturgicalDay, liturgicalPrayers, date);
+    final seasonalPrayer = _getSeasonalPrayer(
+      liturgicalDay,
+      liturgicalPrayers,
+      date,
+    );
     if (seasonalPrayer != null) return seasonalPrayer;
 
     // 3. DEFAULT: Weekly rotation with variety
@@ -29,21 +31,27 @@ class PrayerOfTheDayService {
 
   // Handle specific feast days and solemnities
   static Prayer? _getFeastDayPrayer(
-      LiturgicalDayData liturgicalDay,
-      List<Prayer> prayers
-      ) {
+    LiturgicalDayData liturgicalDay,
+    List<Prayer> prayers,
+  ) {
     // Major Solemnities get specific prayers
-    if (liturgicalDay.isSolemnity && liturgicalDay.celebration.name.isNotEmpty) {
-
+    if (liturgicalDay.isSolemnity &&
+        liturgicalDay.celebration.name.isNotEmpty) {
       // Christmas Season
       if (liturgicalDay.celebration.name.contains('Nativity') ||
           liturgicalDay.celebration.name.contains('Christmas')) {
-        return _findPrayerByPreference(prayers, ['gloria_in_excelsis', 'veni_creator_spiritus']);
+        return _findPrayerByPreference(prayers, [
+          'gloria_in_excelsis',
+          'veni_creator_spiritus',
+        ]);
       }
 
       // Easter
       if (liturgicalDay.celebration.name.contains('Easter')) {
-        return _findPrayerByPreference(prayers, ['regina_caeli', 'gloria_in_excelsis']);
+        return _findPrayerByPreference(prayers, [
+          'regina_caeli',
+          'gloria_in_excelsis',
+        ]);
       }
 
       // Marian Feasts
@@ -51,7 +59,11 @@ class PrayerOfTheDayService {
           liturgicalDay.celebration.name.contains('Immaculate') ||
           liturgicalDay.celebration.name.contains('Assumption') ||
           liturgicalDay.celebration.name.contains('Annunciation')) {
-        return _findPrayerByPreference(prayers, ['hail_mary', 'prayer_to_immaculate_heart', 'memorare']);
+        return _findPrayerByPreference(prayers, [
+          'hail_mary',
+          'prayer_to_immaculate_heart',
+          'memorare',
+        ]);
       }
 
       // St. Joseph
@@ -61,7 +73,10 @@ class PrayerOfTheDayService {
 
       // All Saints
       if (liturgicalDay.celebration.name.contains('All Saints')) {
-        return _findPrayerByPreference(prayers, ['prayer_to_st_michael', 'prayer_for_pope_formal']);
+        return _findPrayerByPreference(prayers, [
+          'prayer_to_st_michael',
+          'prayer_for_pope_formal',
+        ]);
       }
     }
 
@@ -70,28 +85,40 @@ class PrayerOfTheDayService {
 
   // Handle liturgical seasons
   static Prayer? _getSeasonalPrayer(
-      LiturgicalDayData liturgicalDay,
-      List<Prayer> prayers,
-      DateTime date
-      ) {
+    LiturgicalDayData liturgicalDay,
+    List<Prayer> prayers,
+    DateTime date,
+  ) {
     final season = LiturgicalSeason.fromString(liturgicalDay.season);
     if (season == null) return null;
 
     switch (season) {
       case LiturgicalSeason.advent:
         // Rotate through preparation prayers
-        final adventPrayers = ['veni_creator_spiritus', 'morning_thanksgiving', 'morning_offering'];
+        final adventPrayers = [
+          'veni_creator_spiritus',
+          'morning_thanksgiving',
+          'morning_offering',
+        ];
         return _rotatePrayerByDay(prayers, adventPrayers, date);
 
       case LiturgicalSeason.christmas:
       case LiturgicalSeason.christmastide:
         // Christmas joy and praise
-        final christmasPrayers = ['gloria_in_excelsis', 'hail_mary', 'prayer_to_st_joseph'];
+        final christmasPrayers = [
+          'gloria_in_excelsis',
+          'hail_mary',
+          'prayer_to_st_joseph',
+        ];
         return _rotatePrayerByDay(prayers, christmasPrayers, date);
 
       case LiturgicalSeason.lent:
         // Penitential and reflective prayers
-        final lentPrayers = ['act_of_contrition', 'prayer_to_sacred_heart', 'eternal_rest'];
+        final lentPrayers = [
+          'act_of_contrition',
+          'prayer_to_sacred_heart',
+          'eternal_rest',
+        ];
         return _rotatePrayerByDay(prayers, lentPrayers, date);
 
       case LiturgicalSeason.triduum:
@@ -120,28 +147,50 @@ class PrayerOfTheDayService {
 
       case LiturgicalSeason.holyWeek:
         // Holy Week prayers
-        final holyWeekPrayers = ['prayer_to_sacred_heart', 'act_of_contrition', 'eternal_rest'];
+        final holyWeekPrayers = [
+          'prayer_to_sacred_heart',
+          'act_of_contrition',
+          'eternal_rest',
+        ];
         return _rotatePrayerByDay(prayers, holyWeekPrayers, date);
     }
   }
 
   // Handle Ordinary Time with weekly patterns
-  static Prayer _getOrdinaryTimePrayer(
-      DateTime date,
-      List<Prayer> prayers
-      ) {
+  static Prayer _getOrdinaryTimePrayer(DateTime date, List<Prayer> prayers) {
     // Weekly pattern for Ordinary Time
     final weeklyPatterns = {
       DateTime.sunday: ['apostles_creed', 'nicene_creed', 'gloria_in_excelsis'],
-      DateTime.monday: ['morning_offering', 'morning_thanksgiving', 'prayer_to_st_joseph'],
-      DateTime.tuesday: ['prayer_to_st_michael', 'guardian_angel_prayer', 'st_anthony_lost_things'],
-      DateTime.wednesday: ['prayer_for_pope_formal', 'veni_creator_spiritus', 'eternal_rest'],
+      DateTime.monday: [
+        'morning_offering',
+        'morning_thanksgiving',
+        'prayer_to_st_joseph',
+      ],
+      DateTime.tuesday: [
+        'prayer_to_st_michael',
+        'guardian_angel_prayer',
+        'st_anthony_lost_things',
+      ],
+      DateTime.wednesday: [
+        'prayer_for_pope_formal',
+        'veni_creator_spiritus',
+        'eternal_rest',
+      ],
       DateTime.thursday: ['anima_christi', 'sanctus', 'agnus_dei'],
-      DateTime.friday: ['act_of_contrition', 'prayer_to_sacred_heart', 'st_francis_peace_prayer'],
-      DateTime.saturday: ['hail_mary', 'memorare', 'prayer_to_immaculate_heart'],
+      DateTime.friday: [
+        'act_of_contrition',
+        'prayer_to_sacred_heart',
+        'st_francis_peace_prayer',
+      ],
+      DateTime.saturday: [
+        'hail_mary',
+        'memorare',
+        'prayer_to_immaculate_heart',
+      ],
     };
 
-    final dayPrayers = weeklyPatterns[date.weekday] ?? weeklyPatterns[DateTime.sunday]!;
+    final dayPrayers =
+        weeklyPatterns[date.weekday] ?? weeklyPatterns[DateTime.sunday]!;
     return _rotatePrayerByWeek(prayers, dayPrayers, date);
   }
 
@@ -154,7 +203,10 @@ class PrayerOfTheDayService {
     }
   }
 
-  static Prayer? _findPrayerByPreference(List<Prayer> prayers, List<String> preferredIds) {
+  static Prayer? _findPrayerByPreference(
+    List<Prayer> prayers,
+    List<String> preferredIds,
+  ) {
     for (final id in preferredIds) {
       final prayer = _findPrayerById(prayers, id);
       if (prayer != null) return prayer;
@@ -162,7 +214,11 @@ class PrayerOfTheDayService {
     return null;
   }
 
-  static Prayer _rotatePrayerByDay(List<Prayer> prayers, List<String> prayerIds, DateTime date) {
+  static Prayer _rotatePrayerByDay(
+    List<Prayer> prayers,
+    List<String> prayerIds,
+    DateTime date,
+  ) {
     final availablePrayers = prayerIds
         .map((id) => _findPrayerById(prayers, id))
         .where((p) => p != null)
@@ -177,7 +233,11 @@ class PrayerOfTheDayService {
     return availablePrayers[dayOfYear % availablePrayers.length];
   }
 
-  static Prayer _rotatePrayerByWeek(List<Prayer> prayers, List<String> prayerIds, DateTime date) {
+  static Prayer _rotatePrayerByWeek(
+    List<Prayer> prayers,
+    List<String> prayerIds,
+    DateTime date,
+  ) {
     final availablePrayers = prayerIds
         .map((id) => _findPrayerById(prayers, id))
         .where((p) => p != null)
@@ -189,7 +249,8 @@ class PrayerOfTheDayService {
     }
 
     // Use week of year for slower rotation
-    final weekOfYear = ((date.difference(DateTime(date.year, 1, 1)).inDays) / 7).floor();
+    final weekOfYear = ((date.difference(DateTime(date.year, 1, 1)).inDays) / 7)
+        .floor();
     return availablePrayers[weekOfYear % availablePrayers.length];
   }
 }

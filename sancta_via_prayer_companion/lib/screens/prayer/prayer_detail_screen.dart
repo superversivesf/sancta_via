@@ -15,9 +15,7 @@ import '../settings/settings_screen.dart';
 class PrayerDetailScreen extends ConsumerWidget {
   final String prayerId;
 
-  const PrayerDetailScreen({
-    required this.prayerId, super.key,
-  });
+  const PrayerDetailScreen({required this.prayerId, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,12 +25,13 @@ class PrayerDetailScreen extends ConsumerWidget {
     final textScaling = ref.watch(textScaleProvider);
     final defaultLanguage = ref.watch(prayerDefaultLanguageProvider);
     // Get the currently selected translation
-    final selectedTranslation = ref.watch(selectedTranslationProvider(prayerId)) ?? defaultLanguage;
-    
+    final selectedTranslation =
+        ref.watch(selectedTranslationProvider(prayerId)) ?? defaultLanguage;
+
     // Get liturgical color for theming
     final currentColor = ref.watch(currentLiturgicalColorProvider);
     final colorIntensity = ref.watch(colorIntensityProvider);
-    final liturgicalColor = currentColor != null 
+    final liturgicalColor = currentColor != null
         ? LiturgicalColor.fromString(currentColor)
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
@@ -45,8 +44,14 @@ class PrayerDetailScreen extends ConsumerWidget {
     });
 
     return Scaffold(
-        appBar: preferences.readingMode == PrayerReadingMode.immersive 
-          ? _buildImmersiveAppBar(context, ref, isFavorite, themeColor, textScaling)
+      appBar: preferences.readingMode == PrayerReadingMode.immersive
+          ? _buildImmersiveAppBar(
+              context,
+              ref,
+              isFavorite,
+              themeColor,
+              textScaling,
+            )
           : AppBar(
               title: Text(
                 'Prayer',
@@ -60,9 +65,13 @@ class PrayerDetailScreen extends ConsumerWidget {
                     color: isFavorite ? (themeColor ?? Colors.red) : null,
                   ),
                   onPressed: () {
-                    ref.read(prayerAppSettingsProvider.notifier).toggleFavorite(prayerId);
+                    ref
+                        .read(prayerAppSettingsProvider.notifier)
+                        .toggleFavorite(prayerId);
                   },
-                  tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
+                  tooltip: isFavorite
+                      ? 'Remove from favorites'
+                      : 'Add to favorites',
                 ),
                 PopupMenuButton<String>(
                   icon: const Icon(Icons.more_vert),
@@ -103,63 +112,61 @@ class PrayerDetailScreen extends ConsumerWidget {
                 ),
               ],
             ),
-        body: prayerAsync.when(
-              data: (prayer) {
-                if (prayer == null) {
-                  return const Center(child: Text('Prayer not found'));
-                }
+      body: prayerAsync.when(
+        data: (prayer) {
+          if (prayer == null) {
+            return const Center(child: Text('Prayer not found'));
+          }
 
-                // Create map with all translations (including English)
-                final Map<String, String> translations = {
-                  'English': prayer.text,
-                };
+          // Create map with all translations (including English)
+          final Map<String, String> translations = {'English': prayer.text};
 
-                // Add translations with properly capitalized keys
-                prayer.translations?.forEach((key, value) {
-                  final capitalizedKey = key[0].toUpperCase() + key.substring(1);
-                  translations[capitalizedKey] = value;
-                });
+          // Add translations with properly capitalized keys
+          prayer.translations?.forEach((key, value) {
+            final capitalizedKey = key[0].toUpperCase() + key.substring(1);
+            translations[capitalizedKey] = value;
+          });
 
-                // Get the text to display based on selected language
-                final displayText = translations[selectedTranslation] ?? prayer.text;
+          // Get the text to display based on selected language
+          final displayText = translations[selectedTranslation] ?? prayer.text;
 
-                return _buildPrayerContent(
-                  context, 
-                  prayer, 
-                  displayText, 
-                  translations, 
-                  ref, 
-                  themeColor, 
-                  textScaling,
-                  preferences,
-                  selectedTranslation,
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stack) => Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      size: 64,
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Error loading prayer',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      error.toString(),
-                      style: TextStyle(color: Theme.of(context).colorScheme.error),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+          return _buildPrayerContent(
+            context,
+            prayer,
+            displayText,
+            translations,
+            ref,
+            themeColor,
+            textScaling,
+            preferences,
+            selectedTranslation,
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 64,
+                color: Theme.of(context).colorScheme.error,
               ),
-            ),
+              const SizedBox(height: 16),
+              Text(
+                'Error loading prayer',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                error.toString(),
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -174,7 +181,8 @@ class PrayerDetailScreen extends ConsumerWidget {
     PrayerAppSettings settings,
     String selectedTranslation,
   ) {
-    final EdgeInsets padding = settings.readingMode == PrayerReadingMode.immersive 
+    final EdgeInsets padding =
+        settings.readingMode == PrayerReadingMode.immersive
         ? const EdgeInsets.symmetric(horizontal: 24, vertical: 32)
         : const EdgeInsets.all(16);
 
@@ -183,118 +191,150 @@ class PrayerDetailScreen extends ConsumerWidget {
       child: SingleChildScrollView(
         padding: padding,
         child: Column(
-        crossAxisAlignment: settings.readingMode == PrayerReadingMode.contemplative
-            ? CrossAxisAlignment.center
-            : CrossAxisAlignment.start,
-        children: [
-          // Prayer Title (show unless in immersive contemplative mode)
-          if (settings.readingMode != PrayerReadingMode.immersive || 
-              settings.readingMode != PrayerReadingMode.contemplative) ...[
-            Text(
-              prayer.title,
-              style: textScaling.scaledHeadlineMedium(context).copyWith(
-                fontWeight: FontWeight.bold,
-                color: themeColor,
-              ),
-              maxLines: textScaling.scaleFactor > 1.2 ? 2 : 3,
-              overflow: TextOverflow.ellipsis,
-              textAlign: settings.readingMode == PrayerReadingMode.contemplative
-                  ? TextAlign.center
-                  : TextAlign.start,
-            ),
-
-            // Attribution
-            if (prayer.attribution != null) ...[
-              SizedBox(height: settings.readingMode == PrayerReadingMode.immersive ? 12 : 8),
+          crossAxisAlignment:
+              settings.readingMode == PrayerReadingMode.contemplative
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.start,
+          children: [
+            // Prayer Title (show unless in immersive contemplative mode)
+            if (settings.readingMode != PrayerReadingMode.immersive ||
+                settings.readingMode != PrayerReadingMode.contemplative) ...[
               Text(
-                prayer.attribution!,
-                style: textScaling.scaledBodyMedium(context).copyWith(
-                  fontStyle: FontStyle.italic,
-                  color: themeColor?.withValues(alpha: 0.7),
-                ),
-                textAlign: settings.readingMode == PrayerReadingMode.contemplative
+                prayer.title,
+                style: textScaling
+                    .scaledHeadlineMedium(context)
+                    .copyWith(fontWeight: FontWeight.bold, color: themeColor),
+                maxLines: textScaling.scaleFactor > 1.2 ? 2 : 3,
+                overflow: TextOverflow.ellipsis,
+                textAlign:
+                    settings.readingMode == PrayerReadingMode.contemplative
                     ? TextAlign.center
                     : TextAlign.start,
               ),
-            ],
 
-            SizedBox(height: settings.readingMode == PrayerReadingMode.immersive ? 32 : 24),
-          ] else ...[
-            // Minimal spacing for contemplative immersive mode
-            const SizedBox(height: 16),
-          ],
-
-          // Enhanced Prayer Text
-          Container(
-            padding: settings.readingMode == PrayerReadingMode.immersive 
-                ? const EdgeInsets.all(16)
-                : const EdgeInsets.all(20),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              border: themeColor != null ? Border.all(
-                color: themeColor.withValues(alpha: 0.2),
-                width: 1,
-              ) : null,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: EnhancedPrayerText(
-              text: displayText,
-              language: selectedTranslation,
-              themeColor: themeColor,
-              readingMode: settings.readingMode,
-              enableVerseHighlighting: settings.verseHighlighting,
-            ),
-          ),
-
-          // Translation selector (hide in immersive mode)
-          if (settings.readingMode != PrayerReadingMode.immersive && 
-              prayer.translations != null && 
-              prayer.translations!.isNotEmpty) ...[
-            const SizedBox(height: 24),
-            _buildTranslationSelector(context, prayer, translations, ref, themeColor, textScaling),
-          ],
-
-          // Notes (hide in immersive mode unless contemplative)
-          if (prayer.notes != null && 
-              (settings.readingMode != PrayerReadingMode.immersive || 
-               settings.readingMode == PrayerReadingMode.contemplative)) ...[
-            SizedBox(height: settings.readingMode == PrayerReadingMode.immersive ? 32 : 24),
-            if (settings.readingMode != PrayerReadingMode.immersive) ...[
-              Text(
-                'Notes',
-                style: textScaling.scaledTitleMedium(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: themeColor ?? Theme.of(context).colorScheme.primary,
+              // Attribution
+              if (prayer.attribution != null) ...[
+                SizedBox(
+                  height: settings.readingMode == PrayerReadingMode.immersive
+                      ? 12
+                      : 8,
                 ),
-                textAlign: settings.readingMode == PrayerReadingMode.contemplative
-                    ? TextAlign.center
-                    : TextAlign.start,
+                Text(
+                  prayer.attribution!,
+                  style: textScaling
+                      .scaledBodyMedium(context)
+                      .copyWith(
+                        fontStyle: FontStyle.italic,
+                        color: themeColor?.withValues(alpha: 0.7),
+                      ),
+                  textAlign:
+                      settings.readingMode == PrayerReadingMode.contemplative
+                      ? TextAlign.center
+                      : TextAlign.start,
+                ),
+              ],
+
+              SizedBox(
+                height: settings.readingMode == PrayerReadingMode.immersive
+                    ? 32
+                    : 24,
               ),
-              const SizedBox(height: 8),
+            ] else ...[
+              // Minimal spacing for contemplative immersive mode
+              const SizedBox(height: 16),
             ],
+
+            // Enhanced Prayer Text
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: settings.readingMode == PrayerReadingMode.immersive
+                  ? const EdgeInsets.all(16)
+                  : const EdgeInsets.all(20),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: themeColor?.withValues(alpha: 0.05) ?? 
-                       Theme.of(context).colorScheme.surfaceContainerHighest,
+                color: Theme.of(context).colorScheme.surface,
+                border: themeColor != null
+                    ? Border.all(
+                        color: themeColor.withValues(alpha: 0.2),
+                        width: 1,
+                      )
+                    : null,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Text(
-                prayer.notes!,
-                style: textScaling.scaledBodyMedium(context).copyWith(
-                  height: 1.6,
-                ),
-                textAlign: settings.readingMode == PrayerReadingMode.contemplative
-                    ? TextAlign.center
-                    : TextAlign.start,
+              child: EnhancedPrayerText(
+                text: displayText,
+                language: selectedTranslation,
+                themeColor: themeColor,
+                readingMode: settings.readingMode,
+                enableVerseHighlighting: settings.verseHighlighting,
               ),
             ),
-          ],
+
+            // Translation selector (hide in immersive mode)
+            if (settings.readingMode != PrayerReadingMode.immersive &&
+                prayer.translations != null &&
+                prayer.translations!.isNotEmpty) ...[
+              const SizedBox(height: 24),
+              _buildTranslationSelector(
+                context,
+                prayer,
+                translations,
+                ref,
+                themeColor,
+                textScaling,
+              ),
+            ],
+
+            // Notes (hide in immersive mode unless contemplative)
+            if (prayer.notes != null &&
+                (settings.readingMode != PrayerReadingMode.immersive ||
+                    settings.readingMode ==
+                        PrayerReadingMode.contemplative)) ...[
+              SizedBox(
+                height: settings.readingMode == PrayerReadingMode.immersive
+                    ? 32
+                    : 24,
+              ),
+              if (settings.readingMode != PrayerReadingMode.immersive) ...[
+                Text(
+                  'Notes',
+                  style: textScaling
+                      .scaledTitleMedium(context)
+                      .copyWith(
+                        fontWeight: FontWeight.bold,
+                        color:
+                            themeColor ?? Theme.of(context).colorScheme.primary,
+                      ),
+                  textAlign:
+                      settings.readingMode == PrayerReadingMode.contemplative
+                      ? TextAlign.center
+                      : TextAlign.start,
+                ),
+                const SizedBox(height: 8),
+              ],
+              Container(
+                padding: const EdgeInsets.all(16),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color:
+                      themeColor?.withValues(alpha: 0.05) ??
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  prayer.notes!,
+                  style: textScaling
+                      .scaledBodyMedium(context)
+                      .copyWith(height: 1.6),
+                  textAlign:
+                      settings.readingMode == PrayerReadingMode.contemplative
+                      ? TextAlign.center
+                      : TextAlign.start,
+                ),
+              ),
+            ],
 
             // Extra bottom padding for immersive mode
-            if (settings.readingMode == PrayerReadingMode.immersive) 
+            if (settings.readingMode == PrayerReadingMode.immersive)
               const SizedBox(height: 40),
           ],
         ),
@@ -303,11 +343,11 @@ class PrayerDetailScreen extends ConsumerWidget {
   }
 
   PreferredSizeWidget _buildImmersiveAppBar(
-    BuildContext context, 
-    WidgetRef ref, 
-    bool isFavorite, 
-    Color? themeColor, 
-    TextScaling textScaling
+    BuildContext context,
+    WidgetRef ref,
+    bool isFavorite,
+    Color? themeColor,
+    TextScaling textScaling,
   ) {
     return AppBar(
       backgroundColor: Colors.transparent,
@@ -340,13 +380,15 @@ class PrayerDetailScreen extends ConsumerWidget {
           child: IconButton(
             icon: Icon(
               isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: isFavorite 
-                ? (themeColor ?? Colors.red) 
-                : Theme.of(context).colorScheme.onSurface,
+              color: isFavorite
+                  ? (themeColor ?? Colors.red)
+                  : Theme.of(context).colorScheme.onSurface,
               size: 18,
             ),
             onPressed: () {
-              ref.read(prayerAppSettingsProvider.notifier).toggleFavorite(prayerId);
+              ref
+                  .read(prayerAppSettingsProvider.notifier)
+                  .toggleFavorite(prayerId);
             },
             tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
           ),
@@ -398,9 +440,9 @@ class PrayerDetailScreen extends ConsumerWidget {
     switch (action) {
       case 'share':
         // Share functionality would go here
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Sharing coming soon')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Sharing coming soon')));
         break;
       case 'copy':
         // Copy prayer text functionality
@@ -410,32 +452,36 @@ class PrayerDetailScreen extends ConsumerWidget {
         break;
       case 'settings':
         // Navigate to settings with reading section highlighted
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const SettingsScreen()),
-        );
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const SettingsScreen()));
         break;
     }
   }
 
   Widget _buildTranslationSelector(
-      BuildContext context,
-      Prayer prayer,
-      Map<String, String> translations,
-      WidgetRef ref,
-      Color? themeColor,
-      TextScaling textScaling,
-      ) {
-    final selectedTranslation = ref.watch(selectedTranslationProvider(prayerId)) ?? ref.watch(prayerDefaultLanguageProvider);
+    BuildContext context,
+    Prayer prayer,
+    Map<String, String> translations,
+    WidgetRef ref,
+    Color? themeColor,
+    TextScaling textScaling,
+  ) {
+    final selectedTranslation =
+        ref.watch(selectedTranslationProvider(prayerId)) ??
+        ref.watch(prayerDefaultLanguageProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Language',
-          style: textScaling.scaledTitleMedium(context).copyWith(
-            fontWeight: FontWeight.bold,
-            color: themeColor ?? Theme.of(context).colorScheme.primary,
-          ),
+          style: textScaling
+              .scaledTitleMedium(context)
+              .copyWith(
+                fontWeight: FontWeight.bold,
+                color: themeColor ?? Theme.of(context).colorScheme.primary,
+              ),
         ),
         const SizedBox(height: 12),
         Wrap(
@@ -454,7 +500,10 @@ class PrayerDetailScreen extends ConsumerWidget {
               selectedColor: themeColor?.withValues(alpha: 0.2),
               onSelected: (selected) {
                 if (selected) {
-                  ref.read(selectedTranslationProvider(prayerId).notifier).state = language;
+                  ref
+                          .read(selectedTranslationProvider(prayerId).notifier)
+                          .state =
+                      language;
                 }
               },
               side: isSelected && themeColor != null

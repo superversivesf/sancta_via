@@ -19,7 +19,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final lastUpdatedDate = lastUpdated ?? DateTime(2025, 7, 9);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Privacy Policy'),
@@ -59,11 +59,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
               context,
               'Local Data Storage',
               'The app stores the following data locally on your device:\n'
-              '• App preferences and settings\n'
-              '• Your personal notes and reflections\n'
-              '• Reading history and bookmarks\n'
-              '• Customization choices\n\n'
-              'This data is never transmitted outside of your device.',
+                  '• App preferences and settings\n'
+                  '• Your personal notes and reflections\n'
+                  '• Reading history and bookmarks\n'
+                  '• Customization choices\n\n'
+                  'This data is never transmitted outside of your device.',
             ),
             _buildSection(
               context,

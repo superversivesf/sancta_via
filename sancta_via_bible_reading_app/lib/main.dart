@@ -11,10 +11,10 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Set up user message service
   UserMessageService.navigatorKey = navigatorKey;
-  
+
   runApp(const ProviderScope(child: BibleReadingApp()));
 }
 
@@ -25,9 +25,8 @@ class BibleReadingApp extends ConsumerStatefulWidget {
   ConsumerState<BibleReadingApp> createState() => _BibleReadingAppState();
 }
 
-class _BibleReadingAppState extends ConsumerState<BibleReadingApp> 
+class _BibleReadingAppState extends ConsumerState<BibleReadingApp>
     with WidgetsBindingObserver {
-
   @override
   void initState() {
     super.initState();
@@ -45,7 +44,7 @@ class _BibleReadingAppState extends ConsumerState<BibleReadingApp>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    
+
     // FIXED: Only trigger daily reset on resume, with safety checks
     if (state == AppLifecycleState.resumed) {
       print('🔆 App resumed from background - safely checking for daily reset');
@@ -76,13 +75,13 @@ class _BibleReadingAppState extends ConsumerState<BibleReadingApp>
   Widget build(BuildContext context) {
     // Watch liturgical color for dynamic theming
     final currentLiturgicalColor = ref.watch(currentLiturgicalColorProvider);
-    
+
     // Watch user preferences
     final themeMode = ref.watch(themeModeProvider);
     final colorIntensity = ref.watch(colorIntensityProvider);
-    
+
     // Parse liturgical color from string
-    final liturgicalColor = currentLiturgicalColor != null 
+    final liturgicalColor = currentLiturgicalColor != null
         ? LiturgicalColor.fromString(currentLiturgicalColor)
         : null;
 

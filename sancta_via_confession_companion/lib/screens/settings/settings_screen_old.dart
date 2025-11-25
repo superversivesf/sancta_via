@@ -12,13 +12,10 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Settings',
-          style: textScaling.scaledTitleLarge(context),
-        ),
+        title: Text('Settings', style: textScaling.scaledTitleLarge(context)),
       ),
       body: ListView(
         children: [
@@ -49,9 +46,9 @@ class SettingsScreen extends ConsumerWidget {
                     Expanded(
                       child: Text(
                         'Font Size',
-                        style: textScaling.scaledTitleMedium(context).copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: textScaling
+                            .scaledTitleMedium(context)
+                            .copyWith(fontWeight: FontWeight.w500),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -86,7 +83,9 @@ class SettingsScreen extends ConsumerWidget {
                   value: settings.defaultLanguage,
                   onChanged: (String? newValue) {
                     if (newValue != null) {
-                      ref.read(appSettingsNotifierProvider).updateDefaultLanguage(newValue);
+                      ref
+                          .read(appSettingsNotifierProvider)
+                          .updateDefaultLanguage(newValue);
                     }
                   },
                   items: ['English', 'Latin', 'Spanish'].map((String language) {
@@ -116,7 +115,9 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 value: settings.notificationsEnabled,
                 onChanged: (bool value) {
-                  ref.read(appSettingsNotifierProvider).updateNotifications(value);
+                  ref
+                      .read(appSettingsNotifierProvider)
+                      .updateNotifications(value);
                 },
               );
             },
@@ -142,10 +143,12 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(
-                      'Sync settings - Coming Soon',
-                      style: textScaling.scaledBodyMedium(context),
-                    )),
+                    SnackBar(
+                      content: Text(
+                        'Sync settings - Coming Soon',
+                        style: textScaling.scaledBodyMedium(context),
+                      ),
+                    ),
                   );
                 },
               );
@@ -226,10 +229,12 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(
-                      'Feedback - Coming Soon',
-                      style: textScaling.scaledBodyMedium(context),
-                    )),
+                    SnackBar(
+                      content: Text(
+                        'Feedback - Coming Soon',
+                        style: textScaling.scaledBodyMedium(context),
+                      ),
+                    ),
                   );
                 },
               );
@@ -306,10 +311,12 @@ class SettingsScreen extends ConsumerWidget {
                   Navigator.of(context).pop();
                   // TODO: Implement data clearing
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(
-                      'Data clearing - Coming Soon',
-                      style: textScaling.scaledBodyMedium(context),
-                    )),
+                    SnackBar(
+                      content: Text(
+                        'Data clearing - Coming Soon',
+                        style: textScaling.scaledBodyMedium(context),
+                      ),
+                    ),
                   );
                 },
                 style: TextButton.styleFrom(

@@ -14,23 +14,28 @@ final examinationRepositoryProvider = Provider<ExaminationRepository>((ref) {
 });
 
 // Provider for available examinations
-final examinationsProvider = FutureProvider<List<ExaminationModel>>((ref) async {
+final examinationsProvider = FutureProvider<List<ExaminationModel>>((
+  ref,
+) async {
   final repository = ref.watch(examinationRepositoryProvider);
   return await repository.getExaminations();
 });
 
 // Provider for a specific examination by ID
-final examinationByIdProvider = FutureProvider.family<ExaminationModel?, String>((ref, id) async {
-  AppLogger.examination('examinationByIdProvider called with ID: $id');
-  final repository = ref.watch(examinationRepositoryProvider);
-  final result = await repository.getExaminationById(id);
-  if (result == null) {
-    AppLogger.examination('Examination with ID $id not found');
-  } else {
-    AppLogger.examination('Successfully loaded examination: ${result.title}');
-  }
-  return result;
-});
+final examinationByIdProvider =
+    FutureProvider.family<ExaminationModel?, String>((ref, id) async {
+      AppLogger.examination('examinationByIdProvider called with ID: $id');
+      final repository = ref.watch(examinationRepositoryProvider);
+      final result = await repository.getExaminationById(id);
+      if (result == null) {
+        AppLogger.examination('Examination with ID $id not found');
+      } else {
+        AppLogger.examination(
+          'Successfully loaded examination: ${result.title}',
+        );
+      }
+      return result;
+    });
 
 final examinationsUpdateProvider = FutureProvider<bool>((ref) async {
   final repository = ref.watch(examinationRepositoryProvider);
@@ -38,7 +43,9 @@ final examinationsUpdateProvider = FutureProvider<bool>((ref) async {
 });
 
 // Provider to trigger examination updates
-final examinationsUpdateTriggerProvider = FutureProvider.autoDispose<bool>((ref) async {
+final examinationsUpdateTriggerProvider = FutureProvider.autoDispose<bool>((
+  ref,
+) async {
   final repository = ref.watch(examinationRepositoryProvider);
   final result = await repository.downloadUpdates();
 
@@ -51,16 +58,22 @@ final examinationsUpdateTriggerProvider = FutureProvider.autoDispose<bool>((ref)
 });
 
 // Provider for user preferences
-final examinationPreferencesProvider = StateNotifierProvider<ExaminationPreferencesNotifier, ExaminationPreferences>((ref) {
-  final repository = ref.watch(examinationRepositoryProvider);
-  return ExaminationPreferencesNotifier(repository);
-});
+final examinationPreferencesProvider =
+    StateNotifierProvider<
+      ExaminationPreferencesNotifier,
+      ExaminationPreferences
+    >((ref) {
+      final repository = ref.watch(examinationRepositoryProvider);
+      return ExaminationPreferencesNotifier(repository);
+    });
 
 // Notifier class for preferences
-class ExaminationPreferencesNotifier extends StateNotifier<ExaminationPreferences> {
+class ExaminationPreferencesNotifier
+    extends StateNotifier<ExaminationPreferences> {
   final ExaminationRepository repository;
 
-  ExaminationPreferencesNotifier(this.repository) : super(ExaminationPreferences()) {
+  ExaminationPreferencesNotifier(this.repository)
+    : super(ExaminationPreferences()) {
     _loadPreferences();
   }
 
@@ -71,7 +84,12 @@ class ExaminationPreferencesNotifier extends StateNotifier<ExaminationPreference
         state = preferences;
       }
     } catch (e) {
-      AppLogger.error('Failed to load examination preferences', e, null, 'EXAM');
+      AppLogger.error(
+        'Failed to load examination preferences',
+        e,
+        null,
+        'EXAM',
+      );
     }
   }
 
@@ -84,14 +102,14 @@ class ExaminationPreferencesNotifier extends StateNotifier<ExaminationPreference
       } else {
         currentFavorites.add(examinationId);
       }
-      
+
       if (mounted) {
         state = state.copyWith(favoriteExaminationIds: currentFavorites);
       }
 
       // Then persist to storage
       final updatedPreferences = await repository.toggleFavorite(examinationId);
-      
+
       // Update state with persisted result if still mounted
       if (mounted) {
         state = updatedPreferences;
@@ -111,8 +129,10 @@ class ExaminationPreferencesNotifier extends StateNotifier<ExaminationPreference
       }
 
       // Then persist to storage
-      final updatedPreferences = await repository.setDefaultExamination(examinationId);
-      
+      final updatedPreferences = await repository.setDefaultExamination(
+        examinationId,
+      );
+
       // Update state with persisted result if still mounted
       if (mounted) {
         state = updatedPreferences;
@@ -131,7 +151,12 @@ class ExaminationPreferencesNotifier extends StateNotifier<ExaminationPreference
         state = preferences;
       }
     } catch (e) {
-      AppLogger.error('Failed to update examination preferences', e, null, 'EXAM');
+      AppLogger.error(
+        'Failed to update examination preferences',
+        e,
+        null,
+        'EXAM',
+      );
       // Reload preferences to ensure consistency
       await _loadPreferences();
     }
@@ -170,7 +195,9 @@ final defaultExaminationProvider = Provider<ExaminationModel?>((ref) {
   }
 });
 
-final completedExaminationsProvider = FutureProvider<List<ExaminationSession>>((ref) async {
+final completedExaminationsProvider = FutureProvider<List<ExaminationSession>>((
+  ref,
+) async {
   final repository = ref.watch(examinationRepositoryProvider);
   return await repository.getCompletedSessions();
 });
@@ -196,11 +223,13 @@ final confessionItemsProvider = Provider<List<ConfessionItem>>((ref) {
     for (final item in category.items) {
       final status = session.itemResponses[item.id];
       if (status == ExaminationResponseStatus.needConfess) {
-        items.add(ConfessionItem.fromExaminationItem(
-          itemText: item.text,
-          note: session.notes[item.id],
-          isMortal: false,
-        ));
+        items.add(
+          ConfessionItem.fromExaminationItem(
+            itemText: item.text,
+            note: session.notes[item.id],
+            isMortal: false,
+          ),
+        );
       }
     }
   }
@@ -209,44 +238,50 @@ final confessionItemsProvider = Provider<List<ConfessionItem>>((ref) {
 });
 
 // Provider for a specific completed session
-final completedSessionProvider = FutureProvider.family<ExaminationSession?, String>((ref, id) async {
-  final repository = ref.watch(examinationRepositoryProvider);
-  final sessions = await repository.getCompletedSessions();
-  
-  final matchingSessions = sessions.where((s) => s.id == id).toList();
-  return matchingSessions.isNotEmpty ? matchingSessions.first : null;
-});
+final completedSessionProvider =
+    FutureProvider.family<ExaminationSession?, String>((ref, id) async {
+      final repository = ref.watch(examinationRepositoryProvider);
+      final sessions = await repository.getCompletedSessions();
+
+      final matchingSessions = sessions.where((s) => s.id == id).toList();
+      return matchingSessions.isNotEmpty ? matchingSessions.first : null;
+    });
 
 // Provider for generating confession items from a completed session
-final completedSessionItemsProvider = Provider.family<List<ConfessionItem>, String>((ref, sessionId) {
-  final sessionAsync = ref.watch(completedSessionProvider(sessionId));
+final completedSessionItemsProvider =
+    Provider.family<List<ConfessionItem>, String>((ref, sessionId) {
+      final sessionAsync = ref.watch(completedSessionProvider(sessionId));
 
-  if (!sessionAsync.hasValue || sessionAsync.value == null) {
-    return [];
-  }
-
-  final session = sessionAsync.value!;
-  final examinationAsync = ref.watch(examinationByIdProvider(session.examinationId));
-
-  if (!examinationAsync.hasValue || examinationAsync.value == null) {
-    return [];
-  }
-
-  final examination = examinationAsync.value!;
-  final List<ConfessionItem> items = [];
-
-  for (final category in examination.categories) {
-    for (final item in category.items) {
-      final status = session.itemResponses[item.id];
-      if (status == ExaminationResponseStatus.needConfess) {
-        items.add(ConfessionItem.fromExaminationItem(
-          itemText: item.text,
-          note: session.notes[item.id],
-          isMortal: false,
-        ));
+      if (!sessionAsync.hasValue || sessionAsync.value == null) {
+        return [];
       }
-    }
-  }
 
-  return items;
-});
+      final session = sessionAsync.value!;
+      final examinationAsync = ref.watch(
+        examinationByIdProvider(session.examinationId),
+      );
+
+      if (!examinationAsync.hasValue || examinationAsync.value == null) {
+        return [];
+      }
+
+      final examination = examinationAsync.value!;
+      final List<ConfessionItem> items = [];
+
+      for (final category in examination.categories) {
+        for (final item in category.items) {
+          final status = session.itemResponses[item.id];
+          if (status == ExaminationResponseStatus.needConfess) {
+            items.add(
+              ConfessionItem.fromExaminationItem(
+                itemText: item.text,
+                note: session.notes[item.id],
+                isMortal: false,
+              ),
+            );
+          }
+        }
+      }
+
+      return items;
+    });

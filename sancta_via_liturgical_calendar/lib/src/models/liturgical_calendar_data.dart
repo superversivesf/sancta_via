@@ -71,7 +71,7 @@ class LiturgicalCalendarData {
   factory LiturgicalCalendarData.fromJson(Map<String, dynamic> json) {
     final calendarJson = json['calendar'] as Map<String, dynamic>;
     final calendar = <String, LiturgicalDayData>{};
-    
+
     for (final entry in calendarJson.entries) {
       calendar[entry.key] = LiturgicalDayData.fromJson(entry.value);
     }
@@ -88,15 +88,13 @@ class LiturgicalCalendarData {
       calendarJson[entry.key] = entry.value.toJson();
     }
 
-    return {
-      'metadata': metadata.toJson(),
-      'calendar': calendarJson,
-    };
+    return {'metadata': metadata.toJson(), 'calendar': calendarJson};
   }
 
   /// Get liturgical day for a specific date
   LiturgicalDayData? getDayForDate(DateTime date) {
-    final dateKey = '${date.year.toString().padLeft(4, '0')}-'
+    final dateKey =
+        '${date.year.toString().padLeft(4, '0')}-'
         '${date.month.toString().padLeft(2, '0')}-'
         '${date.day.toString().padLeft(2, '0')}';
     return calendar[dateKey];
@@ -105,16 +103,18 @@ class LiturgicalCalendarData {
   /// Get all days in a date range
   List<LiturgicalDayData> getDaysInRange(DateTime start, DateTime end) {
     final days = <LiturgicalDayData>[];
-    
-    for (var date = start; 
-         date.isBefore(end.add(const Duration(days: 1))); 
-         date = date.add(const Duration(days: 1))) {
+
+    for (
+      var date = start;
+      date.isBefore(end.add(const Duration(days: 1)));
+      date = date.add(const Duration(days: 1))
+    ) {
       final day = getDayForDate(date);
       if (day != null) {
         days.add(day);
       }
     }
-    
+
     return days;
   }
 
@@ -125,15 +125,18 @@ class LiturgicalCalendarData {
   }) {
     final start = fromDate ?? DateTime.now();
     final end = start.add(Duration(days: daysAhead));
-    
+
     final days = getDaysInRange(start, end);
-    
-    return days.where((day) => 
-      day.celebration.prioritized ||
-      day.celebration.rank == 'SOLEMNITY' ||
-      day.celebration.rank == 'FEAST' ||
-      day.celebration.rank == 'MEMORIAL'
-    ).toList();
+
+    return days
+        .where(
+          (day) =>
+              day.celebration.prioritized ||
+              day.celebration.rank == 'SOLEMNITY' ||
+              day.celebration.rank == 'FEAST' ||
+              day.celebration.rank == 'MEMORIAL',
+        )
+        .toList();
   }
 
   @override

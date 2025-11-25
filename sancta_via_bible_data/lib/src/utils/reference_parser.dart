@@ -6,7 +6,7 @@ class ReferenceParser {
   /// Parse a scripture reference from text with enhanced error handling
   static ScriptureReference parse(String referenceText) {
     final trimmed = referenceText.trim();
-    
+
     if (trimmed.isEmpty) {
       throw ArgumentError('Reference text cannot be empty');
     }
@@ -23,22 +23,25 @@ class ReferenceParser {
   static ScriptureReference _enhancedParse(String referenceText) {
     // Remove common prefixes and suffixes
     String cleaned = referenceText
-        .replaceAll(RegExp(r'^(cf\.|see\s+|compare\s+)', caseSensitive: false), '')
+        .replaceAll(
+            RegExp(r'^(cf\.|see\s+|compare\s+)', caseSensitive: false), '')
         .replaceAll(RegExp(r'\s*\([^)]*\)$'), '') // Remove trailing parentheses
         .trim();
 
     // Try different parsing strategies
-    
+
     // Strategy 1: Handle books with numbers at the start
-    final numberBookMatch = RegExp(r'^(\d+)\s+([a-zA-Z\s]+)\s+(\d+(?::\d+(?:-\d+)?)?)')
-        .firstMatch(cleaned);
+    final numberBookMatch =
+        RegExp(r'^(\d+)\s+([a-zA-Z\s]+)\s+(\d+(?::\d+(?:-\d+)?)?)')
+            .firstMatch(cleaned);
     if (numberBookMatch != null) {
       final bookNumber = numberBookMatch.group(1)!;
       final bookName = numberBookMatch.group(2)!.trim();
       final chapterVerse = numberBookMatch.group(3)!;
-      
+
       final fullBookName = '$bookNumber $bookName';
-      return _parseWithBookAndChapterVerse(fullBookName, chapterVerse, referenceText);
+      return _parseWithBookAndChapterVerse(
+          fullBookName, chapterVerse, referenceText);
     }
 
     // Strategy 2: Split on last numeric part
@@ -48,10 +51,11 @@ class ReferenceParser {
         if (RegExp(r'^\d+').hasMatch(parts[i])) {
           final book = parts.take(i).join(' ');
           final chapterVerse = parts[i];
-          
+
           // Validate book name
           if (BibleBookMapping.findBook(book) != null) {
-            return _parseWithBookAndChapterVerse(book, chapterVerse, referenceText);
+            return _parseWithBookAndChapterVerse(
+                book, chapterVerse, referenceText);
           }
         }
       }
@@ -63,10 +67,11 @@ class ReferenceParser {
     if (abbrevMatch != null) {
       final abbrev = abbrevMatch.group(1)!.replaceAll('.', '');
       final chapterVerse = abbrevMatch.group(2)!;
-      
+
       final metadata = BibleBookMapping.getByAbbreviation(abbrev);
       if (metadata != null) {
-        return _parseWithBookAndChapterVerse(metadata.name, chapterVerse, referenceText);
+        return _parseWithBookAndChapterVerse(
+            metadata.name, chapterVerse, referenceText);
       }
     }
 
@@ -75,16 +80,13 @@ class ReferenceParser {
 
   /// Parse when we have separated book and chapter:verse
   static ScriptureReference _parseWithBookAndChapterVerse(
-    String book, 
-    String chapterVerse, 
-    String originalText
-  ) {
+      String book, String chapterVerse, String originalText) {
     final colonParts = chapterVerse.split(':');
     final chapter = int.parse(colonParts[0]);
-    
+
     int? startVerse;
     int? endVerse;
-    
+
     if (colonParts.length > 1) {
       final verseParts = colonParts[1].split('-');
       startVerse = int.parse(verseParts[0]);
@@ -107,7 +109,7 @@ class ReferenceParser {
   /// Try to parse multiple references from a single string
   static List<ScriptureReference> parseMultiple(String text) {
     final references = <ScriptureReference>[];
-    
+
     // Common patterns for multiple references
     final patterns = [
       // Semicolon separated: "John 3:16; Romans 6:23"
@@ -169,13 +171,13 @@ class ReferenceParser {
   static String? normalize(String referenceText) {
     try {
       final ref = parse(referenceText);
-      
+
       // Use canonical book name if available
-      final metadata = BibleBookMapping.getByName(ref.book) ?? 
-                       BibleBookMapping.getByAbbreviation(ref.book) ??
-                       BibleBookMapping.getById(ref.book);
+      final metadata = BibleBookMapping.getByName(ref.book) ??
+          BibleBookMapping.getByAbbreviation(ref.book) ??
+          BibleBookMapping.getById(ref.book);
       final bookName = metadata?.name ?? ref.book;
-      
+
       if (ref.startVerse != null) {
         if (ref.isSingleVerse) {
           return '$bookName ${ref.chapter}:${ref.startVerse}';

@@ -16,7 +16,8 @@ class PrayerListScreen extends ConsumerWidget {
   final bool showRecent;
 
   const PrayerListScreen({
-    required this.title, super.key,
+    required this.title,
+    super.key,
     this.categoryId,
     this.groupId,
     this.showFavorites = false,
@@ -28,7 +29,7 @@ class PrayerListScreen extends ConsumerWidget {
     // Get liturgical color for theming
     final currentColor = ref.watch(currentLiturgicalColorProvider);
     final colorIntensity = ref.watch(colorIntensityProvider);
-    final liturgicalColor = currentColor != null 
+    final liturgicalColor = currentColor != null
         ? LiturgicalColor.fromString(currentColor)
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
@@ -134,7 +135,8 @@ class PrayerListScreen extends ConsumerWidget {
     IconData icon;
 
     if (showFavorites) {
-      message = 'No favorite prayers yet.\nStart adding prayers to your favorites!';
+      message =
+          'No favorite prayers yet.\nStart adding prayers to your favorites!';
       icon = Icons.favorite_border;
     } else if (showRecent) {
       message = 'No recent prayers.\nStart reading prayers to see them here!';
@@ -153,14 +155,19 @@ class PrayerListScreen extends ConsumerWidget {
             Icon(
               icon,
               size: 64,
-              color: themeColor?.withValues(alpha: 0.6) ?? 
-                     Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+              color:
+                  themeColor?.withValues(alpha: 0.6) ??
+                  Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
             const SizedBox(height: 16),
             Text(
               message,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
               textAlign: TextAlign.center,
             ),
@@ -201,9 +208,8 @@ class PrayerListScreen extends ConsumerWidget {
                   children: [
                     Text(
                       'Filter Prayers',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     IconButton(
                       onPressed: () => Navigator.of(context).pop(),
@@ -217,7 +223,9 @@ class PrayerListScreen extends ConsumerWidget {
                     builder: (context, ref, child) {
                       final selectedTags = ref.watch(selectedTagsProvider);
                       final availableTags = ref.watch(availableTagsProvider);
-                      final showFavoritesOnly = ref.watch(showFavoritesOnlyProvider);
+                      final showFavoritesOnly = ref.watch(
+                        showFavoritesOnlyProvider,
+                      );
 
                       return ListView(
                         controller: scrollController,
@@ -227,20 +235,22 @@ class PrayerListScreen extends ConsumerWidget {
                             title: const Text('Show favorites only'),
                             value: showFavoritesOnly,
                             onChanged: (value) {
-                              ref.read(showFavoritesOnlyProvider.notifier).state = value;
+                              ref
+                                      .read(showFavoritesOnlyProvider.notifier)
+                                      .state =
+                                  value;
                             },
                           ),
                           const Divider(),
-                          
+
                           // Tags section
                           Text(
                             'Filter by Tags',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 8),
-                          
+
                           Wrap(
                             spacing: 8,
                             runSpacing: 4,
@@ -250,20 +260,29 @@ class PrayerListScreen extends ConsumerWidget {
                                 label: Text(tag),
                                 selected: isSelected,
                                 onSelected: (selected) {
-                                  ref.read(selectedTagsProvider.notifier).toggleTag(tag);
+                                  ref
+                                      .read(selectedTagsProvider.notifier)
+                                      .toggleTag(tag);
                                 },
                               );
                             }).toList(),
                           ),
-                          
+
                           const SizedBox(height: 16),
-                          
+
                           // Clear filters button
                           if (selectedTags.isNotEmpty || showFavoritesOnly)
                             ElevatedButton(
                               onPressed: () {
-                                ref.read(selectedTagsProvider.notifier).clearTags();
-                                ref.read(showFavoritesOnlyProvider.notifier).state = false;
+                                ref
+                                    .read(selectedTagsProvider.notifier)
+                                    .clearTags();
+                                ref
+                                        .read(
+                                          showFavoritesOnlyProvider.notifier,
+                                        )
+                                        .state =
+                                    false;
                               },
                               child: const Text('Clear All Filters'),
                             ),

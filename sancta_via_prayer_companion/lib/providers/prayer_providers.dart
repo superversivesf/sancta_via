@@ -21,13 +21,17 @@ final prayerRepositoryProvider = Provider<PrayerRepository>((ref) {
 });
 
 // Provider for prayer categories
-final prayerCategoriesProvider = FutureProvider<List<PrayerCategory>>((ref) async {
+final prayerCategoriesProvider = FutureProvider<List<PrayerCategory>>((
+  ref,
+) async {
   final repository = ref.watch(prayerRepositoryProvider);
   return await repository.getPrayerCategories();
 });
 
 // Provider for prayer category groups
-final prayerCategoryGroupsProvider = FutureProvider<List<PrayerCategoryGroup>>((ref) async {
+final prayerCategoryGroupsProvider = FutureProvider<List<PrayerCategoryGroup>>((
+  ref,
+) async {
   final repository = ref.watch(prayerRepositoryProvider);
   return await repository.getPrayerCategoryGroups();
 });
@@ -44,25 +48,34 @@ final prayerMetadataProvider = FutureProvider<List<Prayer>>((ref) async {
 });
 
 // Provider for prayers by category
-final prayersByCategoryProvider = FutureProvider.family<List<Prayer>, String>((ref, categoryId) async {
+final prayersByCategoryProvider = FutureProvider.family<List<Prayer>, String>((
+  ref,
+  categoryId,
+) async {
   final repository = ref.watch(prayerRepositoryProvider);
   return await repository.getPrayersByCategory(categoryId);
 });
 
 // Provider for prayers by group
-final prayersByGroupProvider = FutureProvider.family<List<Prayer>, String>((ref, groupId) async {
+final prayersByGroupProvider = FutureProvider.family<List<Prayer>, String>((
+  ref,
+  groupId,
+) async {
   final repository = ref.watch(prayerRepositoryProvider);
   return await repository.getPrayersByGroup(groupId);
 });
 
 // Provider for a specific prayer
-final prayerProvider = FutureProvider.family<Prayer?, String>((ref, prayerId) async {
+final prayerProvider = FutureProvider.family<Prayer?, String>((
+  ref,
+  prayerId,
+) async {
   final repository = ref.watch(prayerRepositoryProvider);
   return await repository.getPrayer(prayerId);
 });
 
 // BACKWARD COMPATIBILITY: Provider for user preferences using new unified system
-// 
+//
 // This provider now wraps the new PrayerAppSettings but maintains a compatible interface
 // for backward compatibility. New code should use prayerAppSettingsProvider directly.
 final prayerPreferencesProvider = Provider<PrayerAppSettings>((ref) {
@@ -82,22 +95,24 @@ String _convertLanguageToString(AppLanguage language) {
 }
 
 /// BACKWARD COMPATIBILITY: Notifier wrapper for the old interface
-/// 
+///
 /// This class provides the old interface but delegates to the new unified system.
 /// Use PrayerAppSettingsNotifier directly for new features.
 class PrayerPreferencesNotifier {
   final Ref _ref;
   final PrayerRepository repository; // Keep for any legacy functionality
-  
+
   PrayerPreferencesNotifier(this._ref, this.repository);
-  
+
   /// Get current state (backward compatibility)
   PrayerAppSettings get state {
     return _ref.read(prayerAppSettingsProvider);
   }
 
   Future<void> toggleFavorite(String prayerId) async {
-    await _ref.read(prayerAppSettingsProvider.notifier).toggleFavorite(prayerId);
+    await _ref
+        .read(prayerAppSettingsProvider.notifier)
+        .toggleFavorite(prayerId);
   }
 
   Future<void> addToRecent(String prayerId) async {
@@ -105,24 +120,34 @@ class PrayerPreferencesNotifier {
   }
 
   Future<void> updateFontSize(double fontSize) async {
-    await _ref.read(prayerAppSettingsProvider.notifier).updateFontSize(fontSize);
+    await _ref
+        .read(prayerAppSettingsProvider.notifier)
+        .updateFontSize(fontSize);
   }
 
   Future<void> updateDefaultLanguage(String language) async {
-    await _ref.read(prayerAppSettingsProvider.notifier).updateDefaultLanguage(language);
+    await _ref
+        .read(prayerAppSettingsProvider.notifier)
+        .updateDefaultLanguage(language);
   }
 
   Future<void> updateReadingMode(PrayerReadingMode readingMode) async {
-    await _ref.read(prayerAppSettingsProvider.notifier).updateReadingMode(readingMode);
+    await _ref
+        .read(prayerAppSettingsProvider.notifier)
+        .updateReadingMode(readingMode);
   }
 
   Future<void> updateVerseHighlighting(bool enabled) async {
-    await _ref.read(prayerAppSettingsProvider.notifier).updateVerseHighlighting(enabled);
+    await _ref
+        .read(prayerAppSettingsProvider.notifier)
+        .updateVerseHighlighting(enabled);
   }
 }
 
 /// BACKWARD COMPATIBILITY: Provider for the notifier
-final prayerPreferencesNotifierProvider = Provider<PrayerPreferencesNotifier>((ref) {
+final prayerPreferencesNotifierProvider = Provider<PrayerPreferencesNotifier>((
+  ref,
+) {
   final repository = ref.watch(prayerRepositoryProvider);
   return PrayerPreferencesNotifier(ref, repository);
 });
@@ -163,12 +188,15 @@ final searchResultsProvider = FutureProvider<List<Prayer>>((ref) async {
 });
 
 // Provider for selected translation
-final selectedTranslationProvider = StateProvider.family<String?, String>((ref, prayerId) => null);
+final selectedTranslationProvider = StateProvider.family<String?, String>(
+  (ref, prayerId) => null,
+);
 
 // Selected tags provider for filtering
-final selectedTagsProvider = StateNotifierProvider<SelectedTagsNotifier, List<String>>((ref) {
-  return SelectedTagsNotifier();
-});
+final selectedTagsProvider =
+    StateNotifierProvider<SelectedTagsNotifier, List<String>>((ref) {
+      return SelectedTagsNotifier();
+    });
 
 // Font size provider (derived from preferences)
 final fontSizeProvider = Provider<double>((ref) {
@@ -227,9 +255,9 @@ final filteredPrayersProvider = FutureProvider<List<Prayer>>((ref) async {
 
   // Filter by favorites if enabled
   if (showFavoritesOnly) {
-    filteredPrayers = filteredPrayers.where((prayer) =>
-        settings.favoritePrayerIds.contains(prayer.id)
-    ).toList();
+    filteredPrayers = filteredPrayers
+        .where((prayer) => settings.favoritePrayerIds.contains(prayer.id))
+        .toList();
   }
 
   // Filter by selected tags
@@ -243,37 +271,38 @@ final filteredPrayersProvider = FutureProvider<List<Prayer>>((ref) async {
 });
 
 // Filtered category prayers provider
-final filteredCategoryPrayersProvider = FutureProvider.family<List<Prayer>, String>((ref, categoryFilter) async {
-  final allPrayersAsync = ref.watch(allPrayersProvider);
-  final allPrayers = allPrayersAsync.value ?? [];
+final filteredCategoryPrayersProvider =
+    FutureProvider.family<List<Prayer>, String>((ref, categoryFilter) async {
+      final allPrayersAsync = ref.watch(allPrayersProvider);
+      final allPrayers = allPrayersAsync.value ?? [];
 
-  final selectedTags = ref.watch(selectedTagsProvider);
-  final showFavoritesOnly = ref.watch(showFavoritesOnlyProvider);
-  final settings = ref.watch(prayerPreferencesProvider);
+      final selectedTags = ref.watch(selectedTagsProvider);
+      final showFavoritesOnly = ref.watch(showFavoritesOnlyProvider);
+      final settings = ref.watch(prayerPreferencesProvider);
 
-  // Parse comma-separated categories
-  final categories = categoryFilter.split(',');
+      // Parse comma-separated categories
+      final categories = categoryFilter.split(',');
 
-  // Filter by category
-  var filteredPrayers = allPrayers.where((prayer) {
-    return prayer.categories.any((cat) => categories.contains(cat));
-  }).toList();
+      // Filter by category
+      var filteredPrayers = allPrayers.where((prayer) {
+        return prayer.categories.any((cat) => categories.contains(cat));
+      }).toList();
 
-  // Apply other filters
-  if (showFavoritesOnly) {
-    filteredPrayers = filteredPrayers.where((prayer) =>
-        settings.favoritePrayerIds.contains(prayer.id)
-    ).toList();
-  }
+      // Apply other filters
+      if (showFavoritesOnly) {
+        filteredPrayers = filteredPrayers
+            .where((prayer) => settings.favoritePrayerIds.contains(prayer.id))
+            .toList();
+      }
 
-  if (selectedTags.isNotEmpty) {
-    filteredPrayers = filteredPrayers.where((prayer) {
-      return prayer.tags.any((tag) => selectedTags.contains(tag));
-    }).toList();
-  }
+      if (selectedTags.isNotEmpty) {
+        filteredPrayers = filteredPrayers.where((prayer) {
+          return prayer.tags.any((tag) => selectedTags.contains(tag));
+        }).toList();
+      }
 
-  return filteredPrayers;
-});
+      return filteredPrayers;
+    });
 
 // Prayer of the day provider using liturgical calendar
 final prayerOfTheDayProvider = FutureProvider<Prayer?>((ref) async {
@@ -289,9 +318,9 @@ final prayerOfTheDayProvider = FutureProvider<Prayer?>((ref) async {
 
   // Use the service to select the appropriate prayer
   return PrayerOfTheDayService.selectPrayerOfTheDay(
-      today,
-      liturgicalDay,
-      allPrayers
+    today,
+    liturgicalDay,
+    allPrayers,
   );
 });
 

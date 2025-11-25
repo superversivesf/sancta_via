@@ -2,21 +2,21 @@
 enum BibleTranslation {
   /// Catholic Public Domain Version
   cpdv('cpdv', 'Catholic Public Domain Version', 'CPDV'),
-  
+
   /// Douay-Rheims 1899 American Edition
   drc('drc', 'Douay-Rheims 1899', 'DRC'),
-  
+
   /// World English Bible Catholic Edition
   engwebc('engwebc', 'World English Bible Catholic', 'WEB-C');
 
   const BibleTranslation(this.id, this.name, this.abbreviation);
-  
+
   /// Unique identifier for the translation
   final String id;
-  
+
   /// Full name of the translation
   final String name;
-  
+
   /// Common abbreviation
   final String abbreviation;
 
@@ -37,6 +37,6 @@ enum BibleTranslation {
   }
 
   /// Get all available translation IDs
-  static List<String> get availableIds => 
+  static List<String> get availableIds =>
       BibleTranslation.values.map((t) => t.id).toList();
 }

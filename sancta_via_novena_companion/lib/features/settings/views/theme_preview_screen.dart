@@ -9,8 +9,10 @@ class ThemePreviewScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Use the shared liturgical calendar provider
-    final currentLiturgicalColorString = ref.watch(currentLiturgicalColorProvider);
-    final liturgicalColor = currentLiturgicalColorString != null 
+    final currentLiturgicalColorString = ref.watch(
+      currentLiturgicalColorProvider,
+    );
+    final liturgicalColor = currentLiturgicalColorString != null
         ? LiturgicalColor.fromString(currentLiturgicalColorString)
         : null;
     final liturgicalSeason = ref.watch(currentLiturgicalSeasonProvider);
@@ -55,39 +57,40 @@ class ThemePreviewScreen extends ConsumerWidget {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 24),
-          
+
           // ═══════════════════════════════════════
           // APPEARANCE SECTION (using shared UI)
           // ═══════════════════════════════════════
           const SettingsSectionHeader(title: 'Appearance'),
-          
+
           // Theme mode selection (Light/Dark/System)
           const ThemeModeSelector(),
-          
+
           // Color intensity selection (Vibrant/Muted)
           const ColorIntensitySelector(),
-          
+
           // Liturgical color preview
           const LiturgicalColorPreview(),
-          
+
           const Divider(),
-          
+
           // ═══════════════════════════════════════
           // ACCESSIBILITY SECTION
           // ═══════════════════════════════════════
           const AccessibilitySettings(
-            fontPreviewText: 'Sample novena prayer text: "O Saint Jude, glorious apostle..."',
+            fontPreviewText:
+                'Sample novena prayer text: "O Saint Jude, glorious apostle..."',
             showFontSize: true,
           ),
-          
+
           const SizedBox(height: 24),
-          
+
           // Preview section
           const SettingsSectionHeader(title: 'Preview'),
           const SizedBox(height: 16),
-          
+
           // Sample UI elements
           Card(
             child: Padding(
@@ -129,7 +132,7 @@ class ThemePreviewScreen extends ConsumerWidget {
 
   String _getColorName(LiturgicalColor? color) {
     if (color == null) return 'Default (Purple)';
-    
+
     switch (color) {
       case LiturgicalColor.green:
         return 'Green (Ordinary Time)';

@@ -45,10 +45,12 @@ void main() {
         ];
 
         // Mock the database calls
-        when(mockDatabase.getPrayersForExactTimeOfDay('morning'))
-            .thenAnswer((_) async => morningPrayers);
-        when(mockDatabase.getPrayersForExactTimeOfDay('anytime'))
-            .thenAnswer((_) async => anytimePrayers);
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay('morning'),
+        ).thenAnswer((_) async => morningPrayers);
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay('anytime'),
+        ).thenAnswer((_) async => anytimePrayers);
 
         // Call repository method
         final result = await repository.getPrayersForTimeOfDay(
@@ -68,8 +70,9 @@ void main() {
 
       test('returns empty lists when no prayers exist', () async {
         // Mock empty results
-        when(mockDatabase.getPrayersForExactTimeOfDay(any))
-            .thenAnswer((_) async => []);
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay(any),
+        ).thenAnswer((_) async => []);
 
         final result = await repository.getPrayersForTimeOfDay(
           PrayerTimeOfDay.afternoon,
@@ -81,20 +84,22 @@ void main() {
 
       test('handles all time periods correctly', () async {
         // Setup mock for all time periods
-        when(mockDatabase.getPrayersForExactTimeOfDay(any))
-            .thenAnswer((_) async => []);
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay(any),
+        ).thenAnswer((_) async => []);
 
         for (final timeOfDay in PrayerTimeOfDay.values) {
           final result = await repository.getPrayersForTimeOfDay(timeOfDay);
-          
+
           expect(result.timePrayers, isA<List<Prayer>>());
           expect(result.anytimePrayers, isA<List<Prayer>>());
         }
       });
 
       test('returns correct record structure', () async {
-        when(mockDatabase.getPrayersForExactTimeOfDay(any))
-            .thenAnswer((_) async => []);
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay(any),
+        ).thenAnswer((_) async => []);
 
         final result = await repository.getPrayersForTimeOfDay(
           PrayerTimeOfDay.evening,
@@ -112,12 +117,15 @@ void main() {
         final anytimePrayers = [createPrayer('3', 'Anytime', 'anytime')];
 
         // Setup different responses for different time periods
-        when(mockDatabase.getPrayersForExactTimeOfDay('morning'))
-            .thenAnswer((_) async => morningPrayers);
-        when(mockDatabase.getPrayersForExactTimeOfDay('afternoon'))
-            .thenAnswer((_) async => afternoonPrayers);
-        when(mockDatabase.getPrayersForExactTimeOfDay('anytime'))
-            .thenAnswer((_) async => anytimePrayers);
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay('morning'),
+        ).thenAnswer((_) async => morningPrayers);
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay('afternoon'),
+        ).thenAnswer((_) async => afternoonPrayers);
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay('anytime'),
+        ).thenAnswer((_) async => anytimePrayers);
 
         final morningResult = await repository.getPrayersForTimeOfDay(
           PrayerTimeOfDay.morning,
@@ -133,8 +141,9 @@ void main() {
 
     group('Record Type Features', () {
       setUp(() {
-        when(mockDatabase.getPrayersForExactTimeOfDay(any))
-            .thenAnswer((_) async => []);
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay(any),
+        ).thenAnswer((_) async => []);
       });
 
       test('record fields can be destructured', () async {
@@ -143,7 +152,7 @@ void main() {
         );
 
         final (:timePrayers, :anytimePrayers) = result;
-        
+
         expect(timePrayers, isA<List<Prayer>>());
         expect(anytimePrayers, isA<List<Prayer>>());
       });
@@ -158,7 +167,7 @@ void main() {
       });
 
       test('record can be assigned to typed variable', () async {
-        final ({List<Prayer> timePrayers, List<Prayer> anytimePrayers}) result = 
+        final ({List<Prayer> timePrayers, List<Prayer> anytimePrayers}) result =
             await repository.getPrayersForTimeOfDay(PrayerTimeOfDay.evening);
 
         expect(result.timePrayers, isA<List<Prayer>>());
@@ -169,8 +178,9 @@ void main() {
     group('Error Handling', () {
       test('handles database errors gracefully', () async {
         // Mock database throwing an error
-        when(mockDatabase.getPrayersForExactTimeOfDay(any))
-            .thenThrow(Exception('Database error'));
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay(any),
+        ).thenThrow(Exception('Database error'));
 
         final result = await repository.getPrayersForTimeOfDay(
           PrayerTimeOfDay.morning,
@@ -182,11 +192,13 @@ void main() {
       });
 
       test('does not throw when database fails', () async {
-        when(mockDatabase.getPrayersForExactTimeOfDay(any))
-            .thenThrow(Exception('Database error'));
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay(any),
+        ).thenThrow(Exception('Database error'));
 
         expect(
-          () async => await repository.getPrayersForTimeOfDay(PrayerTimeOfDay.morning),
+          () async =>
+              await repository.getPrayersForTimeOfDay(PrayerTimeOfDay.morning),
           returnsNormally,
         );
       });
@@ -201,21 +213,28 @@ void main() {
         repository.clearCache();
         repository.clearCache();
         repository.clearCache();
-        
+
         expect(true, isTrue);
       });
     });
 
     group('Multiple Query Patterns', () {
       setUp(() {
-        when(mockDatabase.getPrayersForExactTimeOfDay(any))
-            .thenAnswer((_) async => []);
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay(any),
+        ).thenAnswer((_) async => []);
       });
 
       test('can query multiple time periods sequentially', () async {
-        final morning = await repository.getPrayersForTimeOfDay(PrayerTimeOfDay.morning);
-        final afternoon = await repository.getPrayersForTimeOfDay(PrayerTimeOfDay.afternoon);
-        final evening = await repository.getPrayersForTimeOfDay(PrayerTimeOfDay.evening);
+        final morning = await repository.getPrayersForTimeOfDay(
+          PrayerTimeOfDay.morning,
+        );
+        final afternoon = await repository.getPrayersForTimeOfDay(
+          PrayerTimeOfDay.afternoon,
+        );
+        final evening = await repository.getPrayersForTimeOfDay(
+          PrayerTimeOfDay.evening,
+        );
 
         expect(morning.timePrayers, isA<List<Prayer>>());
         expect(afternoon.timePrayers, isA<List<Prayer>>());
@@ -223,9 +242,15 @@ void main() {
       });
 
       test('can query same time period multiple times', () async {
-        final result1 = await repository.getPrayersForTimeOfDay(PrayerTimeOfDay.morning);
-        final result2 = await repository.getPrayersForTimeOfDay(PrayerTimeOfDay.morning);
-        final result3 = await repository.getPrayersForTimeOfDay(PrayerTimeOfDay.morning);
+        final result1 = await repository.getPrayersForTimeOfDay(
+          PrayerTimeOfDay.morning,
+        );
+        final result2 = await repository.getPrayersForTimeOfDay(
+          PrayerTimeOfDay.morning,
+        );
+        final result3 = await repository.getPrayersForTimeOfDay(
+          PrayerTimeOfDay.morning,
+        );
 
         expect(result1.timePrayers, isA<List<Prayer>>());
         expect(result2.timePrayers, isA<List<Prayer>>());
@@ -235,8 +260,9 @@ void main() {
 
     group('Mock Verification', () {
       test('database methods are called with correct parameters', () async {
-        when(mockDatabase.getPrayersForExactTimeOfDay(any))
-            .thenAnswer((_) async => []);
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay(any),
+        ).thenAnswer((_) async => []);
 
         await repository.getPrayersForTimeOfDay(PrayerTimeOfDay.morning);
 
@@ -246,8 +272,9 @@ void main() {
       });
 
       test('database is not called more than necessary', () async {
-        when(mockDatabase.getPrayersForExactTimeOfDay(any))
-            .thenAnswer((_) async => []);
+        when(
+          mockDatabase.getPrayersForExactTimeOfDay(any),
+        ).thenAnswer((_) async => []);
 
         await repository.getPrayersForTimeOfDay(PrayerTimeOfDay.afternoon);
 

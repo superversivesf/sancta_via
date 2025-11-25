@@ -13,13 +13,13 @@ import '../models/app_settings.dart';
 export 'bible_app_settings_provider.dart';
 
 /// BACKWARD COMPATIBILITY: Provider for app settings using new unified system
-/// 
+///
 /// This provider now wraps the new BibleAppSettings but maintains the old AppSettings interface
 /// for backward compatibility. New code should use bibleAppSettingsProvider directly.
 // ignore: deprecated_member_use_from_same_package
 final appSettingsProvider = Provider<AppSettings>((ref) {
   final bibleSettings = ref.watch(bibleAppSettingsProvider);
-  
+
   // Convert to old AppSettings format for backward compatibility
   // ignore: deprecated_member_use_from_same_package
   return AppSettings(
@@ -29,14 +29,14 @@ final appSettingsProvider = Provider<AppSettings>((ref) {
 });
 
 /// BACKWARD COMPATIBILITY: Notifier wrapper for the old interface
-/// 
+///
 /// This class provides the old interface but delegates to the new unified system.
 /// Use BibleAppSettingsNotifier directly for new features.
 class AppSettingsNotifier {
   final Ref _ref;
-  
+
   AppSettingsNotifier(this._ref);
-  
+
   /// Get current state (backward compatibility)
   // ignore: deprecated_member_use_from_same_package
   AppSettings get state {
@@ -53,7 +53,9 @@ class AppSettingsNotifier {
   }
 
   Future<void> setBibleTranslation(BibleTranslation translation) async {
-    await _ref.read(bibleAppSettingsProvider.notifier).setBibleTranslation(translation);
+    await _ref
+        .read(bibleAppSettingsProvider.notifier)
+        .setBibleTranslation(translation);
   }
 }
 

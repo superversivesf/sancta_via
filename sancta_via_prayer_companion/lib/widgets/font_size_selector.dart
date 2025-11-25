@@ -12,7 +12,7 @@ class FontSizeSlider extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(prayerAppSettingsProvider);
     final currentFontSize = settings.fontSize;
-    
+
     return Column(
       children: [
         // Font size slider with icons
@@ -26,9 +26,12 @@ class FontSizeSlider extends ConsumerWidget {
                 min: 12.0,
                 max: 32.0, // Updated to new unified range
                 divisions: 20,
-                label: '${currentFontSize.round()}pt (${_getFontSizeLabel(currentFontSize)})',
+                label:
+                    '${currentFontSize.round()}pt (${_getFontSizeLabel(currentFontSize)})',
                 onChanged: (value) {
-                  ref.read(prayerAppSettingsProvider.notifier).updateFontSize(value);
+                  ref
+                      .read(prayerAppSettingsProvider.notifier)
+                      .updateFontSize(value);
                 },
               ),
             ),
@@ -36,7 +39,7 @@ class FontSizeSlider extends ConsumerWidget {
             const Icon(Icons.text_increase, size: 20),
           ],
         ),
-        
+
         // Current font size display
         Padding(
           padding: const EdgeInsets.only(top: 4),
@@ -45,17 +48,15 @@ class FontSizeSlider extends ConsumerWidget {
             style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
-        
+
         const SizedBox(height: 12),
-        
+
         // Sample prayer text with current settings
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(12.0),
           decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).dividerColor,
-            ),
+            border: Border.all(color: Theme.of(context).dividerColor),
             borderRadius: BorderRadius.circular(6.0),
           ),
           child: Column(
@@ -68,16 +69,15 @@ class FontSizeSlider extends ConsumerWidget {
               const SizedBox(height: 6),
               Text(
                 'Our Father, who art in heaven,\nhallowed be thy name.',
-                style: TextStyle(
-                  fontSize: currentFontSize,
-                  height: 1.5,
-                ),
+                style: TextStyle(fontSize: currentFontSize, height: 1.5),
               ),
               const SizedBox(height: 4),
               Text(
                 'Effective scale: ${settings.effectiveTextScaleFactor.toStringAsFixed(2)}x',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
+                  color: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
                 ),
               ),
             ],

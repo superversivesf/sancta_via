@@ -12,7 +12,7 @@ import '../widgets/app_info_section.dart';
 import '../models/base_settings_model.dart';
 
 /// Example unified settings screen showing how to use all standardized components
-/// 
+///
 /// This demonstrates the recommended structure for settings screens across all
 /// Sancta Via apps. Apps can:
 /// 1. Use this as-is for basic settings
@@ -40,66 +40,68 @@ class UnifiedSettingsScreen extends ConsumerWidget {
         top: false, // Let AppBar handle top
         child: ListView(
           children: [
-          // ═══════════════════════════════════════
-          // APPEARANCE SECTION
-          // ═══════════════════════════════════════
-          const SettingsSectionHeader(title: 'Appearance'),
-          
-          // Theme mode selection (Light/Dark/System)
-          const ThemeModeSelector(),
-          
-          // Color intensity selection (Vibrant/Muted)
-          const ColorIntensitySelector(),
-          
-          // Liturgical color preview
-          const LiturgicalColorPreview(),
-          
-          const Divider(),
+            // ═══════════════════════════════════════
+            // APPEARANCE SECTION
+            // ═══════════════════════════════════════
+            const SettingsSectionHeader(title: 'Appearance'),
 
-          // ═══════════════════════════════════════
-          // ACCESSIBILITY SECTION
-          // ═══════════════════════════════════════
-          const AccessibilitySettings(
-            fontPreviewText: 'Sample prayer text: "Hail Mary, full of grace..."',
-          ),
-          
-          const Divider(),
+            // Theme mode selection (Light/Dark/System)
+            const ThemeModeSelector(),
 
-          // ═══════════════════════════════════════
-          // LANGUAGE & LOCALIZATION
-          // ═══════════════════════════════════════
-          const SettingsSectionHeader(title: 'Language & Localization'),
-          
-          const LanguageSelector(
-            subtitle: 'Choose language for prayers and interface',
-          ),
-          
-          const Divider(),
+            // Color intensity selection (Vibrant/Muted)
+            const ColorIntensitySelector(),
 
-          // ═══════════════════════════════════════
-          // NOTIFICATIONS SECTION
-          // ═══════════════════════════════════════
-          NotificationsSettings(
-            subtitle: 'Prayer reminders and liturgical notifications',
-            customOptions: customNotifications ?? [
-              CatholicNotificationOptions.prayerReminders(),
-              CatholicNotificationOptions.liturgicalCalendar(),
-            ],
-          ),
-          
-          const Divider(),
+            // Liturgical color preview
+            const LiturgicalColorPreview(),
 
-          // ═══════════════════════════════════════
-          // APP-SPECIFIC SETTINGS
-          // ═══════════════════════════════════════
-          if (appSpecificSettings != null) ...[
-            appSpecificSettings!,
             const Divider(),
-          ],
 
-          // ═══════════════════════════════════════
-          // ABOUT SECTION
-          // ═══════════════════════════════════════
+            // ═══════════════════════════════════════
+            // ACCESSIBILITY SECTION
+            // ═══════════════════════════════════════
+            const AccessibilitySettings(
+              fontPreviewText:
+                  'Sample prayer text: "Hail Mary, full of grace..."',
+            ),
+
+            const Divider(),
+
+            // ═══════════════════════════════════════
+            // LANGUAGE & LOCALIZATION
+            // ═══════════════════════════════════════
+            const SettingsSectionHeader(title: 'Language & Localization'),
+
+            const LanguageSelector(
+              subtitle: 'Choose language for prayers and interface',
+            ),
+
+            const Divider(),
+
+            // ═══════════════════════════════════════
+            // NOTIFICATIONS SECTION
+            // ═══════════════════════════════════════
+            NotificationsSettings(
+              subtitle: 'Prayer reminders and liturgical notifications',
+              customOptions: customNotifications ??
+                  [
+                    CatholicNotificationOptions.prayerReminders(),
+                    CatholicNotificationOptions.liturgicalCalendar(),
+                  ],
+            ),
+
+            const Divider(),
+
+            // ═══════════════════════════════════════
+            // APP-SPECIFIC SETTINGS
+            // ═══════════════════════════════════════
+            if (appSpecificSettings != null) ...[
+              appSpecificSettings!,
+              const Divider(),
+            ],
+
+            // ═══════════════════════════════════════
+            // ABOUT SECTION
+            // ═══════════════════════════════════════
             AppInfoSection(
               appInfo: appInfo,
             ),
@@ -120,7 +122,8 @@ class ExampleBibleAppSettingsScreen extends ConsumerWidget {
     final appInfo = AppInfo(
       appName: 'Bible Reading App',
       version: '1.0.0',
-      description: 'A Catholic Bible reading app with liturgical calendar integration for daily spiritual reading.',
+      description:
+          'A Catholic Bible reading app with liturgical calendar integration for daily spiritual reading.',
       icon: const Icon(Icons.book, size: 48),
     );
 
@@ -128,7 +131,7 @@ class ExampleBibleAppSettingsScreen extends ConsumerWidget {
     final bibleSpecificSettings = Column(
       children: [
         const SettingsSectionHeader(title: 'Bible Settings'),
-        
+
         // Bible translation selector (app-specific)
         ListTile(
           leading: const Icon(Icons.book),
@@ -147,7 +150,7 @@ class ExampleBibleAppSettingsScreen extends ConsumerWidget {
             },
           ),
         ),
-        
+
         // Reading mode (app-specific)
         SwitchListTile(
           secondary: const Icon(Icons.auto_stories),
@@ -186,14 +189,15 @@ class ExamplePrayerAppSettingsScreen extends ConsumerWidget {
     final appInfo = AppInfo(
       appName: 'Prayer Companion',
       version: '1.0.0',
-      description: 'Traditional and contemporary Catholic prayers with liturgical calendar integration.',
+      description:
+          'Traditional and contemporary Catholic prayers with liturgical calendar integration.',
       icon: const Icon(Icons.church, size: 48),
     );
 
     final prayerSpecificSettings = Column(
       children: [
         const SettingsSectionHeader(title: 'Prayer Settings'),
-        
+
         // Prayer reading mode
         ListTile(
           leading: const Icon(Icons.auto_stories),
@@ -212,7 +216,7 @@ class ExamplePrayerAppSettingsScreen extends ConsumerWidget {
             },
           ),
         ),
-        
+
         // Verse highlighting
         SwitchListTile(
           secondary: const Icon(Icons.touch_app),
@@ -238,7 +242,7 @@ class ExamplePrayerAppSettingsScreen extends ConsumerWidget {
 }
 
 /// Migration helper: How to convert existing settings screens
-/// 
+///
 /// BEFORE (individual app implementation):
 /// ```dart
 /// class OldSettingsScreen extends ConsumerWidget {
@@ -259,7 +263,7 @@ class ExamplePrayerAppSettingsScreen extends ConsumerWidget {
 ///   }
 /// }
 /// ```
-/// 
+///
 /// AFTER (using unified components):
 /// ```dart
 /// class NewSettingsScreen extends ConsumerWidget {

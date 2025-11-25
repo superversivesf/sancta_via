@@ -28,10 +28,10 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
     // Get the return destination from the current route BEFORE showing modal
     final returnTo = GoRouterState.of(context).uri.queryParameters['returnTo'];
     AppLogger.debug('Retrieved returnTo parameter: $returnTo', 'PIN_AUTH');
-    
+
     // Load initial data
     final authService = ref.read(authServiceProvider);
-    
+
     // Check if currently locked out
     final isLockedOut = await authService.isLockedOut();
     if (isLockedOut) {
@@ -44,7 +44,7 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
         await authService.clearLockoutOnRestart();
       }
     }
-    
+
     final currentAttempts = await authService.getFailedAttempts();
     await _showPinAuthModal(returnTo, currentAttempts);
   }
@@ -52,11 +52,11 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
   Future<void> _showPinAuthModal(String? returnTo, int currentAttempts) async {
     String? errorMessage;
     int attempts = currentAttempts;
-    
+
     while (attempts < AppConstants.maxPinAttempts) {
       try {
         if (!mounted) return;
-        
+
         final enteredPin = await PinputModalWidget.show(
           context: context,
           title: 'Sancta Via',
@@ -76,7 +76,7 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
 
         // Validate PIN with loading state
         final isValid = await _validatePinWithLoading(enteredPin);
-        
+
         if (isValid) {
           // Authentication successful
           await _handleAuthSuccess(returnTo);
@@ -85,9 +85,10 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
           // Authentication failed
           attempts = await ref.read(authServiceProvider).getFailedAttempts();
           final newRemainingAttempts = AppConstants.maxPinAttempts - attempts;
-          
+
           if (newRemainingAttempts > 0) {
-            errorMessage = 'Incorrect PIN. $newRemainingAttempts attempts remaining.';
+            errorMessage =
+                'Incorrect PIN. $newRemainingAttempts attempts remaining.';
           } else {
             // This shouldn't happen with new lockout system, but handle gracefully
             final authService = ref.read(authServiceProvider);
@@ -98,7 +99,6 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
             }
           }
         }
-        
       } catch (e, stackTrace) {
         AppLogger.error('PIN auth modal error', e, stackTrace, 'PIN_AUTH');
         if (e.toString().contains('locked') || e.toString().contains('wait')) {
@@ -122,45 +122,50 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
 
     try {
       AppLogger.debug('=== PIN VALIDATION START ===', 'PIN_AUTH');
-      
+
       final authService = ref.read(authServiceProvider);
       final isValid = await authService.validatePin(pin);
-      
+
       AppLogger.debug('PIN validation result: $isValid', 'PIN_AUTH');
-      
+
       // Close loading modal
       if (mounted) Navigator.of(context).pop();
-      
+
       return isValid;
-      
     } catch (e, stackTrace) {
       AppLogger.error('PIN validation error', e, stackTrace, 'PIN_AUTH');
-      
+
       // Close loading modal
       if (mounted) Navigator.of(context).pop();
-      
+
       rethrow;
     }
   }
 
   Future<void> _handleAuthSuccess(String? returnTo) async {
     AppLogger.debug('=== AUTHENTICATION SUCCESS ===', 'PIN_AUTH');
-    
+
     if (!mounted) return;
-    
+
     try {
       // Small delay to ensure auth state is set
       await Future.delayed(const Duration(milliseconds: 300));
-      
+
       // Verify authentication state
       final authService = ref.read(authServiceProvider);
       if (!authService.isAuthenticated) {
-        AppLogger.warning('Authentication state lost, forcing to true', 'PIN_AUTH');
+        AppLogger.warning(
+          'Authentication state lost, forcing to true',
+          'PIN_AUTH',
+        );
         authService.setAuthenticatedForDebug(true);
       }
-      
+
       if (returnTo != null && returnTo.isNotEmpty) {
-        AppLogger.debug('Navigating to intended destination: $returnTo', 'PIN_AUTH');
+        AppLogger.debug(
+          'Navigating to intended destination: $returnTo',
+          'PIN_AUTH',
+        );
         if (mounted) {
           context.go(returnTo);
         }
@@ -170,16 +175,25 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
           context.goNamed(RouteNames.home);
         }
       }
-      
     } catch (e, stackTrace) {
-      AppLogger.error('Navigation error after PIN auth', e, stackTrace, 'PIN_AUTH');
+      AppLogger.error(
+        'Navigation error after PIN auth',
+        e,
+        stackTrace,
+        'PIN_AUTH',
+      );
       // Fallback to home
       try {
         if (mounted) {
           context.goNamed(RouteNames.home);
         }
       } catch (fallbackError) {
-        AppLogger.error('Fallback navigation failed', fallbackError, null, 'PIN_AUTH');
+        AppLogger.error(
+          'Fallback navigation failed',
+          fallbackError,
+          null,
+          'PIN_AUTH',
+        );
       }
     }
   }
@@ -193,19 +207,27 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
       try {
         context.goNamed(RouteNames.home);
       } catch (e2, stackTrace2) {
-        AppLogger.error('Fallback cancel navigation failed', e2, stackTrace2, 'PIN_AUTH');
+        AppLogger.error(
+          'Fallback cancel navigation failed',
+          e2,
+          stackTrace2,
+          'PIN_AUTH',
+        );
       }
     }
   }
 
   void _showLockoutModal(Duration remainingTime) async {
-    AppLogger.debug('Showing PIN lockout modal, remaining time: $remainingTime', 'PIN_AUTH');
-    
+    AppLogger.debug(
+      'Showing PIN lockout modal, remaining time: $remainingTime',
+      'PIN_AUTH',
+    );
+
     await PinLockoutModal.show(
       context: context,
       lockoutDuration: remainingTime,
     );
-    
+
     // After lockout modal is dismissed, go back to home
     if (mounted && context.mounted) {
       context.go('/');

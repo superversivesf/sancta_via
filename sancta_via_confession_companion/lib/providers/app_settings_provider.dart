@@ -15,13 +15,16 @@ import '../models/confession_app_settings.dart';
 export 'confession_app_settings_provider.dart';
 
 /// DEPRECATED: Old AppSettings model - maintained for backward compatibility
-/// 
+///
 /// Use ConfessionAppSettings from confession_app_settings_provider.dart instead.
-@Deprecated('Use ConfessionAppSettings with the unified settings system instead')
+@Deprecated(
+  'Use ConfessionAppSettings with the unified settings system instead',
+)
 class AppSettings {
-  final bool darkMode;           // DEPRECATED: Use theme providers instead
-  final double textScale;       // DEPRECATED: Use fontSize in unified system
-  final String defaultLanguage; // DEPRECATED: Use AppLanguage enum in unified system
+  final bool darkMode; // DEPRECATED: Use theme providers instead
+  final double textScale; // DEPRECATED: Use fontSize in unified system
+  final String
+  defaultLanguage; // DEPRECATED: Use AppLanguage enum in unified system
   final bool notificationsEnabled;
 
   AppSettings({
@@ -89,7 +92,7 @@ class AppSettings {
 }
 
 /// BACKWARD COMPATIBILITY: Provider for app settings using new unified system
-/// 
+///
 /// This provider now wraps the new ConfessionAppSettings but maintains the old AppSettings interface
 /// for backward compatibility. New code should use confessionAppSettingsProvider directly.
 // ignore: deprecated_member_use_from_same_package
@@ -100,14 +103,14 @@ final appSettingsProvider = Provider<AppSettings>((ref) {
 });
 
 /// BACKWARD COMPATIBILITY: Notifier wrapper for the old interface
-/// 
+///
 /// This class provides the old interface but delegates to the new unified system.
 /// Use ConfessionAppSettingsNotifier directly for new features.
 class AppSettingsNotifier {
   final Ref _ref;
-  
+
   AppSettingsNotifier(this._ref);
-  
+
   /// Get current state (backward compatibility)
   // ignore: deprecated_member_use_from_same_package
   AppSettings get state {
@@ -126,7 +129,9 @@ class AppSettingsNotifier {
   }
 
   Future<void> updateTextScale(double textScale) async {
-    await _ref.read(confessionAppSettingsProvider.notifier).updateTextScale(textScale);
+    await _ref
+        .read(confessionAppSettingsProvider.notifier)
+        .updateTextScale(textScale);
   }
 
   Future<void> updateDefaultLanguage(String language) async {
@@ -136,12 +141,16 @@ class AppSettingsNotifier {
     } else if (language == 'Spanish') {
       appLanguage = AppLanguage.spanish;
     }
-    
-    await _ref.read(confessionAppSettingsProvider.notifier).setDefaultLanguage(appLanguage);
+
+    await _ref
+        .read(confessionAppSettingsProvider.notifier)
+        .setDefaultLanguage(appLanguage);
   }
 
   Future<void> updateNotifications(bool enabled) async {
-    await _ref.read(confessionAppSettingsProvider.notifier).setNotificationsEnabled(enabled);
+    await _ref
+        .read(confessionAppSettingsProvider.notifier)
+        .setNotificationsEnabled(enabled);
   }
 }
 
@@ -149,7 +158,6 @@ class AppSettingsNotifier {
 final appSettingsNotifierProvider = Provider<AppSettingsNotifier>((ref) {
   return AppSettingsNotifier(ref);
 });
-
 
 /// Migration helper to access the new notifier from old code patterns
 extension AppSettingsNotifierExtension on WidgetRef {

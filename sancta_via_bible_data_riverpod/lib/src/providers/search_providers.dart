@@ -4,52 +4,57 @@ import 'bible_providers.dart';
 import 'settings_providers.dart';
 
 /// Provider for searching scripture text
-final scriptureSearchProvider = FutureProvider.family<List<SearchResult>, String>((ref, query) async {
-  if (query.trim().isEmpty) return [];
-  
-  final serviceAsync = ref.watch(bibleServiceNotifierProvider);
-  final translation = ref.watch(selectedBibleTranslationProvider);
-  final searchSettings = ref.watch(searchSettingsProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      return await service.searchText(
-        query,
-        translation,
-        caseSensitive: searchSettings.caseSensitive,
-        wholeWords: searchSettings.wholeWords,
-        oldTestamentOnly: searchSettings.oldTestamentOnly,
-        newTestamentOnly: searchSettings.newTestamentOnly,
-        maxResults: searchSettings.maxResults,
+final scriptureSearchProvider =
+    FutureProvider.family<List<SearchResult>, String>((ref, query) async {
+      if (query.trim().isEmpty) return [];
+
+      final serviceAsync = ref.watch(bibleServiceNotifierProvider);
+      final translation = ref.watch(selectedBibleTranslationProvider);
+      final searchSettings = ref.watch(searchSettingsProvider);
+
+      return serviceAsync.when(
+        data: (service) async {
+          return await service.searchText(
+            query,
+            translation,
+            caseSensitive: searchSettings.caseSensitive,
+            wholeWords: searchSettings.wholeWords,
+            oldTestamentOnly: searchSettings.oldTestamentOnly,
+            newTestamentOnly: searchSettings.newTestamentOnly,
+            maxResults: searchSettings.maxResults,
+          );
+        },
+        loading: () => <SearchResult>[],
+        error: (error, stack) => throw error,
       );
-    },
-    loading: () => <SearchResult>[],
-    error: (error, stack) => throw error,
-  );
-});
+    });
 
 /// Provider for advanced scripture search with custom parameters
-final advancedScriptureSearchProvider = FutureProvider.family<List<SearchResult>, SearchParameters>((ref, params) async {
-  if (params.query.trim().isEmpty) return [];
-  
-  final serviceAsync = ref.watch(bibleServiceNotifierProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      return await service.searchText(
-        params.query,
-        params.translation,
-        caseSensitive: params.caseSensitive,
-        wholeWords: params.wholeWords,
-        oldTestamentOnly: params.oldTestamentOnly,
-        newTestamentOnly: params.newTestamentOnly,
-        maxResults: params.maxResults,
+final advancedScriptureSearchProvider =
+    FutureProvider.family<List<SearchResult>, SearchParameters>((
+      ref,
+      params,
+    ) async {
+      if (params.query.trim().isEmpty) return [];
+
+      final serviceAsync = ref.watch(bibleServiceNotifierProvider);
+
+      return serviceAsync.when(
+        data: (service) async {
+          return await service.searchText(
+            params.query,
+            params.translation,
+            caseSensitive: params.caseSensitive,
+            wholeWords: params.wholeWords,
+            oldTestamentOnly: params.oldTestamentOnly,
+            newTestamentOnly: params.newTestamentOnly,
+            maxResults: params.maxResults,
+          );
+        },
+        loading: () => <SearchResult>[],
+        error: (error, stack) => throw error,
       );
-    },
-    loading: () => <SearchResult>[],
-    error: (error, stack) => throw error,
-  );
-});
+    });
 
 /// Search parameters model for advanced search
 class SearchParameters {
@@ -123,7 +128,7 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
             newTestamentOnly: searchSettings.newTestamentOnly,
             maxResults: searchSettings.maxResults,
           );
-          
+
           state = SearchState.success(query, results);
         },
         loading: () => throw Exception('Bible service is loading'),
@@ -155,8 +160,13 @@ sealed class SearchState {
 
   const factory SearchState.initial() = SearchStateInitial;
   const factory SearchState.loading(String query) = SearchStateLoading;
-  const factory SearchState.success(String query, List<SearchResult> results) = SearchStateSuccess;
-  const factory SearchState.error(String query, Object error, StackTrace stackTrace) = SearchStateError;
+  const factory SearchState.success(String query, List<SearchResult> results) =
+      SearchStateSuccess;
+  const factory SearchState.error(
+    String query,
+    Object error,
+    StackTrace stackTrace,
+  ) = SearchStateError;
 }
 
 class SearchStateInitial extends SearchState {
@@ -168,20 +178,23 @@ class SearchStateLoading extends SearchState {
 }
 
 class SearchStateSuccess extends SearchState {
-  const SearchStateSuccess(String query, List<SearchResult> results) : super(query, results);
+  const SearchStateSuccess(String query, List<SearchResult> results)
+    : super(query, results);
 }
 
 class SearchStateError extends SearchState {
   final Object error;
   final StackTrace stackTrace;
 
-  const SearchStateError(String query, this.error, this.stackTrace) : super(query, const []);
+  const SearchStateError(String query, this.error, this.stackTrace)
+    : super(query, const []);
 }
 
 /// Provider for search state management
-final searchStateProvider = StateNotifierProvider<SearchStateNotifier, SearchState>((ref) {
-  return SearchStateNotifier(ref);
-});
+final searchStateProvider =
+    StateNotifierProvider<SearchStateNotifier, SearchState>((ref) {
+      return SearchStateNotifier(ref);
+    });
 
 /// Provider for search suggestions based on popular searches
 final searchSuggestionsProvider = Provider<List<String>>((ref) {
@@ -210,9 +223,10 @@ final searchSuggestionsProvider = Provider<List<String>>((ref) {
 });
 
 /// Provider for search history
-final searchHistoryProvider = StateNotifierProvider<SearchHistoryNotifier, List<String>>((ref) {
-  return SearchHistoryNotifier();
-});
+final searchHistoryProvider =
+    StateNotifierProvider<SearchHistoryNotifier, List<String>>((ref) {
+      return SearchHistoryNotifier();
+    });
 
 /// StateNotifier for managing search history
 class SearchHistoryNotifier extends StateNotifier<List<String>> {
@@ -221,20 +235,20 @@ class SearchHistoryNotifier extends StateNotifier<List<String>> {
   /// Add a search query to history
   void addSearch(String query) {
     if (query.trim().isEmpty) return;
-    
+
     final trimmedQuery = query.trim();
-    
+
     // Remove if already exists
     final newState = state.where((q) => q != trimmedQuery).toList();
-    
+
     // Add to front
     newState.insert(0, trimmedQuery);
-    
+
     // Limit to 20 items
     if (newState.length > 20) {
       newState.removeRange(20, newState.length);
     }
-    
+
     state = newState;
   }
 
@@ -261,29 +275,34 @@ final recentSearchesProvider = Provider<List<String>>((ref) {
 });
 
 /// Provider for searching by verse number
-final verseNumberSearchProvider = FutureProvider.family<List<SearchResult>, int>((ref, verseNumber) async {
-  final serviceAsync = ref.watch(bibleServiceNotifierProvider);
-  final translation = ref.watch(selectedBibleTranslationProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      final searchService = await service.getSearchService(translation);
-      return await searchService.searchByVerseNumber(verseNumber);
-    },
-    loading: () => <SearchResult>[],
-    error: (error, stack) => throw error,
-  );
-});
+final verseNumberSearchProvider =
+    FutureProvider.family<List<SearchResult>, int>((ref, verseNumber) async {
+      final serviceAsync = ref.watch(bibleServiceNotifierProvider);
+      final translation = ref.watch(selectedBibleTranslationProvider);
+
+      return serviceAsync.when(
+        data: (service) async {
+          final searchService = await service.getSearchService(translation);
+          return await searchService.searchByVerseNumber(verseNumber);
+        },
+        loading: () => <SearchResult>[],
+        error: (error, stack) => throw error,
+      );
+    });
 
 /// Provider for getting search service directly
-final searchServiceProvider = FutureProvider.family<BibleSearchService, BibleTranslation>((ref, translation) async {
-  final serviceAsync = ref.watch(bibleServiceNotifierProvider);
-  
-  return serviceAsync.when(
-    data: (service) async {
-      return await service.getSearchService(translation);
-    },
-    loading: () => throw Exception('Bible service is loading'),
-    error: (error, stack) => throw error,
-  );
-});
+final searchServiceProvider =
+    FutureProvider.family<BibleSearchService, BibleTranslation>((
+      ref,
+      translation,
+    ) async {
+      final serviceAsync = ref.watch(bibleServiceNotifierProvider);
+
+      return serviceAsync.when(
+        data: (service) async {
+          return await service.getSearchService(translation);
+        },
+        loading: () => throw Exception('Bible service is loading'),
+        error: (error, stack) => throw error,
+      );
+    });

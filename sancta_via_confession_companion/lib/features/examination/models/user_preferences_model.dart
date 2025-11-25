@@ -11,7 +11,9 @@ class ExaminationPreferences {
   // Factory method to create from JSON
   factory ExaminationPreferences.fromJson(Map<String, dynamic> json) {
     return ExaminationPreferences(
-      favoriteExaminationIds: List<String>.from(json['favoriteExaminationIds'] ?? []),
+      favoriteExaminationIds: List<String>.from(
+        json['favoriteExaminationIds'] ?? [],
+      ),
       defaultExaminationId: json['defaultExaminationId'],
     );
   }
@@ -30,7 +32,8 @@ class ExaminationPreferences {
     String? defaultExaminationId,
   }) {
     return ExaminationPreferences(
-      favoriteExaminationIds: favoriteExaminationIds ?? this.favoriteExaminationIds,
+      favoriteExaminationIds:
+          favoriteExaminationIds ?? this.favoriteExaminationIds,
       defaultExaminationId: defaultExaminationId ?? this.defaultExaminationId,
     );
   }

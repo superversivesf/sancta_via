@@ -13,15 +13,15 @@ void main() {
     setUpAll(() {
       // Mock asset loading for testing
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(
-        const MethodChannel('flutter/assets'),
-        (MethodCall methodCall) async {
-          if (methodCall.method == 'loadString') {
-            final String assetPath = methodCall.arguments as String;
-            
-            // Return test data for our Bible assets
-            if (assetPath.contains('cpdv.json')) {
-              return '''
+          .setMockMethodCallHandler(const MethodChannel('flutter/assets'), (
+            MethodCall methodCall,
+          ) async {
+            if (methodCall.method == 'loadString') {
+              final String assetPath = methodCall.arguments as String;
+
+              // Return test data for our Bible assets
+              if (assetPath.contains('cpdv.json')) {
+                return '''
 {
   "translation": "cpdv",
   "metadata": {
@@ -51,12 +51,14 @@ void main() {
   ]
 }
 ''';
+              }
+              throw PlatformException(
+                code: 'asset_not_found',
+                message: 'Asset not found: $assetPath',
+              );
             }
-            throw PlatformException(code: 'asset_not_found', message: 'Asset not found: $assetPath');
-          }
-          return null;
-        },
-      );
+            return null;
+          });
 
       loader = AssetBibleLoader(
         assetBasePath: 'assets/bibles',
@@ -67,7 +69,7 @@ void main() {
 
     test('should load CPDV Bible successfully', () async {
       final bible = await service.getBible(BibleTranslation.cpdv);
-      
+
       expect(bible.translation, BibleTranslation.cpdv);
       expect(bible.books.length, 1);
       expect(bible.books.first.name, 'Mark');
@@ -75,7 +77,7 @@ void main() {
 
     test('should parse Mark 1:1 reference', () {
       final reference = ScriptureReference.parse('Mark 1:1');
-      
+
       expect(reference.book, 'Mark');
       expect(reference.chapter, 1);
       expect(reference.startVerse, 1);
@@ -83,8 +85,11 @@ void main() {
     });
 
     test('should get Mark 1:1 scripture content', () async {
-      final content = await service.getScriptureByReference('Mark 1:1', BibleTranslation.cpdv);
-      
+      final content = await service.getScriptureByReference(
+        'Mark 1:1',
+        BibleTranslation.cpdv,
+      );
+
       expect(content.found, true);
       expect(content.text, contains('beginning of the Gospel'));
       expect(content.translation, BibleTranslation.cpdv);
@@ -92,7 +97,7 @@ void main() {
 
     test('should parse Mark 1:1-8 range reference', () {
       final reference = ScriptureReference.parse('Mark 1:1-8');
-      
+
       expect(reference.book, 'Mark');
       expect(reference.chapter, 1);
       expect(reference.startVerse, 1);

@@ -10,16 +10,15 @@ import '../providers/novena_state_provider.dart';
 class NovenaConfigurationScreen extends ConsumerStatefulWidget {
   final String novenaId;
 
-  const NovenaConfigurationScreen({
-    required this.novenaId,
-    super.key,
-  });
+  const NovenaConfigurationScreen({required this.novenaId, super.key});
 
   @override
-  ConsumerState<NovenaConfigurationScreen> createState() => _NovenaConfigurationScreenState();
+  ConsumerState<NovenaConfigurationScreen> createState() =>
+      _NovenaConfigurationScreenState();
 }
 
-class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationScreen> {
+class _NovenaConfigurationScreenState
+    extends ConsumerState<NovenaConfigurationScreen> {
   DateTime _startDate = DateTime.now();
   TimeOfDay _reminderTime = const TimeOfDay(hour: 9, minute: 0);
   ReminderInterval _reminderFrequency = ReminderInterval.threeHours;
@@ -38,9 +37,7 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
     final notificationsReady = ref.watch(notificationsReadyProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Configure Novena'),
-      ),
+      appBar: AppBar(title: const Text('Configure Novena')),
       body: novenaAsync.when(
         data: (novena) {
           if (novena == null) {
@@ -150,7 +147,8 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
                   context,
                   title: 'Reminder Frequency',
                   icon: Icons.notifications,
-                  subtitle: 'How often to remind you if you haven\'t prayed yet',
+                  subtitle:
+                      'How often to remind you if you haven\'t prayed yet',
                   child: Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -166,7 +164,9 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
                             });
                           }
                         },
-                        selectedColor: Theme.of(context).colorScheme.primaryContainer,
+                        selectedColor: Theme.of(
+                          context,
+                        ).colorScheme.primaryContainer,
                         backgroundColor: Theme.of(context).colorScheme.surface,
                         side: BorderSide(
                           color: isSelected
@@ -183,7 +183,8 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
                   context,
                   title: 'Personal Intention (Optional)',
                   icon: Icons.favorite,
-                  subtitle: 'Share your specific prayer intention for this novena',
+                  subtitle:
+                      'Share your specific prayer intention for this novena',
                   child: TextField(
                     controller: _intentionController,
                     maxLines: 3,
@@ -251,16 +252,13 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
         children: [
           Row(
             children: [
-              Icon(
-                icon,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+              Icon(icon, color: Theme.of(context).colorScheme.primary),
               const SizedBox(width: 8),
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -311,7 +309,11 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
   }
 
   String _formatTime(TimeOfDay time) {
-    final hour = time.hour == 0 ? 12 : time.hour > 12 ? time.hour - 12 : time.hour;
+    final hour = time.hour == 0
+        ? 12
+        : time.hour > 12
+        ? time.hour - 12
+        : time.hour;
     final minute = time.minute.toString().padLeft(2, '0');
     final period = time.hour < 12 ? 'AM' : 'PM';
     return '$hour:$minute $period';
@@ -339,8 +341,8 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
         startDate: normalizedStartDate,
         reminderTime: _reminderTime,
         reminderFrequency: _reminderFrequency,
-        personalIntention: _intentionController.text.trim().isEmpty 
-            ? null 
+        personalIntention: _intentionController.text.trim().isEmpty
+            ? null
             : _intentionController.text.trim(),
         completedDays: List.filled(9, false),
       );
@@ -348,8 +350,10 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
       // Get novena for title
       final novena = await ref.read(novenaByIdProvider(widget.novenaId).future);
       final novenaTitle = novena?.title ?? 'Novena';
-      
-      await ref.read(novenaStateProvider.notifier).startNovena(activeNovena, novenaTitle);
+
+      await ref
+          .read(novenaStateProvider.notifier)
+          .startNovena(activeNovena, novenaTitle);
 
       if (mounted) {
         // Navigate to active novena dashboard
@@ -373,12 +377,15 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
     }
   }
 
-  Widget _buildNotificationStatusSection(BuildContext context, bool notificationsReady) {
+  Widget _buildNotificationStatusSection(
+    BuildContext context,
+    bool notificationsReady,
+  ) {
     return Container(
       margin: const EdgeInsets.only(top: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: notificationsReady 
+        color: notificationsReady
             ? Theme.of(context).colorScheme.tertiaryContainer
             : Theme.of(context).colorScheme.errorContainer,
         borderRadius: BorderRadius.circular(12),
@@ -386,8 +393,10 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
       child: Row(
         children: [
           Icon(
-            notificationsReady ? Icons.notifications_active : Icons.notifications_off,
-            color: notificationsReady 
+            notificationsReady
+                ? Icons.notifications_active
+                : Icons.notifications_off,
+            color: notificationsReady
                 ? Theme.of(context).colorScheme.tertiary
                 : Theme.of(context).colorScheme.error,
           ),
@@ -397,21 +406,23 @@ class _NovenaConfigurationScreenState extends ConsumerState<NovenaConfigurationS
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  notificationsReady ? 'Notifications Enabled' : 'Notifications Unavailable',
+                  notificationsReady
+                      ? 'Notifications Enabled'
+                      : 'Notifications Unavailable',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: notificationsReady 
+                    color: notificationsReady
                         ? Theme.of(context).colorScheme.onTertiaryContainer
                         : Theme.of(context).colorScheme.onErrorContainer,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  notificationsReady 
+                  notificationsReady
                       ? 'You\'ll receive daily reminders and follow-ups based on your settings'
                       : 'Notifications aren\'t available, but you can still use the novena',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: notificationsReady 
+                    color: notificationsReady
                         ? Theme.of(context).colorScheme.onTertiaryContainer
                         : Theme.of(context).colorScheme.onErrorContainer,
                   ),

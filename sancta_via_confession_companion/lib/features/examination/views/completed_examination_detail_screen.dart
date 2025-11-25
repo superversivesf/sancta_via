@@ -9,26 +9,31 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
   final String completedExaminationId;
 
   const CompletedExaminationDetailScreen({
-    required this.completedExaminationId, super.key,
+    required this.completedExaminationId,
+    super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sessionAsync = ref.watch(completedSessionProvider(completedExaminationId));
-    final confessionItems = ref.watch(completedSessionItemsProvider(completedExaminationId));
+    final sessionAsync = ref.watch(
+      completedSessionProvider(completedExaminationId),
+    );
+    final confessionItems = ref.watch(
+      completedSessionItemsProvider(completedExaminationId),
+    );
     final textScaling = ref.watch(textScaleProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Confession Summary'),
-      ),
+      appBar: AppBar(title: const Text('Confession Summary')),
       body: sessionAsync.when(
         data: (session) {
           if (session == null) {
             return const Center(child: Text('Session not found'));
           }
 
-          final examinationAsync = ref.watch(examinationByIdProvider(session.examinationId));
+          final examinationAsync = ref.watch(
+            examinationByIdProvider(session.examinationId),
+          );
 
           return examinationAsync.when(
             data: (examination) {
@@ -47,44 +52,56 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
                           // Header
                           Text(
                             'Items to Confess',
-                            style: textScaling.scaledHeadlineSmall(context).copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
+                            style: textScaling
+                                .scaledHeadlineSmall(context)
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                           ),
                           const SizedBox(height: 8),
                           Text(
                             'Examination: ${examination.title}',
-                            style: textScaling.scaledBodyLarge(context).copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: textScaling
+                                .scaledBodyLarge(context)
+                                .copyWith(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             'Completed: ${_formatDate(session.createdAt)}',
-                            style: textScaling.scaledBodyMedium(context).copyWith(
-                              color: Theme.of(context).textTheme.bodyMedium?.color,
-                            ),
+                            style: textScaling
+                                .scaledBodyMedium(context)
+                                .copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.bodyMedium?.color,
+                                ),
                           ),
                           const SizedBox(height: 24),
 
                           // Instructions
                           Card(
-                            color: Theme.of(context).colorScheme.secondaryContainer,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.secondaryContainer,
                             child: Padding(
                               padding: const EdgeInsets.all(16),
                               child: Row(
                                 children: [
                                   Icon(
                                     Icons.info_outline,
-                                    color: Theme.of(context).colorScheme.secondary,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.secondary,
                                   ),
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Text(
                                       'Use this list during confession, then delete it afterwards to maintain your privacy.',
                                       style: TextStyle(
-                                        color: Theme.of(context).colorScheme.secondary,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.secondary,
                                       ),
                                     ),
                                   ),
@@ -101,7 +118,9 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
                               style: textScaling.scaledBodyLarge(context),
                             ),
                           ] else ...[
-                            ...confessionItems.map((item) => _buildConfessionItem(context, item)),
+                            ...confessionItems.map(
+                              (item) => _buildConfessionItem(context, item),
+                            ),
                           ],
 
                           const SizedBox(height: 32),
@@ -116,9 +135,9 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
                                 children: [
                                   Text(
                                     'Act of Contrition',
-                                    style: textScaling.scaledTitleMedium(context).copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: textScaling
+                                        .scaledTitleMedium(context)
+                                        .copyWith(fontWeight: FontWeight.bold),
                                   ),
                                   const SizedBox(height: 8),
                                   const Text(
@@ -157,8 +176,12 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
                             icon: const Icon(Icons.delete),
                             label: const Text('Delete After Confession'),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).colorScheme.error,
-                              foregroundColor: Theme.of(context).colorScheme.onError,
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.error,
+                              foregroundColor: Theme.of(
+                                context,
+                              ).colorScheme.onError,
                             ),
                           ),
                         ),
@@ -169,15 +192,13 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
               );
             },
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, _) => Center(
-              child: Text('Error loading examination: $error'),
-            ),
+            error: (error, _) =>
+                Center(child: Text('Error loading examination: $error')),
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(
-          child: Text('Error loading session: $error'),
-        ),
+        error: (error, _) =>
+            Center(child: Text('Error loading session: $error')),
       ),
     );
   }
@@ -203,17 +224,21 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
                   children: [
                     Text(
                       item.getDisplayText(),
-                      style: textScaling.scaledBodyLarge(context).copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: textScaling
+                          .scaledBodyLarge(context)
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
                     if (item.note != null && item.note!.isNotEmpty) ...[
                       const SizedBox(height: 4),
                       Text(
                         item.note!,
-                        style: textScaling.scaledBodySmall(context).copyWith(
-                          color: Theme.of(context).textTheme.bodySmall?.color,
-                        ),
+                        style: textScaling
+                            .scaledBodySmall(context)
+                            .copyWith(
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.color,
+                            ),
                       ),
                     ],
                   ],
@@ -236,7 +261,9 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete Examination?'),
-        content: const Text('Have you completed your confession? This will delete the examination record.'),
+        content: const Text(
+          'Have you completed your confession? This will delete the examination record.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -247,7 +274,9 @@ class CompletedExaminationDetailScreen extends ConsumerWidget {
               Navigator.of(context).pop();
 
               // Delete the session
-              await ref.read(examinationRepositoryProvider).deleteSession(completedExaminationId);
+              await ref
+                  .read(examinationRepositoryProvider)
+                  .deleteSession(completedExaminationId);
 
               // Refresh the provider
               ref.invalidate(completedExaminationsProvider);

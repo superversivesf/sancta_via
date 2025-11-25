@@ -69,19 +69,15 @@ class _PinputOverlayState extends State<_PinputOverlay>
     super.initState();
     _pinController = TextEditingController();
     _focusNode = FocusNode();
-    
+
     // Setup shake animation for errors
     _shakeController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-    _shakeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _shakeController,
-      curve: Curves.elasticIn,
-    ));
+    _shakeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _shakeController, curve: Curves.elasticIn),
+    );
 
     // Auto-focus the PIN input with delay to ensure modal is fully shown
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -98,9 +94,10 @@ class _PinputOverlayState extends State<_PinputOverlay>
   @override
   void didUpdateWidget(_PinputOverlay oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
+
     // Trigger shake animation when error message appears
-    if (widget.errorMessage != null && oldWidget.errorMessage != widget.errorMessage) {
+    if (widget.errorMessage != null &&
+        oldWidget.errorMessage != widget.errorMessage) {
       _shakeController.forward().then((_) {
         _shakeController.reset();
         // Clear the PIN field on error
@@ -123,7 +120,7 @@ class _PinputOverlayState extends State<_PinputOverlay>
     final mediaQuery = MediaQuery.of(context);
     final keyboardHeight = mediaQuery.viewInsets.bottom;
     final screenHeight = mediaQuery.size.height;
-    
+
     return Material(
       color: Colors.transparent,
       child: SafeArea(
@@ -170,24 +167,28 @@ class _PinputOverlayState extends State<_PinputOverlay>
                               children: [
                                 Text(
                                   widget.title,
-                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: Theme.of(context).textTheme.titleLarge
+                                      ?.copyWith(fontWeight: FontWeight.w600),
                                 ),
                                 if (widget.subtitle != null) ...[
                                   const SizedBox(height: 4),
                                   Text(
                                     widget.subtitle!,
-                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      color: colorScheme.onSurfaceVariant,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: colorScheme.onSurfaceVariant,
+                                        ),
                                   ),
                                 ],
                               ],
                             ),
                           ),
                           IconButton(
-                            onPressed: widget.isLoading ? null : () => Navigator.of(context).pop(),
+                            onPressed: widget.isLoading
+                                ? null
+                                : () => Navigator.of(context).pop(),
                             icon: const Icon(Icons.close),
                             visualDensity: VisualDensity.compact,
                           ),
@@ -218,18 +219,24 @@ class _PinputOverlayState extends State<_PinputOverlay>
                                   children: [
                                     Text(
                                       'Your PIN:',
-                                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                        color: colorScheme.onSurfaceVariant,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium
+                                          ?.copyWith(
+                                            color: colorScheme.onSurfaceVariant,
+                                          ),
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
                                       widget.confirmPinText!,
-                                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                        fontFamily: 'monospace',
-                                        letterSpacing: 8,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall
+                                          ?.copyWith(
+                                            fontFamily: 'monospace',
+                                            letterSpacing: 8,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                     ),
                                   ],
                                 ),
@@ -242,7 +249,12 @@ class _PinputOverlayState extends State<_PinputOverlay>
                               animation: _shakeAnimation,
                               builder: (context, child) {
                                 return Transform.translate(
-                                  offset: Offset(_shakeAnimation.value * 10 * (0.5 - _shakeAnimation.value), 0),
+                                  offset: Offset(
+                                    _shakeAnimation.value *
+                                        10 *
+                                        (0.5 - _shakeAnimation.value),
+                                    0,
+                                  ),
                                   child: child,
                                 );
                               },
@@ -271,9 +283,13 @@ class _PinputOverlayState extends State<_PinputOverlay>
                                     Expanded(
                                       child: Text(
                                         widget.errorMessage!,
-                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          color: colorScheme.onErrorContainer,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
+                                              color:
+                                                  colorScheme.onErrorContainer,
+                                            ),
                                       ),
                                     ),
                                   ],
@@ -298,9 +314,12 @@ class _PinputOverlayState extends State<_PinputOverlay>
                                   const SizedBox(width: 12),
                                   Text(
                                     'Verifying...',
-                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      color: colorScheme.onSurfaceVariant,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: colorScheme.onSurfaceVariant,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -310,7 +329,9 @@ class _PinputOverlayState extends State<_PinputOverlay>
                             // Forgot PIN button
                             if (widget.onForgotPin != null) ...[
                               TextButton(
-                                onPressed: widget.isLoading ? null : widget.onForgotPin,
+                                onPressed: widget.isLoading
+                                    ? null
+                                    : widget.onForgotPin,
                                 child: const Text('Forgot PIN?'),
                               ),
                             ],
@@ -342,17 +363,15 @@ class _PinputOverlayState extends State<_PinputOverlay>
           width: 2.0,
         ),
         borderRadius: BorderRadius.circular(12),
-        color: colorScheme.surfaceContainerHighest, // Use a more contrasted background
+        color: colorScheme
+            .surfaceContainerHighest, // Use a more contrasted background
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration!.copyWith(
         color: colorScheme.surfaceContainerHighest,
-        border: Border.all(
-          color: colorScheme.primary,
-          width: 2.5,
-        ),
+        border: Border.all(color: colorScheme.primary, width: 2.5),
         boxShadow: [
           BoxShadow(
             color: colorScheme.primary.withAlpha(77),
@@ -366,20 +385,14 @@ class _PinputOverlayState extends State<_PinputOverlay>
     final submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration!.copyWith(
         color: colorScheme.primaryContainer,
-        border: Border.all(
-          color: colorScheme.primary,
-          width: 2.0,
-        ),
+        border: Border.all(color: colorScheme.primary, width: 2.0),
       ),
     );
 
     final errorPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration!.copyWith(
         color: colorScheme.errorContainer.withAlpha(77),
-        border: Border.all(
-          color: colorScheme.error,
-          width: 2.5,
-        ),
+        border: Border.all(color: colorScheme.error, width: 2.5),
       ),
     );
 
@@ -412,7 +425,10 @@ class _PinputOverlayState extends State<_PinputOverlay>
         useNativeKeyboard: true, // Use native keyboard for better UX
         hapticFeedbackType: HapticFeedbackType.lightImpact,
         onCompleted: (pin) {
-          AppLogger.debug('PIN completed: length=${pin.length}', 'PINPUT_MODAL');
+          AppLogger.debug(
+            'PIN completed: length=${pin.length}',
+            'PINPUT_MODAL',
+          );
           if (!widget.isLoading) {
             Navigator.of(context).pop(pin);
           }
@@ -421,7 +437,10 @@ class _PinputOverlayState extends State<_PinputOverlay>
           AppLogger.debug('PIN changed: length=${pin.length}', 'PINPUT_MODAL');
         },
         onTap: () {
-          AppLogger.debug('PIN input tapped - requesting focus', 'PINPUT_MODAL');
+          AppLogger.debug(
+            'PIN input tapped - requesting focus',
+            'PINPUT_MODAL',
+          );
           if (!_focusNode.hasFocus) {
             _focusNode.requestFocus();
           }

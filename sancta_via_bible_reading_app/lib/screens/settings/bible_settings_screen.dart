@@ -21,7 +21,8 @@ class BibleSettingsScreen extends ConsumerWidget {
         final appInfo = AppInfo(
           appName: 'Bible Reading App',
           version: snapshot.hasData ? snapshot.data!.version : 'Loading...',
-          description: 'A Catholic Bible reading app with liturgical calendar integration for daily spiritual reading.',
+          description:
+              'A Catholic Bible reading app with liturgical calendar integration for daily spiritual reading.',
           icon: const Icon(Icons.book, size: 48, color: Colors.blue),
           onFeedback: () => _showComingSoon(context, 'Feedback'),
           onSupport: () => _showSupportDialog(context),
@@ -37,7 +38,9 @@ class BibleSettingsScreen extends ConsumerWidget {
             CatholicNotificationOptions.liturgicalCalendar(
               enabled: ref.watch(bibleNotificationsEnabledProvider),
               onChanged: (enabled) {
-                ref.read(bibleAppSettingsProvider.notifier).setNotificationsEnabled(enabled);
+                ref
+                    .read(bibleAppSettingsProvider.notifier)
+                    .setNotificationsEnabled(enabled);
               },
             ),
             NotificationOption(
@@ -46,7 +49,9 @@ class BibleSettingsScreen extends ConsumerWidget {
               icon: Icons.schedule_outlined,
               enabled: ref.watch(dailyReadingNotificationsEnabledProvider),
               onChanged: (enabled) {
-                ref.read(bibleAppSettingsProvider.notifier).setDailyReadingNotificationsEnabled(enabled);
+                ref
+                    .read(bibleAppSettingsProvider.notifier)
+                    .setDailyReadingNotificationsEnabled(enabled);
               },
             ),
           ],
@@ -57,7 +62,7 @@ class BibleSettingsScreen extends ConsumerWidget {
 
   Widget _buildBibleSpecificSettings(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(bibleAppSettingsProvider);
-    
+
     return Column(
       children: [
         // Bible Settings Section
@@ -74,7 +79,9 @@ class BibleSettingsScreen extends ConsumerWidget {
             value: settings.selectedBibleTranslation,
             onChanged: (BibleTranslation? newValue) {
               if (newValue != null) {
-                ref.read(bibleAppSettingsProvider.notifier).setBibleTranslation(newValue);
+                ref
+                    .read(bibleAppSettingsProvider.notifier)
+                    .setBibleTranslation(newValue);
               }
             },
             items: BibleTranslation.values.map((translation) {
@@ -109,7 +116,9 @@ class BibleSettingsScreen extends ConsumerWidget {
           subtitle: const Text('Display verse numbers in Bible text'),
           value: settings.showVerseNumbers,
           onChanged: (bool value) {
-            ref.read(bibleAppSettingsProvider.notifier).setShowVerseNumbers(value);
+            ref
+                .read(bibleAppSettingsProvider.notifier)
+                .setShowVerseNumbers(value);
           },
         ),
 
@@ -120,7 +129,9 @@ class BibleSettingsScreen extends ConsumerWidget {
           subtitle: const Text('Highlight verse during audio playback'),
           value: settings.highlightCurrentVerse,
           onChanged: (bool value) {
-            ref.read(bibleAppSettingsProvider.notifier).setHighlightCurrentVerse(value);
+            ref
+                .read(bibleAppSettingsProvider.notifier)
+                .setHighlightCurrentVerse(value);
           },
         ),
 
@@ -129,39 +140,43 @@ class BibleSettingsScreen extends ConsumerWidget {
 
         // Preview Section with current settings
         const SettingsSectionHeader(title: 'Preview'),
-        
+
         _buildBibleTextPreview(context, ref),
 
         const Divider(),
 
         // Advanced Settings
         const SettingsSectionHeader(title: 'Advanced'),
-        
+
         ListTile(
           leading: const Icon(Icons.restore),
           title: const Text('Reset Settings'),
           subtitle: const Text('Reset all settings to default values'),
           onTap: () => _showResetDialog(context, ref),
         ),
-        
+
         // NEW: Clear Reading Plans option
         ListTile(
           leading: const Icon(Icons.delete_sweep),
           title: const Text('Clear All Reading Plans'),
-          subtitle: const Text('Remove all reading plans (useful for corrupted data)'),
+          subtitle: const Text(
+            'Remove all reading plans (useful for corrupted data)',
+          ),
           onTap: () => _showClearPlansDialog(context, ref),
         ),
 
-        if (kDebugMode) ...[  
+        if (kDebugMode) ...[
           const Divider(),
-          
+
           // Debug Section (only in debug mode)
           const SettingsSectionHeader(title: 'Debug & Testing'),
-          
+
           ListTile(
             leading: const Icon(Icons.bug_report),
             title: const Text('Test Numbered Books'),
-            subtitle: const Text('Verify 1 Samuel, 2 Corinthians, etc. are working'),
+            subtitle: const Text(
+              'Verify 1 Samuel, 2 Corinthians, etc. are working',
+            ),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
               Navigator.of(context).pushNamed('/debug/numbered-books');
@@ -176,7 +191,7 @@ class BibleSettingsScreen extends ConsumerWidget {
 
   Widget _buildBibleTextPreview(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(bibleAppSettingsProvider);
-    
+
     return Container(
       margin: const EdgeInsets.all(16.0),
       padding: const EdgeInsets.all(16.0),
@@ -189,12 +204,12 @@ class BibleSettingsScreen extends ConsumerWidget {
         children: [
           Text(
             'Bible Text Preview',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
-          
+
           // Sample Bible verse with formatting
           RichText(
             text: TextSpan(
@@ -213,21 +228,24 @@ class BibleSettingsScreen extends ConsumerWidget {
                     ),
                   ),
                 const TextSpan(
-                  text: 'In the beginning was the Word, and the Word was with God, and the Word was God.',
+                  text:
+                      'In the beginning was the Word, and the Word was with God, and the Word was God.',
                 ),
               ],
             ),
           ),
-          
+
           const SizedBox(height: 8),
-          
+
           // Settings summary
           Text(
             'Font: ${settings.fontSize.round()}pt • '
             'Scale: ${settings.effectiveTextScaleFactor.toStringAsFixed(2)}x • '
             'Translation: ${settings.selectedBibleTranslation.abbreviation}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
+              color: Theme.of(
+                context,
+              ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -237,14 +255,14 @@ class BibleSettingsScreen extends ConsumerWidget {
 
   Widget _buildReadingPlansSection(BuildContext context, WidgetRef ref) {
     final activePlans = ref.watch(activeReadingPlansProvider);
-    
+
     return ListTile(
       leading: const Icon(Icons.calendar_view_day),
       title: const Text('Reading Plans'),
       subtitle: Text(
-        activePlans.isEmpty 
-          ? 'No active plans'
-          : '${activePlans.length} active plan${activePlans.length != 1 ? 's' : ''}',
+        activePlans.isEmpty
+            ? 'No active plans'
+            : '${activePlans.length} active plan${activePlans.length != 1 ? 's' : ''}',
       ),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       onTap: () {
@@ -270,7 +288,9 @@ class BibleSettingsScreen extends ConsumerWidget {
           TextButton(
             onPressed: () async {
               Navigator.of(context).pop();
-              await ref.read(bibleAppSettingsProvider.notifier).resetToDefaults();
+              await ref
+                  .read(bibleAppSettingsProvider.notifier)
+                  .resetToDefaults();
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -286,22 +306,22 @@ class BibleSettingsScreen extends ConsumerWidget {
       ),
     );
   }
-  
+
   // NEW: Dialog to clear all reading plans
   void _showClearPlansDialog(BuildContext context, WidgetRef ref) {
     final activePlans = ref.read(activeReadingPlansProvider);
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Clear All Reading Plans'),
         content: Text(
-          activePlans.isEmpty 
-            ? 'No reading plans to clear.'
-            : 'Are you sure you want to remove all ${activePlans.length} reading plan${activePlans.length != 1 ? 's' : ''}?\n\n'
-              'This will permanently delete:\n'
-              '${activePlans.map((p) => '• ${p.name}').join('\n')}\n\n'
-              'This action cannot be undone.',
+          activePlans.isEmpty
+              ? 'No reading plans to clear.'
+              : 'Are you sure you want to remove all ${activePlans.length} reading plan${activePlans.length != 1 ? 's' : ''}?\n\n'
+                    'This will permanently delete:\n'
+                    '${activePlans.map((p) => '• ${p.name}').join('\n')}\n\n'
+                    'This action cannot be undone.',
         ),
         actions: [
           TextButton(
@@ -313,7 +333,9 @@ class BibleSettingsScreen extends ConsumerWidget {
               onPressed: () async {
                 Navigator.of(context).pop();
                 try {
-                  await ref.read(readingPlanManagerProvider.notifier).clearAllPlans();
+                  await ref
+                      .read(readingPlanManagerProvider.notifier)
+                      .clearAllPlans();
                   // Success message is shown by the provider
                 } catch (e) {
                   if (context.mounted) {
@@ -328,7 +350,10 @@ class BibleSettingsScreen extends ConsumerWidget {
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: const Text('Clear All Plans', style: TextStyle(color: Colors.white)),
+              child: const Text(
+                'Clear All Plans',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
         ],
       ),

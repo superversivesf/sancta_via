@@ -5,12 +5,13 @@ import 'novena_database_service.dart';
 
 /// Service to initialize the novena database from individual JSON assets
 class NovenaDatabaseInitializer {
-  static final NovenaDatabaseInitializer _instance = NovenaDatabaseInitializer._internal();
+  static final NovenaDatabaseInitializer _instance =
+      NovenaDatabaseInitializer._internal();
   factory NovenaDatabaseInitializer() => _instance;
   NovenaDatabaseInitializer._internal();
 
   final NovenaDatabaseService _databaseService = NovenaDatabaseService();
-  
+
   bool _isInitialized = false;
   bool get isInitialized => _isInitialized;
 
@@ -18,30 +19,45 @@ class NovenaDatabaseInitializer {
   Future<DatabaseInitResult> initializeDatabase() async {
     try {
       AppLogger.info('Starting database initialization...', 'DB_INIT');
-      
+
       // Check if database is already populated
       final isEmpty = await _databaseService.isDatabaseEmpty();
-      
+
       if (!isEmpty) {
-        AppLogger.info('Database already contains data, skipping initialization', 'DB_INIT');
+        AppLogger.info(
+          'Database already contains data, skipping initialization',
+          'DB_INIT',
+        );
         _isInitialized = true;
         return DatabaseInitResult.alreadyInitialized();
       }
-      
+
       // Database is empty, populate from JSON files
       final result = await _populateFromAssets();
-      
+
       if (result.success) {
         _isInitialized = true;
-        AppLogger.info('Database initialization completed successfully', 'DB_INIT');
+        AppLogger.info(
+          'Database initialization completed successfully',
+          'DB_INIT',
+        );
       } else {
-        AppLogger.error('Database initialization failed', result.error, null, 'DB_INIT');
+        AppLogger.error(
+          'Database initialization failed',
+          result.error,
+          null,
+          'DB_INIT',
+        );
       }
-      
+
       return result;
-      
     } catch (e, stackTrace) {
-      AppLogger.error('Database initialization failed', e, stackTrace, 'DB_INIT');
+      AppLogger.error(
+        'Database initialization failed',
+        e,
+        stackTrace,
+        'DB_INIT',
+      );
       return DatabaseInitResult.failure('Database initialization failed: $e');
     }
   }
@@ -49,16 +65,22 @@ class NovenaDatabaseInitializer {
   /// Populate database from individual JSON assets
   Future<DatabaseInitResult> _populateFromAssets() async {
     try {
-      AppLogger.debug('Discovering and loading novena JSON files from assets...', 'DB_INIT');
-      
+      AppLogger.debug(
+        'Discovering and loading novena JSON files from assets...',
+        'DB_INIT',
+      );
+
       // Get list of novena files by reading the asset manifest
       final novenaFiles = await _discoverNovenaFiles();
-      
-      AppLogger.debug('Discovered ${novenaFiles.length} novena files', 'DB_INIT');
-      
+
+      AppLogger.debug(
+        'Discovered ${novenaFiles.length} novena files',
+        'DB_INIT',
+      );
+
       int successCount = 0;
       final errors = <String>[];
-      
+
       // Load each novena file
       for (final fileName in novenaFiles) {
         try {
@@ -68,7 +90,10 @@ class NovenaDatabaseInitializer {
             if (_validateNovenaData(novenaData)) {
               await _databaseService.insertNovena(novenaData);
               successCount++;
-              AppLogger.debug('Successfully imported: ${novenaData['id']}', 'DB_INIT');
+              AppLogger.debug(
+                'Successfully imported: ${novenaData['id']}',
+                'DB_INIT',
+              );
             } else {
               errors.add('Failed to validate data for $fileName');
             }
@@ -80,7 +105,7 @@ class NovenaDatabaseInitializer {
           AppLogger.error('Failed to process $fileName', e, null, 'DB_INIT');
         }
       }
-      
+
       // Return result
       if (successCount == 0) {
         return DatabaseInitResult.failure('No novenas could be imported');
@@ -89,9 +114,13 @@ class NovenaDatabaseInitializer {
       } else {
         return DatabaseInitResult.success(successCount);
       }
-      
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to populate database from assets', e, stackTrace, 'DB_INIT');
+      AppLogger.error(
+        'Failed to populate database from assets',
+        e,
+        stackTrace,
+        'DB_INIT',
+      );
       return DatabaseInitResult.failure('Failed to read asset files: $e');
     }
   }
@@ -102,23 +131,30 @@ class NovenaDatabaseInitializer {
       // Get the asset manifest to find all JSON files in novenas directory
       final manifestContent = await rootBundle.loadString('AssetManifest.json');
       final Map<String, dynamic> manifestMap = json.decode(manifestContent);
-      
+
       // Filter for novena JSON files (exclude metadata files)
       final novenaFiles = manifestMap.keys
-          .where((String key) => 
-              key.startsWith('assets/novenas/') && 
-              key.endsWith('.json') &&
-              !key.contains('metadata'))
+          .where(
+            (String key) =>
+                key.startsWith('assets/novenas/') &&
+                key.endsWith('.json') &&
+                !key.contains('metadata'),
+          )
           .map((key) => key.split('/').last) // Get just the filename
           .toList();
-      
-      AppLogger.debug('Discovered novena files from manifest: $novenaFiles', 'DB_INIT');
+
+      AppLogger.debug(
+        'Discovered novena files from manifest: $novenaFiles',
+        'DB_INIT',
+      );
       return novenaFiles;
-      
     } catch (e) {
       // Fallback: Use hardcoded list if manifest approach fails
-      AppLogger.warning('Failed to read asset manifest, using fallback file list', 'DB_INIT');
-      
+      AppLogger.warning(
+        'Failed to read asset manifest, using fallback file list',
+        'DB_INIT',
+      );
+
       return [
         'divine-mercy.json',
         'sacred-heart.json',
@@ -137,14 +173,16 @@ class NovenaDatabaseInitializer {
   Future<Map<String, dynamic>?> _loadNovenaFromAsset(String fileName) async {
     try {
       AppLogger.debug('Loading novena from asset: $fileName', 'DB_INIT');
-      
+
       final assetPath = 'assets/novenas/$fileName';
       final jsonString = await rootBundle.loadString(assetPath);
       final Map<String, dynamic> novenaData = json.decode(jsonString);
-      
-      AppLogger.debug('Successfully loaded novena content: ${novenaData['id']}', 'DB_INIT');
+
+      AppLogger.debug(
+        'Successfully loaded novena content: ${novenaData['id']}',
+        'DB_INIT',
+      );
       return novenaData;
-      
     } catch (e, stackTrace) {
       AppLogger.error('Failed to load $fileName', e, stackTrace, 'DB_INIT');
       return null;
@@ -155,59 +193,87 @@ class NovenaDatabaseInitializer {
   bool _validateNovenaData(Map<String, dynamic> data) {
     const requiredFields = [
       'id', 'title', 'description', 'saint', 'feast_day',
-      'intention_category', 'difficulty', 'duration_minutes', // Metadata fields now in each file
-      'intention', 'instructions', 'source', 'days'
+      'intention_category',
+      'difficulty',
+      'duration_minutes', // Metadata fields now in each file
+      'intention', 'instructions', 'source', 'days',
     ];
-    
+
     // Check top-level fields
     for (final field in requiredFields) {
       if (!data.containsKey(field) || data[field] == null) {
-        AppLogger.warning('Missing required field: $field in ${data['id'] ?? 'unknown'}', 'DB_INIT');
+        AppLogger.warning(
+          'Missing required field: $field in ${data['id'] ?? 'unknown'}',
+          'DB_INIT',
+        );
         return false;
       }
     }
-    
+
     // Validate metadata field types
     if (data['duration_minutes'] is! int) {
-      AppLogger.warning('duration_minutes must be an integer in ${data['id']}', 'DB_INIT');
+      AppLogger.warning(
+        'duration_minutes must be an integer in ${data['id']}',
+        'DB_INIT',
+      );
       return false;
     }
-    
+
     // Validate days array
     final days = data['days'];
     if (days is! List || days.length != 9) {
-      AppLogger.warning('Invalid days array: must be list of 9 items in ${data['id']}', 'DB_INIT');
+      AppLogger.warning(
+        'Invalid days array: must be list of 9 items in ${data['id']}',
+        'DB_INIT',
+      );
       return false;
     }
-    
+
     // Validate each day
     const requiredDayFields = [
-      'day', 'title', 'opening_prayer', 'daily_prayer',
-      'closing_prayer', 'reflection', 'intention_prayer'
+      'day',
+      'title',
+      'opening_prayer',
+      'daily_prayer',
+      'closing_prayer',
+      'reflection',
+      'intention_prayer',
     ];
-    
+
     for (int i = 0; i < days.length; i++) {
       final day = days[i];
       if (day is! Map<String, dynamic>) {
-        AppLogger.warning('Day ${i + 1} is not a valid object in ${data['id']}', 'DB_INIT');
+        AppLogger.warning(
+          'Day ${i + 1} is not a valid object in ${data['id']}',
+          'DB_INIT',
+        );
         return false;
       }
-      
+
       for (final field in requiredDayFields) {
         if (!day.containsKey(field) || day[field] == null) {
-          AppLogger.warning('Day ${i + 1} missing required field: $field in ${data['id']}', 'DB_INIT');
+          AppLogger.warning(
+            'Day ${i + 1} missing required field: $field in ${data['id']}',
+            'DB_INIT',
+          );
           return false;
         }
       }
-      
+
       // Validate day number
       if (day['day'] != (i + 1)) {
-        AppLogger.warning('Day ${i + 1} has incorrect day number: ${day['day']} in ${data['id']}', 'DB_INIT');
+        AppLogger.warning(
+          'Day ${i + 1} has incorrect day number: ${day['day']} in ${data['id']}',
+          'DB_INIT',
+        );
         return false;
       }
     }
-    
-    AppLogger.debug('Validation successful for novena: ${data['id']}', 'DB_INIT');
+
+    AppLogger.debug(
+      'Validation successful for novena: ${data['id']}',
+      'DB_INIT',
+    );
     return true;
   }
 
@@ -215,18 +281,22 @@ class NovenaDatabaseInitializer {
   Future<DatabaseInitResult> reinitializeDatabase() async {
     try {
       AppLogger.warning('Force reinitializing database...', 'DB_INIT');
-      
+
       // Clear existing data
       await _databaseService.clearAllData();
-      
+
       // Reset initialization flag
       _isInitialized = false;
-      
+
       // Repopulate from assets
       return await initializeDatabase();
-      
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to reinitialize database', e, stackTrace, 'DB_INIT');
+      AppLogger.error(
+        'Failed to reinitialize database',
+        e,
+        stackTrace,
+        'DB_INIT',
+      );
       return DatabaseInitResult.failure('Reinitialization failed: $e');
     }
   }
@@ -237,7 +307,7 @@ class NovenaDatabaseInitializer {
       final stats = await _databaseService.getDatabaseStats();
       final categories = await _databaseService.getAllCategories();
       final difficulties = await _databaseService.getAllDifficulties();
-      
+
       return {
         'initialized': _isInitialized,
         'stats': stats,
@@ -246,10 +316,7 @@ class NovenaDatabaseInitializer {
       };
     } catch (e, stackTrace) {
       AppLogger.error('Failed to get database info', e, stackTrace, 'DB_INIT');
-      return {
-        'initialized': _isInitialized,
-        'error': e.toString(),
-      };
+      return {'initialized': _isInitialized, 'error': e.toString()};
     }
   }
 }
@@ -279,14 +346,18 @@ class DatabaseInitResult {
   factory DatabaseInitResult.partial(int count, List<String> errors) =>
       DatabaseInitResult._(success: true, novenaCount: count, errors: errors);
 
-  factory DatabaseInitResult.alreadyInitialized() =>
-      DatabaseInitResult._(success: true, novenaCount: 0, wasAlreadyInitialized: true);
+  factory DatabaseInitResult.alreadyInitialized() => DatabaseInitResult._(
+    success: true,
+    novenaCount: 0,
+    wasAlreadyInitialized: true,
+  );
 
   @override
   String toString() {
     if (wasAlreadyInitialized) return 'Already initialized';
     if (!success) return 'Failed: $error';
-    if (errors.isNotEmpty) return 'Partial success: $novenaCount imported, ${errors.length} errors';
+    if (errors.isNotEmpty)
+      return 'Partial success: $novenaCount imported, ${errors.length} errors';
     return 'Success: $novenaCount novenas imported';
   }
 }

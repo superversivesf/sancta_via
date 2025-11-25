@@ -11,14 +11,18 @@ class ExaminationQuestionsScreen extends ConsumerStatefulWidget {
   final String categoryId;
 
   const ExaminationQuestionsScreen({
-    required this.examinationId, required this.categoryId, super.key,
+    required this.examinationId,
+    required this.categoryId,
+    super.key,
   });
 
   @override
-  ConsumerState<ExaminationQuestionsScreen> createState() => _ExaminationQuestionsScreenState();
+  ConsumerState<ExaminationQuestionsScreen> createState() =>
+      _ExaminationQuestionsScreenState();
 }
 
-class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestionsScreen> {
+class _ExaminationQuestionsScreenState
+    extends ConsumerState<ExaminationQuestionsScreen> {
   String? _currentItemId;
   final TextEditingController _noteController = TextEditingController();
 
@@ -32,11 +36,15 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
 
   void _initCurrentItem() {
     final sessionState = ref.read(examinationSessionProvider);
-    final examinationAsync = ref.read(examinationByIdProvider(sessionState!.examinationId));
+    final examinationAsync = ref.read(
+      examinationByIdProvider(sessionState!.examinationId),
+    );
 
     if (examinationAsync.value != null) {
       final examination = examinationAsync.value!;
-      final category = examination.categories.firstWhere((c) => c.id == widget.categoryId);
+      final category = examination.categories.firstWhere(
+        (c) => c.id == widget.categoryId,
+      );
 
       // If there's a saved position in this category, use it
       if (sessionState.currentCategoryId == category.id &&
@@ -53,10 +61,9 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
       }
 
       // Save the position
-      ref.read(examinationSessionProvider.notifier).updatePosition(
-          category.id,
-          _currentItemId!
-      );
+      ref
+          .read(examinationSessionProvider.notifier)
+          .updatePosition(category.id, _currentItemId!);
     }
   }
 
@@ -75,12 +82,12 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pop();
       });
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    final examinationAsync = ref.watch(examinationByIdProvider(sessionState.examinationId));
+    final examinationAsync = ref.watch(
+      examinationByIdProvider(sessionState.examinationId),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -102,16 +109,24 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
             return const Center(child: Text('Examination not found'));
           }
 
-          final category = examination.categories.firstWhere((c) => c.id == widget.categoryId);
+          final category = examination.categories.firstWhere(
+            (c) => c.id == widget.categoryId,
+          );
           final items = category.items;
 
-          if (_currentItemId == null || !items.any((item) => item.id == _currentItemId)) {
+          if (_currentItemId == null ||
+              !items.any((item) => item.id == _currentItemId)) {
             return const Center(child: Text('Item not found'));
           }
 
-          final currentItem = items.firstWhere((item) => item.id == _currentItemId);
-          final currentIndex = items.indexWhere((item) => item.id == _currentItemId);
-          final responseStatus = sessionState.itemResponses[currentItem.id] ??
+          final currentItem = items.firstWhere(
+            (item) => item.id == _currentItemId,
+          );
+          final currentIndex = items.indexWhere(
+            (item) => item.id == _currentItemId,
+          );
+          final responseStatus =
+              sessionState.itemResponses[currentItem.id] ??
               ExaminationResponseStatus.notReviewed;
           final note = sessionState.notes[currentItem.id] ?? '';
 
@@ -123,9 +138,7 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
           return Column(
             children: [
               // Progress through this category
-              LinearProgressIndicator(
-                value: (currentIndex + 1) / items.length,
-              ),
+              LinearProgressIndicator(value: (currentIndex + 1) / items.length),
 
               Expanded(
                 child: SingleChildScrollView(
@@ -136,29 +149,28 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                       // Category title
                       Text(
                         category.title,
-                        style: textScaling.scaledTitleLarge(context).copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: textScaling
+                            .scaledTitleLarge(context)
+                            .copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                       const SizedBox(height: 32),
 
                       // Question number
                       Text(
                         'Question ${currentIndex + 1} of ${items.length}',
-                        style: textScaling.scaledBodySmall(context).copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: textScaling
+                            .scaledBodySmall(context)
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
 
                       // Question text
                       Text(
                         currentItem.text,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          height: 1.5,
-                        ),
+                        style: const TextStyle(fontSize: 20, height: 1.5),
                       ),
 
                       // Optional clarification
@@ -167,7 +179,9 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondaryContainer,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.secondaryContainer,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(
@@ -182,7 +196,9 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                                 child: Text(
                                   currentItem.clarification!,
                                   style: TextStyle(
-                                    color: Theme.of(context).colorScheme.secondary,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.secondary,
                                   ),
                                 ),
                               ),
@@ -200,26 +216,34 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                           Expanded(
                             child: ElevatedButton.icon(
                               icon: Icon(
-                                responseStatus == ExaminationResponseStatus.needConfess
+                                responseStatus ==
+                                        ExaminationResponseStatus.needConfess
                                     ? Icons.check_circle
                                     : Icons.add_circle_outline,
                               ),
                               label: const Text('Need to Confess'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: responseStatus == ExaminationResponseStatus.needConfess
+                                backgroundColor:
+                                    responseStatus ==
+                                        ExaminationResponseStatus.needConfess
                                     ? Theme.of(context).colorScheme.primary
                                     : null,
-                                foregroundColor: responseStatus == ExaminationResponseStatus.needConfess
+                                foregroundColor:
+                                    responseStatus ==
+                                        ExaminationResponseStatus.needConfess
                                     ? Theme.of(context).colorScheme.onPrimary
                                     : null,
-                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
                               ),
                               onPressed: () {
-                                ref.read(examinationSessionProvider.notifier)
+                                ref
+                                    .read(examinationSessionProvider.notifier)
                                     .setResponseStatus(
-                                    currentItem.id,
-                                    ExaminationResponseStatus.needConfess
-                                );
+                                      currentItem.id,
+                                      ExaminationResponseStatus.needConfess,
+                                    );
                               },
                             ),
                           ),
@@ -228,23 +252,31 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                           Expanded(
                             child: OutlinedButton.icon(
                               icon: Icon(
-                                responseStatus == ExaminationResponseStatus.noIssue
+                                responseStatus ==
+                                        ExaminationResponseStatus.noIssue
                                     ? Icons.check_circle
                                     : Icons.check_circle_outline,
                               ),
                               label: const Text('This is OK'),
                               style: OutlinedButton.styleFrom(
-                                backgroundColor: responseStatus == ExaminationResponseStatus.noIssue
-                                    ? Theme.of(context).colorScheme.secondaryContainer
+                                backgroundColor:
+                                    responseStatus ==
+                                        ExaminationResponseStatus.noIssue
+                                    ? Theme.of(
+                                        context,
+                                      ).colorScheme.secondaryContainer
                                     : null,
-                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
                               ),
                               onPressed: () {
-                                ref.read(examinationSessionProvider.notifier)
+                                ref
+                                    .read(examinationSessionProvider.notifier)
                                     .setResponseStatus(
-                                    currentItem.id,
-                                    ExaminationResponseStatus.noIssue
-                                );
+                                      currentItem.id,
+                                      ExaminationResponseStatus.noIssue,
+                                    );
                               },
                             ),
                           ),
@@ -254,12 +286,11 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                       const SizedBox(height: 24),
 
                       // Add note (only appears when "Need to Confess" is selected)
-                      if (responseStatus == ExaminationResponseStatus.needConfess) ...[
+                      if (responseStatus ==
+                          ExaminationResponseStatus.needConfess) ...[
                         const Text(
                           'Add a note (optional):',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
                         TextField(
@@ -270,7 +301,8 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                           ),
                           maxLines: 3,
                           onChanged: (value) {
-                            ref.read(examinationSessionProvider.notifier)
+                            ref
+                                .read(examinationSessionProvider.notifier)
                                 .updateNote(currentItem.id, value);
                           },
                         ),
@@ -298,7 +330,8 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                             });
 
                             // Save position
-                            ref.read(examinationSessionProvider.notifier)
+                            ref
+                                .read(examinationSessionProvider.notifier)
                                 .updatePosition(category.id, prevItem.id);
                           },
                           icon: const Icon(Icons.chevron_left),
@@ -318,16 +351,23 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                             });
 
                             // Save position
-                            ref.read(examinationSessionProvider.notifier)
+                            ref
+                                .read(examinationSessionProvider.notifier)
                                 .updatePosition(category.id, nextItem.id);
                           } else {
                             // Last question in category - show completion dialog
-                            _showCategoryCompletionDialog(context, examination, category);
+                            _showCategoryCompletionDialog(
+                              context,
+                              examination,
+                              category,
+                            );
                           }
                         },
                         icon: const Icon(Icons.arrow_forward),
                         label: Text(
-                          currentIndex < items.length - 1 ? 'Next' : 'Complete Section',
+                          currentIndex < items.length - 1
+                              ? 'Next'
+                              : 'Complete Section',
                         ),
                       ),
                     ],
@@ -348,12 +388,18 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
     );
   }
 
-  void _showCategoryCompletionDialog(BuildContext context, examination, category) {
+  void _showCategoryCompletionDialog(
+    BuildContext context,
+    examination,
+    category,
+  ) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Section Complete'),
-        content: Text('You have completed "${category.title}". What would you like to do next?'),
+        content: Text(
+          'You have completed "${category.title}". What would you like to do next?',
+        ),
         actions: [
           TextButton(
             onPressed: () {
@@ -368,7 +414,9 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
                 Navigator.of(context).pop(); // Close dialog
                 final nextCategory = _getNextCategory(examination, category);
                 if (nextCategory != null) {
-                  context.push('/examination/${examination.id}/category/${nextCategory.id}');
+                  context.push(
+                    '/examination/${examination.id}/category/${nextCategory.id}',
+                  );
                 }
               },
               child: const Text('Continue to Next Section'),
@@ -387,12 +435,16 @@ class _ExaminationQuestionsScreenState extends ConsumerState<ExaminationQuestion
   }
 
   bool _hasNextCategory(examination, currentCategory) {
-    final currentIndex = examination.categories.indexWhere((c) => c.id == currentCategory.id);
+    final currentIndex = examination.categories.indexWhere(
+      (c) => c.id == currentCategory.id,
+    );
     return currentIndex < examination.categories.length - 1;
   }
 
   dynamic _getNextCategory(examination, currentCategory) {
-    final currentIndex = examination.categories.indexWhere((c) => c.id == currentCategory.id);
+    final currentIndex = examination.categories.indexWhere(
+      (c) => c.id == currentCategory.id,
+    );
     if (currentIndex < examination.categories.length - 1) {
       return examination.categories[currentIndex + 1];
     }

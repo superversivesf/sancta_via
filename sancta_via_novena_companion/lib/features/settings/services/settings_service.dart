@@ -15,10 +15,20 @@ class SettingsService {
   /// Update daily reminder time
   Future<void> updateReminderTime(TimeOfDay time) async {
     try {
-      await _ref.read(novenaAppSettingsProvider.notifier).updateDailyReminderTime(time);
-      AppLogger.debug('Daily reminder time updated to ${time.hour}:${time.minute.toString().padLeft(2, '0')}', 'SETTINGS_SERVICE');
+      await _ref
+          .read(novenaAppSettingsProvider.notifier)
+          .updateDailyReminderTime(time);
+      AppLogger.debug(
+        'Daily reminder time updated to ${time.hour}:${time.minute.toString().padLeft(2, '0')}',
+        'SETTINGS_SERVICE',
+      );
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to update reminder time', e, stackTrace, 'SETTINGS_SERVICE');
+      AppLogger.error(
+        'Failed to update reminder time',
+        e,
+        stackTrace,
+        'SETTINGS_SERVICE',
+      );
       rethrow;
     }
   }
@@ -29,11 +39,16 @@ class SettingsService {
       if (pin.length != 4) {
         throw ArgumentError('PIN must be exactly 4 digits');
       }
-      
+
       await _ref.read(novenaAppSettingsProvider.notifier).setPinCode(pin);
       AppLogger.debug('PIN code set up successfully', 'SETTINGS_SERVICE');
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to set up PIN code', e, stackTrace, 'SETTINGS_SERVICE');
+      AppLogger.error(
+        'Failed to set up PIN code',
+        e,
+        stackTrace,
+        'SETTINGS_SERVICE',
+      );
       rethrow;
     }
   }
@@ -54,7 +69,12 @@ class SettingsService {
       await setupPinCode(newPin);
       AppLogger.debug('PIN code changed successfully', 'SETTINGS_SERVICE');
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to change PIN code', e, stackTrace, 'SETTINGS_SERVICE');
+      AppLogger.error(
+        'Failed to change PIN code',
+        e,
+        stackTrace,
+        'SETTINGS_SERVICE',
+      );
       rethrow;
     }
   }
@@ -75,7 +95,12 @@ class SettingsService {
       await _ref.read(novenaAppSettingsProvider.notifier).clearPinCode();
       AppLogger.debug('PIN code removed successfully', 'SETTINGS_SERVICE');
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to remove PIN code', e, stackTrace, 'SETTINGS_SERVICE');
+      AppLogger.error(
+        'Failed to remove PIN code',
+        e,
+        stackTrace,
+        'SETTINGS_SERVICE',
+      );
       rethrow;
     }
   }
@@ -83,10 +108,20 @@ class SettingsService {
   /// Toggle novena notifications
   Future<void> toggleNovenaNotifications(bool enabled) async {
     try {
-      await _ref.read(novenaAppSettingsProvider.notifier).updateNovenaNotificationsEnabled(enabled);
-      AppLogger.debug('Novena notifications ${enabled ? 'enabled' : 'disabled'}', 'SETTINGS_SERVICE');
+      await _ref
+          .read(novenaAppSettingsProvider.notifier)
+          .updateNovenaNotificationsEnabled(enabled);
+      AppLogger.debug(
+        'Novena notifications ${enabled ? 'enabled' : 'disabled'}',
+        'SETTINGS_SERVICE',
+      );
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to toggle novena notifications', e, stackTrace, 'SETTINGS_SERVICE');
+      AppLogger.error(
+        'Failed to toggle novena notifications',
+        e,
+        stackTrace,
+        'SETTINGS_SERVICE',
+      );
       rethrow;
     }
   }
@@ -94,10 +129,20 @@ class SettingsService {
   /// Toggle completion celebrations
   Future<void> toggleCompletionCelebrations(bool enabled) async {
     try {
-      await _ref.read(novenaAppSettingsProvider.notifier).updateShowCompletionCelebrations(enabled);
-      AppLogger.debug('Completion celebrations ${enabled ? 'enabled' : 'disabled'}', 'SETTINGS_SERVICE');
+      await _ref
+          .read(novenaAppSettingsProvider.notifier)
+          .updateShowCompletionCelebrations(enabled);
+      AppLogger.debug(
+        'Completion celebrations ${enabled ? 'enabled' : 'disabled'}',
+        'SETTINGS_SERVICE',
+      );
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to toggle completion celebrations', e, stackTrace, 'SETTINGS_SERVICE');
+      AppLogger.error(
+        'Failed to toggle completion celebrations',
+        e,
+        stackTrace,
+        'SETTINGS_SERVICE',
+      );
       rethrow;
     }
   }
@@ -107,7 +152,12 @@ class SettingsService {
     try {
       return await _authService.validatePin(pin);
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to validate PIN', e, stackTrace, 'SETTINGS_SERVICE');
+      AppLogger.error(
+        'Failed to validate PIN',
+        e,
+        stackTrace,
+        'SETTINGS_SERVICE',
+      );
       return false;
     }
   }

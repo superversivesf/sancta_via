@@ -1,5 +1,5 @@
 /// Riverpod providers for the bible_data package with reactive state management
-/// 
+///
 /// This library provides Flutter Riverpod integration for the bible_data package,
 /// offering reactive state management, automatic caching, and simplified data access.
 ///
@@ -13,7 +13,7 @@
 ///   @override
 ///   Widget build(BuildContext context, WidgetRef ref) {
 ///     final scripture = ref.watch(scriptureProvider('John 3:16'));
-///     
+///
 ///     return scripture.when(
 ///       data: (content) => Text(content.text),
 ///       loading: () => CircularProgressIndicator(),

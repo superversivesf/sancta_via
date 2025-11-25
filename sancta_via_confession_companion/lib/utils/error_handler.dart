@@ -1,9 +1,9 @@
 // Custom exception for data-related errors
 class DataException implements Exception {
   final String message;
-  
+
   DataException(this.message);
-  
+
   @override
   String toString() => message;
 }
@@ -11,9 +11,9 @@ class DataException implements Exception {
 // Custom exception for storage-related errors
 class StorageException implements Exception {
   final String message;
-  
+
   StorageException(this.message);
-  
+
   @override
   String toString() => message;
 }

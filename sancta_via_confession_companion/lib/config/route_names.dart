@@ -8,6 +8,7 @@ class RouteNames {
   static const String examinationSummary = 'examination-summary';
   static const String categoryCompletion = 'category-completion';
   static const String completedExaminations = 'completed-examinations';
-  static const String completedExaminationDetail = 'completed-examination-detail';
+  static const String completedExaminationDetail =
+      'completed-examination-detail';
   static const String examinationPreferences = 'examination-preferences';
 }

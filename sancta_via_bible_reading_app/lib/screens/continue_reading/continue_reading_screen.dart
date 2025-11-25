@@ -18,9 +18,9 @@ class ContinueReadingScreen extends ConsumerWidget {
     final textScaling = ref.watch(textScaleProvider);
     final activePlans = ref.watch(activeReadingPlansProvider);
     final hasReadToday = ref.watch(hasReadTodayProvider);
-    
+
     // Parse liturgical color and convert to Flutter color
-    final liturgicalColor = currentColor != null 
+    final liturgicalColor = currentColor != null
         ? LiturgicalColor.fromString(currentColor)
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
@@ -40,40 +40,49 @@ class ContinueReadingScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            // Header
-            Text(
-              'Your Reading Plans',
-              style: textScaling.scaledHeadlineSmall(context).copyWith(
-                fontWeight: FontWeight.bold,
+              // Header
+              Text(
+                'Your Reading Plans',
+                style: textScaling
+                    .scaledHeadlineSmall(context)
+                    .copyWith(fontWeight: FontWeight.bold),
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Pick any plan and read the next chapter. Read as much or as little as you want!',
-              style: textScaling.scaledBodyLarge(context).copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+              const SizedBox(height: 8),
+              Text(
+                'Pick any plan and read the next chapter. Read as much or as little as you want!',
+                style: textScaling
+                    .scaledBodyLarge(context)
+                    .copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
               ),
-            ),
-            const SizedBox(height: 24),
-
-            // Reading status for today
-            _buildTodayStatusCard(context, ref, hasReadToday, themeColor),
-            const SizedBox(height: 24),
-
-            // Content based on reading plan status
-            if (activePlans.isEmpty) ...[
-              _buildNoReadingPlansCard(context, ref, themeColor),
-            ] else ...[
-              // Active reading plans
-              _buildActiveReadingPlans(context, ref, activePlans, themeColor),
               const SizedBox(height: 24),
-              
-              // Overall progress summary
-              _buildProgressSummaryCard(context, ref, activePlans, themeColor),
-            ],
 
-            const SizedBox(height: 24),
-            _buildQuickActionsCard(context, ref, activePlans, themeColor),
+              // Reading status for today
+              _buildTodayStatusCard(context, ref, hasReadToday, themeColor),
+              const SizedBox(height: 24),
+
+              // Content based on reading plan status
+              if (activePlans.isEmpty) ...[
+                _buildNoReadingPlansCard(context, ref, themeColor),
+              ] else ...[
+                // Active reading plans
+                _buildActiveReadingPlans(context, ref, activePlans, themeColor),
+                const SizedBox(height: 24),
+
+                // Overall progress summary
+                _buildProgressSummaryCard(
+                  context,
+                  ref,
+                  activePlans,
+                  themeColor,
+                ),
+              ],
+
+              const SizedBox(height: 24),
+              _buildQuickActionsCard(context, ref, activePlans, themeColor),
             ],
           ),
         ),
@@ -81,20 +90,27 @@ class ContinueReadingScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildTodayStatusCard(BuildContext context, WidgetRef ref, bool hasReadToday, Color? themeColor) {
+  Widget _buildTodayStatusCard(
+    BuildContext context,
+    WidgetRef ref,
+    bool hasReadToday,
+    Color? themeColor,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return Card(
       child: Container(
         decoration: BoxDecoration(
-          color: hasReadToday 
-            ? (themeColor ?? Colors.green).withValues(alpha: 0.1)
-            : (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.05),
+          color: hasReadToday
+              ? (themeColor ?? Colors.green).withValues(alpha: 0.1)
+              : (themeColor ?? Theme.of(context).colorScheme.primary)
+                    .withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: hasReadToday 
-              ? (themeColor ?? Colors.green).withValues(alpha: 0.3)
-              : (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
+            color: hasReadToday
+                ? (themeColor ?? Colors.green).withValues(alpha: 0.3)
+                : (themeColor ?? Theme.of(context).colorScheme.primary)
+                      .withValues(alpha: 0.3),
             width: 2,
           ),
         ),
@@ -104,9 +120,9 @@ class ContinueReadingScreen extends ConsumerWidget {
             children: [
               Icon(
                 hasReadToday ? Icons.check_circle : Icons.menu_book,
-                color: hasReadToday 
-                  ? (themeColor ?? Colors.green)
-                  : themeColor ?? Theme.of(context).colorScheme.primary,
+                color: hasReadToday
+                    ? (themeColor ?? Colors.green)
+                    : themeColor ?? Theme.of(context).colorScheme.primary,
                 size: 32,
               ),
               const SizedBox(width: 16),
@@ -115,21 +131,33 @@ class ContinueReadingScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      hasReadToday ? 'You\'ve read today! 📖' : 'Ready to read today?',
-                      style: textScaling.scaledTitleMedium(context).copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: hasReadToday 
-                          ? (themeColor ?? Colors.green).withValues(alpha: 0.9)
-                          : (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.9),
-                      ),
+                      hasReadToday
+                          ? 'You\'ve read today! 📖'
+                          : 'Ready to read today?',
+                      style: textScaling
+                          .scaledTitleMedium(context)
+                          .copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: hasReadToday
+                                ? (themeColor ?? Colors.green).withValues(
+                                    alpha: 0.9,
+                                  )
+                                : (themeColor ??
+                                          Theme.of(context).colorScheme.primary)
+                                      .withValues(alpha: 0.9),
+                          ),
                     ),
                     Text(
-                      hasReadToday 
-                        ? 'Great job! You can keep reading if you want to get ahead.'
-                        : 'Pick any reading plan below and start with the next chapter.',
-                      style: textScaling.scaledBodyMedium(context).copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                      ),
+                      hasReadToday
+                          ? 'Great job! You can keep reading if you want to get ahead.'
+                          : 'Pick any reading plan below and start with the next chapter.',
+                      style: textScaling
+                          .scaledBodyMedium(context)
+                          .copyWith(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.7),
+                          ),
                     ),
                   ],
                 ),
@@ -141,17 +169,20 @@ class ContinueReadingScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildNoReadingPlansCard(BuildContext context, WidgetRef ref, Color? themeColor) {
+  Widget _buildNoReadingPlansCard(
+    BuildContext context,
+    WidgetRef ref,
+    Color? themeColor,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return Card(
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          border: themeColor != null ? Border.all(
-            color: themeColor.withValues(alpha: 0.3),
-            width: 2,
-          ) : null,
+          border: themeColor != null
+              ? Border.all(color: themeColor.withValues(alpha: 0.3), width: 2)
+              : null,
         ),
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -160,25 +191,35 @@ class ContinueReadingScreen extends ConsumerWidget {
               Icon(
                 Icons.auto_stories_outlined,
                 size: textScaling.scaleFactor * 64,
-                color: themeColor?.withValues(alpha: 0.7) ?? 
-                       Theme.of(context).colorScheme.primary.withValues(alpha: 0.7),
+                color:
+                    themeColor?.withValues(alpha: 0.7) ??
+                    Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.7),
               ),
               const SizedBox(height: 16),
               Text(
                 'No Reading Plans Set',
-                style: textScaling.scaledTitleLarge(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: themeColor?.withValues(alpha: 0.8) ?? 
-                         Theme.of(context).colorScheme.primary,
-                ),
+                style: textScaling
+                    .scaledTitleLarge(context)
+                    .copyWith(
+                      fontWeight: FontWeight.bold,
+                      color:
+                          themeColor?.withValues(alpha: 0.8) ??
+                          Theme.of(context).colorScheme.primary,
+                    ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
               Text(
                 'Create reading plans to track your progress through different parts of the Bible. Read at your own pace!',
-                style: textScaling.scaledBodyLarge(context).copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                ),
+                style: textScaling
+                    .scaledBodyLarge(context)
+                    .copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
@@ -189,14 +230,18 @@ class ContinueReadingScreen extends ConsumerWidget {
                 icon: const Icon(Icons.create),
                 label: Text(
                   'Create Reading Plan',
-                  style: textScaling.scaledBodyLarge(context).copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: textScaling
+                      .scaledBodyLarge(context)
+                      .copyWith(fontWeight: FontWeight.w600),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
+                  backgroundColor:
+                      themeColor ?? Theme.of(context).colorScheme.primary,
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 16,
+                  ),
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(12)),
                   ),
@@ -209,9 +254,14 @@ class ContinueReadingScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildActiveReadingPlans(BuildContext context, WidgetRef ref, List<ReadingPlan> activePlans, Color? themeColor) {
+  Widget _buildActiveReadingPlans(
+    BuildContext context,
+    WidgetRef ref,
+    List<ReadingPlan> activePlans,
+    Color? themeColor,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -219,28 +269,36 @@ class ContinueReadingScreen extends ConsumerWidget {
         if (activePlans.length > 1) ...[
           Text(
             'Your Active Reading Plans',
-            style: textScaling.scaledTitleLarge(context).copyWith(
-              fontWeight: FontWeight.bold,
-              color: themeColor ?? Theme.of(context).colorScheme.primary,
-            ),
+            style: textScaling
+                .scaledTitleLarge(context)
+                .copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: themeColor ?? Theme.of(context).colorScheme.primary,
+                ),
           ),
           const SizedBox(height: 8),
           Text(
             'Choose any plan to continue reading:',
-            style: textScaling.scaledBodyMedium(context).copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-            ),
+            style: textScaling
+                .scaledBodyMedium(context)
+                .copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
+                ),
           ),
           const SizedBox(height: 20),
         ],
-        
+
         // Individual plan cards with more spacing
         ...activePlans.map((plan) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildPlanReadingCard(context, ref, plan, themeColor),
-              const SizedBox(height: 24), // Consistent spacing between all plans
+              const SizedBox(
+                height: 24,
+              ), // Consistent spacing between all plans
             ],
           );
         }),
@@ -248,10 +306,15 @@ class ContinueReadingScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildPlanReadingCard(BuildContext context, WidgetRef ref, ReadingPlan plan, Color? themeColor) {
+  Widget _buildPlanReadingCard(
+    BuildContext context,
+    WidgetRef ref,
+    ReadingPlan plan,
+    Color? themeColor,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
     final completionColor = themeColor ?? Theme.of(context).colorScheme.primary;
-    
+
     return Card(
       elevation: 4, // Increased elevation for better separation
       child: Container(
@@ -259,7 +322,9 @@ class ContinueReadingScreen extends ConsumerWidget {
           color: completionColor.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: completionColor.withValues(alpha: 0.4), // Slightly stronger border
+            color: completionColor.withValues(
+              alpha: 0.4,
+            ), // Slightly stronger border
             width: 2,
           ),
         ),
@@ -300,48 +365,59 @@ class ContinueReadingScreen extends ConsumerWidget {
                         children: [
                           Text(
                             plan.name,
-                            style: textScaling.scaledTitleMedium(context).copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: completionColor.withValues(alpha: 0.95),
-                            ),
+                            style: textScaling
+                                .scaledTitleMedium(context)
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: completionColor.withValues(
+                                    alpha: 0.95,
+                                  ),
+                                ),
                           ),
                           Text(
                             plan.collection.displayName,
-                            style: textScaling.scaledBodySmall(context).copyWith(
-                              color: completionColor.withValues(alpha: 0.7),
-                              fontWeight: FontWeight.w500,
-                            ),
+                            style: textScaling
+                                .scaledBodySmall(context)
+                                .copyWith(
+                                  color: completionColor.withValues(alpha: 0.7),
+                                  fontWeight: FontWeight.w500,
+                                ),
                           ),
                         ],
                       ),
                     ),
                     // Progress percentage
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: completionColor.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         '${(plan.progressPercentage * 100).toStringAsFixed(1)}%',
-                        style: textScaling.scaledLabelMedium(context).copyWith(
-                          color: completionColor,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: textScaling
+                            .scaledLabelMedium(context)
+                            .copyWith(
+                              color: completionColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                     ),
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Next chapter to read - clickable to start reading
               InkWell(
                 onTap: () => _navigateToChapter(
-                  context, 
-                  plan.progress.currentBook, 
-                  plan.progress.currentChapter
+                  context,
+                  plan.progress.currentBook,
+                  plan.progress.currentChapter,
                 ),
                 borderRadius: BorderRadius.circular(8),
                 child: Container(
@@ -359,10 +435,14 @@ class ContinueReadingScreen extends ConsumerWidget {
                     children: [
                       Text(
                         'Next chapter to read:',
-                        style: textScaling.scaledBodyMedium(context).copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: textScaling
+                            .scaledBodyMedium(context)
+                            .copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.7),
+                              fontWeight: FontWeight.w500,
+                            ),
                       ),
                       const SizedBox(height: 8),
                       Row(
@@ -376,10 +456,12 @@ class ContinueReadingScreen extends ConsumerWidget {
                           const SizedBox(width: 12),
                           Text(
                             plan.nextChapterText,
-                            style: textScaling.scaledTitleLarge(context).copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: completionColor.withValues(alpha: 0.9),
-                            ),
+                            style: textScaling
+                                .scaledTitleLarge(context)
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: completionColor.withValues(alpha: 0.9),
+                                ),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -387,29 +469,35 @@ class ContinueReadingScreen extends ConsumerWidget {
                       const SizedBox(height: 8),
                       Text(
                         'Tap to start reading',
-                        style: textScaling.scaledBodySmall(context).copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                          fontStyle: FontStyle.italic,
-                        ),
+                        style: textScaling
+                            .scaledBodySmall(context)
+                            .copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.6),
+                              fontStyle: FontStyle.italic,
+                            ),
                         textAlign: TextAlign.center,
                       ),
                     ],
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Progress bar
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Reading Progress',
-                    style: textScaling.scaledBodyMedium(context).copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: completionColor.withValues(alpha: 0.8),
-                    ),
+                    style: textScaling
+                        .scaledBodyMedium(context)
+                        .copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: completionColor.withValues(alpha: 0.8),
+                        ),
                   ),
                   const SizedBox(height: 8),
                   LinearProgressIndicator(
@@ -421,30 +509,38 @@ class ContinueReadingScreen extends ConsumerWidget {
                   const SizedBox(height: 8),
                   Text(
                     'Currently at: ${plan.progress.currentBook} ${plan.progress.currentChapter}',
-                    style: textScaling.scaledBodySmall(context).copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                    ),
+                    style: textScaling
+                        .scaledBodySmall(context)
+                        .copyWith(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.7),
+                        ),
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Quick action button
               Center(
                 child: ElevatedButton.icon(
-                  onPressed: () => _advancePlan(context, ref, plan.id, themeColor),
+                  onPressed: () =>
+                      _advancePlan(context, ref, plan.id, themeColor),
                   icon: const Icon(Icons.arrow_forward, size: 18),
                   label: Text(
                     'Mark as Read & Advance',
-                    style: textScaling.scaledBodyMedium(context).copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: textScaling
+                        .scaledBodyMedium(context)
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: completionColor,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 28,
+                      vertical: 14,
+                    ),
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
@@ -459,17 +555,21 @@ class ContinueReadingScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildProgressSummaryCard(BuildContext context, WidgetRef ref, List<ReadingPlan> activePlans, Color? themeColor) {
+  Widget _buildProgressSummaryCard(
+    BuildContext context,
+    WidgetRef ref,
+    List<ReadingPlan> activePlans,
+    Color? themeColor,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return Card(
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          border: themeColor != null ? Border.all(
-            color: themeColor.withValues(alpha: 0.3),
-            width: 1,
-          ) : null,
+          border: themeColor != null
+              ? Border.all(color: themeColor.withValues(alpha: 0.3), width: 1)
+              : null,
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -485,14 +585,14 @@ class ContinueReadingScreen extends ConsumerWidget {
                   const SizedBox(width: 8),
                   Text(
                     'Reading Progress Summary',
-                    style: textScaling.scaledTitleMedium(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: textScaling
+                        .scaledTitleMedium(context)
+                        .copyWith(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
-              
+
               ...activePlans.map((plan) {
                 final progressPercentage = plan.progressPercentage;
                 return Padding(
@@ -505,16 +605,19 @@ class ContinueReadingScreen extends ConsumerWidget {
                           Expanded(
                             child: Text(
                               plan.name,
-                              style: textScaling.scaledBodyMedium(context).copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: textScaling
+                                  .scaledBodyMedium(context)
+                                  .copyWith(fontWeight: FontWeight.w500),
                             ),
                           ),
                           Text(
                             '${(progressPercentage * 100).toStringAsFixed(1)}%',
-                            style: textScaling.scaledBodySmall(context).copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                            ),
+                            style: textScaling
+                                .scaledBodySmall(context)
+                                .copyWith(
+                                  color: Theme.of(context).colorScheme.onSurface
+                                      .withValues(alpha: 0.6),
+                                ),
                           ),
                         ],
                       ),
@@ -529,9 +632,13 @@ class ContinueReadingScreen extends ConsumerWidget {
                       const SizedBox(height: 4),
                       Text(
                         'Currently at: ${plan.progress.currentBook} ${plan.progress.currentChapter}',
-                        style: textScaling.scaledBodySmall(context).copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                        ),
+                        style: textScaling
+                            .scaledBodySmall(context)
+                            .copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.6),
+                            ),
                       ),
                     ],
                   ),
@@ -544,19 +651,23 @@ class ContinueReadingScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildQuickActionsCard(BuildContext context, WidgetRef ref, List<ReadingPlan> activePlans, Color? themeColor) {
+  Widget _buildQuickActionsCard(
+    BuildContext context,
+    WidgetRef ref,
+    List<ReadingPlan> activePlans,
+    Color? themeColor,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
     final manager = ref.watch(readingPlanManagerProvider);
     final canAddNew = manager.canAddNewPlan();
-    
+
     return Card(
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          border: themeColor != null ? Border.all(
-            color: themeColor.withValues(alpha: 0.3),
-            width: 1,
-          ) : null,
+          border: themeColor != null
+              ? Border.all(color: themeColor.withValues(alpha: 0.3), width: 1)
+              : null,
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -572,19 +683,21 @@ class ContinueReadingScreen extends ConsumerWidget {
                   const SizedBox(width: 8),
                   Text(
                     'Quick Actions',
-                    style: textScaling.scaledTitleMedium(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: textScaling
+                        .scaledTitleMedium(context)
+                        .copyWith(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
-              
+
               if (canAddNew) ...[
                 ListTile(
                   leading: const Icon(Icons.add),
                   title: const Text('Add New Reading Plan'),
-                  subtitle: Text('${maxSimultaneousPlans - activePlans.length} more plan${maxSimultaneousPlans - activePlans.length != 1 ? 's' : ''} allowed'),
+                  subtitle: Text(
+                    '${maxSimultaneousPlans - activePlans.length} more plan${maxSimultaneousPlans - activePlans.length != 1 ? 's' : ''} allowed',
+                  ),
                   onTap: () {
                     context.push('/reading-plan');
                   },
@@ -592,11 +705,16 @@ class ContinueReadingScreen extends ConsumerWidget {
               ] else ...[
                 ListTile(
                   leading: Icon(Icons.info, color: Colors.orange.shade700),
-                  title: Text('Maximum Plans Reached', style: TextStyle(color: Colors.orange.shade700)),
-                  subtitle: Text('You have the maximum of $maxSimultaneousPlans simultaneous plans'),
+                  title: Text(
+                    'Maximum Plans Reached',
+                    style: TextStyle(color: Colors.orange.shade700),
+                  ),
+                  subtitle: Text(
+                    'You have the maximum of $maxSimultaneousPlans simultaneous plans',
+                  ),
                 ),
               ],
-              
+
               if (activePlans.isNotEmpty) ...[
                 ListTile(
                   leading: const Icon(Icons.edit),
@@ -613,7 +731,7 @@ class ContinueReadingScreen extends ConsumerWidget {
                   onTap: () => _showResetDailyDialog(context, ref),
                 ),
               ],
-              
+
               ListTile(
                 leading: const Icon(Icons.search),
                 title: const Text('Bible Lookup'),
@@ -633,8 +751,15 @@ class ContinueReadingScreen extends ConsumerWidget {
     context.push('/chapter/${Uri.encodeComponent(book)}/$chapter');
   }
 
-  void _advancePlan(BuildContext context, WidgetRef ref, String planId, Color? themeColor) {
-    ref.read(readingPlanManagerProvider.notifier).advancePlan(planId, successColor: themeColor);
+  void _advancePlan(
+    BuildContext context,
+    WidgetRef ref,
+    String planId,
+    Color? themeColor,
+  ) {
+    ref
+        .read(readingPlanManagerProvider.notifier)
+        .advancePlan(planId, successColor: themeColor);
     // Note: Success message is now handled by the UserMessageService with liturgical color
   }
 
@@ -644,7 +769,7 @@ class ContinueReadingScreen extends ConsumerWidget {
       builder: (context) => AlertDialog(
         title: const Text('Reset Daily Status'),
         content: const Text(
-          'This will mark you as not having read today. Are you sure?'
+          'This will mark you as not having read today. Are you sure?',
         ),
         actions: [
           TextButton(
@@ -657,12 +782,16 @@ class ContinueReadingScreen extends ConsumerWidget {
               // Get the current liturgical color for success message
               final currentColor = ref.read(currentLiturgicalColorProvider);
               final colorIntensity = ref.read(colorIntensityProvider);
-              final liturgicalColor = currentColor != null 
+              final liturgicalColor = currentColor != null
                   ? LiturgicalColor.fromString(currentColor)
                   : null;
-              final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
-              
-              ref.read(readingPlanManagerProvider.notifier).resetDailyStatus(successColor: themeColor);
+              final themeColor = liturgicalColor?.toFlutterColor(
+                colorIntensity,
+              );
+
+              ref
+                  .read(readingPlanManagerProvider.notifier)
+                  .resetDailyStatus(successColor: themeColor);
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
             child: const Text('Reset'),

@@ -5,12 +5,18 @@ class ExaminationModel {
   final String id;
   final String title;
   final String description;
-  final String source; // E.g., "Based on Ten Commandments", "St. Francis de Sales", etc.
+  final String
+  source; // E.g., "Based on Ten Commandments", "St. Francis de Sales", etc.
   final String targetAudience; // E.g., "Adults", "Children", "Teens", etc.
   final List<ExaminationCategory> categories;
 
   ExaminationModel({
-    required this.title, required this.description, required this.source, required this.targetAudience, required this.categories, String? id,
+    required this.title,
+    required this.description,
+    required this.source,
+    required this.targetAudience,
+    required this.categories,
+    String? id,
   }) : id = id ?? const Uuid().v4();
 
   // Factory method to create from JSON
@@ -53,7 +59,9 @@ class ExaminationCategory {
   final List<ExaminationItem> items;
 
   ExaminationCategory({
-    required this.title, required this.items, String? id,
+    required this.title,
+    required this.items,
+    String? id,
     this.description,
   }) : id = id ?? const Uuid().v4();
 
@@ -86,10 +94,8 @@ class ExaminationItem {
   final String text;
   final String? clarification; // Optional additional explanation
 
-  ExaminationItem({
-    required this.text, String? id,
-    this.clarification,
-  }) : id = id ?? const Uuid().v4();
+  ExaminationItem({required this.text, String? id, this.clarification})
+    : id = id ?? const Uuid().v4();
 
   // Factory method to create from JSON
   factory ExaminationItem.fromJson(Map<String, dynamic> json) {
@@ -102,10 +108,6 @@ class ExaminationItem {
 
   // Convert to JSON
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'text': text,
-      'clarification': clarification,
-    };
+    return {'id': id, 'text': text, 'clarification': clarification};
   }
 }

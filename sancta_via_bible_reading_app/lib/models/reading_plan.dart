@@ -1,5 +1,3 @@
-
-
 /// Maximum number of simultaneous reading plans allowed
 const int maxSimultaneousPlans = 5;
 
@@ -81,80 +79,191 @@ enum BookCollection {
         return [
           // Old Testament (Catholic Canon with Deuterocanonical Books)
           'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy',
-          'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings',
-          '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Tobit', 'Judith', 'Esther', 
+          'Joshua',
+          'Judges',
+          'Ruth',
+          '1 Samuel',
+          '2 Samuel',
+          '1 Kings',
+          '2 Kings',
+          '1 Chronicles',
+          '2 Chronicles',
+          'Ezra',
+          'Nehemiah',
+          'Tobit',
+          'Judith',
+          'Esther',
           '1 Maccabees', '2 Maccabees',
-          'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs', 'Wisdom', 'Sirach',
+          'Job',
+          'Psalms',
+          'Proverbs',
+          'Ecclesiastes',
+          'Song of Songs',
+          'Wisdom',
+          'Sirach',
           'Isaiah', 'Jeremiah', 'Lamentations', 'Baruch', 'Ezekiel', 'Daniel',
           'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum',
           'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi',
           // New Testament
           'Matthew', 'Mark', 'Luke', 'John',
           'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians',
-          'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians',
+          'Ephesians',
+          'Philippians',
+          'Colossians',
+          '1 Thessalonians',
+          '2 Thessalonians',
           '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews',
-          'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation of John'
+          'James',
+          '1 Peter',
+          '2 Peter',
+          '1 John',
+          '2 John',
+          '3 John',
+          'Jude',
+          'Revelation of John',
         ];
       case BookCollection.newTestament:
         return [
-          'Matthew', 'Mark', 'Luke', 'John',
-          'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians',
-          'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians',
-          '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews',
-          'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation of John'
+          'Matthew',
+          'Mark',
+          'Luke',
+          'John',
+          'Acts',
+          'Romans',
+          '1 Corinthians',
+          '2 Corinthians',
+          'Galatians',
+          'Ephesians',
+          'Philippians',
+          'Colossians',
+          '1 Thessalonians',
+          '2 Thessalonians',
+          '1 Timothy',
+          '2 Timothy',
+          'Titus',
+          'Philemon',
+          'Hebrews',
+          'James',
+          '1 Peter',
+          '2 Peter',
+          '1 John',
+          '2 John',
+          '3 John',
+          'Jude',
+          'Revelation of John',
         ];
       case BookCollection.oldTestament:
         return [
           // Catholic Old Testament (including Deuterocanonical Books)
           'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy',
-          'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings',
-          '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Tobit', 'Judith', 'Esther',
+          'Joshua',
+          'Judges',
+          'Ruth',
+          '1 Samuel',
+          '2 Samuel',
+          '1 Kings',
+          '2 Kings',
+          '1 Chronicles',
+          '2 Chronicles',
+          'Ezra',
+          'Nehemiah',
+          'Tobit',
+          'Judith',
+          'Esther',
           '1 Maccabees', '2 Maccabees',
-          'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs', 'Wisdom', 'Sirach',
+          'Job',
+          'Psalms',
+          'Proverbs',
+          'Ecclesiastes',
+          'Song of Songs',
+          'Wisdom',
+          'Sirach',
           'Isaiah', 'Jeremiah', 'Lamentations', 'Baruch', 'Ezekiel', 'Daniel',
           'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum',
-          'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi'
+          'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi',
         ];
       case BookCollection.gospels:
         return ['Matthew', 'Mark', 'Luke', 'John'];
       case BookCollection.paulineEpistles:
         return [
-          'Romans', '1 Corinthians', '2 Corinthians', 'Galatians',
-          'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians',
-          '1 Timothy', '2 Timothy', 'Titus', 'Philemon'
+          'Romans',
+          '1 Corinthians',
+          '2 Corinthians',
+          'Galatians',
+          'Ephesians',
+          'Philippians',
+          'Colossians',
+          '1 Thessalonians',
+          '2 Thessalonians',
+          '1 Timothy',
+          '2 Timothy',
+          'Titus',
+          'Philemon',
         ];
       case BookCollection.pastoralEpistles:
-        return [
-          '1 Timothy', '2 Timothy', 'Titus'
-        ];
+        return ['1 Timothy', '2 Timothy', 'Titus'];
       case BookCollection.generalEpistles:
         return [
-          'Hebrews', 'James', '1 Peter', '2 Peter', 
-          '1 John', '2 John', '3 John', 'Jude'
+          'Hebrews',
+          'James',
+          '1 Peter',
+          '2 Peter',
+          '1 John',
+          '2 John',
+          '3 John',
+          'Jude',
         ];
       case BookCollection.psalmsProverbs:
         return ['Psalms', 'Proverbs'];
       case BookCollection.majorProphets:
         return [
           // Catholic Major Prophets (including Deuterocanonical Books)
-          'Isaiah', 'Jeremiah', 'Lamentations', 'Baruch', 'Ezekiel', 'Daniel'
+          'Isaiah', 'Jeremiah', 'Lamentations', 'Baruch', 'Ezekiel', 'Daniel',
         ];
       case BookCollection.minorProphets:
         return [
-          'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum',
-          'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi'
+          'Hosea',
+          'Joel',
+          'Amos',
+          'Obadiah',
+          'Jonah',
+          'Micah',
+          'Nahum',
+          'Habakkuk',
+          'Zephaniah',
+          'Haggai',
+          'Zechariah',
+          'Malachi',
         ];
       case BookCollection.wisdom:
         return [
           // Catholic Wisdom Books (including Deuterocanonical Books)
-          'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs', 'Wisdom', 'Sirach'
+          'Job',
+          'Psalms',
+          'Proverbs',
+          'Ecclesiastes',
+          'Song of Songs',
+          'Wisdom',
+          'Sirach',
         ];
       case BookCollection.history:
         return [
           // Catholic Historical Books (including Deuterocanonical Books)
-          'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings',
-          '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Tobit', 'Judith', 'Esther',
-          '1 Maccabees', '2 Maccabees'
+          'Joshua',
+          'Judges',
+          'Ruth',
+          '1 Samuel',
+          '2 Samuel',
+          '1 Kings',
+          '2 Kings',
+          '1 Chronicles',
+          '2 Chronicles',
+          'Ezra',
+          'Nehemiah',
+          'Tobit',
+          'Judith',
+          'Esther',
+          '1 Maccabees', '2 Maccabees',
         ];
     }
   }
@@ -229,7 +338,9 @@ class ReadingProgress {
       bookIndex: json['bookIndex'],
       books: List<String>.from(json['books']),
       isCompleted: json['isCompleted'] ?? false,
-      lastReadDate: json['lastReadDate'] != null ? DateTime.parse(json['lastReadDate']) : null,
+      lastReadDate: json['lastReadDate'] != null
+          ? DateTime.parse(json['lastReadDate'])
+          : null,
     );
   }
 }
@@ -247,8 +358,8 @@ class ReadingPlan {
     required this.id,
     required this.name,
     required this.collection,
-    required this.progress, 
-    required this.createdAt, 
+    required this.progress,
+    required this.createdAt,
     this.completedAt,
     this.isActive = true,
   });
@@ -279,13 +390,14 @@ class ReadingPlan {
 
   double get progressPercentage {
     if (progress.books.isEmpty) return 0.0;
-    
+
     // Calculate total chapters read vs total chapters in collection
     // This is a simplified calculation - in a real app you'd want to know exact chapter counts
     final totalBooks = progress.books.length;
     final completedBooks = progress.bookIndex;
-    final currentBookProgress = progress.currentChapter / 30.0; // Assume average 30 chapters per book
-    
+    final currentBookProgress =
+        progress.currentChapter / 30.0; // Assume average 30 chapters per book
+
     return (completedBooks + currentBookProgress) / totalBooks;
   }
 
@@ -305,10 +417,14 @@ class ReadingPlan {
     return ReadingPlan(
       id: json['id'],
       name: json['name'] ?? 'Reading Plan',
-      collection: BookCollection.values.firstWhere((e) => e.name == json['collection']),
+      collection: BookCollection.values.firstWhere(
+        (e) => e.name == json['collection'],
+      ),
       progress: ReadingProgress.fromJson(json['progress']),
       createdAt: DateTime.parse(json['createdAt']),
-      completedAt: json['completedAt'] != null ? DateTime.parse(json['completedAt']) : null,
+      completedAt: json['completedAt'] != null
+          ? DateTime.parse(json['completedAt'])
+          : null,
       isActive: json['isActive'] ?? true,
     );
   }
@@ -337,15 +453,18 @@ class ReadingPlanManager {
       lastResetDate: _normalizeToMidnight(now),
     );
   }
-  
+
   /// Helper method to normalize DateTime to midnight of the same day
   static DateTime _normalizeToMidnight(DateTime dateTime) {
     return DateTime(dateTime.year, dateTime.month, dateTime.day);
   }
 
-  List<ReadingPlan> get activePlans => plans.where((plan) => plan.isActive && !plan.isCompleted).toList();
-  List<ReadingPlan> get completedPlans => plans.where((plan) => plan.isCompleted).toList();
-  List<ReadingPlan> get pausedPlans => plans.where((plan) => !plan.isActive && !plan.isCompleted).toList();
+  List<ReadingPlan> get activePlans =>
+      plans.where((plan) => plan.isActive && !plan.isCompleted).toList();
+  List<ReadingPlan> get completedPlans =>
+      plans.where((plan) => plan.isCompleted).toList();
+  List<ReadingPlan> get pausedPlans =>
+      plans.where((plan) => !plan.isActive && !plan.isCompleted).toList();
 
   bool canAddNewPlan() {
     return activePlans.length < maxSimultaneousPlans;
@@ -353,13 +472,12 @@ class ReadingPlanManager {
 
   ReadingPlanManager addPlan(ReadingPlan plan) {
     if (!canAddNewPlan()) {
-      throw Exception('Maximum number of simultaneous plans ($maxSimultaneousPlans) reached');
+      throw Exception(
+        'Maximum number of simultaneous plans ($maxSimultaneousPlans) reached',
+      );
     }
-    
-    return copyWith(
-      plans: [...plans, plan],
-      lastUpdated: DateTime.now(),
-    );
+
+    return copyWith(plans: [...plans, plan], lastUpdated: DateTime.now());
   }
 
   ReadingPlanManager updatePlan(ReadingPlan updatedPlan) {
@@ -367,10 +485,7 @@ class ReadingPlanManager {
       return plan.id == updatedPlan.id ? updatedPlan : plan;
     }).toList();
 
-    return copyWith(
-      plans: updatedPlans,
-      lastUpdated: DateTime.now(),
-    );
+    return copyWith(plans: updatedPlans, lastUpdated: DateTime.now());
   }
 
   ReadingPlanManager removePlan(String planId) {
@@ -381,10 +496,7 @@ class ReadingPlanManager {
   }
 
   ReadingPlanManager markReadToday() {
-    return copyWith(
-      hasReadAnythingToday: true,
-      lastUpdated: DateTime.now(),
-    );
+    return copyWith(hasReadAnythingToday: true, lastUpdated: DateTime.now());
   }
 
   ReadingPlanManager copyWith({
@@ -418,7 +530,7 @@ class ReadingPlanManager {
           .toList(),
       lastUpdated: lastUpdated,
       hasReadAnythingToday: json['hasReadAnythingToday'] ?? false,
-      lastResetDate: json['lastResetDate'] != null 
+      lastResetDate: json['lastResetDate'] != null
           ? _normalizeToMidnight(DateTime.parse(json['lastResetDate']))
           : _normalizeToMidnight(lastUpdated),
     );
@@ -427,7 +539,11 @@ class ReadingPlanManager {
   /// Check if we need to reset daily status (new day detected)
   bool get needsDailyReset {
     final now = DateTime.now();
-    final resetDate = DateTime(lastResetDate.year, lastResetDate.month, lastResetDate.day);
+    final resetDate = DateTime(
+      lastResetDate.year,
+      lastResetDate.month,
+      lastResetDate.day,
+    );
     final currentDate = DateTime(now.year, now.month, now.day);
     return currentDate.isAfter(resetDate);
   }

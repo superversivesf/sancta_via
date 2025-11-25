@@ -2,7 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/novena_notification_service.dart';
 
 /// Provider for the novena notification service
-final novenaNotificationServiceProvider = Provider<NovenaNotificationService>((ref) {
+final novenaNotificationServiceProvider = Provider<NovenaNotificationService>((
+  ref,
+) {
   return NovenaNotificationService();
 });
 

@@ -3,23 +3,14 @@ class LiturgicalCycle {
   final int key;
   final String value;
 
-  const LiturgicalCycle({
-    required this.key,
-    required this.value,
-  });
+  const LiturgicalCycle({required this.key, required this.value});
 
   factory LiturgicalCycle.fromJson(Map<String, dynamic> json) {
-    return LiturgicalCycle(
-      key: json['key'] ?? 0,
-      value: json['value'] ?? '',
-    );
+    return LiturgicalCycle(key: json['key'] ?? 0, value: json['value'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'key': key,
-      'value': value,
-    };
+    return {'key': key, 'value': value};
   }
 
   @override
@@ -43,23 +34,14 @@ class PsalterWeek {
   final int key;
   final String value;
 
-  const PsalterWeek({
-    required this.key,
-    required this.value,
-  });
+  const PsalterWeek({required this.key, required this.value});
 
   factory PsalterWeek.fromJson(Map<String, dynamic> json) {
-    return PsalterWeek(
-      key: json['key'] ?? 0,
-      value: json['value'] ?? '',
-    );
+    return PsalterWeek(key: json['key'] ?? 0, value: json['value'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'key': key,
-      'value': value,
-    };
+    return {'key': key, 'value': value};
   }
 
   @override

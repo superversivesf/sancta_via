@@ -25,7 +25,7 @@ void main() {
 
     // Verify that ProviderScope is in the widget tree
     expect(find.byType(ProviderScope), findsOneWidget);
-    
+
     // Verify basic widget functionality
     expect(find.text('Test'), findsOneWidget);
     expect(find.text('Hello'), findsOneWidget);

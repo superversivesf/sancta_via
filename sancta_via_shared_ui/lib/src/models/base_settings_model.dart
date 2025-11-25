@@ -3,12 +3,12 @@ import 'package:flutter/foundation.dart';
 /// Text scaling mode for font size preferences
 enum TextScalingMode {
   small(0.85, 'Small'),
-  normal(1.0, 'Normal'), 
+  normal(1.0, 'Normal'),
   large(1.15, 'Large'),
   extraLarge(1.3, 'Extra Large');
 
   const TextScalingMode(this.scaleFactor, this.displayName);
-  
+
   final double scaleFactor;
   final String displayName;
 }
@@ -20,7 +20,7 @@ enum AppLanguage {
   spanish('Spanish', 'es');
 
   const AppLanguage(this.displayName, this.code);
-  
+
   final String displayName;
   final String code;
 }
@@ -31,22 +31,22 @@ enum AppLanguage {
 class BaseSettingsModel {
   /// Font size for text content (in points)
   final double fontSize;
-  
+
   /// Text scaling mode for accessibility
   final TextScalingMode textScalingMode;
-  
+
   /// Default language for the app
   final AppLanguage defaultLanguage;
-  
+
   /// Whether notifications are enabled
   final bool notificationsEnabled;
-  
+
   /// Whether to show liturgical color indicators
   final bool showLiturgicalColors;
-  
+
   /// Whether to enable haptic feedback
   final bool hapticFeedbackEnabled;
-  
+
   /// Whether to reduce motion for accessibility
   final bool reduceMotion;
 
@@ -138,7 +138,8 @@ class BaseSettingsModel {
       defaultLanguage: defaultLanguage ?? this.defaultLanguage,
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
       showLiturgicalColors: showLiturgicalColors ?? this.showLiturgicalColors,
-      hapticFeedbackEnabled: hapticFeedbackEnabled ?? this.hapticFeedbackEnabled,
+      hapticFeedbackEnabled:
+          hapticFeedbackEnabled ?? this.hapticFeedbackEnabled,
       reduceMotion: reduceMotion ?? this.reduceMotion,
     );
   }
@@ -147,10 +148,10 @@ class BaseSettingsModel {
   double get effectiveTextScaleFactor {
     // Base scale from the scaling mode
     double baseScale = textScalingMode.scaleFactor;
-    
+
     // Additional scale from font size (relative to 18pt baseline)
     double fontScale = fontSize / 18.0;
-    
+
     return baseScale * fontScale;
   }
 

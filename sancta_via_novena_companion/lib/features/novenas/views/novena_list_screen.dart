@@ -14,7 +14,7 @@ class NovenaListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final novenaListAsync = ref.watch(novenaMetadataListProvider);
     final hasActiveNovena = ref.watch(hasActiveNovenaProvider);
-    
+
     // Redirect to active novena dashboard if one exists
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (hasActiveNovena && context.mounted) {
@@ -42,23 +42,21 @@ class NovenaListScreen extends ConsumerWidget {
           return ListView(
             children: [
               // Info section about novenas
-              if (!hasActiveNovena) ...[
-                _buildInfoSection(context),
-              ],
+              if (!hasActiveNovena) ...[_buildInfoSection(context)],
 
               // Active novena banner if one exists
-              if (hasActiveNovena) ...[
-                _buildActiveNovenaBanner(context, ref),
-              ],
+              if (hasActiveNovena) ...[_buildActiveNovenaBanner(context, ref)],
 
               // All novenas section
               _buildSectionHeader(context, 'Available Novenas'),
-              ...novenas.map((novena) => _buildNovenaCard(
-                context, 
-                ref, 
-                novena, 
-                hasActiveNovena: hasActiveNovena,
-              )),
+              ...novenas.map(
+                (novena) => _buildNovenaCard(
+                  context,
+                  ref,
+                  novena,
+                  hasActiveNovena: hasActiveNovena,
+                ),
+              ),
             ],
           );
         },
@@ -148,7 +146,9 @@ class NovenaListScreen extends ConsumerWidget {
           const SizedBox(height: 8),
           LinearProgressIndicator(
             value: activeNovena.progressPercentage,
-            backgroundColor: Theme.of(context).colorScheme.outline.withAlpha(77),
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.outline.withAlpha(77),
             valueColor: AlwaysStoppedAnimation<Color>(
               Theme.of(context).colorScheme.tertiary,
             ),
@@ -179,20 +179,22 @@ class NovenaListScreen extends ConsumerWidget {
   }
 
   Widget _buildNovenaCard(
-    BuildContext context, 
-    WidgetRef ref, 
+    BuildContext context,
+    WidgetRef ref,
     NovenaMetadata novena, {
     required bool hasActiveNovena,
   }) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
-        onTap: hasActiveNovena ? null : () {
-          context.pushNamed(
-            RouteNames.novenaDetail,
-            pathParameters: {'novenaId': novena.id},
-          );
-        },
+        onTap: hasActiveNovena
+            ? null
+            : () {
+                context.pushNamed(
+                  RouteNames.novenaDetail,
+                  pathParameters: {'novenaId': novena.id},
+                );
+              },
         borderRadius: BorderRadius.circular(16),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -224,10 +226,11 @@ class NovenaListScreen extends ConsumerWidget {
                         const SizedBox(height: 4),
                         Text(
                           novena.saint,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.w500,
+                              ),
                         ),
                       ],
                     ),
@@ -246,15 +249,21 @@ class NovenaListScreen extends ConsumerWidget {
                 children: [
                   Chip(
                     label: Text(novena.intentionCategory),
-                    backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.secondaryContainer,
                   ),
                   Chip(
                     label: Text('${novena.durationMinutes} min'),
-                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.primaryContainer,
                   ),
                   Chip(
                     label: Text(novena.difficulty),
-                    backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.tertiaryContainer,
                   ),
                 ],
               ),

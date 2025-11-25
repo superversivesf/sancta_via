@@ -11,9 +11,7 @@ import '../../providers/book_provider.dart';
 class ChapterSelectionScreen extends ConsumerWidget {
   final String bookName;
 
-  const ChapterSelectionScreen({
-    required this.bookName, super.key,
-  });
+  const ChapterSelectionScreen({required this.bookName, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,23 +19,22 @@ class ChapterSelectionScreen extends ConsumerWidget {
     final colorIntensity = ref.watch(colorIntensityProvider);
     final textScaling = ref.watch(textScaleProvider);
     final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
-    final maxChaptersAsync = ref.watch(chapterCountProvider((
-      bookName: bookName,
-      translation: selectedTranslation,
-    )));
-    
+    final maxChaptersAsync = ref.watch(
+      chapterCountProvider((
+        bookName: bookName,
+        translation: selectedTranslation,
+      )),
+    );
+
     // Parse liturgical color and convert to Flutter color
-    final liturgicalColor = currentColor != null 
+    final liturgicalColor = currentColor != null
         ? LiturgicalColor.fromString(currentColor)
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          bookName,
-          style: textScaling.scaledTitleLarge(context),
-        ),
+        title: Text(bookName, style: textScaling.scaledTitleLarge(context)),
         backgroundColor: themeColor?.withValues(alpha: 0.1),
         actions: [
           // Translation indicator
@@ -45,18 +42,22 @@ class ChapterSelectionScreen extends ConsumerWidget {
             margin: const EdgeInsets.only(right: 16),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1),
+              color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                  .withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
+                color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                    .withValues(alpha: 0.3),
               ),
             ),
             child: Text(
               selectedTranslation.abbreviation,
-              style: textScaling.scaledBodySmall(context).copyWith(
-                fontWeight: FontWeight.w600,
-                color: themeColor ?? Theme.of(context).colorScheme.primary,
-              ),
+              style: textScaling
+                  .scaledBodySmall(context)
+                  .copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: themeColor ?? Theme.of(context).colorScheme.primary,
+                  ),
             ),
           ),
         ],
@@ -64,7 +65,8 @@ class ChapterSelectionScreen extends ConsumerWidget {
       body: SafeArea(
         top: false, // Let AppBar handle top
         child: maxChaptersAsync.when(
-          data: (maxChapters) => _buildChapterGrid(context, ref, maxChapters, themeColor),
+          data: (maxChapters) =>
+              _buildChapterGrid(context, ref, maxChapters, themeColor),
           loading: () => Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -84,18 +86,16 @@ class ChapterSelectionScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.error_outline,
-                  size: 48,
-                  color: Colors.red,
-                ),
+                const Icon(Icons.error_outline, size: 48, color: Colors.red),
                 const SizedBox(height: 16),
                 Text(
                   'Error loading chapters',
-                  style: textScaling.scaledTitleMedium(context).copyWith(
-                    color: Colors.red.shade700,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: textScaling
+                      .scaledTitleMedium(context)
+                      .copyWith(
+                        color: Colors.red.shade700,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -111,9 +111,14 @@ class ChapterSelectionScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildChapterGrid(BuildContext context, WidgetRef ref, int maxChapters, Color? themeColor) {
+  Widget _buildChapterGrid(
+    BuildContext context,
+    WidgetRef ref,
+    int maxChapters,
+    Color? themeColor,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return Column(
       children: [
         // Header
@@ -121,10 +126,12 @@ class ChapterSelectionScreen extends ConsumerWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.05),
+            color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                .withValues(alpha: 0.05),
             border: Border(
               bottom: BorderSide(
-                color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.2),
+                color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                    .withValues(alpha: 0.2),
               ),
             ),
           ),
@@ -132,22 +139,30 @@ class ChapterSelectionScreen extends ConsumerWidget {
             children: [
               Text(
                 'Select Chapter',
-                style: textScaling.scaledTitleMedium(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: themeColor?.withValues(alpha: 0.8) ?? Theme.of(context).colorScheme.primary,
-                ),
+                style: textScaling
+                    .scaledTitleMedium(context)
+                    .copyWith(
+                      fontWeight: FontWeight.bold,
+                      color:
+                          themeColor?.withValues(alpha: 0.8) ??
+                          Theme.of(context).colorScheme.primary,
+                    ),
               ),
               const SizedBox(height: 4),
               Text(
                 '$bookName has $maxChapters chapter${maxChapters == 1 ? '' : 's'}',
-                style: textScaling.scaledBodyMedium(context).copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                ),
+                style: textScaling
+                    .scaledBodyMedium(context)
+                    .copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
               ),
             ],
           ),
         ),
-        
+
         // Chapter Grid
         Expanded(
           child: GridView.builder(
@@ -161,27 +176,35 @@ class ChapterSelectionScreen extends ConsumerWidget {
             itemCount: maxChapters,
             itemBuilder: (context, index) {
               final chapterNumber = index + 1;
-              
+
               return Card(
                 elevation: 2,
                 child: InkWell(
-                  onTap: () => _navigateToVerseSelection(context, chapterNumber),
+                  onTap: () =>
+                      _navigateToVerseSelection(context, chapterNumber),
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.3),
+                        color:
+                            (themeColor ??
+                                    Theme.of(context).colorScheme.primary)
+                                .withValues(alpha: 0.3),
                         width: 1,
                       ),
                     ),
                     child: Center(
                       child: Text(
                         chapterNumber.toString(),
-                        style: textScaling.scaledTitleMedium(context).copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: themeColor ?? Theme.of(context).colorScheme.primary,
-                        ),
+                        style: textScaling
+                            .scaledTitleMedium(context)
+                            .copyWith(
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  themeColor ??
+                                  Theme.of(context).colorScheme.primary,
+                            ),
                       ),
                     ),
                   ),
@@ -190,7 +213,7 @@ class ChapterSelectionScreen extends ConsumerWidget {
             },
           ),
         ),
-        
+
         // Quick actions
         Container(
           padding: const EdgeInsets.all(16),
@@ -198,7 +221,8 @@ class ChapterSelectionScreen extends ConsumerWidget {
             color: Theme.of(context).colorScheme.surface,
             border: Border(
               top: BorderSide(
-                color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.2),
+                color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                    .withValues(alpha: 0.2),
               ),
             ),
           ),
@@ -210,9 +234,12 @@ class ChapterSelectionScreen extends ConsumerWidget {
                   icon: const Icon(Icons.first_page),
                   label: const Text('Read from Chapter 1'),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
+                    foregroundColor:
+                        themeColor ?? Theme.of(context).colorScheme.primary,
                     side: BorderSide(
-                      color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.5),
+                      color:
+                          (themeColor ?? Theme.of(context).colorScheme.primary)
+                              .withValues(alpha: 0.5),
                     ),
                   ),
                 ),
@@ -220,11 +247,14 @@ class ChapterSelectionScreen extends ConsumerWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: maxChapters > 0 ? () => _navigateToChapter(context, maxChapters) : null,
+                  onPressed: maxChapters > 0
+                      ? () => _navigateToChapter(context, maxChapters)
+                      : null,
                   icon: const Icon(Icons.last_page),
                   label: const Text('Last Chapter'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
+                    backgroundColor:
+                        themeColor ?? Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
                   ),
                 ),

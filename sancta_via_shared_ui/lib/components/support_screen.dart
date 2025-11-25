@@ -20,7 +20,7 @@ class SupportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Support Sancta Via'),
@@ -66,7 +66,7 @@ class SupportScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            
+
             // Financial Support
             if (sponsorUrl != null) ...[
               _buildSupportOption(
@@ -79,7 +79,7 @@ class SupportScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
             ],
-            
+
             // GitHub/Development Support
             if (githubUrl != null) ...[
               _buildSupportOption(
@@ -92,7 +92,7 @@ class SupportScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
             ],
-            
+
             // Prayer Support
             _buildSupportOption(
               context,
@@ -103,7 +103,7 @@ class SupportScreen extends StatelessWidget {
               onTap: () => _showPrayerDialog(context),
             ),
             const SizedBox(height: 16),
-            
+
             // Share the App
             _buildSupportOption(
               context,
@@ -114,7 +114,7 @@ class SupportScreen extends StatelessWidget {
               onTap: () => _shareApp(context),
             ),
             const SizedBox(height: 16),
-            
+
             // Feedback
             if (contactEmail != null) ...[
               _buildSupportOption(
@@ -127,7 +127,7 @@ class SupportScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
             ],
-            
+
             // App Rating
             _buildSupportOption(
               context,
@@ -137,9 +137,9 @@ class SupportScreen extends StatelessWidget {
               actionText: 'Rate Now',
               onTap: () => _rateApp(context),
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Thank you message
             Card(
               color: theme.colorScheme.primaryContainer,
@@ -189,7 +189,7 @@ class SupportScreen extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     final theme = Theme.of(context);
-    
+
     return Card(
       child: ListTile(
         leading: CircleAvatar(

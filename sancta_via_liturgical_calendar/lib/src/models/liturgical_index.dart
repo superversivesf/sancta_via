@@ -112,10 +112,7 @@ class LiturgicalIndex {
     if (availableYearsList.isEmpty) {
       return (start: 0, end: 0);
     }
-    return (
-      start: availableYearsList.first,
-      end: availableYearsList.last,
-    );
+    return (start: availableYearsList.first, end: availableYearsList.last);
   }
 
   @override

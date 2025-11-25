@@ -2,18 +2,18 @@ import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_ca
 
 // Liturgical color enum
 enum LiturgicalColor {
-  green,   // Ordinary Time
-  purple,  // Advent, Lent
-  rose,    // Gaudete, Laetare Sundays
-  white,   // Christmas, Easter, major feasts
-  red,     // Pentecost, martyrs, Palm Sunday
-  gold,    // High feasts (alternative to white)
+  green, // Ordinary Time
+  purple, // Advent, Lent
+  rose, // Gaudete, Laetare Sundays
+  white, // Christmas, Easter, major feasts
+  red, // Pentecost, martyrs, Palm Sunday
+  gold, // High feasts (alternative to white)
 }
 
 // Provider for active liturgical color based on current day
 final activeLiturgicalColorProvider = Provider<LiturgicalColor>((ref) {
   final liturgicalColorString = ref.watch(currentLiturgicalColorProvider);
-  
+
   return _mapLiturgicalColorFromString(liturgicalColorString ?? 'green');
 });
 

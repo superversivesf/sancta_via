@@ -37,7 +37,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget build(BuildContext context) {
     final searchResults = ref.watch(local_providers.searchResultsProvider);
     final searchQuery = ref.watch(local_providers.searchQueryProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search Celebrations'),
@@ -59,7 +59,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         icon: const Icon(Icons.clear),
                         onPressed: () {
                           _searchController.clear();
-                          ref.read(local_providers.searchQueryProvider.notifier).state = '';
+                          ref
+                                  .read(
+                                    local_providers
+                                        .searchQueryProvider
+                                        .notifier,
+                                  )
+                                  .state =
+                              '';
                         },
                       )
                     : null,
@@ -69,19 +76,20 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 filled: true,
               ),
               onChanged: (value) {
-                ref.read(local_providers.searchQueryProvider.notifier).state = value;
+                ref.read(local_providers.searchQueryProvider.notifier).state =
+                    value;
               },
               textInputAction: TextInputAction.search,
             ),
           ),
-          
+
           // Search results
           Expanded(
             child: searchQuery.isEmpty
                 ? _buildEmptyState(context)
                 : searchResults.isEmpty
-                    ? _buildNoResultsState(context, searchQuery)
-                    : _buildSearchResults(context, ref, searchResults),
+                ? _buildNoResultsState(context, searchQuery)
+                : _buildSearchResults(context, ref, searchResults),
           ),
         ],
       ),
@@ -90,7 +98,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   Widget _buildEmptyState(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -134,14 +142,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       label: Text(suggestion),
       onPressed: () {
         _searchController.text = suggestion;
-        ref.read(local_providers.searchQueryProvider.notifier).state = suggestion;
+        ref.read(local_providers.searchQueryProvider.notifier).state =
+            suggestion;
       },
     );
   }
 
   Widget _buildNoResultsState(BuildContext context, String query) {
     final theme = Theme.of(context);
-    
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -170,10 +179,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     );
   }
 
-  Widget _buildSearchResults(BuildContext context, WidgetRef ref, List<LiturgicalDayData> results) {
+  Widget _buildSearchResults(
+    BuildContext context,
+    WidgetRef ref,
+    List<LiturgicalDayData> results,
+  ) {
     final today = DateTime.now();
     final oneYearAhead = DateTime(today.year + 1, today.month, today.day);
-    
+
     return Column(
       children: [
         // Info banner about the search scope
@@ -200,7 +213,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             ],
           ),
         ),
-        
+
         // Search results list
         Expanded(
           child: ListView.builder(
@@ -215,12 +228,18 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     );
   }
 
-  Widget _buildSearchResultTile(BuildContext context, WidgetRef ref, LiturgicalDayData result) {
+  Widget _buildSearchResultTile(
+    BuildContext context,
+    WidgetRef ref,
+    LiturgicalDayData result,
+  ) {
     final theme = Theme.of(context);
     final colorIntensity = ref.watch(colorIntensityProvider);
-    final liturgicalColor = result.celebration.color.toLiturgicalColor(colorIntensity);
+    final liturgicalColor = result.celebration.color.toLiturgicalColor(
+      colorIntensity,
+    );
     final resultDate = DateTime.parse(result.date);
-    
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: ListTile(
@@ -233,12 +252,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           ),
         ),
         title: Text(
-          result.celebration.name.isEmpty 
-              ? result.season 
+          result.celebration.name.isEmpty
+              ? result.season
               : result.celebration.name,
           style: theme.textTheme.titleSmall?.copyWith(
-            fontWeight: result.celebration.rank == 'SOLEMNITY' 
-                ? FontWeight.bold 
+            fontWeight: result.celebration.rank == 'SOLEMNITY'
+                ? FontWeight.bold
                 : FontWeight.normal,
           ),
         ),
@@ -257,10 +276,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           ],
         ),
         trailing: result.celebration.prioritized
-            ? Icon(
-                Icons.star,
-                color: Colors.amber[700],
-              )
+            ? Icon(Icons.star, color: Colors.amber[700])
             : null,
         onTap: () {
           context.push('/day/${resultDate.toIso8601String().split('T')[0]}');
@@ -280,8 +296,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       case 'OPT_MEMORIAL':
         return Icons.circle_outlined;
       default:
-        return liturgicalDay.celebration.prioritized 
-            ? Icons.star_outline 
+        return liturgicalDay.celebration.prioritized
+            ? Icons.star_outline
             : Icons.event;
     }
   }

@@ -7,16 +7,16 @@ import 'package:bible_data/bible_data.dart';
 class BibleAppSettings {
   /// Base settings common to all Sancta Via apps
   final BaseSettingsModel baseSettings;
-  
+
   /// Selected Bible translation for reading
   final BibleTranslation selectedBibleTranslation;
-  
+
   /// Whether to show verse numbers
   final bool showVerseNumbers;
-  
+
   /// Whether to highlight current verse in audio mode
   final bool highlightCurrentVerse;
-  
+
   /// Whether daily reading notifications are enabled
   final bool dailyReadingNotificationsEnabled;
 
@@ -41,7 +41,9 @@ class BibleAppSettings {
     // Handle base settings
     BaseSettingsModel baseSettings;
     if (json.containsKey('baseSettings')) {
-      baseSettings = BaseSettingsModel.fromJson(json['baseSettings'] as Map<String, dynamic>);
+      baseSettings = BaseSettingsModel.fromJson(
+        json['baseSettings'] as Map<String, dynamic>,
+      );
     } else {
       // Migration: create base settings from old individual values
       baseSettings = BaseSettingsModel(
@@ -66,7 +68,8 @@ class BibleAppSettings {
       selectedBibleTranslation: translation,
       showVerseNumbers: json['showVerseNumbers'] as bool? ?? true,
       highlightCurrentVerse: json['highlightCurrentVerse'] as bool? ?? true,
-      dailyReadingNotificationsEnabled: json['dailyReadingNotificationsEnabled'] as bool? ?? false,
+      dailyReadingNotificationsEnabled:
+          json['dailyReadingNotificationsEnabled'] as bool? ?? false,
     );
   }
 
@@ -91,10 +94,14 @@ class BibleAppSettings {
   }) {
     return BibleAppSettings(
       baseSettings: baseSettings ?? this.baseSettings,
-      selectedBibleTranslation: selectedBibleTranslation ?? this.selectedBibleTranslation,
+      selectedBibleTranslation:
+          selectedBibleTranslation ?? this.selectedBibleTranslation,
       showVerseNumbers: showVerseNumbers ?? this.showVerseNumbers,
-      highlightCurrentVerse: highlightCurrentVerse ?? this.highlightCurrentVerse,
-      dailyReadingNotificationsEnabled: dailyReadingNotificationsEnabled ?? this.dailyReadingNotificationsEnabled,
+      highlightCurrentVerse:
+          highlightCurrentVerse ?? this.highlightCurrentVerse,
+      dailyReadingNotificationsEnabled:
+          dailyReadingNotificationsEnabled ??
+          this.dailyReadingNotificationsEnabled,
     );
   }
 
@@ -118,7 +125,8 @@ class BibleAppSettings {
         other.selectedBibleTranslation == selectedBibleTranslation &&
         other.showVerseNumbers == showVerseNumbers &&
         other.highlightCurrentVerse == highlightCurrentVerse &&
-        other.dailyReadingNotificationsEnabled == dailyReadingNotificationsEnabled;
+        other.dailyReadingNotificationsEnabled ==
+            dailyReadingNotificationsEnabled;
   }
 
   @override

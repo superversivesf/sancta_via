@@ -16,7 +16,7 @@ class BaseSettingsNotifier extends StateNotifier<BaseSettingsModel> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final settingsJson = prefs.getString(_storageKey);
-      
+
       if (settingsJson != null) {
         final settingsMap = json.decode(settingsJson) as Map<String, dynamic>;
         final settings = BaseSettingsModel.fromJson(settingsMap);
@@ -99,7 +99,8 @@ class BaseSettingsNotifier extends StateNotifier<BaseSettingsModel> {
 }
 
 /// Provider for base settings
-final baseSettingsProvider = StateNotifierProvider<BaseSettingsNotifier, BaseSettingsModel>((ref) {
+final baseSettingsProvider =
+    StateNotifierProvider<BaseSettingsNotifier, BaseSettingsModel>((ref) {
   return BaseSettingsNotifier();
 });
 

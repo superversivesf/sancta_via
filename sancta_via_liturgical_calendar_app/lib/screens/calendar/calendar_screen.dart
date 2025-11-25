@@ -17,7 +17,7 @@ class CalendarScreen extends ConsumerWidget {
     final monthDays = ref.watch(local_providers.monthLiturgicalDaysProvider);
     final selectedDate = ref.watch(local_providers.selectedDateProvider);
     final upcomingFeasts = ref.watch(local_providers.upcomingFeastsProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Liturgical Calendar'),
@@ -27,9 +27,10 @@ class CalendarScreen extends ConsumerWidget {
             icon: const Icon(Icons.today),
             onPressed: () {
               final now = DateTime.now();
-              ref.read(local_providers.displayedMonthProvider.notifier).state = 
+              ref.read(local_providers.displayedMonthProvider.notifier).state =
                   DateTime(now.year, now.month, 1);
-              ref.read(local_providers.selectedDateProvider.notifier).state = now;
+              ref.read(local_providers.selectedDateProvider.notifier).state =
+                  now;
             },
             tooltip: 'Go to today',
           ),
@@ -49,22 +50,22 @@ class CalendarScreen extends ConsumerWidget {
             children: [
               // Month navigation
               _buildMonthNavigation(context, ref, displayedMonth),
-            
-            // Calendar grid - no constraints, natural size
-            _buildCalendarGrid(
-              context, 
-              ref, 
-              displayedMonth, 
-              monthDays, 
-              selectedDate,
-            ),
-            
-            // Selected day info
-            _buildSelectedDayInfo(context, ref, selectedDate),
-            
-            // Upcoming feasts - natural height
-            UpcomingFeastsList(feasts: upcomingFeasts),
-            
+
+              // Calendar grid - no constraints, natural size
+              _buildCalendarGrid(
+                context,
+                ref,
+                displayedMonth,
+                monthDays,
+                selectedDate,
+              ),
+
+              // Selected day info
+              _buildSelectedDayInfo(context, ref, selectedDate),
+
+              // Upcoming feasts - natural height
+              UpcomingFeastsList(feasts: upcomingFeasts),
+
               // Bottom padding for better scrolling
               const SizedBox(height: 20),
             ],
@@ -78,14 +79,14 @@ class CalendarScreen extends ConsumerWidget {
       ),
     );
   }
-  
+
   Widget _buildMonthNavigation(
-    BuildContext context, 
-    WidgetRef ref, 
+    BuildContext context,
+    WidgetRef ref,
     DateTime displayedMonth,
   ) {
     final theme = Theme.of(context);
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
@@ -101,11 +102,8 @@ class CalendarScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.chevron_left),
             onPressed: () {
-              ref.read(local_providers.displayedMonthProvider.notifier).state = DateTime(
-                displayedMonth.year, 
-                displayedMonth.month - 1, 
-                1,
-              );
+              ref.read(local_providers.displayedMonthProvider.notifier).state =
+                  DateTime(displayedMonth.year, displayedMonth.month - 1, 1);
             },
           ),
           Text(
@@ -117,39 +115,44 @@ class CalendarScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.chevron_right),
             onPressed: () {
-              ref.read(local_providers.displayedMonthProvider.notifier).state = DateTime(
-                displayedMonth.year, 
-                displayedMonth.month + 1, 
-                 1,
-              );
+              ref.read(local_providers.displayedMonthProvider.notifier).state =
+                  DateTime(displayedMonth.year, displayedMonth.month + 1, 1);
             },
           ),
         ],
       ),
     );
   }
-  
+
   Widget _buildCalendarGrid(
-    BuildContext context, 
-    WidgetRef ref, 
-    DateTime displayedMonth, 
+    BuildContext context,
+    WidgetRef ref,
+    DateTime displayedMonth,
     Map<int, LiturgicalDayData> monthDays,
     DateTime selectedDate,
   ) {
     final theme = Theme.of(context);
-    
+
     // Calculate days in month
-    final daysInMonth = DateTime(displayedMonth.year, displayedMonth.month + 1, 0).day;
-    
+    final daysInMonth = DateTime(
+      displayedMonth.year,
+      displayedMonth.month + 1,
+      0,
+    ).day;
+
     // Calculate the weekday of the first day (1 = Monday, 7 = Sunday)
-    final firstDayWeekday = DateTime(displayedMonth.year, displayedMonth.month, 1).weekday;
-    
+    final firstDayWeekday = DateTime(
+      displayedMonth.year,
+      displayedMonth.month,
+      1,
+    ).weekday;
+
     // Adjust for Sunday being the first day of the week (0 = Sunday, 6 = Saturday)
     final firstDayOffset = firstDayWeekday % 7;
-    
+
     // Days of the week header
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    
+
     return Column(
       children: [
         // Days of week header
@@ -157,21 +160,23 @@ class CalendarScreen extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: daysOfWeek.map((day) => 
-              SizedBox(
-                width: 40,
-                child: Text(
-                  day,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+            children: daysOfWeek
+                .map(
+                  (day) => SizedBox(
+                    width: 40,
+                    child: Text(
+                      day,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              )
-            ).toList(),
+                )
+                .toList(),
           ),
         ),
-        
+
         // Calendar grid - fixed height, no scrolling
         SizedBox(
           height: 300, // Fixed height for 6 rows of calendar
@@ -185,33 +190,35 @@ class CalendarScreen extends ConsumerWidget {
             itemBuilder: (context, index) {
               // Calculate the day number (1-based)
               final dayNumber = index - firstDayOffset + 1;
-              
+
               // Check if this grid position is part of the current month
               if (dayNumber < 1 || dayNumber > daysInMonth) {
                 return const SizedBox.shrink();
               }
-              
+
               // Get liturgical day info if available
               final liturgicalDay = monthDays[dayNumber];
-              
+
               // Current date
               final currentDate = DateTime(
-                displayedMonth.year, 
-                displayedMonth.month, 
+                displayedMonth.year,
+                displayedMonth.month,
                 dayNumber,
               );
-              
+
               // Check if this is the selected date
-              final isSelected = selectedDate.year == currentDate.year && 
-                                selectedDate.month == currentDate.month && 
-                                selectedDate.day == currentDate.day;
-              
+              final isSelected =
+                  selectedDate.year == currentDate.year &&
+                  selectedDate.month == currentDate.month &&
+                  selectedDate.day == currentDate.day;
+
               // Check if this is today's date
               final now = DateTime.now();
-              final isToday = now.year == currentDate.year && 
-                             now.month == currentDate.month && 
-                             now.day == currentDate.day;
-              
+              final isToday =
+                  now.year == currentDate.year &&
+                  now.month == currentDate.month &&
+                  now.day == currentDate.day;
+
               return _buildCalendarDay(
                 context,
                 ref,
@@ -239,37 +246,41 @@ class CalendarScreen extends ConsumerWidget {
   ) {
     final theme = Theme.of(context);
     final colorIntensity = ref.watch(colorIntensityProvider);
-    
+
     // Default color is theme surface color
     Color dayColor = theme.colorScheme.surface;
-    
+
     // Use liturgical color if available
     if (liturgicalDay != null) {
-      dayColor = liturgicalDay.celebration.color.toLiturgicalColorWithOpacity(0.2, colorIntensity);
+      dayColor = liturgicalDay.celebration.color.toLiturgicalColorWithOpacity(
+        0.2,
+        colorIntensity,
+      );
     }
-    
+
     return GestureDetector(
       onTap: () {
-        ref.read(local_providers.selectedDateProvider.notifier).state = currentDate;
+        ref.read(local_providers.selectedDateProvider.notifier).state =
+            currentDate;
       },
       child: Container(
         margin: const EdgeInsets.all(2),
         decoration: BoxDecoration(
           color: dayColor,
           border: Border.all(
-            color: isSelected 
-                ? theme.colorScheme.primary 
-                : Colors.transparent,
+            color: isSelected ? theme.colorScheme.primary : Colors.transparent,
             width: 2,
           ),
           borderRadius: BorderRadius.circular(8),
-          boxShadow: isToday ? [
-            BoxShadow(
-              color: theme.colorScheme.primary.withValues(alpha: 0.3),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ] : null,
+          boxShadow: isToday
+              ? [
+                  BoxShadow(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -277,12 +288,13 @@ class CalendarScreen extends ConsumerWidget {
             Text(
               dayNumber.toString(),
               style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: isToday || isSelected 
-                    ? FontWeight.bold 
+                fontWeight: isToday || isSelected
+                    ? FontWeight.bold
                     : FontWeight.normal,
               ),
             ),
-            if (liturgicalDay != null && _isSignificantCelebration(liturgicalDay))
+            if (liturgicalDay != null &&
+                _isSignificantCelebration(liturgicalDay))
               Icon(
                 _getCelebrationIcon(liturgicalDay),
                 size: 12,
@@ -293,19 +305,23 @@ class CalendarScreen extends ConsumerWidget {
       ),
     );
   }
-  
+
   Widget _buildSelectedDayInfo(
-    BuildContext context, 
-    WidgetRef ref, 
+    BuildContext context,
+    WidgetRef ref,
     DateTime selectedDate,
   ) {
-    final liturgicalDay = ref.watch(local_providers.liturgicalDayForDateProvider(selectedDate));
-    
+    final liturgicalDay = ref.watch(
+      local_providers.liturgicalDayForDateProvider(selectedDate),
+    );
+
     if (liturgicalDay != null) {
       return LiturgicalDayCard(
         liturgicalDay: liturgicalDay,
         selectedDate: selectedDate,
-        onTap: () => context.push('/day/${selectedDate.toIso8601String().split('T')[0]}'),
+        onTap: () => context.push(
+          '/day/${selectedDate.toIso8601String().split('T')[0]}',
+        ),
       );
     } else {
       return Container(
@@ -321,9 +337,9 @@ class CalendarScreen extends ConsumerWidget {
   // Helper function to determine if a day has a significant celebration
   bool _isSignificantCelebration(LiturgicalDayData liturgicalDay) {
     return liturgicalDay.celebration.prioritized ||
-           liturgicalDay.celebration.rank == 'SOLEMNITY' ||
-           liturgicalDay.celebration.rank == 'FEAST' ||
-           liturgicalDay.celebration.rank == 'MEMORIAL';
+        liturgicalDay.celebration.rank == 'SOLEMNITY' ||
+        liturgicalDay.celebration.rank == 'FEAST' ||
+        liturgicalDay.celebration.rank == 'MEMORIAL';
   }
 
   // Helper function to get appropriate icon for celebration type
@@ -338,8 +354,8 @@ class CalendarScreen extends ConsumerWidget {
       case 'OPT_MEMORIAL':
         return Icons.circle_outlined;
       default:
-        return liturgicalDay.celebration.prioritized 
-            ? Icons.star_outline 
+        return liturgicalDay.celebration.prioritized
+            ? Icons.star_outline
             : Icons.circle_outlined;
     }
   }

@@ -11,12 +11,13 @@ class PinManagementDialog {
   static Future<void> showSetupPin(BuildContext context, WidgetRef ref) async {
     try {
       final settingsService = ref.read(settingsServiceProvider);
-      
+
       // Step 1: Get first PIN
       final firstPin = await PinputModalWidget.show(
         context: context,
         title: 'Set PIN Code',
-        subtitle: 'Create a ${AppConstants.pinLength}-digit PIN to protect examination data',
+        subtitle:
+            'Create a ${AppConstants.pinLength}-digit PIN to protect examination data',
         obscureText: true,
       );
 
@@ -26,7 +27,8 @@ class PinManagementDialog {
       final confirmedPin = await PinputModalWidget.show(
         context: context,
         title: 'Confirm PIN',
-        subtitle: 'Enter the same ${AppConstants.pinLength} digits to confirm your PIN',
+        subtitle:
+            'Enter the same ${AppConstants.pinLength} digits to confirm your PIN',
         confirmPinText: firstPin.replaceAll(RegExp(r'.'), '●'),
         obscureText: true,
       );
@@ -48,9 +50,13 @@ class PinManagementDialog {
 
       // Step 3: Save the PIN with loading
       if (context.mounted) {
-        await _savePinWithLoading(context, settingsService, firstPin, isChange: false);
+        await _savePinWithLoading(
+          context,
+          settingsService,
+          firstPin,
+          isChange: false,
+        );
       }
-
     } catch (e) {
       if (context.mounted) {
         SettingsErrorHandler.handleError(
@@ -66,7 +72,7 @@ class PinManagementDialog {
   static Future<void> showChangePin(BuildContext context, WidgetRef ref) async {
     try {
       final settingsService = ref.read(settingsServiceProvider);
-      
+
       // Step 1: Verify current PIN
       final currentPin = await PinputModalWidget.show(
         context: context,
@@ -88,7 +94,7 @@ class PinManagementDialog {
       );
 
       final isValid = await settingsService.validatePin(currentPin);
-      
+
       if (context.mounted) {
         SettingsErrorHandler.hideLoadingDialog(context);
       }
@@ -108,7 +114,6 @@ class PinManagementDialog {
       if (context.mounted) {
         await _showNewPinFlow(context, ref, settingsService, currentPin);
       }
-
     } catch (e) {
       if (context.mounted) {
         SettingsErrorHandler.hideLoadingDialog(context);
@@ -125,7 +130,7 @@ class PinManagementDialog {
   static Future<void> showRemovePin(BuildContext context, WidgetRef ref) async {
     try {
       final settingsService = ref.read(settingsServiceProvider);
-      
+
       // Step 1: Verify current PIN
       final currentPin = await PinputModalWidget.show(
         context: context,
@@ -147,7 +152,7 @@ class PinManagementDialog {
       );
 
       await settingsService.removePinCode(currentPin);
-      
+
       if (context.mounted) {
         SettingsErrorHandler.hideLoadingDialog(context);
         SettingsErrorHandler.showSuccess(
@@ -156,7 +161,6 @@ class PinManagementDialog {
           backgroundColor: Colors.orange,
         );
       }
-
     } catch (e) {
       if (context.mounted) {
         SettingsErrorHandler.hideLoadingDialog(context);
@@ -220,13 +224,10 @@ class PinManagementDialog {
 
       try {
         await settingsService.changePinCode(currentPin, newPin);
-        
+
         if (context.mounted) {
           SettingsErrorHandler.hideLoadingDialog(context);
-          SettingsErrorHandler.showSuccess(
-            context,
-            'PIN changed successfully',
-          );
+          SettingsErrorHandler.showSuccess(context, 'PIN changed successfully');
         }
       } catch (e) {
         if (context.mounted) {
@@ -256,7 +257,7 @@ class PinManagementDialog {
 
     try {
       await settingsService.setupPinCode(pin);
-      
+
       if (context.mounted) {
         SettingsErrorHandler.hideLoadingDialog(context);
         SettingsErrorHandler.showSuccess(

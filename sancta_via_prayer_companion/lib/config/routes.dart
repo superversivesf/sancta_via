@@ -11,7 +11,7 @@ import '../screens/categories/categories_screen.dart';
 final appRouter = GoRouter(
   initialLocation: '/',
   debugLogDiagnostics: false,
-  
+
   routes: [
     // Home route
     GoRoute(

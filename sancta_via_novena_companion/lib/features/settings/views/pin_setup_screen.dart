@@ -29,7 +29,8 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
       final firstPin = await PinputModalWidget.show(
         context: context,
         title: 'Set PIN Code',
-        subtitle: 'Create a ${AppConstants.pinLength}-digit PIN to protect examination data',
+        subtitle:
+            'Create a ${AppConstants.pinLength}-digit PIN to protect examination data',
         obscureText: true,
       );
 
@@ -45,7 +46,8 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
       final confirmedPin = await PinputModalWidget.show(
         context: context,
         title: 'Confirm PIN',
-        subtitle: 'Enter the same ${AppConstants.pinLength} digits to confirm your PIN',
+        subtitle:
+            'Enter the same ${AppConstants.pinLength} digits to confirm your PIN',
         confirmPinText: firstPin.replaceAll(RegExp(r'.'), '●'),
         obscureText: true,
       );
@@ -67,7 +69,6 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
 
       // Step 3: Save the PIN
       await _savePinCode(firstPin);
-
     } catch (e, stackTrace) {
       AppLogger.error('PIN setup flow error', e, stackTrace, 'PIN_SETUP');
       if (mounted) {
@@ -89,20 +90,29 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
     try {
       AppLogger.debug('=== PIN SETUP SAVE START ===', 'PIN_SETUP');
       AppLogger.debug('Saving PIN of length: ${pin.length}', 'PIN_SETUP');
-      
+
       final authService = ref.read(authServiceProvider);
       await authService.setPinCode(pin);
-      
-      AppLogger.debug('PIN set in auth service, waiting for storage to settle', 'PIN_SETUP');
+
+      AppLogger.debug(
+        'PIN set in auth service, waiting for storage to settle',
+        'PIN_SETUP',
+      );
       await Future.delayed(const Duration(milliseconds: 500));
 
       // Verify PIN was stored correctly
-      AppLogger.debug('Verifying PIN storage by testing validation', 'PIN_SETUP');
+      AppLogger.debug(
+        'Verifying PIN storage by testing validation',
+        'PIN_SETUP',
+      );
       final isValid = await authService.validatePin(pin);
       AppLogger.debug('PIN validation test result: $isValid', 'PIN_SETUP');
-      
+
       if (!isValid) {
-        AppLogger.warning('PIN validation failed immediately after saving!', 'PIN_SETUP');
+        AppLogger.warning(
+          'PIN validation failed immediately after saving!',
+          'PIN_SETUP',
+        );
         throw Exception('PIN storage verification failed. Please try again.');
       }
 
@@ -110,15 +120,21 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
       await ref.read(novenaAppSettingsProvider.notifier).refreshPinStatus();
 
       // IMPORTANT: Force logout to ensure user must authenticate to access protected content
-      AppLogger.debug('Forcing logout after PIN setup to clear authentication state', 'PIN_SETUP');
+      AppLogger.debug(
+        'Forcing logout after PIN setup to clear authentication state',
+        'PIN_SETUP',
+      );
       authService.forceLogout();
       authService.debugAuthState();
 
-      AppLogger.debug('=== PIN SAVE PROCESS COMPLETED SUCCESSFULLY ===', 'PIN_SETUP');
-      
+      AppLogger.debug(
+        '=== PIN SAVE PROCESS COMPLETED SUCCESSFULLY ===',
+        'PIN_SETUP',
+      );
+
       // Close loading modal
       if (mounted) Navigator.of(context).pop();
-      
+
       if (mounted) {
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
@@ -136,22 +152,23 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
         );
         context.pop();
       }
-
     } catch (e, stackTrace) {
       AppLogger.error('PIN save failed', e, stackTrace, 'PIN_SETUP');
-      
+
       // Close loading modal
       if (mounted) Navigator.of(context).pop();
-      
+
       if (mounted) {
         String errorMessage = 'Failed to save PIN. Please try again.';
-        
+
         if (e.toString().contains('iOS Simulator')) {
-          errorMessage = 'PIN setup not available in iOS Simulator. Please test on a physical device.';
+          errorMessage =
+              'PIN setup not available in iOS Simulator. Please test on a physical device.';
         } else if (e.toString().contains('Secure storage not available')) {
-          errorMessage = 'Secure storage not available. This may be due to device or permission issues.';
+          errorMessage =
+              'Secure storage not available. This may be due to device or permission issues.';
         }
-        
+
         _showErrorDialog(errorMessage);
         context.pop();
       }
@@ -181,9 +198,7 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
   Widget build(BuildContext context) {
     // Show a simple background while PIN setup loads
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Set PIN Code'),
-      ),
+      appBar: AppBar(title: const Text('Set PIN Code')),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -195,9 +210,7 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
             ],
           ),
         ),
-        child: const Center(
-          child: CircularProgressIndicator(),
-        ),
+        child: const Center(child: CircularProgressIndicator()),
       ),
     );
   }

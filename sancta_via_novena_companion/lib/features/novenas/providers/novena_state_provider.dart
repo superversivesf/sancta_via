@@ -12,7 +12,6 @@ const String _activeNovenaKey = 'active_novena_v1';
 
 // State notifier for managing active novena
 class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
-  
   NovenaStateNotifier() : super(null) {
     _loadActiveNovena();
   }
@@ -29,22 +28,37 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final activeNovenaJson = prefs.getString(_activeNovenaKey);
-      
+
       if (activeNovenaJson != null) {
-        final activeNovenaData = json.decode(activeNovenaJson) as Map<String, dynamic>;
+        final activeNovenaData =
+            json.decode(activeNovenaJson) as Map<String, dynamic>;
         final activeNovena = ActiveNovena.fromJson(activeNovenaData);
-        
+
         // Check if novena has expired (more than 9 days since start)
-        final daysSinceStart = DateTime.now().difference(activeNovena.startDate).inDays;
+        final daysSinceStart = DateTime.now()
+            .difference(activeNovena.startDate)
+            .inDays;
         if (daysSinceStart >= 9 || activeNovena.isComplete) {
           // Clear expired/completed novena
           await clearActiveNovena();
         } else {
           state = activeNovena;
-          AppLogger.debug('✅ Loaded active novena: ${activeNovena.novenaId}', 'NOVENA_STATE');
-          AppLogger.debug('📅 Start Date: ${activeNovena.startDate}', 'NOVENA_STATE');
-          AppLogger.debug('📊 Completed Days: ${activeNovena.completedDays}', 'NOVENA_STATE');
-          AppLogger.debug('🎯 Current Spiritual Day: ${activeNovena.spiritualDay}', 'NOVENA_STATE');
+          AppLogger.debug(
+            '✅ Loaded active novena: ${activeNovena.novenaId}',
+            'NOVENA_STATE',
+          );
+          AppLogger.debug(
+            '📅 Start Date: ${activeNovena.startDate}',
+            'NOVENA_STATE',
+          );
+          AppLogger.debug(
+            '📊 Completed Days: ${activeNovena.completedDays}',
+            'NOVENA_STATE',
+          );
+          AppLogger.debug(
+            '🎯 Current Spiritual Day: ${activeNovena.spiritualDay}',
+            'NOVENA_STATE',
+          );
         }
       }
     } catch (e) {
@@ -72,17 +86,26 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
   }
 
   // Start a new novena
-  Future<void> startNovena(ActiveNovena activeNovena, String novenaTitle) async {
+  Future<void> startNovena(
+    ActiveNovena activeNovena,
+    String novenaTitle,
+  ) async {
     AppLogger.info('🚀 Starting novena: $novenaTitle', 'NOVENA_STATE');
     AppLogger.debug('📅 Start Date: ${activeNovena.startDate}', 'NOVENA_STATE');
-    AppLogger.debug('⏰ Reminder Time: ${_formatTimeOfDay(activeNovena.reminderTime)}', 'NOVENA_STATE');
+    AppLogger.debug(
+      '⏰ Reminder Time: ${_formatTimeOfDay(activeNovena.reminderTime)}',
+      'NOVENA_STATE',
+    );
     state = activeNovena;
     await _saveActiveNovena();
   }
 
   // Update state without scheduling new notifications (for debug/reset)
   Future<void> updateState(ActiveNovena activeNovena) async {
-    AppLogger.debug('Updating state without rescheduling notifications', 'NOVENA_STATE');
+    AppLogger.debug(
+      'Updating state without rescheduling notifications',
+      'NOVENA_STATE',
+    );
     state = activeNovena;
     await _saveActiveNovena();
   }
@@ -100,7 +123,7 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
       AppLogger.warning('Invalid day number: $dayNumber', 'NOVENA_STATE');
       return;
     }
-    
+
     if (current.isDayComplete(dayNumber)) {
       AppLogger.debug('Day $dayNumber is already complete', 'NOVENA_STATE');
       return;
@@ -111,9 +134,12 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
     while (updatedCompletedDays.length < 9) {
       updatedCompletedDays.add(false);
     }
-    
+
     updatedCompletedDays[dayNumber - 1] = true;
-    AppLogger.debug('✅ Updated completion status for day $dayNumber', 'NOVENA_STATE');
+    AppLogger.debug(
+      '✅ Updated completion status for day $dayNumber',
+      'NOVENA_STATE',
+    );
 
     final updatedNovena = current.copyWith(
       completedDays: updatedCompletedDays,
@@ -122,9 +148,9 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
 
     state = updatedNovena;
     await _saveActiveNovena();
-    
+
     AppLogger.info('✅ Day $dayNumber marked complete', 'NOVENA_STATE');
-    
+
     // Check if entire novena is complete
     if (updatedNovena.isComplete) {
       AppLogger.info('🌟 Novena completed! All 9 days done.', 'NOVENA_STATE');
@@ -158,11 +184,17 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
   }) async {
     final current = state;
     if (current == null) {
-      AppLogger.warning('Cannot update reminder settings: no active novena', 'NOVENA_STATE');
+      AppLogger.warning(
+        'Cannot update reminder settings: no active novena',
+        'NOVENA_STATE',
+      );
       return;
     }
 
-    AppLogger.debug('⚙️ Updating reminder settings: ${_formatTimeOfDay(reminderTime)}, ${reminderFrequency.displayName}', 'NOVENA_STATE');
+    AppLogger.debug(
+      '⚙️ Updating reminder settings: ${_formatTimeOfDay(reminderTime)}, ${reminderFrequency.displayName}',
+      'NOVENA_STATE',
+    );
 
     state = current.copyWith(
       reminderTime: reminderTime,
@@ -171,14 +203,13 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
 
     await _saveActiveNovena();
   }
-
-
 }
 
 // Novena state provider without notification dependency
-final novenaStateProvider = StateNotifierProvider<NovenaStateNotifier, ActiveNovena?>((ref) {
-  return NovenaStateNotifier();
-});
+final novenaStateProvider =
+    StateNotifierProvider<NovenaStateNotifier, ActiveNovena?>((ref) {
+      return NovenaStateNotifier();
+    });
 
 // Computed providers for convenience - these watch date changes to auto-refresh
 final hasActiveNovenaProvider = Provider<bool>((ref) {

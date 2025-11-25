@@ -28,7 +28,10 @@ class LiturgicalCalendarException implements Exception {
   }
 
   /// Create an exception for initialization failures
-  static LiturgicalCalendarException initialization(String details, [Object? cause]) {
+  static LiturgicalCalendarException initialization(
+    String details, [
+    Object? cause,
+  ]) {
     return LiturgicalCalendarException(
       'Failed to initialize liturgical calendar: $details',
       type: LiturgicalCalendarExceptionType.initialization,
@@ -53,7 +56,10 @@ class LiturgicalCalendarException implements Exception {
   }
 
   /// Create an exception for data loading failures
-  static LiturgicalCalendarException dataLoading(String details, [Object? cause]) {
+  static LiturgicalCalendarException dataLoading(
+    String details, [
+    Object? cause,
+  ]) {
     return LiturgicalCalendarException(
       'Failed to load liturgical data: $details',
       type: LiturgicalCalendarExceptionType.dataLoading,
@@ -70,7 +76,10 @@ class LiturgicalCalendarException implements Exception {
   }
 
   /// Create an exception for data format issues
-  static LiturgicalCalendarException dataFormat(String details, [Object? cause]) {
+  static LiturgicalCalendarException dataFormat(
+    String details, [
+    Object? cause,
+  ]) {
     return LiturgicalCalendarException(
       'Data format error: $details',
       type: LiturgicalCalendarExceptionType.dataFormat,

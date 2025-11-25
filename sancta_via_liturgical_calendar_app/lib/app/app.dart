@@ -9,12 +9,12 @@ class LiturgicalCalendarApp extends ConsumerStatefulWidget {
   const LiturgicalCalendarApp({super.key});
 
   @override
-  ConsumerState<LiturgicalCalendarApp> createState() => _LiturgicalCalendarAppState();
+  ConsumerState<LiturgicalCalendarApp> createState() =>
+      _LiturgicalCalendarAppState();
 }
 
-class _LiturgicalCalendarAppState extends ConsumerState<LiturgicalCalendarApp> 
+class _LiturgicalCalendarAppState extends ConsumerState<LiturgicalCalendarApp>
     with WidgetsBindingObserver {
-
   @override
   void initState() {
     super.initState();
@@ -32,7 +32,7 @@ class _LiturgicalCalendarAppState extends ConsumerState<LiturgicalCalendarApp>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    
+
     // When app comes back from background, check if date has changed
     if (state == AppLifecycleState.resumed) {
       _checkAndUpdateDateIfNeeded();
@@ -42,24 +42,25 @@ class _LiturgicalCalendarAppState extends ConsumerState<LiturgicalCalendarApp>
   void _checkAndUpdateDateIfNeeded() {
     final now = DateTime.now();
     final selectedDate = ref.read(local_providers.selectedDateProvider);
-    
+
     // Check if the selected date is no longer today
-    final isSelectedDateToday = selectedDate.year == now.year && 
-                               selectedDate.month == now.month && 
-                               selectedDate.day == now.day;
-    
+    final isSelectedDateToday =
+        selectedDate.year == now.year &&
+        selectedDate.month == now.month &&
+        selectedDate.day == now.day;
+
     // If the app was backgrounded overnight or longer, update to today
     if (!isSelectedDateToday) {
       // Update selected date to today
       ref.read(local_providers.selectedDateProvider.notifier).state = now;
-      
+
       // Also update displayed month to current month if needed
       final displayedMonth = ref.read(local_providers.displayedMonthProvider);
-      final isDisplayedMonthCurrent = displayedMonth.year == now.year && 
-                                     displayedMonth.month == now.month;
-      
+      final isDisplayedMonthCurrent =
+          displayedMonth.year == now.year && displayedMonth.month == now.month;
+
       if (!isDisplayedMonthCurrent) {
-        ref.read(local_providers.displayedMonthProvider.notifier).state = 
+        ref.read(local_providers.displayedMonthProvider.notifier).state =
             DateTime(now.year, now.month, 1);
       }
     }
@@ -68,26 +69,28 @@ class _LiturgicalCalendarAppState extends ConsumerState<LiturgicalCalendarApp>
   @override
   Widget build(BuildContext context) {
     // Watch liturgical color for dynamic theming - now based on selected date!
-    final liturgicalColorString = ref.watch(local_providers.selectedDateLiturgicalColorProvider);
-    
+    final liturgicalColorString = ref.watch(
+      local_providers.selectedDateLiturgicalColorProvider,
+    );
+
     // Watch shared UI theme providers
     final themeMode = ref.watch(themeModeProvider);
-    
+
     // Watch user preferences
     final colorIntensity = ref.watch(colorIntensityProvider);
-    
+
     // Watch font size setting for text scaling
     final textScale = ref.watch(effectiveTextScaleProvider);
-    
+
     // Parse liturgical color from string
-    final liturgicalColor = liturgicalColorString != null 
+    final liturgicalColor = liturgicalColorString != null
         ? LiturgicalColor.fromString(liturgicalColorString)
         : null;
-    
+
     // Get themes from shared UI system
     final lightTheme = AppTheme.lightTheme(liturgicalColor, colorIntensity);
     final darkTheme = AppTheme.darkTheme(liturgicalColor, colorIntensity);
-    
+
     return MaterialApp.router(
       title: 'Sancta Via Calendar',
       theme: lightTheme,
@@ -101,9 +104,9 @@ class _LiturgicalCalendarAppState extends ConsumerState<LiturgicalCalendarApp>
           minScaleFactor: 0.8,
           maxScaleFactor: 2.0,
           child: MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaler: TextScaler.linear(textScale),
-            ),
+            data: MediaQuery.of(
+              context,
+            ).copyWith(textScaler: TextScaler.linear(textScale)),
             child: child!,
           ),
         );

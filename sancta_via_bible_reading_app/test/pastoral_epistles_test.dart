@@ -50,7 +50,7 @@ void main() {
 
       // Serialize to JSON
       final json = originalPlan.toJson();
-      
+
       // Deserialize from JSON
       final restoredPlan = ReadingPlan.fromJson(json);
 

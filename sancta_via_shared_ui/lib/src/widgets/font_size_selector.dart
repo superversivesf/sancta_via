@@ -35,7 +35,9 @@ class FontSizeSelector extends ConsumerWidget {
         value: settings.textScalingMode,
         onChanged: (TextScalingMode? newValue) {
           if (newValue != null) {
-            ref.read(baseSettingsProvider.notifier).setTextScalingMode(newValue);
+            ref
+                .read(baseSettingsProvider.notifier)
+                .setTextScalingMode(newValue);
           }
         },
         items: TextScalingMode.values.map((mode) {
@@ -74,16 +76,19 @@ class FontSizeSelector extends ConsumerWidget {
                         min: 12.0,
                         max: 32.0,
                         divisions: 20,
-                        label: '${settings.fontSize.round()}pt (${settings.fontSizeLabel})',
+                        label:
+                            '${settings.fontSize.round()}pt (${settings.fontSizeLabel})',
                         onChanged: (value) {
-                          ref.read(baseSettingsProvider.notifier).setFontSize(value);
+                          ref
+                              .read(baseSettingsProvider.notifier)
+                              .setFontSize(value);
                         },
                       ),
                     ),
                     const Icon(Icons.text_increase, size: 20),
                   ],
                 ),
-                
+
                 // Current value display
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
@@ -99,7 +104,8 @@ class FontSizeSelector extends ConsumerWidget {
         // Dropdown for accessibility presets
         if (showDropdown)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Row(
               children: [
                 const Text('Accessibility: '),
@@ -107,7 +113,9 @@ class FontSizeSelector extends ConsumerWidget {
                   value: settings.textScalingMode,
                   onChanged: (TextScalingMode? newValue) {
                     if (newValue != null) {
-                      ref.read(baseSettingsProvider.notifier).setTextScalingMode(newValue);
+                      ref
+                          .read(baseSettingsProvider.notifier)
+                          .setTextScalingMode(newValue);
                     }
                   },
                   items: TextScalingMode.values.map((mode) {
@@ -143,17 +151,22 @@ class FontSizeSelector extends ConsumerWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    previewText ?? 'Sample text: "Be it done unto me according to thy word."',
+                    previewText ??
+                        'Sample text: "Be it done unto me according to thy word."',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontSize: settings.fontSize,
-                    ),
+                          fontSize: settings.fontSize,
+                        ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'Effective scale: ${effectiveScale.toStringAsFixed(2)}x',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
-                    ),
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.color
+                              ?.withOpacity(0.6),
+                        ),
                   ),
                 ],
               ),
@@ -175,7 +188,8 @@ class CompactFontSizeSelector extends ConsumerWidget {
     return ListTile(
       leading: const Icon(Icons.text_fields),
       title: const Text('Font Size'),
-      subtitle: Text('${settings.fontSize.round()}pt - ${settings.fontSizeLabel}'),
+      subtitle:
+          Text('${settings.fontSize.round()}pt - ${settings.fontSizeLabel}'),
       trailing: SizedBox(
         width: 120,
         child: Slider(

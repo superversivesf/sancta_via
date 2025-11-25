@@ -2,16 +2,16 @@
 enum PrayerTimeOfDay {
   /// Morning prayers (5:00 AM - 9:00 AM)
   morning,
-  
+
   /// Afternoon prayers (11:00 AM - 5:00 PM)
   afternoon,
-  
+
   /// Evening prayers (5:00 PM - 9:00 PM)
   evening,
-  
+
   /// Night prayers (9:00 PM - 5:00 AM)
   night,
-  
+
   /// Prayers suitable for any time of day
   anytime;
 
@@ -52,7 +52,7 @@ enum PrayerTimeOfDay {
     if (value == null || value.isEmpty) {
       return PrayerTimeOfDay.anytime;
     }
-    
+
     switch (value.toLowerCase()) {
       case 'morning':
         return PrayerTimeOfDay.morning;
@@ -74,7 +74,7 @@ enum PrayerTimeOfDay {
   }
 
   /// Determine the current time of day based on the given DateTime
-  /// 
+  ///
   /// Time ranges:
   /// - Morning: 5:00 AM - 9:00 AM
   /// - Anytime: 9:00 AM - 11:00 AM
@@ -83,7 +83,7 @@ enum PrayerTimeOfDay {
   /// - Night: 9:00 PM - 5:00 AM
   static PrayerTimeOfDay fromDateTime(DateTime dateTime) {
     final hour = dateTime.hour;
-    
+
     if (hour >= 5 && hour < 9) {
       return PrayerTimeOfDay.morning;
     } else if (hour >= 9 && hour < 11) {

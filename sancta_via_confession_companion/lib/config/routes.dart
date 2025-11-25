@@ -15,7 +15,7 @@ import '../providers/text_scaling_provider.dart';
 final appRouter = GoRouter(
   initialLocation: '/',
   debugLogDiagnostics: false,
-  
+
   routes: [
     // Home route
     GoRoute(

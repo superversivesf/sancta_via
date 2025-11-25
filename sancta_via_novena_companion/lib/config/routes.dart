@@ -75,7 +75,10 @@ final appRouter = GoRouter(
           path: 'active',
           name: RouteNames.activeNovena,
           builder: (context, state) {
-            AppLogger.debug('🔍 [ROUTES] Building ActiveNovenaDashboard', 'NOVENA_ROUTES');
+            AppLogger.debug(
+              '🔍 [ROUTES] Building ActiveNovenaDashboard',
+              'NOVENA_ROUTES',
+            );
             return const ActiveNovenaDashboard();
           },
           routes: [
@@ -84,7 +87,10 @@ final appRouter = GoRouter(
               name: RouteNames.dailyNovena,
               builder: (context, state) {
                 final dayNumber = int.parse(state.pathParameters['dayNumber']!);
-                AppLogger.debug('🔍 [ROUTES] Building DailyNovenaScreen for day $dayNumber', 'NOVENA_ROUTES');
+                AppLogger.debug(
+                  '🔍 [ROUTES] Building DailyNovenaScreen for day $dayNumber',
+                  'NOVENA_ROUTES',
+                );
                 return DailyNovenaScreen(dayNumber: dayNumber);
               },
             ),
@@ -96,7 +102,10 @@ final appRouter = GoRouter(
           name: RouteNames.novenaDetail,
           builder: (context, state) {
             final novenaId = state.pathParameters['novenaId']!;
-            AppLogger.debug('🔍 [ROUTES] Building NovenaDetailScreen with novenaId: "$novenaId"', 'NOVENA_ROUTES');
+            AppLogger.debug(
+              '🔍 [ROUTES] Building NovenaDetailScreen with novenaId: "$novenaId"',
+              'NOVENA_ROUTES',
+            );
             return NovenaDetailScreen(novenaId: novenaId);
           },
           routes: [
@@ -105,7 +114,10 @@ final appRouter = GoRouter(
               name: RouteNames.novenaConfiguration,
               builder: (context, state) {
                 final novenaId = state.pathParameters['novenaId']!;
-                AppLogger.debug('🔍 [ROUTES] Building NovenaConfigurationScreen with novenaId: "$novenaId"', 'NOVENA_ROUTES');
+                AppLogger.debug(
+                  '🔍 [ROUTES] Building NovenaConfigurationScreen with novenaId: "$novenaId"',
+                  'NOVENA_ROUTES',
+                );
                 return NovenaConfigurationScreen(novenaId: novenaId);
               },
             ),
@@ -121,7 +133,6 @@ final appRouter = GoRouter(
       // No protected routes in the basic novena app - all content is accessible
       AppLogger.debug('Route: ${state.matchedLocation}', 'ROUTER');
       return null; // No redirect needed
-      
     } catch (e, stackTrace) {
       AppLogger.error('Router redirect error', e, stackTrace, 'ROUTER');
       return null; // Don't redirect on error

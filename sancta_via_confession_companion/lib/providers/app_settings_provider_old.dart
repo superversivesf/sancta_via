@@ -51,9 +51,10 @@ class AppSettings {
 }
 
 // Settings provider
-final appSettingsProvider = StateNotifierProvider<AppSettingsNotifier, AppSettings>((ref) {
-  return AppSettingsNotifier();
-});
+final appSettingsProvider =
+    StateNotifierProvider<AppSettingsNotifier, AppSettings>((ref) {
+      return AppSettingsNotifier();
+    });
 
 class AppSettingsNotifier extends StateNotifier<AppSettings> {
   AppSettingsNotifier() : super(AppSettings()) {
@@ -64,7 +65,7 @@ class AppSettingsNotifier extends StateNotifier<AppSettings> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final settingsJson = prefs.getString(AppConstants.settingsKey);
-      
+
       if (settingsJson != null) {
         final settings = AppSettings.fromJson(json.decode(settingsJson));
         if (mounted) {
@@ -79,7 +80,10 @@ class AppSettingsNotifier extends StateNotifier<AppSettings> {
   Future<void> _saveSettings() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(AppConstants.settingsKey, json.encode(state.toJson()));
+      await prefs.setString(
+        AppConstants.settingsKey,
+        json.encode(state.toJson()),
+      );
     } catch (e) {
       // Handle error
     }

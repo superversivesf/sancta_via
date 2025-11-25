@@ -130,12 +130,24 @@ class PrayerDatabase {
     ''');
 
     // Create indexes for better performance
-    await db.execute('CREATE INDEX idx_prayers_liturgical ON prayers (is_liturgical, liturgical_priority)');
-    await db.execute('CREATE INDEX idx_prayers_season ON prayers (liturgical_season)');
-    await db.execute('CREATE INDEX idx_prayers_time_of_day ON prayers (time_of_day)');
-    await db.execute('CREATE INDEX idx_prayer_categories_prayer ON prayer_categories (prayer_id)');
-    await db.execute('CREATE INDEX idx_prayer_categories_category ON prayer_categories (category_id)');
-    await db.execute('CREATE INDEX idx_prayer_tags_prayer ON prayer_tags (prayer_id)');
+    await db.execute(
+      'CREATE INDEX idx_prayers_liturgical ON prayers (is_liturgical, liturgical_priority)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_prayers_season ON prayers (liturgical_season)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_prayers_time_of_day ON prayers (time_of_day)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_prayer_categories_prayer ON prayer_categories (prayer_id)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_prayer_categories_category ON prayer_categories (category_id)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_prayer_tags_prayer ON prayer_tags (prayer_id)',
+    );
     await db.execute('CREATE INDEX idx_prayer_tags_tag ON prayer_tags (tag)');
 
     AppLogger.info('Database tables created successfully', 'DB');
@@ -154,62 +166,62 @@ class PrayerDatabase {
   /// Insert or update category group
   Future<void> insertCategoryGroup(PrayerCategoryGroup group) async {
     final db = await database;
-    await db.insert(
-      'category_groups',
-      {
-        'id': group.id,
-        'title': group.title,
-        'description': group.description,
-        'icon': group.icon,
-        'order_index': group.order,
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    await db.insert('category_groups', {
+      'id': group.id,
+      'title': group.title,
+      'description': group.description,
+      'icon': group.icon,
+      'order_index': group.order,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   /// Insert or update category
   Future<void> insertCategory(PrayerCategory category) async {
     final db = await database;
-    await db.insert(
-      'categories',
-      {
-        'id': category.id,
-        'title': category.title,
-        'description': category.description,
-        'group_id': category.groupId,
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    await db.insert('categories', {
+      'id': category.id,
+      'title': category.title,
+      'description': category.description,
+      'group_id': category.groupId,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   /// Insert or update prayer
   Future<void> insertPrayer(Prayer prayer) async {
     final db = await database;
-    
+
     // Start transaction for data consistency
     await db.transaction((txn) async {
       // Insert main prayer record
-      await txn.insert(
-        'prayers',
-        {
-          'id': prayer.id,
-          'title': prayer.title,
-          'text': prayer.text,
-          'attribution': prayer.attribution,
-          'notes': prayer.notes,
-          'description': prayer.description,
-          'is_liturgical': prayer.isLiturgical ? 1 : 0,
-          'liturgical_priority': prayer.liturgicalPriority,
-          'liturgical_season': prayer.liturgicalSeason,
-          'time_of_day': prayer.timeOfDay,
-        },
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
+      await txn.insert('prayers', {
+        'id': prayer.id,
+        'title': prayer.title,
+        'text': prayer.text,
+        'attribution': prayer.attribution,
+        'notes': prayer.notes,
+        'description': prayer.description,
+        'is_liturgical': prayer.isLiturgical ? 1 : 0,
+        'liturgical_priority': prayer.liturgicalPriority,
+        'liturgical_season': prayer.liturgicalSeason,
+        'time_of_day': prayer.timeOfDay,
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
 
       // Delete existing related records to avoid duplicates
-      await txn.delete('prayer_categories', where: 'prayer_id = ?', whereArgs: [prayer.id]);
-      await txn.delete('prayer_tags', where: 'prayer_id = ?', whereArgs: [prayer.id]);
-      await txn.delete('prayer_translations', where: 'prayer_id = ?', whereArgs: [prayer.id]);
+      await txn.delete(
+        'prayer_categories',
+        where: 'prayer_id = ?',
+        whereArgs: [prayer.id],
+      );
+      await txn.delete(
+        'prayer_tags',
+        where: 'prayer_id = ?',
+        whereArgs: [prayer.id],
+      );
+      await txn.delete(
+        'prayer_translations',
+        where: 'prayer_id = ?',
+        whereArgs: [prayer.id],
+      );
 
       // Insert categories
       for (final categoryId in prayer.categories) {
@@ -221,10 +233,7 @@ class PrayerDatabase {
 
       // Insert tags
       for (final tag in prayer.tags) {
-        await txn.insert('prayer_tags', {
-          'prayer_id': prayer.id,
-          'tag': tag,
-        });
+        await txn.insert('prayer_tags', {'prayer_id': prayer.id, 'tag': tag});
       }
 
       // Insert translations
@@ -296,23 +305,25 @@ class PrayerDatabase {
   /// Get all prayers with complete data
   Future<List<Prayer>> getAllPrayers() async {
     final db = await database;
-    
+
     // Get basic prayer data
     final List<Map<String, dynamic>> prayerMaps = await db.query('prayers');
-    
+
     final List<Prayer> prayers = [];
-    
+
     for (final prayerMap in prayerMaps) {
       final prayerId = prayerMap['id'] as String;
-      
+
       // Get categories for this prayer
       final categoriesMaps = await db.query(
         'prayer_categories',
         where: 'prayer_id = ?',
         whereArgs: [prayerId],
       );
-      final categories = categoriesMaps.map((m) => m['category_id'] as String).toList();
-      
+      final categories = categoriesMaps
+          .map((m) => m['category_id'] as String)
+          .toList();
+
       // Get tags for this prayer
       final tagsMaps = await db.query(
         'prayer_tags',
@@ -320,7 +331,7 @@ class PrayerDatabase {
         whereArgs: [prayerId],
       );
       final tags = tagsMaps.map((m) => m['tag'] as String).toList();
-      
+
       // Get translations for this prayer
       final translationsMaps = await db.query(
         'prayer_translations',
@@ -329,52 +340,57 @@ class PrayerDatabase {
       );
       final translations = <String, String>{};
       for (final translationMap in translationsMaps) {
-        translations[translationMap['language'] as String] = translationMap['text'] as String;
+        translations[translationMap['language'] as String] =
+            translationMap['text'] as String;
       }
-      
-      prayers.add(Prayer(
-        id: prayerMap['id'],
-        title: prayerMap['title'],
-        text: prayerMap['text'],
-        attribution: prayerMap['attribution'],
-        notes: prayerMap['notes'],
-        categories: categories,
-        description: prayerMap['description'],
-        tags: tags,
-        translations: translations.isEmpty ? null : translations,
-        isLiturgical: prayerMap['is_liturgical'] == 1,
-        liturgicalPriority: prayerMap['liturgical_priority'],
-        liturgicalSeason: prayerMap['liturgical_season'],
-        timeOfDay: prayerMap['time_of_day'] ?? 'anytime',
-      ));
+
+      prayers.add(
+        Prayer(
+          id: prayerMap['id'],
+          title: prayerMap['title'],
+          text: prayerMap['text'],
+          attribution: prayerMap['attribution'],
+          notes: prayerMap['notes'],
+          categories: categories,
+          description: prayerMap['description'],
+          tags: tags,
+          translations: translations.isEmpty ? null : translations,
+          isLiturgical: prayerMap['is_liturgical'] == 1,
+          liturgicalPriority: prayerMap['liturgical_priority'],
+          liturgicalSeason: prayerMap['liturgical_season'],
+          timeOfDay: prayerMap['time_of_day'] ?? 'anytime',
+        ),
+      );
     }
-    
+
     return prayers;
   }
 
   /// Get prayer by ID
   Future<Prayer?> getPrayerById(String id) async {
     final db = await database;
-    
+
     // Get basic prayer data
     final List<Map<String, dynamic>> prayerMaps = await db.query(
       'prayers',
       where: 'id = ?',
       whereArgs: [id],
     );
-    
+
     if (prayerMaps.isEmpty) return null;
-    
+
     final prayerMap = prayerMaps.first;
-    
+
     // Get categories for this prayer
     final categoriesMaps = await db.query(
       'prayer_categories',
       where: 'prayer_id = ?',
       whereArgs: [id],
     );
-    final categories = categoriesMaps.map((m) => m['category_id'] as String).toList();
-    
+    final categories = categoriesMaps
+        .map((m) => m['category_id'] as String)
+        .toList();
+
     // Get tags for this prayer
     final tagsMaps = await db.query(
       'prayer_tags',
@@ -382,7 +398,7 @@ class PrayerDatabase {
       whereArgs: [id],
     );
     final tags = tagsMaps.map((m) => m['tag'] as String).toList();
-    
+
     // Get translations for this prayer
     final translationsMaps = await db.query(
       'prayer_translations',
@@ -391,9 +407,10 @@ class PrayerDatabase {
     );
     final translations = <String, String>{};
     for (final translationMap in translationsMaps) {
-      translations[translationMap['language'] as String] = translationMap['text'] as String;
+      translations[translationMap['language'] as String] =
+          translationMap['text'] as String;
     }
-    
+
     return Prayer(
       id: prayerMap['id'],
       title: prayerMap['title'],
@@ -414,24 +431,27 @@ class PrayerDatabase {
   /// Get prayers by category
   Future<List<Prayer>> getPrayersByCategory(String categoryId) async {
     final db = await database;
-    
-    final List<Map<String, dynamic>> maps = await db.rawQuery('''
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+      '''
       SELECT p.* FROM prayers p
       INNER JOIN prayer_categories pc ON p.id = pc.prayer_id
       WHERE pc.category_id = ?
       ORDER BY p.title
-    ''', [categoryId]);
-    
+    ''',
+      [categoryId],
+    );
+
     final List<Prayer> prayers = [];
-    
+
     for (final prayerMap in maps) {
       final prayerId = prayerMap['id'] as String;
-      
+
       // Get categories, tags, and translations for each prayer
       final prayer = await getPrayerById(prayerId);
       if (prayer != null) prayers.add(prayer);
     }
-    
+
     return prayers;
   }
 
@@ -439,96 +459,97 @@ class PrayerDatabase {
   /// Returns prayers that match the specified time OR are marked as 'anytime'
   Future<List<Prayer>> getPrayersByTimeOfDay(String timeOfDay) async {
     final db = await database;
-    
+
     final List<Map<String, dynamic>> maps = await db.query(
       'prayers',
       where: 'time_of_day = ? OR time_of_day = ?',
       whereArgs: [timeOfDay, 'anytime'],
       orderBy: 'title',
     );
-    
+
     final List<Prayer> prayers = [];
-    
+
     for (final prayerMap in maps) {
       final prayerId = prayerMap['id'] as String;
       final prayer = await getPrayerById(prayerId);
       if (prayer != null) prayers.add(prayer);
     }
-    
+
     return prayers;
   }
 
   /// Get prayers for a specific time of day only (not including 'anytime')
   Future<List<Prayer>> getPrayersForExactTimeOfDay(String timeOfDay) async {
     final db = await database;
-    
+
     final List<Map<String, dynamic>> maps = await db.query(
       'prayers',
       where: 'time_of_day = ?',
       whereArgs: [timeOfDay],
       orderBy: 'title',
     );
-    
+
     final List<Prayer> prayers = [];
-    
+
     for (final prayerMap in maps) {
       final prayerId = prayerMap['id'] as String;
       final prayer = await getPrayerById(prayerId);
       if (prayer != null) prayers.add(prayer);
     }
-    
+
     return prayers;
   }
 
   /// Search prayers by title or text
   Future<List<Prayer>> searchPrayers(String query) async {
     final db = await database;
-    
+
     final List<Map<String, dynamic>> maps = await db.query(
       'prayers',
       where: 'title LIKE ? OR text LIKE ? OR description LIKE ?',
       whereArgs: ['%$query%', '%$query%', '%$query%'],
       orderBy: 'title',
     );
-    
+
     final List<Prayer> prayers = [];
-    
+
     for (final prayerMap in maps) {
       final prayerId = prayerMap['id'] as String;
       final prayer = await getPrayerById(prayerId);
       if (prayer != null) prayers.add(prayer);
     }
-    
+
     return prayers;
   }
 
   /// Get liturgical prayers ordered by priority
   Future<List<Prayer>> getLiturgicalPrayers({String? season}) async {
     final db = await database;
-    
+
     String whereClause = 'is_liturgical = 1';
     final List<dynamic> whereArgs = [];
-    
+
     if (season != null) {
-      whereClause += ' AND (liturgical_season = ? OR liturgical_season IS NULL)';
+      whereClause +=
+          ' AND (liturgical_season = ? OR liturgical_season IS NULL)';
       whereArgs.add(season);
     }
-    
+
     final List<Map<String, dynamic>> maps = await db.query(
       'prayers',
       where: whereClause,
       whereArgs: whereArgs.isEmpty ? null : whereArgs,
       orderBy: 'liturgical_priority DESC, title',
     );
-    
+
     final List<Prayer> prayers = [];
-    
+
     for (final prayerMap in maps) {
       final prayerId = prayerMap['id'] as String;
       final prayer = await getPrayerById(prayerId);
       if (prayer != null) prayers.add(prayer);
     }
-    
+
     return prayers;
   }
 

@@ -31,7 +31,10 @@ void main() {
       });
 
       test('returns correct panel label for afternoon', () {
-        expect(PrayerTimeOfDay.afternoon.panelLabel, equals('Afternoon Prayer'));
+        expect(
+          PrayerTimeOfDay.afternoon.panelLabel,
+          equals('Afternoon Prayer'),
+        );
       });
 
       test('returns correct panel label for evening', () {
@@ -49,38 +52,71 @@ void main() {
 
     group('fromString', () {
       test('converts "morning" to morning', () {
-        expect(PrayerTimeOfDay.fromString('morning'), equals(PrayerTimeOfDay.morning));
+        expect(
+          PrayerTimeOfDay.fromString('morning'),
+          equals(PrayerTimeOfDay.morning),
+        );
       });
 
       test('converts "afternoon" to afternoon', () {
-        expect(PrayerTimeOfDay.fromString('afternoon'), equals(PrayerTimeOfDay.afternoon));
+        expect(
+          PrayerTimeOfDay.fromString('afternoon'),
+          equals(PrayerTimeOfDay.afternoon),
+        );
       });
 
       test('converts "evening" to evening', () {
-        expect(PrayerTimeOfDay.fromString('evening'), equals(PrayerTimeOfDay.evening));
+        expect(
+          PrayerTimeOfDay.fromString('evening'),
+          equals(PrayerTimeOfDay.evening),
+        );
       });
 
       test('converts "night" to night', () {
-        expect(PrayerTimeOfDay.fromString('night'), equals(PrayerTimeOfDay.night));
+        expect(
+          PrayerTimeOfDay.fromString('night'),
+          equals(PrayerTimeOfDay.night),
+        );
       });
 
       test('converts "anytime" to anytime', () {
-        expect(PrayerTimeOfDay.fromString('anytime'), equals(PrayerTimeOfDay.anytime));
+        expect(
+          PrayerTimeOfDay.fromString('anytime'),
+          equals(PrayerTimeOfDay.anytime),
+        );
       });
 
       test('handles uppercase strings correctly', () {
-        expect(PrayerTimeOfDay.fromString('MORNING'), equals(PrayerTimeOfDay.morning));
-        expect(PrayerTimeOfDay.fromString('AFTERNOON'), equals(PrayerTimeOfDay.afternoon));
-        expect(PrayerTimeOfDay.fromString('EVENING'), equals(PrayerTimeOfDay.evening));
+        expect(
+          PrayerTimeOfDay.fromString('MORNING'),
+          equals(PrayerTimeOfDay.morning),
+        );
+        expect(
+          PrayerTimeOfDay.fromString('AFTERNOON'),
+          equals(PrayerTimeOfDay.afternoon),
+        );
+        expect(
+          PrayerTimeOfDay.fromString('EVENING'),
+          equals(PrayerTimeOfDay.evening),
+        );
       });
 
       test('handles mixed case strings correctly', () {
-        expect(PrayerTimeOfDay.fromString('MoRnInG'), equals(PrayerTimeOfDay.morning));
-        expect(PrayerTimeOfDay.fromString('AfTeRnOoN'), equals(PrayerTimeOfDay.afternoon));
+        expect(
+          PrayerTimeOfDay.fromString('MoRnInG'),
+          equals(PrayerTimeOfDay.morning),
+        );
+        expect(
+          PrayerTimeOfDay.fromString('AfTeRnOoN'),
+          equals(PrayerTimeOfDay.afternoon),
+        );
       });
 
       test('returns anytime for null value', () {
-        expect(PrayerTimeOfDay.fromString(null), equals(PrayerTimeOfDay.anytime));
+        expect(
+          PrayerTimeOfDay.fromString(null),
+          equals(PrayerTimeOfDay.anytime),
+        );
       });
 
       test('returns anytime for empty string', () {
@@ -88,8 +124,14 @@ void main() {
       });
 
       test('returns anytime for invalid string', () {
-        expect(PrayerTimeOfDay.fromString('invalid'), equals(PrayerTimeOfDay.anytime));
-        expect(PrayerTimeOfDay.fromString('xyz'), equals(PrayerTimeOfDay.anytime));
+        expect(
+          PrayerTimeOfDay.fromString('invalid'),
+          equals(PrayerTimeOfDay.anytime),
+        );
+        expect(
+          PrayerTimeOfDay.fromString('xyz'),
+          equals(PrayerTimeOfDay.anytime),
+        );
       });
     });
 
@@ -126,7 +168,7 @@ void main() {
           PrayerTimeOfDay.fromDateTime(DateTime(2025, 1, 1, 8, 59)),
           equals(PrayerTimeOfDay.morning),
         );
-        
+
         // Test middle of range
         expect(
           PrayerTimeOfDay.fromDateTime(DateTime(2025, 1, 1, 7, 30)),
@@ -144,7 +186,7 @@ void main() {
           PrayerTimeOfDay.fromDateTime(DateTime(2025, 1, 1, 10, 59)),
           equals(PrayerTimeOfDay.anytime),
         );
-        
+
         // Test middle of range
         expect(
           PrayerTimeOfDay.fromDateTime(DateTime(2025, 1, 1, 10, 0)),
@@ -162,7 +204,7 @@ void main() {
           PrayerTimeOfDay.fromDateTime(DateTime(2025, 1, 1, 16, 59)),
           equals(PrayerTimeOfDay.afternoon),
         );
-        
+
         // Test middle of range
         expect(
           PrayerTimeOfDay.fromDateTime(DateTime(2025, 1, 1, 13, 30)),
@@ -180,7 +222,7 @@ void main() {
           PrayerTimeOfDay.fromDateTime(DateTime(2025, 1, 1, 20, 59)),
           equals(PrayerTimeOfDay.evening),
         );
-        
+
         // Test middle of range
         expect(
           PrayerTimeOfDay.fromDateTime(DateTime(2025, 1, 1, 19, 0)),
@@ -194,19 +236,19 @@ void main() {
           PrayerTimeOfDay.fromDateTime(DateTime(2025, 1, 1, 21, 0)),
           equals(PrayerTimeOfDay.night),
         );
-        
+
         // Test midnight
         expect(
           PrayerTimeOfDay.fromDateTime(DateTime(2025, 1, 1, 0, 0)),
           equals(PrayerTimeOfDay.night),
         );
-        
+
         // Test early morning boundary
         expect(
           PrayerTimeOfDay.fromDateTime(DateTime(2025, 1, 1, 4, 59)),
           equals(PrayerTimeOfDay.night),
         );
-        
+
         // Test middle of night
         expect(
           PrayerTimeOfDay.fromDateTime(DateTime(2025, 1, 1, 2, 30)),

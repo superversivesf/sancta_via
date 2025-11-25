@@ -16,7 +16,7 @@ class PrayerSettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     // Force synchronization of base settings when prayer settings change
     ref.listen(prayerAppSettingsProvider, (previous, next) {
       if (previous?.fontSize != next.fontSize) {
@@ -34,102 +34,117 @@ class PrayerSettingsScreen extends ConsumerWidget {
         final appInfo = AppInfo(
           appName: 'Prayer Companion',
           version: snapshot.hasData ? snapshot.data!.version : 'Loading...',
-          description: 'Traditional and contemporary Catholic prayers with liturgical calendar integration for daily spiritual reading.',
+          description:
+              'Traditional and contemporary Catholic prayers with liturgical calendar integration for daily spiritual reading.',
           icon: const Icon(Icons.church, size: 48, color: Colors.indigo),
           onFeedback: () => _showComingSoon(context, 'Feedback'),
           onSupport: () => _showSupportDialog(context),
         );
 
         return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Settings',
-          style: textScaling.scaledTitleLarge(context),
-        ),
-      ),
-      body: SafeArea(
-        top: false, // Let AppBar handle top
-        child: ListView(
-          children: [
-            // ═══════════════════════════════════════
-            // APPEARANCE SECTION (with consistent text scaling)
-            // ═══════════════════════════════════════
-            _buildScaledSectionHeader(context, ref, 'Appearance'),
-          
-          // Theme mode selection (wrapped for consistent scaling)
-          _wrapWithTextScaling(context, ref, const ThemeModeSelector()),
-          
-          // Color intensity selection (wrapped for consistent scaling)
-          _wrapWithTextScaling(context, ref, const ColorIntensitySelector()),
-          
-          // Liturgical color preview (wrapped for consistent scaling)
-          _wrapWithTextScaling(context, ref, const LiturgicalColorPreview()),
-          
-          const Divider(),
-
-          // ═══════════════════════════════════════
-          // LANGUAGE & LOCALIZATION (with consistent text scaling)
-          // ═══════════════════════════════════════
-          _buildScaledSectionHeader(context, ref, 'Language & Localization'),
-          
-          _wrapWithTextScaling(
-            context, 
-            ref, 
-            const LanguageSelector(
-              subtitle: 'Choose language for prayers and interface',
+          appBar: AppBar(
+            title: Text(
+              'Settings',
+              style: textScaling.scaledTitleLarge(context),
             ),
           ),
-          
-          const Divider(),
+          body: SafeArea(
+            top: false, // Let AppBar handle top
+            child: ListView(
+              children: [
+                // ═══════════════════════════════════════
+                // APPEARANCE SECTION (with consistent text scaling)
+                // ═══════════════════════════════════════
+                _buildScaledSectionHeader(context, ref, 'Appearance'),
 
-          // ═══════════════════════════════════════
-          // PRAYER SETTINGS SECTION (app-specific)
-          // ═══════════════════════════════════════
-          _buildPrayerSpecificSettings(context, ref),
+                // Theme mode selection (wrapped for consistent scaling)
+                _wrapWithTextScaling(context, ref, const ThemeModeSelector()),
 
-          const Divider(),
-
-          // ═══════════════════════════════════════
-          // NOTIFICATIONS SECTION (with consistent text scaling)
-          // ═══════════════════════════════════════
-          _wrapWithTextScaling(
-            context,
-            ref,
-            NotificationsSettings(
-              subtitle: 'Prayer reminders and liturgical notifications',
-              customOptions: [
-                CatholicNotificationOptions.prayerReminders(
-                  enabled: false, // TODO: Connect to actual notifications
-                  onChanged: (enabled) {
-                    _showComingSoon(context, 'Prayer reminders');
-                  },
+                // Color intensity selection (wrapped for consistent scaling)
+                _wrapWithTextScaling(
+                  context,
+                  ref,
+                  const ColorIntensitySelector(),
                 ),
-                CatholicNotificationOptions.liturgicalCalendar(
-                  enabled: false, // TODO: Connect to liturgical notifications
-                  onChanged: (enabled) {
-                    _showComingSoon(context, 'Liturgical calendar notifications');
-                  },
+
+                // Liturgical color preview (wrapped for consistent scaling)
+                _wrapWithTextScaling(
+                  context,
+                  ref,
+                  const LiturgicalColorPreview(),
+                ),
+
+                const Divider(),
+
+                // ═══════════════════════════════════════
+                // LANGUAGE & LOCALIZATION (with consistent text scaling)
+                // ═══════════════════════════════════════
+                _buildScaledSectionHeader(
+                  context,
+                  ref,
+                  'Language & Localization',
+                ),
+
+                _wrapWithTextScaling(
+                  context,
+                  ref,
+                  const LanguageSelector(
+                    subtitle: 'Choose language for prayers and interface',
+                  ),
+                ),
+
+                const Divider(),
+
+                // ═══════════════════════════════════════
+                // PRAYER SETTINGS SECTION (app-specific)
+                // ═══════════════════════════════════════
+                _buildPrayerSpecificSettings(context, ref),
+
+                const Divider(),
+
+                // ═══════════════════════════════════════
+                // NOTIFICATIONS SECTION (with consistent text scaling)
+                // ═══════════════════════════════════════
+                _wrapWithTextScaling(
+                  context,
+                  ref,
+                  NotificationsSettings(
+                    subtitle: 'Prayer reminders and liturgical notifications',
+                    customOptions: [
+                      CatholicNotificationOptions.prayerReminders(
+                        enabled: false, // TODO: Connect to actual notifications
+                        onChanged: (enabled) {
+                          _showComingSoon(context, 'Prayer reminders');
+                        },
+                      ),
+                      CatholicNotificationOptions.liturgicalCalendar(
+                        enabled:
+                            false, // TODO: Connect to liturgical notifications
+                        onChanged: (enabled) {
+                          _showComingSoon(
+                            context,
+                            'Liturgical calendar notifications',
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+
+                const Divider(),
+
+                // ═══════════════════════════════════════
+                // ABOUT SECTION (with consistent text scaling)
+                // ═══════════════════════════════════════
+                _wrapWithTextScaling(
+                  context,
+                  ref,
+                  AppInfoSection(appInfo: appInfo),
                 ),
               ],
             ),
           ),
-          
-          const Divider(),
-
-          // ═══════════════════════════════════════
-          // ABOUT SECTION (with consistent text scaling)
-          // ═══════════════════════════════════════
-            _wrapWithTextScaling(
-              context,
-              ref,
-              AppInfoSection(
-                appInfo: appInfo,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+        );
       },
     );
   }
@@ -137,7 +152,7 @@ class PrayerSettingsScreen extends ConsumerWidget {
   Widget _buildPrayerSpecificSettings(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(prayerAppSettingsProvider);
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return Column(
       children: [
         // ═══════════════════════════════════════
@@ -162,17 +177,27 @@ class PrayerSettingsScreen extends ConsumerWidget {
                 value: settings.defaultLanguage,
                 onChanged: (AppLanguage? newValue) {
                   if (newValue != null) {
-                    final languageString = newValue == AppLanguage.latin ? 'Latin' :
-                                          newValue == AppLanguage.spanish ? 'Spanish' : 'English';
-                    ref.read(prayerAppSettingsProvider.notifier).updateDefaultLanguage(languageString);
+                    final languageString = newValue == AppLanguage.latin
+                        ? 'Latin'
+                        : newValue == AppLanguage.spanish
+                        ? 'Spanish'
+                        : 'English';
+                    ref
+                        .read(prayerAppSettingsProvider.notifier)
+                        .updateDefaultLanguage(languageString);
                   }
                 },
-                items: [AppLanguage.english, AppLanguage.latin, AppLanguage.spanish].map((AppLanguage language) {
-                  return DropdownMenuItem(
-                    value: language,
-                    child: Text(language.displayName),
-                  );
-                }).toList(),
+                items:
+                    [
+                      AppLanguage.english,
+                      AppLanguage.latin,
+                      AppLanguage.spanish,
+                    ].map((AppLanguage language) {
+                      return DropdownMenuItem(
+                        value: language,
+                        child: Text(language.displayName),
+                      );
+                    }).toList(),
               ),
             );
           },
@@ -195,9 +220,9 @@ class PrayerSettingsScreen extends ConsumerWidget {
                   Expanded(
                     child: Text(
                       'Font Size',
-                      style: textScaling.scaledTitleMedium(context).copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: textScaling
+                          .scaledTitleMedium(context)
+                          .copyWith(fontWeight: FontWeight.w500),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -233,7 +258,9 @@ class PrayerSettingsScreen extends ConsumerWidget {
                 value: settings.readingMode,
                 onChanged: (PrayerReadingMode? newValue) {
                   if (newValue != null) {
-                    ref.read(prayerAppSettingsProvider.notifier).updateReadingMode(newValue);
+                    ref
+                        .read(prayerAppSettingsProvider.notifier)
+                        .updateReadingMode(newValue);
                   }
                 },
                 items: PrayerReadingMode.values.map((PrayerReadingMode mode) {
@@ -262,7 +289,9 @@ class PrayerSettingsScreen extends ConsumerWidget {
               ),
               value: settings.verseHighlighting,
               onChanged: (bool value) {
-                ref.read(prayerAppSettingsProvider.notifier).updateVerseHighlighting(value);
+                ref
+                    .read(prayerAppSettingsProvider.notifier)
+                    .updateVerseHighlighting(value);
               },
             );
           },
@@ -286,12 +315,12 @@ class PrayerSettingsScreen extends ConsumerWidget {
                 style: textScaling.scaledTitleMedium(context),
               ),
               subtitle: Text(
-                favoriteCount > 0 
+                favoriteCount > 0
                     ? '$favoriteCount prayer${favoriteCount == 1 ? '' : 's'} favorited'
                     : 'No favorite prayers yet',
                 style: textScaling.scaledBodyMedium(context),
               ),
-              trailing: favoriteCount > 0 
+              trailing: favoriteCount > 0
                   ? TextButton(
                       onPressed: () => _showClearFavoritesDialog(context, ref),
                       child: const Text('Clear'),
@@ -312,12 +341,12 @@ class PrayerSettingsScreen extends ConsumerWidget {
                 style: textScaling.scaledTitleMedium(context),
               ),
               subtitle: Text(
-                recentCount > 0 
+                recentCount > 0
                     ? '$recentCount recent prayer${recentCount == 1 ? '' : 's'} (max ${settings.maxRecentPrayers})'
                     : 'No recent prayers yet',
                 style: textScaling.scaledBodyMedium(context),
               ),
-              trailing: recentCount > 0 
+              trailing: recentCount > 0
                   ? TextButton(
                       onPressed: () => _showClearRecentsDialog(context, ref),
                       child: const Text('Clear'),
@@ -380,7 +409,7 @@ class PrayerSettingsScreen extends ConsumerWidget {
         // PREVIEW SECTION
         // ═══════════════════════════════════════
         const SettingsSectionHeader(title: 'Preview'),
-        
+
         _buildPrayerTextPreview(context, ref),
 
         const Divider(),
@@ -390,7 +419,7 @@ class PrayerSettingsScreen extends ConsumerWidget {
 
   Widget _buildPrayerTextPreview(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(prayerAppSettingsProvider);
-    
+
     return Container(
       margin: const EdgeInsets.all(16.0),
       padding: const EdgeInsets.all(16.0),
@@ -403,22 +432,23 @@ class PrayerSettingsScreen extends ConsumerWidget {
         children: [
           Text(
             'Prayer Text Preview',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
-          
+
           // Sample prayer text with current formatting
           EnhancedPrayerText(
-            text: 'Our Father, who art in heaven,\nhallowed be thy name.\nThy kingdom come,\nthy will be done,\non earth as it is in heaven.',
+            text:
+                'Our Father, who art in heaven,\nhallowed be thy name.\nThy kingdom come,\nthy will be done,\non earth as it is in heaven.',
             language: settings.defaultLanguage.displayName,
             readingMode: settings.readingMode,
             enableVerseHighlighting: settings.verseHighlighting,
           ),
-          
+
           const SizedBox(height: 12),
-          
+
           // Settings summary
           Text(
             'Font: ${settings.fontSize.round()}pt • '
@@ -426,7 +456,9 @@ class PrayerSettingsScreen extends ConsumerWidget {
             'Mode: ${_getReadingModeLabel(settings.readingMode)} • '
             'Language: ${settings.defaultLanguage.displayName}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
+              color: Theme.of(
+                context,
+              ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -457,29 +489,39 @@ class PrayerSettingsScreen extends ConsumerWidget {
   }
 
   /// Helper method to build section headers with consistent text scaling
-  Widget _buildScaledSectionHeader(BuildContext context, WidgetRef ref, String title) {
+  Widget _buildScaledSectionHeader(
+    BuildContext context,
+    WidgetRef ref,
+    String title,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
       child: Text(
         title,
-        style: textScaling.scaledTitleMedium(context).copyWith(
-          fontWeight: FontWeight.w600,
-          color: Theme.of(context).colorScheme.primary,
-        ),
+        style: textScaling
+            .scaledTitleMedium(context)
+            .copyWith(
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.primary,
+            ),
       ),
     );
   }
 
   /// Helper method to wrap shared UI components with consistent text scaling
-  Widget _wrapWithTextScaling(BuildContext context, WidgetRef ref, Widget child) {
+  Widget _wrapWithTextScaling(
+    BuildContext context,
+    WidgetRef ref,
+    Widget child,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
     final scaleFactor = textScaling.scaleFactor;
-    
+
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(
-        textScaler: TextScaler.linear(scaleFactor),
-      ),
+      data: MediaQuery.of(
+        context,
+      ).copyWith(textScaler: TextScaler.linear(scaleFactor)),
       child: child,
     );
   }
@@ -598,7 +640,7 @@ class PrayerSettingsScreen extends ConsumerWidget {
               TextButton(
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  // TODO: Implement clear recents  
+                  // TODO: Implement clear recents
                   _showComingSoon(context, 'Clear recent prayers');
                 },
                 style: TextButton.styleFrom(

@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 class BibleVerse {
   /// The verse number within the chapter
   final int number;
-  
+
   /// The text content of the verse
   final String text;
 
@@ -19,16 +19,17 @@ class BibleVerse {
     // Handle both old and new formats
     final numberValue = json['number'] ?? json['verse'];
     final textValue = json['text'];
-    
+
     if (numberValue == null) {
       throw FormatException('BibleVerse number/verse is null in JSON: $json');
     }
     if (textValue == null) {
       throw FormatException('BibleVerse text is null in JSON: $json');
     }
-    
+
     return BibleVerse(
-      number: numberValue is int ? numberValue : int.parse(numberValue.toString()),
+      number:
+          numberValue is int ? numberValue : int.parse(numberValue.toString()),
       text: textValue.toString().trim(), // Trim whitespace from text
     );
   }
@@ -44,16 +45,15 @@ class BibleVerse {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is BibleVerse &&
-        other.number == number &&
-        other.text == text;
+    return other is BibleVerse && other.number == number && other.text == text;
   }
 
   @override
   int get hashCode => Object.hash(number, text);
 
   @override
-  String toString() => 'BibleVerse(number: $number, text: ${text.substring(0, text.length > 50 ? 50 : text.length)}...)';
+  String toString() =>
+      'BibleVerse(number: $number, text: ${text.substring(0, text.length > 50 ? 50 : text.length)}...)';
 
   /// Create a copy with modified values
   BibleVerse copyWith({

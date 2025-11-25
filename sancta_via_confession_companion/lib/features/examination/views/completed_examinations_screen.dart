@@ -67,19 +67,20 @@ class CompletedExaminationsScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(
-          child: Text('Error loading completed examinations: $error'),
-        ),
+        error: (error, _) =>
+            Center(child: Text('Error loading completed examinations: $error')),
       ),
     );
   }
 
   Widget _buildCompletedExaminationCard(
-      BuildContext context,
-      WidgetRef ref,
-      ExaminationSession session
-      ) {
-    final examinationAsync = ref.watch(examinationByIdProvider(session.examinationId));
+    BuildContext context,
+    WidgetRef ref,
+    ExaminationSession session,
+  ) {
+    final examinationAsync = ref.watch(
+      examinationByIdProvider(session.examinationId),
+    );
     final dateFormat = DateFormat('MMM d, yyyy h:mm a');
     final formattedDate = dateFormat.format(session.createdAt);
 
@@ -92,10 +93,7 @@ class CompletedExaminationsScreen extends ConsumerWidget {
         },
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-          child: Icon(
-            Icons.quiz,
-            color: Theme.of(context).colorScheme.primary,
-          ),
+          child: Icon(Icons.quiz, color: Theme.of(context).colorScheme.primary),
         ),
         title: Text(
           examinationAsync.value?.title ?? 'Examination',
@@ -125,15 +123,17 @@ class CompletedExaminationsScreen extends ConsumerWidget {
   }
 
   Future<void> _confirmDelete(
-      BuildContext context,
-      WidgetRef ref,
-      String sessionId
-      ) async {
+    BuildContext context,
+    WidgetRef ref,
+    String sessionId,
+  ) async {
     return showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete Examination?'),
-        content: const Text('Are you sure you want to delete this completed examination?'),
+        content: const Text(
+          'Are you sure you want to delete this completed examination?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -144,7 +144,9 @@ class CompletedExaminationsScreen extends ConsumerWidget {
               Navigator.of(context).pop();
 
               // Delete the session
-              await ref.read(examinationRepositoryProvider).deleteSession(sessionId);
+              await ref
+                  .read(examinationRepositoryProvider)
+                  .deleteSession(sessionId);
 
               // Refresh the list
               ref.invalidate(completedExaminationsProvider);
@@ -168,7 +170,9 @@ class CompletedExaminationsScreen extends ConsumerWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete All Examinations?'),
-        content: const Text('Are you sure you want to delete all completed examinations? This cannot be undone.'),
+        content: const Text(
+          'Are you sure you want to delete all completed examinations? This cannot be undone.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),

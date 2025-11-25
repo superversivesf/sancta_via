@@ -24,14 +24,22 @@ class NovenaSettingsScreen extends ConsumerWidget {
         final appInfo = AppInfo(
           appName: 'Novena Companion',
           version: snapshot.hasData ? snapshot.data!.version : 'Loading...',
-          description: 'Catholic novena companion app with traditional nine-day prayer devotions and liturgical integration for spiritual growth.',
-          icon: const Icon(Icons.auto_stories, size: 48, color: Colors.deepPurple),
+          description:
+              'Catholic novena companion app with traditional nine-day prayer devotions and liturgical integration for spiritual growth.',
+          icon: const Icon(
+            Icons.auto_stories,
+            size: 48,
+            color: Colors.deepPurple,
+          ),
           onFeedback: () => _showComingSoon(context, 'Feedback'),
           onSupport: () => _showSupportDialog(context),
         );
 
         // Novena-specific settings section
-        final novenaSpecificSettings = _buildNovenaSpecificSettings(context, ref);
+        final novenaSpecificSettings = _buildNovenaSpecificSettings(
+          context,
+          ref,
+        );
 
         return UnifiedSettingsScreen(
           appInfo: appInfo,
@@ -40,7 +48,9 @@ class NovenaSettingsScreen extends ConsumerWidget {
             CatholicNotificationOptions.novenas(
               enabled: ref.watch(novenaNotificationsEnabledProvider),
               onChanged: (enabled) {
-                ref.read(novenaAppSettingsProvider.notifier).updateNovenaNotificationsEnabled(enabled);
+                ref
+                    .read(novenaAppSettingsProvider.notifier)
+                    .updateNovenaNotificationsEnabled(enabled);
               },
             ),
             CatholicNotificationOptions.liturgicalCalendar(
@@ -58,7 +68,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
   Widget _buildNovenaSpecificSettings(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(novenaAppSettingsProvider);
     final activeNovena = ref.watch(novenaStateProvider);
-    
+
     return Column(
       children: [
         // ═══════════════════════════════════════
@@ -87,7 +97,9 @@ class NovenaSettingsScreen extends ConsumerWidget {
           subtitle: const Text('Show celebrations when completing novena days'),
           value: settings.showCompletionCelebrations,
           onChanged: (value) {
-            ref.read(novenaAppSettingsProvider.notifier).updateShowCompletionCelebrations(value);
+            ref
+                .read(novenaAppSettingsProvider.notifier)
+                .updateShowCompletionCelebrations(value);
           },
         ),
 
@@ -106,16 +118,16 @@ class NovenaSettingsScreen extends ConsumerWidget {
         // APPEARANCE SECTION (using shared UI)
         // ═══════════════════════════════════════
         const SettingsSectionHeader(title: 'Appearance'),
-        
+
         // Theme mode selection (Light/Dark/System)
         const ThemeModeSelector(),
-        
+
         // Color intensity selection (Vibrant/Muted)
         const ColorIntensitySelector(),
-        
+
         // Liturgical color preview
         const LiturgicalColorPreview(),
-        
+
         // Current color display for easier verification
         ListTile(
           leading: const Icon(Icons.info),
@@ -130,14 +142,15 @@ class NovenaSettingsScreen extends ConsumerWidget {
             ),
           ),
         ),
-        
+
         const Divider(),
 
         // ═══════════════════════════════════════
         // ACCESSIBILITY SECTION (with working font size)
         // ═══════════════════════════════════════
         const AccessibilitySettings(
-          fontPreviewText: 'Sample novena prayer text: "O Saint Jude, glorious apostle..."',
+          fontPreviewText:
+              'Sample novena prayer text: "O Saint Jude, glorious apostle..."',
           showFontSize: true,
         ),
 
@@ -152,10 +165,12 @@ class NovenaSettingsScreen extends ConsumerWidget {
         ListTile(
           leading: const Icon(Icons.lock),
           title: Text(settings.hasPinCode ? 'Change PIN Code' : 'Set PIN Code'),
-          subtitle: Text(settings.hasPinCode 
-              ? 'PIN is currently set for examination data protection'
-              : 'Create a ${AppConstants.pinLength}-digit PIN to protect examination data'),
-          trailing: settings.hasPinCode 
+          subtitle: Text(
+            settings.hasPinCode
+                ? 'PIN is currently set for examination data protection'
+                : 'Create a ${AppConstants.pinLength}-digit PIN to protect examination data',
+          ),
+          trailing: settings.hasPinCode
               ? const Icon(Icons.edit)
               : const Icon(Icons.add),
           onTap: () {
@@ -181,7 +196,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
         // DEBUG SECTION (for development)
         // ═══════════════════════════════════════
         const SettingsSectionHeader(title: 'Debug Tools'),
-        
+
         // Database debug tools
         ListTile(
           leading: const Icon(Icons.storage, color: Colors.blue),
@@ -189,25 +204,25 @@ class NovenaSettingsScreen extends ConsumerWidget {
           subtitle: const Text('Run comprehensive database test'),
           onTap: () => _testDatabase(context),
         ),
-        
+
         ListTile(
           leading: const Icon(Icons.info, color: Colors.blue),
           title: const Text('Database Info'),
           subtitle: const Text('Show database statistics'),
           onTap: () => _showDatabaseInfo(context),
         ),
-        
+
         ListTile(
           leading: const Icon(Icons.refresh, color: Colors.orange),
           title: const Text('Reset Database'),
           subtitle: const Text('Clear and reinitialize database'),
           onTap: () => _resetDatabase(context),
         ),
-        
+
         if (activeNovena != null) ...[
           const Divider(),
           const SettingsSectionHeader(title: 'Debug Tools'),
-          
+
           // Current novena status
           ListTile(
             leading: const Icon(Icons.info, color: Colors.blue),
@@ -215,10 +230,10 @@ class NovenaSettingsScreen extends ConsumerWidget {
             subtitle: Text(
               'Day ${activeNovena.spiritualDay} of 9 • '
               '${activeNovena.accessibleCompletedCount} completed • '
-              'Started: ${activeNovena.startDate.toString().split(' ')[0]}'
+              'Started: ${activeNovena.startDate.toString().split(' ')[0]}',
             ),
           ),
-          
+
           // Advance novena day
           ListTile(
             leading: const Icon(Icons.fast_forward, color: Colors.orange),
@@ -226,17 +241,17 @@ class NovenaSettingsScreen extends ConsumerWidget {
             subtitle: const Text('Move forward one day for testing'),
             onTap: () => _advanceNovenaDay(context, ref),
           ),
-          
+
           // Complete current day
           ListTile(
             leading: const Icon(Icons.check_circle, color: Colors.green),
             title: const Text('Complete Current Day'),
             subtitle: const Text('Mark current spiritual day as complete'),
-            onTap: activeNovena.isTodayComplete 
-                ? null 
+            onTap: activeNovena.isTodayComplete
+                ? null
                 : () => _completeCurrentDay(context, ref),
           ),
-          
+
           // Reset novena progress
           ListTile(
             leading: const Icon(Icons.refresh, color: Colors.purple),
@@ -244,7 +259,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
             subtitle: const Text('Clear all completed days but keep novena'),
             onTap: () => _resetNovenaProgress(context, ref),
           ),
-          
+
           // Cancel novena
           ListTile(
             leading: const Icon(Icons.cancel, color: Colors.red),
@@ -252,16 +267,18 @@ class NovenaSettingsScreen extends ConsumerWidget {
             subtitle: const Text('Remove the active novena completely'),
             onTap: () => _cancelNovena(context, ref),
           ),
-          
         ],
       ],
     );
   }
 
-  Future<void> _showTimePickerDialog(BuildContext context, WidgetRef ref) async {
+  Future<void> _showTimePickerDialog(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
     final settings = ref.read(novenaAppSettingsProvider);
     final currentTime = settings.dailyReminderTimeOfDay;
-    
+
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
       initialTime: currentTime,
@@ -278,11 +295,16 @@ class NovenaSettingsScreen extends ConsumerWidget {
         );
       },
     );
-    
+
     if (pickedTime != null && pickedTime != currentTime) {
-      await ref.read(novenaAppSettingsProvider.notifier).updateDailyReminderTime(pickedTime);
+      await ref
+          .read(novenaAppSettingsProvider.notifier)
+          .updateDailyReminderTime(pickedTime);
       if (context.mounted) {
-        _showSuccessSnackBar(context, 'Daily reminder time updated to ${pickedTime.format(context)}');
+        _showSuccessSnackBar(
+          context,
+          'Daily reminder time updated to ${pickedTime.format(context)}',
+        );
       }
     }
   }
@@ -305,7 +327,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
 
       // Verify the current PIN
       final authService = ref.read(authServiceProvider);
-      
+
       // Show loading
       if (context.mounted) {
         PinputModalWidget.show(
@@ -317,7 +339,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
       }
 
       final isValid = await authService.validatePin(currentPin);
-      
+
       // Close loading modal
       if (context.mounted) Navigator.of(context).pop();
 
@@ -335,22 +357,31 @@ class NovenaSettingsScreen extends ConsumerWidget {
       if (context.mounted) {
         await _showPinSetupFlow(context, ref, isChange: true);
       }
-
     } catch (e, stackTrace) {
-      AppLogger.error('Change PIN flow error', e, stackTrace, 'NOVENA_SETTINGS');
+      AppLogger.error(
+        'Change PIN flow error',
+        e,
+        stackTrace,
+        'NOVENA_SETTINGS',
+      );
       if (context.mounted) {
         _showErrorSnackBar(context, 'Failed to change PIN. Please try again.');
       }
     }
   }
 
-  Future<void> _showPinSetupFlow(BuildContext context, WidgetRef ref, {bool isChange = false}) async {
+  Future<void> _showPinSetupFlow(
+    BuildContext context,
+    WidgetRef ref, {
+    bool isChange = false,
+  }) async {
     try {
       // Step 1: Get first PIN
       final firstPin = await PinputModalWidget.show(
         context: context,
         title: isChange ? 'Set New PIN' : 'Set PIN Code',
-        subtitle: 'Create a ${AppConstants.pinLength}-digit PIN to protect examination data',
+        subtitle:
+            'Create a ${AppConstants.pinLength}-digit PIN to protect examination data',
         obscureText: true,
       );
 
@@ -358,11 +389,12 @@ class NovenaSettingsScreen extends ConsumerWidget {
 
       // Step 2: Confirm PIN
       if (!context.mounted) return;
-      
+
       final confirmedPin = await PinputModalWidget.show(
         context: context,
         title: 'Confirm PIN',
-        subtitle: 'Enter the same ${AppConstants.pinLength} digits to confirm your PIN',
+        subtitle:
+            'Enter the same ${AppConstants.pinLength} digits to confirm your PIN',
         confirmPinText: firstPin.replaceAll(RegExp(r'.'), '●'),
         obscureText: true,
       );
@@ -381,7 +413,6 @@ class NovenaSettingsScreen extends ConsumerWidget {
       if (context.mounted) {
         await _savePinCode(context, ref, firstPin, isChange: isChange);
       }
-
     } catch (e, stackTrace) {
       AppLogger.error('PIN setup flow error', e, stackTrace, 'NOVENA_SETTINGS');
       if (context.mounted) {
@@ -407,7 +438,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
 
       // Verify the current PIN
       final authService = ref.read(authServiceProvider);
-      
+
       // Show loading
       if (context.mounted) {
         PinputModalWidget.show(
@@ -419,7 +450,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
       }
 
       final isValid = await authService.validatePin(currentPin);
-      
+
       // Close loading modal
       if (context.mounted) Navigator.of(context).pop();
 
@@ -435,21 +466,33 @@ class NovenaSettingsScreen extends ConsumerWidget {
 
       // Step 2: Remove PIN
       await ref.read(novenaAppSettingsProvider.notifier).clearPinCode();
-      
-      if (context.mounted) {
-        _showSuccessSnackBar(context, 'PIN code removed successfully', 
-                            backgroundColor: Colors.orange);
-      }
 
+      if (context.mounted) {
+        _showSuccessSnackBar(
+          context,
+          'PIN code removed successfully',
+          backgroundColor: Colors.orange,
+        );
+      }
     } catch (e, stackTrace) {
-      AppLogger.error('Remove PIN flow error', e, stackTrace, 'NOVENA_SETTINGS');
+      AppLogger.error(
+        'Remove PIN flow error',
+        e,
+        stackTrace,
+        'NOVENA_SETTINGS',
+      );
       if (context.mounted) {
         _showErrorSnackBar(context, 'Failed to remove PIN. Please try again.');
       }
     }
   }
 
-  Future<void> _savePinCode(BuildContext context, WidgetRef ref, String pin, {bool isChange = false}) async {
+  Future<void> _savePinCode(
+    BuildContext context,
+    WidgetRef ref,
+    String pin, {
+    bool isChange = false,
+  }) async {
     // Show loading modal
     PinputModalWidget.show(
       context: context,
@@ -460,13 +503,13 @@ class NovenaSettingsScreen extends ConsumerWidget {
 
     try {
       await ref.read(novenaAppSettingsProvider.notifier).setPinCode(pin);
-      
+
       await Future.delayed(const Duration(milliseconds: 500));
 
       // Verify PIN was stored correctly
       final authService = ref.read(authServiceProvider);
       final isValid = await authService.validatePin(pin);
-      
+
       if (!isValid) {
         throw Exception('PIN storage verification failed. Please try again.');
       }
@@ -476,26 +519,29 @@ class NovenaSettingsScreen extends ConsumerWidget {
 
       // Close loading modal
       if (context.mounted) Navigator.of(context).pop();
-      
-      if (context.mounted) {
-        _showSuccessSnackBar(context, 
-            isChange ? 'PIN changed successfully' : 'PIN saved successfully');
-      }
 
+      if (context.mounted) {
+        _showSuccessSnackBar(
+          context,
+          isChange ? 'PIN changed successfully' : 'PIN saved successfully',
+        );
+      }
     } catch (e, stackTrace) {
       AppLogger.error('PIN save failed', e, stackTrace, 'NOVENA_SETTINGS');
-      
+
       // Close loading modal
       if (context.mounted) Navigator.of(context).pop();
-      
+
       String errorMessage = 'Failed to save PIN. Please try again.';
-      
+
       if (e.toString().contains('iOS Simulator')) {
-        errorMessage = 'PIN setup not available in iOS Simulator. Please test on a physical device.';
+        errorMessage =
+            'PIN setup not available in iOS Simulator. Please test on a physical device.';
       } else if (e.toString().contains('Secure storage not available')) {
-        errorMessage = 'Secure storage not available. This may be due to device or permission issues.';
+        errorMessage =
+            'Secure storage not available. This may be due to device or permission issues.';
       }
-      
+
       if (context.mounted) {
         _showErrorDialog(context, 'PIN Setup Error', errorMessage);
       }
@@ -564,10 +610,10 @@ class NovenaSettingsScreen extends ConsumerWidget {
 
     try {
       final results = await DatabaseTestUtility.runDatabaseTest();
-      
+
       // Close loading dialog
       if (context.mounted) Navigator.of(context).pop();
-      
+
       // Show results
       if (context.mounted) {
         showDialog(
@@ -582,9 +628,13 @@ class NovenaSettingsScreen extends ConsumerWidget {
                   Text('Test Completed: ${results['test_completed'] ?? false}'),
                   const SizedBox(height: 8),
                   if (results['initialization'] != null) ...[
-                    Text('Initialization: ${results['initialization']['success'] ? 'Success' : 'Failed'}'),
+                    Text(
+                      'Initialization: ${results['initialization']['success'] ? 'Success' : 'Failed'}',
+                    ),
                     if (results['initialization']['novena_count'] > 0)
-                      Text('Novenas: ${results['initialization']['novena_count']}'),
+                      Text(
+                        'Novenas: ${results['initialization']['novena_count']}',
+                      ),
                     const SizedBox(height: 8),
                   ],
                   if (results['stats'] != null) ...[
@@ -594,19 +644,28 @@ class NovenaSettingsScreen extends ConsumerWidget {
                     const SizedBox(height: 8),
                   ],
                   if (results['categories'] != null) ...[
-                    Text('Categories: ${(results['categories'] as List).join(', ')}'),
+                    Text(
+                      'Categories: ${(results['categories'] as List).join(', ')}',
+                    ),
                     const SizedBox(height: 8),
                   ],
                   if (results['difficulties'] != null) ...[
-                    Text('Difficulties: ${(results['difficulties'] as List).join(', ')}'),
+                    Text(
+                      'Difficulties: ${(results['difficulties'] as List).join(', ')}',
+                    ),
                     const SizedBox(height: 8),
                   ],
                   if (results['search_test'] != null) ...[
-                    Text('Search Test: ${results['search_test']['results_count']} results for "${results['search_test']['search_term']}"'),
+                    Text(
+                      'Search Test: ${results['search_test']['results_count']} results for "${results['search_test']['search_term']}"',
+                    ),
                   ],
                   if (results['error'] != null) ...[
                     const SizedBox(height: 8),
-                    Text('Error: ${results['error']}', style: const TextStyle(color: Colors.red)),
+                    Text(
+                      'Error: ${results['error']}',
+                      style: const TextStyle(color: Colors.red),
+                    ),
                   ],
                 ],
               ),
@@ -623,7 +682,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
     } catch (e) {
       // Close loading dialog
       if (context.mounted) Navigator.of(context).pop();
-      
+
       if (context.mounted) {
         _showErrorSnackBar(context, 'Database test failed: $e');
       }
@@ -634,7 +693,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
     try {
       // This will print to console and can be viewed in debug logs
       await DatabaseTestUtility.printDatabaseInfo();
-      
+
       if (context.mounted) {
         _showSuccessSnackBar(context, 'Database info printed to console');
       }
@@ -652,7 +711,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
         title: const Text('Reset Database'),
         content: const Text(
           'This will clear all novena data and reload from JSON files. '
-          'This action cannot be undone. Are you sure?'
+          'This action cannot be undone. Are you sure?',
         ),
         actions: [
           TextButton(
@@ -688,13 +747,17 @@ class NovenaSettingsScreen extends ConsumerWidget {
 
     try {
       final success = await DatabaseTestUtility.resetDatabase();
-      
+
       // Close loading dialog
       if (context.mounted) Navigator.of(context).pop();
-      
+
       if (success) {
         if (context.mounted) {
-          _showSuccessSnackBar(context, 'Database reset successfully', backgroundColor: Colors.orange);
+          _showSuccessSnackBar(
+            context,
+            'Database reset successfully',
+            backgroundColor: Colors.orange,
+          );
         }
       } else {
         if (context.mounted) {
@@ -704,7 +767,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
     } catch (e) {
       // Close loading dialog
       if (context.mounted) Navigator.of(context).pop();
-      
+
       if (context.mounted) {
         _showErrorSnackBar(context, 'Database reset failed: $e');
       }
@@ -718,17 +781,20 @@ class NovenaSettingsScreen extends ConsumerWidget {
       if (activeNovena == null) return;
 
       // Advance by moving start date back by 1 day
-      final newStartDate = activeNovena.startDate.subtract(const Duration(days: 1));
+      final newStartDate = activeNovena.startDate.subtract(
+        const Duration(days: 1),
+      );
       final updatedNovena = activeNovena.copyWith(startDate: newStartDate);
-      
+
       await ref.read(novenaStateProvider.notifier).updateState(updatedNovena);
-      
+
       if (context.mounted) {
-        _showSuccessSnackBar(context, 
-            'Advanced to Day ${updatedNovena.spiritualDay}', 
-            backgroundColor: Colors.orange);
+        _showSuccessSnackBar(
+          context,
+          'Advanced to Day ${updatedNovena.spiritualDay}',
+          backgroundColor: Colors.orange,
+        );
       }
-      
     } catch (e) {
       if (context.mounted) {
         _showErrorSnackBar(context, 'Failed to advance novena day: $e');
@@ -754,7 +820,9 @@ class NovenaSettingsScreen extends ConsumerWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Reset Novena Progress'),
-        content: const Text('Are you sure you want to clear all completed days? This cannot be undone.'),
+        content: const Text(
+          'Are you sure you want to clear all completed days? This cannot be undone.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -779,12 +847,15 @@ class NovenaSettingsScreen extends ConsumerWidget {
         completedDays: List.filled(9, false),
         lastCompletedDate: null,
       );
-      
+
       await ref.read(novenaStateProvider.notifier).updateState(resetNovena);
       if (context.mounted) {
-        _showSuccessSnackBar(context, 'Novena progress reset', backgroundColor: Colors.purple);
+        _showSuccessSnackBar(
+          context,
+          'Novena progress reset',
+          backgroundColor: Colors.purple,
+        );
       }
-      
     } catch (e) {
       if (context.mounted) {
         _showErrorSnackBar(context, 'Failed to reset novena progress: $e');
@@ -797,7 +868,9 @@ class NovenaSettingsScreen extends ConsumerWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Cancel Novena'),
-        content: const Text('Are you sure you want to cancel your active novena? This cannot be undone.'),
+        content: const Text(
+          'Are you sure you want to cancel your active novena? This cannot be undone.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -817,7 +890,11 @@ class NovenaSettingsScreen extends ConsumerWidget {
     try {
       await ref.read(novenaStateProvider.notifier).clearActiveNovena();
       if (context.mounted) {
-        _showSuccessSnackBar(context, 'Novena cancelled', backgroundColor: Colors.red);
+        _showSuccessSnackBar(
+          context,
+          'Novena cancelled',
+          backgroundColor: Colors.red,
+        );
       }
     } catch (e) {
       if (context.mounted) {
@@ -825,7 +902,6 @@ class NovenaSettingsScreen extends ConsumerWidget {
       }
     }
   }
-
 
   void _showComingSoon(BuildContext context, String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -873,7 +949,11 @@ class NovenaSettingsScreen extends ConsumerWidget {
     );
   }
 
-  void _showSuccessSnackBar(BuildContext context, String message, {Color? backgroundColor}) {
+  void _showSuccessSnackBar(
+    BuildContext context,
+    String message, {
+    Color? backgroundColor,
+  }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(

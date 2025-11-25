@@ -23,12 +23,15 @@ class ChapterReadingScreen extends ConsumerStatefulWidget {
   final int? startVerse; // Optional starting verse
 
   const ChapterReadingScreen({
-    required this.bookName, required this.chapter, super.key,
+    required this.bookName,
+    required this.chapter,
+    super.key,
     this.startVerse,
   });
 
   @override
-  ConsumerState<ChapterReadingScreen> createState() => _ChapterReadingScreenState();
+  ConsumerState<ChapterReadingScreen> createState() =>
+      _ChapterReadingScreenState();
 }
 
 class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
@@ -36,13 +39,15 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
   late ScrollController _scrollController;
   late String currentBookName;
   late int currentChapter;
-  bool _hasScrolledToInitialVerse = false; // Track if we've scrolled to the initial verse
-  bool _hasMarkedChapterAsRead = false; // NEW: Track if we've already marked this chapter as read
-  
+  bool _hasScrolledToInitialVerse =
+      false; // Track if we've scrolled to the initial verse
+  bool _hasMarkedChapterAsRead =
+      false; // NEW: Track if we've already marked this chapter as read
+
   // Verse scrolling management
   final List<GlobalKey> _verseKeys = [];
   List<String> _currentVerses = [];
-  
+
   @override
   void initState() {
     super.initState();
@@ -50,19 +55,24 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     currentChapter = widget.chapter;
     _pageController = PageController();
     _scrollController = ScrollController();
-    
+
     // NEW: Add scroll listener to detect when user reaches the end
     _scrollController.addListener(_handleScroll);
-    
-    debugLog('ChapterReadingScreen initialized: $currentBookName $currentChapter${widget.startVerse != null ? ' (starting at verse ${widget.startVerse})' : ''}', 'CHAPTER');
-    
+
+    debugLog(
+      'ChapterReadingScreen initialized: $currentBookName $currentChapter${widget.startVerse != null ? ' (starting at verse ${widget.startVerse})' : ''}',
+      'CHAPTER',
+    );
+
     // REMOVED: No longer marking chapter as read immediately when opening
     // The chapter will be marked as read only when user scrolls to the end
   }
 
   @override
   void dispose() {
-    _scrollController.removeListener(_handleScroll); // NEW: Remove scroll listener
+    _scrollController.removeListener(
+      _handleScroll,
+    ); // NEW: Remove scroll listener
     _pageController.dispose();
     _scrollController.dispose();
     super.dispose();
@@ -70,15 +80,16 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
 
   /// NEW: Handle scroll events to detect when user reaches end of chapter
   void _handleScroll() {
-    if (_hasMarkedChapterAsRead) return; // Already marked as read, no need to check again
-    
+    if (_hasMarkedChapterAsRead)
+      return; // Already marked as read, no need to check again
+
     final scrollController = _scrollController;
-    
+
     // Check if user has scrolled to near the end (95% or more)
     if (scrollController.hasClients) {
       final maxScroll = scrollController.position.maxScrollExtent;
       final currentScroll = scrollController.position.pixels;
-      
+
       // Handle case where content fits on screen (maxScroll is 0 or very small)
       if (maxScroll <= 50) {
         // Chapter is short enough to fit on one screen, wait a moment then mark as read
@@ -89,12 +100,15 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         });
         return;
       }
-      
+
       // Calculate scroll percentage
       final scrollPercentage = currentScroll / maxScroll;
-      
-      debugLog('Scroll progress: ${(scrollPercentage * 100).toStringAsFixed(1)}%', 'SCROLL');
-      
+
+      debugLog(
+        'Scroll progress: ${(scrollPercentage * 100).toStringAsFixed(1)}%',
+        'SCROLL',
+      );
+
       // Mark as read when user reaches 95% of the way through
       if (scrollPercentage >= 0.95) {
         _markChapterAsRead();
@@ -105,45 +119,52 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
   /// NEW: Mark the current chapter as read and advance reading plans
   void _markChapterAsRead() {
     if (_hasMarkedChapterAsRead) return; // Prevent multiple calls
-    
+
     _hasMarkedChapterAsRead = true;
-    
-    debugLog('User has finished reading chapter, marking as complete', 'CHAPTER');
-    
+
+    debugLog(
+      'User has finished reading chapter, marking as complete',
+      'CHAPTER',
+    );
+
     final activePlans = ref.read(activeReadingPlansProvider);
     final currentColor = ref.read(currentLiturgicalColorProvider);
     final colorIntensity = ref.read(colorIntensityProvider);
-    
+
     // Parse liturgical color and convert to Flutter color
-    final liturgicalColor = currentColor != null 
+    final liturgicalColor = currentColor != null
         ? LiturgicalColor.fromString(currentColor)
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
-    
+
     bool foundMatchingPlan = false;
-    
+
     for (final plan in activePlans) {
       // Check if this chapter is the next chapter in any reading plan
-      if (plan.progress.currentBook == currentBookName && 
+      if (plan.progress.currentBook == currentBookName &&
           plan.progress.currentChapter == currentChapter) {
-        
         // This chapter matches the next chapter to read in this plan
-        ref.read(readingPlanManagerProvider.notifier).markChapterRead(
-          plan.id, 
-          currentBookName, 
-          currentChapter,
-          successColor: themeColor,
-        );
-        
+        ref
+            .read(readingPlanManagerProvider.notifier)
+            .markChapterRead(
+              plan.id,
+              currentBookName,
+              currentChapter,
+              successColor: themeColor,
+            );
+
         foundMatchingPlan = true;
-        debugLog('Marked chapter read for plan "${plan.name}": $currentBookName $currentChapter', 'CHAPTER');
-        
+        debugLog(
+          'Marked chapter read for plan "${plan.name}": $currentBookName $currentChapter',
+          'CHAPTER',
+        );
+
         // Note: Success message and plan completion handling is done by the UserMessageService
-        
+
         break; // Only advance one plan to avoid conflicts
       }
     }
-    
+
     // If no reading plan matched, still give feedback that they finished the chapter
     if (!foundMatchingPlan) {
       // Show a simple completion message
@@ -155,19 +176,27 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                 const Icon(Icons.check_circle, color: Colors.white, size: 20),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text('Finished reading $currentBookName $currentChapter'),
+                  child: Text(
+                    'Finished reading $currentBookName $currentChapter',
+                  ),
                 ),
               ],
             ),
-            backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
+            backgroundColor:
+                themeColor ?? Theme.of(context).colorScheme.primary,
             duration: const Duration(seconds: 3),
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
         );
       }
-      
-      debugLog('Chapter reading completed (no matching reading plan): $currentBookName $currentChapter', 'CHAPTER');
+
+      debugLog(
+        'Chapter reading completed (no matching reading plan): $currentBookName $currentChapter',
+        'CHAPTER',
+      );
     }
   }
 
@@ -205,27 +234,37 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     final colorIntensity = ref.watch(colorIntensityProvider);
     final textScaling = ref.watch(textScaleProvider);
     final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
-    
+
     // Get max chapters for navigation logic (using optimized provider)
-    final maxChaptersAsync = ref.watch(optimizedChapterCountProvider((
-      bookName: currentBookName,
-      translation: selectedTranslation,
-    )));
-    
+    final maxChaptersAsync = ref.watch(
+      optimizedChapterCountProvider((
+        bookName: currentBookName,
+        translation: selectedTranslation,
+      )),
+    );
+
     // Parse liturgical color and convert to Flutter color
-    final liturgicalColor = currentColor != null 
+    final liturgicalColor = currentColor != null
         ? LiturgicalColor.fromString(currentColor)
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
 
-    debugLog('Building chapter screen for $currentBookName $currentChapter with ${selectedTranslation.name}', 'CHAPTER');
+    debugLog(
+      'Building chapter screen for $currentBookName $currentChapter with ${selectedTranslation.name}',
+      'CHAPTER',
+    );
 
     // Create scripture reference for current chapter
-    final reference = ScriptureReference.chapter(currentBookName, currentChapter);
-    final chapterAsync = ref.watch(optimizedScriptureByReferenceProvider((
-      reference: reference,
-      translation: selectedTranslation,
-    )));
+    final reference = ScriptureReference.chapter(
+      currentBookName,
+      currentChapter,
+    );
+    final chapterAsync = ref.watch(
+      optimizedScriptureByReferenceProvider((
+        reference: reference,
+        translation: selectedTranslation,
+      )),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -261,34 +300,46 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
           top: false, // Let AppBar handle top
           child: Container(
             decoration: BoxDecoration(
-              border: themeColor != null ? Border(
-                top: BorderSide(
-                  color: themeColor.withValues(alpha: 0.3),
-                  width: 3,
-                ),
-              ) : null,
+              border: themeColor != null
+                  ? Border(
+                      top: BorderSide(
+                        color: themeColor.withValues(alpha: 0.3),
+                        width: 3,
+                      ),
+                    )
+                  : null,
             ),
             child: chapterAsync.when(
-            data: (scripture) => _buildChapterContent(context, scripture, themeColor),
-            loading: () => _buildLoadingContent(context, themeColor),
-              error: (error, stack) => _buildErrorContent(context, error, themeColor),
+              data: (scripture) =>
+                  _buildChapterContent(context, scripture, themeColor),
+              loading: () => _buildLoadingContent(context, themeColor),
+              error: (error, stack) =>
+                  _buildErrorContent(context, error, themeColor),
             ),
           ),
         ),
       ),
       floatingActionButton: maxChaptersAsync.when(
-        data: (maxChapters) => _buildNavigationButtons(context, maxChapters, themeColor),
+        data: (maxChapters) =>
+            _buildNavigationButtons(context, maxChapters, themeColor),
         loading: () => null, // Don't show buttons while loading
         error: (error, stackTrace) => null, // Don't show buttons on error
       ),
     );
   }
 
-  Widget _buildChapterContent(BuildContext context, OptimizedScriptureContent scripture, Color? themeColor) {
+  Widget _buildChapterContent(
+    BuildContext context,
+    OptimizedScriptureContent scripture,
+    Color? themeColor,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
     final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
 
-    debugLog('Building chapter content: found=${scripture.found}, text length=${scripture.text.length}', 'CHAPTER');
+    debugLog(
+      'Building chapter content: found=${scripture.found}, text length=${scripture.text.length}',
+      'CHAPTER',
+    );
 
     if (!scripture.found || scripture.text.isEmpty) {
       return _buildNotFoundContent(context, scripture.errorMessage, themeColor);
@@ -296,8 +347,8 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
 
     // Schedule scroll to starting verse after the content is built
     // Only do this once, when we first load the original chapter with the startVerse
-    if (widget.startVerse != null && 
-        widget.startVerse! > 1 && 
+    if (widget.startVerse != null &&
+        widget.startVerse! > 1 &&
         !_hasScrolledToInitialVerse &&
         currentBookName == widget.bookName &&
         currentChapter == widget.chapter) {
@@ -310,10 +361,14 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     return ScrollbarTheme(
       data: ScrollbarThemeData(
         thumbColor: WidgetStateProperty.all(
-          (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.6)
+          (themeColor ?? Theme.of(context).colorScheme.primary).withValues(
+            alpha: 0.6,
+          ),
         ),
         trackColor: WidgetStateProperty.all(
-          (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.1)
+          (themeColor ?? Theme.of(context).colorScheme.primary).withValues(
+            alpha: 0.1,
+          ),
         ),
         trackBorderColor: WidgetStateProperty.all(Colors.transparent),
         thickness: WidgetStateProperty.all(6.0),
@@ -323,99 +378,127 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       ),
       child: Scrollbar(
         controller: _scrollController,
-        thumbVisibility: true, // Always show the scroll thumb for progress indication
+        thumbVisibility:
+            true, // Always show the scroll thumb for progress indication
         trackVisibility: true, // Show a subtle track for better visual guidance
         child: SingleChildScrollView(
-        controller: _scrollController,
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Chapter header
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: (themeColor ?? Theme.of(context).colorScheme.primary)
-                    .withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
+          controller: _scrollController,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Chapter header
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
                   color: (themeColor ?? Theme.of(context).colorScheme.primary)
-                      .withValues(alpha: 0.3),
-                  width: 2,
+                      .withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                        .withValues(alpha: 0.3),
+                    width: 2,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      scripture.reference.displayText,
+                      style: textScaling
+                          .scaledHeadlineSmall(context)
+                          .copyWith(
+                            fontWeight: FontWeight.bold,
+                            color:
+                                themeColor?.withValues(alpha: 0.8) ??
+                                Theme.of(context).colorScheme.primary,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      selectedTranslation.name,
+                      style: textScaling
+                          .scaledBodyMedium(context)
+                          .copyWith(
+                            fontStyle: FontStyle.italic,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.7),
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
-              child: Column(
-                children: [
-                  Text(
-                    scripture.reference.displayText,
-                    style: textScaling.scaledHeadlineSmall(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: themeColor?.withValues(alpha: 0.8) ?? 
-                             Theme.of(context).colorScheme.primary,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    selectedTranslation.name,
-                    style: textScaling.scaledBodyMedium(context).copyWith(
-                      fontStyle: FontStyle.italic,
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            
-            // Chapter text with verse formatting and selection capability
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: (themeColor ?? Theme.of(context).colorScheme.primary)
-                      .withValues(alpha: 0.2),
-                  width: 1,
-                ),
-              ),
-              child: _buildSelectableChapterText(context, scripture.text, themeColor),
-            ),
+              const SizedBox(height: 24),
 
-            const SizedBox(height: 50), // Space for floating action buttons
-          ],
+              // Chapter text with verse formatting and selection capability
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                        .withValues(alpha: 0.2),
+                    width: 1,
+                  ),
+                ),
+                child: _buildSelectableChapterText(
+                  context,
+                  scripture.text,
+                  themeColor,
+                ),
+              ),
+
+              const SizedBox(height: 50), // Space for floating action buttons
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
   }
 
   /// Build selectable chapter text with verse formatting
-  Widget _buildSelectableChapterText(BuildContext context, String chapterText, Color? themeColor) {
+  Widget _buildSelectableChapterText(
+    BuildContext context,
+    String chapterText,
+    Color? themeColor,
+  ) {
     final verses = _parseVersesFromChapter(chapterText);
-    
+
     // Generate keys for each verse if needed
     _generateVerseKeys(verses.length);
     _currentVerses = verses;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: verses.asMap().entries.map((entry) {
         final verseNumber = entry.key + 1;
         final verseText = entry.value;
-        
-        return _buildTappableVerse(context, verseNumber, verseText, themeColor, entry.key);
+
+        return _buildTappableVerse(
+          context,
+          verseNumber,
+          verseText,
+          themeColor,
+          entry.key,
+        );
       }).toList(),
     );
   }
-  
+
   /// Build a tappable verse that highlights and copies when tapped
-  Widget _buildTappableVerse(BuildContext context, int verseNumber, String verseText, Color? themeColor, int index) {
+  Widget _buildTappableVerse(
+    BuildContext context,
+    int verseNumber,
+    String verseText,
+    Color? themeColor,
+    int index,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return Container(
       key: _verseKeys[index], // Use GlobalKey for precise scrolling
       child: InkWell(
@@ -425,10 +508,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: Colors.transparent,
-              width: 2,
-            ),
+            border: Border.all(color: Colors.transparent, width: 2),
           ),
           child: RichText(
             text: TextSpan(
@@ -438,13 +518,13 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                   text: '$verseNumber ',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: (themeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.8),
-                    fontSize: textScaling.scaledBibleText(context).fontSize! * 0.9,
+                    color: (themeColor ?? Theme.of(context).colorScheme.primary)
+                        .withValues(alpha: 0.8),
+                    fontSize:
+                        textScaling.scaledBibleText(context).fontSize! * 0.9,
                   ),
                 ),
-                TextSpan(
-                  text: verseText,
-                ),
+                TextSpan(text: verseText),
               ],
             ),
           ),
@@ -452,22 +532,27 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       ),
     );
   }
-  
+
   /// Handle when a verse is tapped - highlight and copy
-  void _handleVerseTap(int verseNumber, String verseText, Color? themeColor) async {
+  void _handleVerseTap(
+    int verseNumber,
+    String verseText,
+    Color? themeColor,
+  ) async {
     final selectedTranslation = ref.read(appSelectedBibleTranslationProvider);
-    
+
     // Create formatted text for clipboard
     final translationAbbrev = selectedTranslation.abbreviation;
-    final formattedText = '$verseText ($currentBookName $currentChapter:$verseNumber, $translationAbbrev)';
-    
+    final formattedText =
+        '$verseText ($currentBookName $currentChapter:$verseNumber, $translationAbbrev)';
+
     // Copy to clipboard
     try {
       await Clipboard.setData(ClipboardData(text: formattedText));
-      
+
       // Provide haptic feedback
       HapticFeedback.lightImpact();
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -475,23 +560,27 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
               children: [
                 const Icon(Icons.content_copy, color: Colors.white, size: 20),
                 const SizedBox(width: 8),
-                Expanded(
-                  child: Text('Copied verse $verseNumber to clipboard'),
-                ),
+                Expanded(child: Text('Copied verse $verseNumber to clipboard')),
               ],
             ),
-            backgroundColor: themeColor ?? Theme.of(context).colorScheme.primary,
+            backgroundColor:
+                themeColor ?? Theme.of(context).colorScheme.primary,
             duration: const Duration(seconds: 2),
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
         );
       }
-      
-      debugLog('Successfully copied verse $verseNumber to clipboard', 'VERSE_TAP');
+
+      debugLog(
+        'Successfully copied verse $verseNumber to clipboard',
+        'VERSE_TAP',
+      );
     } catch (e) {
       debugLog('Error copying verse to clipboard: $e', 'VERSE_TAP');
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -505,7 +594,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
 
   Widget _buildLoadingContent(BuildContext context, Color? themeColor) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -516,18 +605,26 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
           const SizedBox(height: 16),
           Text(
             'Loading $currentBookName $currentChapter...',
-            style: textScaling.scaledBodyLarge(context).copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-            ),
+            style: textScaling
+                .scaledBodyLarge(context)
+                .copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
+                ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildErrorContent(BuildContext context, Object error, Color? themeColor) {
+  Widget _buildErrorContent(
+    BuildContext context,
+    Object error,
+    Color? themeColor,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -542,17 +639,19 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
             const SizedBox(height: 16),
             Text(
               'Error loading chapter',
-              style: textScaling.scaledTitleLarge(context).copyWith(
-                color: Colors.red.shade700,
-                fontWeight: FontWeight.bold,
-              ),
+              style: textScaling
+                  .scaledTitleLarge(context)
+                  .copyWith(
+                    color: Colors.red.shade700,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 8),
             Text(
               error.toString(),
-              style: textScaling.scaledBodyMedium(context).copyWith(
-                color: Colors.red.shade600,
-              ),
+              style: textScaling
+                  .scaledBodyMedium(context)
+                  .copyWith(color: Colors.red.shade600),
               textAlign: TextAlign.center,
             ),
           ],
@@ -561,9 +660,13 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     );
   }
 
-  Widget _buildNotFoundContent(BuildContext context, String? errorMessage, Color? themeColor) {
+  Widget _buildNotFoundContent(
+    BuildContext context,
+    String? errorMessage,
+    Color? themeColor,
+  ) {
     final textScaling = ref.watch(textScaleProvider);
-    
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -578,17 +681,19 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
             const SizedBox(height: 16),
             Text(
               'Chapter not found',
-              style: textScaling.scaledTitleLarge(context).copyWith(
-                color: Colors.orange.shade700,
-                fontWeight: FontWeight.bold,
-              ),
+              style: textScaling
+                  .scaledTitleLarge(context)
+                  .copyWith(
+                    color: Colors.orange.shade700,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 8),
             Text(
               errorMessage ?? 'The requested chapter could not be loaded.',
-              style: textScaling.scaledBodyMedium(context).copyWith(
-                color: Colors.orange.shade600,
-              ),
+              style: textScaling
+                  .scaledBodyMedium(context)
+                  .copyWith(color: Colors.orange.shade600),
               textAlign: TextAlign.center,
             ),
           ],
@@ -599,11 +704,14 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
 
   List<String> _parseVersesFromChapter(String chapterText) {
     final verses = <String>[];
-    
+
     // Try to split by verse numbers (pattern: number followed by space)
-    final versePattern = RegExp(r'(?:^|\s)(\d+)\s+([^0-9]*?)(?=\s\d+\s|$)', multiLine: true);
+    final versePattern = RegExp(
+      r'(?:^|\s)(\d+)\s+([^0-9]*?)(?=\s\d+\s|$)',
+      multiLine: true,
+    );
     final matches = versePattern.allMatches(chapterText);
-    
+
     if (matches.isNotEmpty) {
       // Found verse patterns, use them
       for (final match in matches) {
@@ -615,52 +723,58 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     } else {
       // Fallback: split by sentences and group them
       final sentences = chapterText.split(RegExp(r'[.!?]+\s+'));
-      
+
       // Group sentences into reasonable verse-like chunks
       for (int i = 0; i < sentences.length; i += 2) {
-        final verseText = sentences.sublist(i, (i + 2).clamp(0, sentences.length)).join('. ').trim();
+        final verseText = sentences
+            .sublist(i, (i + 2).clamp(0, sentences.length))
+            .join('. ')
+            .trim();
         if (verseText.isNotEmpty) {
           verses.add(verseText);
         }
       }
     }
-    
+
     // Ensure we have at least one verse
     if (verses.isEmpty) {
       verses.add(chapterText.isNotEmpty ? chapterText : 'Chapter text');
     }
-    
+
     return verses;
   }
 
   void _scrollToVerseAccurate(int startVerse) {
     if (startVerse <= 0 || startVerse > _verseKeys.length) {
-      debugLog('Invalid verse number: $startVerse (available: ${_verseKeys.length})', 'CHAPTER');
+      debugLog(
+        'Invalid verse number: $startVerse (available: ${_verseKeys.length})',
+        'CHAPTER',
+      );
       return;
     }
-    
+
     final verseIndex = startVerse - 1; // Convert to 0-based index
     final verseKey = _verseKeys[verseIndex];
-    
+
     debugLog('=== ACCURATE SCROLL DEBUG ===', 'CHAPTER');
     debugLog('Target verse: $startVerse (index: $verseIndex)', 'CHAPTER');
     debugLog('Total verses: ${_verseKeys.length}', 'CHAPTER');
-    
+
     // Wait for the widget to be built and rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final context = verseKey.currentContext;
       if (context != null) {
         // Adjust alignment for verses near the end
         double alignment = 0.15; // Default: 15% from top
-        
+
         // If this is in the last 20% of verses, center it instead
         if (startVerse > (_verseKeys.length * 0.8)) {
           alignment = 0.5; // Center it for better visibility
           debugLog('Using center alignment for verse near end', 'CHAPTER');
         }
-        
+
         debugLog('Scrolling to verse with alignment: $alignment', 'CHAPTER');
-        
+
         try {
           Scrollable.ensureVisible(
             context,
@@ -668,20 +782,22 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
             curve: Curves.easeInOut,
             alignment: alignment,
           );
-          
-          debugLog('Successfully initiated scroll to verse $startVerse', 'CHAPTER');
+
+          debugLog(
+            'Successfully initiated scroll to verse $startVerse',
+            'CHAPTER',
+          );
         } catch (e) {
           debugLog('Error during ensureVisible: $e', 'CHAPTER');
         }
       } else {
         debugLog('Verse context not found for verse $startVerse', 'CHAPTER');
       }
-      
+
       debugLog('=== END ACCURATE SCROLL DEBUG ===', 'CHAPTER');
     });
   }
-  
-  
+
   /// Generate GlobalKeys for each verse for precise scrolling
   void _generateVerseKeys(int verseCount) {
     // Only regenerate if the count has changed
@@ -692,15 +808,19 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     }
   }
 
-  Widget? _buildNavigationButtons(BuildContext context, int maxChapters, Color? themeColor) {
+  Widget? _buildNavigationButtons(
+    BuildContext context,
+    int maxChapters,
+    Color? themeColor,
+  ) {
     final showPrevious = currentChapter > 1;
     final showNext = currentChapter < maxChapters;
-    
+
     // If neither button should be shown, return null
     if (!showPrevious && !showNext) {
       return null;
     }
-    
+
     // Always use the same layout but conditionally show buttons
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -712,8 +832,9 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
               ? FloatingActionButton(
                   heroTag: 'previous',
                   onPressed: _navigateToPreviousChapter,
-                  backgroundColor: themeColor?.withValues(alpha: 0.8) ?? 
-                                 Theme.of(context).colorScheme.primary,
+                  backgroundColor:
+                      themeColor?.withValues(alpha: 0.8) ??
+                      Theme.of(context).colorScheme.primary,
                   child: const Icon(Icons.chevron_left, color: Colors.white),
                 )
               : const SizedBox.shrink(), // Invisible placeholder
@@ -723,8 +844,9 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
             ? FloatingActionButton(
                 heroTag: 'next',
                 onPressed: _navigateToNextChapter,
-                backgroundColor: themeColor?.withValues(alpha: 0.8) ?? 
-                               Theme.of(context).colorScheme.primary,
+                backgroundColor:
+                    themeColor?.withValues(alpha: 0.8) ??
+                    Theme.of(context).colorScheme.primary,
                 child: const Icon(Icons.chevron_right, color: Colors.white),
               )
             : const SizedBox.shrink(), // Invisible placeholder

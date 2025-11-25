@@ -5,12 +5,14 @@ void main() {
   group('Bible Data Package Tests', () {
     test('BibleTranslation enum should have correct values', () {
       expect(BibleTranslation.cpdv.id, equals('cpdv'));
-      expect(BibleTranslation.cpdv.name, equals('Catholic Public Domain Version'));
+      expect(
+          BibleTranslation.cpdv.name, equals('Catholic Public Domain Version'));
       expect(BibleTranslation.cpdv.abbreviation, equals('CPDV'));
-      
+
       expect(BibleTranslation.fromId('cpdv'), equals(BibleTranslation.cpdv));
-      expect(BibleTranslation.fromId('invalid'), equals(BibleTranslation.cpdv)); // default
-      
+      expect(BibleTranslation.fromId('invalid'),
+          equals(BibleTranslation.cpdv)); // default
+
       expect(BibleTranslation.isSupported('drc'), isTrue);
       expect(BibleTranslation.isSupported('invalid'), isFalse);
     });
@@ -76,7 +78,8 @@ void main() {
 
       final normalized = ReferenceParser.normalize('Mt 5:3-12');
       expect(normalized, isNotNull);
-      expect(normalized, contains('Matthew')); // Should expand abbreviation to full name
+      expect(normalized,
+          contains('Matthew')); // Should expand abbreviation to full name
 
       final bookName = ReferenceParser.extractBookName('2 Corinthians 12:9');
       expect(bookName, equals('2 Corinthians'));
@@ -87,11 +90,11 @@ void main() {
         'number': 1,
         'text': 'In the beginning was the Word',
       };
-      
+
       final verse = BibleVerse.fromJson(json);
       expect(verse.number, equals(1));
       expect(verse.text, equals('In the beginning was the Word'));
-      
+
       final backToJson = verse.toJson();
       expect(backToJson['number'], equals(1));
       expect(backToJson['text'], equals('In the beginning was the Word'));
@@ -103,15 +106,15 @@ void main() {
         BibleVerse(number: 2, text: 'Second verse'),
         BibleVerse(number: 3, text: 'Third verse'),
       ];
-      
+
       final chapter = BibleChapter(number: 1, verses: verses);
-      
+
       expect(chapter.getVerseText(2), equals('Second verse'));
       expect(chapter.getVerseText(99), isNull);
       expect(chapter.hasVerse(3), isTrue);
       expect(chapter.hasVerse(4), isFalse);
       expect(chapter.maxVerseNumber, equals(3));
-      
+
       final range = chapter.getVerseRange(2, 3);
       expect(range.length, equals(2));
       expect(range.first.number, equals(2));

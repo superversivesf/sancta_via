@@ -15,10 +15,10 @@ import '../screens/verse_selection/verse_selection_screen.dart';
 import '../screens/debug/numbered_books_debug_screen.dart';
 
 final appRouter = GoRouter(
-  navigatorKey: navigatorKey,  // Global navigator key for user messages
+  navigatorKey: navigatorKey, // Global navigator key for user messages
   initialLocation: '/',
   debugLogDiagnostics: false,
-  
+
   routes: [
     // Home route - uses AppWrapper to handle onboarding
     GoRoute(
@@ -56,12 +56,14 @@ final appRouter = GoRouter(
       builder: (context, state) {
         try {
           // FIXED: Proper URL decoding
-          final bookName = Uri.decodeComponent(state.pathParameters['bookName']!);
-          
+          final bookName = Uri.decodeComponent(
+            state.pathParameters['bookName']!,
+          );
+
           if (!_isValidBookName(bookName)) {
             throw Exception('Invalid book name: $bookName');
           }
-          
+
           return ChapterSelectionScreen(bookName: bookName);
         } catch (e) {
           print('❌ Error parsing chapter selection route: $e');
@@ -75,24 +77,29 @@ final appRouter = GoRouter(
       builder: (context, state) {
         try {
           // FIXED: Proper URL decoding
-          final bookName = Uri.decodeComponent(state.pathParameters['bookName']!);
+          final bookName = Uri.decodeComponent(
+            state.pathParameters['bookName']!,
+          );
           final chapter = int.parse(state.pathParameters['chapter']!);
           final startVerse = state.uri.queryParameters['startVerse'];
-          
+
           // Validate book name against known Bible books
           if (!_isValidBookName(bookName)) {
             throw Exception('Invalid book name: $bookName');
           }
-          
+
           return ChapterReadingScreen(
-            bookName: bookName, 
+            bookName: bookName,
             chapter: chapter,
             startVerse: startVerse != null ? int.tryParse(startVerse) : null,
           );
         } catch (e) {
           print('❌ Error parsing chapter route: $e');
           // Return error screen instead of crashing
-          return _buildRouteErrorScreen(context, 'Invalid chapter parameters: $e');
+          return _buildRouteErrorScreen(
+            context,
+            'Invalid chapter parameters: $e',
+          );
         }
       },
     ),
@@ -102,20 +109,22 @@ final appRouter = GoRouter(
       builder: (context, state) {
         try {
           // FIXED: Proper URL decoding
-          final bookName = Uri.decodeComponent(state.pathParameters['bookName']!);
+          final bookName = Uri.decodeComponent(
+            state.pathParameters['bookName']!,
+          );
           final chapter = int.parse(state.pathParameters['chapter']!);
-          
+
           if (!_isValidBookName(bookName)) {
             throw Exception('Invalid book name: $bookName');
           }
-          
-          return VerseSelectionScreen(
-            bookName: bookName,
-            chapter: chapter,
-          );
+
+          return VerseSelectionScreen(bookName: bookName, chapter: chapter);
         } catch (e) {
           print('❌ Error parsing verse selection route: $e');
-          return _buildRouteErrorScreen(context, 'Invalid verse selection parameters: $e');
+          return _buildRouteErrorScreen(
+            context,
+            'Invalid verse selection parameters: $e',
+          );
         }
       },
     ),
@@ -136,15 +145,15 @@ final appRouter = GoRouter(
   ],
 
   // Enhanced error handling
-  errorBuilder: (context, state) => _buildRouteErrorScreen(context, 
-    'Page not found: ${state.uri.path}'),
+  errorBuilder: (context, state) =>
+      _buildRouteErrorScreen(context, 'Page not found: ${state.uri.path}'),
 );
 
 /// NEW: Validate book names against known Bible books
 bool _isValidBookName(String bookName) {
   // DEBUGGING: Log the book name being validated
   print('🔍 Validating book name: "$bookName"');
-  
+
   // Check against all possible book collections
   for (final collection in BookCollection.values) {
     if (collection.bookNames.contains(bookName)) {
@@ -152,14 +161,16 @@ bool _isValidBookName(String bookName) {
       return true;
     }
   }
-  
+
   // DEBUGGING: Log all books in collections to help debug
   print('❌ Book "$bookName" not found in any collection!');
   print('📚 Available books in collections:');
   for (final collection in BookCollection.values) {
-    print('   ${collection.name}: ${collection.bookNames.take(5).join(", ")}${collection.bookNames.length > 5 ? "..." : ""}');
+    print(
+      '   ${collection.name}: ${collection.bookNames.take(5).join(", ")}${collection.bookNames.length > 5 ? "..." : ""}',
+    );
   }
-  
+
   return false;
 }
 

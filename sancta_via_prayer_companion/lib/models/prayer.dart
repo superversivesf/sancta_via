@@ -5,7 +5,7 @@ class Prayer {
   final Map<String, String>? translations;
   final String? attribution;
   final String? notes;
-  
+
   // Metadata fields from prayers_metadata.json (required parameters come first)
   final List<String> categories;
   final String description;
@@ -13,7 +13,7 @@ class Prayer {
   final bool isLiturgical;
   final int liturgicalPriority;
   final String? liturgicalSeason;
-  
+
   // Time of day categorization for time-appropriate prayer selection
   final String timeOfDay;
 

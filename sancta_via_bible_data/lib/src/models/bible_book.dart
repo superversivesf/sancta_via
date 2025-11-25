@@ -7,19 +7,19 @@ import '../utils/book_mapping.dart';
 class BibleBook {
   /// Unique book identifier (e.g., "gen", "exo", "mat", "mrk")
   final String id;
-  
+
   /// Full book name (e.g., "Genesis", "Exodus", "Matthew", "Mark")
   final String name;
-  
+
   /// Common abbreviation (e.g., "Gen", "Ex", "Mt", "Mk")
   final String abbreviation;
-  
+
   /// Order in the Bible (1-73 for Catholic Bible)
   final int order;
-  
+
   /// Whether this is an Old Testament book
   final bool isOldTestament;
-  
+
   /// List of chapters in this book
   final List<BibleChapter> chapters;
 
@@ -37,24 +37,24 @@ class BibleBook {
     // Handle both old and new formats
     final nameValue = json['name'];
     final chaptersValue = json['chapters'];
-    
+
     if (nameValue == null) {
       throw FormatException('BibleBook name is null in JSON: $json');
     }
     if (chaptersValue == null) {
       throw FormatException('BibleBook chapters is null in JSON: $json');
     }
-    
+
     final bookName = nameValue.toString();
-    
+
     // Try to get metadata from mapping, or generate defaults
     final metadata = BibleBookMapping.getByName(bookName);
-    
+
     String bookId;
     String abbreviation;
     int order;
     bool isOldTestament;
-    
+
     if (metadata != null) {
       bookId = metadata.id;
       abbreviation = metadata.abbreviation;
@@ -63,7 +63,8 @@ class BibleBook {
     } else {
       // Generate defaults for unknown books
       try {
-        bookId = json['id']?.toString() ?? BibleBookMapping.generateId(bookName);
+        bookId =
+            json['id']?.toString() ?? BibleBookMapping.generateId(bookName);
       } catch (e) {
         throw FormatException('Error generating ID for book "$bookName": $e');
       }
@@ -71,7 +72,7 @@ class BibleBook {
       order = json['order'] as int? ?? 999; // Put unknown books at the end
       isOldTestament = json['isOldTestament'] as bool? ?? true; // Default to OT
     }
-    
+
     try {
       return BibleBook(
         id: bookId,
@@ -79,18 +80,18 @@ class BibleBook {
         abbreviation: abbreviation,
         order: order,
         isOldTestament: isOldTestament,
-        chapters: (chaptersValue as List<dynamic>)
-            .map((chapter) {
-              try {
-                return BibleChapter.fromJson(chapter as Map<String, dynamic>);
-              } catch (e) {
-                throw FormatException('Error parsing chapter in book $bookName: $e');
-              }
-            })
-            .toList(),
+        chapters: (chaptersValue as List<dynamic>).map((chapter) {
+          try {
+            return BibleChapter.fromJson(chapter as Map<String, dynamic>);
+          } catch (e) {
+            throw FormatException(
+                'Error parsing chapter in book $bookName: $e');
+          }
+        }).toList(),
       );
     } catch (e) {
-      throw FormatException('Error parsing BibleBook "$bookName": $e, JSON keys: ${json.keys.toList()}');
+      throw FormatException(
+          'Error parsing BibleBook "$bookName": $e, JSON keys: ${json.keys.toList()}');
     }
   }
 
@@ -119,10 +120,13 @@ class BibleBook {
   List<int> get chapterNumbers => chapters.map((c) => c.number).toList();
 
   /// Get the maximum chapter number in this book
-  int get maxChapterNumber => chapters.isEmpty ? 0 : chapters.map((c) => c.number).reduce((a, b) => a > b ? a : b);
+  int get maxChapterNumber => chapters.isEmpty
+      ? 0
+      : chapters.map((c) => c.number).reduce((a, b) => a > b ? a : b);
 
   /// Check if a chapter number exists in this book
-  bool hasChapter(int chapterNumber) => chapters.any((c) => c.number == chapterNumber);
+  bool hasChapter(int chapterNumber) =>
+      chapters.any((c) => c.number == chapterNumber);
 
   /// Get verse count for a specific chapter
   int getChapterVerseCount(int chapterNumber) {
@@ -131,7 +135,8 @@ class BibleBook {
   }
 
   /// Get total verse count in this book
-  int get totalVerseCount => chapters.fold(0, (sum, chapter) => sum + chapter.verses.length);
+  int get totalVerseCount =>
+      chapters.fold(0, (sum, chapter) => sum + chapter.verses.length);
 
   /// Get a verse by chapter and verse number
   String? getVerseText(int chapterNumber, int verseNumber) {
@@ -143,15 +148,16 @@ class BibleBook {
   List<String> searchText(String query) {
     final results = <String>[];
     final lowerQuery = query.toLowerCase();
-    
+
     for (final chapter in chapters) {
       for (final verse in chapter.verses) {
         if (verse.text.toLowerCase().contains(lowerQuery)) {
-          results.add('${name} ${chapter.number}:${verse.number} - ${verse.text}');
+          results
+              .add('${name} ${chapter.number}:${verse.number} - ${verse.text}');
         }
       }
     }
-    
+
     return results;
   }
 
@@ -168,10 +174,12 @@ class BibleBook {
   }
 
   @override
-  int get hashCode => Object.hash(id, name, abbreviation, order, isOldTestament, Object.hashAll(chapters));
+  int get hashCode => Object.hash(
+      id, name, abbreviation, order, isOldTestament, Object.hashAll(chapters));
 
   @override
-  String toString() => 'BibleBook(id: $id, name: $name, chapterCount: ${chapters.length})';
+  String toString() =>
+      'BibleBook(id: $id, name: $name, chapterCount: ${chapters.length})';
 
   /// Create a copy with modified values
   BibleBook copyWith({

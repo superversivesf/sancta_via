@@ -3,16 +3,20 @@ class Assets {
   Assets._();
 
   static const String assetsAppIcon = 'assets/app_icon.png';
-  static const String basicStJudeNovena = 'assets/prayers/basic/st_jude_novena.json';
+  static const String basicStJudeNovena =
+      'assets/prayers/basic/st_jude_novena.json';
   static const String novenasDivineMercy = 'assets/novenas/divine-mercy.json';
-  static const String novenasImmaculateHeart = 'assets/novenas/immaculate-heart.json';
-  static const String novenasOurLadyPerpetualHelp = 'assets/novenas/our-lady-perpetual-help.json';
+  static const String novenasImmaculateHeart =
+      'assets/novenas/immaculate-heart.json';
+  static const String novenasOurLadyPerpetualHelp =
+      'assets/novenas/our-lady-perpetual-help.json';
   static const String novenasSacredHeart = 'assets/novenas/sacred-heart.json';
   static const String novenasStAnthony = 'assets/novenas/st-anthony.json';
-  static const String novenasStJohnPaulIi = 'assets/novenas/st-john-paul-ii.json';
+  static const String novenasStJohnPaulIi =
+      'assets/novenas/st-john-paul-ii.json';
   static const String novenasStJoseph = 'assets/novenas/st-joseph.json';
   static const String novenasStJude = 'assets/novenas/st-jude.json';
   static const String novenasStTherese = 'assets/novenas/st-therese.json';
-  static const String sanctaViaNovenaCompanionAssetsAppIcon = 'assets/app_icon.png';
-
+  static const String sanctaViaNovenaCompanionAssetsAppIcon =
+      'assets/app_icon.png';
 }

@@ -7,10 +7,10 @@ import 'bible_book.dart';
 class Bible {
   /// The translation type
   final BibleTranslation translation;
-  
+
   /// List of all books in this Bible
   final List<BibleBook> books;
-  
+
   /// Additional metadata about this Bible
   final Map<String, dynamic> metadata;
 
@@ -23,17 +23,17 @@ class Bible {
   /// Create a Bible from JSON data
   factory Bible.fromJson(Map<String, dynamic> json) {
     final booksValue = json['books'];
-    
+
     if (booksValue == null) {
       throw FormatException('Bible books is null in JSON');
     }
-    
+
     // Extract translation info from metadata or top-level
     final metadataMap = Map<String, dynamic>.from(json['metadata'] ?? {});
-    final translationName = json['translation']?.toString() ?? 
-                           metadataMap['name']?.toString() ?? 
-                           'Unknown Translation';
-    
+    final translationName = json['translation']?.toString() ??
+        metadataMap['name']?.toString() ??
+        'Unknown Translation';
+
     // Map translation names to enum values
     BibleTranslation translation;
     switch (translationName.toLowerCase()) {
@@ -54,7 +54,8 @@ class Bible {
         break;
       default:
         // Try to match by abbreviation if available
-        final abbreviation = metadataMap['abbreviation']?.toString().toLowerCase() ?? '';
+        final abbreviation =
+            metadataMap['abbreviation']?.toString().toLowerCase() ?? '';
         switch (abbreviation) {
           case 'drc':
             translation = BibleTranslation.drc;
@@ -69,23 +70,20 @@ class Bible {
             translation = BibleTranslation.cpdv; // Default fallback
         }
     }
-    
+
     try {
       return Bible(
         translation: translation,
-        books: (booksValue as List<dynamic>)
-            .asMap()
-            .entries
-            .map((entry) {
-              try {
-                return BibleBook.fromJson(entry.value as Map<String, dynamic>);
-              } catch (e) {
-                final bookData = entry.value as Map<String, dynamic>;
-                final bookName = bookData['name'] ?? 'Unknown';
-                throw FormatException('Error parsing book at index ${entry.key} ("$bookName"): $e');
-              }
-            })
-            .toList(),
+        books: (booksValue as List<dynamic>).asMap().entries.map((entry) {
+          try {
+            return BibleBook.fromJson(entry.value as Map<String, dynamic>);
+          } catch (e) {
+            final bookData = entry.value as Map<String, dynamic>;
+            final bookName = bookData['name'] ?? 'Unknown';
+            throw FormatException(
+                'Error parsing book at index ${entry.key} ("$bookName"): $e');
+          }
+        }).toList(),
         metadata: metadataMap,
       );
     } catch (e) {
@@ -105,7 +103,8 @@ class Bible {
   /// Get book by ID (case insensitive)
   BibleBook? getBook(String bookId) {
     try {
-      return books.firstWhere((book) => book.id.toLowerCase() == bookId.toLowerCase());
+      return books
+          .firstWhere((book) => book.id.toLowerCase() == bookId.toLowerCase());
     } catch (e) {
       return null;
     }
@@ -114,10 +113,10 @@ class Bible {
   /// Get book by name, ID, or abbreviation
   BibleBook? findBook(String bookIdentifier) {
     final lowerId = bookIdentifier.toLowerCase();
-    
+
     // First try exact matching
     try {
-      return books.firstWhere((book) => 
+      return books.firstWhere((book) =>
           book.id.toLowerCase() == lowerId ||
           book.name.toLowerCase() == lowerId ||
           book.abbreviation.toLowerCase() == lowerId);
@@ -127,7 +126,7 @@ class Bible {
       if (convertedId != bookIdentifier) {
         try {
           final convertedLowerId = convertedId.toLowerCase();
-          return books.firstWhere((book) => 
+          return books.firstWhere((book) =>
               book.id.toLowerCase() == convertedLowerId ||
               book.name.toLowerCase() == convertedLowerId ||
               book.abbreviation.toLowerCase() == convertedLowerId);
@@ -140,21 +139,23 @@ class Bible {
   }
 
   /// Get all Old Testament books
-  List<BibleBook> get oldTestamentBooks => 
+  List<BibleBook> get oldTestamentBooks =>
       books.where((book) => book.isOldTestament).toList();
 
   /// Get all New Testament books
-  List<BibleBook> get newTestamentBooks => 
+  List<BibleBook> get newTestamentBooks =>
       books.where((book) => !book.isOldTestament).toList();
 
   /// Get total number of books
   int get bookCount => books.length;
 
   /// Get total number of chapters across all books
-  int get totalChapterCount => books.fold(0, (sum, book) => sum + book.chapters.length);
+  int get totalChapterCount =>
+      books.fold(0, (sum, book) => sum + book.chapters.length);
 
   /// Get total number of verses across all books
-  int get totalVerseCount => books.fold(0, (sum, book) => sum + book.totalVerseCount);
+  int get totalVerseCount =>
+      books.fold(0, (sum, book) => sum + book.totalVerseCount);
 
   /// Search for text across all books
   List<String> searchText(String query) {
@@ -179,11 +180,12 @@ class Bible {
   }
 
   /// Get verse range text
-  String? getVerseRangeText(String bookName, int chapter, int startVerse, int endVerse) {
+  String? getVerseRangeText(
+      String bookName, int chapter, int startVerse, int endVerse) {
     final book = findBook(bookName);
     final chapterObj = book?.getChapter(chapter);
     if (chapterObj == null) return null;
-    
+
     final verses = chapterObj.getVerseRange(startVerse, endVerse);
     return verses.map((verse) => '${verse.number} ${verse.text}').join(' ');
   }
@@ -202,7 +204,8 @@ class Bible {
   List<String> get bookNames => books.map((book) => book.name).toList();
 
   /// Get book abbreviations (useful for autocomplete)
-  List<String> get bookAbbreviations => books.map((book) => book.abbreviation).toList();
+  List<String> get bookAbbreviations =>
+      books.map((book) => book.abbreviation).toList();
 
   @override
   bool operator ==(Object other) {
@@ -214,7 +217,8 @@ class Bible {
   }
 
   @override
-  int get hashCode => Object.hash(translation, Object.hashAll(books), Object.hashAll(metadata.entries));
+  int get hashCode => Object.hash(
+      translation, Object.hashAll(books), Object.hashAll(metadata.entries));
 
   @override
   String toString() => 'Bible(${translation.name}, ${books.length} books)';
@@ -241,19 +245,19 @@ class Bible {
       r'^II ': '2 ',
       r'^III ': '3 ',
       r'^IV ': '4 ',
-      // Arabic to Roman  
+      // Arabic to Roman
       r'^1 ': 'I ',
       r'^2 ': 'II ',
       r'^3 ': 'III ',
       r'^4 ': 'IV ',
     };
-    
+
     for (final entry in conversions.entries) {
       if (RegExp(entry.key).hasMatch(bookName)) {
         return bookName.replaceFirst(RegExp(entry.key), entry.value);
       }
     }
-    
+
     return bookName; // No conversion needed
   }
 

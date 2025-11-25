@@ -20,7 +20,7 @@ class PrayerRepository {
 
   // Database instance (can be injected for testing)
   final PrayerDatabase _database;
-  
+
   // Flag to skip migration (when database is injected for testing)
   final bool _skipMigration;
 
@@ -28,22 +28,22 @@ class PrayerRepository {
   List<Prayer>? _cachedPrayers;
   List<PrayerCategory>? _cachedCategories;
   List<PrayerCategoryGroup>? _cachedCategoryGroups;
-  
+
   // Flag to track if migration has been attempted
   bool _migrationChecked = false;
 
   /// Create a repository with optional database injection (for testing)
-  PrayerRepository({PrayerDatabase? database}) 
-      : _database = database ?? PrayerDatabase.instance,
-        _skipMigration = database != null;
+  PrayerRepository({PrayerDatabase? database})
+    : _database = database ?? PrayerDatabase.instance,
+      _skipMigration = database != null;
 
   /// Ensure database migration is complete before any data access
   Future<void> _ensureMigrationComplete() async {
     if (_migrationChecked || _skipMigration) return;
-    
+
     try {
       AppLogger.info('Checking database migration status...');
-      
+
       // Check if migration is needed
       if (await DatabaseMigrationService.isMigrationNeeded()) {
         AppLogger.info('Database migration required, starting migration...');
@@ -52,7 +52,7 @@ class PrayerRepository {
       } else {
         AppLogger.info('Database already populated, skipping migration');
       }
-      
+
       _migrationChecked = true;
     } catch (e) {
       AppLogger.error('Database migration failed', e, null, 'MIGRATION');
@@ -71,12 +71,12 @@ class PrayerRepository {
 
     try {
       await _ensureMigrationComplete();
-      
+
       final prayers = await _database.getAllPrayers();
-      
+
       // Cache the result for future calls
       _cachedPrayers = prayers;
-      
+
       AppLogger.info('Loaded ${prayers.length} prayers from database', 'REPO');
       return prayers;
     } catch (e) {
@@ -89,7 +89,7 @@ class PrayerRepository {
   Future<Prayer?> getPrayer(String prayerId) async {
     try {
       await _ensureMigrationComplete();
-      
+
       // Try to get from cache first
       if (_cachedPrayers != null) {
         try {
@@ -98,14 +98,14 @@ class PrayerRepository {
           // Prayer not found in cache, fall through to database query
         }
       }
-      
+
       // Query database directly
       final prayer = await _database.getPrayerById(prayerId);
-      
+
       if (prayer == null) {
         AppLogger.warning('Prayer not found: $prayerId', 'REPO');
       }
-      
+
       return prayer;
     } catch (e) {
       AppLogger.error('Error loading prayer $prayerId', e, null, 'REPO');
@@ -119,10 +119,13 @@ class PrayerRepository {
 
     try {
       await _ensureMigrationComplete();
-      
+
       final results = await _database.searchPrayers(query);
-      
-      AppLogger.info('Found ${results.length} prayers matching "$query"', 'REPO');
+
+      AppLogger.info(
+        'Found ${results.length} prayers matching "$query"',
+        'REPO',
+      );
       return results;
     } catch (e) {
       AppLogger.error('Error searching prayers for "$query"', e, null, 'REPO');
@@ -139,16 +142,24 @@ class PrayerRepository {
 
     try {
       await _ensureMigrationComplete();
-      
+
       final groups = await _database.getCategoryGroups();
-      
+
       // Cache the result
       _cachedCategoryGroups = groups;
-      
-      AppLogger.info('Loaded ${groups.length} category groups from database', 'REPO');
+
+      AppLogger.info(
+        'Loaded ${groups.length} category groups from database',
+        'REPO',
+      );
       return groups;
     } catch (e) {
-      AppLogger.error('Error loading category groups from database', e, null, 'REPO');
+      AppLogger.error(
+        'Error loading category groups from database',
+        e,
+        null,
+        'REPO',
+      );
       return [];
     }
   }
@@ -162,16 +173,24 @@ class PrayerRepository {
 
     try {
       await _ensureMigrationComplete();
-      
+
       final categories = await _database.getCategories();
-      
+
       // Cache the result
       _cachedCategories = categories;
-      
-      AppLogger.info('Loaded ${categories.length} categories from database', 'REPO');
+
+      AppLogger.info(
+        'Loaded ${categories.length} categories from database',
+        'REPO',
+      );
       return categories;
     } catch (e) {
-      AppLogger.error('Error loading categories from database', e, null, 'REPO');
+      AppLogger.error(
+        'Error loading categories from database',
+        e,
+        null,
+        'REPO',
+      );
       return [];
     }
   }
@@ -180,13 +199,21 @@ class PrayerRepository {
   Future<List<Prayer>> getPrayersByCategory(String categoryId) async {
     try {
       await _ensureMigrationComplete();
-      
+
       final prayers = await _database.getPrayersByCategory(categoryId);
-      
-      AppLogger.info('Found ${prayers.length} prayers in category "$categoryId"', 'REPO');
+
+      AppLogger.info(
+        'Found ${prayers.length} prayers in category "$categoryId"',
+        'REPO',
+      );
       return prayers;
     } catch (e) {
-      AppLogger.error('Error loading prayers for category $categoryId', e, null, 'REPO');
+      AppLogger.error(
+        'Error loading prayers for category $categoryId',
+        e,
+        null,
+        'REPO',
+      );
       return [];
     }
   }
@@ -195,7 +222,7 @@ class PrayerRepository {
   Future<List<Prayer>> getPrayersByGroup(String groupId) async {
     try {
       await _ensureMigrationComplete();
-      
+
       // Get all categories in this group
       final allCategories = await getPrayerCategories();
       final categoryIds = allCategories
@@ -211,27 +238,40 @@ class PrayerRepository {
       }
 
       final result = groupPrayers.toList();
-      AppLogger.info('Found ${result.length} prayers in group "$groupId"', 'REPO');
+      AppLogger.info(
+        'Found ${result.length} prayers in group "$groupId"',
+        'REPO',
+      );
       return result;
     } catch (e) {
-      AppLogger.error('Error loading prayers for group $groupId', e, null, 'REPO');
+      AppLogger.error(
+        'Error loading prayers for group $groupId',
+        e,
+        null,
+        'REPO',
+      );
       return [];
     }
   }
 
   /// Get Prayer of the Day based on liturgical calendar
-  Future<Prayer?> getPrayerOfTheDay(DateTime date, String liturgicalSeason) async {
+  Future<Prayer?> getPrayerOfTheDay(
+    DateTime date,
+    String liturgicalSeason,
+  ) async {
     try {
       await _ensureMigrationComplete();
-      
+
       // Get liturgical prayers filtered by season
-      final liturgicalPrayers = await _database.getLiturgicalPrayers(season: liturgicalSeason);
-      
+      final liturgicalPrayers = await _database.getLiturgicalPrayers(
+        season: liturgicalSeason,
+      );
+
       if (liturgicalPrayers.isEmpty) {
         // Fallback to any liturgical prayers if none for specific season
         final allLiturgicalPrayers = await _database.getLiturgicalPrayers();
         if (allLiturgicalPrayers.isEmpty) return null;
-        
+
         // Simple rotation based on day of year for variety
         final dayOfYear = date.difference(DateTime(date.year, 1, 1)).inDays;
         return allLiturgicalPrayers[dayOfYear % allLiturgicalPrayers.length];
@@ -239,9 +279,13 @@ class PrayerRepository {
 
       // Simple rotation based on day of year for variety
       final dayOfYear = date.difference(DateTime(date.year, 1, 1)).inDays;
-      final selectedPrayer = liturgicalPrayers[dayOfYear % liturgicalPrayers.length];
-      
-      AppLogger.info('Selected prayer of the day: ${selectedPrayer.title} for season: $liturgicalSeason', 'REPO');
+      final selectedPrayer =
+          liturgicalPrayers[dayOfYear % liturgicalPrayers.length];
+
+      AppLogger.info(
+        'Selected prayer of the day: ${selectedPrayer.title} for season: $liturgicalSeason',
+        'REPO',
+      );
       return selectedPrayer;
     } catch (e) {
       AppLogger.error('Error getting prayer of the day', e, null, 'REPO');
@@ -252,26 +296,34 @@ class PrayerRepository {
   /// Get prayers for a specific time of day
   /// Returns two lists: time-specific prayers and anytime prayers
   /// This allows the caller to apply weighted selection
-  Future<({List<Prayer> timePrayers, List<Prayer> anytimePrayers})> getPrayersForTimeOfDay(
-    PrayerTimeOfDay timeOfDay,
-  ) async {
+  Future<({List<Prayer> timePrayers, List<Prayer> anytimePrayers})>
+  getPrayersForTimeOfDay(PrayerTimeOfDay timeOfDay) async {
     try {
       await _ensureMigrationComplete();
-      
+
       // Get prayers specifically for this time of day
-      final timePrayers = await _database.getPrayersForExactTimeOfDay(timeOfDay.toStringValue());
-      
+      final timePrayers = await _database.getPrayersForExactTimeOfDay(
+        timeOfDay.toStringValue(),
+      );
+
       // Get anytime prayers
-      final anytimePrayers = await _database.getPrayersForExactTimeOfDay('anytime');
-      
+      final anytimePrayers = await _database.getPrayersForExactTimeOfDay(
+        'anytime',
+      );
+
       AppLogger.info(
         'Found ${timePrayers.length} ${timeOfDay.displayName.toLowerCase()} prayers and ${anytimePrayers.length} anytime prayers',
         'REPO',
       );
-      
+
       return (timePrayers: timePrayers, anytimePrayers: anytimePrayers);
     } catch (e) {
-      AppLogger.error('Error getting prayers for time of day: ${timeOfDay.displayName}', e, null, 'REPO');
+      AppLogger.error(
+        'Error getting prayers for time of day: ${timeOfDay.displayName}',
+        e,
+        null,
+        'REPO',
+      );
       return (timePrayers: <Prayer>[], anytimePrayers: <Prayer>[]);
     }
   }
@@ -288,16 +340,16 @@ class PrayerRepository {
   Future<void> forceMigration() async {
     try {
       AppLogger.info('Forcing database re-migration...', 'REPO');
-      
+
       // Clear caches
       clearCache();
-      
+
       // Reset migration flag
       _migrationChecked = false;
-      
+
       // Force re-migration
       await DatabaseMigrationService.forceMigration();
-      
+
       AppLogger.info('Forced migration completed successfully', 'REPO');
     } catch (e) {
       AppLogger.error('Error during forced migration', e, null, 'REPO');
