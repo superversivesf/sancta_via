@@ -5,7 +5,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../providers/novena_app_settings_provider.dart';
 import '../widgets/novena_settings_section.dart';
-import '../widgets/security_settings_section.dart';
 import '../services/settings_error_handler.dart';
 
 /// Clean, focused settings screen using modular components
@@ -33,11 +32,11 @@ class NovenaSettingsScreen extends ConsumerWidget {
         );
 
         // Build app-specific settings sections
-        final appSpecificSettings = Column(
+        final appSpecificSettings = const Column(
           children: [
             // Novena-specific settings
-            const NovenaSettingsSection(),
-            const SizedBox(height: 16),
+            NovenaSettingsSection(),
+            SizedBox(height: 16),
           ],
         );
 
@@ -63,22 +62,6 @@ class NovenaSettingsScreen extends ConsumerWidget {
     );
   }
 
-  /// Build current theme color display
-  Widget _buildCurrentThemeColor(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Icons.info),
-      title: const Text('Current Theme Color'),
-      trailing: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Theme.of(context).colorScheme.outline),
-        ),
-      ),
-    );
-  }
 
   /// Toggle novena notifications with error handling
   Future<void> _toggleNovenaNotifications(

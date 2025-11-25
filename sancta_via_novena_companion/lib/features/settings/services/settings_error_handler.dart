@@ -10,7 +10,7 @@ class SettingsErrorHandler {
     String? operation,
     VoidCallback? onRetry,
   }) {
-    String userMessage = _getUserFriendlyMessage(error);
+    final String userMessage = _getUserFriendlyMessage(error);
 
     if (operation != null) {
       AppLogger.error(

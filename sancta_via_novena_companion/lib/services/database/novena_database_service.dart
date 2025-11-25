@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../../utils/logger.dart';
@@ -12,7 +11,6 @@ class NovenaDatabaseService {
   NovenaDatabaseService._internal();
 
   static Database? _database;
-  static const String _databaseName = 'novena_companion.db';
   static const int _databaseVersion = 1;
 
   /// Get database instance (singleton pattern)

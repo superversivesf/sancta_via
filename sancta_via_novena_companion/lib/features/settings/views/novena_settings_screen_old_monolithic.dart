@@ -638,7 +638,7 @@ class NovenaSettingsScreen extends ConsumerWidget {
                     const SizedBox(height: 8),
                   ],
                   if (results['stats'] != null) ...[
-                    Text('Database Stats:'),
+                    const Text('Database Stats:'),
                     Text('  Novenas: ${results['stats']['novenas']}'),
                     Text('  Days: ${results['stats']['days']}'),
                     const SizedBox(height: 8),

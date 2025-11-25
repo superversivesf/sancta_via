@@ -356,8 +356,9 @@ class DatabaseInitResult {
   String toString() {
     if (wasAlreadyInitialized) return 'Already initialized';
     if (!success) return 'Failed: $error';
-    if (errors.isNotEmpty)
+    if (errors.isNotEmpty) {
       return 'Partial success: $novenaCount imported, ${errors.length} errors';
+    }
     return 'Success: $novenaCount novenas imported';
   }
 }
