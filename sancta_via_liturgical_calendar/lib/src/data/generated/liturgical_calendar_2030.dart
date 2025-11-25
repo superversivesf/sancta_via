@@ -40,7 +40,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -70,7 +70,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -100,7 +100,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -130,7 +130,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -160,7 +160,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -190,7 +190,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -220,7 +220,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -250,7 +250,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -280,7 +280,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -310,7 +310,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -340,7 +340,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -370,7 +370,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -400,7 +400,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>['FEAST_OF_THE_LORD'],
+      titles: <String>['FEAST_OF_THE_LORD'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -430,7 +430,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -460,7 +460,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -490,7 +490,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -520,7 +520,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -550,7 +550,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -580,7 +580,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -610,7 +610,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -640,7 +640,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -670,7 +670,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -700,7 +700,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -730,7 +730,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -760,7 +760,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -790,7 +790,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -820,7 +820,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -850,7 +850,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -880,7 +880,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -910,7 +910,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -940,7 +940,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -970,7 +970,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1000,7 +1000,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>['FEAST_OF_THE_LORD'],
+      titles: <String>['FEAST_OF_THE_LORD'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1030,7 +1030,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1060,7 +1060,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1090,7 +1090,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1120,7 +1120,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1150,7 +1150,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1180,7 +1180,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1210,7 +1210,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1240,7 +1240,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1270,7 +1270,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1300,7 +1300,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1330,7 +1330,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1360,7 +1360,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['PATRON_OF_EUROPE'],
+      titles: <String>['PATRON_OF_EUROPE'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1390,7 +1390,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1420,7 +1420,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1450,7 +1450,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1480,7 +1480,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1510,7 +1510,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1540,7 +1540,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1570,7 +1570,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1600,7 +1600,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1630,7 +1630,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1660,7 +1660,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1690,7 +1690,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1720,7 +1720,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1750,7 +1750,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1780,7 +1780,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1810,7 +1810,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1840,7 +1840,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1870,7 +1870,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1900,7 +1900,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1930,7 +1930,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1960,7 +1960,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -1990,7 +1990,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2020,7 +2020,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2050,7 +2050,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2080,7 +2080,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2110,7 +2110,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2140,7 +2140,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2170,7 +2170,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2200,7 +2200,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2230,7 +2230,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2260,7 +2260,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2290,7 +2290,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2320,7 +2320,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2350,7 +2350,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2380,7 +2380,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2410,7 +2410,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2440,7 +2440,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2470,7 +2470,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2500,7 +2500,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2530,7 +2530,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2560,7 +2560,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2590,7 +2590,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2620,7 +2620,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2650,7 +2650,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2680,7 +2680,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2710,7 +2710,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF007F',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2740,7 +2740,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2770,7 +2770,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2800,7 +2800,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2830,7 +2830,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2860,7 +2860,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2890,7 +2890,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2920,7 +2920,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2950,7 +2950,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -2980,7 +2980,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3010,7 +3010,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3040,7 +3040,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3070,7 +3070,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3100,7 +3100,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3130,7 +3130,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3160,7 +3160,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3190,7 +3190,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3220,7 +3220,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3250,7 +3250,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>['TRIDUUM'],
+      titles: <String>['TRIDUUM'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3280,7 +3280,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'c',
       prioritized: true,
-      titles: const <String>['TRIDUUM'],
+      titles: <String>['TRIDUUM'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3310,7 +3310,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>['TRIDUUM'],
+      titles: <String>['TRIDUUM'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3340,7 +3340,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3370,7 +3370,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3400,7 +3400,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3430,7 +3430,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3460,7 +3460,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3490,7 +3490,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3520,7 +3520,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3550,7 +3550,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3580,7 +3580,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>['PATRON_OF_EUROPE', 'DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['PATRON_OF_EUROPE', 'DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3610,7 +3610,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3640,7 +3640,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3670,7 +3670,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3700,7 +3700,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3730,7 +3730,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3760,7 +3760,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3790,7 +3790,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3820,7 +3820,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3850,7 +3850,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3880,7 +3880,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3910,7 +3910,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3940,7 +3940,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -3970,7 +3970,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4000,7 +4000,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4030,7 +4030,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4060,7 +4060,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4090,7 +4090,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4120,7 +4120,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4150,7 +4150,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4180,7 +4180,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4210,7 +4210,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4240,7 +4240,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4270,7 +4270,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4300,7 +4300,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4330,7 +4330,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4360,7 +4360,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4390,7 +4390,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4420,7 +4420,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4450,7 +4450,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4480,7 +4480,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4510,7 +4510,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4540,7 +4540,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4570,7 +4570,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: true,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4600,7 +4600,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4630,7 +4630,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: true,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4660,7 +4660,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4690,7 +4690,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: true,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4720,7 +4720,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4750,7 +4750,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4780,7 +4780,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4810,7 +4810,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4840,7 +4840,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4870,7 +4870,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4900,7 +4900,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4930,7 +4930,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4960,7 +4960,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -4990,7 +4990,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5020,7 +5020,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5050,7 +5050,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5080,7 +5080,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5110,7 +5110,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5140,7 +5140,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5170,7 +5170,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5200,7 +5200,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5230,7 +5230,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5260,7 +5260,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5290,7 +5290,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5320,7 +5320,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5350,7 +5350,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5380,7 +5380,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5410,7 +5410,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5440,7 +5440,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5470,7 +5470,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5500,7 +5500,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5530,7 +5530,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5560,7 +5560,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5590,7 +5590,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5620,7 +5620,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5650,7 +5650,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5680,7 +5680,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5710,7 +5710,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5740,7 +5740,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5770,7 +5770,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['PATRON_OF_EUROPE'],
+      titles: <String>['PATRON_OF_EUROPE'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5800,7 +5800,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5830,7 +5830,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5860,7 +5860,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5890,7 +5890,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5920,7 +5920,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5950,7 +5950,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -5980,7 +5980,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6010,7 +6010,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6040,7 +6040,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6070,7 +6070,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6100,7 +6100,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6130,7 +6130,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['PATRON_OF_EUROPE'],
+      titles: <String>['PATRON_OF_EUROPE'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6160,7 +6160,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6190,7 +6190,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6220,7 +6220,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6250,7 +6250,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6280,7 +6280,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6310,7 +6310,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6340,7 +6340,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6370,7 +6370,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6400,7 +6400,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6430,7 +6430,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6460,7 +6460,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6490,7 +6490,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6520,7 +6520,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6550,7 +6550,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>['FEAST_OF_THE_LORD'],
+      titles: <String>['FEAST_OF_THE_LORD'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6580,7 +6580,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6610,7 +6610,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6640,7 +6640,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR', 'PATRON_OF_EUROPE'],
+      titles: <String>['MARTYR', 'PATRON_OF_EUROPE'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6670,7 +6670,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6700,7 +6700,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6730,7 +6730,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6760,7 +6760,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6790,7 +6790,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6820,7 +6820,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6850,7 +6850,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6880,7 +6880,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6910,7 +6910,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6940,7 +6940,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -6970,7 +6970,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7000,7 +7000,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7030,7 +7030,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7060,7 +7060,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7090,7 +7090,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7120,7 +7120,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7150,7 +7150,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7180,7 +7180,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7210,7 +7210,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7240,7 +7240,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7270,7 +7270,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7300,7 +7300,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7330,7 +7330,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7360,7 +7360,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7390,7 +7390,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7420,7 +7420,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7450,7 +7450,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7480,7 +7480,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7510,7 +7510,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7540,7 +7540,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7570,7 +7570,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7600,7 +7600,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7630,7 +7630,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7660,7 +7660,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7690,7 +7690,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7720,7 +7720,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'c',
       prioritized: true,
-      titles: const <String>['FEAST_OF_THE_LORD'],
+      titles: <String>['FEAST_OF_THE_LORD'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7750,7 +7750,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7780,7 +7780,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7810,7 +7810,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7840,7 +7840,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7870,7 +7870,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7900,7 +7900,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7930,7 +7930,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7960,7 +7960,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -7990,7 +7990,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8020,7 +8020,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8050,7 +8050,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8080,7 +8080,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8110,7 +8110,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8140,7 +8140,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8170,7 +8170,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8200,7 +8200,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8230,7 +8230,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8260,7 +8260,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8290,7 +8290,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8320,7 +8320,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8350,7 +8350,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8380,7 +8380,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8410,7 +8410,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8440,7 +8440,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8470,7 +8470,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8500,7 +8500,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8530,7 +8530,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8560,7 +8560,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8590,7 +8590,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8620,7 +8620,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8650,7 +8650,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8680,7 +8680,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8710,7 +8710,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8740,7 +8740,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8770,7 +8770,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8800,7 +8800,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8830,7 +8830,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8860,7 +8860,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8890,7 +8890,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8920,7 +8920,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8950,7 +8950,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -8980,7 +8980,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9010,7 +9010,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9040,7 +9040,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9070,7 +9070,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9100,7 +9100,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9130,7 +9130,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9160,7 +9160,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9190,7 +9190,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9220,7 +9220,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9250,7 +9250,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9280,7 +9280,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9310,7 +9310,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9340,7 +9340,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9370,7 +9370,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9400,7 +9400,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9430,7 +9430,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9460,7 +9460,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9490,7 +9490,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9520,7 +9520,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9550,7 +9550,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9580,7 +9580,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9610,7 +9610,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9640,7 +9640,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9670,7 +9670,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9700,7 +9700,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9730,7 +9730,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9760,7 +9760,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9790,7 +9790,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9820,7 +9820,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9850,7 +9850,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9880,7 +9880,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9910,7 +9910,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9940,7 +9940,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -9970,7 +9970,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10000,7 +10000,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#008000',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10030,7 +10030,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10060,7 +10060,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10090,7 +10090,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10120,7 +10120,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10150,7 +10150,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10180,7 +10180,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10210,7 +10210,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10240,7 +10240,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10270,7 +10270,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10300,7 +10300,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10330,7 +10330,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10360,7 +10360,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10390,7 +10390,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10420,7 +10420,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10450,7 +10450,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10480,7 +10480,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF007F',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10510,7 +10510,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10540,7 +10540,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10570,7 +10570,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10600,7 +10600,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10630,7 +10630,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10660,7 +10660,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>['DOCTOR_OF_THE_CHURCH'],
+      titles: <String>['DOCTOR_OF_THE_CHURCH'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10690,7 +10690,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10720,7 +10720,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10750,7 +10750,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#800080',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10780,7 +10780,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10810,7 +10810,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10840,7 +10840,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10870,7 +10870,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FF0000',
       source: 'g',
       prioritized: false,
-      titles: const <String>['MARTYR'],
+      titles: <String>['MARTYR'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10900,7 +10900,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'c',
       prioritized: true,
-      titles: const <String>['FEAST_OF_THE_LORD'],
+      titles: <String>['FEAST_OF_THE_LORD'],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10930,7 +10930,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'l',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
@@ -10960,7 +10960,7 @@ class LiturgicalCalendarData2030 {
       colorName: '#FFFFFF',
       source: 'g',
       prioritized: false,
-      titles: const <String>[],
+      titles: <String>[],
     ),
       liturgicalYear: LiturgicalYearInfo(
       year: 2030,
