@@ -3,11 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 
 void main() {
-  runApp(
-    const ProviderScope(
-      child: LiturgicalCalendarApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: LiturgicalCalendarApp()));
 }
 
 class LiturgicalCalendarApp extends ConsumerWidget {
@@ -44,19 +40,19 @@ class LiturgicalHomePage extends ConsumerWidget {
             // Current day information
             CurrentDayCard(),
             SizedBox(height: 16),
-            
+
             // Upcoming celebrations
             UpcomingCelebrationsCard(),
             SizedBox(height: 16),
-            
+
             // This week's liturgical days
             ThisWeekCard(),
             SizedBox(height: 16),
-            
+
             // Search functionality
             SearchCard(),
             SizedBox(height: 16),
-            
+
             // Analytics
             AnalyticsCard(),
           ],
@@ -100,7 +96,7 @@ class CurrentDayCard extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 12),
-            
+
             if (currentDay != null) ...[
               _InfoRow('Celebration', liturgicalInfo['celebration']!, color),
               _InfoRow('Season', liturgicalInfo['season']!, color),
@@ -108,11 +104,14 @@ class CurrentDayCard extends ConsumerWidget {
               _InfoRow('Color', liturgicalInfo['color']!, color),
               _InfoRow('Cycle', liturgicalInfo['cycle']!, color),
               _InfoRow('Psalter Week', liturgicalInfo['psalterWeek']!, color),
-              
+
               if (currentDay.celebration.prioritized)
                 Container(
                   margin: const EdgeInsets.only(top: 8),
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(4),
@@ -140,10 +139,7 @@ class CurrentDayCard extends ConsumerWidget {
             width: 100,
             child: Text(
               '$label:',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: color,
-              ),
+              style: TextStyle(fontWeight: FontWeight.w500, color: color),
             ),
           ),
           Expanded(child: Text(value)),
@@ -175,7 +171,7 @@ class UpcomingCelebrationsCard extends ConsumerWidget {
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
-            
+
             if (nextMajor != null && daysUntil != null)
               Container(
                 padding: const EdgeInsets.all(8),
@@ -204,17 +200,25 @@ class UpcomingCelebrationsCard extends ConsumerWidget {
                   ],
                 ),
               ),
-            
-            ...upcomingUI.take(5).map((celebration) => ListTile(
-              dense: true,
-              leading: Icon(
-                celebration['rank'] == 'SOLEMNITY' ? Icons.star : Icons.event,
-                color: Theme.of(context).primaryColor,
-              ),
-              title: Text(celebration['name']!),
-              subtitle: Text('${celebration['rank']} • ${celebration['date']}'),
-              trailing: Text('${celebration['daysUntil']} days'),
-            )),
+
+            ...upcomingUI
+                .take(5)
+                .map(
+                  (celebration) => ListTile(
+                    dense: true,
+                    leading: Icon(
+                      celebration['rank'] == 'SOLEMNITY'
+                          ? Icons.star
+                          : Icons.event,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    title: Text(celebration['name']!),
+                    subtitle: Text(
+                      '${celebration['rank']} • ${celebration['date']}',
+                    ),
+                    trailing: Text('${celebration['daysUntil']} days'),
+                  ),
+                ),
           ],
         ),
       ),
@@ -237,18 +241,16 @@ class ThisWeekCard extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'This Week',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+            Text('This Week', style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 8),
-            
+
             ...thisWeek.map((day) {
               final dayDate = DateTime.parse(day.date);
-              final isToday = dayDate.day == DateTime.now().day &&
-                             dayDate.month == DateTime.now().month;
+              final isToday =
+                  dayDate.day == DateTime.now().day &&
+                  dayDate.month == DateTime.now().month;
               final color = ref.watch(liturgicalColorByDateProvider(dayDate));
-              
+
               return Container(
                 margin: const EdgeInsets.symmetric(vertical: 2),
                 padding: const EdgeInsets.all(8),
@@ -264,7 +266,9 @@ class ThisWeekCard extends ConsumerWidget {
                       child: Text(
                         _getDayName(dayDate),
                         style: TextStyle(
-                          fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+                          fontWeight: isToday
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                         ),
                       ),
                     ),
@@ -272,14 +276,17 @@ class ThisWeekCard extends ConsumerWidget {
                       child: Text(
                         day.celebration.name,
                         style: TextStyle(
-                          fontWeight: day.celebration.prioritized 
-                            ? FontWeight.bold 
-                            : FontWeight.normal,
+                          fontWeight: day.celebration.prioritized
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                         ),
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: color.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(3),
@@ -320,7 +327,9 @@ class _SearchCardState extends ConsumerState<SearchCard> {
   @override
   Widget build(BuildContext context) {
     final searchResults = _searchQuery.isNotEmpty
-        ? ref.watch(searchCelebrationsProvider((query: _searchQuery, year: null)))
+        ? ref.watch(
+            searchCelebrationsProvider((query: _searchQuery, year: null)),
+          )
         : <LiturgicalDayData>[];
 
     return Card(
@@ -335,7 +344,7 @@ class _SearchCardState extends ConsumerState<SearchCard> {
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
-            
+
             TextField(
               controller: _controller,
               decoration: const InputDecoration(
@@ -349,24 +358,32 @@ class _SearchCardState extends ConsumerState<SearchCard> {
                 });
               },
             ),
-            
+
             if (searchResults.isNotEmpty) ...[
               const SizedBox(height: 16),
               Text('Found ${searchResults.length} results:'),
               const SizedBox(height: 8),
-              
-              ...searchResults.take(5).map((result) => ListTile(
-                dense: true,
-                title: Text(result.celebration.name),
-                subtitle: Text('${result.date} • ${result.season}'),
-                trailing: Chip(
-                  label: Text(result.celebration.rank),
-                  backgroundColor: ref.watch(liturgicalColorByDateProvider(
-                    DateTime.parse(result.date)
-                  )).withValues(alpha: 0.3),
-                ),
-              )),
-              
+
+              ...searchResults
+                  .take(5)
+                  .map(
+                    (result) => ListTile(
+                      dense: true,
+                      title: Text(result.celebration.name),
+                      subtitle: Text('${result.date} • ${result.season}'),
+                      trailing: Chip(
+                        label: Text(result.celebration.rank),
+                        backgroundColor: ref
+                            .watch(
+                              liturgicalColorByDateProvider(
+                                DateTime.parse(result.date),
+                              ),
+                            )
+                            .withValues(alpha: 0.3),
+                      ),
+                    ),
+                  ),
+
               if (searchResults.length > 5)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -410,7 +427,7 @@ class AnalyticsCard extends ConsumerWidget {
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 16),
-            
+
             // Current liturgical mode
             Container(
               padding: const EdgeInsets.all(12),
@@ -421,10 +438,13 @@ class AnalyticsCard extends ConsumerWidget {
               child: Row(
                 children: [
                   Icon(
-                    liturgicalMode['mode'] == 'celebration' ? Icons.celebration :
-                    liturgicalMode['mode'] == 'preparation' ? Icons.schedule :
-                    liturgicalMode['mode'] == 'penance' ? Icons.self_improvement :
-                    Icons.calendar_today,
+                    liturgicalMode['mode'] == 'celebration'
+                        ? Icons.celebration
+                        : liturgicalMode['mode'] == 'preparation'
+                        ? Icons.schedule
+                        : liturgicalMode['mode'] == 'penance'
+                        ? Icons.self_improvement
+                        : Icons.calendar_today,
                     color: Theme.of(context).primaryColor,
                   ),
                   const SizedBox(width: 8),
@@ -444,7 +464,7 @@ class AnalyticsCard extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // Year progress
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -466,7 +486,7 @@ class AnalyticsCard extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 16),
-            
+
             // Global statistics
             Row(
               children: [
@@ -477,10 +497,7 @@ class AnalyticsCard extends ConsumerWidget {
                   ),
                 ),
                 Expanded(
-                  child: _StatItem(
-                    'Total Days',
-                    '${globalStats['totalDays']}',
-                  ),
+                  child: _StatItem('Total Days', '${globalStats['totalDays']}'),
                 ),
               ],
             ),
@@ -512,15 +529,9 @@ class AnalyticsCard extends ConsumerWidget {
       children: [
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 12),
-        ),
+        Text(label, style: const TextStyle(fontSize: 12)),
       ],
     );
   }
@@ -553,10 +564,7 @@ class NotificationFab extends ConsumerWidget {
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
-                constraints: const BoxConstraints(
-                  minWidth: 16,
-                  minHeight: 16,
-                ),
+                constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
                 child: Text(
                   '${reminders.length}',
                   style: const TextStyle(
@@ -573,24 +581,37 @@ class NotificationFab extends ConsumerWidget {
     );
   }
 
-  void _showRemindersDialog(BuildContext context, List<Map<String, dynamic>> reminders) {
+  void _showRemindersDialog(
+    BuildContext context,
+    List<Map<String, dynamic>> reminders,
+  ) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Liturgical Reminders'),
         content: reminders.isEmpty
-          ? const Text('No upcoming celebrations in the next 7 days.')
-          : Column(
-              mainAxisSize: MainAxisSize.min,
-              children: reminders.map((reminder) => ListTile(
-                leading: Icon(
-                  reminder['priority'] == 'high' ? Icons.star : Icons.event,
-                  color: reminder['priority'] == 'high' ? Colors.amber : Colors.blue,
-                ),
-                title: Text(reminder['title']),
-                subtitle: Text('${reminder['daysUntil']} days • ${reminder['rank']}'),
-              )).toList(),
-            ),
+            ? const Text('No upcoming celebrations in the next 7 days.')
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: reminders
+                    .map(
+                      (reminder) => ListTile(
+                        leading: Icon(
+                          reminder['priority'] == 'high'
+                              ? Icons.star
+                              : Icons.event,
+                          color: reminder['priority'] == 'high'
+                              ? Colors.amber
+                              : Colors.blue,
+                        ),
+                        title: Text(reminder['title']),
+                        subtitle: Text(
+                          '${reminder['daysUntil']} days • ${reminder['rank']}',
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),

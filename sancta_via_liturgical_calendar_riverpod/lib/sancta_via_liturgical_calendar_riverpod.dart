@@ -26,7 +26,7 @@
 ///   Widget build(BuildContext context, WidgetRef ref) {
 ///     final today = ref.watch(currentLiturgicalDayProvider);
 ///     final color = ref.watch(liturgicalColorProvider);
-///     
+///
 ///     return Card(
 ///       color: color.withOpacity(0.1),
 ///       child: ListTile(
@@ -81,16 +81,16 @@ export 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.da
 
 // Re-export riverpod for convenience
 export 'package:flutter_riverpod/flutter_riverpod.dart'
-    show 
-      Provider, 
-      StreamProvider, 
-      FutureProvider,
-      StateProvider,
-      StateNotifierProvider,
-      ChangeNotifierProvider,
-      ConsumerWidget,
-      ConsumerStatefulWidget,
-      Consumer,
-      WidgetRef,
-      ProviderScope,
-      ProviderContainer;
+    show
+        Provider,
+        StreamProvider,
+        FutureProvider,
+        StateProvider,
+        StateNotifierProvider,
+        ChangeNotifierProvider,
+        ConsumerWidget,
+        ConsumerStatefulWidget,
+        Consumer,
+        WidgetRef,
+        ProviderScope,
+        ProviderContainer;

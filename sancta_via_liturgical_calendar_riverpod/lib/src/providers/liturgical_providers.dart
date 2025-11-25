@@ -4,17 +4,19 @@ import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.da
 /// Current date provider that updates at midnight
 final currentDateProvider = StreamProvider<DateTime>((ref) {
   return Stream.periodic(const Duration(minutes: 1), (_) => DateTime.now())
-      .distinct((previous, next) => 
-        previous.year == next.year && 
-        previous.month == next.month && 
-        previous.day == next.day)
+      .distinct(
+        (previous, next) =>
+            previous.year == next.year &&
+            previous.month == next.month &&
+            previous.day == next.day,
+      )
       .asBroadcastStream();
 });
 
 /// Current liturgical day provider that updates automatically
 final currentLiturgicalDayProvider = Provider<LiturgicalDayData?>((ref) {
   final dateAsync = ref.watch(currentDateProvider);
-  
+
   return dateAsync.when(
     data: (date) => LiturgicalCalendarService.getDayForDate(date),
     loading: () => LiturgicalCalendarService.getCurrentDay(),
@@ -23,49 +25,88 @@ final currentLiturgicalDayProvider = Provider<LiturgicalDayData?>((ref) {
 });
 
 /// Provider for a specific liturgical day by date
-final liturgicalDayProvider = Provider.family<LiturgicalDayData?, DateTime>((ref, date) {
+final liturgicalDayProvider = Provider.family<LiturgicalDayData?, DateTime>((
+  ref,
+  date,
+) {
   return LiturgicalCalendarService.getDayForDate(date);
 });
 
 /// Provider for upcoming feasts and celebrations
-final upcomingFeastsProvider = Provider.family<List<LiturgicalDayData>, int>((ref, daysAhead) {
+final upcomingFeastsProvider = Provider.family<List<LiturgicalDayData>, int>((
+  ref,
+  daysAhead,
+) {
   return LiturgicalCalendarService.getUpcomingFeasts(daysAhead: daysAhead);
 });
 
 /// Provider for liturgical days in a date range
-final daysInRangeProvider = Provider.family<List<LiturgicalDayData>, ({DateTime start, DateTime end})>((ref, range) {
-  return LiturgicalCalendarService.getDaysInRange(range.start, range.end);
-});
+final daysInRangeProvider =
+    Provider.family<List<LiturgicalDayData>, ({DateTime start, DateTime end})>((
+      ref,
+      range,
+    ) {
+      return LiturgicalCalendarService.getDaysInRange(range.start, range.end);
+    });
 
 /// Provider for searching celebrations by name
-final searchCelebrationsProvider = Provider.family<List<LiturgicalDayData>, ({String query, int? year})>((ref, params) {
-  return LiturgicalCalendarService.searchCelebrations(params.query, year: params.year);
-});
+final searchCelebrationsProvider =
+    Provider.family<List<LiturgicalDayData>, ({String query, int? year})>((
+      ref,
+      params,
+    ) {
+      return LiturgicalCalendarService.searchCelebrations(
+        params.query,
+        year: params.year,
+      );
+    });
 
 /// Provider for liturgical days in a specific season
-final seasonDaysProvider = Provider.family<List<LiturgicalDayData>, ({int year, String season})>((ref, params) {
-  return LiturgicalCalendarService.getDaysForSeason(params.year, params.season);
-});
+final seasonDaysProvider =
+    Provider.family<List<LiturgicalDayData>, ({int year, String season})>((
+      ref,
+      params,
+    ) {
+      return LiturgicalCalendarService.getDaysForSeason(
+        params.year,
+        params.season,
+      );
+    });
 
 /// Provider for liturgical days by rank
-final daysByRankProvider = Provider.family<List<LiturgicalDayData>, ({int year, String rank})>((ref, params) {
-  return LiturgicalCalendarService.getDaysByRank(params.year, params.rank);
-});
+final daysByRankProvider =
+    Provider.family<List<LiturgicalDayData>, ({int year, String rank})>((
+      ref,
+      params,
+    ) {
+      return LiturgicalCalendarService.getDaysByRank(params.year, params.rank);
+    });
 
 /// Provider for prioritized celebrations in a year
-final prioritizedCelebrationsProvider = Provider.family<List<LiturgicalDayData>, int>((ref, year) {
-  return LiturgicalCalendarService.getPrioritizedCelebrationsForYear(year);
-});
+final prioritizedCelebrationsProvider =
+    Provider.family<List<LiturgicalDayData>, int>((ref, year) {
+      return LiturgicalCalendarService.getPrioritizedCelebrationsForYear(year);
+    });
 
 /// Provider for all days in a specific year
-final allDaysInYearProvider = Provider.family<List<LiturgicalDayData>, int>((ref, year) {
+final allDaysInYearProvider = Provider.family<List<LiturgicalDayData>, int>((
+  ref,
+  year,
+) {
   return LiturgicalCalendarService.getAllDaysForYear(year);
 });
 
 /// Provider for finding next occurrence of a celebration
-final nextOccurrenceProvider = Provider.family<LiturgicalDayData?, ({String celebration, DateTime? fromDate})>((ref, params) {
-  return LiturgicalCalendarService.getNextOccurrence(params.celebration, fromDate: params.fromDate);
-});
+final nextOccurrenceProvider =
+    Provider.family<
+      LiturgicalDayData?,
+      ({String celebration, DateTime? fromDate})
+    >((ref, params) {
+      return LiturgicalCalendarService.getNextOccurrence(
+        params.celebration,
+        fromDate: params.fromDate,
+      );
+    });
 
 /// Provider for available years
 final availableYearsProvider = Provider<List<int>>((ref) {

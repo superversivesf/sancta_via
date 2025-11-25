@@ -9,7 +9,10 @@ final liturgicalColorProvider = Provider<Color>((ref) {
 });
 
 /// Provider for liturgical color by date
-final liturgicalColorByDateProvider = Provider.family<Color, DateTime>((ref, date) {
+final liturgicalColorByDateProvider = Provider.family<Color, DateTime>((
+  ref,
+  date,
+) {
   final day = ref.watch(liturgicalDayProvider(date));
   return _getLiturgicalColor(day?.celebration.color);
 });
@@ -18,7 +21,7 @@ final liturgicalColorByDateProvider = Provider.family<Color, DateTime>((ref, dat
 final liturgicalThemeProvider = Provider<ThemeData>((ref) {
   final color = ref.watch(liturgicalColorProvider);
   final season = ref.watch(currentLiturgicalSeasonProvider);
-  
+
   return ThemeData(
     primarySwatch: _createMaterialColor(color),
     colorScheme: ColorScheme.fromSeed(
@@ -36,7 +39,7 @@ final liturgicalThemeProvider = Provider<ThemeData>((ref) {
 final currentCelebrationDisplayProvider = Provider<String>((ref) {
   final currentDay = ref.watch(currentLiturgicalDayProvider);
   if (currentDay == null) return 'No liturgical data available';
-  
+
   return currentDay.displayName;
 });
 
@@ -52,7 +55,7 @@ final liturgicalInfoProvider = Provider<Map<String, String>>((ref) {
       'color': 'Unknown',
     };
   }
-  
+
   return {
     'date': currentDay.date,
     'celebration': currentDay.celebration.name,
@@ -65,15 +68,23 @@ final liturgicalInfoProvider = Provider<Map<String, String>>((ref) {
 });
 
 /// Provider for upcoming celebrations formatted for UI
-final upcomingCelebrationsUIProvider = Provider<List<Map<String, String>>>((ref) {
+final upcomingCelebrationsUIProvider = Provider<List<Map<String, String>>>((
+  ref,
+) {
   final upcoming = ref.watch(upcomingFeastsProvider(30));
-  
-  return upcoming.map((day) => {
-    'date': day.date,
-    'name': day.celebration.name,
-    'rank': day.celebration.rank,
-    'daysUntil': DateTime.parse(day.date).difference(DateTime.now()).inDays.toString(),
-  }).toList();
+
+  return upcoming
+      .map(
+        (day) => {
+          'date': day.date,
+          'name': day.celebration.name,
+          'rank': day.celebration.rank,
+          'daysUntil': DateTime.parse(
+            day.date,
+          ).difference(DateTime.now()).inDays.toString(),
+        },
+      )
+      .toList();
 });
 
 /// Provider for liturgical calendar widget state
@@ -81,7 +92,7 @@ final liturgicalCalendarStateProvider = Provider<Map<String, dynamic>>((ref) {
   final currentDay = ref.watch(currentLiturgicalDayProvider);
   final color = ref.watch(liturgicalColorProvider);
   final upcoming = ref.watch(upcomingFeastsProvider(7));
-  
+
   return {
     'hasData': currentDay != null,
     'currentDay': currentDay,
@@ -109,7 +120,7 @@ final rankIconProvider = Provider<IconData>((ref) {
 final liturgicalNotificationProvider = Provider<Map<String, dynamic>?>((ref) {
   final currentDay = ref.watch(currentLiturgicalDayProvider);
   if (currentDay == null || !currentDay.celebration.prioritized) return null;
-  
+
   return {
     'title': currentDay.celebration.name,
     'subtitle': '${currentDay.season} • ${currentDay.celebration.rank}',
@@ -140,10 +151,10 @@ Color _getLiturgicalColor(String? colorString) {
 
 /// Helper function to create MaterialColor from Color
 MaterialColor _createMaterialColor(Color color) {
-  final int red = color.red;
-  final int green = color.green;
-  final int blue = color.blue;
-  
+  final int red = (color.r * 255.0).round().clamp(0, 255);
+  final int green = (color.g * 255.0).round().clamp(0, 255);
+  final int blue = (color.b * 255.0).round().clamp(0, 255);
+
   final Map<int, Color> shades = {
     50: Color.fromRGBO(red, green, blue, .1),
     100: Color.fromRGBO(red, green, blue, .2),
@@ -156,8 +167,8 @@ MaterialColor _createMaterialColor(Color color) {
     800: Color.fromRGBO(red, green, blue, .9),
     900: Color.fromRGBO(red, green, blue, 1),
   };
-  
-  return MaterialColor(color.value, shades);
+
+  return MaterialColor(color.toARGB32(), shades);
 }
 
 /// Helper function to determine season brightness
