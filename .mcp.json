@@ -1,0 +1,23 @@
+  {
+    "mcpServers": {
+      "n8n-mcp": {
+        "command": "npx",
+        "args": ["n8n-mcp"],
+        "env": {
+          "MCP_MODE": "stdio",
+          "LOG_LEVEL": "error",
+          "DISABLE_CONSOLE_OUTPUT": "true",
+          "N8N_API_URL": "http://n8n.lan",
+          "N8N_API_KEY": "${N8N_API_KEY}"
+        }
+      },
+      "vikunja": {
+        "command": "npx",
+        "args": ["-y", "@democratize-technology/vikunja-mcp"],
+        "env": {
+          "VIKUNJA_URL": "http://tasks.lan/api/v1",
+          "VIKUNJA_API_TOKEN": "${VIKUNJA_API_TOKEN}"
+        }
+      }
+    }
+  }

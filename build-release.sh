@@ -266,7 +266,7 @@ EOF
 create_ios_testflight_script() {
     local ios_dir="$RELEASE_DIR/ios"
     local testflight_script="$ios_dir/upload-testflight.sh"
-    
+
     cat > "$testflight_script" << 'EOF'
 #!/bin/bash
 
@@ -306,6 +306,41 @@ EOF
 
     chmod +x "$testflight_script"
     log "SUCCESS" "Created iOS TestFlight script at $testflight_script (requires configuration)"
+}
+
+# Function to commit and push version changes
+commit_and_push_changes() {
+    log "INFO" "Committing and pushing version changes..."
+
+    cd "$BASE_DIR" || return 1
+
+    # Check if there are any changes to pubspec.yaml files
+    if ! git diff --quiet pubspec.yaml pubspec.lock 2>/dev/null; then
+        log "INFO" "Found pubspec.yaml changes to commit"
+
+        # Stage all pubspec.yaml and pubspec.lock files
+        git add -A pubspec.yaml pubspec.lock >> "$RELEASE_DIR/build.log" 2>&1
+
+        # Commit changes
+        if git commit -m "Release Build" >> "$RELEASE_DIR/build.log" 2>&1; then
+            log "SUCCESS" "Committed version changes"
+
+            # Push changes
+            if git push >> "$RELEASE_DIR/build.log" 2>&1; then
+                log "SUCCESS" "Pushed version changes to remote"
+                return 0
+            else
+                log "ERROR" "Failed to push changes to remote"
+                return 1
+            fi
+        else
+            log "WARNING" "No changes to commit or commit failed"
+            return 0
+        fi
+    else
+        log "INFO" "No pubspec.yaml changes to commit"
+        return 0
+    fi
 }
 
 # Main execution
@@ -419,14 +454,17 @@ main() {
         # Create helper scripts
         create_android_install_script
         create_ios_testflight_script
-        
+
+        # Commit and push version changes
+        commit_and_push_changes
+
         # Final summary
         log "INFO" "Build Summary:"
         log "INFO" "  Total projects: ${#flutter_projects[@]}"
         log "INFO" "  Successful builds: $success_count"
         log "INFO" "  Failed builds: $((${#flutter_projects[@]} - success_count))"
         log "INFO" "Release artifacts saved to: $RELEASE_DIR"
-        
+
         echo ""
         echo -e "${GREEN}🎉 Release build complete!${NC}"
         echo -e "${BLUE}Release directory: $RELEASE_DIR${NC}"
