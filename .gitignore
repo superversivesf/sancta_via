@@ -5,6 +5,7 @@ pubspec.lock
 # Build artifacts
 build/
 .dart_tool/
+out/
 
 # IDE
 .idea/
