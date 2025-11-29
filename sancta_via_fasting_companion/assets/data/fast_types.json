@@ -1,0 +1,79 @@
+[
+  {
+    "id": "intermittent_16_8",
+    "name": "16:8 Intermittent Fast",
+    "description": "Fast for 16 hours, eat within an 8-hour window. A popular daily fasting pattern.",
+    "category": "intermittent",
+    "targetDurationHours": 16,
+    "milestoneMessages": {
+      "4": "Quarter of the way through!",
+      "8": "Halfway there - keep going!",
+      "12": "Three quarters complete!",
+      "14": "Almost there - final push!"
+    },
+    "associatedPrayers": []
+  },
+  {
+    "id": "intermittent_18_6",
+    "name": "18:6 Intermittent Fast",
+    "description": "Fast for 18 hours, eat within a 6-hour window. An extended intermittent fast.",
+    "category": "intermittent",
+    "targetDurationHours": 18,
+    "milestoneMessages": {
+      "6": "First milestone reached!",
+      "9": "Halfway complete!",
+      "12": "Two thirds done!",
+      "16": "Almost finished!"
+    },
+    "associatedPrayers": []
+  },
+  {
+    "id": "daily_24hr",
+    "name": "24-Hour Fast",
+    "description": "Complete 24-hour fasting period from dinner to dinner or lunch to lunch.",
+    "category": "daily24hr",
+    "targetDurationHours": 24,
+    "milestoneMessages": {
+      "6": "Quarter of the day complete!",
+      "12": "Halfway through your 24-hour journey!",
+      "18": "Three quarters done - you're doing great!",
+      "22": "Almost there - final hours!"
+    },
+    "associatedPrayers": []
+  },
+  {
+    "id": "lenten_fast",
+    "name": "Lenten Fast",
+    "description": "Traditional Catholic Lenten fasting - one full meal and two smaller meals that together do not equal a full meal.",
+    "category": "liturgical",
+    "targetDurationHours": null,
+    "milestoneMessages": {},
+    "associatedPrayers": []
+  },
+  {
+    "id": "ash_wednesday",
+    "name": "Ash Wednesday Fast",
+    "description": "Obligatory fast and abstinence from meat on Ash Wednesday.",
+    "category": "liturgical",
+    "targetDurationHours": 24,
+    "milestoneMessages": {
+      "8": "Morning prayers complete",
+      "12": "Midday - remember your mortality",
+      "18": "Evening approaches - persevere"
+    },
+    "associatedPrayers": []
+  },
+  {
+    "id": "good_friday",
+    "name": "Good Friday Fast",
+    "description": "Obligatory fast and abstinence in remembrance of Christ's passion and death.",
+    "category": "liturgical",
+    "targetDurationHours": 24,
+    "milestoneMessages": {
+      "9": "Third hour - Jesus is condemned",
+      "12": "Sixth hour - the crucifixion",
+      "15": "Ninth hour - Jesus dies"
+    },
+    "associatedPrayers": []
+  }
+]
