@@ -2,7 +2,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/encouragement.dart';
-import '../models/encouragement_category.dart';
 import '../models/fast_session.dart';
 import '../models/fast_status.dart';
 import '../models/fast_type.dart';
@@ -26,6 +25,11 @@ class FastingDatabase {
   static const String tableEncouragementHistory = 'encouragement_history';
 
   Database? _database;
+  final String? _testDatabaseName;
+
+  /// Constructor with optional test database name for testing
+  FastingDatabase({String? testDatabaseName})
+      : _testDatabaseName = testDatabaseName;
 
   /// Get database instance (singleton pattern)
   Future<Database> get database async {
@@ -37,7 +41,8 @@ class FastingDatabase {
   /// Initialize database
   Future<Database> _initDatabase() async {
     final databasesPath = await getDatabasesPath();
-    final path = join(databasesPath, _databaseName);
+    final dbName = _testDatabaseName ?? _databaseName;
+    final path = join(databasesPath, dbName);
 
     return await openDatabase(
       path,

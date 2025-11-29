@@ -48,14 +48,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^5.4.4
+  sqflite_common_ffi: ^2.3.3
 
 flutter:
   uses-material-design: true
 
-  # Assets will be populated in later phases
-  # assets:
-  #   - assets/data/
-  #   - assets/app_icon.png
+  assets:
+    - assets/data/
 
 # App icon configuration (will be set up in later phases)
 # flutter_launcher_icons:
