@@ -201,6 +201,17 @@ class FastingRepository {
     await _database.updateFastSession(session);
   }
 
+  /// Update the fast type of a session (useful for categorizing open-ended fasts)
+  Future<void> updateFastSessionType(String sessionId, String newFastTypeId) async {
+    final session = await getFastSessionById(sessionId);
+    if (session == null) {
+      throw StateError('Fast session not found: $sessionId');
+    }
+
+    final updated = session.copyWith(fastTypeId: newFastTypeId);
+    await _database.updateFastSession(updated);
+  }
+
   /// Complete the current fast
   Future<FastSession> completeFast({String? notes}) async {
     final active = await getActiveFastSession();

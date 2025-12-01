@@ -234,3 +234,27 @@ final timerServiceProvider = Provider<TimerService>((ref) {
 
   return service;
 });
+
+/// Provider that emits periodic ticks to trigger UI rebuilds
+/// This provider emits a new value every second when there's an active fast
+final timerTickProvider = StreamProvider<DateTime>((ref) async* {
+  final sessionAsync = ref.watch(activeFastSessionProvider);
+
+  // Only emit ticks if there's an active session
+  if (sessionAsync is AsyncData<FastSession?> && sessionAsync.value != null) {
+    // Emit current time immediately
+    yield DateTime.now();
+
+    // Then emit every second
+    await for (final _ in Stream.periodic(const Duration(seconds: 1))) {
+      // Check if session is still active
+      final currentSession = ref.read(activeFastSessionProvider);
+      if (currentSession is AsyncData<FastSession?> && currentSession.value != null) {
+        yield DateTime.now();
+      } else {
+        // Session ended, stop emitting
+        break;
+      }
+    }
+  }
+});

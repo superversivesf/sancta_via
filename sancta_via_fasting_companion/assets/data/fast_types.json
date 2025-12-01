@@ -1,17 +1,64 @@
 [
   {
+    "id": "open_ended",
+    "name": "Open-Ended Fast",
+    "description": "Start fasting now and decide later how long you'll fast. Perfect for flexible schedules - categorize your fast when you're done.",
+    "category": "flexible",
+    "targetDurationHours": 0,
+    "milestoneMessages": {
+      "4": "4 hours fasted - digestion complete, energy from stored glucose",
+      "8": "8 hours fasted - fat burning beginning, insulin levels dropping",
+      "12": "12 hours fasted - ketosis starting, autophagy activating",
+      "16": "16 hours fasted - deep ketosis, enhanced mental clarity",
+      "18": "18 hours fasted - peak fat burning and cellular renewal",
+      "24": "24 hours fasted - maximum autophagy and growth hormone elevation"
+    },
+    "associatedPrayers": [
+      "Morning Offering",
+      "Angelus",
+      "Rosary",
+      "Divine Mercy Chaplet",
+      "Liturgy of the Hours"
+    ]
+  },
+  {
+    "id": "intermittent_14_10",
+    "name": "14:10 Intermittent Fast",
+    "description": "Fast for 14 hours, eat within a 10-hour window. A gentle introduction to intermittent fasting.",
+    "category": "intermittent",
+    "targetDurationHours": 14,
+    "milestoneMessages": {
+      "4": "Digestion complete - your body is switching to stored energy",
+      "7": "Halfway there! Blood sugar stabilizing, mental clarity increasing",
+      "10": "Entering fat-burning mode - autophagy beginning",
+      "12": "Almost done! Your cells are cleaning and repairing themselves"
+    },
+    "associatedPrayers": [
+      "Morning Offering",
+      "Angelus",
+      "Divine Mercy Chaplet",
+      "Act of Contrition"
+    ]
+  },
+  {
     "id": "intermittent_16_8",
     "name": "16:8 Intermittent Fast",
     "description": "Fast for 16 hours, eat within an 8-hour window. A popular daily fasting pattern.",
     "category": "intermittent",
     "targetDurationHours": 16,
     "milestoneMessages": {
-      "4": "Quarter of the way through!",
-      "8": "Halfway there - keep going!",
-      "12": "Three quarters complete!",
-      "14": "Almost there - final push!"
+      "4": "Digestion complete - glycogen stores being accessed",
+      "8": "Halfway! Insulin levels dropping, fat burning increasing",
+      "12": "Deep ketosis beginning - peak mental clarity and focus",
+      "14": "Final stretch! Autophagy in full effect, cellular renewal active"
     },
-    "associatedPrayers": []
+    "associatedPrayers": [
+      "Morning Offering",
+      "Angelus",
+      "Rosary",
+      "Divine Mercy Chaplet",
+      "Liturgy of the Hours"
+    ]
   },
   {
     "id": "intermittent_18_6",
@@ -20,12 +67,19 @@
     "category": "intermittent",
     "targetDurationHours": 18,
     "milestoneMessages": {
-      "6": "First milestone reached!",
-      "9": "Halfway complete!",
-      "12": "Two thirds done!",
-      "16": "Almost finished!"
+      "6": "Fat-burning mode activated - ketone production beginning",
+      "9": "Halfway! Deep ketosis, maximum fat oxidation occurring",
+      "12": "Autophagy accelerating - your body is healing and renewing",
+      "16": "Peak metabolic benefits! HGH elevated, inflammation reduced"
     },
-    "associatedPrayers": []
+    "associatedPrayers": [
+      "Morning Offering",
+      "Angelus",
+      "Rosary",
+      "Divine Mercy Chaplet",
+      "Liturgy of the Hours",
+      "Stations of the Cross"
+    ]
   },
   {
     "id": "daily_24hr",
@@ -34,12 +88,21 @@
     "category": "daily24hr",
     "targetDurationHours": 24,
     "milestoneMessages": {
-      "6": "Quarter of the day complete!",
-      "12": "Halfway through your 24-hour journey!",
-      "18": "Three quarters done - you're doing great!",
-      "22": "Almost there - final hours!"
+      "6": "Quarter complete! Glycogen depletion beginning, ketone production starting",
+      "12": "Halfway there! Full ketosis achieved, growth hormone rising significantly",
+      "18": "Deep autophagy! Your body is in maximum cellular repair and renewal mode",
+      "22": "Final hours! Stem cell regeneration activated, immune system resetting"
     },
-    "associatedPrayers": []
+    "associatedPrayers": [
+      "Morning Offering",
+      "Angelus",
+      "Rosary",
+      "Divine Mercy Chaplet",
+      "Liturgy of the Hours",
+      "Stations of the Cross",
+      "Adoration",
+      "Lectio Divina"
+    ]
   },
   {
     "id": "lenten_fast",
@@ -48,7 +111,15 @@
     "category": "liturgical",
     "targetDurationHours": null,
     "milestoneMessages": {},
-    "associatedPrayers": []
+    "associatedPrayers": [
+      "Morning Offering",
+      "Angelus",
+      "Rosary",
+      "Stations of the Cross",
+      "Liturgy of the Hours",
+      "Penitential Psalms",
+      "Act of Contrition"
+    ]
   },
   {
     "id": "ash_wednesday",
@@ -61,7 +132,16 @@
       "12": "Midday - remember your mortality",
       "18": "Evening approaches - persevere"
     },
-    "associatedPrayers": []
+    "associatedPrayers": [
+      "Morning Offering",
+      "Angelus",
+      "Rosary",
+      "Stations of the Cross",
+      "Liturgy of the Hours",
+      "Penitential Psalms",
+      "Act of Contrition",
+      "Prayer for Lent"
+    ]
   },
   {
     "id": "good_friday",
@@ -74,6 +154,14 @@
       "12": "Sixth hour - the crucifixion",
       "15": "Ninth hour - Jesus dies"
     },
-    "associatedPrayers": []
+    "associatedPrayers": [
+      "Stations of the Cross",
+      "Sorrowful Mysteries",
+      "Divine Mercy Chaplet",
+      "Seven Last Words",
+      "Liturgy of the Hours",
+      "Veneration of the Cross",
+      "Passion of Our Lord"
+    ]
   }
 ]

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../screens/active_fast/active_fast_screen.dart';
+import '../screens/history/history_screen.dart';
 import '../screens/home/home_screen.dart';
+import '../screens/settings/settings_screen.dart';
+import '../screens/start_fast/start_fast_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -13,6 +17,34 @@ final appRouter = GoRouter(
       path: '/',
       name: 'home',
       builder: (context, state) => const HomeScreen(),
+    ),
+
+    // Active fast route
+    GoRoute(
+      path: '/active-fast',
+      name: 'active-fast',
+      builder: (context, state) => const ActiveFastScreen(),
+    ),
+
+    // Start fast route
+    GoRoute(
+      path: '/start-fast',
+      name: 'start-fast',
+      builder: (context, state) => const StartFastScreen(),
+    ),
+
+    // History route
+    GoRoute(
+      path: '/history',
+      name: 'history',
+      builder: (context, state) => const HistoryScreen(),
+    ),
+
+    // Settings route
+    GoRoute(
+      path: '/settings',
+      name: 'settings',
+      builder: (context, state) => const SettingsScreen(),
     ),
   ],
 

@@ -10,7 +10,10 @@ enum FastTypeCategory {
   multiDay,
 
   /// Liturgical/seasonal fasts (Advent, Lent, etc.)
-  liturgical;
+  liturgical,
+
+  /// Flexible/open-ended fasts with no set duration
+  flexible;
 
   /// Convert category to JSON string
   String toJson() => name;
@@ -34,6 +37,8 @@ enum FastTypeCategory {
         return 'Multi-Day';
       case FastTypeCategory.liturgical:
         return 'Liturgical';
+      case FastTypeCategory.flexible:
+        return 'Flexible';
     }
   }
 
@@ -48,6 +53,8 @@ enum FastTypeCategory {
         return 'Extended fasts lasting multiple days';
       case FastTypeCategory.liturgical:
         return 'Traditional Catholic seasonal fasts';
+      case FastTypeCategory.flexible:
+        return 'Open-ended fasts - decide duration when you finish';
     }
   }
 }
