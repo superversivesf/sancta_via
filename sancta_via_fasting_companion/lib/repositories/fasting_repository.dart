@@ -312,6 +312,12 @@ class FastingRepository {
   }
 
   /// Get current streak (consecutive days with completed fasts)
+  ///
+  /// A streak is maintained if:
+  /// - You have a fast today, or
+  /// - You have a fast yesterday (grace period to maintain the streak)
+  ///
+  /// The streak counts consecutive days with completed fasts going backwards.
   Future<int> getCurrentStreak() async {
     await _ensureMigration();
     final sessions = await _database.getFastSessions();
@@ -322,28 +328,41 @@ class FastingRepository {
 
     if (completed.isEmpty) return 0;
 
-    int streak = 0;
-    DateTime currentDate = DateTime.now();
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final mostRecent = completed.first;
+    final mostRecentDate = DateTime(
+      mostRecent.startTime.year,
+      mostRecent.startTime.month,
+      mostRecent.startTime.day,
+    );
 
-    for (final session in completed) {
+    // Check if the most recent fast was within the grace period (today or yesterday)
+    final daysSinceLastFast = today.difference(mostRecentDate).inDays;
+    if (daysSinceLastFast > 1) {
+      // Streak is broken - no fast today or yesterday
+      return 0;
+    }
+
+    // Count consecutive days starting from the most recent fast
+    int streak = 1;
+    DateTime expectedDate = mostRecentDate.subtract(const Duration(days: 1));
+
+    for (int i = 1; i < completed.length; i++) {
       final sessionDate = DateTime(
-        session.startTime.year,
-        session.startTime.month,
-        session.startTime.day,
-      );
-      final checkDate = DateTime(
-        currentDate.year,
-        currentDate.month,
-        currentDate.day,
+        completed[i].startTime.year,
+        completed[i].startTime.month,
+        completed[i].startTime.day,
       );
 
-      final difference = checkDate.difference(sessionDate).inDays;
-
-      if (difference == streak) {
+      if (sessionDate == expectedDate) {
         streak++;
-      } else if (difference > streak) {
+        expectedDate = expectedDate.subtract(const Duration(days: 1));
+      } else if (sessionDate.isBefore(expectedDate)) {
+        // Gap found - streak is broken
         break;
       }
+      // If sessionDate is after expectedDate, it's the same day - skip it
     }
 
     return streak;

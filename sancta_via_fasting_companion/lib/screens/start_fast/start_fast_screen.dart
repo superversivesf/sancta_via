@@ -312,7 +312,7 @@ class _StartFastScreenState extends ConsumerState<StartFastScreen> {
           : (_customDurationMinutes ??
               (_selectedFastType!.targetDurationHours! * 60));
 
-      await notifier.startFast(
+      final notificationWarning = await notifier.startFast(
         fastTypeId: _selectedFastType!.id,
         targetDurationMinutes: targetMinutes,
         notes: _notesController.text.isEmpty ? null : _notesController.text,
@@ -322,16 +322,35 @@ class _StartFastScreenState extends ConsumerState<StartFastScreen> {
 
       // Navigate to active fast screen
       context.go('/');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            isOpenEnded
-                ? 'Open-ended fast started! Fast until you\'re ready.'
-                : 'Fast started! Good luck!',
+
+      // Show success message or warning if there were notification issues
+      if (notificationWarning != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(notificationWarning),
+            backgroundColor: Colors.orange,
+            duration: const Duration(seconds: 6),
+            action: SnackBarAction(
+              label: 'Settings',
+              textColor: Colors.white,
+              onPressed: () {
+                context.push('/settings');
+              },
+            ),
           ),
-          backgroundColor: Colors.green,
-        ),
-      );
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              isOpenEnded
+                  ? 'Open-ended fast started! Fast until you\'re ready.'
+                  : 'Fast started! Good luck!',
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
     } catch (e) {
       if (!mounted) return;
 

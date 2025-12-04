@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import '../../providers/settings_provider.dart';
@@ -175,6 +176,20 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
+                  secondary: const Icon(Icons.check_circle_outline),
+                  title: const Text('Auto-End Fasts'),
+                  subtitle: const Text(
+                    'Automatically complete fasts when target is reached (default: manual)',
+                  ),
+                  value: settings.autoEndFasts,
+                  onChanged: (value) {
+                    ref
+                        .read(fastingSettingsProvider.notifier)
+                        .setAutoEndFasts(value);
+                  },
+                ),
+                const Divider(height: 1),
+                SwitchListTile(
                   secondary: const Icon(Icons.vibration),
                   title: const Text('Vibration'),
                   subtitle: const Text('Device vibrates when reaching milestones'),
@@ -199,16 +214,29 @@ class SettingsScreen extends ConsumerWidget {
             child: Column(
               children: [
                 ListTile(
+                  leading: const Icon(Icons.bar_chart),
+                  title: const Text('Statistics'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    context.push('/statistics');
+                  },
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.emoji_events),
+                  title: const Text('Achievements'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    context.push('/achievements');
+                  },
+                ),
+                const Divider(height: 1),
+                ListTile(
                   leading: const Icon(Icons.privacy_tip),
                   title: const Text('Privacy Policy'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
-                    // TODO: Show privacy policy
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Privacy Policy coming soon!'),
-                      ),
-                    );
+                    context.push('/privacy-policy');
                   },
                 ),
                 const Divider(height: 1),
@@ -217,12 +245,7 @@ class SettingsScreen extends ConsumerWidget {
                   title: const Text('Help & Support'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
-                    // TODO: Show help
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Help coming soon!'),
-                      ),
-                    );
+                    context.push('/help');
                   },
                 ),
                 const Divider(height: 1),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 
 import '../../providers/fast_session_providers.dart';
 import '../../providers/statistics_providers.dart';
@@ -34,6 +35,11 @@ class HomeScreen extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
+            // Liturgical Day Card
+            _LiturgicalDayCard(),
+
+            const SizedBox(height: 24),
+
             // Active Fast Section
             activeSessionAsync.when(
               data: (session) {
@@ -99,6 +105,47 @@ class HomeScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// Show confirmation dialog before completing a fast
+void _showCompleteConfirmation(BuildContext context, WidgetRef ref) {
+  showDialog(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: const Text('Complete Fast?'),
+      content: const Text(
+        'Are you sure you want to complete this fast? This action cannot be undone.',
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(dialogContext).pop(),
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            Navigator.of(dialogContext).pop();
+
+            final notifier = ref.read(
+              activeFastSessionProvider.notifier,
+            );
+            await notifier.completeFast(
+              notes: 'Completed from home screen',
+            );
+
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Fast completed successfully!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            }
+          },
+          child: const Text('Complete'),
+        ),
+      ],
+    ),
+  );
 }
 
 class _ActiveFastCard extends ConsumerWidget {
@@ -252,14 +299,7 @@ class _ActiveFastCard extends ConsumerWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () async {
-                      final notifier = ref.read(
-                        activeFastSessionProvider.notifier,
-                      );
-                      await notifier.completeFast(
-                        notes: 'Completed from home screen',
-                      );
-                    },
+                    onPressed: () => _showCompleteConfirmation(context, ref),
                     icon: const Icon(Icons.check),
                     label: const Text('Complete'),
                   ),
@@ -477,7 +517,7 @@ class _HistoryTile extends ConsumerWidget {
         ),
         trailing: const Icon(Icons.chevron_right),
         onTap: () {
-          // TODO: Navigate to fast detail screen
+          context.push('/fast-detail/${fast.id}');
         },
       ),
     );
@@ -485,6 +525,105 @@ class _HistoryTile extends ConsumerWidget {
 
   String _formatDate(DateTime date) {
     return '${date.month}/${date.day}/${date.year}';
+  }
+}
+
+class _LiturgicalDayCard extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentDay = ref.watch(currentLiturgicalDayProvider);
+    final liturgicalColor = ref.watch(liturgicalColorProvider);
+    final seasonIcon = ref.watch(seasonIconProvider);
+
+    if (currentDay == null) {
+      return const SizedBox.shrink();
+    }
+
+    return Card(
+      elevation: 2,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          gradient: LinearGradient(
+            colors: [
+              liturgicalColor.withAlpha(25),
+              liturgicalColor.withAlpha(10),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          border: Border.all(
+            color: liturgicalColor.withAlpha(80),
+            width: 2,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: liturgicalColor.withAlpha(50),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  seasonIcon,
+                  color: liturgicalColor,
+                  size: 32,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            currentDay.celebration.name,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: liturgicalColor,
+                                ),
+                          ),
+                        ),
+                        if (currentDay.celebration.prioritized)
+                          Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 20,
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      currentDay.season,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    if (currentDay.celebration.rank != 'Ordinary') ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        currentDay.celebration.rank,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[500],
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

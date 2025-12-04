@@ -12,6 +12,7 @@ class FastingSettings {
   final String defaultFastTypeId;
   final bool showLiturgicalContent;
   final int timerUpdateInterval; // in seconds
+  final bool autoEndFasts; // Automatically end fasts when target reached
 
   const FastingSettings({
     this.notificationsEnabled = true,
@@ -23,6 +24,7 @@ class FastingSettings {
     this.defaultFastTypeId = 'intermittent_16_8',
     this.showLiturgicalContent = true,
     this.timerUpdateInterval = 60, // 1 minute default
+    this.autoEndFasts = false, // Default to manual ending
   });
 
   FastingSettings copyWith({
@@ -35,6 +37,7 @@ class FastingSettings {
     String? defaultFastTypeId,
     bool? showLiturgicalContent,
     int? timerUpdateInterval,
+    bool? autoEndFasts,
   }) {
     return FastingSettings(
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
@@ -47,6 +50,7 @@ class FastingSettings {
       showLiturgicalContent:
           showLiturgicalContent ?? this.showLiturgicalContent,
       timerUpdateInterval: timerUpdateInterval ?? this.timerUpdateInterval,
+      autoEndFasts: autoEndFasts ?? this.autoEndFasts,
     );
   }
 }
@@ -62,6 +66,7 @@ class FastingSettingsNotifier extends StateNotifier<FastingSettings> {
   static const String _keyDefaultFastType = 'default_fast_type';
   static const String _keyShowLiturgical = 'show_liturgical_content';
   static const String _keyTimerInterval = 'timer_update_interval';
+  static const String _keyAutoEndFasts = 'auto_end_fasts';
 
   final SharedPreferences _prefs;
 
@@ -82,6 +87,7 @@ class FastingSettingsNotifier extends StateNotifier<FastingSettings> {
           _prefs.getString(_keyDefaultFastType) ?? 'intermittent_16_8',
       showLiturgicalContent: _prefs.getBool(_keyShowLiturgical) ?? true,
       timerUpdateInterval: _prefs.getInt(_keyTimerInterval) ?? 60,
+      autoEndFasts: _prefs.getBool(_keyAutoEndFasts) ?? false,
     );
   }
 
@@ -137,6 +143,12 @@ class FastingSettingsNotifier extends StateNotifier<FastingSettings> {
   Future<void> setTimerUpdateInterval(int seconds) async {
     await _prefs.setInt(_keyTimerInterval, seconds);
     state = state.copyWith(timerUpdateInterval: seconds);
+  }
+
+  /// Toggle auto-end fasts
+  Future<void> setAutoEndFasts(bool enabled) async {
+    await _prefs.setBool(_keyAutoEndFasts, enabled);
+    state = state.copyWith(autoEndFasts: enabled);
   }
 
   /// Reset all settings to defaults

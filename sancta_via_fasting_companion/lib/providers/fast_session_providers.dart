@@ -4,14 +4,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/fast_session.dart';
 import '../repositories/fasting_repository.dart';
+import '../services/notification_service.dart';
+import '../utils/app_logger.dart';
+import 'achievement_providers.dart';
 import 'fast_type_providers.dart';
+import 'statistics_providers.dart';
 
 /// Provider for the active fast session
 final activeFastSessionProvider =
     StateNotifierProvider<ActiveFastSessionNotifier, AsyncValue<FastSession?>>(
   (ref) {
     return ActiveFastSessionNotifier(
+      ref,
       ref.watch(fastingRepositoryProvider),
+      ref.watch(notificationServiceProvider),
     );
   },
 );
@@ -19,12 +25,33 @@ final activeFastSessionProvider =
 /// Notifier for managing the active fast session
 class ActiveFastSessionNotifier
     extends StateNotifier<AsyncValue<FastSession?>> {
+  final Ref ref;
   final FastingRepository fastingRepository;
+  final NotificationService notificationService;
   Timer? _timer;
 
-  ActiveFastSessionNotifier(this.fastingRepository)
-      : super(const AsyncValue.loading()) {
+  ActiveFastSessionNotifier(
+    this.ref,
+    this.fastingRepository,
+    this.notificationService,
+  ) : super(const AsyncValue.loading()) {
+    _initializeNotifications();
     _loadActiveFast();
+  }
+
+  /// Initialize notification service
+  Future<void> _initializeNotifications() async {
+    try {
+      await notificationService.initialize();
+      AppLogger.info('Notifications initialized', 'ActiveFastSessionNotifier');
+    } catch (e, stack) {
+      AppLogger.error(
+        'Failed to initialize notifications',
+        e,
+        stack,
+        'ActiveFastSessionNotifier',
+      );
+    }
   }
 
   /// Load the active fast session
@@ -47,7 +74,8 @@ class ActiveFastSessionNotifier
   }
 
   /// Start a new fast
-  Future<void> startFast({
+  /// Returns a message if there are notification permission issues
+  Future<String?> startFast({
     required String fastTypeId,
     required int targetDurationMinutes,
     String? notes,
@@ -60,6 +88,43 @@ class ActiveFastSessionNotifier
       );
       state = AsyncValue.data(session);
       _startTimer();
+
+      // Schedule notifications and check for permission issues
+      try {
+        final result = await notificationService.scheduleNotificationsForFast(session);
+
+        if (result.success) {
+          AppLogger.info(
+            'Notifications scheduled for fast: ${session.id}',
+            'ActiveFastSessionNotifier',
+          );
+          return null; // No issues
+        } else {
+          // Log the issue but don't fail the fast start
+          AppLogger.warning(
+            'Notification scheduling issue: ${result.errorMessage}',
+            'ActiveFastSessionNotifier',
+          );
+
+          // Return a user-friendly message based on the issue
+          if (result.needsExactAlarmPermission) {
+            return 'Your fast has started, but exact alarm permission is needed for timely notifications. You can enable it in Settings > Notifications.';
+          } else if (result.needsNotificationPermission) {
+            return 'Your fast has started, but notification permissions are needed for reminders. You can enable them in Settings > Notifications.';
+          } else {
+            return 'Your fast has started, but there was an issue scheduling notifications.';
+          }
+        }
+      } catch (e, stack) {
+        AppLogger.error(
+          'Failed to schedule notifications',
+          e,
+          stack,
+          'ActiveFastSessionNotifier',
+        );
+        // Don't fail the fast start if notifications fail
+        return 'Your fast has started, but notifications could not be scheduled.';
+      }
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
       rethrow;
@@ -69,9 +134,61 @@ class ActiveFastSessionNotifier
   /// Complete the current fast
   Future<FastSession> completeFast({String? notes}) async {
     try {
+      final currentSession = state.value;
       final completed = await fastingRepository.completeFast(notes: notes);
       state = AsyncValue.data(null);
       _stopTimer();
+
+      // Cancel notifications for this fast
+      if (currentSession != null) {
+        try {
+          await notificationService.cancelNotificationsForFast(currentSession.id);
+          AppLogger.info(
+            'Notifications cancelled for completed fast: ${currentSession.id}',
+            'ActiveFastSessionNotifier',
+          );
+        } catch (e, stack) {
+          AppLogger.error(
+            'Failed to cancel notifications',
+            e,
+            stack,
+            'ActiveFastSessionNotifier',
+          );
+        }
+      }
+
+      // Invalidate statistics providers to reflect the new completed fast
+      ref.invalidate(dashboardStatisticsProvider);
+      ref.invalidate(fastHistoryProvider);
+      AppLogger.info(
+        'Statistics providers invalidated after completing fast',
+        'ActiveFastSessionNotifier',
+      );
+
+      // Check for new achievements
+      try {
+        final achievementService = ref.read(achievementServiceProvider);
+        final newAchievements = await achievementService.checkNewAchievements(completed);
+        if (newAchievements.isNotEmpty) {
+          AppLogger.info(
+            'Earned ${newAchievements.length} new achievements',
+            'ActiveFastSessionNotifier',
+          );
+          // Invalidate achievement providers
+          ref.invalidate(earnedAchievementsProvider);
+          ref.invalidate(unseenAchievementCountProvider);
+          ref.invalidate(totalAchievementPointsProvider);
+        }
+      } catch (e, stack) {
+        AppLogger.error(
+          'Failed to check achievements',
+          e,
+          stack,
+          'ActiveFastSessionNotifier',
+        );
+        // Don't fail the fast completion if achievement check fails
+      }
+
       // Return the completed session for display
       return completed;
     } catch (e, stack) {
@@ -83,9 +200,37 @@ class ActiveFastSessionNotifier
   /// Break the current fast
   Future<FastSession> breakFast({String? notes}) async {
     try {
+      final currentSession = state.value;
       final broken = await fastingRepository.breakFast(notes: notes);
       state = AsyncValue.data(null);
       _stopTimer();
+
+      // Cancel notifications for this fast
+      if (currentSession != null) {
+        try {
+          await notificationService.cancelNotificationsForFast(currentSession.id);
+          AppLogger.info(
+            'Notifications cancelled for broken fast: ${currentSession.id}',
+            'ActiveFastSessionNotifier',
+          );
+        } catch (e, stack) {
+          AppLogger.error(
+            'Failed to cancel notifications',
+            e,
+            stack,
+            'ActiveFastSessionNotifier',
+          );
+        }
+      }
+
+      // Invalidate statistics providers to reflect the broken fast
+      ref.invalidate(dashboardStatisticsProvider);
+      ref.invalidate(fastHistoryProvider);
+      AppLogger.info(
+        'Statistics providers invalidated after breaking fast',
+        'ActiveFastSessionNotifier',
+      );
+
       return broken;
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);

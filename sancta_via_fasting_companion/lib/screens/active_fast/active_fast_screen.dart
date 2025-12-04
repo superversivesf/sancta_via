@@ -36,7 +36,6 @@ class _ActiveFastScreenState extends ConsumerState<ActiveFastScreen> {
           IconButton(
             icon: const Icon(Icons.favorite_outline),
             onPressed: () {
-              // TODO: Show encouragement dialog
               _showEncouragementDialog(context);
             },
             tooltip: 'Get Encouragement',
@@ -174,7 +173,9 @@ class _ActiveFastView extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '${(progress * 100).toStringAsFixed(1)}% Complete',
+                      hasReached
+                          ? 'Target Exceeded'
+                          : '${(progress * 100).toStringAsFixed(1)}% Complete',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     const SizedBox(height: 24),
@@ -234,16 +235,28 @@ class _ActiveFastView extends ConsumerWidget {
                           color: Colors.green[50],
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        child: Column(
                           children: [
-                            Icon(Icons.check_circle, color: Colors.green[700]),
-                            const SizedBox(width: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.check_circle, color: Colors.green[700]),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Target Reached!',
+                                  style: TextStyle(
+                                    color: Colors.green[700],
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
                             Text(
-                              'Target Reached!',
+                              'Continuing ${timerService.formatDurationHuman(remaining.abs())} beyond target',
                               style: TextStyle(
-                                color: Colors.green[700],
-                                fontWeight: FontWeight.bold,
+                                color: Colors.green[600],
+                                fontSize: 12,
                               ),
                             ),
                           ],
