@@ -62,40 +62,40 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
           children: [
             // Key Statistics Cards
             dashboardStats.when(
-              data: (stats) => _KeyStatisticsGrid(stats: stats),
+              data: (stats) => KeyStatisticsGrid(stats: stats),
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, _) => _ErrorCard(error: error),
+              error: (error, _) => ErrorCard(error: error),
             ),
 
             const SizedBox(height: 24),
 
             // Achievement Points
             totalPoints.when(
-              data: (points) => _AchievementPointsCard(points: points),
+              data: (points) => AchievementPointsCard(points: points),
               loading: () => const SizedBox.shrink(),
-              error: (_, __) => const SizedBox.shrink(),
+              error: (error, stack) => const SizedBox.shrink(),
             ),
 
             const SizedBox(height: 24),
 
             // Activity Over Time Chart
-            _SectionHeader(title: 'Activity Over Time (${_selectedPeriod.displayName})'),
+            SectionHeader(title: 'Activity Over Time (${_selectedPeriod.displayName})'),
             const SizedBox(height: 12),
-            _ActivityChart(period: _selectedPeriod),
+            ActivityChart(period: _selectedPeriod),
 
             const SizedBox(height: 24),
 
             // Duration Distribution Chart
-            const _SectionHeader(title: 'Fast Duration Distribution'),
+            const SectionHeader(title: 'Fast Duration Distribution'),
             const SizedBox(height: 12),
-            const _DurationDistributionChart(),
+            const DurationDistributionChart(),
 
             const SizedBox(height: 24),
 
             // Fast Type Distribution
-            const _SectionHeader(title: 'Fast Types'),
+            const SectionHeader(title: 'Fast Types'),
             const SizedBox(height: 12),
-            const _FastTypeDistribution(),
+            const FastTypeDistribution(),
 
             const SizedBox(height: 32),
           ],
@@ -105,10 +105,10 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
+class SectionHeader extends StatelessWidget {
   final String title;
 
-  const _SectionHeader({required this.title});
+  const SectionHeader({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -121,10 +121,10 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
-class _KeyStatisticsGrid extends StatelessWidget {
+class KeyStatisticsGrid extends StatelessWidget {
   final DashboardStatistics stats;
 
-  const _KeyStatisticsGrid({required this.stats});
+  const KeyStatisticsGrid({super.key, required this.stats});
 
   @override
   Widget build(BuildContext context) {
@@ -136,37 +136,37 @@ class _KeyStatisticsGrid extends StatelessWidget {
       crossAxisSpacing: 12,
       childAspectRatio: 1.5,
       children: [
-        _StatCard(
+        StatCard(
           icon: Icons.check_circle,
           label: 'Completed',
           value: stats.completedFastsCount.toString(),
           color: Colors.green,
         ),
-        _StatCard(
+        StatCard(
           icon: Icons.schedule,
           label: 'Total Hours',
           value: stats.totalHoursFasted.toStringAsFixed(1),
           color: Colors.blue,
         ),
-        _StatCard(
+        StatCard(
           icon: Icons.local_fire_department,
           label: 'Current Streak',
           value: '${stats.currentStreak} days',
           color: Colors.orange,
         ),
-        _StatCard(
+        StatCard(
           icon: Icons.star,
           label: 'Longest Streak',
           value: '${stats.longestStreak} days',
           color: Colors.amber,
         ),
-        _StatCard(
+        StatCard(
           icon: Icons.percent,
           label: 'Success Rate',
           value: '${stats.completionRate.toStringAsFixed(0)}%',
           color: Colors.purple,
         ),
-        _StatCard(
+        StatCard(
           icon: Icons.timer,
           label: 'Avg Duration',
           value: '${stats.averageDuration.toStringAsFixed(1)}h',
@@ -177,13 +177,14 @@ class _KeyStatisticsGrid extends StatelessWidget {
   }
 }
 
-class _StatCard extends StatelessWidget {
+class StatCard extends StatelessWidget {
   final IconData icon;
   final String label;
   final String value;
   final Color color;
 
-  const _StatCard({
+  const StatCard({
+    super.key,
     required this.icon,
     required this.label,
     required this.value,
@@ -223,10 +224,10 @@ class _StatCard extends StatelessWidget {
   }
 }
 
-class _AchievementPointsCard extends StatelessWidget {
+class AchievementPointsCard extends StatelessWidget {
   final int points;
 
-  const _AchievementPointsCard({required this.points});
+  const AchievementPointsCard({super.key, required this.points});
 
   @override
   Widget build(BuildContext context) {
@@ -269,10 +270,10 @@ class _AchievementPointsCard extends StatelessWidget {
   }
 }
 
-class _ActivityChart extends ConsumerWidget {
+class ActivityChart extends ConsumerWidget {
   final StatisticsPeriod period;
 
-  const _ActivityChart({required this.period});
+  const ActivityChart({super.key, required this.period});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -423,8 +424,8 @@ class _ActivityChart extends ConsumerWidget {
   }
 }
 
-class _DurationDistributionChart extends ConsumerWidget {
-  const _DurationDistributionChart();
+class DurationDistributionChart extends ConsumerWidget {
+  const DurationDistributionChart({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -545,8 +546,8 @@ class _DurationDistributionChart extends ConsumerWidget {
   }
 }
 
-class _FastTypeDistribution extends ConsumerWidget {
-  const _FastTypeDistribution();
+class FastTypeDistribution extends ConsumerWidget {
+  const FastTypeDistribution({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -629,10 +630,10 @@ class _FastTypeDistribution extends ConsumerWidget {
   }
 }
 
-class _ErrorCard extends StatelessWidget {
+class ErrorCard extends StatelessWidget {
   final Object error;
 
-  const _ErrorCard({required this.error});
+  const ErrorCard({super.key, required this.error});
 
   @override
   Widget build(BuildContext context) {

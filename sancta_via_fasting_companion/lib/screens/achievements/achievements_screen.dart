@@ -53,7 +53,7 @@ class AchievementsScreen extends ConsumerWidget {
               ),
             ),
             loading: () => const SizedBox.shrink(),
-            error: (_, __) => const SizedBox.shrink(),
+            error: (error, stack) => const SizedBox.shrink(),
           ),
         ],
       ),
@@ -77,13 +77,13 @@ class AchievementsScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Category Header
-                    _CategoryHeader(category: category),
+                    CategoryHeader(category: category),
                     const SizedBox(height: 12),
 
                     // Achievements in this category
                     ...achievements.map((achievement) {
                       final isEarned = earnedIds.contains(achievement.id);
-                      return _AchievementCard(
+                      return AchievementCard(
                         achievement: achievement,
                         isEarned: isEarned,
                       );
@@ -97,16 +97,16 @@ class AchievementsScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => _ErrorView(error: error),
+        error: (error, stack) => ErrorView(error: error),
       ),
     );
   }
 }
 
-class _CategoryHeader extends StatelessWidget {
+class CategoryHeader extends StatelessWidget {
   final String category;
 
-  const _CategoryHeader({required this.category});
+  const CategoryHeader({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -147,11 +147,12 @@ class _CategoryHeader extends StatelessWidget {
   }
 }
 
-class _AchievementCard extends ConsumerWidget {
+class AchievementCard extends ConsumerWidget {
   final Achievement achievement;
   final bool isEarned;
 
-  const _AchievementCard({
+  const AchievementCard({
+    super.key,
     required this.achievement,
     required this.isEarned,
   });
@@ -269,7 +270,7 @@ class _AchievementCard extends ConsumerWidget {
                         height: 6,
                         child: LinearProgressIndicator(),
                       ),
-                      error: (_, __) => const SizedBox.shrink(),
+                      error: (error, stack) => const SizedBox.shrink(),
                     ),
 
                   // Points badge
@@ -302,10 +303,10 @@ class _AchievementCard extends ConsumerWidget {
   }
 }
 
-class _ErrorView extends StatelessWidget {
+class ErrorView extends StatelessWidget {
   final Object error;
 
-  const _ErrorView({required this.error});
+  const ErrorView({super.key, required this.error});
 
   @override
   Widget build(BuildContext context) {
