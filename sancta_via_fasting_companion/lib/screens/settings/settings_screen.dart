@@ -276,40 +276,32 @@ class SettingsScreen extends ConsumerWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Theme Mode'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<ThemeMode>(
-              title: const Text('System'),
-              subtitle: const Text('Follow device theme'),
-              value: ThemeMode.system,
-              groupValue: currentMode,
-              onChanged: (value) {
-                ref.read(themeModeProvider.notifier).setThemeMode(value!);
-                Navigator.of(context).pop();
-              },
-            ),
-            RadioListTile<ThemeMode>(
-              title: const Text('Light'),
-              subtitle: const Text('Always use light theme'),
-              value: ThemeMode.light,
-              groupValue: currentMode,
-              onChanged: (value) {
-                ref.read(themeModeProvider.notifier).setThemeMode(value!);
-                Navigator.of(context).pop();
-              },
-            ),
-            RadioListTile<ThemeMode>(
-              title: const Text('Dark'),
-              subtitle: const Text('Always use dark theme'),
-              value: ThemeMode.dark,
-              groupValue: currentMode,
-              onChanged: (value) {
-                ref.read(themeModeProvider.notifier).setThemeMode(value!);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+        content: RadioGroup<ThemeMode>(
+          groupValue: currentMode,
+          onChanged: (value) {
+            ref.read(themeModeProvider.notifier).setThemeMode(value!);
+            Navigator.of(context).pop();
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RadioListTile<ThemeMode>(
+                title: const Text('System'),
+                subtitle: const Text('Follow device theme'),
+                value: ThemeMode.system,
+              ),
+              RadioListTile<ThemeMode>(
+                title: const Text('Light'),
+                subtitle: const Text('Always use light theme'),
+                value: ThemeMode.light,
+              ),
+              RadioListTile<ThemeMode>(
+                title: const Text('Dark'),
+                subtitle: const Text('Always use dark theme'),
+                value: ThemeMode.dark,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -324,34 +316,29 @@ class SettingsScreen extends ConsumerWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Color Intensity'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<ColorIntensity>(
-              title: const Text('Vibrant'),
-              subtitle: const Text('Bright, saturated colors'),
-              value: ColorIntensity.vibrant,
-              groupValue: currentIntensity,
-              onChanged: (value) {
-                ref
-                    .read(colorIntensityProvider.notifier)
-                    .setColorIntensity(value!);
-                Navigator.of(context).pop();
-              },
-            ),
-            RadioListTile<ColorIntensity>(
-              title: const Text('Muted'),
-              subtitle: const Text('Soft, subdued colors'),
-              value: ColorIntensity.muted,
-              groupValue: currentIntensity,
-              onChanged: (value) {
-                ref
-                    .read(colorIntensityProvider.notifier)
-                    .setColorIntensity(value!);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+        content: RadioGroup<ColorIntensity>(
+          groupValue: currentIntensity,
+          onChanged: (value) {
+            ref
+                .read(colorIntensityProvider.notifier)
+                .setColorIntensity(value!);
+            Navigator.of(context).pop();
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RadioListTile<ColorIntensity>(
+                title: const Text('Vibrant'),
+                subtitle: const Text('Bright, saturated colors'),
+                value: ColorIntensity.vibrant,
+              ),
+              RadioListTile<ColorIntensity>(
+                title: const Text('Muted'),
+                subtitle: const Text('Soft, subdued colors'),
+                value: ColorIntensity.muted,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -366,65 +353,39 @@ class SettingsScreen extends ConsumerWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Timer Update Interval'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<int>(
-              title: const Text('1 second'),
-              value: 1,
-              groupValue: settings.timerUpdateInterval,
-              onChanged: (value) {
-                ref
-                    .read(fastingSettingsProvider.notifier)
-                    .setTimerUpdateInterval(value!);
-                Navigator.of(context).pop();
-              },
-            ),
-            RadioListTile<int>(
-              title: const Text('5 seconds'),
-              value: 5,
-              groupValue: settings.timerUpdateInterval,
-              onChanged: (value) {
-                ref
-                    .read(fastingSettingsProvider.notifier)
-                    .setTimerUpdateInterval(value!);
-                Navigator.of(context).pop();
-              },
-            ),
-            RadioListTile<int>(
-              title: const Text('10 seconds'),
-              value: 10,
-              groupValue: settings.timerUpdateInterval,
-              onChanged: (value) {
-                ref
-                    .read(fastingSettingsProvider.notifier)
-                    .setTimerUpdateInterval(value!);
-                Navigator.of(context).pop();
-              },
-            ),
-            RadioListTile<int>(
-              title: const Text('30 seconds'),
-              value: 30,
-              groupValue: settings.timerUpdateInterval,
-              onChanged: (value) {
-                ref
-                    .read(fastingSettingsProvider.notifier)
-                    .setTimerUpdateInterval(value!);
-                Navigator.of(context).pop();
-              },
-            ),
-            RadioListTile<int>(
-              title: const Text('60 seconds (saves battery)'),
-              value: 60,
-              groupValue: settings.timerUpdateInterval,
-              onChanged: (value) {
-                ref
-                    .read(fastingSettingsProvider.notifier)
-                    .setTimerUpdateInterval(value!);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+        content: RadioGroup<int>(
+          groupValue: settings.timerUpdateInterval,
+          onChanged: (value) {
+            ref
+                .read(fastingSettingsProvider.notifier)
+                .setTimerUpdateInterval(value!);
+            Navigator.of(context).pop();
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RadioListTile<int>(
+                title: const Text('1 second'),
+                value: 1,
+              ),
+              RadioListTile<int>(
+                title: const Text('5 seconds'),
+                value: 5,
+              ),
+              RadioListTile<int>(
+                title: const Text('10 seconds'),
+                value: 10,
+              ),
+              RadioListTile<int>(
+                title: const Text('30 seconds'),
+                value: 30,
+              ),
+              RadioListTile<int>(
+                title: const Text('60 seconds (saves battery)'),
+                value: 60,
+              ),
+            ],
+          ),
         ),
       ),
     );

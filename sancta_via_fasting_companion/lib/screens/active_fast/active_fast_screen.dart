@@ -590,70 +590,73 @@ class _OpenEndedCompleteDialogState
                 const Text('How would you like to categorize this fast?'),
                 const SizedBox(height: 16),
 
-                // Keep as Open-Ended option
-                RadioListTile<String>(
-                  value: 'open_ended',
+                // RadioGroup for all fast type selection options
+                RadioGroup<String>(
                   groupValue: _selectedFastTypeId ?? 'open_ended',
                   onChanged: (value) {
                     setState(() {
                       _selectedFastTypeId = value;
                     });
                   },
-                  title: const Text('Keep as Open-Ended Fast'),
-                  subtitle: const Text('Don\'t categorize this fast'),
-                ),
-
-                const Divider(),
-                const SizedBox(height: 8),
-                Text(
-                  'Suggested Categories',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Keep as Open-Ended option
+                      RadioListTile<String>(
+                        value: 'open_ended',
+                        title: const Text('Keep as Open-Ended Fast'),
+                        subtitle: const Text('Don\'t categorize this fast'),
                       ),
-                ),
-                const SizedBox(height: 8),
 
-                // Suggested fast types
-                ...suggestions.map((ft) {
-                  final isRecommended = suggestions.indexOf(ft) == 0;
-                  return RadioListTile<String>(
-                    value: ft.id,
-                    groupValue: _selectedFastTypeId ?? 'open_ended',
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedFastTypeId = value;
-                      });
-                    },
-                    title: Row(
-                      children: [
-                        Expanded(child: Text(ft.name)),
-                        if (isRecommended)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 2,
+                      const Divider(),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Suggested Categories',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
                             ),
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Text(
-                              'BEST MATCH',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                      ),
+                      const SizedBox(height: 8),
+
+                      // Suggested fast types
+                      ...suggestions.map((ft) {
+                        final isRecommended = suggestions.indexOf(ft) == 0;
+                        return RadioListTile<String>(
+                          value: ft.id,
+                          title: Row(
+                            children: [
+                              Expanded(child: Text(ft.name)),
+                              if (isRecommended)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: const Text(
+                                    'BEST MATCH',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
-                      ],
-                    ),
-                    subtitle: Text(
-                      '${ft.targetDurationHours} hours',
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  );
-                }),
+                          subtitle: Text(
+                            '${ft.targetDurationHours} hours',
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                ),
 
                 const SizedBox(height: 16),
                 TextField(
