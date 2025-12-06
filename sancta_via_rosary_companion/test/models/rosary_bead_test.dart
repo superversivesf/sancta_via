@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/material.dart';
 import 'package:sancta_via_rosary_companion/models/rosary_bead.dart';
 import 'package:sancta_via_rosary_companion/models/bead_type.dart';
 

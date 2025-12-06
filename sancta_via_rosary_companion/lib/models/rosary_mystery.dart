@@ -55,8 +55,5 @@ class RosaryMystery {
   }
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      type.hashCode ^
-      mysteryNumber.hashCode;
+  int get hashCode => id.hashCode ^ type.hashCode ^ mysteryNumber.hashCode;
 }

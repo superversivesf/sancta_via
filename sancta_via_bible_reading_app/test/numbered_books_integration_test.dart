@@ -1,7 +1,9 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart'; // Import flutter_test for TestWidgetsFlutterBinding
 import 'package:bible_data/bible_data.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized(); // Add this line
+
   group('Numbered Books Integration Tests', () {
     test('optimized service should handle numbered books correctly', () async {
       // Test that numbered books can be found and have chapters

@@ -3,7 +3,7 @@ description: "Catholic rosary companion app for praying the traditional rosary w
 publish_to: 'none'
 
 # Version: major.minor.patch+build
-version: 1.0.0+1
+version: 1.0.5
 
 environment:
   sdk: ^3.9.2

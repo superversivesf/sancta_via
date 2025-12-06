@@ -7,12 +7,10 @@ import '../utils/logger.dart';
 import 'rosary_repository.dart';
 
 class RosaryRepositoryImpl implements RosaryRepository {
-  RosaryRepositoryImpl();
-
   @override
   Future<List<RosaryMystery>> getAllMysteries() async {
     try {
-      final db = await RosaryDatabase.database;
+      final db = await RosaryDatabase.instance.database;
       final maps = await db.query('mysteries', orderBy: 'type, mystery_number');
 
       return maps.map((map) => _mapToMystery(map)).toList();
@@ -25,7 +23,7 @@ class RosaryRepositoryImpl implements RosaryRepository {
   @override
   Future<List<RosaryMystery>> getMysteriesByType(String type) async {
     try {
-      final db = await RosaryDatabase.database;
+      final db = await RosaryDatabase.instance.database;
       final maps = await db.query(
         'mysteries',
         where: 'type = ?',
@@ -43,15 +41,17 @@ class RosaryRepositoryImpl implements RosaryRepository {
   @override
   Future<RosaryMystery?> getMysteryById(String id) async {
     try {
-      final db = await RosaryDatabase.database;
+      final db = await RosaryDatabase.instance.database;
       final maps = await db.query(
         'mysteries',
         where: 'id = ?',
         whereArgs: [id],
       );
 
-      if (maps.isEmpty) return null;
-      return _mapToMystery(maps.first);
+      if (maps.isNotEmpty) {
+        return _mapToMystery(maps.first);
+      }
+      return null;
     } catch (e, stackTrace) {
       AppLogger.error('Failed to get mystery by id: $id', e, stackTrace);
       return null;
@@ -61,12 +61,12 @@ class RosaryRepositoryImpl implements RosaryRepository {
   @override
   Future<List<RosaryBead>> getBeads() async {
     try {
-      final db = await RosaryDatabase.database;
-      final maps = await db.query('beads');
+      final db = await RosaryDatabase.instance.database;
+      final maps = await db.query('beads', orderBy: 'decade_position');
 
       return maps.map((map) => _mapToBead(map)).toList();
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to get beads', e, stackTrace);
+      AppLogger.error('Failed to get all beads', e, stackTrace);
       return [];
     }
   }
@@ -74,11 +74,12 @@ class RosaryRepositoryImpl implements RosaryRepository {
   @override
   Future<List<RosaryBead>> getBeadsByType(String type) async {
     try {
-      final db = await RosaryDatabase.database;
+      final db = await RosaryDatabase.instance.database;
       final maps = await db.query(
         'beads',
         where: 'type = ?',
         whereArgs: [type],
+        orderBy: 'decade_position',
       );
 
       return maps.map((map) => _mapToBead(map)).toList();
@@ -91,94 +92,82 @@ class RosaryRepositoryImpl implements RosaryRepository {
   @override
   Future<void> createMystery(RosaryMystery mystery) async {
     try {
-      final db = await RosaryDatabase.database;
-      await db.insert('mysteries', _mapFromMystery(mystery));
-      AppLogger.debug('Mystery created: ${mystery.id}');
+      final db = await RosaryDatabase.instance.database;
+      await db.insert('mysteries', _mysteryToMap(mystery));
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to create mystery: ${mystery.id}', e, stackTrace);
+      AppLogger.error('Failed to create mystery', e, stackTrace);
     }
   }
 
   @override
   Future<void> createBead(RosaryBead bead) async {
     try {
-      final db = await RosaryDatabase.database;
-      await db.insert('beads', _mapFromBead(bead));
-      AppLogger.debug('Bead created: ${bead.id}');
+      final db = await RosaryDatabase.instance.database;
+      await db.insert('beads', _beadToMap(bead));
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to create bead: ${bead.id}', e, stackTrace);
+      AppLogger.error('Failed to create bead', e, stackTrace);
     }
   }
 
   @override
   Future<void> updateMystery(RosaryMystery mystery) async {
     try {
-      final db = await RosaryDatabase.database;
+      final db = await RosaryDatabase.instance.database;
       await db.update(
         'mysteries',
-        _mapFromMystery(mystery),
+        _mysteryToMap(mystery),
         where: 'id = ?',
         whereArgs: [mystery.id],
       );
-      AppLogger.debug('Mystery updated: ${mystery.id}');
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to update mystery: ${mystery.id}', e, stackTrace);
+      AppLogger.error('Failed to update mystery', e, stackTrace);
     }
   }
 
   @override
   Future<void> updateBead(RosaryBead bead) async {
     try {
-      final db = await RosaryDatabase.database;
+      final db = await RosaryDatabase.instance.database;
       await db.update(
         'beads',
-        _mapFromBead(bead),
+        _beadToMap(bead),
         where: 'id = ?',
         whereArgs: [bead.id],
       );
-      AppLogger.debug('Bead updated: ${bead.id}');
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to update bead: ${bead.id}', e, stackTrace);
+      AppLogger.error('Failed to update bead', e, stackTrace);
     }
   }
 
   @override
   Future<void> deleteMystery(String id) async {
     try {
-      final db = await RosaryDatabase.database;
-      await db.delete(
-        'mysteries',
-        where: 'id = ?',
-        whereArgs: [id],
-      );
-      AppLogger.debug('Mystery deleted: $id');
+      final db = await RosaryDatabase.instance.database;
+      await db.delete('mysteries', where: 'id = ?', whereArgs: [id]);
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to delete mystery: $id', e, stackTrace);
+      AppLogger.error('Failed to delete mystery', e, stackTrace);
     }
   }
 
   @override
   Future<void> deleteBead(String id) async {
     try {
-      final db = await RosaryDatabase.database;
-      await db.delete(
-        'beads',
-        where: 'id = ?',
-        whereArgs: [id],
-      );
-      AppLogger.debug('Bead deleted: $id');
+      final db = await RosaryDatabase.instance.database;
+      await db.delete('beads', where: 'id = ?', whereArgs: [id]);
     } catch (e, stackTrace) {
-      AppLogger.error('Failed to delete bead: $id', e, stackTrace);
+      AppLogger.error('Failed to delete bead', e, stackTrace);
     }
   }
 
   @override
   Future<void> clearAllData() async {
     try {
-      final db = await RosaryDatabase.database;
+      final db = await RosaryDatabase.instance.database;
       await db.delete('mysteries');
       await db.delete('beads');
-      AppLogger.debug('All rosary data cleared');
+      await db.delete('sessions');
+      await db.delete('settings');
+      await db.delete('statistics');
     } catch (e, stackTrace) {
       AppLogger.error('Failed to clear all data', e, stackTrace);
     }
@@ -187,37 +176,17 @@ class RosaryRepositoryImpl implements RosaryRepository {
   @override
   Future<bool> isDataSeeded() async {
     try {
-      final db = await RosaryDatabase.database;
-      final mysteryCount = await db.rawQuery('SELECT COUNT(*) FROM mysteries');
-      final beadCount = await db.rawQuery('SELECT COUNT(*) FROM beads');
-
-      final mysteryTotal = mysteryCount.isNotEmpty ?
-          mysteryCount.first.values.first as int :
-          0;
-      final beadTotal = beadCount.isNotEmpty ?
-          beadCount.first.values.first as int :
-          0;
-
-      return mysteryTotal > 0 && beadTotal > 0;
-    } catch (e, stackTrace) {
-      AppLogger.error('Failed to check if data is seeded', e, stackTrace);
+      final db = await RosaryDatabase.instance.database;
+      final result = await db.query('mysteries', limit: 1);
+      return result.isNotEmpty;
+    } catch (e) {
       return false;
     }
   }
 
   @override
   Future<void> seedInitialData() async {
-    try {
-      if (await isDataSeeded()) {
-        AppLogger.debug('Data already seeded, skipping');
-        return;
-      }
-
-      await RosaryDatabase.seedInitialData();
-      AppLogger.debug('Initial data seeded successfully');
-    } catch (e, stackTrace) {
-      AppLogger.error('Failed to seed initial data', e, stackTrace);
-    }
+    // Data is seeded automatically in database initialization
   }
 
   RosaryMystery _mapToMystery(Map<String, dynamic> map) {
@@ -232,7 +201,17 @@ class RosaryRepositoryImpl implements RosaryRepository {
     );
   }
 
-  Map<String, dynamic> _mapFromMystery(RosaryMystery mystery) {
+  RosaryBead _mapToBead(Map<String, dynamic> map) {
+    return RosaryBead(
+      id: map['id'] as String,
+      type: BeadType.fromString(map['type'] as String),
+      decadePosition: map['decade_position'] as int,
+      prayerText: map['prayer_text'] as String,
+      audioUrl: map['audio_url'] as String?,
+    );
+  }
+
+  Map<String, dynamic> _mysteryToMap(RosaryMystery mystery) {
     return {
       'id': mystery.id,
       'type': mystery.type.value,
@@ -244,17 +223,7 @@ class RosaryRepositoryImpl implements RosaryRepository {
     };
   }
 
-  RosaryBead _mapToBead(Map<String, dynamic> map) {
-    return RosaryBead(
-      id: map['id'] as String,
-      type: BeadType.fromString(map['type'] as String),
-      decadePosition: map['decade_position'] as int,
-      prayerText: map['prayer_text'] as String,
-      audioUrl: map['audio_url'] as String?,
-    );
-  }
-
-  Map<String, dynamic> _mapFromBead(RosaryBead bead) {
+  Map<String, dynamic> _beadToMap(RosaryBead bead) {
     return {
       'id': bead.id,
       'type': bead.type.value,

@@ -18,6 +18,8 @@ class DatabaseSchemas {
       id TEXT PRIMARY KEY,
       type TEXT NOT NULL,
       decade_position INTEGER NOT NULL,
+      mystery_type TEXT, -- joyful, sorrowful, glorious, luminous
+      decade_number INTEGER, -- 0-5 (0 = opening prayers, 1-5 = decades)
       prayer_text TEXT NOT NULL,
       audio_url TEXT
     )

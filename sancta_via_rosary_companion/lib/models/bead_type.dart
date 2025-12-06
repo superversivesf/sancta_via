@@ -4,6 +4,7 @@ enum BeadType {
   gloryBe('glory_be'),
   apostlesCreed('apostles_creed'),
   hailHolyQueen('hail_holy_queen'),
+  fatimaPrayer('fatima_prayer'),
   signOfCross('sign_of_cross'),
   finalPrayer('final_prayer');
 

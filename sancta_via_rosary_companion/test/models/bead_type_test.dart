@@ -4,7 +4,7 @@ import 'package:sancta_via_rosary_companion/models/bead_type.dart';
 void main() {
   group('BeadType', () {
     test('should have correct number of values', () {
-      expect(BeadType.values.length, 7);
+      expect(BeadType.values.length, 8);
     });
 
     test('should have correct string values', () {
@@ -13,6 +13,7 @@ void main() {
       expect(BeadType.gloryBe.value, 'glory_be');
       expect(BeadType.apostlesCreed.value, 'apostles_creed');
       expect(BeadType.hailHolyQueen.value, 'hail_holy_queen');
+      expect(BeadType.fatimaPrayer.value, 'fatima_prayer');
       expect(BeadType.signOfCross.value, 'sign_of_cross');
       expect(BeadType.finalPrayer.value, 'final_prayer');
     });
@@ -23,6 +24,7 @@ void main() {
       expect(BeadType.fromString('glory_be'), BeadType.gloryBe);
       expect(BeadType.fromString('apostles_creed'), BeadType.apostlesCreed);
       expect(BeadType.fromString('hail_holy_queen'), BeadType.hailHolyQueen);
+      expect(BeadType.fromString('fatima_prayer'), BeadType.fatimaPrayer);
       expect(BeadType.fromString('sign_of_cross'), BeadType.signOfCross);
       expect(BeadType.fromString('final_prayer'), BeadType.finalPrayer);
     });

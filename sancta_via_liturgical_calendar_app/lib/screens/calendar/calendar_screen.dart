@@ -27,10 +27,11 @@ class CalendarScreen extends ConsumerWidget {
             icon: const Icon(Icons.today),
             onPressed: () {
               final now = DateTime.now();
+              final today = DateTime(now.year, now.month, now.day);
               ref.read(local_providers.displayedMonthProvider.notifier).state =
                   DateTime(now.year, now.month, 1);
               ref.read(local_providers.selectedDateProvider.notifier).state =
-                  now;
+                  today;
             },
             tooltip: 'Go to today',
           ),

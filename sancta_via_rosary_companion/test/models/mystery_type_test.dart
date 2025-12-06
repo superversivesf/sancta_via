@@ -31,7 +31,10 @@ void main() {
       expect(MysteryType.fromDate(DateTime(2025, 1, 7)), MysteryType.sorrowful);
       expect(MysteryType.fromDate(DateTime(2025, 1, 8)), MysteryType.glorious);
       expect(MysteryType.fromDate(DateTime(2025, 1, 9)), MysteryType.luminous);
-      expect(MysteryType.fromDate(DateTime(2025, 1, 10)), MysteryType.sorrowful);
+      expect(
+        MysteryType.fromDate(DateTime(2025, 1, 10)),
+        MysteryType.sorrowful,
+      );
       expect(MysteryType.fromDate(DateTime(2025, 1, 11)), MysteryType.joyful);
       expect(MysteryType.fromDate(DateTime(2025, 1, 12)), MysteryType.glorious);
     });
