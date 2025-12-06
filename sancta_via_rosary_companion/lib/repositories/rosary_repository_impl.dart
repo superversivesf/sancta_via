@@ -198,6 +198,7 @@ class RosaryRepositoryImpl implements RosaryRepository {
       description: map['description'] as String,
       scriptureText: map['scripture_text'] as String,
       meditationText: map['meditation_text'] as String,
+      imagePath: map['image_path'] as String?,
     );
   }
 
@@ -220,6 +221,7 @@ class RosaryRepositoryImpl implements RosaryRepository {
       'description': mystery.description,
       'scripture_text': mystery.scriptureText,
       'meditation_text': mystery.meditationText,
+      'image_path': mystery.imagePath,
     };
   }
 

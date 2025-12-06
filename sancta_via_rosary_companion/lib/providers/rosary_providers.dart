@@ -4,9 +4,13 @@ import '../models/rosary_session.dart';
 import '../models/rosary_settings.dart';
 import '../models/mystery_type.dart';
 import '../models/bead_type.dart';
+import '../models/rosary_mystery.dart';
+import '../repositories/rosary_repository_impl.dart';
 
 // Prayer progression providers
 final currentMysteryIndexProvider = StateProvider<int>((ref) => 0);
+
+final currentMysteryTypeProvider = StateProvider<String>((ref) => 'joyful');
 
 final currentBeadIndexProvider = StateProvider<int>((ref) => 0);
 
@@ -214,6 +218,28 @@ final prayerControllerProvider = Provider<PrayerController>((ref) {
   return PrayerController(ref);
 });
 
+// Add providers for dynamic mystery loading
+final currentMysteriesProvider = FutureProvider<List<RosaryMystery>>((
+  ref,
+) async {
+  final repository = RosaryRepositoryImpl();
+  final mysteryType = ref.watch(currentMysteryTypeProvider);
+  return await repository.getMysteriesByType(mysteryType);
+});
+
+final currentMysteryProvider = Provider<RosaryMystery?>((ref) {
+  final mysteries = ref.watch(currentMysteriesProvider);
+  final mysteryIndex = ref.watch(currentMysteryIndexProvider);
+
+  return mysteries.when(
+    data: (mysteriesList) => mysteryIndex < mysteriesList.length
+        ? mysteriesList[mysteryIndex]
+        : null,
+    loading: () => null,
+    error: (error, _) => null,
+  );
+});
+
 class PrayerController {
   PrayerController(this._ref);
 
@@ -265,8 +291,13 @@ class PrayerController {
     _ref.read(activeSessionProvider.notifier).resetSession();
   }
 
-  void startNewSession(String mysteryType) {
-    _ref.read(activeSessionProvider.notifier).startSession(mysteryType);
+  void startNewSession(String mysteryTypeDisplayName) {
+    // Extract the mystery type from display name (e.g., "Joyful Mysteries" -> "joyful")
+    final mysteryType = mysteryTypeDisplayName.toLowerCase().split(' ')[0];
+    _ref.read(currentMysteryTypeProvider.notifier).state = mysteryType;
+    _ref
+        .read(activeSessionProvider.notifier)
+        .startSession(mysteryTypeDisplayName);
     resetPrayer();
   }
 }

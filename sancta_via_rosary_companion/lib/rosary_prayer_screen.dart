@@ -17,20 +17,9 @@ class RosaryPrayerScreen extends ConsumerWidget {
     final totalBeads = ref.watch(totalBeadsProvider);
     final isPrayerComplete = ref.watch(isPrayerCompleteProvider);
     final currentDecade = ref.watch(currentDecadeProvider);
-
-    // List of Joyful Mysteries for now - will be dynamic later
-    final mysteries = [
-      'The Annunciation',
-      'The Visitation',
-      'The Nativity',
-      'The Presentation',
-      'The Finding in the Temple',
-    ];
-
+    final currentMysteriesAsync = ref.watch(currentMysteriesProvider);
     final currentMysteryIndex = ref.watch(currentMysteryIndexProvider);
-    final currentMystery = currentMysteryIndex < mysteries.length
-        ? mysteries[currentMysteryIndex]
-        : 'Completed';
+    final settings = ref.watch(rosarySettingsProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -48,101 +37,157 @@ class RosaryPrayerScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Mystery display
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Text(
-                      'Mystery ${currentMysteryIndex + 1}: $currentMystery',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      _getMysteryDescription(currentMysteryIndex),
-                      style: const TextStyle(fontSize: 16),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      _getMysteryScripture(currentMysteryIndex),
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontStyle: FontStyle.italic,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
+      body: currentMysteriesAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => Center(child: Text('Error: $error')),
+        data: (mysteries) {
+          if (mysteries.isEmpty || currentMysteryIndex >= mysteries.length) {
+            return const Center(child: Text('No mysteries available'));
+          }
 
-            // Progress indicator
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Bead ${currentBeadIndex + 1} of $totalBeads',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+          final currentMystery = mysteries[currentMysteryIndex];
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Mystery display with image
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        // Mystery image (if available and settings enabled)
+                        if (currentMystery.imagePath != null &&
+                            settings.showImagery) ...[
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Image.asset(
+                              currentMystery.imagePath!,
+                              height: 200,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.image_not_supported,
+                                          size: 48,
+                                          color: Colors.grey.shade600,
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          'Image not available',
+                                          style: TextStyle(
+                                            color: Colors.grey.shade600,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                        ],
+                        Text(
+                          'Mystery ${currentMysteryIndex + 1}: ${currentMystery.title}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          currentMystery.description,
+                          style: const TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          currentMystery.scriptureText,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
-                  Text(
-                    'Decade: ${currentDecade == 0 ? 'Intro' : currentDecade}',
-                    style: const TextStyle(fontSize: 14),
+                ),
+                const SizedBox(height: 20),
+
+                // Progress indicator
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Bead ${currentBeadIndex + 1} of $totalBeads',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        'Decade: ${currentDecade == 0 ? 'Intro' : currentDecade}',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Bead grid
+                _buildBeadDisplay(currentBeadIndex, totalBeads),
+                const SizedBox(height: 20),
+
+                // Prayer text
+                _buildPrayerDisplay(
+                  currentBead,
+                  isPrayerComplete,
+                  prayerController,
+                ),
+                const SizedBox(height: 20),
+
+                // Navigation buttons
+                _buildMysteryNavigation(
+                  prayerController,
+                  currentMysteryIndex,
+                  currentBeadIndex,
+                  totalBeads,
+                ),
+
+                // Complete prayer button if done
+                if (isPrayerComplete) ...[
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      prayerController.resetPrayer();
+                      context.go('/home');
+                    },
+                    icon: const Icon(Icons.home),
+                    label: const Text('Return to Home'),
                   ),
                 ],
-              ),
+              ],
             ),
-
-            // Bead grid
-            _buildBeadDisplay(currentBeadIndex, totalBeads),
-            const SizedBox(height: 20),
-
-            // Prayer text
-            _buildPrayerDisplay(
-              currentBead,
-              isPrayerComplete,
-              prayerController,
-            ),
-            const SizedBox(height: 20),
-
-            // Navigation buttons
-            _buildMysteryNavigation(
-              prayerController,
-              currentMysteryIndex,
-              currentBeadIndex,
-              totalBeads,
-            ),
-
-            // Complete prayer button if done
-            if (isPrayerComplete) ...[
-              const SizedBox(height: 16),
-              ElevatedButton.icon(
-                onPressed: () {
-                  prayerController.resetPrayer();
-                  context.go('/home');
-                },
-                icon: const Icon(Icons.home),
-                label: const Text('Return to Home'),
-              ),
-            ],
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -271,31 +316,5 @@ class RosaryPrayerScreen extends ConsumerWidget {
       default:
         return 'Prayer';
     }
-  }
-
-  String _getMysteryDescription(int index) {
-    final descriptions = [
-      'The Angel Gabriel announces to Mary that she will bear the Son of God',
-      'Mary visits her cousin Elizabeth, who recognizes Mary as the mother of her Lord',
-      'Jesus is born in a humble stable in Bethlehem',
-      'Mary and Joseph present Jesus in the temple, where Simeon and Anna recognize him as the Messiah',
-      'Mary and Joseph find Jesus discussing with teachers in the temple after searching for three days',
-    ];
-    return index < descriptions.length
-        ? descriptions[index]
-        : 'Mystery completed';
-  }
-
-  String _getMysteryScripture(int index) {
-    final scriptures = [
-      '"Hail, full of grace, the Lord is with you!" (Luke 1:28)',
-      '"Blessed are you among women, and blessed is the fruit of your womb!" (Luke 1:42)',
-      '"And she gave birth to her firstborn son and wrapped him in swaddling cloths..." (Luke 2:7)',
-      '"My eyes have seen your salvation..." (Luke 2:30)',
-      '"Did you not know that I must be in my Father\'s house?" (Luke 2:49)',
-    ];
-    return index < scriptures.length
-        ? scriptures[index]
-        : 'Scripture reference';
   }
 }

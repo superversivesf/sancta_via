@@ -9,6 +9,7 @@ class RosaryMystery {
     required this.description,
     required this.scriptureText,
     required this.meditationText,
+    this.imagePath,
   });
 
   final String id;
@@ -18,6 +19,7 @@ class RosaryMystery {
   final String description;
   final String scriptureText;
   final String meditationText;
+  final String? imagePath;
 
   bool get isFirstMystery => mysteryNumber == 1;
   bool get isLastMystery => mysteryNumber == 5;
@@ -33,6 +35,7 @@ class RosaryMystery {
     String? description,
     String? scriptureText,
     String? meditationText,
+    String? imagePath,
   }) {
     return RosaryMystery(
       id: id ?? this.id,
@@ -42,6 +45,7 @@ class RosaryMystery {
       description: description ?? this.description,
       scriptureText: scriptureText ?? this.scriptureText,
       meditationText: meditationText ?? this.meditationText,
+      imagePath: imagePath ?? this.imagePath,
     );
   }
 
