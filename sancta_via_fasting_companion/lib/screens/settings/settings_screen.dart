@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +10,7 @@ import '../../providers/fast_session_providers.dart';
 import '../../providers/fast_type_providers.dart';
 import '../../providers/settings_provider.dart';
 import '../../providers/statistics_providers.dart';
+import '../../services/notification_service.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -112,6 +115,11 @@ class SettingsScreen extends ConsumerWidget {
 
           // Notification Settings
           _SectionHeader(title: 'Notifications'),
+          const SizedBox(height: 12),
+
+          // Notification Diagnostics Card
+          _NotificationDiagnosticsCard(),
+
           const SizedBox(height: 12),
 
           Card(
@@ -610,6 +618,257 @@ class _SectionHeader extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Theme.of(context).colorScheme.primary,
           ),
+    );
+  }
+}
+
+class _NotificationDiagnosticsCard extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<_NotificationDiagnosticsCard> createState() =>
+      _NotificationDiagnosticsCardState();
+}
+
+class _NotificationDiagnosticsCardState
+    extends ConsumerState<_NotificationDiagnosticsCard> {
+  bool _isLoading = false;
+  Map<String, dynamic>? _permissionStatus;
+  String? _testResult;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPermissionStatus();
+  }
+
+  Future<void> _loadPermissionStatus() async {
+    final notificationService = ref.read(notificationServiceProvider);
+    final status = await notificationService.getPermissionStatus();
+    if (mounted) {
+      setState(() {
+        _permissionStatus = status;
+      });
+    }
+  }
+
+  Future<void> _sendTestNotification() async {
+    setState(() {
+      _isLoading = true;
+      _testResult = null;
+    });
+
+    final notificationService = ref.read(notificationServiceProvider);
+    final success = await notificationService.sendTestNotification();
+
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+        _testResult = success
+            ? 'Test notification sent! Check your notification tray.'
+            : 'Failed to send test notification. Check permissions.';
+      });
+
+      // Reload permission status after test
+      await _loadPermissionStatus();
+
+      // Show snackbar
+      if (mounted && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(_testResult!),
+            backgroundColor: success ? Colors.green : Colors.orange,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _requestPermissions() async {
+    final notificationService = ref.read(notificationServiceProvider);
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final success = await notificationService.requestPermissions();
+
+    if (Platform.isAndroid) {
+      final exactAlarms = await notificationService.canScheduleExactAlarms();
+      if (!exactAlarms) {
+        await notificationService.requestExactAlarmPermission();
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+
+      await _loadPermissionStatus();
+
+      if (mounted && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              success
+                  ? 'Permissions granted!'
+                  : 'Please enable notifications in system settings',
+            ),
+            backgroundColor: success ? Colors.green : Colors.orange,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_permissionStatus == null) {
+      return const Card(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
+    final notificationsEnabled =
+        _permissionStatus!['notificationsEnabled'] as bool? ?? false;
+    final exactAlarmsEnabled =
+        _permissionStatus!['exactAlarmsEnabled'] as bool? ?? false;
+    final initialized = _permissionStatus!['initialized'] as bool? ?? false;
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Notification Status',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            _StatusRow(
+              label: 'Service Initialized',
+              isEnabled: initialized,
+            ),
+            const SizedBox(height: 8),
+            _StatusRow(
+              label: 'Notifications Enabled',
+              isEnabled: notificationsEnabled,
+            ),
+            if (Platform.isAndroid) ...[
+              const SizedBox(height: 8),
+              _StatusRow(
+                label: 'Exact Alarms Enabled',
+                isEnabled: exactAlarmsEnabled,
+              ),
+            ],
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _isLoading ? null : _sendTestNotification,
+                    icon: _isLoading
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.send),
+                    label: const Text('Send Test'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed:
+                        (_isLoading || (notificationsEnabled && exactAlarmsEnabled))
+                            ? null
+                            : _requestPermissions,
+                    icon: const Icon(Icons.security),
+                    label: const Text('Request Permissions'),
+                  ),
+                ),
+              ],
+            ),
+            if (_testResult != null) ...[
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      _testResult!.contains('sent')
+                          ? Icons.check_circle
+                          : Icons.warning,
+                      size: 16,
+                      color: _testResult!.contains('sent')
+                          ? Colors.green
+                          : Colors.orange,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        _testResult!,
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _StatusRow extends StatelessWidget {
+  final String label;
+  final bool isEnabled;
+
+  const _StatusRow({
+    required this.label,
+    required this.isEnabled,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(
+          isEnabled ? Icons.check_circle : Icons.cancel,
+          color: isEnabled ? Colors.green : Colors.red,
+          size: 18,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+            color: isEnabled ? Colors.green[700] : Colors.red[700],
+          ),
+        ),
+      ],
     );
   }
 }

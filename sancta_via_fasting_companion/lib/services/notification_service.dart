@@ -166,13 +166,47 @@ class NotificationService {
     }
   }
 
-  /// Request notification permissions from the user
-  Future<bool> requestPermissions() async {
-    if (!settings.notificationsEnabled) {
+  /// Check if notification permissions are granted (doesn't request)
+  Future<bool> areNotificationsEnabled() async {
+    try {
+      if (Platform.isAndroid) {
+        final androidPlugin = _notifications
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>();
+
+        if (androidPlugin == null) {
+          AppLogger.warning('Android plugin not available', 'NotificationService');
+          return false;
+        }
+
+        final permitted = await androidPlugin.areNotificationsEnabled();
+        AppLogger.debug(
+          'Android notifications enabled: $permitted',
+          'NotificationService',
+        );
+        return permitted ?? false;
+      } else if (Platform.isIOS || Platform.isMacOS) {
+        // iOS/macOS - we can't check directly, assume true if initialized
+        return _initialized;
+      }
+
+      return false;
+    } catch (e, stack) {
+      AppLogger.error(
+        'Error checking notification permissions',
+        e,
+        stack,
+        'NotificationService',
+      );
       return false;
     }
+  }
 
+  /// Request notification permissions from the user
+  Future<bool> requestPermissions() async {
     try {
+      AppLogger.info('Requesting notification permissions...', 'NotificationService');
+
       // Request iOS permissions
       final iosGranted = await _notifications
           .resolvePlatformSpecificImplementation<
@@ -202,9 +236,9 @@ class NotificationService {
       final granted = iosGranted ?? macosGranted ?? androidGranted ?? true;
 
       if (granted) {
-        AppLogger.info('Notification permissions granted', 'NotificationService');
+        AppLogger.info('✅ Notification permissions granted', 'NotificationService');
       } else {
-        AppLogger.warning('Notification permissions denied', 'NotificationService');
+        AppLogger.warning('❌ Notification permissions denied', 'NotificationService');
       }
 
       return granted;
@@ -336,6 +370,11 @@ class NotificationService {
 
   /// Schedule all notifications for an active fast session
   Future<NotificationScheduleResult> scheduleNotificationsForFast(FastSession session) async {
+    AppLogger.info(
+      'scheduleNotificationsForFast called for session ${session.id}',
+      'NotificationService',
+    );
+
     if (!settings.notificationsEnabled) {
       AppLogger.info('Notifications disabled in settings', 'NotificationService');
       return NotificationScheduleResult.success();
@@ -344,19 +383,35 @@ class NotificationService {
     try {
       // Ensure notification service is initialized
       if (!_initialized) {
-        await initialize();
+        AppLogger.info('Initializing notification service...', 'NotificationService');
+        final initialized = await initialize();
+        if (!initialized) {
+          AppLogger.error(
+            'Failed to initialize notification service',
+            null,
+            null,
+            'NotificationService',
+          );
+          return NotificationScheduleResult.error(
+            'Failed to initialize notification service',
+          );
+        }
       }
 
       // Check basic notification permissions
+      AppLogger.info('Checking notification permissions...', 'NotificationService');
       final hasNotificationPermission = await requestPermissions();
       if (!hasNotificationPermission) {
+        AppLogger.warning('Notification permissions denied', 'NotificationService');
         return NotificationScheduleResult.notificationPermissionDenied();
       }
 
       // Check exact alarm permissions (Android 12+)
       if (Platform.isAndroid) {
+        AppLogger.info('Checking exact alarm permissions...', 'NotificationService');
         final canScheduleExact = await canScheduleExactAlarms();
         if (!canScheduleExact) {
+          AppLogger.warning('Exact alarm permissions denied', 'NotificationService');
           return NotificationScheduleResult.exactAlarmPermissionDenied();
         }
       }
@@ -366,21 +421,24 @@ class NotificationService {
 
       // Schedule hourly reminders if enabled
       if (settings.hourlyReminders) {
+        AppLogger.info('Scheduling hourly reminders...', 'NotificationService');
         await _scheduleHourlyReminders(session);
       }
 
       // Schedule milestone reminders if enabled
       if (settings.milestoneReminders) {
+        AppLogger.info('Scheduling milestone reminders...', 'NotificationService');
         await _scheduleMilestoneReminders(session);
       }
 
       // Schedule completion reminder if enabled
       if (settings.completionReminders) {
+        AppLogger.info('Scheduling completion reminder...', 'NotificationService');
         await _scheduleCompletionReminder(session);
       }
 
       AppLogger.info(
-        'Successfully scheduled ${_scheduledNotifications.length} notifications',
+        '✅ Successfully scheduled ${_scheduledNotifications.length} notifications for session ${session.id}',
         'NotificationService',
       );
       return NotificationScheduleResult.success();
@@ -612,6 +670,120 @@ class NotificationService {
   /// Get all currently scheduled notifications (for testing/debugging)
   List<ScheduledNotification> getScheduledNotifications() {
     return List.unmodifiable(_scheduledNotifications);
+  }
+
+  /// Send an immediate test notification to verify the system is working
+  Future<bool> sendTestNotification() async {
+    try {
+      // Ensure notification service is initialized
+      if (!_initialized) {
+        final initialized = await initialize();
+        if (!initialized) {
+          AppLogger.error(
+            'Cannot send test notification - service not initialized',
+            null,
+            null,
+            'NotificationService',
+          );
+          return false;
+        }
+      }
+
+      AppLogger.info('Sending test notification...', 'NotificationService');
+
+      // Check permissions first
+      final hasPermission = await areNotificationsEnabled();
+      AppLogger.info(
+        'Notification permission status: $hasPermission',
+        'NotificationService',
+      );
+
+      if (!hasPermission) {
+        AppLogger.warning(
+          'Attempting to send test notification without permissions',
+          'NotificationService',
+        );
+        // Try to request permissions
+        final granted = await requestPermissions();
+        if (!granted) {
+          return false;
+        }
+      }
+
+      // Android notification details
+      const androidDetails = AndroidNotificationDetails(
+        'fasting_progress',
+        'Fasting Progress',
+        channelDescription: 'Notifications about your fasting progress',
+        importance: Importance.high,
+        priority: Priority.high,
+        icon: '@mipmap/ic_launcher',
+        playSound: true,
+        enableVibration: true,
+      );
+
+      // iOS notification details
+      const iosDetails = DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      );
+
+      const notificationDetails = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+        macOS: iosDetails,
+      );
+
+      // Send immediate notification
+      await _notifications.show(
+        999999, // Use a unique ID for test notifications
+        'Test Notification',
+        'If you see this, notifications are working! 🎉',
+        notificationDetails,
+        payload: 'test_notification',
+      );
+
+      AppLogger.info('✅ Test notification sent successfully', 'NotificationService');
+      return true;
+    } catch (e, stack) {
+      AppLogger.error(
+        'Error sending test notification',
+        e,
+        stack,
+        'NotificationService',
+      );
+      return false;
+    }
+  }
+
+  /// Get detailed permission status for debugging
+  Future<Map<String, dynamic>> getPermissionStatus() async {
+    final status = <String, dynamic>{
+      'initialized': _initialized,
+      'settingsEnabled': settings.notificationsEnabled,
+      'notificationsEnabled': false,
+      'exactAlarmsEnabled': false,
+      'platform': Platform.operatingSystem,
+    };
+
+    try {
+      status['notificationsEnabled'] = await areNotificationsEnabled();
+
+      if (Platform.isAndroid) {
+        status['exactAlarmsEnabled'] = await canScheduleExactAlarms();
+      }
+    } catch (e, stack) {
+      AppLogger.error(
+        'Error getting permission status',
+        e,
+        stack,
+        'NotificationService',
+      );
+      status['error'] = e.toString();
+    }
+
+    return status;
   }
 }
 
