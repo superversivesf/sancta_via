@@ -452,6 +452,19 @@ class FastingRepository {
 
   // ==================== Utility Methods ====================
 
+  /// Clear all user data (fasts, history, achievements, settings)
+  /// WARNING: This cannot be undone!
+  Future<void> clearAllUserData() async {
+    // Clear database user data (sessions and encouragement history)
+    await _database.clearUserData();
+
+    // Clear cached data
+    clearCache();
+
+    // Note: Achievements are stored in SharedPreferences and should be cleared
+    // by the achievement service separately
+  }
+
   /// Force re-migration (for development/testing)
   Future<void> forceMigration() async {
     await _migrationService.forceMigration();

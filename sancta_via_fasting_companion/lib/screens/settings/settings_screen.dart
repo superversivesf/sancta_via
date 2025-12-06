@@ -3,7 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
+import '../../providers/achievement_providers.dart';
+import '../../providers/fast_session_providers.dart';
+import '../../providers/fast_type_providers.dart';
 import '../../providers/settings_provider.dart';
+import '../../providers/statistics_providers.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -152,6 +156,20 @@ class SettingsScreen extends ConsumerWidget {
                         }
                       : null,
                 ),
+                const Divider(height: 1),
+                SwitchListTile(
+                  secondary: const Icon(Icons.flag),
+                  title: const Text('Completion Reminders'),
+                  subtitle: const Text('Get notified when fast target is reached'),
+                  value: settings.completionReminders,
+                  onChanged: settings.notificationsEnabled
+                      ? (value) {
+                          ref
+                              .read(fastingSettingsProvider.notifier)
+                              .setCompletionReminders(value);
+                        }
+                      : null,
+                ),
               ],
             ),
           ),
@@ -201,6 +219,27 @@ class SettingsScreen extends ConsumerWidget {
                   },
                 ),
               ],
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // Data Management
+          _SectionHeader(title: 'Data Management'),
+          const SizedBox(height: 12),
+
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.delete_forever, color: Colors.red),
+              title: const Text(
+                'Clear All Data',
+                style: TextStyle(color: Colors.red),
+              ),
+              subtitle: const Text(
+                'Delete all fasts, history, and achievements',
+              ),
+              trailing: const Icon(Icons.chevron_right, color: Colors.red),
+              onTap: () => _showClearDataDialog(context, ref),
             ),
           ),
 
@@ -430,6 +469,127 @@ class SettingsScreen extends ConsumerWidget {
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showClearDataDialog(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.warning, color: Colors.red, size: 28),
+            SizedBox(width: 12),
+            Text('Clear All Data?'),
+          ],
+        ),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'This will permanently delete:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 12),
+            Text('• All fast sessions (active and history)'),
+            Text('• All achievements and progress'),
+            Text('• All statistics and streaks'),
+            SizedBox(height: 16),
+            Text(
+              'This action CANNOT be undone!',
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Settings and preferences will be preserved.',
+              style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () async {
+              Navigator.of(dialogContext).pop();
+
+              // Show loading indicator
+              if (context.mounted) {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (ctx) => const Center(
+                    child: Card(
+                      child: Padding(
+                        padding: EdgeInsets.all(24.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CircularProgressIndicator(),
+                            SizedBox(height: 16),
+                            Text('Clearing data...'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
+
+              try {
+                // Clear repository data (fasts and history)
+                final repository = ref.read(fastingRepositoryProvider);
+                await repository.clearAllUserData();
+
+                // Clear achievements
+                final achievementService =
+                    ref.read(achievementServiceProvider);
+                await achievementService.clearAllAchievements();
+
+                // Invalidate all providers to refresh UI
+                ref.invalidate(activeFastSessionProvider);
+                ref.invalidate(fastHistoryProvider);
+                ref.invalidate(dashboardStatisticsProvider);
+                ref.invalidate(earnedAchievementsProvider);
+                ref.invalidate(totalAchievementPointsProvider);
+
+                if (context.mounted) {
+                  Navigator.of(context).pop(); // Close loading dialog
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('All data cleared successfully'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  Navigator.of(context).pop(); // Close loading dialog
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Error clearing data: $e'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              }
+            },
+            child: const Text('Delete Everything'),
           ),
         ],
       ),

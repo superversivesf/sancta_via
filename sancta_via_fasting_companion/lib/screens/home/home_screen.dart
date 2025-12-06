@@ -20,7 +20,15 @@ class HomeScreen extends ConsumerWidget {
         title: const Text('Sancta Via Fasting'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.emoji_events),
+            tooltip: 'Achievements',
+            onPressed: () {
+              context.push('/achievements');
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.settings),
+            tooltip: 'Settings',
             onPressed: () {
               context.push('/settings');
             },

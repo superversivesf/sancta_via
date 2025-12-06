@@ -402,7 +402,14 @@ class FastingDatabase {
 
   // ==================== Utility Methods ====================
 
-  /// Clear all data from database (for testing)
+  /// Clear all user data (sessions and history) - keeps predefined types and encouragements
+  Future<void> clearUserData() async {
+    final db = await database;
+    await db.delete(tableEncouragementHistory);
+    await db.delete(tableFastSessions);
+  }
+
+  /// Clear all data from database (for testing only)
   Future<void> clearAllData() async {
     final db = await database;
     await db.delete(tableEncouragementHistory);
