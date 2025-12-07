@@ -450,6 +450,15 @@ class FastingRepository {
     return await getFastTypeById(mostCommonId!);
   }
 
+  // ==================== Import/Export ====================
+
+  /// Import a fast session (for data import/restore)
+  /// This allows importing historical data without triggering achievements
+  Future<void> importSession(FastSession session) async {
+    await _ensureMigration();
+    await _database.insertFastSession(session);
+  }
+
   // ==================== Utility Methods ====================
 
   /// Clear all user data (fasts, history, achievements, settings)

@@ -309,4 +309,47 @@ class AchievementService {
     _cachedEarnedAchievements = null;
     AppLogger.info('Cleared all achievements', 'AchievementService');
   }
+
+  /// Import an earned achievement (for data import/restore)
+  Future<void> importEarnedAchievement(
+    String achievementId,
+    DateTime earnedAt,
+    bool seen,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Get existing earned achievements
+    final earned = await getEarnedAchievements();
+
+    // Check if already exists
+    final exists = earned.any((e) => e.achievementId == achievementId);
+    if (exists) {
+      AppLogger.info(
+        'Achievement $achievementId already exists, skipping import',
+        'AchievementService',
+      );
+      return;
+    }
+
+    // Add new achievement
+    final newAchievement = EarnedAchievement(
+      achievementId: achievementId,
+      earnedAt: earnedAt,
+      seen: seen,
+    );
+
+    earned.add(newAchievement);
+
+    // Save to SharedPreferences
+    final json = earned.map((e) => e.toJson()).toList();
+    await prefs.setString(_earnedAchievementsKey, jsonEncode(json));
+
+    // Clear cache
+    _cachedEarnedAchievements = null;
+
+    AppLogger.info(
+      'Imported achievement: $achievementId',
+      'AchievementService',
+    );
+  }
 }
