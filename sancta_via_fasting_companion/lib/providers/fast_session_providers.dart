@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/fast_session.dart';
@@ -24,7 +25,8 @@ final activeFastSessionProvider =
 
 /// Notifier for managing the active fast session
 class ActiveFastSessionNotifier
-    extends StateNotifier<AsyncValue<FastSession?>> {
+    extends StateNotifier<AsyncValue<FastSession?>>
+    with WidgetsBindingObserver {
   final Ref ref;
   final FastingRepository fastingRepository;
   final NotificationService notificationService;
@@ -37,6 +39,48 @@ class ActiveFastSessionNotifier
   ) : super(const AsyncValue.loading()) {
     _initializeNotifications();
     _loadActiveFast();
+    // Add lifecycle observer to handle app resume
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    _stopTimer();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // App came back to foreground - reschedule notifications
+      // This handles cases where notifications were cleared while app was backgrounded
+      _rescheduleNotificationsIfNeeded();
+    }
+  }
+
+  /// Reschedule notifications if there's an active fast
+  Future<void> _rescheduleNotificationsIfNeeded() async {
+    try {
+      final currentState = state;
+      if (currentState is AsyncData<FastSession?>) {
+        final session = currentState.value;
+        if (session != null) {
+          AppLogger.info(
+            'App resumed - rescheduling notifications for active fast',
+            'ActiveFastSessionNotifier',
+          );
+          await notificationService.scheduleNotificationsForFast(session);
+        }
+      }
+    } catch (e, stack) {
+      AppLogger.error(
+        'Error rescheduling notifications on app resume',
+        e,
+        stack,
+        'ActiveFastSessionNotifier',
+      );
+    }
   }
 
   /// Initialize notification service
@@ -66,6 +110,29 @@ class ActiveFastSessionNotifier
       // Start timer if there's an active session
       if (session != null) {
         _startTimer();
+
+        // Reschedule notifications for active fast (in case app was restarted)
+        // This ensures notifications fire even if app was killed and restarted
+        try {
+          AppLogger.info(
+            'Rescheduling notifications for active fast: ${session.id}',
+            'ActiveFastSessionNotifier',
+          );
+          final result = await notificationService.scheduleNotificationsForFast(session);
+          if (!result.success) {
+            AppLogger.warning(
+              'Failed to reschedule notifications: ${result.errorMessage}',
+              'ActiveFastSessionNotifier',
+            );
+          }
+        } catch (e, stack) {
+          AppLogger.error(
+            'Error rescheduling notifications on app start',
+            e,
+            stack,
+            'ActiveFastSessionNotifier',
+          );
+        }
       }
     } catch (e, stack) {
       if (!mounted) return;
@@ -273,12 +340,6 @@ class ActiveFastSessionNotifier
   void _stopTimer() {
     _timer?.cancel();
     _timer = null;
-  }
-
-  @override
-  void dispose() {
-    _stopTimer();
-    super.dispose();
   }
 }
 
