@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../../models/fast_session.dart';
 import '../../models/fast_status.dart';
 import '../../providers/encouragement_providers.dart';
+import '../../providers/fast_session_providers.dart';
 import '../../providers/fast_type_providers.dart';
+import '../../providers/statistics_providers.dart';
 import '../../services/timer_service.dart';
 
 class FastDetailScreen extends ConsumerStatefulWidget {
@@ -47,6 +49,9 @@ class _FastDetailScreenState extends ConsumerState<FastDetailScreen> {
       final repository = ref.read(fastingRepositoryProvider);
       final updated = session.copyWith(notes: _notesController.text);
       await repository.updateFastSession(updated);
+
+      // Invalidate history provider to reflect updated notes
+      ref.invalidate(fastHistoryProvider);
 
       if (mounted) {
         setState(() {
@@ -95,6 +100,11 @@ class _FastDetailScreenState extends ConsumerState<FastDetailScreen> {
       try {
         final repository = ref.read(fastingRepositoryProvider);
         await repository.deleteFastSession(widget.sessionId);
+
+        // Invalidate providers to refresh UI
+        ref.invalidate(fastHistoryProvider);
+        ref.invalidate(dashboardStatisticsProvider);
+        ref.invalidate(activeFastSessionProvider);
 
         if (mounted) {
           context.pop();

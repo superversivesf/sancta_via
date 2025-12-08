@@ -4,11 +4,12 @@ import 'package:sancta_via_fasting_companion/models/fast_type_category.dart';
 void main() {
   group('FastTypeCategory', () {
     test('should have correct enum values', () {
-      expect(FastTypeCategory.values.length, 4);
+      expect(FastTypeCategory.values.length, 5);
       expect(FastTypeCategory.values, contains(FastTypeCategory.intermittent));
       expect(FastTypeCategory.values, contains(FastTypeCategory.daily24hr));
       expect(FastTypeCategory.values, contains(FastTypeCategory.multiDay));
       expect(FastTypeCategory.values, contains(FastTypeCategory.liturgical));
+      expect(FastTypeCategory.values, contains(FastTypeCategory.flexible));
     });
 
     test('toJson should return correct string', () {
@@ -16,6 +17,7 @@ void main() {
       expect(FastTypeCategory.daily24hr.toJson(), 'daily24hr');
       expect(FastTypeCategory.multiDay.toJson(), 'multiDay');
       expect(FastTypeCategory.liturgical.toJson(), 'liturgical');
+      expect(FastTypeCategory.flexible.toJson(), 'flexible');
     });
 
     test('fromJson should parse correctly', () {
@@ -32,6 +34,10 @@ void main() {
         FastTypeCategory.fromJson('liturgical'),
         FastTypeCategory.liturgical,
       );
+      expect(
+        FastTypeCategory.fromJson('flexible'),
+        FastTypeCategory.flexible,
+      );
     });
 
     test('fromJson should default to intermittent for invalid input', () {
@@ -47,6 +53,7 @@ void main() {
       expect(FastTypeCategory.daily24hr.displayName, '24-Hour');
       expect(FastTypeCategory.multiDay.displayName, 'Multi-Day');
       expect(FastTypeCategory.liturgical.displayName, 'Liturgical');
+      expect(FastTypeCategory.flexible.displayName, 'Flexible');
     });
 
     test('description should return meaningful text', () {
@@ -57,6 +64,7 @@ void main() {
       expect(FastTypeCategory.daily24hr.description, contains('24-hour'));
       expect(FastTypeCategory.multiDay.description, contains('multiple days'));
       expect(FastTypeCategory.liturgical.description, contains('Catholic'));
+      expect(FastTypeCategory.flexible.description, contains('Open-ended'));
     });
 
     test('should roundtrip through JSON', () {

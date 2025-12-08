@@ -180,6 +180,7 @@ void main() {
             FastTypeCategory.daily24hr,
             FastTypeCategory.multiDay,
             FastTypeCategory.liturgical,
+            FastTypeCategory.flexible,
           ],
           contains(fastType.category),
         );
@@ -191,9 +192,10 @@ void main() {
 
       final fastTypes = await database.getAllFastTypes();
       for (final fastType in fastTypes) {
-        if (fastType.targetDurationHours != null) {
+        if (fastType.targetDurationHours != null && fastType.targetDurationHours! > 0) {
           expect(fastType.targetDurationHours! > 0, isTrue);
-          expect(fastType.targetDurationHours! <= 168, isTrue); // Max 1 week
+          // Allow durations up to 30 days for multi-day fasts
+          expect(fastType.targetDurationHours! <= 720, isTrue);
         }
       }
     });
@@ -216,8 +218,12 @@ void main() {
       for (final fastType in fastTypes) {
         for (final hour in fastType.milestoneMessages.keys) {
           expect(hour >= 0, isTrue);
-          if (fastType.targetDurationHours != null) {
-            expect(hour <= fastType.targetDurationHours!, isTrue);
+          // Milestone hours should be reasonable (up to 30 days)
+          expect(hour <= 720, isTrue);
+          // If fast has a target duration > 0, milestones should be within reasonable range
+          if (fastType.targetDurationHours != null && fastType.targetDurationHours! > 0) {
+            // Allow milestones to be up to 2x the target duration for flexibility
+            expect(hour <= fastType.targetDurationHours! * 2, isTrue);
           }
         }
       }

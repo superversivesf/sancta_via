@@ -2,11 +2,38 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sancta_via_fasting_companion/database/database_migration_service.dart';
 import 'package:sancta_via_fasting_companion/database/fasting_database.dart';
+import 'package:sancta_via_fasting_companion/models/fast_session.dart';
 import 'package:sancta_via_fasting_companion/models/fast_status.dart';
 import 'package:sancta_via_fasting_companion/providers/fast_session_providers.dart';
 import 'package:sancta_via_fasting_companion/providers/fast_type_providers.dart';
+import 'package:sancta_via_fasting_companion/providers/settings_provider.dart';
 import 'package:sancta_via_fasting_companion/repositories/fasting_repository.dart';
+import 'package:sancta_via_fasting_companion/services/notification_service.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+/// Mock NotificationService that doesn't use Flutter plugins
+class MockNotificationService extends NotificationService {
+  MockNotificationService() : super(const FastingSettings());
+
+  @override
+  Future<bool> initialize() async => true;
+
+  @override
+  Future<bool> requestPermissions() async => true;
+
+  @override
+  Future<NotificationScheduleResult> scheduleNotificationsForFast(
+    FastSession session,
+  ) async {
+    return NotificationScheduleResult.success();
+  }
+
+  @override
+  Future<void> cancelAllNotifications() async {}
+
+  @override
+  Future<void> cancelNotificationsForSession(String sessionId) async {}
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +57,7 @@ void main() {
     container = ProviderContainer(
       overrides: [
         fastingRepositoryProvider.overrideWithValue(repository),
+        notificationServiceProvider.overrideWithValue(MockNotificationService()),
       ],
     );
 
