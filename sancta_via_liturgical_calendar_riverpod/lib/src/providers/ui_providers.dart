@@ -125,7 +125,7 @@ final liturgicalNotificationProvider = Provider<Map<String, dynamic>?>((ref) {
     'title': currentDay.celebration.name,
     'subtitle': '${currentDay.season} • ${currentDay.celebration.rank}',
     'color': ref.watch(liturgicalColorProvider),
-    'priority': currentDay.celebration.rank == 'SOLEMNITY' ? 'high' : 'normal',
+    'priority': currentDay.celebration.isSolemnity ? 'high' : 'normal',
   };
 });
 

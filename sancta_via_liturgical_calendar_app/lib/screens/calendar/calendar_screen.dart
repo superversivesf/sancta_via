@@ -338,9 +338,9 @@ class CalendarScreen extends ConsumerWidget {
   // Helper function to determine if a day has a significant celebration
   bool _isSignificantCelebration(LiturgicalDayData liturgicalDay) {
     return liturgicalDay.celebration.prioritized ||
-        liturgicalDay.celebration.rank == 'SOLEMNITY' ||
-        liturgicalDay.celebration.rank == 'FEAST' ||
-        liturgicalDay.celebration.rank == 'MEMORIAL';
+        liturgicalDay.celebration.isSolemnity ||
+        liturgicalDay.celebration.isFeast ||
+        liturgicalDay.celebration.isMemorial;
   }
 
   // Helper function to get appropriate icon for celebration type

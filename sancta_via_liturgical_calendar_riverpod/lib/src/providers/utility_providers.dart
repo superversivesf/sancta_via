@@ -10,8 +10,7 @@ final majorFeastsProvider = Provider.family<List<LiturgicalDayData>, int>((
   final allDays = ref.watch(allDaysInYearProvider(year));
   return allDays
       .where(
-        (day) =>
-            day.celebration.rank == 'SOLEMNITY' && day.celebration.prioritized,
+        (day) => day.celebration.isSolemnity && day.celebration.prioritized,
       )
       .toList();
 });
@@ -28,14 +27,7 @@ final maryFeastsProvider = Provider.family<List<LiturgicalDayData>, int>((
 final saintCommemorationsProvider =
     Provider.family<List<LiturgicalDayData>, int>((ref, year) {
       final allDays = ref.watch(allDaysInYearProvider(year));
-      return allDays
-          .where(
-            (day) =>
-                day.celebration.rank == 'MEMORIAL' ||
-                day.celebration.rank == 'OPTIONAL_MEMORIAL' ||
-                day.celebration.rank == 'OPT_MEMORIAL',
-          )
-          .toList();
+      return allDays.where((day) => day.celebration.isAnyMemorial).toList();
     });
 
 /// Provider for this week's liturgical days
@@ -63,8 +55,8 @@ final feastDaysThisMonthProvider = Provider<List<LiturgicalDayData>>((ref) {
       .where(
         (day) =>
             day.celebration.prioritized ||
-            day.celebration.rank == 'SOLEMNITY' ||
-            day.celebration.rank == 'FEAST',
+            day.celebration.isSolemnity ||
+            day.celebration.isFeast,
       )
       .toList();
 });
@@ -107,8 +99,8 @@ final nextMajorCelebrationProvider = Provider<LiturgicalDayData?>((ref) {
 
   // Find the next solemnity or major feast
   for (final day in upcoming) {
-    if (day.celebration.rank == 'SOLEMNITY' ||
-        (day.celebration.rank == 'FEAST' && day.celebration.prioritized)) {
+    if (day.celebration.isSolemnity ||
+        (day.celebration.isFeast && day.celebration.prioritized)) {
       return day;
     }
   }
@@ -186,7 +178,7 @@ final liturgicalRemindersProvider = Provider<List<Map<String, dynamic>>>((ref) {
         'rank': day.celebration.rank,
         'season': day.season,
         'color': day.celebration.color,
-        'priority': day.celebration.rank == 'SOLEMNITY' ? 'high' : 'medium',
+        'priority': day.celebration.isSolemnity ? 'high' : 'medium',
       });
     }
   }
@@ -202,12 +194,11 @@ final liturgicalModeProvider = Provider<Map<String, dynamic>>((ref) {
   }
 
   final season = currentDay.season.toLowerCase();
-  final rank = currentDay.celebration.rank;
 
   String mode;
   String emphasis;
 
-  if (rank == 'SOLEMNITY') {
+  if (currentDay.celebration.isSolemnity) {
     mode = 'celebration';
     emphasis = 'high';
   } else if (season.contains('advent')) {
@@ -228,7 +219,7 @@ final liturgicalModeProvider = Provider<Map<String, dynamic>>((ref) {
     'mode': mode,
     'emphasis': emphasis,
     'season': currentDay.season,
-    'rank': rank,
+    'rank': currentDay.celebration.rank,
     'color': currentDay.celebration.color,
   };
 });

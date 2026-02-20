@@ -61,9 +61,9 @@ class LiturgicalCalendarService {
         .where(
           (day) =>
               day.celebration.prioritized ||
-              day.celebration.rank == 'SOLEMNITY' ||
-              day.celebration.rank == 'FEAST' ||
-              day.celebration.rank == 'MEMORIAL',
+              day.celebration.isSolemnity ||
+              day.celebration.isFeast ||
+              day.celebration.isMemorial,
         )
         .toList();
   }

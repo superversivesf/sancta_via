@@ -49,13 +49,12 @@ class LiturgicalDayData {
   bool get hasPrioritizedCelebration => celebration.prioritized;
 
   /// Check if this is a specific rank of celebration
-  bool get isSolemnity => celebration.rank == 'SOLEMNITY';
-  bool get isFeast => celebration.rank == 'FEAST';
-  bool get isMemorial => celebration.rank == 'MEMORIAL';
-  bool get isOptionalMemorial =>
-      celebration.rank == 'OPT_MEMORIAL' ||
-      celebration.rank == 'OPTIONAL_MEMORIAL';
-  bool get isWeekday => celebration.rank == 'WEEKDAY';
+  /// These delegate to the LiturgicalCelebration helper methods
+  bool get isSolemnity => celebration.isSolemnity;
+  bool get isFeast => celebration.isFeast;
+  bool get isMemorial => celebration.isMemorial;
+  bool get isOptionalMemorial => celebration.isOptionalMemorial;
+  bool get isWeekday => celebration.isWeekday;
 
   /// Get a short description for display
   String get displayName {

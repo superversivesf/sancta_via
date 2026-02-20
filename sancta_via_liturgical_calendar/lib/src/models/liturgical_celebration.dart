@@ -1,3 +1,5 @@
+import '../enums/celebration_rank.dart';
+
 /// Represents a liturgical celebration (feast, solemnity, memorial, etc.)
 class LiturgicalCelebration {
   final String key;
@@ -21,6 +23,34 @@ class LiturgicalCelebration {
     required this.prioritized,
     required this.titles,
   });
+
+  /// Get the parsed CelebrationRank enum for this celebration
+  /// Defaults to weekday if rank string is unrecognized
+  CelebrationRank get rankEnum => CelebrationRank.fromString(rank);
+
+  /// Check if this is a solemnity
+  bool get isSolemnity => rankEnum == CelebrationRank.solemnity;
+
+  /// Check if this is a feast
+  bool get isFeast => rankEnum == CelebrationRank.feast;
+
+  /// Check if this is a memorial
+  bool get isMemorial => rankEnum == CelebrationRank.memorial;
+
+  /// Check if this is an optional memorial
+  bool get isOptionalMemorial => rankEnum == CelebrationRank.optionalMemorial;
+
+  /// Check if this is any type of memorial (memorial or optional)
+  bool get isAnyMemorial => rankEnum.isMemorial;
+
+  /// Check if this is a weekday
+  bool get isWeekday => rankEnum == CelebrationRank.weekday;
+
+  /// Check if this is a major celebration (solemnity or feast)
+  bool get isMajorCelebration => rankEnum.isMajorCelebration;
+
+  /// Check if this should be displayed prominently (solemnity, feast, or memorial)
+  bool get isProminentCelebration => isSolemnity || isFeast || isMemorial;
 
   factory LiturgicalCelebration.fromJson(Map<String, dynamic> json) {
     return LiturgicalCelebration(

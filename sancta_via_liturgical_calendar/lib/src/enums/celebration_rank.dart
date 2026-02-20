@@ -12,8 +12,8 @@ enum CelebrationRank {
   final String displayName;
   final int precedence; // Lower number = higher precedence
 
-  /// Convert from string to enum
-  static CelebrationRank? fromString(String rank) {
+  /// Convert from string to enum (returns weekday as default fallback)
+  static CelebrationRank fromString(String rank) {
     switch (rank.toUpperCase()) {
       case 'SOLEMNITY':
         return CelebrationRank.solemnity;
