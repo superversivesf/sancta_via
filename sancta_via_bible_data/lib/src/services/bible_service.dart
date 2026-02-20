@@ -2,14 +2,9 @@ import '../models/bible.dart';
 import '../models/bible_translation.dart';
 import '../models/scripture_reference.dart';
 import '../utils/reference_parser.dart';
+import '../utils/logger.dart';
 import 'bible_loader.dart';
 import 'bible_search_service.dart';
-
-/// Debug logging utility
-void bibleServiceDebugLog(String message, [String? tag]) {
-  final timestamp = DateTime.now().toIso8601String();
-  print('[$timestamp] ${tag != null ? '[$tag] ' : ''}$message');
-}
 
 /// Result of looking up scripture text
 class ScriptureContent {
@@ -80,22 +75,22 @@ class BibleService {
 
   /// Get a Bible for the specified translation
   Future<Bible> getBible(BibleTranslation translation) async {
-    bibleServiceDebugLog(
+    AppLogger.service(
         'getBible called for ${translation.name} (${translation.id})',
         'BIBLE_SERVICE');
 
     if (_cache.containsKey(translation)) {
-      bibleServiceDebugLog(
+      AppLogger.service(
           'Bible ${translation.name} found in cache', 'BIBLE_SERVICE');
       return _cache[translation]!;
     }
 
-    bibleServiceDebugLog(
+    AppLogger.service(
         'Loading Bible ${translation.name} from loader...', 'BIBLE_SERVICE');
 
     try {
       final bible = await _loader.loadBible(translation);
-      bibleServiceDebugLog(
+      AppLogger.service(
           'Bible ${translation.name} loaded successfully: ${bible.books.length} books',
           'BIBLE_SERVICE');
 
@@ -103,12 +98,12 @@ class BibleService {
 
       // Create search service for this Bible
       _searchServices[translation] = BibleSearchService(bible);
-      bibleServiceDebugLog(
+      AppLogger.service(
           'Search service created for ${translation.name}', 'BIBLE_SERVICE');
 
       return bible;
     } catch (e) {
-      bibleServiceDebugLog(
+      AppLogger.service(
           'Failed to load Bible ${translation.name}: $e', 'BIBLE_SERVICE');
       rethrow;
     }
@@ -131,22 +126,22 @@ class BibleService {
     ScriptureReference reference,
     BibleTranslation translation,
   ) async {
-    bibleServiceDebugLog(
+    AppLogger.service(
         'getScriptureContent called: ${reference.displayText} from ${translation.name}',
         'BIBLE_SERVICE');
 
     try {
-      bibleServiceDebugLog(
+      AppLogger.service(
           'Loading Bible for ${translation.name}...', 'BIBLE_SERVICE');
       final bible = await getBible(translation);
 
-      bibleServiceDebugLog(
+      AppLogger.service(
           'Looking for book: "${reference.book}" in ${bible.books.length} books',
           'BIBLE_SERVICE');
       final book = bible.findBook(reference.book);
 
       if (book == null) {
-        bibleServiceDebugLog(
+        AppLogger.service(
             'Book "${reference.book}" not found. Available books: ${bible.bookNames.join(', ')}',
             'BIBLE_SERVICE');
         return ScriptureContent.notFound(
@@ -157,12 +152,12 @@ class BibleService {
         );
       }
 
-      bibleServiceDebugLog(
+      AppLogger.service(
           'Found book: ${book.name}, looking for chapter ${reference.chapter}',
           'BIBLE_SERVICE');
       final chapter = book.getChapter(reference.chapter);
       if (chapter == null) {
-        bibleServiceDebugLog(
+        AppLogger.service(
             'Chapter ${reference.chapter} not found in ${reference.book}. Available chapters: ${book.chapterNumbers.join(', ')}',
             'BIBLE_SERVICE');
         return ScriptureContent.notFound(
@@ -176,14 +171,14 @@ class BibleService {
       String text;
 
       if (reference.startVerse != null && reference.endVerse != null) {
-        bibleServiceDebugLog(
+        AppLogger.service(
             'Getting verse range ${reference.startVerse}-${reference.endVerse} from chapter ${reference.chapter}',
             'BIBLE_SERVICE');
         // Get specific verse range
         final verses =
             chapter.getVerseRange(reference.startVerse!, reference.endVerse!);
         if (verses.isEmpty) {
-          bibleServiceDebugLog(
+          AppLogger.service(
               'No verses found for range ${reference.startVerse}-${reference.endVerse}. Chapter has ${chapter.verses.length} verses',
               'BIBLE_SERVICE');
           return ScriptureContent.notFound(
@@ -195,15 +190,15 @@ class BibleService {
         }
 
         text = verses.map((verse) => '${verse.number} ${verse.text}').join(' ');
-        bibleServiceDebugLog(
+        AppLogger.service(
             'Successfully retrieved ${verses.length} verses, text length: ${text.length}',
             'BIBLE_SERVICE');
       } else {
-        bibleServiceDebugLog(
+        AppLogger.service(
             'Getting entire chapter ${reference.chapter}', 'BIBLE_SERVICE');
         // Get entire chapter
         if (chapter.verses.isEmpty) {
-          bibleServiceDebugLog(
+          AppLogger.service(
               'Chapter ${reference.chapter} has no verses', 'BIBLE_SERVICE');
           return ScriptureContent.notFound(
             reference: reference,
@@ -212,12 +207,12 @@ class BibleService {
           );
         }
         text = chapter.fullText;
-        bibleServiceDebugLog(
+        AppLogger.service(
             'Successfully retrieved entire chapter, text length: ${text.length}',
             'BIBLE_SERVICE');
       }
 
-      bibleServiceDebugLog(
+      AppLogger.service(
           'Scripture content retrieved successfully for ${reference.displayText}',
           'BIBLE_SERVICE');
       return ScriptureContent.found(
@@ -226,8 +221,7 @@ class BibleService {
         translation: translation,
       );
     } catch (e) {
-      bibleServiceDebugLog(
-          'Error loading scripture ${reference.displayText}: $e',
+      AppLogger.service('Error loading scripture ${reference.displayText}: $e',
           'BIBLE_SERVICE');
       return ScriptureContent.notFound(
         reference: reference,
@@ -341,16 +335,16 @@ class BibleService {
 
   /// Get available translations
   Future<List<BibleTranslation>> getAvailableTranslations() async {
-    bibleServiceDebugLog('Getting available translations...', 'BIBLE_SERVICE');
+    AppLogger.service('Getting available translations...', 'BIBLE_SERVICE');
 
     try {
       final translations = await _loader.getAvailableTranslations();
-      bibleServiceDebugLog(
+      AppLogger.service(
           'Available translations: ${translations.map((t) => '${t.name} (${t.id})').join(', ')}',
           'BIBLE_SERVICE');
       return translations;
     } catch (e) {
-      bibleServiceDebugLog(
+      AppLogger.service(
           'Error getting available translations: $e', 'BIBLE_SERVICE');
       rethrow;
     }
@@ -358,17 +352,17 @@ class BibleService {
 
   /// Check if a translation is available
   Future<bool> isTranslationAvailable(BibleTranslation translation) async {
-    bibleServiceDebugLog(
+    AppLogger.service(
         'Checking if ${translation.name} (${translation.id}) is available...',
         'BIBLE_SERVICE');
 
     try {
       final available = await _loader.isTranslationAvailable(translation);
-      bibleServiceDebugLog(
+      AppLogger.service(
           '${translation.name} availability: $available', 'BIBLE_SERVICE');
       return available;
     } catch (e) {
-      bibleServiceDebugLog(
+      AppLogger.service(
           'Error checking availability for ${translation.name}: $e',
           'BIBLE_SERVICE');
       return false;

@@ -10,12 +10,7 @@ import '../models/bible_chapter.dart';
 import '../models/bible_verse.dart';
 import 'bible_loader.dart';
 import '../utils/book_mapping.dart';
-
-/// Debug logging utility
-void _debugLog(String message, [String? tag]) {
-  final timestamp = DateTime.now().toIso8601String();
-  print('[$timestamp] ${tag != null ? '[$tag] ' : ''}$message');
-}
+import '../utils/logger.dart';
 
 /// High-performance Bible loader using SQLite database
 ///
@@ -50,7 +45,8 @@ class SqliteBibleLoader implements BibleLoader {
 
       if (!dbExists) {
         // Copy database from assets
-        _debugLog('Copying database from assets to $dbPath', 'SQLITE_LOADER');
+        AppLogger.loader(
+            'Copying database from assets to $dbPath', 'SQLITE_LOADER');
         final data = await rootBundle.load(databaseAssetPath);
         final bytes =
             data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
@@ -70,13 +66,13 @@ class SqliteBibleLoader implements BibleLoader {
             // Make file readable and writable by owner
             await Process.run('chmod', ['644', dbPath]);
           } catch (e) {
-            _debugLog(
+            AppLogger.loader(
                 'Warning: Could not set file permissions: $e', 'SQLITE_LOADER');
             // Continue anyway - might still work
           }
         }
 
-        _debugLog('Database copied successfully', 'SQLITE_LOADER');
+        AppLogger.loader('Database copied successfully', 'SQLITE_LOADER');
       }
 
       // Open database without read-only restriction
@@ -87,22 +83,23 @@ class SqliteBibleLoader implements BibleLoader {
         // Don't set readOnly: true - SQLite needs to write metadata
         onCreate: (db, version) {
           // Database already exists and is populated, no need to create
-          _debugLog(
+          AppLogger.loader(
               'Database opened (onCreate called but ignored)', 'SQLITE_LOADER');
         },
         onOpen: (db) {
-          _debugLog('Database opened successfully', 'SQLITE_LOADER');
+          AppLogger.loader('Database opened successfully', 'SQLITE_LOADER');
         },
       );
 
       return _database!;
     } catch (e) {
-      _debugLog('Error initializing database: $e', 'SQLITE_LOADER');
+      AppLogger.loader('Error initializing database: $e', 'SQLITE_LOADER');
 
       // If there's a permission error, try to delete and recreate
       if (e.toString().contains('readonly') ||
           e.toString().contains('permission')) {
-        _debugLog('Attempting to recreate database due to permission error...',
+        AppLogger.loader(
+            'Attempting to recreate database due to permission error...',
             'SQLITE_LOADER');
         try {
           final documentsPath = await getDatabasesPath();
@@ -111,7 +108,8 @@ class SqliteBibleLoader implements BibleLoader {
 
           if (await dbFile.exists()) {
             await dbFile.delete();
-            _debugLog('Deleted corrupted database file', 'SQLITE_LOADER');
+            AppLogger.loader(
+                'Deleted corrupted database file', 'SQLITE_LOADER');
           }
 
           // Reset static variable to force recreation
@@ -120,7 +118,7 @@ class SqliteBibleLoader implements BibleLoader {
           // Try again recursively (but only once)
           return await _getDatabase();
         } catch (retryError) {
-          _debugLog('Retry failed: $retryError', 'SQLITE_LOADER');
+          AppLogger.loader('Retry failed: $retryError', 'SQLITE_LOADER');
           rethrow;
         }
       }
@@ -131,12 +129,12 @@ class SqliteBibleLoader implements BibleLoader {
 
   @override
   Future<Bible> loadBible(BibleTranslation translation) async {
-    _debugLog('Loading Bible: ${translation.name} (${translation.id})',
+    AppLogger.loader('Loading Bible: ${translation.name} (${translation.id})',
         'SQLITE_LOADER');
 
     // Check cache first
     if (_cache.containsKey(translation)) {
-      _debugLog('Found ${translation.name} in cache', 'SQLITE_LOADER');
+      AppLogger.loader('Found ${translation.name} in cache', 'SQLITE_LOADER');
       return _cache[translation]!;
     }
 
@@ -156,12 +154,12 @@ class SqliteBibleLoader implements BibleLoader {
       }
 
       final metadata = translationData.first;
-      _debugLog(
+      AppLogger.loader(
           'Loaded translation metadata: ${metadata['name']}', 'SQLITE_LOADER');
 
       // Load all books for this translation
       final books = await _loadBooks(db, translation);
-      _debugLog('Loaded ${books.length} books for ${translation.name}',
+      AppLogger.loader('Loaded ${books.length} books for ${translation.name}',
           'SQLITE_LOADER');
 
       // Create Bible object
@@ -179,11 +177,12 @@ class SqliteBibleLoader implements BibleLoader {
 
       // Cache the loaded bible
       _cache[translation] = bible;
-      _debugLog('Bible cached for ${translation.name}', 'SQLITE_LOADER');
+      AppLogger.loader('Bible cached for ${translation.name}', 'SQLITE_LOADER');
 
       return bible;
     } catch (e) {
-      _debugLog('Error loading ${translation.name}: $e', 'SQLITE_LOADER');
+      AppLogger.loader(
+          'Error loading ${translation.name}: $e', 'SQLITE_LOADER');
       rethrow;
     }
   }
@@ -227,7 +226,8 @@ class SqliteBibleLoader implements BibleLoader {
   /// Load all chapters for a book in one efficient query
   Future<List<BibleChapter>> _loadAllChapters(
       Database db, BibleTranslation translation, String bookName) async {
-    _debugLog('Loading all chapters for: $bookName from ${translation.id}',
+    AppLogger.loader(
+        'Loading all chapters for: $bookName from ${translation.id}',
         'SQLITE_LOADER');
 
     try {
@@ -240,7 +240,7 @@ class SqliteBibleLoader implements BibleLoader {
       );
 
       if (versesData.isEmpty) {
-        _debugLog('No verses found for $bookName', 'SQLITE_LOADER');
+        AppLogger.loader('No verses found for $bookName', 'SQLITE_LOADER');
         return [];
       }
 
@@ -270,12 +270,13 @@ class SqliteBibleLoader implements BibleLoader {
         chapters.add(chapter);
       }
 
-      _debugLog(
+      AppLogger.loader(
           'Loaded ${chapters.length} chapters for $bookName (${versesData.length} total verses)',
           'SQLITE_LOADER');
       return chapters;
     } catch (e) {
-      _debugLog('Error loading chapters for $bookName: $e', 'SQLITE_LOADER');
+      AppLogger.loader(
+          'Error loading chapters for $bookName: $e', 'SQLITE_LOADER');
       return [];
     }
   }
@@ -312,11 +313,11 @@ class SqliteBibleLoader implements BibleLoader {
       );
 
       final available = result.isNotEmpty;
-      _debugLog('Translation ${translation.id} availability: $available',
+      AppLogger.loader('Translation ${translation.id} availability: $available',
           'SQLITE_LOADER');
       return available;
     } catch (e) {
-      _debugLog('Error checking availability for ${translation.id}: $e',
+      AppLogger.loader('Error checking availability for ${translation.id}: $e',
           'SQLITE_LOADER');
       return false;
     }
@@ -324,7 +325,7 @@ class SqliteBibleLoader implements BibleLoader {
 
   @override
   Future<List<BibleTranslation>> getAvailableTranslations() async {
-    _debugLog(
+    AppLogger.loader(
         'Getting available translations from database...', 'SQLITE_LOADER');
 
     try {
@@ -340,19 +341,20 @@ class SqliteBibleLoader implements BibleLoader {
         try {
           final translation = BibleTranslation.fromId(id);
           available.add(translation);
-          _debugLog(
+          AppLogger.loader(
               '✓ Found translation: ${translation.name}', 'SQLITE_LOADER');
         } catch (e) {
-          _debugLog(
+          AppLogger.loader(
               '✗ Unknown translation ID in database: $id', 'SQLITE_LOADER');
         }
       }
 
-      _debugLog(
+      AppLogger.loader(
           'Total available translations: ${available.length}', 'SQLITE_LOADER');
       return available;
     } catch (e) {
-      _debugLog('Error getting available translations: $e', 'SQLITE_LOADER');
+      AppLogger.loader(
+          'Error getting available translations: $e', 'SQLITE_LOADER');
       return [];
     }
   }
@@ -383,13 +385,13 @@ class SqliteBibleLoader implements BibleLoader {
 
       if (await dbFile.exists()) {
         await dbFile.delete();
-        print('✅ Database reset successfully');
+        AppLogger.loader('✅ Database reset successfully');
       }
 
       // Clear cache
       clearCache();
     } catch (e) {
-      print('❌ Error resetting database: $e');
+      AppLogger.error('Error resetting database', e, null, 'SQLITE_LOADER');
     }
   }
 

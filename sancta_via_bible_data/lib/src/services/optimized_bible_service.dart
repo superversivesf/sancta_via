@@ -1,13 +1,8 @@
 import '../models/bible_translation.dart';
 import '../models/scripture_reference.dart';
 import '../utils/reference_parser.dart';
+import '../utils/logger.dart';
 import 'optimized_sqlite_bible_loader.dart';
-
-/// Debug logging utility
-void optimizedBibleServiceDebugLog(String message, [String? tag]) {
-  final timestamp = DateTime.now().toIso8601String();
-  print('[$timestamp] ${tag != null ? '[$tag] ' : ''}$message');
-}
 
 /// Result of looking up scripture text (same as before)
 class OptimizedScriptureContent {
@@ -74,7 +69,7 @@ class OptimizedBibleService {
     ScriptureReference reference,
     BibleTranslation translation,
   ) async {
-    optimizedBibleServiceDebugLog(
+    AppLogger.service(
         'getScriptureContent called: ${reference.displayText} from ${translation.name}',
         'OPTIMIZED_SERVICE');
 
@@ -82,7 +77,7 @@ class OptimizedBibleService {
       // Check if book exists (fast database query)
       final hasBook = await _loader.hasBook(reference.book, translation);
       if (!hasBook) {
-        optimizedBibleServiceDebugLog(
+        AppLogger.service(
             'Book "${reference.book}" not found in ${translation.name}',
             'OPTIMIZED_SERVICE');
         return OptimizedScriptureContent.notFound(
@@ -94,14 +89,14 @@ class OptimizedBibleService {
       }
 
       // Load only the specific chapter we need (fast!)
-      optimizedBibleServiceDebugLog(
+      AppLogger.service(
           'Loading chapter ${reference.chapter} from ${reference.book}',
           'OPTIMIZED_SERVICE');
       final chapter = await _loader.getChapter(
           translation, reference.book, reference.chapter);
 
       if (chapter == null) {
-        optimizedBibleServiceDebugLog(
+        AppLogger.service(
             'Chapter ${reference.chapter} not found in ${reference.book}',
             'OPTIMIZED_SERVICE');
         return OptimizedScriptureContent.notFound(
@@ -116,13 +111,13 @@ class OptimizedBibleService {
 
       if (reference.startVerse != null && reference.endVerse != null) {
         // Get specific verse range
-        optimizedBibleServiceDebugLog(
+        AppLogger.service(
             'Getting verse range ${reference.startVerse}-${reference.endVerse}',
             'OPTIMIZED_SERVICE');
         final verses =
             chapter.getVerseRange(reference.startVerse!, reference.endVerse!);
         if (verses.isEmpty) {
-          optimizedBibleServiceDebugLog(
+          AppLogger.service(
               'No verses found for range ${reference.startVerse}-${reference.endVerse}',
               'OPTIMIZED_SERVICE');
           return OptimizedScriptureContent.notFound(
@@ -134,16 +129,14 @@ class OptimizedBibleService {
         }
 
         text = verses.map((verse) => '${verse.number} ${verse.text}').join(' ');
-        optimizedBibleServiceDebugLog(
-            'Successfully retrieved ${verses.length} verses',
+        AppLogger.service('Successfully retrieved ${verses.length} verses',
             'OPTIMIZED_SERVICE');
       } else {
         // Get entire chapter
-        optimizedBibleServiceDebugLog(
+        AppLogger.service(
             'Getting entire chapter ${reference.chapter}', 'OPTIMIZED_SERVICE');
         if (chapter.verses.isEmpty) {
-          optimizedBibleServiceDebugLog(
-              'Chapter ${reference.chapter} has no verses',
+          AppLogger.service('Chapter ${reference.chapter} has no verses',
               'OPTIMIZED_SERVICE');
           return OptimizedScriptureContent.notFound(
             reference: reference,
@@ -152,12 +145,12 @@ class OptimizedBibleService {
           );
         }
         text = chapter.fullText;
-        optimizedBibleServiceDebugLog(
+        AppLogger.service(
             'Successfully retrieved entire chapter, text length: ${text.length}',
             'OPTIMIZED_SERVICE');
       }
 
-      optimizedBibleServiceDebugLog(
+      AppLogger.service(
           'Scripture content retrieved successfully for ${reference.displayText}',
           'OPTIMIZED_SERVICE');
       return OptimizedScriptureContent.found(
@@ -166,8 +159,7 @@ class OptimizedBibleService {
         translation: translation,
       );
     } catch (e) {
-      optimizedBibleServiceDebugLog(
-          'Error loading scripture ${reference.displayText}: $e',
+      AppLogger.service('Error loading scripture ${reference.displayText}: $e',
           'OPTIMIZED_SERVICE');
       return OptimizedScriptureContent.notFound(
         reference: reference,
@@ -252,17 +244,17 @@ class OptimizedBibleService {
 
   /// Get available translations (fast - no content loading)
   Future<List<BibleTranslation>> getAvailableTranslations() async {
-    optimizedBibleServiceDebugLog(
+    AppLogger.service(
         'Getting available translations (optimized)...', 'OPTIMIZED_SERVICE');
 
     try {
       final translations = await _loader.getAvailableTranslations();
-      optimizedBibleServiceDebugLog(
+      AppLogger.service(
           'Available translations: ${translations.map((t) => '${t.name} (${t.id})').join(', ')}',
           'OPTIMIZED_SERVICE');
       return translations;
     } catch (e) {
-      optimizedBibleServiceDebugLog(
+      AppLogger.service(
           'Error getting available translations: $e', 'OPTIMIZED_SERVICE');
       rethrow;
     }
@@ -270,17 +262,17 @@ class OptimizedBibleService {
 
   /// Check if a translation is available (fast)
   Future<bool> isTranslationAvailable(BibleTranslation translation) async {
-    optimizedBibleServiceDebugLog(
+    AppLogger.service(
         'Checking if ${translation.name} (${translation.id}) is available...',
         'OPTIMIZED_SERVICE');
 
     try {
       final available = await _loader.isTranslationAvailable(translation);
-      optimizedBibleServiceDebugLog(
+      AppLogger.service(
           '${translation.name} availability: $available', 'OPTIMIZED_SERVICE');
       return available;
     } catch (e) {
-      optimizedBibleServiceDebugLog(
+      AppLogger.service(
           'Error checking availability for ${translation.name}: $e',
           'OPTIMIZED_SERVICE');
       return false;

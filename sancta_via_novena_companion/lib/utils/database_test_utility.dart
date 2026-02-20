@@ -89,32 +89,37 @@ class DatabaseTestUtility {
     try {
       final info = await _initializer.getDatabaseInfo();
 
-      print('\n=== NOVENA DATABASE INFO ===');
-      print('Initialized: ${info['initialized']}');
+      AppLogger.debug('=== NOVENA DATABASE INFO ===', 'DB_TEST');
+      AppLogger.debug('Initialized: ${info['initialized']}', 'DB_TEST');
 
       if (info.containsKey('stats')) {
         final stats = info['stats'] as Map<String, int>;
-        print('Novenas: ${stats['novenas']}');
-        print('Days: ${stats['days']}');
+        AppLogger.debug(
+          'Novenas: ${stats['novenas']}, Days: ${stats['days']}',
+          'DB_TEST',
+        );
       }
 
       if (info.containsKey('categories')) {
         final categories = info['categories'] as List<String>;
-        print('Categories: ${categories.join(', ')}');
+        AppLogger.debug('Categories: ${categories.join(', ')}', 'DB_TEST');
       }
 
       if (info.containsKey('difficulties')) {
         final difficulties = info['difficulties'] as List<String>;
-        print('Difficulties: ${difficulties.join(', ')}');
+        AppLogger.debug('Difficulties: ${difficulties.join(', ')}', 'DB_TEST');
       }
 
       if (info.containsKey('error')) {
-        print('Error: ${info['error']}');
+        AppLogger.error(
+          'Database error: ${info['error']}',
+          null,
+          null,
+          'DB_TEST',
+        );
       }
-
-      print('===========================\n');
     } catch (e) {
-      print('Failed to get database info: $e');
+      AppLogger.error('Failed to get database info', e);
     }
   }
 

@@ -30,3 +30,4 @@ export 'src/services/optimized_bible_service.dart';
 export 'src/utils/book_mapping.dart';
 export 'src/utils/reference_parser.dart';
 export 'src/utils/book_name_normalizer.dart';
+export 'src/utils/logger.dart';

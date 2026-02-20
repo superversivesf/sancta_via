@@ -7,13 +7,7 @@ import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import '../models/confession_app_settings.dart';
 import '../features/examination/models/user_preferences_model.dart';
 import '../config/constants.dart';
-
-/// Debug logging utility
-void debugLog(String message, [String? tag]) {
-  final timestamp = DateTime.now().toIso8601String();
-  // ignore: avoid_print
-  print('[$timestamp] ${tag != null ? '[$tag] ' : ''}$message');
-}
+import '../utils/logger.dart';
 
 /// Provider for Confession app specific settings
 class ConfessionAppSettingsNotifier
@@ -38,7 +32,7 @@ class ConfessionAppSettingsNotifier
   /// Load settings from persistent storage with comprehensive migration support
   Future<void> _loadSettings() async {
     try {
-      debugLog('Loading Confession app settings...', 'CONFESSION_SETTINGS');
+      AppLogger.debug('Loading Confession app settings...', 'CONFESSION_SETTINGS');
       final prefs = await SharedPreferences.getInstance();
 
       // Check if we need to migrate from old format
@@ -64,7 +58,7 @@ class ConfessionAppSettingsNotifier
               .updateSettings(settings.baseSettings);
         }
 
-        debugLog(
+        AppLogger.debug(
           'Confession app settings loaded successfully',
           'CONFESSION_SETTINGS',
         );
@@ -76,13 +70,13 @@ class ConfessionAppSettingsNotifier
             .read(baseSettingsProvider.notifier)
             .updateSettings(defaultSettings.baseSettings);
 
-        debugLog(
+        AppLogger.debug(
           'Using default Confession app settings',
           'CONFESSION_SETTINGS',
         );
       }
     } catch (e) {
-      debugLog(
+      AppLogger.debug(
         'Error loading Confession app settings: $e',
         'CONFESSION_SETTINGS',
       );
@@ -94,14 +88,14 @@ class ConfessionAppSettingsNotifier
   /// Migrate from old format with multiple storage keys and different structure
   Future<void> _migrateFromLegacySettings(SharedPreferences prefs) async {
     try {
-      debugLog('Migrating from legacy Confession app settings...', 'MIGRATION');
+      AppLogger.debug('Migrating from legacy Confession app settings...', 'MIGRATION');
 
       // Load old app settings (JSON format)
       Map<String, dynamic> oldAppSettings = {};
       final oldSettingsJson = prefs.getString(AppConstants.settingsKey);
       if (oldSettingsJson != null) {
         oldAppSettings = json.decode(oldSettingsJson) as Map<String, dynamic>;
-        debugLog('Found legacy app settings: $oldAppSettings', 'MIGRATION');
+        AppLogger.debug('Found legacy app settings: $oldAppSettings', 'MIGRATION');
       }
 
       // Load old examination preferences (separate storage)
@@ -111,7 +105,7 @@ class ConfessionAppSettingsNotifier
       );
       if (oldPrefsJson != null) {
         oldExaminationPrefs = json.decode(oldPrefsJson) as Map<String, dynamic>;
-        debugLog(
+        AppLogger.debug(
           'Found legacy examination preferences: $oldExaminationPrefs',
           'MIGRATION',
         );
@@ -131,7 +125,7 @@ class ConfessionAppSettingsNotifier
 
         // Handle theme migration: if old darkMode was true, set theme to dark
         if (oldAppSettings['darkMode'] == true) {
-          debugLog('Migrating darkMode=true to dark theme', 'MIGRATION');
+          AppLogger.debug('Migrating darkMode=true to dark theme', 'MIGRATION');
           await _ref
               .read(themeModeProvider.notifier)
               .setThemeMode(ThemeMode.dark);
@@ -140,7 +134,7 @@ class ConfessionAppSettingsNotifier
         // Save in new unified format
         await _saveSettings(migratedSettings);
 
-        debugLog('Legacy settings migration completed', 'MIGRATION');
+        AppLogger.debug('Legacy settings migration completed', 'MIGRATION');
       }
 
       // Mark migration as complete
@@ -150,7 +144,7 @@ class ConfessionAppSettingsNotifier
       await prefs.remove(AppConstants.settingsKey);
       await prefs.remove(AppConstants.examinationPreferencesKey);
     } catch (e) {
-      debugLog('Error during migration: $e', 'MIGRATION');
+      AppLogger.debug('Error during migration: $e', 'MIGRATION');
       // Continue with defaults if migration fails
     }
   }
@@ -163,12 +157,12 @@ class ConfessionAppSettingsNotifier
       final settingsJson = json.encode(settingsToSave.toJson());
       await prefs.setString(_unifiedStorageKey, settingsJson);
 
-      debugLog(
+      AppLogger.debug(
         'Confession app settings saved successfully',
         'CONFESSION_SETTINGS',
       );
     } catch (e) {
-      debugLog(
+      AppLogger.debug(
         'Error saving Confession app settings: $e',
         'CONFESSION_SETTINGS',
       );
@@ -230,7 +224,7 @@ class ConfessionAppSettingsNotifier
       );
       state = state.updateExaminationPreferences(newPreferences);
       await _saveSettings();
-      debugLog(
+      AppLogger.debug(
         'Added favorite examination: $examinationId',
         'CONFESSION_SETTINGS',
       );
@@ -246,7 +240,7 @@ class ConfessionAppSettingsNotifier
       );
       state = state.updateExaminationPreferences(newPreferences);
       await _saveSettings();
-      debugLog(
+      AppLogger.debug(
         'Removed favorite examination: $examinationId',
         'CONFESSION_SETTINGS',
       );
@@ -260,7 +254,7 @@ class ConfessionAppSettingsNotifier
     );
     state = state.updateExaminationPreferences(newPreferences);
     await _saveSettings();
-    debugLog('Set default examination: $examinationId', 'CONFESSION_SETTINGS');
+    AppLogger.debug('Set default examination: $examinationId', 'CONFESSION_SETTINGS');
   }
 
   // ===========================================
@@ -271,21 +265,21 @@ class ConfessionAppSettingsNotifier
   Future<void> setShowProgress(bool show) async {
     state = state.copyWith(showProgress: show);
     await _saveSettings();
-    debugLog('Show progress updated to: $show', 'CONFESSION_SETTINGS');
+    AppLogger.debug('Show progress updated to: $show', 'CONFESSION_SETTINGS');
   }
 
   /// Update guided mode
   Future<void> setUseGuidedMode(bool useGuided) async {
     state = state.copyWith(useGuidedMode: useGuided);
     await _saveSettings();
-    debugLog('Use guided mode updated to: $useGuided', 'CONFESSION_SETTINGS');
+    AppLogger.debug('Use guided mode updated to: $useGuided', 'CONFESSION_SETTINGS');
   }
 
   /// Update examination history saving
   Future<void> setSaveExaminationHistory(bool save) async {
     state = state.copyWith(saveExaminationHistory: save);
     await _saveSettings();
-    debugLog(
+    AppLogger.debug(
       'Save examination history updated to: $save',
       'CONFESSION_SETTINGS',
     );
@@ -295,7 +289,7 @@ class ConfessionAppSettingsNotifier
   Future<void> setHistoryRetentionDays(int days) async {
     state = state.copyWith(historyRetentionDays: days.clamp(1, 365));
     await _saveSettings();
-    debugLog('History retention days updated to: $days', 'CONFESSION_SETTINGS');
+    AppLogger.debug('History retention days updated to: $days', 'CONFESSION_SETTINGS');
   }
 }
 

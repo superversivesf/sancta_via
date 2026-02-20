@@ -13,6 +13,7 @@ import '../screens/chapter_selection/chapter_selection_screen.dart';
 import '../screens/chapter/chapter_reading_screen.dart';
 import '../screens/verse_selection/verse_selection_screen.dart';
 import '../screens/debug/numbered_books_debug_screen.dart';
+import '../utils/logger.dart';
 
 final appRouter = GoRouter(
   navigatorKey: navigatorKey, // Global navigator key for user messages
@@ -66,7 +67,7 @@ final appRouter = GoRouter(
 
           return ChapterSelectionScreen(bookName: bookName);
         } catch (e) {
-          print('❌ Error parsing chapter selection route: $e');
+          AppLogger.error('Error parsing chapter selection route', e);
           return _buildRouteErrorScreen(context, 'Invalid book name: $e');
         }
       },
@@ -94,7 +95,7 @@ final appRouter = GoRouter(
             startVerse: startVerse != null ? int.tryParse(startVerse) : null,
           );
         } catch (e) {
-          print('❌ Error parsing chapter route: $e');
+          AppLogger.error('Error parsing chapter route', e);
           // Return error screen instead of crashing
           return _buildRouteErrorScreen(
             context,
@@ -120,7 +121,7 @@ final appRouter = GoRouter(
 
           return VerseSelectionScreen(bookName: bookName, chapter: chapter);
         } catch (e) {
-          print('❌ Error parsing verse selection route: $e');
+          AppLogger.error('Error parsing verse selection route', e);
           return _buildRouteErrorScreen(
             context,
             'Invalid verse selection parameters: $e',
@@ -152,21 +153,22 @@ final appRouter = GoRouter(
 /// NEW: Validate book names against known Bible books
 bool _isValidBookName(String bookName) {
   // DEBUGGING: Log the book name being validated
-  print('🔍 Validating book name: "$bookName"');
+  AppLogger.route('Validating book name: "$bookName"');
 
   // Check against all possible book collections
   for (final collection in BookCollection.values) {
     if (collection.bookNames.contains(bookName)) {
-      print('✅ Book "$bookName" found in collection: ${collection.name}');
+      AppLogger.route(
+        'Book "$bookName" found in collection: ${collection.name}',
+      );
       return true;
     }
   }
 
   // DEBUGGING: Log all books in collections to help debug
-  print('❌ Book "$bookName" not found in any collection!');
-  print('📚 Available books in collections:');
+  AppLogger.warning('Book "$bookName" not found in any collection!');
   for (final collection in BookCollection.values) {
-    print(
+    AppLogger.route(
       '   ${collection.name}: ${collection.bookNames.take(5).join(", ")}${collection.bookNames.length > 5 ? "..." : ""}',
     );
   }

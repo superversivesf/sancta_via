@@ -1,16 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:bible_data_riverpod/bible_data_riverpod.dart';
+import 'package:bible_data_riverpod/bible_data_riverpod.dart' hide AppLogger;
 import 'dart:convert';
 import 'package:flutter/services.dart';
-// COMMENTED OUT: Archive import no longer needed since we don't ship compressed files
-// import 'package:archive/archive.dart';
-
-/// Debug logging utility
-void debugLog(String message, [String? tag]) {
-  final timestamp = DateTime.now().toIso8601String();
-  print('[$timestamp] ${tag != null ? '[$tag] ' : ''}$message');
-}
+import '../utils/logger.dart';
 
 /// Onboarding state
 enum OnboardingState { checking, loading, completed, error }
@@ -82,7 +75,7 @@ class OnboardingService {
       final jsonString = await rootBundle.loadString(path);
       return json.decode(jsonString) as Map<String, dynamic>;
     } catch (e) {
-      debugLog('Error loading JSON file $path: $e', 'ONBOARDING');
+      AppLogger.debug('Error loading JSON file $path: $e', 'ONBOARDING');
       rethrow;
     }
   }
@@ -112,7 +105,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
 
   /// Initialize the onboarding process
   Future<void> initialize() async {
-    debugLog('Starting onboarding initialization...', 'ONBOARDING');
+    AppLogger.debug('Starting onboarding initialization...', 'ONBOARDING');
 
     try {
       // Step 1: Check if this is first run
@@ -127,7 +120,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
       final isDatabaseInitialized =
           await OnboardingService.isDatabaseInitialized();
 
-      debugLog(
+      AppLogger.debug(
         'First run: $isFirstRun, Database initialized: $isDatabaseInitialized',
         'ONBOARDING',
       );
@@ -146,7 +139,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
       // Need to initialize the database
       await _initializeBibleDatabase();
     } catch (e) {
-      debugLog('Onboarding initialization error: $e', 'ONBOARDING');
+      AppLogger.debug('Onboarding initialization error: $e', 'ONBOARDING');
       state = state.copyWith(
         state: OnboardingState.error,
         message: 'Failed to initialize app',
@@ -157,7 +150,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
 
   /// Initialize the Bible database from compressed JSON files
   Future<void> _initializeBibleDatabase() async {
-    debugLog('Starting Bible database initialization...', 'ONBOARDING');
+    AppLogger.debug('Starting Bible database initialization...', 'ONBOARDING');
 
     try {
       // Step 2: Load available translations
@@ -170,7 +163,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
 
       final translations =
           await OnboardingService.getAvailableBibleTranslations();
-      debugLog(
+      AppLogger.debug(
         'Found ${translations.length} translations to load',
         'ONBOARDING',
       );
@@ -185,11 +178,11 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
       );
 
       await OnboardingService.verifyCompressedBibleFiles();
-      debugLog('All compressed Bible files verified successfully', 'ONBOARDING');
+      AppLogger.debug('All compressed Bible files verified successfully', 'ONBOARDING');
       */
 
       // Skip verification step since we only use the SQLite database
-      debugLog(
+      AppLogger.debug(
         'Skipping compressed file verification - using SQLite database only',
         'ONBOARDING',
       );
@@ -226,9 +219,9 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
         progress: 1.0,
       );
 
-      debugLog('Bible database initialization completed', 'ONBOARDING');
+      AppLogger.debug('Bible database initialization completed', 'ONBOARDING');
     } catch (e) {
-      debugLog('Bible database initialization error: $e', 'ONBOARDING');
+      AppLogger.debug('Bible database initialization error: $e', 'ONBOARDING');
       state = state.copyWith(
         state: OnboardingState.error,
         message: 'Failed to initialize Bible database',
@@ -239,7 +232,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingProgress> {
 
   /// Retry onboarding process
   Future<void> retry() async {
-    debugLog('Retrying onboarding process...', 'ONBOARDING');
+    AppLogger.debug('Retrying onboarding process...', 'ONBOARDING');
     state = const OnboardingProgress(
       state: OnboardingState.checking,
       message: 'Retrying...',

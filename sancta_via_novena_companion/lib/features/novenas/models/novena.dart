@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../utils/logger.dart';
 
 // Basic Novena models for fresh restart
 // You can expand these as needed for your new implementation
@@ -196,15 +197,9 @@ class ActiveNovena {
     final calculatedDay = (daysSinceStart + 1).clamp(1, 9);
 
     // Debug logging for day calculation
-    print('🔍 SPIRITUAL DAY DEBUG:');
-    print('  Start Date: ${startDate.toString()}');
-    print(
-      '  Start Time: ${startDate.hour}:${startDate.minute.toString().padLeft(2, '0')}:${startDate.second.toString().padLeft(2, '0')}',
+    AppLogger.debug(
+      'SPIRITUAL DAY: Start=$startDate, Today=$today, DaysSince=$daysSinceStart, Calculated=$calculatedDay, Completed=${completedDays.length}',
     );
-    print('  Today: ${today.toString()}');
-    print('  Days Since Start: $daysSinceStart');
-    print('  Calculated Day: $calculatedDay');
-    print('  Completed Days: $completedDays');
 
     return calculatedDay;
   }

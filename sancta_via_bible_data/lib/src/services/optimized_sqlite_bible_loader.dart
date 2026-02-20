@@ -10,13 +10,8 @@ import '../models/bible_chapter.dart';
 import '../models/bible_verse.dart';
 import '../utils/book_name_normalizer.dart';
 import '../utils/book_mapping.dart';
+import '../utils/logger.dart';
 import 'bible_loader.dart';
-
-/// Debug logging utility
-void _debugLog(String message, [String? tag]) {
-  final timestamp = DateTime.now().toIso8601String();
-  print('[$timestamp] ${tag != null ? '[$tag] ' : ''}$message');
-}
 
 /// Cached chapter data for fast access
 class CachedChapter {
@@ -59,7 +54,7 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
       final dbExists = await dbFile.exists();
 
       if (!dbExists) {
-        _debugLog(
+        AppLogger.loader(
             'Copying database from assets to $dbPath', 'OPTIMIZED_LOADER');
         final data = await rootBundle.load(databaseAssetPath);
         final bytes =
@@ -75,28 +70,29 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
           try {
             await Process.run('chmod', ['644', dbPath]);
           } catch (e) {
-            _debugLog('Warning: Could not set file permissions: $e',
+            AppLogger.loader('Warning: Could not set file permissions: $e',
                 'OPTIMIZED_LOADER');
           }
         }
 
-        _debugLog('Database copied successfully', 'OPTIMIZED_LOADER');
+        AppLogger.loader('Database copied successfully', 'OPTIMIZED_LOADER');
       } else {
-        _debugLog('Using existing database at $dbPath', 'OPTIMIZED_LOADER');
+        AppLogger.loader(
+            'Using existing database at $dbPath', 'OPTIMIZED_LOADER');
       }
 
       _database = await openDatabase(
         dbPath,
         version: 1,
         onOpen: (db) {
-          _debugLog('Database opened successfully (optimized loader)',
+          AppLogger.loader('Database opened successfully (optimized loader)',
               'OPTIMIZED_LOADER');
         },
       );
 
       return _database!;
     } catch (e) {
-      _debugLog('Error initializing database: $e', 'OPTIMIZED_LOADER');
+      AppLogger.loader('Error initializing database: $e', 'OPTIMIZED_LOADER');
       rethrow;
     }
   }
@@ -113,7 +109,7 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
 
     // Check memory cache first
     if (_chapterCache.containsKey(cacheKey)) {
-      _debugLog('Found chapter in cache: $cacheKey', 'OPTIMIZED_LOADER');
+      AppLogger.loader('Found chapter in cache: $cacheKey', 'OPTIMIZED_LOADER');
       final cached = _chapterCache[cacheKey]!;
       // Update access time
       _chapterCache[cacheKey] = CachedChapter(cached.chapter);
@@ -121,7 +117,7 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
     }
 
     try {
-      _debugLog(
+      AppLogger.loader(
           'Loading chapter from database: $cacheKey (db format: $dbBookName)',
           'OPTIMIZED_LOADER');
       final db = await _getDatabase();
@@ -135,7 +131,7 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
       );
 
       if (versesData.isEmpty) {
-        _debugLog('No verses found for $cacheKey', 'OPTIMIZED_LOADER');
+        AppLogger.loader('No verses found for $cacheKey', 'OPTIMIZED_LOADER');
         return null;
       }
 
@@ -156,11 +152,12 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
       // Cache the chapter
       _cacheChapter(cacheKey, chapter);
 
-      _debugLog('Loaded chapter $cacheKey with ${verses.length} verses',
+      AppLogger.loader('Loaded chapter $cacheKey with ${verses.length} verses',
           'OPTIMIZED_LOADER');
       return chapter;
     } catch (e) {
-      _debugLog('Error loading chapter $cacheKey: $e', 'OPTIMIZED_LOADER');
+      AppLogger.loader(
+          'Error loading chapter $cacheKey: $e', 'OPTIMIZED_LOADER');
       return null;
     }
   }
@@ -184,7 +181,7 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
         return BookNameNormalizer.toDisplayFormat(dbBookName);
       }).toList();
     } catch (e) {
-      _debugLog('Error getting book names for ${translation.id}: $e',
+      AppLogger.loader('Error getting book names for ${translation.id}: $e',
           'OPTIMIZED_LOADER');
       return [];
     }
@@ -198,7 +195,8 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
       final dbBookName = BookNameNormalizer.toDatabaseFormat(bookName);
       final db = await _getDatabase();
 
-      _debugLog('Getting chapter count for: $bookName (db format: $dbBookName)',
+      AppLogger.loader(
+          'Getting chapter count for: $bookName (db format: $dbBookName)',
           'OPTIMIZED_LOADER');
 
       final result = await db.rawQuery(
@@ -208,11 +206,11 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
 
       final chapterCount =
           result.isNotEmpty ? (result.first['max_chapter'] as int?) ?? 0 : 0;
-      _debugLog(
+      AppLogger.loader(
           'Chapter count for $bookName: $chapterCount', 'OPTIMIZED_LOADER');
       return chapterCount;
     } catch (e) {
-      _debugLog(
+      AppLogger.loader(
           'Error getting chapter count for $bookName: $e', 'OPTIMIZED_LOADER');
       return 0;
     }
@@ -233,7 +231,7 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
         _chapterCache.remove(sortedEntries[i].key);
       }
 
-      _debugLog(
+      AppLogger.loader(
           'Evicted $toRemove old chapters from cache', 'OPTIMIZED_LOADER');
     }
   }
@@ -242,7 +240,7 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
   Future<Bible> loadBible(BibleTranslation translation) async {
     // For compatibility with the existing interface, create a minimal Bible object
     // that doesn't preload all content
-    _debugLog('Creating minimal Bible object for ${translation.name}',
+    AppLogger.loader('Creating minimal Bible object for ${translation.name}',
         'OPTIMIZED_LOADER');
 
     try {
@@ -293,12 +291,13 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
         },
       );
 
-      _debugLog(
+      AppLogger.loader(
           'Created minimal Bible for ${translation.name} with ${books.length} books (no chapters preloaded)',
           'OPTIMIZED_LOADER');
       return bible;
     } catch (e) {
-      _debugLog('Error creating minimal Bible for ${translation.name}: $e',
+      AppLogger.loader(
+          'Error creating minimal Bible for ${translation.name}: $e',
           'OPTIMIZED_LOADER');
       rethrow;
     }
@@ -317,7 +316,7 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
 
       return result.isNotEmpty;
     } catch (e) {
-      _debugLog('Error checking availability for ${translation.id}: $e',
+      AppLogger.loader('Error checking availability for ${translation.id}: $e',
           'OPTIMIZED_LOADER');
       return false;
     }
@@ -325,7 +324,7 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
 
   @override
   Future<List<BibleTranslation>> getAvailableTranslations() async {
-    _debugLog('Getting available translations (optimized - fast)',
+    AppLogger.loader('Getting available translations (optimized - fast)',
         'OPTIMIZED_LOADER');
 
     try {
@@ -341,17 +340,18 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
           final translation = BibleTranslation.fromId(id);
           available.add(translation);
         } catch (e) {
-          _debugLog(
+          AppLogger.loader(
               'Unknown translation ID in database: $id', 'OPTIMIZED_LOADER');
         }
       }
 
-      _debugLog(
+      AppLogger.loader(
           'Available translations (fast): ${available.map((t) => t.id).join(', ')}',
           'OPTIMIZED_LOADER');
       return available;
     } catch (e) {
-      _debugLog('Error getting available translations: $e', 'OPTIMIZED_LOADER');
+      AppLogger.loader(
+          'Error getting available translations: $e', 'OPTIMIZED_LOADER');
       return [];
     }
   }
@@ -377,7 +377,7 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
   /// Clear chapter cache
   static void clearCache() {
     _chapterCache.clear();
-    _debugLog('Chapter cache cleared', 'OPTIMIZED_LOADER');
+    AppLogger.loader('Chapter cache cleared', 'OPTIMIZED_LOADER');
   }
 
   /// Get cache statistics
@@ -412,11 +412,12 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
       );
 
       final exists = result.isNotEmpty;
-      _debugLog('Book exists check for $bookName (db: $dbBookName): $exists',
+      AppLogger.loader(
+          'Book exists check for $bookName (db: $dbBookName): $exists',
           'OPTIMIZED_LOADER');
       return exists;
     } catch (e) {
-      _debugLog(
+      AppLogger.loader(
           'Error checking if book exists $bookName: $e', 'OPTIMIZED_LOADER');
       return false;
     }

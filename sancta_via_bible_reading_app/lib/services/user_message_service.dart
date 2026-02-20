@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/logger.dart';
 
 /// FIXED: Memory-safe user message service
 class UserMessageService {
@@ -154,12 +155,14 @@ class UserMessageService {
     try {
       final context = navigatorKey?.currentContext;
       if (context == null) {
-        print('⚠️ Cannot show message: No navigator context available');
+        AppLogger.warning(
+          'Cannot show message: No navigator context available',
+        );
         return;
       }
 
       if (!context.mounted) {
-        print('⚠️ Cannot show message: Context not mounted');
+        AppLogger.warning('Cannot show message: Context not mounted');
         return;
       }
 
@@ -188,7 +191,7 @@ class UserMessageService {
         ),
       );
     } catch (e) {
-      print('❌ Error showing snackbar: $e');
+      AppLogger.error('Error showing snackbar', e);
     }
   }
 

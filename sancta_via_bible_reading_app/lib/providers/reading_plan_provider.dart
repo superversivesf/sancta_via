@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../models/reading_plan.dart';
 import '../services/user_message_service.dart';
+import '../utils/logger.dart';
 
 /// Custom exception for reading plan errors
 class ReadingPlanException implements Exception {
@@ -56,7 +57,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
         final managerMap = jsonDecode(managerJson);
         state = ReadingPlanManager.fromJson(managerMap);
         await _checkAndResetDailyStatus();
-        print('📖 Reading plans loaded successfully');
+        AppLogger.info('Reading plans loaded successfully');
         return;
       }
 
@@ -69,9 +70,9 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
 
       // No plans found, start with empty manager
       state = ReadingPlanManager.empty();
-      print('📱 Started with empty reading plan manager');
+      AppLogger.info('Started with empty reading plan manager');
     } catch (e) {
-      print('❌ Error loading reading plans: $e');
+      AppLogger.error('Error loading reading plans', e);
       state = ReadingPlanManager.empty();
       _showErrorMessage('Failed to load reading plans. Starting fresh.');
     }
@@ -116,15 +117,15 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       await _savePlans();
       await prefs.remove(_legacyStorageKey);
 
-      print(
-        '✅ Successfully migrated legacy reading plans to simplified format',
+      AppLogger.info(
+        'Successfully migrated legacy reading plans to simplified format',
       );
       _showSuccessMessage(
         'Reading plans updated to new simplified system!',
         backgroundColor: null,
       );
     } catch (e) {
-      print('❌ Error migrating legacy data: $e');
+      AppLogger.error('Error migrating legacy data', e);
       state = ReadingPlanManager.empty();
       _showErrorMessage('Error migrating reading plans. Starting fresh.');
     }
@@ -133,7 +134,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   /// Check if daily reset is needed and perform it
   Future<void> _checkAndResetDailyStatus() async {
     if (state.needsDailyReset) {
-      print('📅 New day detected - resetting daily reading status');
+      AppLogger.info('New day detected - resetting daily reading status');
       final now = DateTime.now();
       state = state.copyWith(
         hasReadAnythingToday: false,
@@ -149,9 +150,9 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
       final prefs = await SharedPreferences.getInstance();
       final managerJson = jsonEncode(state.toJson());
       await prefs.setString(_storageKey, managerJson);
-      print('💾 Reading plans saved successfully');
+      AppLogger.info('Reading plans saved successfully');
     } catch (e) {
-      print('❌ Error saving reading plans: $e');
+      AppLogger.error('Error saving reading plans', e);
       _showErrorMessage('Failed to save reading progress.');
     }
   }
@@ -294,7 +295,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
         );
       }
     } catch (e) {
-      debugPrint('❌ Error marking chapter as read: $e');
+      AppLogger.error('Error marking chapter as read', e);
 
       if (e is ReadingPlanException) {
         _showErrorMessage(e.message);
@@ -339,7 +340,7 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
         backgroundColor: successColor,
       );
     } catch (e) {
-      debugPrint('❌ Error advancing plan: $e');
+      AppLogger.error('Error advancing plan', e);
       _showErrorMessage('Unable to advance reading plan.');
       rethrow;
     }

@@ -5,6 +5,7 @@ import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import 'config/routes.dart';
 import 'services/user_message_service.dart';
+import 'utils/logger.dart';
 
 // Global navigator key for user messages
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -47,10 +48,12 @@ class _BibleReadingAppState extends ConsumerState<BibleReadingApp>
 
     // FIXED: Only trigger daily reset on resume, with safety checks
     if (state == AppLifecycleState.resumed) {
-      print('🔆 App resumed from background - safely checking for daily reset');
+      AppLogger.info(
+        'App resumed from background - safely checking for daily reset',
+      );
       _safeCheckForDailyReset();
     } else if (state == AppLifecycleState.paused) {
-      print('⏸️ App paused - cleaning up message queue');
+      AppLogger.info('App paused - cleaning up message queue');
       UserMessageService().clearQueue();
     }
   }
@@ -63,10 +66,12 @@ class _BibleReadingAppState extends ConsumerState<BibleReadingApp>
         if (mounted) {
           // The daily reset check is now handled automatically in _loadPlans
           // No need for explicit daily reset calls
-          print('✅ Daily status check handled automatically by provider');
+          AppLogger.info(
+            'Daily status check handled automatically by provider',
+          );
         }
       } catch (e) {
-        print('❌ Error checking daily reset: $e');
+        AppLogger.error('Error checking daily reset', e);
       }
     });
   }

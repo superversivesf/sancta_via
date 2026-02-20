@@ -9,13 +9,7 @@ import 'package:bible_data_riverpod/bible_data_riverpod.dart';
 import '../../providers/app_providers.dart';
 import '../../providers/text_scaling_provider.dart';
 import '../../providers/reading_plan_provider.dart';
-
-/// Debug logging utility
-void debugLog(String message, [String? tag]) {
-  final timestamp = DateTime.now().toIso8601String();
-  // ignore: avoid_print
-  print('[$timestamp] ${tag != null ? '[$tag] ' : ''}$message');
-}
+import '../../utils/logger.dart' as app_logger;
 
 class ChapterReadingScreen extends ConsumerStatefulWidget {
   final String bookName;
@@ -59,7 +53,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     // NEW: Add scroll listener to detect when user reaches the end
     _scrollController.addListener(_handleScroll);
 
-    debugLog(
+    app_logger.AppLogger.debug(
       'ChapterReadingScreen initialized: $currentBookName $currentChapter${widget.startVerse != null ? ' (starting at verse ${widget.startVerse})' : ''}',
       'CHAPTER',
     );
@@ -104,7 +98,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       // Calculate scroll percentage
       final scrollPercentage = currentScroll / maxScroll;
 
-      debugLog(
+      app_logger.AppLogger.debug(
         'Scroll progress: ${(scrollPercentage * 100).toStringAsFixed(1)}%',
         'SCROLL',
       );
@@ -122,7 +116,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
 
     _hasMarkedChapterAsRead = true;
 
-    debugLog(
+    app_logger.AppLogger.debug(
       'User has finished reading chapter, marking as complete',
       'CHAPTER',
     );
@@ -154,7 +148,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
             );
 
         foundMatchingPlan = true;
-        debugLog(
+        app_logger.AppLogger.debug(
           'Marked chapter read for plan "${plan.name}": $currentBookName $currentChapter',
           'CHAPTER',
         );
@@ -193,7 +187,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         );
       }
 
-      debugLog(
+      app_logger.AppLogger.debug(
         'Chapter reading completed (no matching reading plan): $currentBookName $currentChapter',
         'CHAPTER',
       );
@@ -213,7 +207,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       _verseKeys.clear();
       _currentVerses.clear();
     });
-    debugLog('Navigated to: $bookName $chapter', 'CHAPTER');
+    app_logger.AppLogger.debug('Navigated to: $bookName $chapter', 'CHAPTER');
   }
 
   void _navigateToNextChapter() {
@@ -249,7 +243,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         : null;
     final themeColor = liturgicalColor?.toFlutterColor(colorIntensity);
 
-    debugLog(
+    app_logger.AppLogger.debug(
       'Building chapter screen for $currentBookName $currentChapter with ${selectedTranslation.name}',
       'CHAPTER',
     );
@@ -336,7 +330,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     final textScaling = ref.watch(textScaleProvider);
     final selectedTranslation = ref.watch(appSelectedBibleTranslationProvider);
 
-    debugLog(
+    app_logger.AppLogger.debug(
       'Building chapter content: found=${scripture.found}, text length=${scripture.text.length}',
       'CHAPTER',
     );
@@ -574,12 +568,12 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         );
       }
 
-      debugLog(
+      app_logger.AppLogger.debug(
         'Successfully copied verse $verseNumber to clipboard',
         'VERSE_TAP',
       );
     } catch (e) {
-      debugLog('Error copying verse to clipboard: $e', 'VERSE_TAP');
+      app_logger.AppLogger.debug('Error copying verse to clipboard: $e', 'VERSE_TAP');
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -746,7 +740,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
 
   void _scrollToVerseAccurate(int startVerse) {
     if (startVerse <= 0 || startVerse > _verseKeys.length) {
-      debugLog(
+      app_logger.AppLogger.debug(
         'Invalid verse number: $startVerse (available: ${_verseKeys.length})',
         'CHAPTER',
       );
@@ -756,9 +750,12 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     final verseIndex = startVerse - 1; // Convert to 0-based index
     final verseKey = _verseKeys[verseIndex];
 
-    debugLog('=== ACCURATE SCROLL DEBUG ===', 'CHAPTER');
-    debugLog('Target verse: $startVerse (index: $verseIndex)', 'CHAPTER');
-    debugLog('Total verses: ${_verseKeys.length}', 'CHAPTER');
+    app_logger.AppLogger.debug('=== ACCURATE SCROLL DEBUG ===', 'CHAPTER');
+    app_logger.AppLogger.debug(
+      'Target verse: $startVerse (index: $verseIndex)',
+      'CHAPTER',
+    );
+    app_logger.AppLogger.debug('Total verses: ${_verseKeys.length}', 'CHAPTER');
 
     // Wait for the widget to be built and rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -770,10 +767,16 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         // If this is in the last 20% of verses, center it instead
         if (startVerse > (_verseKeys.length * 0.8)) {
           alignment = 0.5; // Center it for better visibility
-          debugLog('Using center alignment for verse near end', 'CHAPTER');
+          app_logger.AppLogger.debug(
+            'Using center alignment for verse near end',
+            'CHAPTER',
+          );
         }
 
-        debugLog('Scrolling to verse with alignment: $alignment', 'CHAPTER');
+        app_logger.AppLogger.debug(
+          'Scrolling to verse with alignment: $alignment',
+          'CHAPTER',
+        );
 
         try {
           Scrollable.ensureVisible(
@@ -783,18 +786,21 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
             alignment: alignment,
           );
 
-          debugLog(
+          app_logger.AppLogger.debug(
             'Successfully initiated scroll to verse $startVerse',
             'CHAPTER',
           );
         } catch (e) {
-          debugLog('Error during ensureVisible: $e', 'CHAPTER');
+          app_logger.AppLogger.debug('Error during ensureVisible: $e', 'CHAPTER');
         }
       } else {
-        debugLog('Verse context not found for verse $startVerse', 'CHAPTER');
+        app_logger.AppLogger.debug(
+          'Verse context not found for verse $startVerse',
+          'CHAPTER',
+        );
       }
 
-      debugLog('=== END ACCURATE SCROLL DEBUG ===', 'CHAPTER');
+      app_logger.AppLogger.debug('=== END ACCURATE SCROLL DEBUG ===', 'CHAPTER');
     });
   }
 
@@ -804,7 +810,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     if (_verseKeys.length != verseCount) {
       _verseKeys.clear();
       _verseKeys.addAll(List.generate(verseCount, (index) => GlobalKey()));
-      debugLog('Generated ${_verseKeys.length} verse keys', 'CHAPTER');
+      app_logger.AppLogger.debug('Generated ${_verseKeys.length} verse keys', 'CHAPTER');
     }
   }
 
