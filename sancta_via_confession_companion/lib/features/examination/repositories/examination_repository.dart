@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
@@ -12,6 +13,11 @@ import '../../../utils/logger.dart';
 import '../../../utils/error_handler.dart';
 import '../../../config/constants.dart';
 import '../../../services/secure_storage_service.dart';
+
+// Provider for the repository - defined at the repository for clean architecture
+final examinationRepositoryProvider = Provider<ExaminationRepository>((ref) {
+  return ExaminationRepository();
+});
 
 class ExaminationMetadata {
   final String id;

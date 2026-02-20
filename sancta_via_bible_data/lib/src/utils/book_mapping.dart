@@ -606,4 +606,33 @@ class BibleBookMapping {
   static int? getBookOrder(String name) {
     return getByName(name)?.order;
   }
+
+  /// Determine if a book is in the Old Testament based on its order number.
+  ///
+  /// The Catholic Bible has 46 Old Testament books (order 1-46) and
+  /// 27 New Testament books (order 47-73).
+  ///
+  /// Note: Deuterocanonical books (Tobit, Judith, 1-2 Maccabees, Wisdom,
+  /// Sirach, Baruch - orders 40-46) are included in the Old Testament.
+  static bool isOldTestamentByOrder(int bookOrder) {
+    return bookOrder <= _kOldTestamentBookCount;
+  }
+
+  /// Determine if a book is in the Old Testament based on its zero-based index.
+  ///
+  /// This is equivalent to [isOldTestamentByOrder] but takes an index
+  /// (0-72) instead of an order (1-73). Book at index 45 is the last OT book.
+  static bool isOldTestamentByIndex(int bookIndex) {
+    return bookIndex < _kOldTestamentBookCount;
+  }
+
+  /// Number of books in the Old Testament (Catholic canon includes Deuterocanonical)
+  static const int _kOldTestamentBookCount = 46;
+
+  /// Number of books in the New Testament
+  static const int kNewTestamentBookCount = 27;
+
+  /// Total number of books in the Catholic Bible
+  static const int kTotalBookCount =
+      _kOldTestamentBookCount + kNewTestamentBookCount; // 73
 }

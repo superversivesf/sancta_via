@@ -1,8 +1,8 @@
-# Bible Reading App Build Script
+# Novena Companion Build Script
 
 # Configuration
 SHELL := /bin/bash
-APP_NAME := bible_reading_app
+APP_NAME := novena_companion
 BUILD_DATE := $(shell date +%Y%m%d_%H%M%S)
 BUILD_VERSION := $(shell grep "^version:" pubspec.yaml | sed 's/version: *//' | tr -d '"' | cut -d'+' -f1)
 BUILD_NUMBER := $(shell grep "^version:" pubspec.yaml | sed 's/version: *//' | tr -d '"' | cut -d'+' -f2)
@@ -18,7 +18,7 @@ NC := \033[0m # No Color
 # Default target
 .PHONY: help
 help:
-	@echo "$(GREEN)Bible Reading App Build System$(NC)"
+	@echo "$(GREEN)Novena Companion Build System$(NC)"
 	@echo ""
 	@echo "Available targets:"
 	@echo "  $(YELLOW)info$(NC)            - Show app information"
@@ -36,7 +36,7 @@ help:
 
 .PHONY: info
 info:
-	@echo "$(GREEN)Bible Reading App Information$(NC)"
+	@echo "$(GREEN)Novena Companion Information$(NC)"
 	@echo "App Name: $(APP_NAME)"
 	@echo "Version: $(BUILD_VERSION)"
 	@echo "Build Number: $(BUILD_NUMBER)"
@@ -122,7 +122,7 @@ build-web: deps
 
 .PHONY: build-all
 build-all: clean
-	@echo "$(GREEN)Building Bible Reading App for all platforms$(NC)"
+	@echo "$(GREEN)Building Novena Companion for all platforms$(NC)"
 	@echo ""
 	@$(MAKE) build-android
 	@echo ""

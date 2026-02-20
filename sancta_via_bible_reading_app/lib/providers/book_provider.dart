@@ -38,17 +38,22 @@ final booksByTestamentProvider = FutureProvider<Map<String, List<String>>>((
 ) async {
   final availableBooks = await ref.watch(availableBooksProvider.future);
 
-  // This is a simplified categorization - in reality you'd need more sophisticated logic
-  // to determine Old vs New Testament from the actual Bible data
+  // Use canonical book mapping for accurate testament categorization
   final oldTestamentBooks = <String>[];
   final newTestamentBooks = <String>[];
 
   for (final book in availableBooks) {
-    // Simple heuristic: NT books typically start after "Malachi"
-    // This is approximate and should be improved with actual metadata
-    if (_isNewTestamentBook(book)) {
-      newTestamentBooks.add(book);
+    // Use the canonical BibleBookMapping for accurate categorization
+    final metadata = BibleBookMapping.getByName(book);
+    if (metadata != null) {
+      if (metadata.isOldTestament) {
+        oldTestamentBooks.add(book);
+      } else {
+        newTestamentBooks.add(book);
+      }
     } else {
+      // Fallback for unknown books: assume Old Testament
+      // This handles edge cases where book names might differ slightly
       oldTestamentBooks.add(book);
     }
   }
@@ -58,40 +63,3 @@ final booksByTestamentProvider = FutureProvider<Map<String, List<String>>>((
     'New Testament': newTestamentBooks,
   };
 });
-
-/// Helper function to determine if a book is likely New Testament
-/// This is a simplified heuristic - in a full implementation you'd use metadata
-bool _isNewTestamentBook(String bookName) {
-  const newTestamentBooks = {
-    'Matthew',
-    'Mark',
-    'Luke',
-    'John',
-    'Acts',
-    'Romans',
-    '1 Corinthians',
-    '2 Corinthians',
-    'Galatians',
-    'Ephesians',
-    'Philippians',
-    'Colossians',
-    '1 Thessalonians',
-    '2 Thessalonians',
-    '1 Timothy',
-    '2 Timothy',
-    'Titus',
-    'Philemon',
-    'Hebrews',
-    'James',
-    '1 Peter',
-    '2 Peter',
-    '1 John',
-    '2 John',
-    '3 John',
-    'Jude',
-    'Revelation',
-    'Apocalypse',
-  };
-
-  return newTestamentBooks.contains(bookName);
-}

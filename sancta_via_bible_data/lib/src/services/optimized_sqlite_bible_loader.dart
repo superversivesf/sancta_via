@@ -9,6 +9,7 @@ import '../models/bible_book.dart';
 import '../models/bible_chapter.dart';
 import '../models/bible_verse.dart';
 import '../utils/book_name_normalizer.dart';
+import '../utils/book_mapping.dart';
 import 'bible_loader.dart';
 
 /// Debug logging utility
@@ -274,7 +275,7 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
           name: bookName,
           abbreviation: _generateAbbreviation(bookName),
           order: i + 1,
-          isOldTestament: i < 46, // Standard Catholic Bible OT/NT split
+          isOldTestament: BibleBookMapping.isOldTestamentByIndex(i),
           chapters: [], // Empty - will be loaded on demand
         );
         books.add(book);
@@ -357,10 +358,8 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
 
   /// Generate book ID from name (simplified)
   String _generateBookId(String bookName) {
-    return bookName
-        .toLowerCase()
-        .replaceAll(RegExp(r'[^a-z0-9]'), '')
-        .substring(0, bookName.length < 3 ? bookName.length : 3);
+    final cleaned = bookName.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '');
+    return cleaned.length < 3 ? cleaned : cleaned.substring(0, 3);
   }
 
   /// Generate abbreviation from name (simplified)

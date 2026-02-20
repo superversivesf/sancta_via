@@ -120,5 +120,48 @@ void main() {
       expect(range.first.number, equals(2));
       expect(range.last.number, equals(3));
     });
+
+    test('BibleBookMapping testament helpers should work correctly', () {
+      // Test Old Testament boundary
+      // Genesis (order 1) is OT
+      expect(BibleBookMapping.isOldTestamentByOrder(1), isTrue);
+      expect(BibleBookMapping.isOldTestamentByIndex(0), isTrue);
+
+      // Malachi (order 39) is OT
+      expect(BibleBookMapping.isOldTestamentByOrder(39), isTrue);
+      expect(BibleBookMapping.isOldTestamentByIndex(38), isTrue);
+
+      // Deuterocanonical books (orders 40-46) are OT
+      expect(BibleBookMapping.isOldTestamentByOrder(40), isTrue); // Tobit
+      expect(BibleBookMapping.isOldTestamentByOrder(46),
+          isTrue); // Baruch (last OT)
+      expect(BibleBookMapping.isOldTestamentByIndex(45),
+          isTrue); // Baruch at index 45
+
+      // Matthew (order 47) is NT (first NT book)
+      expect(BibleBookMapping.isOldTestamentByOrder(47), isFalse);
+      expect(BibleBookMapping.isOldTestamentByIndex(46), isFalse);
+
+      // Revelation (order 73) is NT
+      expect(BibleBookMapping.isOldTestamentByOrder(73), isFalse);
+      expect(BibleBookMapping.isOldTestamentByIndex(72), isFalse);
+
+      // Verify counts
+      expect(BibleBookMapping.oldTestamentBooks.length, equals(46));
+      expect(BibleBookMapping.newTestamentBooks.length, equals(27));
+      expect(BibleBookMapping.allBooks.length, equals(73));
+
+      // Verify Baruch metadata (order 46, last OT book)
+      final baruch = BibleBookMapping.getByName('Baruch');
+      expect(baruch, isNotNull);
+      expect(baruch!.order, equals(46));
+      expect(baruch.isOldTestament, isTrue);
+
+      // Verify Matthew metadata (order 47, first NT book)
+      final matthew = BibleBookMapping.getByName('Matthew');
+      expect(matthew, isNotNull);
+      expect(matthew!.order, equals(47));
+      expect(matthew.isOldTestament, isFalse);
+    });
   });
 }

@@ -4,6 +4,10 @@ import '../models/examination_response_status.dart';
 import '../repositories/examination_repository.dart';
 import '../../../utils/logger.dart';
 
+// Re-export the repository provider for convenience
+export '../repositories/examination_repository.dart'
+    show examinationRepositoryProvider;
+
 // Provider for the current examination session
 final examinationSessionProvider =
     StateNotifierProvider<ExaminationSessionNotifier, ExaminationSession?>((
@@ -178,8 +182,3 @@ class ExaminationSessionNotifier extends StateNotifier<ExaminationSession?> {
     await _loadActiveSession();
   }
 }
-
-// Provider for the repository dependency
-final examinationRepositoryProvider = Provider<ExaminationRepository>((ref) {
-  return ExaminationRepository();
-});

@@ -2,7 +2,7 @@
 
 # Configuration
 SHELL := /bin/bash
-APP_NAME := sancta_via_prayer_companion
+APP_NAME := prayer_companion
 BUILD_DATE := $(shell date +%Y%m%d_%H%M%S)
 BUILD_VERSION := $(shell grep "^version:" pubspec.yaml | sed 's/version: *//' | tr -d '"' | cut -d'+' -f1)
 BUILD_NUMBER := $(shell grep "^version:" pubspec.yaml | sed 's/version: *//' | tr -d '"' | cut -d'+' -f2)

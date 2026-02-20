@@ -8,10 +8,9 @@ import '../repositories/examination_repository.dart';
 import 'examination_session_provider.dart';
 import '../../../utils/logger.dart';
 
-// Provider for the repository
-final examinationRepositoryProvider = Provider<ExaminationRepository>((ref) {
-  return ExaminationRepository();
-});
+// Re-export the repository provider for convenience
+export '../repositories/examination_repository.dart'
+    show examinationRepositoryProvider;
 
 // Provider for available examinations
 final examinationsProvider = FutureProvider<List<ExaminationModel>>((

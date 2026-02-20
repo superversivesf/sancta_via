@@ -196,8 +196,8 @@ class PrayerDetailScreen extends ConsumerWidget {
               ? CrossAxisAlignment.center
               : CrossAxisAlignment.start,
           children: [
-            // Prayer Title (show unless in immersive contemplative mode)
-            if (settings.readingMode != PrayerReadingMode.immersive ||
+            // Prayer Title (show unless in immersive or contemplative mode)
+            if (settings.readingMode != PrayerReadingMode.immersive &&
                 settings.readingMode != PrayerReadingMode.contemplative) ...[
               Text(
                 prayer.title,

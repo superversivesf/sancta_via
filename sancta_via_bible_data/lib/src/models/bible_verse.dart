@@ -53,7 +53,7 @@ class BibleVerse {
 
   @override
   String toString() =>
-      'BibleVerse(number: $number, text: ${text.substring(0, text.length > 50 ? 50 : text.length)}...)';
+      'BibleVerse(number: $number, text: ${text.isEmpty ? '' : text.substring(0, text.length > 50 ? 50 : text.length)}...)';
 
   /// Create a copy with modified values
   BibleVerse copyWith({
