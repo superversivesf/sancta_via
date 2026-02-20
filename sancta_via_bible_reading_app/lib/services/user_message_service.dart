@@ -216,12 +216,3 @@ class _QueuedMessage {
     this.duration = const Duration(seconds: 3),
   });
 }
-
-/// Custom exception for reading plan errors
-class ReadingPlanException implements Exception {
-  final String message;
-  ReadingPlanException(this.message);
-
-  @override
-  String toString() => message;
-}

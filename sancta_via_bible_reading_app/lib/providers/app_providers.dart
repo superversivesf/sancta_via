@@ -64,19 +64,6 @@ final appSettingsNotifierProvider = Provider<AppSettingsNotifier>((ref) {
   return AppSettingsNotifier(ref);
 });
 
-/// BACKWARD COMPATIBILITY: Re-export convenience providers
-/// These now use the new unified system but maintain the same interface
-
-/// Provider for font size
-final fontSizeProvider = Provider<double>((ref) {
-  return ref.watch(bibleAppSettingsProvider).fontSize;
-});
-
-/// Provider for app's selected bible translation
-final appSelectedBibleTranslationProvider = Provider<BibleTranslation>((ref) {
-  return ref.watch(bibleAppSettingsProvider).selectedBibleTranslation;
-});
-
 /// Migration helper to access the new notifier from old code patterns
 extension AppSettingsNotifierExtension on WidgetRef {
   /// Get the new unified Bible app settings notifier
