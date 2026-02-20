@@ -3,7 +3,7 @@ description: A pure Dart package for Catholic Bible texts with search and lookup
 version: 1.0.0
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ^3.9.2
 
 dependencies:
   meta: ^1.9.1

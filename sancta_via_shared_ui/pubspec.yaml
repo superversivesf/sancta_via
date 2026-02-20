@@ -18,7 +18,7 @@ funding:
   - https://github.com/sponsors/superversive-ca
 
 environment:
-  sdk: '>=3.2.0 <4.0.0'
+  sdk: ^3.9.2
   flutter: ">=3.0.0"
 
 dependencies:
