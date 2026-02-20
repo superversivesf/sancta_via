@@ -557,8 +557,9 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
   }
 
   /// Map of Bible book names to their chapter counts
+  /// Includes deuterocanonical books for Catholic canon
   static const Map<String, int> _chapterCounts = {
-    // Old Testament
+    // Old Testament (Protestant canon)
     'Genesis': 50,
     'Exodus': 40,
     'Leviticus': 27,
@@ -572,6 +573,9 @@ class ReadingPlanManagerNotifier extends StateNotifier<ReadingPlanManager> {
     'Hosea': 14, 'Joel': 3, 'Amos': 9, 'Obadiah': 1, 'Jonah': 4,
     'Micah': 7, 'Nahum': 3, 'Habakkuk': 3, 'Zephaniah': 3, 'Haggai': 2,
     'Zechariah': 14, 'Malachi': 4,
+    // Deuterocanonical books (Catholic canon)
+    'Tobit': 14, 'Judith': 16, 'Wisdom': 19, 'Sirach': 51, 'Baruch': 6,
+    '1 Maccabees': 16, '2 Maccabees': 15,
     // New Testament
     'Matthew': 28, 'Mark': 16, 'Luke': 24, 'John': 21, 'Acts': 28,
     'Romans': 16, '1 Corinthians': 16, '2 Corinthians': 13, 'Galatians': 6,
