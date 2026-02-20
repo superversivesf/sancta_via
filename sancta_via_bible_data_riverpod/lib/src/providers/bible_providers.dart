@@ -3,12 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bible_data/bible_data.dart';
 
-/// Debug logging utility
-void debugLog(String message, [String? tag]) {
-  final timestamp = DateTime.now().toIso8601String();
-  print('[$timestamp] ${tag != null ? '[$tag] ' : ''}$message');
-}
-
 /// Provider for the Bible service instance
 /// This is the main service provider that all other providers depend on
 final bibleServiceProvider = Provider<BibleService>((ref) {
@@ -36,40 +30,40 @@ class DebugAssetBibleLoader implements BibleLoader {
 
   @override
   Future<Bible> loadBible(BibleTranslation translation) async {
-    debugLog(
+    AppLogger.loader(
       'Starting to load Bible: ${translation.name} (${translation.id})',
       'BIBLE_LOADER',
     );
 
     try {
       final bible = await _loader.loadBible(translation);
-      debugLog(
+      AppLogger.loader(
         'Successfully loaded Bible: ${translation.name}, ${bible.books.length} books',
         'BIBLE_LOADER',
       );
       return bible;
     } catch (e) {
-      debugLog('Failed to load Bible ${translation.name}: $e', 'BIBLE_LOADER');
+      AppLogger.loader('Failed to load Bible ${translation.name}: $e', 'BIBLE_LOADER');
       rethrow;
     }
   }
 
   @override
   Future<bool> isTranslationAvailable(BibleTranslation translation) async {
-    debugLog(
+    AppLogger.loader(
       'Checking if translation is available: ${translation.name} (${translation.id})',
       'BIBLE_LOADER',
     );
 
     try {
       final available = await _loader.isTranslationAvailable(translation);
-      debugLog(
+      AppLogger.loader(
         'Translation ${translation.name} available: $available',
         'BIBLE_LOADER',
       );
       return available;
     } catch (e) {
-      debugLog(
+      AppLogger.loader(
         'Error checking translation availability for ${translation.name}: $e',
         'BIBLE_LOADER',
       );
@@ -79,17 +73,17 @@ class DebugAssetBibleLoader implements BibleLoader {
 
   @override
   Future<List<BibleTranslation>> getAvailableTranslations() async {
-    debugLog('Getting available translations...', 'BIBLE_LOADER');
+    AppLogger.loader('Getting available translations...', 'BIBLE_LOADER');
 
     try {
       final translations = await _loader.getAvailableTranslations();
-      debugLog(
+      AppLogger.loader(
         'Available translations: ${translations.map((t) => t.id).join(', ')}',
         'BIBLE_LOADER',
       );
       return translations;
     } catch (e) {
-      debugLog('Error getting available translations: $e', 'BIBLE_LOADER');
+      AppLogger.loader('Error getting available translations: $e', 'BIBLE_LOADER');
       return [];
     }
   }
@@ -100,7 +94,7 @@ class DebugAssetBibleLoader implements BibleLoader {
 final bibleLoaderProvider = Provider<BibleLoader>((ref) {
   if (kIsWeb) {
     // Web doesn't support SQLite, fall back to JSON loading
-    debugLog(
+    AppLogger.loader(
       'Creating AssetBibleLoader for web platform (JSON fallback)',
       'BIBLE_LOADER',
     );
@@ -108,16 +102,16 @@ final bibleLoaderProvider = Provider<BibleLoader>((ref) {
     final baseLoader = AssetBibleLoader(
       assetBasePath: 'assets/bibles',
       assetLoader: (path) async {
-        debugLog('Loading asset: $path', 'BIBLE_LOADER');
+        AppLogger.loader('Loading asset: $path', 'BIBLE_LOADER');
         try {
           final content = await rootBundle.loadString(path);
-          debugLog(
+          AppLogger.loader(
             'Asset loaded successfully: $path, length: ${content.length}',
             'BIBLE_LOADER',
           );
           return content;
         } catch (e) {
-          debugLog('Failed to load asset $path: $e', 'BIBLE_LOADER');
+          AppLogger.loader('Failed to load asset $path: $e', 'BIBLE_LOADER');
           rethrow;
         }
       },
@@ -126,7 +120,7 @@ final bibleLoaderProvider = Provider<BibleLoader>((ref) {
     return DebugAssetBibleLoader(baseLoader);
   } else {
     // Mobile/Desktop: Use high-performance SQLite
-    debugLog(
+    AppLogger.loader(
       'Creating SqliteBibleLoader for mobile/desktop platform',
       'BIBLE_LOADER',
     );
@@ -138,7 +132,7 @@ final bibleLoaderProvider = Provider<BibleLoader>((ref) {
 /// StateNotifier for managing Bible service initialization and state
 class BibleServiceNotifier extends StateNotifier<AsyncValue<BibleService>> {
   BibleServiceNotifier(this._loader) : super(const AsyncValue.loading()) {
-    debugLog(
+    AppLogger.loader(
       'BibleServiceNotifier created, starting initialization...',
       'BIBLE_SERVICE',
     );
@@ -149,24 +143,24 @@ class BibleServiceNotifier extends StateNotifier<AsyncValue<BibleService>> {
   BibleService? _service;
 
   Future<void> _initialize() async {
-    debugLog('Initializing BibleService...', 'BIBLE_SERVICE');
+    AppLogger.loader('Initializing BibleService...', 'BIBLE_SERVICE');
 
     try {
       _service = BibleService(_loader);
-      debugLog('BibleService created successfully', 'BIBLE_SERVICE');
+      AppLogger.loader('BibleService created successfully', 'BIBLE_SERVICE');
 
       // Test loading available translations to verify assets work
       final availableTranslations = await _service!.getAvailableTranslations();
-      debugLog(
+      AppLogger.loader(
         'Available translations on startup: ${availableTranslations.map((t) => t.id).join(', ')}',
         'BIBLE_SERVICE',
       );
 
       state = AsyncValue.data(_service!);
-      debugLog('BibleService initialization complete', 'BIBLE_SERVICE');
+      AppLogger.loader('BibleService initialization complete', 'BIBLE_SERVICE');
     } catch (error, stackTrace) {
-      debugLog('BibleService initialization failed: $error', 'BIBLE_SERVICE');
-      debugLog('Stack trace: $stackTrace', 'BIBLE_SERVICE');
+      AppLogger.loader('BibleService initialization failed: $error', 'BIBLE_SERVICE');
+      AppLogger.loader('Stack trace: $stackTrace', 'BIBLE_SERVICE');
       state = AsyncValue.error(error, stackTrace);
     }
   }
@@ -201,7 +195,7 @@ class OptimizedBibleServiceNotifier
     extends StateNotifier<AsyncValue<OptimizedBibleService>> {
   OptimizedBibleServiceNotifier(this._loader)
     : super(const AsyncValue.loading()) {
-    debugLog(
+    AppLogger.loader(
       'OptimizedBibleServiceNotifier created, starting fast initialization...',
       'OPTIMIZED_SERVICE',
     );
@@ -212,14 +206,14 @@ class OptimizedBibleServiceNotifier
   OptimizedBibleService? _service;
 
   Future<void> _initialize() async {
-    debugLog(
+    AppLogger.loader(
       'Initializing OptimizedBibleService (fast)...',
       'OPTIMIZED_SERVICE',
     );
 
     try {
       _service = OptimizedBibleService(_loader);
-      debugLog(
+      AppLogger.loader(
         'OptimizedBibleService created successfully',
         'OPTIMIZED_SERVICE',
       );
@@ -228,16 +222,16 @@ class OptimizedBibleServiceNotifier
       // Available translations will be queried only when needed
 
       state = AsyncValue.data(_service!);
-      debugLog(
+      AppLogger.loader(
         'OptimizedBibleService initialization complete (fast)',
         'OPTIMIZED_SERVICE',
       );
     } catch (error, stackTrace) {
-      debugLog(
+      AppLogger.loader(
         'OptimizedBibleService initialization failed: $error',
         'OPTIMIZED_SERVICE',
       );
-      debugLog('Stack trace: $stackTrace', 'OPTIMIZED_SERVICE');
+      AppLogger.loader('Stack trace: $stackTrace', 'OPTIMIZED_SERVICE');
       state = AsyncValue.error(error, stackTrace);
     }
   }
