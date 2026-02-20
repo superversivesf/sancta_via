@@ -31,3 +31,6 @@ export 'src/examples/unified_settings_screen.dart';
 // Extensions
 export 'src/extensions/liturgical_color_extensions.dart';
 export 'src/extensions/theme_extensions.dart';
+
+// Utilities
+export 'src/utils/app_logger.dart';
