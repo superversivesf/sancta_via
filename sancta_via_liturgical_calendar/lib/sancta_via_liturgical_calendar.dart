@@ -42,6 +42,3 @@ export 'src/services/liturgical_calendar_service.dart';
 
 // Generated data (embedded Dart objects)
 export 'src/data/generated/generated_liturgical_data.dart';
-
-// Exceptions
-export 'src/exceptions/liturgical_calendar_exception.dart';
