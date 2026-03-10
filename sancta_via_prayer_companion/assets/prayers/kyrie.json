@@ -1,0 +1,24 @@
+{
+  "id": "kyrie",
+  "title": "Kyrie Eleison (Lord, Have Mercy)",
+  "text": "Lord, have mercy.\nLord, have mercy.\nLord, have mercy.\n\nChrist, have mercy.\nChrist, have mercy.\nChrist, have mercy.\n\nLord, have mercy.\nLord, have mercy.\nLord, have mercy.",
+  "translation": {
+    "latin": "Kyrie, eleison.\nKyrie, eleison.\nKyrie, eleison.\n\nChriste, eleison.\nChriste, eleison.\nChriste, eleison.\n\nKyrie, eleison.\nKyrie, eleison.\nKyrie, eleison."
+  },
+  "attribution": "Ancient Greek prayer, dating to the earliest Christian liturgies",
+  "notes": "The Kyrie is the penitential acclamation at the beginning of Mass, invoking God's mercy three times to the Father, three times to the Son, and three times to the Holy Spirit. It is one of the oldest prayers in the Roman Rite, with roots in the Greek-speaking churches of the early centuries.",
+  "categories": [
+    "mass"
+  ],
+  "description": "The Kyrie is the ancient penitential acclamation invoking God's mercy, sung or recited at the beginning of Mass",
+  "tags": [
+    "liturgical",
+    "mass",
+    "penitential",
+    "mercy"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 9,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

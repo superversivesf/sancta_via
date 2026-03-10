@@ -87,6 +87,12 @@
       "title": "Confession Prayers",
       "description": "Prayers for the sacrament of reconciliation",
       "groupId": "sacramental"
+    },
+    {
+      "id": "litany",
+      "title": "Litanies",
+      "description": "Liturgical litanies and devotional prayers with invocations",
+      "groupId": "liturgical"
     }
   ],
   "prayers": [
@@ -520,6 +526,28 @@
       "liturgicalSeason": null
     },
     {
+      "id": "alma_redemptoris_mater",
+      "title": "Alma Redemptoris Mater (Loving Mother of the Redeemer)",
+      "categories": ["marian"],
+      "description": "The Alma Redemptoris Mater is a Marian antiphon traditionally sung at Compline from Advent through Candlemas (February 2)",
+      "tags": ["marian", "advent", "christmas", "antiphon", "compline"],
+      "fileName": "alma_redemptoris_mater.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 8,
+      "liturgicalSeason": "advent"
+    },
+    {
+      "id": "ave_regina_caelorum",
+      "title": "Ave Regina Caelorum (Hail Queen of Heaven)",
+      "categories": ["marian"],
+      "description": "The Ave Regina Caelorum is a Marian antiphon traditionally sung at Compline from Candlemas through Holy Wednesday (Lent)",
+      "tags": ["marian", "lent", "antiphon", "compline", "queen"],
+      "fileName": "ave_regina_caelorum.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 8,
+      "liturgicalSeason": "lent"
+    },
+    {
       "id": "sub_tuum_praesidium",
       "title": "Sub Tuum Praesidium (We Fly to Your Protection)",
       "categories": ["marian"],
@@ -793,6 +821,204 @@
       "isLiturgical": false,
       "liturgicalPriority": 7,
       "liturgicalSeason": null
+    },
+    {
+      "id": "litany_sacred_heart",
+      "title": "Litany of the Sacred Heart of Jesus",
+      "categories": ["litany"],
+      "description": "A litany invoking the Sacred Heart of Jesus with over 33 invocations celebrating His divine attributes",
+      "tags": ["sacred_heart", "litany", "jesus", "devotion", "june"],
+      "fileName": "litany_sacred_heart.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 8,
+      "liturgicalSeason": "ordinary"
+    },
+    {
+      "id": "litany_loreto",
+      "title": "Litany of Loreto (Litany of the Blessed Virgin Mary)",
+      "categories": ["litany", "marian"],
+      "description": "The most beloved Marian litany invoking Our Lady under her many titles and virtues",
+      "tags": ["mary", "litany", "blessed_virgin", "loreto", "marian", "rosary"],
+      "fileName": "litany_loreto.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 9,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "litany_st_joseph",
+      "title": "Litany of St. Joseph",
+      "categories": ["litany", "saints"],
+      "description": "A litany honoring St. Joseph, the foster father of Jesus and spouse of Mary, invoking his protection and intercession",
+      "tags": ["st_joseph", "litany", "saint", "family", "workers", "patron"],
+      "fileName": "litany_st_joseph.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 8,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "litany_holy_spirit",
+      "title": "Litany of the Holy Spirit",
+      "categories": ["litany"],
+      "description": "A litany invoking the Holy Spirit under His many titles, gifts, and fruits",
+      "tags": ["holy_spirit", "litany", "pentecost", "confirmation", "gifts", "trinity"],
+      "fileName": "litany_holy_spirit.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 9,
+      "liturgicalSeason": "pentecost"
+    },
+    {
+      "id": "kyrie",
+      "title": "Kyrie Eleison (Lord, Have Mercy)",
+      "categories": ["mass"],
+      "description": "The Kyrie is the ancient penitential acclamation invoking God's mercy, sung or recited at the beginning of Mass",
+      "tags": ["liturgical", "mass", "penitential", "mercy"],
+      "fileName": "kyrie.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 9,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "asperges_me",
+      "title": "Asperges Me (Sprinkle Me, O Lord)",
+      "categories": ["mass"],
+      "description": "The Asperges Me is sung during the sprinkling of holy water on Sundays outside the Easter season",
+      "tags": ["liturgical", "mass", "holy_water", "purification", "sunday"],
+      "fileName": "asperges_me.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": "ordinary"
+    },
+    {
+      "id": "vidi_aquam",
+      "title": "Vidi Aquam (I Saw Water)",
+      "categories": ["mass"],
+      "description": "The Vidi Aquam is sung during the sprinkling of holy water in the Easter season",
+      "tags": ["liturgical", "mass", "holy_water", "easter", "baptism"],
+      "fileName": "vidi_aquam.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": "easter"
+    },
+    {
+      "id": "benedicite",
+      "title": "Benedicite (Canticle of the Three Children)",
+      "categories": ["mass"],
+      "description": "The Benedicite is a canticle from Daniel calling all creation to bless the Lord",
+      "tags": ["liturgical", "mass", "canticle", "creation", "daniel"],
+      "fileName": "benedicite.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "divine_praises",
+      "title": "Divine Praises",
+      "categories": ["mass"],
+      "description": "The Divine Praises are recited after Benediction of the Blessed Sacrament to make reparation for blasphemy",
+      "tags": ["liturgical", "mass", "benediction", "eucharist", "reparation"],
+      "fileName": "divine_praises.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "daily_examen",
+      "title": "Daily Examen (Ignatian)",
+      "categories": ["evening"],
+      "description": "St. Ignatius' method of daily prayerful reflection to discern God's presence in our lives",
+      "tags": ["ignatian", "examen", "reflection", "discernment", "daily"],
+      "fileName": "daily_examen.json",
+      "isLiturgical": false,
+      "liturgicalPriority": 0,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_before_confession",
+      "title": "Prayer Before Confession",
+      "categories": ["confession"],
+      "description": "A prayer asking the Holy Spirit for enlightenment and true contrition before Confession",
+      "tags": ["confession", "reconciliation", "penance", "sacrament", "holy_spirit"],
+      "fileName": "prayer_before_confession.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_after_confession",
+      "title": "Prayer After Confession",
+      "categories": ["confession"],
+      "description": "A prayer of thanksgiving after receiving absolution in the Sacrament of Reconciliation",
+      "tags": ["confession", "reconciliation", "gratitude", "sacrament", "mercy"],
+      "fileName": "prayer_after_confession.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 6,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_before_communion",
+      "title": "Prayer Before Communion",
+      "categories": ["mass"],
+      "description": "A prayer of preparation for receiving Holy Communion",
+      "tags": ["communion", "eucharist", "mass", "sacrament", "preparation"],
+      "fileName": "prayer_before_communion.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_after_communion",
+      "title": "Prayer After Communion",
+      "categories": ["mass"],
+      "description": "A prayer of thanksgiving after receiving Holy Communion",
+      "tags": ["communion", "eucharist", "mass", "sacrament", "thanksgiving"],
+      "fileName": "prayer_after_communion.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 7,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "prayer_to_our_lady_guadalupe",
+      "title": "Prayer to Our Lady of Guadalupe",
+      "categories": ["marian"],
+      "description": "A prayer asking for the intercession of Our Lady of Guadalupe, Patroness of the Americas",
+      "tags": ["marian", "guadalupe", "americas", "intercession", "juan_diego"],
+      "fileName": "prayer_to_our_lady_guadalupe.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 5,
+      "liturgicalSeason": null
+    },
+    {
+      "id": "o_antiphons",
+      "title": "O Antiphons (The Great Antiphons)",
+      "categories": ["liturgical"],
+      "description": "The seven Great O Antiphons, sung at Vespers during the final days of Advent (December 17-23), invoking Christ under His Messianic titles",
+      "tags": ["advent", "christmas", "antiphons", "messianic", "vespers", "traditional"],
+      "fileName": "o_antiphons.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 9,
+      "liturgicalSeason": "advent"
+    },
+    {
+      "id": "christmas_proclamation",
+      "title": "Christmas Proclamation (The Proclamation of the Birth of Christ)",
+      "categories": ["liturgical"],
+      "description": "The solemn proclamation of the birth of Christ from the Roman Martyrology, traditionally proclaimed at Christmas Midnight Mass",
+      "tags": ["christmas", "nativity", "nativity_of_christ", "roman_martyrology", "midnight_mass", "salvation_history"],
+      "fileName": "christmas_proclamation.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 10,
+      "liturgicalSeason": "christmas"
+    },
+    {
+      "id": "veni_sancte_spiritus",
+      "title": "Veni Sancte Spiritus (Come, Holy Spirit)",
+      "categories": ["liturgical"],
+      "description": "The Golden Sequence for Pentecost Sunday, a poetic hymn invoking the Holy Spirit with sevenfold gifts",
+      "tags": ["pentecost", "holy_spirit", "sequence", "medieval", "langton", "seven_gifts"],
+      "fileName": "veni_sancte_spiritus.json",
+      "isLiturgical": true,
+      "liturgicalPriority": 10,
+      "liturgicalSeason": "pentecost"
     }
   ]
 }

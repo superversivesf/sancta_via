@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../models/prayer.dart';
 import '../../models/prayer_app_settings.dart';
@@ -439,15 +441,75 @@ class PrayerDetailScreen extends ConsumerWidget {
   void _handleMenuAction(String action, BuildContext context, WidgetRef ref) {
     switch (action) {
       case 'share':
-        // Share functionality would go here
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Sharing coming soon')));
+        // Get prayer text for sharing
+        final prayerAsync = ref.read(prayerProvider(prayerId));
+        prayerAsync.when(
+          data: (prayer) {
+            if (prayer != null) {
+              final selectedTranslation =
+                  ref.read(selectedTranslationProvider(prayerId)) ??
+                  ref.read(prayerDefaultLanguageProvider);
+
+              // Build translations map
+              final Map<String, String> translations = {'English': prayer.text};
+              prayer.translations?.forEach((key, value) {
+                final capitalizedKey = key[0].toUpperCase() + key.substring(1);
+                translations[capitalizedKey] = value;
+              });
+
+              final displayText =
+                  translations[selectedTranslation] ?? prayer.text;
+              final shareText = '${prayer.title}\n\n$displayText';
+              Share.share(shareText, subject: prayer.title);
+            }
+          },
+          loading: () {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('Loading prayer...')));
+          },
+          error: (error, stack) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('Error sharing: $error')));
+          },
+        );
         break;
       case 'copy':
-        // Copy prayer text functionality
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Text copied to clipboard')),
+        // Get prayer text for copying
+        final prayerAsync = ref.read(prayerProvider(prayerId));
+        prayerAsync.when(
+          data: (prayer) {
+            if (prayer != null) {
+              final selectedTranslation =
+                  ref.read(selectedTranslationProvider(prayerId)) ??
+                  ref.read(prayerDefaultLanguageProvider);
+
+              // Build translations map
+              final Map<String, String> translations = {'English': prayer.text};
+              prayer.translations?.forEach((key, value) {
+                final capitalizedKey = key[0].toUpperCase() + key.substring(1);
+                translations[capitalizedKey] = value;
+              });
+
+              final displayText =
+                  translations[selectedTranslation] ?? prayer.text;
+              Clipboard.setData(ClipboardData(text: displayText));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Text copied to clipboard')),
+              );
+            }
+          },
+          loading: () {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('Loading prayer...')));
+          },
+          error: (error, stack) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('Error copying: $error')));
+          },
         );
         break;
       case 'settings':

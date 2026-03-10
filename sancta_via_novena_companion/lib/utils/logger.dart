@@ -1,7 +1,23 @@
+/// Local AppLogger implementation for backward compatibility.
+///
+/// Provides static logging methods matching the original API.
+/// This file intentionally does NOT import or export from shared_ui
+/// to avoid name conflicts. Files that need both this AppLogger
+/// and shared_ui components should use:
+/// ```dart
+/// import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart' hide AppLogger;
+/// import '../utils/logger.dart';
+/// ```
+library;
+
 import 'package:flutter/foundation.dart';
 
+/// App-wide logging utility with static methods for easy access.
+///
+/// Provides consistent debug logging with app-specific prefixes.
+// ignore: avoid_classes_with_only_static_members
 class AppLogger {
-  static const String _prefix = '[SanctaVia]';
+  static const String _prefix = '[Novena]';
 
   /// Log debug information (only in debug mode)
   static void debug(String message, [String? tag]) {
@@ -24,10 +40,8 @@ class AppLogger {
     final tagStr = tag != null ? '[$tag]' : '';
     if (kDebugMode) {
       print('$_prefix$tagStr WARNING: $message');
-    } else {
-      // In release, you might want to log to a crash reporting service
-      // FirebaseCrashlytics.instance.log('WARNING: $message');
     }
+    // In release, could log to crash reporting service
   }
 
   /// Log errors (always logged, even in release)
@@ -42,13 +56,11 @@ class AppLogger {
       print('$_prefix$tagStr ERROR: $message');
       if (error != null) print('Error details: $error');
       if (stackTrace != null) print('Stack trace: $stackTrace');
-    } else {
-      // In release, send to crash reporting
-      // FirebaseCrashlytics.instance.recordError(error, stackTrace, reason: message);
     }
+    // In release, could send to crash reporting service
   }
 
-  /// Log examination-specific operations
+  /// Log examination operations
   static void examination(String message) {
     debug(message, 'EXAM');
   }

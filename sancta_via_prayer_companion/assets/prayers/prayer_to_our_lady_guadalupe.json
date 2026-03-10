@@ -1,0 +1,22 @@
+{
+  "id": "prayer_to_our_lady_guadalupe",
+  "title": "Prayer to Our Lady of Guadalupe",
+  "text": "Our Lady of Guadalupe,\nMystical Rose,\nmake intercession for Holy Church,\nprotect the Sovereign Pontiff,\nhelp all those who invoke you in their necessities,\nand since you are the ever Virgin Mary\nand Mother of the true God,\nobtain for us from your most holy Son\nthe grace of keeping our faith,\nsweet hope in the midst of the bitterness of life,\nburning charity and the precious gift\nof final perseverance.\n\nAmen.",
+  "attribution": "Traditional Catholic Prayer to Our Lady of Guadalupe, Patroness of the Americas",
+  "notes": "Our Lady of Guadalupe appeared to St. Juan Diego in 1531 on Tepeyac Hill near Mexico City. She is the Patroness of the Americas and the Unborn. Her feast day is December 12. The image of Our Lady imprinted on Juan Diego's tilma remains miraculously preserved to this day.",
+  "categories": [
+    "marian"
+  ],
+  "description": "A prayer asking for the intercession of Our Lady of Guadalupe, Patroness of the Americas",
+  "tags": [
+    "marian",
+    "guadalupe",
+    "americas",
+    "intercession",
+    "juan_diego"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

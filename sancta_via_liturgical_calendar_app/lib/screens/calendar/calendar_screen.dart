@@ -151,6 +151,12 @@ class CalendarScreen extends ConsumerWidget {
     // Adjust for Sunday being the first day of the week (0 = Sunday, 6 = Saturday)
     final firstDayOffset = firstDayWeekday % 7;
 
+    // Calculate the number of rows needed for this month
+    // Last day position = firstDayOffset + daysInMonth - 1
+    // Rows needed = (last day position / 7) + 1
+    final rowsNeeded = ((firstDayOffset + daysInMonth - 1) ~/ 7) + 1;
+    final gridItemCount = rowsNeeded * 7;
+
     // Days of the week header
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -178,59 +184,57 @@ class CalendarScreen extends ConsumerWidget {
           ),
         ),
 
-        // Calendar grid - fixed height, no scrolling
-        SizedBox(
-          height: 300, // Fixed height for 6 rows of calendar
-          child: GridView.builder(
-            physics: const NeverScrollableScrollPhysics(), // Disable scrolling
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 7,
-              childAspectRatio: 1.0,
-            ),
-            itemCount: 42, // 6 rows x 7 columns
-            itemBuilder: (context, index) {
-              // Calculate the day number (1-based)
-              final dayNumber = index - firstDayOffset + 1;
-
-              // Check if this grid position is part of the current month
-              if (dayNumber < 1 || dayNumber > daysInMonth) {
-                return const SizedBox.shrink();
-              }
-
-              // Get liturgical day info if available
-              final liturgicalDay = monthDays[dayNumber];
-
-              // Current date
-              final currentDate = DateTime(
-                displayedMonth.year,
-                displayedMonth.month,
-                dayNumber,
-              );
-
-              // Check if this is the selected date
-              final isSelected =
-                  selectedDate.year == currentDate.year &&
-                  selectedDate.month == currentDate.month &&
-                  selectedDate.day == currentDate.day;
-
-              // Check if this is today's date
-              final now = DateTime.now();
-              final isToday =
-                  now.year == currentDate.year &&
-                  now.month == currentDate.month &&
-                  now.day == currentDate.day;
-
-              return _buildCalendarDay(
-                context,
-                ref,
-                dayNumber,
-                currentDate,
-                liturgicalDay,
-                isSelected,
-                isToday,
-              );
-            },
+        // Calendar grid - dynamic height based on rows needed
+        GridView.builder(
+          shrinkWrap: true, // Size to content
+          physics: const NeverScrollableScrollPhysics(), // Disable scrolling
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 7,
+            childAspectRatio: 1.0,
           ),
+          itemCount: gridItemCount, // Dynamic: rowsNeeded * 7
+          itemBuilder: (context, index) {
+            // Calculate the day number (1-based)
+            final dayNumber = index - firstDayOffset + 1;
+
+            // Check if this grid position is part of the current month
+            if (dayNumber < 1 || dayNumber > daysInMonth) {
+              return const SizedBox.shrink();
+            }
+
+            // Get liturgical day info if available
+            final liturgicalDay = monthDays[dayNumber];
+
+            // Current date
+            final currentDate = DateTime(
+              displayedMonth.year,
+              displayedMonth.month,
+              dayNumber,
+            );
+
+            // Check if this is the selected date
+            final isSelected =
+                selectedDate.year == currentDate.year &&
+                selectedDate.month == currentDate.month &&
+                selectedDate.day == currentDate.day;
+
+            // Check if this is today's date
+            final now = DateTime.now();
+            final isToday =
+                now.year == currentDate.year &&
+                now.month == currentDate.month &&
+                now.day == currentDate.day;
+
+            return _buildCalendarDay(
+              context,
+              ref,
+              dayNumber,
+              currentDate,
+              liturgicalDay,
+              isSelected,
+              isToday,
+            );
+          },
         ),
       ],
     );

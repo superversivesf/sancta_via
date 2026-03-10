@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/src/providers/ui_providers.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/src/providers/liturgical_providers.dart';
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 void main() {
   group('UI Providers - Colors', () {
@@ -28,12 +29,13 @@ void main() {
       expect(color, isA<Color>());
     });
 
-    test('liturgicalColorByDateProvider returns white/grey for Christmas', () {
+    test('liturgicalColorByDateProvider returns white color for Christmas', () {
       final christmas = DateTime(2025, 12, 25);
       final color = container.read(liturgicalColorByDateProvider(christmas));
       final day = container.read(liturgicalDayProvider(christmas));
       expect(day?.celebration.color?.toUpperCase(), equals('WHITE'));
-      expect(color, equals(Colors.grey.shade100));
+      // WHITE color uses vibrant blue (0xFF2196F3) for visibility
+      expect(color, equals(LiturgicalColor.white.toFlutterColor()));
     });
   });
 

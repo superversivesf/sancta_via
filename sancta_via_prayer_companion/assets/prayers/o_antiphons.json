@@ -1,0 +1,70 @@
+{
+  "id": "o_antiphons",
+  "title": "O Antiphons (The Great Antiphons)",
+  "text": "December 17: O Wisdom\nO Wisdom, coming forth from the mouth of the Most High,\nreaching from one end to the other mightily,\nand sweetly disposing all things:\nCome and teach us the way of prudence.\n\nDecember 18: O Adonai\nO Adonai, and leader of the House of Israel,\nwho appeared to Moses in the fire of the burning bush\nand gave him the law on Sinai:\nCome and redeem us with an outstretched arm.\n\nDecember 19: O Root of Jesse\nO Root of Jesse, standing as an ensign before the peoples,\nbefore whom kings keep silence,\nand unto whom the Gentiles shall make supplication:\nCome to deliver us, and tarry not.\n\nDecember 20: O Key of David\nO Key of David, and sceptre of the House of Israel,\nwho opens and no one shuts,\nwho shuts and no one opens:\nCome and bring forth from prison the captive who sits in darkness and in the shadow of death.\n\nDecember 21: O Dayspring\nO Dayspring, brightness of light everlasting,\nand Sun of righteousness:\nCome and enlighten those who sit in darkness and in the shadow of death.\n\nDecember 22: O King of Nations\nO King of Nations, and their desired one,\nthe cornerstone that binds two into one:\nCome and save mankind, whom you fashioned from clay.\n\nDecember 23: O Emmanuel\nO Emmanuel, our King and Lawgiver,\nthe desire of the nations and their Savior:\nCome and save us, O Lord our God.",
+  "translation": {
+    "latin": "Die 17 Decembris: O Sapientia\nO Sapientia, quae ex ore Altissimi prodiisti,\nattingens a fine usque ad finem fortiter,\nsuaviter disponensque omnia:\nVeni ad docendum nos viam prudentiae.\n\nDie 18 Decembris: O Adonai\nO Adonai, et dux domus Israel,\nqui Moysi apparuisti in igne flammae rubi,\net legem dedisti in Sina:\nVeni ad redimendum nos in bracchio extento.\n\nDie 19 Decembris: O Radix Jesse\nO Radix Jesse, qui stas in signum populorum,\nsuper quem conticiscunt reges,\nad quem gentes deprecabuntur:\nVeni ad liberandum nos, iam noli tardare.\n\nDie 20 Decembris: O Clavis David\nO Clavis David, et sceptrum domus Israel,\nqui aperis, et nemo claudit,\nclaudis, et nemo aperit:\nVeni et educ vinctum de domo carceris,\nsedentem in tenebris, et umbra mortis.\n\nDie 21 Decembris: O Oriens\nO Oriens, splendor lucis aeternae,\net sol iustitiae:\nVeni et illumina sedentes in tenebris,\net umbra mortis.\n\nDie 22 Decembris: O Rex Gentium\nO Rex Gentium, et desideratus earum,\nlapisque angularis, qui facis utraque unum:\nVeni et salva hominem,\nquem de limo formasti.\n\nDie 23 Decembris: O Emmanuel\nO Emmanuel, Rex et legifer noster,\nexspectatio Gentium, et Salvator earum:\nVeni ad salvandum nos, Domine Deus noster."
+  },
+  "antiphons": [
+    {
+      "day": "December 17",
+      "title": "O Sapientia (O Wisdom)",
+      "english": "O Wisdom, coming forth from the mouth of the Most High, reaching from one end to the other mightily, and sweetly disposing all things: Come and teach us the way of prudence.",
+      "latin": "O Sapientia, quae ex ore Altissimi prodiisti, attingens a fine usque ad finem fortiter, suaviter disponensque omnia: Veni ad docendum nos viam prudentiae."
+    },
+    {
+      "day": "December 18",
+      "title": "O Adonai (O Lord)",
+      "english": "O Adonai, and leader of the House of Israel, who appeared to Moses in the fire of the burning bush and gave him the law on Sinai: Come and redeem us with an outstretched arm.",
+      "latin": "O Adonai, et dux domus Israel, qui Moysi apparuisti in igne flammae rubi, et legem dedisti in Sina: Veni ad redimendum nos in bracchio extento."
+    },
+    {
+      "day": "December 19",
+      "title": "O Radix Jesse (O Root of Jesse)",
+      "english": "O Root of Jesse, standing as an ensign before the peoples, before whom kings keep silence, and unto whom the Gentiles shall make supplication: Come to deliver us, and tarry not.",
+      "latin": "O Radix Jesse, qui stas in signum populorum, super quem conticiscunt reges, ad quem gentes deprecabuntur: Veni ad liberandum nos, iam noli tardare."
+    },
+    {
+      "day": "December 20",
+      "title": "O Clavis David (O Key of David)",
+      "english": "O Key of David, and sceptre of the House of Israel, who opens and no one shuts, who shuts and no one opens: Come and bring forth from prison the captive who sits in darkness and in the shadow of death.",
+      "latin": "O Clavis David, et sceptrum domus Israel, qui aperis, et nemo claudit, claudis, et nemo aperit: Veni et educ vinctum de domo carceris, sedentem in tenebris, et umbra mortis."
+    },
+    {
+      "day": "December 21",
+      "title": "O Oriens (O Dayspring)",
+      "english": "O Dayspring, brightness of light everlasting, and Sun of righteousness: Come and enlighten those who sit in darkness and in the shadow of death.",
+      "latin": "O Oriens, splendor lucis aeternae, et sol iustitiae: Veni et illumina sedentes in tenebris, et umbra mortis."
+    },
+    {
+      "day": "December 22",
+      "title": "O Rex Gentium (O King of Nations)",
+      "english": "O King of Nations, and their desired one, the cornerstone that binds two into one: Come and save mankind, whom you fashioned from clay.",
+      "latin": "O Rex Gentium, et desideratus earum, lapisque angularis, qui facis utraque unum: Veni et salva hominem, quem de limo formasti."
+    },
+    {
+      "day": "December 23",
+      "title": "O Emmanuel (O God with Us)",
+      "english": "O Emmanuel, our King and Lawgiver, the desire of the nations and their Savior: Come and save us, O Lord our God.",
+      "latin": "O Emmanuel, Rex et legifer noster, exspectatio Gentium, et Salvator earum: Veni ad salvandum nos, Domine Deus noster."
+    }
+  ],
+  "attribution": "Traditional, 7th-8th Century",
+  "notes": "The O Antiphons are ancient antiphons used at Vespers during the Octave before Christmas (December 17-23). Each antiphon begins with 'O' followed by a title for the Messiah from the prophecy of Isaiah. Taken in reverse order, the first letters of the Latin titles (Emmanuel, Rex, Oriens, Clavis, Radix, Adonai, Sapientia) spell out 'ERO CRAS' - 'I will be (here) tomorrow', a fitting response from Christ whose coming is imminent.\n\nThese antiphons are also the basis for the beloved Advent hymn 'O Come, O Come, Emmanuel', which paraphrases and expands upon their imagery.",
+  "categories": [
+    "liturgical"
+  ],
+  "description": "The seven Great O Antiphons, sung at Vespers during the final days of Advent (December 17-23), invoking Christ under His Messianic titles",
+  "tags": [
+    "advent",
+    "christmas",
+    "antiphons",
+    "messianic",
+    "vespers",
+    "traditional"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 9,
+  "liturgicalSeason": "advent",
+  "timeOfDay": "anytime"
+}

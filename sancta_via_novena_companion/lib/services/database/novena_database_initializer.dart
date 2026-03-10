@@ -157,6 +157,7 @@ class NovenaDatabaseInitializer {
 
       return [
         'divine-mercy.json',
+        'holy-spirit.json',
         'sacred-heart.json',
         'immaculate-heart.json',
         'st-jude.json',
@@ -165,6 +166,16 @@ class NovenaDatabaseInitializer {
         'st-therese.json',
         'st-john-paul-ii.json',
         'our-lady-perpetual-help.json',
+        'our-lady-lourdes.json',
+        'our-lady-fatima.json',
+        'immaculate-conception.json',
+        'st-monica.json',
+        'st-rita.json',
+        'st-padre-pio.json',
+        'st-francis-assisi.json',
+        'st-andrew-christmas.json',
+        'all-souls.json',
+        'novena-for-dead.json',
       ];
     }
   }

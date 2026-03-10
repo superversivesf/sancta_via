@@ -1,8 +1,25 @@
+/// Local AppLogger implementation for backward compatibility.
+///
+/// Provides static logging methods matching the original API.
+/// This file intentionally does NOT import or export from shared_ui
+/// to avoid name conflicts. Files that need both this AppLogger
+/// and shared_ui components should use:
+/// ```dart
+/// import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart' hide AppLogger;
+/// import '../utils/logger.dart';
+/// ```
+library;
+
 import 'package:flutter/foundation.dart';
 
+/// App-wide logging utility with static methods for easy access.
+///
+/// Provides consistent debug logging with app-specific prefixes.
+// ignore: avoid_classes_with_only_static_members
 class AppLogger {
   static const String _prefix = '[Confession]';
 
+  /// Log debug information (only in debug mode)
   static void debug(String message, [String? tag]) {
     if (kDebugMode) {
       final tagStr = tag != null ? '[$tag]' : '';
@@ -10,6 +27,7 @@ class AppLogger {
     }
   }
 
+  /// Log info messages (only in debug mode)
   static void info(String message, [String? tag]) {
     if (kDebugMode) {
       final tagStr = tag != null ? '[$tag]' : '';
@@ -17,6 +35,7 @@ class AppLogger {
     }
   }
 
+  /// Log warnings (only in debug mode)
   static void warning(String message, [String? tag]) {
     if (kDebugMode) {
       final tagStr = tag != null ? '[$tag]' : '';
@@ -24,6 +43,7 @@ class AppLogger {
     }
   }
 
+  /// Log errors (always logged, even in release)
   static void error(
     String message, [
     dynamic error,
@@ -38,14 +58,17 @@ class AppLogger {
     }
   }
 
+  /// Log generic message (alias for debug)
   static void log(String message, [String? tag]) {
     debug(message, tag);
   }
 
+  /// Log examination operations
   static void examination(String message) {
     debug(message, 'EXAM');
   }
 
+  /// Log repository operations
   static void repository(String message) {
     debug(message, 'REPO');
   }

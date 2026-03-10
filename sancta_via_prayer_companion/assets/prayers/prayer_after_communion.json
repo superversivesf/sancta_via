@@ -1,0 +1,22 @@
+{
+  "id": "prayer_after_communion",
+  "title": "Prayer After Communion",
+  "text": "Lord Jesus, I thank You with all my heart\nfor the great love You have shown me\nin coming to me in Holy Communion.\n\nYou have given Yourself entirely to me.\nNow let me give myself entirely to You.\n\nMay this Blessed Sacrament\nstrengthen me against temptation,\ncomfort me in my sorrows,\nand inspire me to greater love\nfor You and my neighbor.\n\nStay with me, Lord, for it is necessary to have You\npresent so that I may not forget You.\nStay with me, Lord, for You are my life,\nand without You, I am without fervor.\nStay with me, Lord, for You are my light,\nand without You, I am in darkness.\nStay with me, Lord, to show me Your will.\n\nI love You, Lord, and I desire to love You more each day.\nMake my heart like unto Yours.\n\nAmen.",
+  "attribution": "Traditional Catholic Prayer (includes words attributed to St. Padre Pio)",
+  "notes": "This prayer of thanksgiving after receiving Holy Communion expresses gratitude for the great gift of the Eucharist and asks for the grace to grow in love and holiness.",
+  "categories": [
+    "mass"
+  ],
+  "description": "A prayer of thanksgiving after receiving Holy Communion",
+  "tags": [
+    "communion",
+    "eucharist",
+    "mass",
+    "sacrament",
+    "thanksgiving"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 7,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

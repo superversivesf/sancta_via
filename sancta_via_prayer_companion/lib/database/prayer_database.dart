@@ -8,6 +8,13 @@ import '../models/prayer_category.dart';
 import '../models/prayer_category_group.dart';
 import '../utils/logger.dart';
 
+/// Helper class to hold related data for a prayer during batch loading.
+class _PrayerRelations {
+  final List<String> categories = [];
+  final List<String> tags = [];
+  final Map<String, String> translations = {};
+}
+
 /// SQLite database helper for the prayer companion app
 class PrayerDatabase {
   static const String _databaseName = 'prayers.db';
@@ -302,6 +309,97 @@ class PrayerDatabase {
     });
   }
 
+  /// Load all relations (categories, tags, translations) for a set of prayer IDs.
+  /// Returns a map from prayer ID to its relations.
+  ///
+  /// This batch-loading approach prevents N+1 query problems by fetching all
+  /// relations in just 3 queries instead of N*3 queries.
+  Future<Map<String, _PrayerRelations>> _loadPrayerRelations(
+    List<String> prayerIds,
+  ) async {
+    if (prayerIds.isEmpty) {
+      return {};
+    }
+
+    final db = await database;
+
+    // Create placeholders for IN clause (e.g., "?, ?, ?")
+    final placeholders = List.filled(prayerIds.length, '?').join(', ');
+
+    // Batch load categories for all prayers
+    final categoriesMaps = await db.rawQuery(
+      'SELECT prayer_id, category_id FROM prayer_categories WHERE prayer_id IN ($placeholders)',
+      prayerIds,
+    );
+
+    // Batch load tags for all prayers
+    final tagsMaps = await db.rawQuery(
+      'SELECT prayer_id, tag FROM prayer_tags WHERE prayer_id IN ($placeholders)',
+      prayerIds,
+    );
+
+    // Batch load translations for all prayers
+    final translationsMaps = await db.rawQuery(
+      'SELECT prayer_id, language, text FROM prayer_translations WHERE prayer_id IN ($placeholders)',
+      prayerIds,
+    );
+
+    // Build the relations map
+    final relationsMap = <String, _PrayerRelations>{
+      for (final id in prayerIds) id: _PrayerRelations(),
+    };
+
+    // Populate categories
+    for (final map in categoriesMaps) {
+      final prayerId = map['prayer_id'] as String;
+      relationsMap[prayerId]?.categories.add(map['category_id'] as String);
+    }
+
+    // Populate tags
+    for (final map in tagsMaps) {
+      final prayerId = map['prayer_id'] as String;
+      relationsMap[prayerId]?.tags.add(map['tag'] as String);
+    }
+
+    // Populate translations
+    for (final map in translationsMaps) {
+      final prayerId = map['prayer_id'] as String;
+      relationsMap[prayerId]?.translations[map['language'] as String] =
+          map['text'] as String;
+    }
+
+    return relationsMap;
+  }
+
+  /// Build Prayer objects from database maps with pre-loaded relations.
+  List<Prayer> _buildPrayersFromMaps(
+    List<Map<String, dynamic>> prayerMaps,
+    Map<String, _PrayerRelations> relationsMap,
+  ) {
+    return prayerMaps.map((prayerMap) {
+      final prayerId = prayerMap['id'] as String;
+      final relations = relationsMap[prayerId] ?? _PrayerRelations();
+
+      return Prayer(
+        id: prayerMap['id'],
+        title: prayerMap['title'],
+        text: prayerMap['text'],
+        attribution: prayerMap['attribution'],
+        notes: prayerMap['notes'],
+        categories: relations.categories,
+        description: prayerMap['description'],
+        tags: relations.tags,
+        translations: relations.translations.isEmpty
+            ? null
+            : relations.translations,
+        isLiturgical: prayerMap['is_liturgical'] == 1,
+        liturgicalPriority: prayerMap['liturgical_priority'],
+        liturgicalSeason: prayerMap['liturgical_season'],
+        timeOfDay: prayerMap['time_of_day'] ?? 'anytime',
+      );
+    }).toList();
+  }
+
   /// Get all prayers with complete data
   Future<List<Prayer>> getAllPrayers() async {
     final db = await database;
@@ -309,61 +407,18 @@ class PrayerDatabase {
     // Get basic prayer data
     final List<Map<String, dynamic>> prayerMaps = await db.query('prayers');
 
-    final List<Prayer> prayers = [];
-
-    for (final prayerMap in prayerMaps) {
-      final prayerId = prayerMap['id'] as String;
-
-      // Get categories for this prayer
-      final categoriesMaps = await db.query(
-        'prayer_categories',
-        where: 'prayer_id = ?',
-        whereArgs: [prayerId],
-      );
-      final categories = categoriesMaps
-          .map((m) => m['category_id'] as String)
-          .toList();
-
-      // Get tags for this prayer
-      final tagsMaps = await db.query(
-        'prayer_tags',
-        where: 'prayer_id = ?',
-        whereArgs: [prayerId],
-      );
-      final tags = tagsMaps.map((m) => m['tag'] as String).toList();
-
-      // Get translations for this prayer
-      final translationsMaps = await db.query(
-        'prayer_translations',
-        where: 'prayer_id = ?',
-        whereArgs: [prayerId],
-      );
-      final translations = <String, String>{};
-      for (final translationMap in translationsMaps) {
-        translations[translationMap['language'] as String] =
-            translationMap['text'] as String;
-      }
-
-      prayers.add(
-        Prayer(
-          id: prayerMap['id'],
-          title: prayerMap['title'],
-          text: prayerMap['text'],
-          attribution: prayerMap['attribution'],
-          notes: prayerMap['notes'],
-          categories: categories,
-          description: prayerMap['description'],
-          tags: tags,
-          translations: translations.isEmpty ? null : translations,
-          isLiturgical: prayerMap['is_liturgical'] == 1,
-          liturgicalPriority: prayerMap['liturgical_priority'],
-          liturgicalSeason: prayerMap['liturgical_season'],
-          timeOfDay: prayerMap['time_of_day'] ?? 'anytime',
-        ),
-      );
+    if (prayerMaps.isEmpty) {
+      return [];
     }
 
-    return prayers;
+    // Extract prayer IDs for batch loading
+    final prayerIds = prayerMaps.map((m) => m['id'] as String).toList();
+
+    // Batch load all relations in a single call (3 queries instead of N*3)
+    final relationsMap = await _loadPrayerRelations(prayerIds);
+
+    // Build Prayer objects with pre-loaded relations
+    return _buildPrayersFromMaps(prayerMaps, relationsMap);
   }
 
   /// Get prayer by ID
@@ -442,17 +497,15 @@ class PrayerDatabase {
       [categoryId],
     );
 
-    final List<Prayer> prayers = [];
-
-    for (final prayerMap in maps) {
-      final prayerId = prayerMap['id'] as String;
-
-      // Get categories, tags, and translations for each prayer
-      final prayer = await getPrayerById(prayerId);
-      if (prayer != null) prayers.add(prayer);
+    if (maps.isEmpty) {
+      return [];
     }
 
-    return prayers;
+    // Batch load relations
+    final prayerIds = maps.map((m) => m['id'] as String).toList();
+    final relationsMap = await _loadPrayerRelations(prayerIds);
+
+    return _buildPrayersFromMaps(maps, relationsMap);
   }
 
   /// Get prayers by time of day
@@ -467,15 +520,15 @@ class PrayerDatabase {
       orderBy: 'title',
     );
 
-    final List<Prayer> prayers = [];
-
-    for (final prayerMap in maps) {
-      final prayerId = prayerMap['id'] as String;
-      final prayer = await getPrayerById(prayerId);
-      if (prayer != null) prayers.add(prayer);
+    if (maps.isEmpty) {
+      return [];
     }
 
-    return prayers;
+    // Batch load relations
+    final prayerIds = maps.map((m) => m['id'] as String).toList();
+    final relationsMap = await _loadPrayerRelations(prayerIds);
+
+    return _buildPrayersFromMaps(maps, relationsMap);
   }
 
   /// Get prayers for a specific time of day only (not including 'anytime')
@@ -489,15 +542,15 @@ class PrayerDatabase {
       orderBy: 'title',
     );
 
-    final List<Prayer> prayers = [];
-
-    for (final prayerMap in maps) {
-      final prayerId = prayerMap['id'] as String;
-      final prayer = await getPrayerById(prayerId);
-      if (prayer != null) prayers.add(prayer);
+    if (maps.isEmpty) {
+      return [];
     }
 
-    return prayers;
+    // Batch load relations
+    final prayerIds = maps.map((m) => m['id'] as String).toList();
+    final relationsMap = await _loadPrayerRelations(prayerIds);
+
+    return _buildPrayersFromMaps(maps, relationsMap);
   }
 
   /// Search prayers by title or text
@@ -511,15 +564,15 @@ class PrayerDatabase {
       orderBy: 'title',
     );
 
-    final List<Prayer> prayers = [];
-
-    for (final prayerMap in maps) {
-      final prayerId = prayerMap['id'] as String;
-      final prayer = await getPrayerById(prayerId);
-      if (prayer != null) prayers.add(prayer);
+    if (maps.isEmpty) {
+      return [];
     }
 
-    return prayers;
+    // Batch load relations
+    final prayerIds = maps.map((m) => m['id'] as String).toList();
+    final relationsMap = await _loadPrayerRelations(prayerIds);
+
+    return _buildPrayersFromMaps(maps, relationsMap);
   }
 
   /// Get liturgical prayers ordered by priority
@@ -542,15 +595,15 @@ class PrayerDatabase {
       orderBy: 'liturgical_priority DESC, title',
     );
 
-    final List<Prayer> prayers = [];
-
-    for (final prayerMap in maps) {
-      final prayerId = prayerMap['id'] as String;
-      final prayer = await getPrayerById(prayerId);
-      if (prayer != null) prayers.add(prayer);
+    if (maps.isEmpty) {
+      return [];
     }
 
-    return prayers;
+    // Batch load relations
+    final prayerIds = maps.map((m) => m['id'] as String).toList();
+    final relationsMap = await _loadPrayerRelations(prayerIds);
+
+    return _buildPrayersFromMaps(maps, relationsMap);
   }
 
   /// Check if database has been populated

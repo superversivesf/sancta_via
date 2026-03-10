@@ -26,6 +26,8 @@ dependencies:
     sdk: flutter
   sancta_via_liturgical_calendar:
     path: ../sancta_via_liturgical_calendar
+  sancta_via_shared_ui:
+    path: ../sancta_via_shared_ui
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1
 

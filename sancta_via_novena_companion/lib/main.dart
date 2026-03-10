@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart' hide AppLogger;
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'config/routes.dart';
 import 'services/app_lifecycle_service.dart';

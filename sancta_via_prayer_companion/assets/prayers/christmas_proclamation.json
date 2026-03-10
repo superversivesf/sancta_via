@@ -1,0 +1,26 @@
+{
+  "id": "christmas_proclamation",
+  "title": "Christmas Proclamation (The Proclamation of the Birth of Christ)",
+  "text": "The Twenty-Fifth Day of December,\nin the five thousand one hundred and ninety-ninth year\nfrom the creation of the world,\nwhen in the beginning God created heaven and earth;\n\nin the two thousand nine hundred and fifty-seventh year\nafter the flood;\n\nin the two thousand and fifteenth year\nfrom the birth of Abraham;\n\nin the one thousand five hundred and tenth year\nfrom Moses and the going forth of the people of Israel from Egypt;\n\nin the one thousand and thirty-second year\nfrom David's being anointed king;\n\nin the sixty-fifth week according to the prophecy of Daniel;\n\nin the one hundred and ninety-fourth Olympiad;\n\nin the seven hundred and fifty-second year\nfrom the foundation of the city of Rome;\n\nin the forty-second year of the reign of Octavian Augustus;\n\nthe whole world being at peace,\n\nJESUS CHRIST,\neternal God and Son of the eternal Father,\ndesiring to consecrate the world by His most kind coming,\nbeing conceived by the Holy Spirit,\nand nine months having passed since His conception,\n\nwas born in Bethlehem of Judah of the Virgin Mary,\nbeing made Man.\n\nTHE BIRTH OF OUR LORD JESUS CHRIST ACCORDING TO THE FLESH.",
+  "translation": {
+    "latin": "Annus quinques milensimus centesimus nonagesimus nonus\na creatione mundi,\ncum in principio Deus creavit caelum et terram;\n\nannus duomillesimus nongentesimus quinquagesimus septimus\ndiluvio transacto;\n\nannus duomillesimus quintus decimus\nab ortu Abrahae;\n\nannus millesimus quingentesimus decimus\nex Moysis et exitu populi Israel de Aegypto;\n\nannus millesimus trigesimus secundus\nab unctione David in regem;\n\nseptuagesima quinta hebdomas\niuxta Danielem prophetam;\n\nOlympias centesima nonagesima quarta;\n\nannus septingentesimus quinquagesimus secundus\nab urbe Roma condita;\n\nannus quadragesimus secundus imperii Octaviani Augusti;\ntoto urbe in pace composita,\n\nJESUS CHRISTUS,\nDeus aeternus et Filius aeterni Patris,\n mundum volens sanctificare adventu suo piissimo,\n conceptus est de Spiritu Sancto,\net novem mensibus transactis,\n\nnatus est in Bethlehem Iudaeae ex Maria Virgine,\nfactus homo.\n\nNATIVITAS DOMINI NOSTRI JESU CHRISTI SECUNDUM CARNEM."
+  },
+  "attribution": "Roman Martyrology",
+  "notes": "The Christmas Proclamation, also known as the Proclamation of the Birth of Christ, is a solemn proclamation traditionally chanted or recited before the celebration of Midnight Mass on Christmas Eve, or on Christmas morning. It places the birth of Christ within the context of salvation history, referencing key events and figures from the Old Testament and ancient history.\n\nThe proclamation announces the birth of Jesus Christ in relationship to all of salvation history—from creation, through the flood, Abraham, Moses, David, to the fullness of time when 'the whole world being at peace.' This poetic and solemn proclamation helps us understand that Christ's birth is the center and fulfillment of all history.\n\nThe numbers used in the proclamation are based on the calculations found in the Roman Martyrology. While the exact dates may differ from modern historical scholarship, the proclamation serves a liturgical and spiritual purpose: to situate Christ's birth at the center of human history and as the fulfillment of God's plan of salvation.",
+  "categories": [
+    "liturgical"
+  ],
+  "description": "The solemn proclamation of the birth of Christ from the Roman Martyrology, traditionally proclaimed at Christmas Midnight Mass",
+  "tags": [
+    "christmas",
+    "nativity",
+    "nativity_of_christ",
+    "roman_martyrology",
+    "midnight_mass",
+    "salvation_history"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 10,
+  "liturgicalSeason": "christmas",
+  "timeOfDay": "anytime"
+}

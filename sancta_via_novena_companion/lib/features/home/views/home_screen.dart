@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 import '../../../config/route_names.dart';
 import '../../novenas/providers/novena_state_provider.dart';
 import '../../../providers/liturgical_calendar_provider.dart';
@@ -160,7 +161,7 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  IconData _getLiturgicalIcon(LiturgicalColor color) {
+  IconData _getLiturgicalIcon(LiturgicalColor? color) {
     switch (color) {
       case LiturgicalColor.green:
         return Icons.eco; // Nature/growth for Ordinary Time
@@ -174,6 +175,8 @@ class HomeScreen extends ConsumerWidget {
         return Icons.whatshot; // Fire for Pentecost/martyrs
       case LiturgicalColor.gold:
         return Icons.diamond; // Precious for high feasts
+      case null:
+        return Icons.church; // Default fallback
     }
   }
 }

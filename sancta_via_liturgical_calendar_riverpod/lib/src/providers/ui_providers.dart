@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import 'liturgical_providers.dart';
 
 /// Provider for liturgical color as Flutter Color
 final liturgicalColorProvider = Provider<Color>((ref) {
   final colorString = ref.watch(currentLiturgicalColorProvider);
-  return _getLiturgicalColor(colorString);
+  final colorIntensity = ref.watch(colorIntensityProvider);
+  return colorString?.toLiturgicalColor(colorIntensity) ?? Colors.grey;
 });
 
 /// Provider for liturgical color by date
@@ -14,7 +16,9 @@ final liturgicalColorByDateProvider = Provider.family<Color, DateTime>((
   date,
 ) {
   final day = ref.watch(liturgicalDayProvider(date));
-  return _getLiturgicalColor(day?.celebration.color);
+  final colorIntensity = ref.watch(colorIntensityProvider);
+  return day?.celebration.color.toLiturgicalColor(colorIntensity) ??
+      Colors.grey;
 });
 
 /// Provider for season-based theme data
@@ -128,26 +132,6 @@ final liturgicalNotificationProvider = Provider<Map<String, dynamic>?>((ref) {
     'priority': currentDay.celebration.isSolemnity ? 'high' : 'normal',
   };
 });
-
-/// Helper function to convert liturgical color string to Flutter Color
-Color _getLiturgicalColor(String? colorString) {
-  switch (colorString?.toUpperCase()) {
-    case 'WHITE':
-      return Colors.grey.shade100;
-    case 'RED':
-      return Colors.red.shade700;
-    case 'GREEN':
-      return Colors.green.shade700;
-    case 'PURPLE':
-      return Colors.purple.shade700;
-    case 'ROSE':
-      return Colors.pink.shade300;
-    case 'GOLD':
-      return Colors.amber.shade600;
-    default:
-      return Colors.grey.shade500;
-  }
-}
 
 /// Helper function to create MaterialColor from Color
 MaterialColor _createMaterialColor(Color color) {

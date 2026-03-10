@@ -1,9 +1,26 @@
 {
   "id": "veni_sancte_spiritus",
-  "title": "Come Holy Ghost",
-  "description": "Traditional invocation to the Holy Ghost",
-  "text": "Come Holy Ghost, fill the hearts of Thy faithful and kindle in them the fire of Thy love.\n℣. Send forth Thy Spirit and they shall be created,\n℟. And Thou shalt renew the face of the earth.\n\nLet us pray. O God, Who hast taught the hearts of the faithful by the light of the Holy Ghost, grant, we beseech Thee, that by the gift of the same Spirit, we may be always truly wise, and ever rejoice in His consolation. Through Christ our Lord.",
-  "categories": ["holy_spirit", "pentecost", "essential"],
-  "tags": ["holy_spirit", "pentecost", "essential", "wisdom"],
+  "title": "Veni Sancte Spiritus (Come, Holy Spirit)",
+  "text": "Come, Holy Spirit,\nand send forth from heaven\nthe ray of your light.\n\nCome, Father of the poor;\ncome, giver of gifts;\ncome, light of hearts.\n\nBest consoler,\nsweet guest of the soul,\nsweet coolness:\n\nIn labor, rest;\nin heat, refreshment;\nin tears, solace.\n\nO most blessed light,\nfill the inmost heart\nof your faithful.\n\nWithout your divine power,\nthere is nothing in man,\nand nothing innocent.\n\nCleanse what is base,\nwater what is dry,\nheal what is wounded.\n\nBend what is rigid,\nwarm what is chilled,\nmake right what is crooked.\n\nGive to your faithful,\nwho trust in you,\nthe sevenfold gifts.\n\nGrant the reward of virtue,\ngrant the deliverance of salvation,\ngrant eternal joy.\n\nAmen.",
+  "translation": {
+    "latin": "Veni, Sancte Spiritus,\net emitte caelitus\nlucis tuae radium.\n\nVeni, pater pauperum,\nveni, dator munerum,\nveni, lumen cordium.\n\nConsolator optime,\ndulcis hospes animae,\ndulce refrigerium:\n\nIn labore requies,\nin aestu temperies,\nin fletu solatium.\n\nO lux beatissima,\nreple cordis intima\ntuorum fidelium.\n\nSine tuo numine,\nnihil est in homine,\net nihil innoxium.\n\nLava quod est sordidum,\nriga quod est aridum,\nsana quod est saucium.\n\nFlecte quod est rigidum,\nfove quod est frigidum,\nrege quod est devium.\n\nDa tuis fidelibus,\nin te confidentibus,\nsacrum septenarium.\n\nDa virtutis meritum,\nda salutis exitum,\nda perenne gaudium.\n\nAmen."
+  },
+  "attribution": "Attributed to Stephen Langton (c. 1150-1228), Archbishop of Canterbury",
+  "notes": "The Veni Sancte Spiritus, often called the 'Golden Sequence,' is a medieval sequence hymn sung before the Gospel on Pentecost Sunday. It is one of only four sequences preserved in the Roman Missal after the Council of Trent (the others being Victimae Paschali Laudes for Easter, Lauda Sion for Corpus Christi, and Stabat Mater for Our Lady of Sorrows; the Dies Irae was later moved to the Liturgy of the Hours).\n\nTraditionally attributed to Stephen Langton, Archbishop of Canterbury (c. 1150-1228), this hymn is noted for its poetic beauty and deep theology of the Holy Spirit. The sequence invokes the Spirit as consoler, light, and source of the seven gifts (wisdom, understanding, counsel, fortitude, knowledge, piety, and fear of the Lord).\n\nThe three-fold structure of the hymn (purifying, healing, and perfecting) mirrors the soul's journey toward God, while the recurring refrain 'Veni' (Come) expresses the Church's longing for the Spirit's presence.",
+  "categories": [
+    "liturgical"
+  ],
+  "description": "The Golden Sequence for Pentecost Sunday, a poetic hymn invoking the Holy Spirit with sevenfold gifts",
+  "tags": [
+    "pentecost",
+    "holy_spirit",
+    "sequence",
+    "medieval",
+    "langton",
+    "seven_gifts"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 10,
+  "liturgicalSeason": "pentecost",
   "timeOfDay": "anytime"
 }

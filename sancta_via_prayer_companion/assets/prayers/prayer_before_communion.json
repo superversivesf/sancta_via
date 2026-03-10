@@ -1,0 +1,22 @@
+{
+  "id": "prayer_before_communion",
+  "title": "Prayer Before Communion",
+  "text": "Lord Jesus, I believe that You are truly present\nin the Most Holy Sacrament of the Altar.\nI love You above all things,\nand I desire to receive You into my soul.\n\nSince I cannot at this moment receive You sacramentally,\ncome at least spiritually into my heart.\n\nI embrace You as if You were already there\nand unite myself wholly to You.\nNever permit me to be separated from You.\n\nO most merciful Jesus,\nwash me from my sins in Your most precious Blood.\nMake me worthy to receive You\nand prepare my soul to be a fitting dwelling place for You.\n\nAmen.",
+  "attribution": "Traditional Catholic Prayer (based on St. Alphonsus Liguori)",
+  "notes": "This prayer prepares the soul for the reception of Holy Communion, expressing faith in the Real Presence, love for Christ, and desire for spiritual union with Him.",
+  "categories": [
+    "mass"
+  ],
+  "description": "A prayer of preparation for receiving Holy Communion",
+  "tags": [
+    "communion",
+    "eucharist",
+    "mass",
+    "sacrament",
+    "preparation"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 7,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

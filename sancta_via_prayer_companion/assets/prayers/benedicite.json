@@ -1,0 +1,25 @@
+{
+  "id": "benedicite",
+  "title": "Benedicite (Canticle of the Three Children)",
+  "text": "Bless the Lord, all you works of the Lord:\npraise and exalt him above all forever.\n\nAngels of the Lord, bless the Lord:\nyou heavens, bless the Lord.\nAll you waters above the heavens, bless the Lord:\nall you hosts of the Lord, bless the Lord.\n\nSun and moon, bless the Lord:\nstars of heaven, bless the Lord.\nEvery shower and dew, bless the Lord:\nall you winds, bless the Lord.\n\nFire and heat, bless the Lord:\ncold and chill, bless the Lord.\nDew and rain, bless the Lord:\nfrost and chill, bless the Lord.\n\nIce and snow, bless the Lord:\nnights and days, bless the Lord.\nLight and darkness, bless the Lord:\nlightnings and clouds, bless the Lord.\n\nLet the earth bless the Lord:\npraise and exalt him above all forever.\nMountains and hills, bless the Lord:\nevery thing that springs from the earth, bless the Lord.\n\nYou springs, bless the Lord:\nseas and rivers, bless the Lord.\nYou dolphins and all water creatures, bless the Lord:\nall you birds of the air, bless the Lord.\nAll you beasts, wild and tame, bless the Lord:\nyou sons of men, bless the Lord.\n\nO Israel, bless the Lord:\npraise and exalt him above all forever.\nPriests of the Lord, bless the Lord:\nservants of the Lord, bless the Lord.\nSpirits and souls of the just, bless the Lord:\nholy men of humble heart, bless the Lord.\n\nHananiah, Azariah, Mishael, bless the Lord:\npraise and exalt him above all forever.\nFor he has delivered us from death:\nand saved us from the power of death.\nHe has saved us from the fiery furnace:\nand delivered us from the midst of the burning flame.\n\nGive thanks to the Lord, for he is good:\nfor his mercy endures forever.\nBless the Lord, God of gods:\npraise and exalt him above all forever.\nBlessed are you, Lord, the God of our fathers:\npraiseworthy and glorious above all forever.\nBlessed is your holy and glorious name:\npraiseworthy and exalted above all forever.",
+  "translation": {
+    "latin": "Benedicite, omnia opera Domini, Domino:\nlaudate et superexaltate eum in saecula.\n\nAngeli Domini, benedicite Domino:\ncaeli, benedicite Domino.\nAquae omnes, quae super caelos sunt, benedicite Domino:\nomnes virtutes Domini, benedicite Domino.\n\nSol et luna, benedicite Domino:\nstellae caeli, benedicite Domino.\nimber et ros, benedicite Domino:\nomnes spiritus Dei, benedicite Domino.\n\nIgnis et aestus, benedicite Domino:\nfrigus et aestus, benedicite Domino.\nRores et pruinæ, benedicite Domino:\npruina et nives, benedicite Domino.\n\nGlacies et nives, benedicite Domino:\nnoctes et dies, benedicite Domino.\nLux et tenebrae, benedicite Domino:\nfulgura et nubes, benedicite Domino.\n\nTerra, benedic Domino:\nlaudate et superexaltate eum in saecula.\nMontes et colles, benedicite Domino:\nomnia quae germinant in terra, benedicite Domino.\n\nFontes, benedicite Domino:\nmare et flumina, benedicite Domino.\nCete, et omnia quae moventur in aquis, benedicite Domino:\nomnes volucres caeli, benedicite Domino.\nOmnes bestiae et pecora, benedicite Domino:\nfilii hominum, benedicite Domino.\n\nIsrael, benedic Domino:\nlaudate et superexaltate eum in saecula.\nSacerdotes Domini, benedicite Domino:\nservi Domini, benedicite Domino.\nSpiritutes et animae iustorum, benedicite Domino:\nsancti et humiles corde, benedicite Domino.\n\nAnania, Azaria, Misael, benedicite Domino:\nlaudate et superexaltate eum in saecula.\nQuia eripuit nos de inferno:\net salvavit nos de manu mortis.\nEt eripuit nos de medio ignis ardentis:\net de medio flammae eruit nos.\n\nConfitemini Domino, quoniam bonus:\nquoniam in saeculum misericordia eius.\nBenedicite Deum deorum:\nlaudate et superexaltate eum in saecula.\nBenedictus es, Domine, Deus patrum nostrorum:\net laudabilis et superexaltatus in saecula.\nEt benedictum nomen gloriae tuae sanctum:\net superexaltatum in saecula."
+  },
+  "attribution": "From the Book of Daniel 3:57-88 (Deuterocanonical), Song of the Three Young Men in the fiery furnace",
+  "notes": "The Benedicite is the Canticle of the Three Children (Shadrach, Meshach, and Abednego) who were thrown into the fiery furnace for refusing to worship King Nebuchadnezzar's golden image. It is a beautiful hymn calling all creation to bless the Lord. It is used in the Liturgy of the Hours and in Anglican morning prayer.",
+  "categories": [
+    "mass"
+  ],
+  "description": "The Benedicite is a canticle from Daniel calling all creation to bless the Lord",
+  "tags": [
+    "liturgical",
+    "mass",
+    "canticle",
+    "creation",
+    "daniel"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null,
+  "timeOfDay": "morning"
+}

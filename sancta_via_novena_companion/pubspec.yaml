@@ -14,7 +14,7 @@ app_store:
   age_rating: "4+"
 
 # Version: major.minor.patch+build
-version: 1.1.30
+version: 1.1.42
 
 environment:
   sdk: ^3.9.2

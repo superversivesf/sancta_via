@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart' hide AppLogger;
 
 import '../models/confession_app_settings.dart';
 import '../features/examination/models/user_preferences_model.dart';
@@ -32,7 +32,10 @@ class ConfessionAppSettingsNotifier
   /// Load settings from persistent storage with comprehensive migration support
   Future<void> _loadSettings() async {
     try {
-      AppLogger.debug('Loading Confession app settings...', 'CONFESSION_SETTINGS');
+      AppLogger.debug(
+        'Loading Confession app settings...',
+        'CONFESSION_SETTINGS',
+      );
       final prefs = await SharedPreferences.getInstance();
 
       // Check if we need to migrate from old format
@@ -88,14 +91,20 @@ class ConfessionAppSettingsNotifier
   /// Migrate from old format with multiple storage keys and different structure
   Future<void> _migrateFromLegacySettings(SharedPreferences prefs) async {
     try {
-      AppLogger.debug('Migrating from legacy Confession app settings...', 'MIGRATION');
+      AppLogger.debug(
+        'Migrating from legacy Confession app settings...',
+        'MIGRATION',
+      );
 
       // Load old app settings (JSON format)
       Map<String, dynamic> oldAppSettings = {};
       final oldSettingsJson = prefs.getString(AppConstants.settingsKey);
       if (oldSettingsJson != null) {
         oldAppSettings = json.decode(oldSettingsJson) as Map<String, dynamic>;
-        AppLogger.debug('Found legacy app settings: $oldAppSettings', 'MIGRATION');
+        AppLogger.debug(
+          'Found legacy app settings: $oldAppSettings',
+          'MIGRATION',
+        );
       }
 
       // Load old examination preferences (separate storage)
@@ -254,7 +263,10 @@ class ConfessionAppSettingsNotifier
     );
     state = state.updateExaminationPreferences(newPreferences);
     await _saveSettings();
-    AppLogger.debug('Set default examination: $examinationId', 'CONFESSION_SETTINGS');
+    AppLogger.debug(
+      'Set default examination: $examinationId',
+      'CONFESSION_SETTINGS',
+    );
   }
 
   // ===========================================
@@ -272,7 +284,10 @@ class ConfessionAppSettingsNotifier
   Future<void> setUseGuidedMode(bool useGuided) async {
     state = state.copyWith(useGuidedMode: useGuided);
     await _saveSettings();
-    AppLogger.debug('Use guided mode updated to: $useGuided', 'CONFESSION_SETTINGS');
+    AppLogger.debug(
+      'Use guided mode updated to: $useGuided',
+      'CONFESSION_SETTINGS',
+    );
   }
 
   /// Update examination history saving
@@ -289,7 +304,10 @@ class ConfessionAppSettingsNotifier
   Future<void> setHistoryRetentionDays(int days) async {
     state = state.copyWith(historyRetentionDays: days.clamp(1, 365));
     await _saveSettings();
-    AppLogger.debug('History retention days updated to: $days', 'CONFESSION_SETTINGS');
+    AppLogger.debug(
+      'History retention days updated to: $days',
+      'CONFESSION_SETTINGS',
+    );
   }
 }
 

@@ -1,0 +1,22 @@
+{
+  "id": "prayer_before_confession",
+  "title": "Prayer Before Confession",
+  "text": "Come, Holy Spirit, enlighten my mind,\nthat I may clearly know my sins.\nMove my heart to true sorrow for having offended You,\nWho are all good and deserving of all my love.\nGrant me the grace to make a sincere confession,\nto confess my sins with humility and honesty,\nand to resolve firmly to amend my life.\nHelp me to perform the penance given me\nwith a spirit of love and gratitude.\nAmen.",
+  "attribution": "Traditional Catholic Prayer",
+  "notes": "This prayer is traditionally recited before approaching the Sacrament of Reconciliation to ask for the Holy Spirit's guidance in making a good examination of conscience and sincere confession.",
+  "categories": [
+    "confession"
+  ],
+  "description": "A prayer asking the Holy Spirit for enlightenment and true contrition before Confession",
+  "tags": [
+    "confession",
+    "reconciliation",
+    "penance",
+    "sacrament",
+    "holy_spirit"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 6,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

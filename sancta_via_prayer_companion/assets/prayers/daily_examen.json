@@ -1,0 +1,22 @@
+{
+  "id": "daily_examen",
+  "title": "Daily Examen (Ignatian)",
+  "text": "1. Place yourself in God's presence.\nGive thanks for God's great love for you.\n\n2. Pray for the grace to understand how God is acting in your life.\n\n3. Review your day — recall specific moments and your feelings at the time.\nWhere was God present? Where did you resist God's grace?\n\n4. Reflect on what you did, said, or thought in those moments.\nWere you drawing closer to God, or further away?\n\n5. Look toward tomorrow — ask for God's help and guidance.\nResolve to grow in holiness.\n\nGlory be to the Father, and to the Son, and to the Holy Spirit.\nAs it was in the beginning, is now, and ever shall be,\nworld without end. Amen.",
+  "attribution": "St. Ignatius of Loyola, Spiritual Exercises",
+  "notes": "The Daily Examen is a method of reviewing the day in God's presence, developed by St. Ignatius of Loyola. It is a core practice of Ignatian spirituality, helping believers recognize God's presence and action in their daily lives. The Examen is traditionally prayed at the end of each day.",
+  "categories": [
+    "evening"
+  ],
+  "description": "St. Ignatius' method of daily prayerful reflection to discern God's presence in our lives",
+  "tags": [
+    "ignatian",
+    "examen",
+    "reflection",
+    "discernment",
+    "daily"
+  ],
+  "isLiturgical": false,
+  "liturgicalPriority": 0,
+  "liturgicalSeason": null,
+  "timeOfDay": "evening"
+}

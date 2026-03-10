@@ -164,12 +164,20 @@ class DayDetailScreen extends ConsumerWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.amber.withValues(alpha: 0.1),
+                  color: LiturgicalColor.gold
+                      .toFlutterColor(colorIntensity)
+                      .withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.star, color: Colors.amber[700], size: 24),
+                    Icon(
+                      Icons.star,
+                      color: LiturgicalColor.gold.toFlutterColor(
+                        colorIntensity,
+                      ),
+                      size: 24,
+                    ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(

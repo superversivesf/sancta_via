@@ -11,6 +11,24 @@ final appRouter = GoRouter(
   initialLocation: '/',
   debugLogDiagnostics: false,
 
+  // Redirect invalid dates to home
+  redirect: (context, state) {
+    // Check day-detail route for valid date
+    final pathSegments = state.uri.pathSegments;
+    if (pathSegments.isNotEmpty &&
+        pathSegments.first == 'day' &&
+        pathSegments.length >= 2) {
+      final dateString = pathSegments[1];
+      try {
+        DateTime.parse(dateString);
+      } catch (e) {
+        // Invalid date format - redirect to home
+        return '/';
+      }
+    }
+    return null; // No redirect needed
+  },
+
   routes: [
     // Home route
     GoRoute(
@@ -30,7 +48,9 @@ final appRouter = GoRouter(
       name: 'day-detail',
       builder: (context, state) {
         final dateString = state.pathParameters['date']!;
-        final date = DateTime.parse(dateString);
+        // Defensive parsing - redirect should catch invalid dates,
+        // but this provides a safety net
+        final date = DateTime.tryParse(dateString) ?? DateTime.now();
         return DayDetailScreen(date: date);
       },
     ),
