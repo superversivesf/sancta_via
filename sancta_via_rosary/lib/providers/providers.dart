@@ -4,10 +4,16 @@
 /// - [rosaryProvider] - Rosary data (prayers, mysteries)
 /// - [rosarySessionProvider] - Session management
 /// - [statisticsProvider] - Prayer statistics and streaks
-/// - [rosarySettingsProvider] - Notification settings
+/// - [rosaryAppSettingsProvider] - Unified app settings (audio, notifications)
+/// - [rosarySettingsProvider] - Notification settings (deprecated, use rosaryAppSettingsProvider)
 // ignore_for_file: dangling_library_doc_comments
 
-export 'notification_settings_provider.dart';
+export 'notification_settings_provider.dart'
+    hide
+        rosaryNotificationsEnabledProvider,
+        rosaryDailyReminderEnabledProvider,
+        rosaryDailyReminderTimeProvider;
 export 'rosary_provider.dart';
 export 'rosary_session_provider.dart';
+export 'settings_provider.dart';
 export 'statistics_provider.dart';

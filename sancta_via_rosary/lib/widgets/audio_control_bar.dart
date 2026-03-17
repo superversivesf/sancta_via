@@ -20,8 +20,8 @@ class AudioControlBar extends ConsumerWidget {
     final controller = ref.read(audioControllerProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
-    // Only show if there's audio loaded or it's playing
-    if (!state.hasAudio && !state.isPlaying && !state.isPaused) {
+    // Show control bar whenever audio is available (loaded, playing, or paused)
+    if (!state.hasAudio) {
       return const SizedBox.shrink();
     }
 

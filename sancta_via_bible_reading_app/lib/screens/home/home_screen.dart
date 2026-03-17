@@ -320,7 +320,7 @@ class HomeScreen extends ConsumerWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              plan.nextChapterText,
+                              plan.nextChapterShortText,
                               style: textScaling
                                   .scaledTitleSmall(context)
                                   .copyWith(
@@ -330,8 +330,7 @@ class HomeScreen extends ConsumerWidget {
                                         Theme.of(context).colorScheme.primary,
                                   ),
                               textAlign: TextAlign.center,
-                              maxLines:
-                                  2, // Allow 2 lines for longer book names
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],

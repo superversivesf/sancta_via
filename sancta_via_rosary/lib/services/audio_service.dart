@@ -12,6 +12,9 @@ import '../utils/logger.dart';
 ///
 /// Handles playing prayers, mystery descriptions, and managing playback state.
 /// Uses just_audio package for reliable audio playback.
+///
+/// Settings (volume, auto-play, auto-advance) are injected from RosaryAppSettingsProvider
+/// via the AudioController in audio_provider.dart
 class AudioService {
   static final AudioService _instance = AudioService._internal();
   static AudioService get instance => _instance;
@@ -37,6 +40,11 @@ class AudioService {
   // Whether the service is initialized
   bool _isInitialized = false;
 
+  // Settings - can be updated from outside via updateSettings()
+  double _volume = 1.0;
+  bool _autoPlayEnabled = true;
+  bool _autoAdvanceEnabled = true;
+
   AudioService._internal();
 
   /// Stream of audio state updates
@@ -44,6 +52,37 @@ class AudioService {
 
   /// Current audio state
   AudioState get currentState => _currentState;
+
+  /// Current volume level (0.0 to 1.0)
+  double get volume => _volume;
+
+  /// Whether auto-play is enabled
+  bool get autoPlayEnabled => _autoPlayEnabled;
+
+  /// Whether auto-advance is enabled
+  bool get autoAdvanceEnabled => _autoAdvanceEnabled;
+
+  /// Update audio settings from RosaryAppSettings
+  void updateSettings({
+    double? volume,
+    bool? autoPlayEnabled,
+    bool? autoAdvanceEnabled,
+  }) {
+    if (volume != null) {
+      _volume = volume.clamp(0.0, 1.0);
+      _player.setVolume(_volume);
+    }
+    if (autoPlayEnabled != null) {
+      _autoPlayEnabled = autoPlayEnabled;
+    }
+    if (autoAdvanceEnabled != null) {
+      _autoAdvanceEnabled = autoAdvanceEnabled;
+      _currentState = _currentState.copyWith(
+        autoAdvanceEnabled: _autoAdvanceEnabled,
+      );
+      _stateController.add(_currentState);
+    }
+  }
 
   /// Initialize the audio service
   /// Must be called before using any other methods
@@ -79,6 +118,10 @@ class AudioService {
       _startPositionTimer();
 
       _isInitialized = true;
+
+      // Emit initial state so widgets can react immediately
+      _stateController.add(_currentState);
+
       AppLogger.info('AudioService initialized', 'AUDIO');
     } catch (e) {
       AppLogger.error('Failed to initialize AudioService', e, null, 'AUDIO');
@@ -101,9 +144,18 @@ class AudioService {
   ///
   /// [prayerType] determines which prayer audio to play
   /// Returns true if playback started successfully
+  ///
+  /// Note: If audioEnabled is false from settings, this returns false immediately.
+  /// The caller should check audioEnabled from rosaryAppSettingsProvider first.
   Future<bool> playPrayer(PrayerType prayerType) async {
     if (!_isInitialized) {
       await initialize();
+    }
+
+    // If auto-play is disabled, don't play
+    if (!_autoPlayEnabled) {
+      AppLogger.debug('Auto-play disabled, skipping prayer audio', 'AUDIO');
+      return false;
     }
 
     try {
@@ -130,13 +182,16 @@ class AudioService {
       // Set the audio source
       await _player.setAsset(audioPath);
 
+      // Apply current volume setting
+      await _player.setVolume(_volume);
+
       // Start playback
       await _player.play();
 
       // Activate audio session
       await _session?.setActive(true);
 
-      AppLogger.info('Playing prayer: $prayerType', 'AUDIO');
+      AppLogger.info('Playing prayer: $prayerType (volume: $_volume)', 'AUDIO');
       return true;
     } catch (e) {
       AppLogger.error('Failed to play prayer', e, null, 'AUDIO');
@@ -153,12 +208,20 @@ class AudioService {
   /// [mysteryNumber] is 1-5 for the mystery in the set
   /// [mysterySet] is the name of the mystery set (e.g., 'joyful', 'sorrowful')
   /// Returns true if playback started successfully
+  ///
+  /// Note: If audioEnabled is false from settings, this returns false immediately.
   Future<bool> playMysteryDescription(
     int mysteryNumber,
     String mysterySet,
   ) async {
     if (!_isInitialized) {
       await initialize();
+    }
+
+    // If auto-play is disabled, don't play
+    if (!_autoPlayEnabled) {
+      AppLogger.debug('Auto-play disabled, skipping mystery audio', 'AUDIO');
+      return false;
     }
 
     try {
@@ -189,13 +252,19 @@ class AudioService {
       // Set the audio source
       await _player.setAsset(audioPath);
 
+      // Apply current volume setting
+      await _player.setVolume(_volume);
+
       // Start playback
       await _player.play();
 
       // Activate audio session
       await _session?.setActive(true);
 
-      AppLogger.info('Playing mystery: $mysterySet-$mysteryNumber', 'AUDIO');
+      AppLogger.info(
+        'Playing mystery: $mysterySet-$mysteryNumber (volume: $_volume)',
+        'AUDIO',
+      );
       return true;
     } catch (e) {
       AppLogger.error('Failed to play mystery', e, null, 'AUDIO');
@@ -282,17 +351,45 @@ class AudioService {
     } else if (_currentState.isPaused) {
       await resume();
     } else if (_currentState.hasAudio) {
-      // Try to play the current audio again
-      if (_currentState.currentAudioType == AudioType.prayer &&
-          _currentState.currentPrayerType != null) {
-        await playPrayer(_currentState.currentPrayerType!);
-      } else if (_currentState.currentAudioType == AudioType.mystery &&
-          _currentState.currentMysteryId != null) {
-        final parts = _currentState.currentMysteryId!.split('_');
-        if (parts.length == 2) {
-          await playMysteryDescription(int.parse(parts[1]), parts[0]);
+      // Audio is loaded but stopped - just resume playback without stopping first
+      try {
+        await _player.play();
+        _currentState = _currentState.copyWith(
+          isPlaying: true,
+          isPaused: false,
+        );
+        _stateController.add(_currentState);
+        await _session?.setActive(true);
+        AppLogger.debug('Audio resumed from stopped state', 'AUDIO');
+      } catch (e) {
+        AppLogger.error(
+          'Failed to resume audio from stopped state',
+          e,
+          null,
+          'AUDIO',
+        );
+        // Fallback: try to reload and play
+        if (_currentState.currentAudioType == AudioType.prayer &&
+            _currentState.currentPrayerType != null) {
+          await playPrayer(_currentState.currentPrayerType!);
+        } else if (_currentState.currentAudioType == AudioType.mystery &&
+            _currentState.currentMysteryId != null) {
+          final parts = _currentState.currentMysteryId!.split('_');
+          if (parts.length == 2) {
+            await playMysteryDescription(int.parse(parts[1]), parts[0]);
+          }
         }
       }
+    } else {
+      // No audio loaded - this is an error state
+      AppLogger.warning(
+        'togglePlayPause called but no audio is loaded',
+        'AUDIO',
+      );
+      _currentState = _currentState.copyWith(
+        errorMessage: 'No audio loaded. Please select a prayer to play.',
+      );
+      _stateController.add(_currentState);
     }
   }
 
@@ -308,7 +405,9 @@ class AudioService {
   }
 
   /// Set auto-advance setting
+  /// This is called from AudioController when settings change
   void setAutoAdvance(bool enabled) {
+    _autoAdvanceEnabled = enabled;
     _currentState = _currentState.copyWith(autoAdvanceEnabled: enabled);
     _stateController.add(_currentState);
   }

@@ -5,10 +5,14 @@ import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import 'config/routes.dart';
 import 'providers/rosary_stats_provider.dart';
+import 'services/notification_service.dart';
 import 'services/rosary_statistics_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize notification service
+  await NotificationService.instance.initialize();
 
   // Initialize statistics service
   final statsService = await RosaryStatisticsService.create();

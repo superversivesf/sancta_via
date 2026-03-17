@@ -5,14 +5,42 @@ import '../models/audio_state.dart';
 import '../models/mystery_set.dart';
 import '../models/prayer_type.dart';
 import '../services/audio_service.dart';
+import 'settings_provider.dart';
 import 'rosary_session_provider.dart';
 
 /// Provider for the audio service instance
+/// Initializes with settings from RosaryAppSettingsProvider
 final audioServiceProvider = Provider<AudioService>((ref) {
   final service = AudioService.instance;
 
   // Initialize the service when the provider is first created
   service.initialize();
+
+  // Listen to settings changes and update audio service
+  ref.listen(rosaryAppSettingsProvider, (previous, next) {
+    if (previous != null) {
+      service.updateSettings(
+        volume: next.audioVolume,
+        autoPlayEnabled: next.autoPlayPrayers && next.audioEnabled,
+        autoAdvanceEnabled: true, // Auto-advance is handled separately
+      );
+    } else {
+      // Initial settings sync
+      service.updateSettings(
+        volume: next.audioVolume,
+        autoPlayEnabled: next.autoPlayPrayers && next.audioEnabled,
+        autoAdvanceEnabled: true,
+      );
+    }
+  });
+
+  // Set initial settings
+  final settings = ref.read(rosaryAppSettingsProvider);
+  service.updateSettings(
+    volume: settings.audioVolume,
+    autoPlayEnabled: settings.autoPlayPrayers && settings.audioEnabled,
+    autoAdvanceEnabled: true,
+  );
 
   // Dispose when the provider is destroyed
   ref.onDispose(() {
@@ -63,22 +91,44 @@ final audioDurationProvider = Provider<String>((ref) {
 });
 
 /// Provider for whether auto-advance is enabled
+/// Uses rosaryAutoPlayPrayersProvider from settings_provider for persistence
 final autoAdvanceProvider = StateNotifierProvider<AutoAdvanceNotifier, bool>(
-  (ref) => AutoAdvanceNotifier(),
+  (ref) => AutoAdvanceNotifier(ref),
 );
 
 /// Notifier for managing auto-advance setting
+/// Syncs with RosaryAppSettingsProvider for persistence
 class AutoAdvanceNotifier extends StateNotifier<bool> {
-  AutoAdvanceNotifier() : super(true); // Default to enabled
+  final Ref _ref;
+  bool _initialized = false;
 
-  void setEnabled(bool enabled) {
+  AutoAdvanceNotifier(this._ref) : super(true) {
+    // Listen to settings provider and sync state
+    _ref.listen(rosaryAutoPlayPrayersProvider, (previous, next) {
+      if (!_initialized || state != next) {
+        state = next;
+        _initialized = true;
+      }
+    });
+
+    // Initialize from current settings
+    final settings = _ref.read(rosaryAppSettingsProvider);
+    state = settings.autoPlayPrayers;
+    _initialized = true;
+  }
+
+  Future<void> setEnabled(bool enabled) async {
     state = enabled;
     // Also update the audio service
     AudioService.instance.setAutoAdvance(enabled);
+    // Persist to settings using the proper method
+    await _ref
+        .read(rosaryAppSettingsProvider.notifier)
+        .setAutoPlayPrayers(enabled);
   }
 
-  void toggle() {
-    setEnabled(!state);
+  Future<void> toggle() async {
+    await setEnabled(!state);
   }
 }
 

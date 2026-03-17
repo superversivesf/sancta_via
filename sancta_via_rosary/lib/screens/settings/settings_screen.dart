@@ -1,193 +1,261 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
-/// Main settings screen for the Rosary app.
-/// Provides access to all app settings including notifications.
+import '../../providers/audio_provider.dart';
+import '../../providers/notification_settings_provider.dart';
+
+/// Rosary settings screen using the unified settings pattern.
+///
+/// Provides access to all app settings including:
+/// - Appearance (theme, color intensity, font size)
+/// - Accessibility (text scaling, reduce motion)
+/// - Language (prayer language)
+/// - Notifications (rosary reminders)
+/// - App-specific settings (audio, auto-play)
+/// - About (app info, support)
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Settings'), centerTitle: true),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        children: [
-          // Notification settings
-          _buildSection(
-            context,
-            title: 'Notifications',
-            icon: Icons.notifications,
-            subtitle: 'Configure daily prayer reminders',
+    return FutureBuilder<PackageInfo>(
+      future: PackageInfo.fromPlatform(),
+      builder: (context, snapshot) {
+        // App information for the unified screen
+        final appInfo = AppInfo(
+          appName: 'Sancta Via Rosary',
+          version: snapshot.hasData ? snapshot.data!.version : '1.0.0',
+          description:
+              'A Catholic prayer companion app to help you meditate on the Holy Rosary. '
+              'Features guided audio prayers, mystery reflections, and daily reminders '
+              'to support your devotional practice.',
+          icon: Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.favorite, color: Colors.white, size: 32),
+          ),
+          onSupport: () => _showSupportDialog(context),
+        );
+
+        // Rosary-specific settings section
+        final rosarySpecificSettings = _buildRosarySpecificSettings(
+          context,
+          ref,
+        );
+
+        return UnifiedSettingsScreen(
+          appInfo: appInfo,
+          appSpecificSettings: rosarySpecificSettings,
+          customNotifications: [
+            CatholicNotificationOptions.prayerReminders(
+              enabled: ref.watch(rosarySettingsProvider).dailyReminderEnabled,
+              onChanged: (enabled) {
+                ref
+                    .read(rosarySettingsProvider.notifier)
+                    .setDailyReminderEnabled(enabled);
+              },
+            ),
+            CatholicNotificationOptions.liturgicalCalendar(
+              enabled:
+                  false, // TODO: Implement liturgical calendar notifications
+              onChanged: (enabled) {
+                _showComingSoon(context, 'Liturgical calendar notifications');
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Builds the Rosary-specific settings section.
+  ///
+  /// Includes:
+  /// - Audio settings (enable/disable, volume)
+  /// - Auto-play prayers toggle
+  /// - Haptic feedback toggle
+  /// - Prayer language selector
+  /// - Statistics navigation
+  Widget _buildRosarySpecificSettings(BuildContext context, WidgetRef ref) {
+    final rosarySettings = ref.watch(rosarySettingsProvider);
+    final rosaryNotifier = ref.read(rosarySettingsProvider.notifier);
+    final autoAdvanceEnabled = ref.watch(autoAdvanceProvider);
+    final notificationsEnabled = rosarySettings.notificationsEnabled;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // ═══════════════════════════════════════
+        // AUDIO SETTINGS SECTION
+        // ═══════════════════════════════════════
+        const SettingsSectionHeader(title: 'Audio Settings'),
+
+        // Auto-play prayers toggle
+        SwitchListTile(
+          secondary: const Icon(Icons.play_circle_outline),
+          title: const Text('Auto-play Prayers'),
+          subtitle: const Text('Automatically play audio when advancing'),
+          value: autoAdvanceEnabled,
+          onChanged: (value) {
+            ref.read(autoAdvanceProvider.notifier).setEnabled(value);
+          },
+        ),
+
+        // Haptic feedback toggle
+        Consumer(
+          builder: (context, ref, child) {
+            final hapticEnabled = ref.watch(
+              baseSettingsProvider.select((s) => s.hapticFeedbackEnabled),
+            );
+            return SwitchListTile(
+              secondary: const Icon(Icons.vibration),
+              title: const Text('Haptic Feedback'),
+              subtitle: const Text('Vibrate on prayer transitions'),
+              value: hapticEnabled,
+              onChanged: (value) {
+                ref
+                    .read(baseSettingsProvider.notifier)
+                    .setHapticFeedbackEnabled(value);
+              },
+            );
+          },
+        ),
+
+        const Divider(),
+
+        // ═══════════════════════════════════════
+        // NOTIFICATION SETTINGS SECTION
+        // ═══════════════════════════════════════
+        const SettingsSectionHeader(title: 'Rosary Reminders'),
+
+        // Main notifications toggle
+        SwitchListTile(
+          secondary: const Icon(Icons.notifications),
+          title: const Text('Enable Notifications'),
+          subtitle: const Text('Allow daily prayer reminders'),
+          value: notificationsEnabled,
+          onChanged: (value) {
+            rosaryNotifier.setNotificationsEnabled(value);
+          },
+        ),
+
+        // Daily reminder toggle
+        if (notificationsEnabled)
+          SwitchListTile(
+            secondary: const SizedBox(width: 24),
+            title: const Text('Daily Rosary Reminder'),
+            subtitle: const Text('Get reminded to pray the rosary'),
+            value: rosarySettings.dailyReminderEnabled,
+            onChanged: (value) {
+              rosaryNotifier.setDailyReminderEnabled(value);
+            },
+          ),
+
+        // Reminder time selector
+        if (notificationsEnabled && rosarySettings.dailyReminderEnabled)
+          ListTile(
+            leading: const SizedBox(width: 24),
+            title: const Text('Reminder Time'),
+            subtitle: Text(rosaryNotifier.formattedReminderTime),
+            trailing: const Icon(Icons.access_time),
+            onTap: () => _showTimePicker(context, ref, rosarySettings),
+          ),
+
+        // Configure notifications link
+        if (notificationsEnabled)
+          ListTile(
+            leading: const SizedBox(width: 24),
+            title: const Text('Advanced Notification Settings'),
+            subtitle: const Text('Test notifications and more options'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () => context.push('/settings/notifications'),
           ),
 
-          const Divider(),
+        const Divider(),
 
-          // Theme settings
-          _buildSection(
-            context,
-            title: 'Appearance',
-            icon: Icons.palette,
-            subtitle: 'Theme, colors, and display options',
-            onTap: () => _showAppearanceSettings(context, ref),
-          ),
+        // ═══════════════════════════════════════
+        // STATISTICS SECTION
+        // ═══════════════════════════════════════
+        const SettingsSectionHeader(title: 'Statistics'),
 
-          const Divider(),
+        ListTile(
+          leading: const Icon(Icons.bar_chart),
+          title: const Text('View Statistics'),
+          subtitle: const Text('See your prayer history and progress'),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+          onTap: () => context.push('/statistics'),
+        ),
 
-          // Prayer settings
-          _buildSection(
-            context,
-            title: 'Prayer Preferences',
-            icon: Icons.self_improvement,
-            subtitle: 'Font size, language, and other prayer settings',
-            onTap: () => _showPrayerSettings(context, ref),
-          ),
+        const Divider(),
+      ],
+    );
+  }
 
-          const Divider(),
+  /// Show time picker for reminder time
+  Future<void> _showTimePicker(
+    BuildContext context,
+    WidgetRef ref,
+    RosarySettings settings,
+  ) async {
+    final TimeOfDay initialTime = TimeOfDay(
+      hour: settings.reminderHour,
+      minute: settings.reminderMinute,
+    );
 
-          // Statistics
-          _buildSection(
-            context,
-            title: 'Statistics',
-            icon: Icons.bar_chart,
-            subtitle: 'View your prayer history and progress',
-            onTap: () => context.push('/statistics'),
-          ),
+    final TimeOfDay? selectedTime = await showTimePicker(
+      context: context,
+      initialTime: initialTime,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child!,
+        );
+      },
+    );
 
-          const Divider(),
+    if (selectedTime != null) {
+      await ref
+          .read(rosarySettingsProvider.notifier)
+          .setReminderTime(selectedTime.hour, selectedTime.minute);
+    }
+  }
 
-          // About section
-          _buildSection(
-            context,
-            title: 'About',
-            icon: Icons.info,
-            subtitle: 'App information and support',
-            onTap: () => _showAboutDialog(context),
+  /// Show support dialog
+  void _showSupportDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Support Sancta Via Rosary'),
+        content: const Text(
+          'Sancta Via Rosary is part of the Sancta Via ecosystem of Catholic applications.\n\n'
+          'This app helps Catholics meditate on the Holy Rosary with guided audio prayers, '
+          'mystery reflections, and daily reminders to support your devotional practice.\n\n'
+          'Your support helps us continue developing high-quality Catholic applications for the faithful.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Close'),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSection(
-    BuildContext context, {
-    required String title,
-    required IconData icon,
-    required String subtitle,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      onTap: onTap,
-    );
-  }
-
-  void _showAppearanceSettings(BuildContext context, WidgetRef ref) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.6,
-        minChildSize: 0.4,
-        maxChildSize: 0.8,
-        expand: false,
-        builder: (context, scrollController) {
-          return SingleChildScrollView(
-            controller: scrollController,
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const SettingsSectionHeader(title: 'Theme Mode'),
-                const ThemeModeSelector(),
-                const SizedBox(height: 24),
-                const SettingsSectionHeader(title: 'Color Intensity'),
-                const ColorIntensitySelector(),
-                const SizedBox(height: 24),
-                const SettingsSectionHeader(title: 'Font Size'),
-                const FontSizeSelector(),
-              ],
-            ),
-          );
-        },
+  /// Show coming soon snackbar
+  void _showComingSoon(BuildContext context, String feature) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$feature - Coming Soon'),
+        behavior: SnackBarBehavior.floating,
       ),
-    );
-  }
-
-  void _showPrayerSettings(BuildContext context, WidgetRef ref) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.6,
-        minChildSize: 0.4,
-        maxChildSize: 0.8,
-        expand: false,
-        builder: (context, scrollController) {
-          return SingleChildScrollView(
-            controller: scrollController,
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const SettingsSectionHeader(title: 'Language'),
-                const LanguageSelector(),
-                const SizedBox(height: 24),
-                const SettingsSectionHeader(title: 'Accessibility'),
-                const AccessibilitySettings(),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  void _showAboutDialog(BuildContext context) {
-    showAboutDialog(
-      context: context,
-      applicationName: 'Sancta Via Rosary',
-      applicationVersion: '1.0.0',
-      applicationIcon: Container(
-        width: 64,
-        height: 64,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: const Icon(Icons.favorite, color: Colors.white, size: 40),
-      ),
-      applicationLegalese:
-          '© 2024 Sancta Via. All rights reserved.\n\n'
-          'A Catholic prayer companion app to help you meditate on the Holy Rosary.',
     );
   }
 }

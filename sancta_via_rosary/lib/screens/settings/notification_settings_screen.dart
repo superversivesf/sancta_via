@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
-import '../../providers/notification_settings_provider.dart';
+import '../../models/settings_state.dart';
+import '../../providers/settings_provider.dart';
 import '../../services/notification_service.dart';
 
 /// Screen for configuring notification settings for the Rosary app.
+/// Uses the unified RosaryAppSettingsProvider for settings persistence.
 class NotificationSettingsScreen extends ConsumerWidget {
   const NotificationSettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(rosarySettingsProvider);
-    final notifier = ref.read(rosarySettingsProvider.notifier);
+    final settings = ref.watch(rosaryAppSettingsProvider);
+    final notifier = ref.read(rosaryAppSettingsProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -30,8 +31,9 @@ class NotificationSettingsScreen extends ConsumerWidget {
               subtitle: const Text(
                 'Allow the app to send you prayer reminders',
               ),
-              value: settings.notificationsEnabled,
-              onChanged: (value) => notifier.setNotificationsEnabled(value),
+              value: settings.rosaryNotificationsEnabled,
+              onChanged: (value) =>
+                  notifier.setRosaryNotificationsEnabled(value),
             ),
           ),
 
@@ -46,11 +48,11 @@ class NotificationSettingsScreen extends ConsumerWidget {
                   title: const Text('Daily Rosary Reminder'),
                   subtitle: Text(
                     settings.dailyReminderEnabled
-                        ? 'Reminder set for ${notifier.formattedReminderTime}'
+                        ? 'Reminder set for ${settings.formattedReminderTime}'
                         : 'Get a daily reminder to pray the rosary',
                   ),
                 ),
-                if (settings.notificationsEnabled)
+                if (settings.rosaryNotificationsEnabled)
                   SwitchListTile(
                     secondary: const SizedBox(width: 24),
                     title: const Text('Enable Daily Reminder'),
@@ -58,12 +60,12 @@ class NotificationSettingsScreen extends ConsumerWidget {
                     onChanged: (value) =>
                         notifier.setDailyReminderEnabled(value),
                   ),
-                if (settings.notificationsEnabled &&
+                if (settings.rosaryNotificationsEnabled &&
                     settings.dailyReminderEnabled)
                   ListTile(
                     leading: const SizedBox(width: 24),
                     title: const Text('Reminder Time'),
-                    subtitle: Text(notifier.formattedReminderTime),
+                    subtitle: Text(settings.formattedReminderTime),
                     trailing: const Icon(Icons.access_time),
                     onTap: () => _showTimePicker(context, ref, settings),
                   ),
@@ -74,7 +76,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
           const SizedBox(height: 16),
 
           // Test notification
-          if (settings.notificationsEnabled)
+          if (settings.rosaryNotificationsEnabled)
             Card(
               child: ListTile(
                 leading: const Icon(Icons.notification_add),
@@ -106,12 +108,9 @@ class NotificationSettingsScreen extends ConsumerWidget {
   Future<void> _showTimePicker(
     BuildContext context,
     WidgetRef ref,
-    RosarySettings settings,
+    RosaryAppSettings settings,
   ) async {
-    final TimeOfDay initialTime = TimeOfDay(
-      hour: settings.reminderHour,
-      minute: settings.reminderMinute,
-    );
+    final TimeOfDay initialTime = settings.dailyReminderTimeOfDay;
 
     final TimeOfDay? selectedTime = await showTimePicker(
       context: context,
@@ -126,8 +125,8 @@ class NotificationSettingsScreen extends ConsumerWidget {
 
     if (selectedTime != null) {
       await ref
-          .read(rosarySettingsProvider.notifier)
-          .setReminderTime(selectedTime.hour, selectedTime.minute);
+          .read(rosaryAppSettingsProvider.notifier)
+          .setDailyReminderTime(selectedTime);
     }
   }
 

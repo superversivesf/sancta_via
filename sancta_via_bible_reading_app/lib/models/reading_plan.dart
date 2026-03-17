@@ -1,3 +1,5 @@
+import 'package:bible_data/bible_data.dart';
+
 /// Maximum number of simultaneous reading plans allowed
 const int maxSimultaneousPlans = 5;
 
@@ -320,6 +322,12 @@ class ReadingProgress {
     return '$currentBook $currentChapter';
   }
 
+  String get nextChapterShortText {
+    final metadata = BibleBookMapping.getByName(currentBook);
+    final bookName = metadata?.abbreviation ?? currentBook;
+    return '$bookName $currentChapter';
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'currentBook': currentBook,
@@ -387,6 +395,8 @@ class ReadingPlan {
   bool get isCompleted => progress.isCompleted;
 
   String get nextChapterText => progress.nextChapterText;
+
+  String get nextChapterShortText => progress.nextChapterShortText;
 
   double get progressPercentage {
     if (progress.books.isEmpty) return 0.0;
