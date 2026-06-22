@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
@@ -164,25 +163,6 @@ class BibleSettingsScreen extends ConsumerWidget {
           ),
           onTap: () => _showClearPlansDialog(context, ref),
         ),
-
-        if (kDebugMode) ...[
-          const Divider(),
-
-          // Debug Section (only in debug mode)
-          const SettingsSectionHeader(title: 'Debug & Testing'),
-
-          ListTile(
-            leading: const Icon(Icons.bug_report),
-            title: const Text('Test Numbered Books'),
-            subtitle: const Text(
-              'Verify 1 Samuel, 2 Corinthians, etc. are working',
-            ),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-              Navigator.of(context).pushNamed('/debug/numbered-books');
-            },
-          ),
-        ],
 
         const Divider(),
       ],

@@ -12,7 +12,6 @@ import '../screens/continue_reading/continue_reading_screen.dart';
 import '../screens/chapter_selection/chapter_selection_screen.dart';
 import '../screens/chapter/chapter_reading_screen.dart';
 import '../screens/verse_selection/verse_selection_screen.dart';
-import '../screens/debug/numbered_books_debug_screen.dart';
 import '../utils/logger.dart';
 
 final appRouter = GoRouter(
@@ -136,13 +135,6 @@ final appRouter = GoRouter(
       name: 'settings',
       builder: (context, state) => const SettingsScreen(),
     ),
-
-    // Debug routes (for development/testing)
-    GoRoute(
-      path: '/debug/numbered-books',
-      name: 'numbered-books-debug',
-      builder: (context, state) => const NumberedBooksDebugScreen(),
-    ),
   ],
 
   // Enhanced error handling
@@ -152,27 +144,13 @@ final appRouter = GoRouter(
 
 /// NEW: Validate book names against known Bible books
 bool _isValidBookName(String bookName) {
-  // DEBUGGING: Log the book name being validated
-  AppLogger.route('Validating book name: "$bookName"');
-
-  // Check against all possible book collections
   for (final collection in BookCollection.values) {
     if (collection.bookNames.contains(bookName)) {
-      AppLogger.route(
-        'Book "$bookName" found in collection: ${collection.name}',
-      );
       return true;
     }
   }
 
-  // DEBUGGING: Log all books in collections to help debug
   AppLogger.warning('Book "$bookName" not found in any collection!');
-  for (final collection in BookCollection.values) {
-    AppLogger.route(
-      '   ${collection.name}: ${collection.bookNames.take(5).join(", ")}${collection.bookNames.length > 5 ? "..." : ""}',
-    );
-  }
-
   return false;
 }
 
