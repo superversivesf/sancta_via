@@ -8,7 +8,7 @@
 PRODUCT_NAME = confession_companion
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = net.superversive.sanctavia.confessionCompanion
+PRODUCT_BUNDLE_IDENTIFIER = net.superversive.sancta_via.confession_companion
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2025 net.superversive.sancta_via. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 Sancta Via. All rights reserved.

@@ -8,7 +8,7 @@
 PRODUCT_NAME = prayer_companion
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.prayerCompanion
+PRODUCT_BUNDLE_IDENTIFIER = net.superversive.sancta_via.prayer_companion
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 Sancta Via. All rights reserved.
