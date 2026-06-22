@@ -173,9 +173,15 @@ void main() {
         BookNameNormalizer.toDatabaseFormat('Revelation'),
         equals('Revelation'),
       );
+      // The Catholic Bible database stores Revelation under its full name
+      // "Revelation of John" (see assets/bibles/*.json). The normalizer
+      // intentionally preserves the full canonical database name rather than
+      // collapsing it to "Revelation", so that database lookups continue to
+      // match the stored book names. Both forms are accepted as equivalent by
+      // `areEquivalent` / `getAllVariations` for fuzzy matching.
       expect(
         BookNameNormalizer.toDatabaseFormat('Revelation of John'),
-        equals('Revelation'),
+        equals('Revelation of John'),
       );
     });
 

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/services.dart';
 import 'package:bible_data/bible_data.dart';
@@ -11,17 +14,14 @@ void main() {
     late BibleService service;
 
     setUpAll(() {
-      // Mock asset loading for testing
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(const MethodChannel('flutter/assets'), (
-            MethodCall methodCall,
-          ) async {
-            if (methodCall.method == 'loadString') {
-              final String assetPath = methodCall.arguments as String;
-
-              // Return test data for our Bible assets
-              if (assetPath.contains('cpdv.json')) {
-                return '''
+      // The `flutter/assets` channel used by `rootBundle.loadString` is a raw
+      // binary message channel (StandardMessageCodec is NOT used). The outbound
+      // message is the URL-encoded asset path as UTF-8 bytes, and the reply is
+      // the raw asset content as bytes. Using `setMockMethodCallHandler` wraps
+      // messages with a MethodCodec envelope, which causes a
+      // `FormatException: Message corrupted` when `rootBundle` decodes the
+      // reply. Instead we register a raw message handler on the channel.
+      const String cpdvJson = '''
 {
   "translation": "cpdv",
   "metadata": {
@@ -51,14 +51,26 @@ void main() {
   ]
 }
 ''';
-              }
-              throw PlatformException(
-                code: 'asset_not_found',
-                message: 'Asset not found: $assetPath',
-              );
-            }
-            return null;
-          });
+
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMessageHandler('flutter/assets', (ByteData? message) async {
+        if (message == null) {
+          return null;
+        }
+        // The outgoing message is the URL-encoded asset path as UTF-8 bytes.
+        final String assetPath = utf8.decode(
+          Uint8List.sublistView(message),
+        );
+
+        if (assetPath.contains('cpdv.json')) {
+          final Uint8List replyBytes = Uint8List.fromList(
+            utf8.encode(cpdvJson),
+          );
+          return ByteData.sublistView(replyBytes);
+        }
+        // Asset not found: return null so rootBundle raises the expected error.
+        return null;
+      });
 
       loader = AssetBibleLoader(
         assetBasePath: 'assets/bibles',

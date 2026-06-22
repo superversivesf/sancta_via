@@ -7,15 +7,28 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 
 import 'package:novena_companion/main.dart';
 
 void main() {
   testWidgets('App starts correctly', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const ProviderScope(child: NovenaCompanionApp()));
+    // Override the periodic date stream from the shared liturgical calendar
+    // package with a synchronous single-value stream so no lingering Timer
+    // remains after the test framework tears down the widget tree.
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          currentDateProvider.overrideWith((ref) => Stream.value(DateTime.now())),
+        ],
+        child: const NovenaCompanionApp(),
+      ),
+    );
 
-    // Verify that the app title appears
+    // Pump past initial routing (GoRouter performs async navigation).
+    await tester.pumpAndSettle();
+
+    // Verify that the app title appears in the home screen AppBar.
     expect(find.text('Novena Companion'), findsOneWidget);
   });
 }
