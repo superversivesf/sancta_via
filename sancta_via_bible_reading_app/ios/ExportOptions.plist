@@ -10,5 +10,7 @@
 	<true/>
 	<key>signingStyle</key>
 	<string>automatic</string>
+	<key>teamID</key>
+	<string>U2267GC4DS</string>
 </dict>
 </plist>

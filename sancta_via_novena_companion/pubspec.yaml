@@ -75,10 +75,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/app_icon.png
-    - assets/images/
     - assets/prayers/
     - assets/prayers/basic/
-    - assets/icons/
     - assets/novenas/
 
 flutter_launcher_icons:

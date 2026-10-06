@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp list:*)",
+      "mcp__vikunja__vikunja_auth",
+      "mcp__vikunja__vikunja_projects",
+      "mcp__vikunja__vikunja_tasks",
+      "Bash(mkdir:*)",
+      "Bash(flutter create:*)",
+      "Bash(flutter pub get:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(melos bootstrap:*)",
+      "Bash(flutter build:*)",
+      "Bash(cat:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(flutter test:*)",
+      "Bash(flutter run:*)",
+      "Bash(nc:*)",
+      "Bash(find:*)",
+      "WebSearch",
+      "WebFetch(domain:stackoverflow.com)",
+      "Bash(dart compile kernel:*)",
+      "Bash(dart analyze:*)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "enabledMcpjsonServers": [
+    "n8n-mcp",
+    "vikunja"
+  ]
+}
