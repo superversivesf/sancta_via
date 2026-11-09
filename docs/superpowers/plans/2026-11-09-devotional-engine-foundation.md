@@ -307,6 +307,7 @@ class MissedDayEvaluator { static MissedDayVerdict evaluate(String policy, Progr
 ### Task 15: Content packs — Nine First Fridays & Five First Saturdays
 
 **Files:** Create `test/fixtures/packs/nine_first_fridays.json`, `test/fixtures/packs/five_first_saturdays.json`; Test: `test/content/first_weekday_packs_test.dart`
+(Tasks 15 ruling: brief's literal weekday 6/7 was off-by-one — engine numbers DateTime.monday=1…sunday=7, so fixtures use weekday 5 (Friday) and 6 (Saturday); all pinned dates unchanged.)
 
 **Interfaces:** Consumes `NthWeekdayOfMonthSpec`, `ConsecutiveCommitmentSpec` (counts 9 and 5), `GraceWindow` (confession ±8 on Saturdays only), `CheckpointStep` (saturday: confession, communion, 5 decades, 15-min meditation; friday: communion, reparation prayer).
 
