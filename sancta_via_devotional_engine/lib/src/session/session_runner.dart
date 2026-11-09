@@ -121,6 +121,16 @@ class SessionRunner {
   /// Completes the current step (recording its completion timestamp) and
   /// advances to the next one.
   ///
+  /// [script] supplies the script being run so counted steps can enforce
+  /// their target: completing a [RepetitionStep] requires the step's
+  /// recorded counts to have reached [RepetitionStep.count], and completing
+  /// a [BeadGroupStep] requires reaching [BeadGroupStep.hailMaryCount];
+  /// otherwise a [StateError] is thrown. Every other step type completes
+  /// directly — a [LitanyStep] in one completion action, with no recorded
+  /// counts needed. Without a script the target check is best-effort: no
+  /// target is known, so completion is allowed whatever the recorded counts
+  /// hold.
+  ///
   /// Completing the last step leaves [SessionState.stepIndex] at the
   /// script's step count with [SessionState.isComplete] true. Throws a
   /// [StateError] when the state is already complete — there is no current
@@ -128,10 +138,14 @@ class SessionRunner {
   ///
   /// The completion timestamp is `DateTime.now()`, captured at the moment
   /// of completion.
-  static SessionState completeCurrent(SessionState state) {
+  static SessionState completeCurrent(
+    SessionState state, {
+    SessionScript? script,
+  }) {
     if (state.isComplete) {
       throw StateError(_noCurrentStepMessage(state, 'complete'));
     }
+    _assertCountTargetReached(state, script);
     return SessionState._(
       scriptId: state.scriptId,
       stepIndex: state.stepIndex + 1,
@@ -172,5 +186,49 @@ class SessionRunner {
     return 'Cannot $action a step: session of script ${state.scriptId} is '
         'complete (stepIndex ${state.stepIndex} of '
         '${state.stepCount} steps)';
+  }
+
+  /// The [StateError] guard for counted steps, consulted by
+  /// [completeCurrent] when the running [script] is available.
+  ///
+  /// A [RepetitionStep] targets [RepetitionStep.count] and a
+  /// [BeadGroupStep] targets [BeadGroupStep.hailMaryCount]; every other
+  /// step type carries no target. States whose step index falls outside
+  /// [script]'s steps (a mismatched script) are treated as best-effort too.
+  static void _assertCountTargetReached(
+    SessionState state,
+    SessionScript? script,
+  ) {
+    if (script == null || state.stepIndex >= script.steps.length) {
+      return;
+    }
+    final SessionStep step = script.steps[state.stepIndex];
+    final int? requiredCount;
+    if (step is RepetitionStep) {
+      requiredCount = step.count;
+    } else if (step is BeadGroupStep) {
+      requiredCount = step.hailMaryCount;
+    } else {
+      return;
+    }
+    final int recorded = state.recordedCounts[state.stepIndex] ?? 0;
+    if (recorded < requiredCount) {
+      throw StateError(
+        _stepTargetNotReachedMessage(state, step, requiredCount, recorded),
+      );
+    }
+  }
+
+  /// The error message describing why a step with a recorded target
+  /// ([RepetitionStep], [BeadGroupStep]) cannot complete yet.
+  static String _stepTargetNotReachedMessage(
+    SessionState state,
+    SessionStep step,
+    int requiredCount,
+    int recorded,
+  ) {
+    return 'Cannot complete step ${state.stepIndex} of script '
+        '${state.scriptId}: ${step.runtimeType} target not reached '
+        '(recorded $recorded of $requiredCount)';
   }
 }

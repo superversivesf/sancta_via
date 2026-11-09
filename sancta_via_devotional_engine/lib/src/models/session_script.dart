@@ -104,6 +104,116 @@ class IntercessionStep extends SessionStep {
   });
 }
 
+/// A counted group of beads, typically one decade of the Rosary.
+///
+/// The step carries a counted target: [SessionRunner.completeCurrent] (with
+/// the script supplied) is only allowed once the step's recorded count has
+/// reached [hailMaryCount]. The optional Fatima prayer that concludes a
+/// decade belongs to this same step — [includeFatimaPrayer] is metadata for
+/// the app layer, and the engine keeps no state machinery for it.
+class BeadGroupStep extends SessionStep {
+  /// The title of the mystery meditated on during the beads (e.g.
+  /// `'The Annunciation'`), or null when the beads stand alone.
+  final String? mysteryTitle;
+
+  /// The spiritual fruit of the mystery (e.g. `'Humility'`), or null when
+  /// the beads stand alone.
+  final String? mysteryFruit;
+
+  /// How many counted bead prayers the step asks for, one per bead. One
+  /// decade of the Rosary is ten; chaplet groups use other counts.
+  final int hailMaryCount;
+
+  /// Whether an optional Fatima prayer follows the beads. Presentation
+  /// metadata only: the prayer is part of this step.
+  final bool includeFatimaPrayer;
+
+  /// Creates a [BeadGroupStep].
+  ///
+  /// Throws an [ArgumentError] when [hailMaryCount] is below 1.
+  BeadGroupStep({
+    required super.id,
+    super.title,
+    this.mysteryTitle,
+    this.mysteryFruit,
+    required this.hailMaryCount,
+    required this.includeFatimaPrayer,
+  }) {
+    if (hailMaryCount < 1) {
+      throw ArgumentError(
+        'BeadGroupStep(id: $id) failed validation: '
+        'hailMaryCount must be at least 1',
+      );
+    }
+  }
+}
+
+/// A step displaying one [PrayerText] to be repeated [count] times.
+///
+/// The step carries a counted target: [SessionRunner.completeCurrent] (with
+/// the script supplied) is only allowed once the step's recorded count has
+/// reached [count].
+class RepetitionStep extends SessionStep {
+  /// The prayer the step repeats.
+  final PrayerText text;
+
+  /// How many repetitions the step asks for.
+  final int count;
+
+  /// Creates a [RepetitionStep].
+  ///
+  /// Throws an [ArgumentError] when [count] is below 1.
+  RepetitionStep({
+    required super.id,
+    super.title,
+    required this.text,
+    required this.count,
+  }) {
+    if (count < 1) {
+      throw ArgumentError(
+        'RepetitionStep(id: $id) failed validation: '
+        'count must be at least 1',
+      );
+    }
+  }
+}
+
+/// A step of call-and-response invocations in litany form.
+///
+/// Each line of [invocations] is answered with the same [response]. The
+/// step completes in a single completion action — its invocation count is
+/// presentation data, not a recorded target, unlike [RepetitionStep].
+/// [groupedResponse] describes how the app layer presents the responses
+/// and carries no state.
+class LitanyStep extends SessionStep {
+  /// The invocations of the litany, each answered with [response].
+  final List<String> invocations;
+
+  /// The response spoken for every invocation.
+  final String response;
+
+  /// Whether the app layer renders the responses as one grouped passage.
+  final bool groupedResponse;
+
+  /// Creates a [LitanyStep].
+  ///
+  /// Throws an [ArgumentError] when [invocations] is empty.
+  LitanyStep({
+    required super.id,
+    super.title,
+    required List<String> invocations,
+    required this.response,
+    required this.groupedResponse,
+  }) : invocations = List<String>.unmodifiable(invocations) {
+    if (this.invocations.isEmpty) {
+      throw ArgumentError(
+        'LitanyStep(id: $id) failed validation: '
+        'invocations must not be empty',
+      );
+    }
+  }
+}
+
 /// An ordered sequence of [SessionStep]s forming one devotional session.
 class SessionScript {
   /// The stable identifier of the script.
