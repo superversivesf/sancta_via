@@ -26,6 +26,9 @@ export 'src/content_validation_exception.dart';
 
 // Models
 export 'src/models/prayer_text.dart';
+export 'src/models/schedule_context.dart';
+export 'src/models/schedule_result.dart';
+export 'src/models/schedule_spec.dart';
 
 // Scheduling
 export 'src/scheduling/computus.dart';
