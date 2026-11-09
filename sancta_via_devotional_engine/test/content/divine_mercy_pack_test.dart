@@ -43,7 +43,6 @@ const List<String> nineDailyIntentions = <String>[
 /// The chaplet's Divine-Mercy-specific formulas, attributed to the chaplet
 /// tradition as universally reproduced (no Diary translations).
 const List<String> chapletFormulaKeys = <String>[
-  'dmn_you_expired',
   'dmn_blood_water',
   'dmn_eternal_father',
   'dmn_for_the_sake',
@@ -128,6 +127,17 @@ void main() {
       final ContentPack pack = loadPack('divine_mercy_novena');
       expect(pack.variants, hasLength(9));
 
+      // In-band mapping: each variant carries its own dayIndex, and the
+      // nine indexes appear exactly 1..9, in order.
+      for (int i = 0; i < pack.variants.length; i++) {
+        expect(pack.variants[i]['dayIndex'], i + 1, reason: 'variants[$i]');
+      }
+      final Set<int> indexes = <int>{
+        for (final Map<String, dynamic> variant in pack.variants)
+          variant['dayIndex']! as int,
+      };
+      expect(indexes, <int>{1, 2, 3, 4, 5, 6, 7, 8, 9});
+
       for (int dayNumber = 1; dayNumber <= 9; dayNumber++) {
         // The session day index for 2026 walks from the schedule itself:
         // novena day N falls on April (2 + N), 2026.
@@ -141,12 +151,15 @@ void main() {
           reason: 'day $dayNumber of the novena',
         );
 
-        final Map<String, dynamic> variant = pack.variants[dayNumber - 1];
-        expect(
-          variant['id'],
-          'day-$dayNumber',
-          reason: 'variant index ${dayNumber - 1}',
+        // The variant is found by its explicit dayIndex key, not list
+        // position.
+        final Map<String, dynamic> variant = pack.variants.singleWhere(
+          (Map<String, dynamic> variant) => variant['dayIndex'] == dayNumber,
+          orElse: () => throw StateError(
+            'pack.variants must carry a day-$dayNumber variant',
+          ),
         );
+        expect(variant['id'], 'day-$dayNumber');
         expect(variant['title'], 'Day $dayNumber');
         expect(
           variant['intention'],
@@ -166,18 +179,30 @@ void main() {
       final ContentPack pack = loadPack('divine_mercy_novena');
       final List<SessionStep> steps = pack.session.steps;
       expect(pack.session.id, 'divine-mercy-novena-session');
-      expect(steps, hasLength(26));
+      expect(steps, hasLength(25));
 
-      // The leading intercession step carries the day-N placeholder the app
-      // layer substitutes with the pack's variant texts by session day
-      // index (see Pack.variants and the report note).
+      // The leading intercession step carries the '{{day}}' placeholder the
+      // app layer substitutes with the pack's variant texts by session day
+      // index (see Pack.variants and the report note). The token appears
+      // exactly once.
       expect(steps[0], isA<IntercessionStep>());
       final IntercessionStep novenaIntention = steps[0] as IntercessionStep;
       expect(
         novenaIntention.prompt,
-        "Offer today's novena intention for: Day N of the Divine Mercy "
+        "Offer today's novena intention for: {{day}} of the Divine Mercy "
         'Novena',
       );
+      final String dayToken = '{{day}}';
+      int dayTokenCount = 0;
+      int position = novenaIntention.prompt.indexOf(dayToken);
+      while (position >= 0) {
+        dayTokenCount++;
+        position = novenaIntention.prompt.indexOf(
+          dayToken,
+          position + dayToken.length,
+        );
+      }
+      expect(dayTokenCount, 1);
 
       // Opening: the Sign of the Cross as a verse exchange...
       expect(steps[1], isA<VerseStep>());
@@ -188,31 +213,27 @@ void main() {
       );
       expect(signOfTheCross.response, 'Amen.');
 
-      // ...the Hour-of-Mercy-style opening invocation...
-      expect(steps[2], isA<PrayerStep>());
-      expect((steps[2] as PrayerStep).text.id, 'dmn_you_expired');
-
       // ...and the threefold 'O Blood and Water' invocation.
-      expect(steps[3], isA<RepetitionStep>());
-      final RepetitionStep bloodAndWater = steps[3] as RepetitionStep;
+      expect(steps[2], isA<RepetitionStep>());
+      final RepetitionStep bloodAndWater = steps[2] as RepetitionStep;
       expect(bloodAndWater.text.id, 'dmn_blood_water');
       expect(bloodAndWater.count, 3);
 
       // On the crucifix: Our Father; on the first three beads: three Hail
       // Marys as one prayer step per bead; then the Apostles' Creed.
-      expect((steps[4] as PrayerStep).text.id, 'dmn_our_father');
-      for (int i = 5; i <= 7; i++) {
+      expect((steps[3] as PrayerStep).text.id, 'dmn_our_father');
+      for (int i = 4; i <= 6; i++) {
         expect(steps[i], isA<PrayerStep>(), reason: 'steps[$i]');
         expect((steps[i] as PrayerStep).text.id, 'dmn_hail_mary');
       }
-      expect((steps[8] as PrayerStep).text.id, 'dmn_apostles_creed');
+      expect((steps[7] as PrayerStep).text.id, 'dmn_apostles_creed');
 
       // Five decades, three steps each in order: Eternal Father (prayer),
       // 'For the sake of His sorrowful Passion' (repetition x10), Glory Be
       // (prayer). The Divine Mercy decade is NOT a Rosary BeadGroupStep.
       expect(steps.whereType<BeadGroupStep>(), isEmpty);
       for (int decade = 1; decade <= 5; decade++) {
-        final int base = 9 + (decade - 1) * 3;
+        final int base = 8 + (decade - 1) * 3;
         expect(steps[base], isA<PrayerStep>(), reason: 'decade $decade');
         final PrayerStep eternalFather = steps[base] as PrayerStep;
         expect(eternalFather.id, 'dmn-decade-$decade-eternal-father');
@@ -233,8 +254,8 @@ void main() {
         expect(gloryBe.id, 'dmn-decade-$decade-glory-be');
         expect(gloryBe.text.id, 'dmn_glory_be');
       }
-      // The decades occupy exactly steps 9..23 of the session, in order.
-      for (int i = 9; i <= 23; i++) {
+      // The decades occupy exactly steps 8..22 of the session, in order.
+      for (int i = 8; i <= 22; i++) {
         expect(
           steps[i],
           anyOf(isA<PrayerStep>(), isA<RepetitionStep>()),
@@ -244,12 +265,12 @@ void main() {
 
       // Closing: the threefold Holy God antiphon, then 'Jesus, I trust in
       // You!'.
-      expect(steps[24], isA<RepetitionStep>());
-      final RepetitionStep holyGod = steps[24] as RepetitionStep;
+      expect(steps[23], isA<RepetitionStep>());
+      final RepetitionStep holyGod = steps[23] as RepetitionStep;
       expect(holyGod.text.id, 'dmn_holy_god');
       expect(holyGod.count, 3);
-      expect(steps[25], isA<PrayerStep>());
-      expect((steps[25] as PrayerStep).text.id, 'dmn_jesus_trust');
+      expect(steps[24], isA<PrayerStep>());
+      expect((steps[24] as PrayerStep).text.id, 'dmn_jesus_trust');
     });
 
     test('every contentRef resolves into the content map', () {
@@ -271,9 +292,9 @@ void main() {
             fail('unexpected step type ${step.runtimeType}');
         }
       }
-      // The 10 content entries are all reached by the session's refs: Our
+      // The 9 content entries are all reached by the session's refs: Our
       // Father, one Hail Mary text over three steps, each other formula.
-      expect(referencedTexts, 24);
+      expect(referencedTexts, 23);
       expect(
         pack.content.keys,
         hasLength(chapletFormulaKeys.length + traditionalPrayerKeys.length),
@@ -337,16 +358,29 @@ void main() {
         'fountain of mercy for us, I trust in You.',
       );
 
-      // No Diary translation texts anywhere (content or variants): the
-      // first-person novena translation formulas are excluded.
+      // No Diary translation texts anywhere (content or variants): neither
+      // the first-person novena translation formulas nor the Diary 1319
+      // passage ('You expired, Jesus...' — 'source of life gushed forth') /
+      // Diary 1763 wording ('unfathomable Divine Mercy') may reappear.
       final String allContent = <String>[
         for (final PrayerText entry in pack.content.values) entry.text,
         for (final Map<String, dynamic> variant in pack.variants)
           variant['intention']! as String,
       ].join('\n');
-      expect(allContent, isNot(contains('Today bring to Me')));
-      expect(allContent, isNot(contains('ocean of My mercy')));
-      expect(allContent, isNot(contains('entreat My mercy')));
+      const List<String> forbiddenDiaryPhrases = <String>[
+        'Today bring to Me',
+        'ocean of My mercy',
+        'entreat My mercy',
+        'source of life gushed forth',
+        'unfathomable Divine Mercy',
+      ];
+      for (final String phrase in forbiddenDiaryPhrases) {
+        expect(
+          allContent,
+          isNot(contains(phrase)),
+          reason: 'forbidden: $phrase',
+        );
+      }
     });
 
     test('PackValidator passes for fixture year 2026', () {
