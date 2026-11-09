@@ -1,0 +1,100 @@
+{
+  "id": "daily_anchors",
+  "title": "Daily Anchors",
+  "family": "routine",
+  "schedule": {
+    "type": "timeOfDay",
+    "hour": 6,
+    "minute": 0,
+    "baseLabel": "angelus",
+    "variants": [
+      {
+        "months": [3, 4, 5],
+        "seasons": ["Eastertide", "Easter", "Pentecost"],
+        "variantId": "regina_caeli"
+      }
+    ]
+  },
+  "session": {
+    "id": "daily-anchors-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "angelus-v1",
+        "versicle": "The Angel of the Lord declared unto Mary.",
+        "response": "And she conceived of the Holy Spirit."
+      },
+      {
+        "type": "verse",
+        "id": "angelus-v2",
+        "versicle": "Behold the handmaid of the Lord.",
+        "response": "Be it done unto me according to Thy word."
+      },
+      {
+        "type": "verse",
+        "id": "angelus-v3",
+        "versicle": "And the Word was made flesh.",
+        "response": "And dwelt among us."
+      },
+      {
+        "type": "prayer",
+        "id": "angelus-collect",
+        "title": "The Angelus Collect",
+        "contentRef": "angelus_collect"
+      },
+      {
+        "type": "prayer",
+        "id": "mercy-hour-prayer",
+        "title": "The Hour of Mercy",
+        "contentRef": "mercy_hour_prayer"
+      },
+      {
+        "type": "repetition",
+        "id": "mercy-hour-repetition",
+        "title": "O Blood and Water",
+        "contentRef": "mercy_hour_repetition",
+        "count": 3
+      }
+    ]
+  },
+  "content": {
+    "angelus_collect": {
+      "id": "angelus_collect",
+      "text": "V. Pray for us, O holy Mother of God.\nR. That we may be made worthy of the promises of Christ.\n\nLet us pray. Pour forth, we beseech Thee, O Lord, Thy grace into our hearts; that we, to whom the Incarnation of Christ, Thy Son, was made known by the message of an angel, may by His Passion and Cross be brought to the glory of His Resurrection. Through the same Christ our Lord. Amen.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    },
+    "regina_caeli_collect": {
+      "id": "regina_caeli_collect",
+      "text": "O God, who by the Resurrection of Thine only-begotten Son, and by the co-operation of the Holy Ghost, hast given unto the world the joy of everlasting life; grant, we beseech Thee, that through the intercession of the Blessed Virgin Mary, His Mother, we may attain unto the joys of everlasting life. Through the same Christ our Lord. Amen.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    },
+    "regina_caeli_versicles": {
+      "id": "regina_caeli_versicles",
+      "text": "V. Queen of Heaven, rejoice, alleluia.\nR. For He whom thou didst merit to bear, alleluia.\nV. Has risen as He said, alleluia.\nR. Pray for us to God, alleluia.\nV. Rejoice and be glad, O Virgin Mary, alleluia.\nR. For the Lord hath truly risen, alleluia.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    },
+    "mercy_hour_prayer": {
+      "id": "mercy_hour_prayer",
+      "text": "You expired, Jesus, but the source of life gushed forth for souls, and an ocean of mercy opened up for the whole world. O Blood and Water, which gushed forth from the Heart of Jesus as a fountain of mercy for us, I trust in You.",
+      "source": "The Diary of St. Faustina (short invocations)",
+      "license": "short-phrase (attributed, widely-reproduced)"
+    },
+    "mercy_hour_repetition": {
+      "id": "mercy_hour_repetition",
+      "text": "O Blood and Water, which gushed forth from the Heart of Jesus as a fountain of mercy for us, I trust in You.",
+      "source": "The Diary of St. Faustina (short invocations)",
+      "license": "short-phrase (attributed, widely-reproduced)"
+    }
+  },
+  "reminders": {
+    "mercy_hour": {
+      "type": "timeOfDay",
+      "hour": 15,
+      "minute": 0,
+      "baseLabel": "mercy_hour"
+    }
+  }
+}
