@@ -276,3 +276,225 @@ class NthWeekdayOfMonthSpec extends ScheduleSpec {
   @override
   String toString() => 'NthWeekdayOfMonthSpec(weekday: $weekday, nth: $nth)';
 }
+
+/// A schedule due every week on each of the listed weekdays, recurring in
+/// every month, with optional whole-month suppression.
+///
+/// [weekday]s are numbered as `DateTime` numbers weekdays:
+/// [DateTime.monday] = 1 through [DateTime.sunday] = 7. The spec is due when
+/// the resolved date's own weekday appears in [weekdays] — e.g.
+/// `WeeklyLoopSpec(weekdays: {DateTime.tuesday})` is due every Tuesday.
+///
+/// When [skipMonths] is provided and non-empty, the resolved date's month
+/// appearing in it suppresses the spec for that entire month: even a listed
+/// weekday in a skipped month resolves as not due. Suppression is
+/// deliberately month-scoped only; finer-grained displacements in v1 — such
+/// as a solemnity displacing a weekday devotional — are the caller's
+/// concern (driven by the [ScheduleContext.seasonKeyValue] label outside
+/// the engine), which is why [resolve] does not consult the context.
+class WeeklyLoopSpec extends ScheduleSpec {
+  /// The weekdays on which the loop is due, numbered as `DateTime` numbers
+  /// weekdays: [DateTime.monday] = 1 through [DateTime.sunday] = 7.
+  final Set<int> weekdays;
+
+  /// The months (1 through 12) in which the loop is suppressed for the
+  /// whole month, or null / empty for no suppression.
+  final List<int>? skipMonths;
+
+  /// Creates a [WeeklyLoopSpec].
+  ///
+  /// Throws an [ArgumentError] when [weekdays] is empty or holds a value
+  /// outside 1 (Monday) through 7 (Sunday), or when [skipMonths] holds a
+  /// value outside 1 through 12. [skipMonths] itself may be null or empty.
+  WeeklyLoopSpec({required this.weekdays, this.skipMonths}) {
+    final List<String> problems = <String>[];
+    if (weekdays.isEmpty) {
+      problems.add('weekdays must not be empty');
+    }
+    if (weekdays.any(
+      (int weekday) => weekday < DateTime.monday || weekday > DateTime.sunday,
+    )) {
+      problems.add('weekdays must each be between 1 (Monday) and 7 (Sunday)');
+    }
+    final List<int>? skip = skipMonths;
+    if (skip != null && skip.any((int month) => month < 1 || month > 12)) {
+      problems.add('skipMonths must each be between 1 and 12');
+    }
+    if (problems.isNotEmpty) {
+      throw ArgumentError(
+        'WeeklyLoopSpec(weekdays: $weekdays, skipMonths: $skipMonths) '
+        'failed validation: ${problems.join('; ')}',
+      );
+    }
+  }
+
+  @override
+  ScheduleResult resolve(DateTime date, ScheduleContext context) {
+    final DateTime d = ScheduleSpec._dateOnly(date);
+    final List<int>? skip = skipMonths;
+    if (skip != null && skip.contains(d.month)) {
+      return const ScheduleResult(due: false);
+    }
+    return ScheduleResult(due: weekdays.contains(d.weekday));
+  }
+
+  @override
+  String toString() =>
+      'WeeklyLoopSpec(weekdays: $weekdays, skipMonths: $skipMonths)';
+}
+
+/// A schedule due every day at a fixed local wall-clock time, carrying a
+/// display label that season variants can re-shape.
+///
+/// The spec is due on every resolved date ([hour] 0 through 23, [minute] 0
+/// through 59 — resolution reads only the local calendar of the date, never
+/// a time-zone rendering; the caller schedules the wall-clock reminder).
+///
+/// The resolution's label is, in order of preference:
+///
+/// 1. The `variantId` of the first [variants] entry matching the
+///    resolution — matching either by month or by season.
+/// 2. [baseLabel], when provided.
+/// 3. The zero-padded `HH:mm` rendering of [hour] and [minute] (e.g.
+///    `TimeOfDaySpec(15, 0)` labels itself `'15:00'`, `TimeOfDaySpec(6, 0)`
+///    labels itself `'06:00'`).
+///
+/// E.g. the Angelus devotional can carry
+/// `TimeOfDaySpec(6, 0, baseLabel: 'angelus', variants: [SeasonVariant(
+/// months: [4, 5], seasons: {'eastertide'}, variantId: 'regina_caeli')])`,
+/// resolving as `regina_caeli` during Eastertide and `angelus` elsewhere.
+class TimeOfDaySpec extends ScheduleSpec {
+  /// The hour of the fixed local wall-clock time (0 through 23).
+  final int hour;
+
+  /// The minute of the fixed local wall-clock time (0 through 59).
+  final int minute;
+
+  /// The label used when no [SeasonVariant] in [variants] matches the
+  /// resolution, or null to fall through to the `HH:mm` rendering.
+  final String? baseLabel;
+
+  /// Season-scoped label variants, tried in order; the first match wins.
+  final List<SeasonVariant> variants;
+
+  /// Creates a [TimeOfDaySpec].
+  ///
+  /// Throws an [ArgumentError] when [hour] is outside 0 through 23 or
+  /// [minute] is outside 0 through 59.
+  TimeOfDaySpec(
+    this.hour,
+    this.minute, {
+    this.baseLabel,
+    this.variants = const <SeasonVariant>[],
+  }) {
+    final List<String> problems = <String>[];
+    if (hour < 0 || hour > 23) {
+      problems.add('hour must be between 0 and 23');
+    }
+    if (minute < 0 || minute > 59) {
+      problems.add('minute must be between 0 and 59');
+    }
+    if (problems.isNotEmpty) {
+      throw ArgumentError(
+        'TimeOfDaySpec($hour, $minute) failed validation: '
+        '${problems.join('; ')}',
+      );
+    }
+  }
+
+  @override
+  ScheduleResult resolve(DateTime date, ScheduleContext context) {
+    final DateTime d = ScheduleSpec._dateOnly(date);
+    return ScheduleResult(due: true, labels: <String>[_labelFor(d, context)]);
+  }
+
+  /// The label carried by a resolution of the date-only [d]: the
+  /// `variantId` of the first matching [variants] entry, else [baseLabel],
+  /// else the `HH:mm` rendering of this spec's time.
+  String _labelFor(DateTime d, ScheduleContext context) {
+    final String? seasonKey = context.seasonKeyValue;
+    for (final SeasonVariant variant in variants) {
+      if (variant.months.contains(d.month)) {
+        return variant.variantId;
+      }
+      final Set<String>? seasons = variant.seasons;
+      if (seasons != null &&
+          seasonKey != null &&
+          seasonKey.isNotEmpty &&
+          seasons.any(
+            (String season) => season.toLowerCase() == seasonKey.toLowerCase(),
+          )) {
+        return variant.variantId;
+      }
+    }
+    return baseLabel ?? _clockLabel(hour, minute);
+  }
+
+  /// Zero-pads the time into a stable `HH:mm` label.
+  static String _clockLabel(int hour, int minute) =>
+      '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
+
+  @override
+  String toString() =>
+      'TimeOfDaySpec(hour: $hour, minute: $minute, baseLabel: $baseLabel, '
+      'variants: $variants)';
+}
+
+/// A season-scoped display variant of a [TimeOfDaySpec].
+///
+/// A variant matches a resolution when its [months] include the resolved
+/// date's local month OR its [seasons] contain the resolution's
+/// [ScheduleContext.seasonKeyValue] (compared case-insensitively on both
+/// sides). A [TimeOfDaySpec] tries its variants in order and the first
+/// match's `variantId` becomes the resolution's label.
+///
+/// At least one match source must exist: [months] non-empty or [seasons]
+/// non-empty and non-null — a variant with neither could never match.
+class SeasonVariant {
+  /// The months (1 through 12) in which the variant may apply, by the
+  /// resolved date's local month. May be empty when the variant is keyed
+  /// purely by [seasons].
+  final List<int> months;
+
+  /// The season keys under which the variant applies, or null when the
+  /// variant is keyed purely by [months]. Compared case-insensitively
+  /// against the resolution's season key.
+  final Set<String>? seasons;
+
+  /// The label this variant substitutes into the resolution when it
+  /// matches.
+  final String variantId;
+
+  /// Creates a [SeasonVariant].
+  ///
+  /// Throws an [ArgumentError] when [months] holds a value outside 1
+  /// through 12, when [variantId] is empty, or when both [months] and
+  /// [seasons] are empty (the variant could never match).
+  SeasonVariant({required this.months, this.seasons, required this.variantId}) {
+    final List<String> problems = <String>[];
+    if (months.any((int month) => month < 1 || month > 12)) {
+      problems.add('months must each be between 1 and 12');
+    }
+    final Set<String>? variantSeasons = seasons;
+    if (months.isEmpty && (variantSeasons == null || variantSeasons.isEmpty)) {
+      problems.add(
+        'at least one month or one season key must be provided '
+        '(otherwise the variant can never match)',
+      );
+    }
+    if (variantId.isEmpty) {
+      problems.add('variantId must not be empty');
+    }
+    if (problems.isNotEmpty) {
+      throw ArgumentError(
+        'SeasonVariant(months: $months, variantId: $variantId) '
+        'failed validation: ${problems.join('; ')}',
+      );
+    }
+  }
+
+  @override
+  String toString() =>
+      'SeasonVariant(months: $months, seasons: $seasons, '
+      'variantId: $variantId)';
+}
