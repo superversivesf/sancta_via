@@ -31,6 +31,7 @@ export 'src/models/schedule_result.dart';
 export 'src/models/schedule_spec.dart';
 
 // Scheduling
+export 'src/scheduling/consecration_planner.dart';
 export 'src/scheduling/computus.dart';
 
 // Progress

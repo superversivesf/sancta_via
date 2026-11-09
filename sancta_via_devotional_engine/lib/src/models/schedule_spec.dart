@@ -499,6 +499,54 @@ class SeasonVariant {
       'variantId: $variantId)';
 }
 
+/// A schedule due on every day of a bounded series anchored to one
+/// concrete start date.
+///
+/// The series consists of [lengthDays] consecutive calendar days beginning
+/// with [startDate] itself: due dates run from [startDate] through
+/// [startDate] + [lengthDays] − 1, inclusive, and a due resolution carries
+/// the series' 1-based [ScheduleResult.dayIndex] (e.g. the 34th day of the
+/// series reports dayIndex 34). Pair [startDate] with
+/// `ConsecrationPlanner.startFor` to schedule a 33-day consecration
+/// preparation that ends on the consecration day itself:
+/// `SessionSeriesSpec(startDate: start, lengthDays: 34)` makes day 1 the
+/// preparation's first day and day 34 the consecration day.
+///
+/// The due-window offset is taken in whole calendar days between
+/// date-only values (see [_wholeCalendarDays]), so the window's span is
+/// immune to DST shifts and never consults a time-zone rendering.
+class SessionSeriesSpec extends ScheduleSpec {
+  /// The concrete date of the series' first day (day 1).
+  final DateTime startDate;
+
+  /// The number of days in the series (at least 1), counting [startDate]
+  /// itself as day 1.
+  final int lengthDays;
+
+  /// Creates a [SessionSeriesSpec].
+  ///
+  /// Throws an [ArgumentError] when [lengthDays] is less than 1.
+  SessionSeriesSpec({required this.startDate, required this.lengthDays}) {
+    if (lengthDays < 1) {
+      throw ArgumentError.value(lengthDays, 'lengthDays', 'must be at least 1');
+    }
+  }
+
+  @override
+  ScheduleResult resolve(DateTime date, ScheduleContext context) {
+    final DateTime d = ScheduleSpec._dateOnly(date);
+    final int offset = _wholeCalendarDays(ScheduleSpec._dateOnly(startDate), d);
+    if (offset < 0 || offset >= lengthDays) {
+      return const ScheduleResult(due: false);
+    }
+    return ScheduleResult(due: true, dayIndex: offset + 1);
+  }
+
+  @override
+  String toString() =>
+      'SessionSeriesSpec(startDate: $startDate, lengthDays: $lengthDays)';
+}
+
 /// How a consecutive commitment's fulfilled ordinals react to a gap: an
 /// anchor position in the series that was not completed.
 enum RestartPolicy {
