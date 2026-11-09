@@ -290,7 +290,7 @@ class MissedDayEvaluator { static MissedDayVerdict evaluate(String policy, Progr
 
 ### Task 14: Content pack — Daily anchors (Angelus/Regina Caeli + mercy hour)
 
-**Files:** Create `test/fixtures/packs/daily_anchors.json`; Test: `test/content/daily_anchors_pack_test.dart`
+**Files:** Create `test/fixtures/packs/angelus.json` + `test/fixtures/packs/mercy_hour.json` (round-1 ruling: one pack per devotion); Test: `test/content/daily_anchors_pack_test.dart`
 
 **Interfaces:**
 - Consumes: `PackLoader.loadFixturesIn`, `TimeOfDaySpec` variants, `VerseStep`, `PrayerText`, `angelusPrayerFor`.
