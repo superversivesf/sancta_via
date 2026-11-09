@@ -40,7 +40,7 @@
 - Scaffold mirrors `sancta_via_liturgical_calendar` (topics, funding, environment), name `sancta_via_devotional_engine`, description "Pure Dart engine for Catholic devotional programs: scheduling, sessions, and progress"
 
 **Interfaces:**
-- Produces: `class PrayerText { final String id; final String text; final String? latin; final String source; final String license; const PrayerText({...required}) ; fromJson/toJson }` and barrel `export src/models/prayer_text.dart`
+- Produces: `class PrayerText { final String id; final String text; final String? latin; final String source; final String license; PrayerText({...required}) ; fromJson/toJson }` and barrel `export src/models/prayer_text.dart`
 - Produces: `class ContentValidationException implements Exception` (empty `lib/src/content_validation_exception.dart`) with `final String message; final List<String> problems;`
 
 - [ ] **Step 1: Write failing test** — constructing `PrayerText(id:'memorare', text:'Remember…', source:'', license:'public-domain')` throws `ContentValidationException` mentioning `source`; missing `latin` is fine; `toJson`/`fromJson` round-trip preserves all fields.
