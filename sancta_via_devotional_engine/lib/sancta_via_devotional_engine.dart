@@ -25,11 +25,15 @@ library sancta_via_devotional_engine;
 export 'src/content_validation_exception.dart';
 
 // Models
+export 'src/models/content_pack.dart';
 export 'src/models/prayer_text.dart';
 export 'src/models/schedule_context.dart';
 export 'src/models/schedule_result.dart';
 export 'src/models/schedule_spec.dart';
 export 'src/models/session_script.dart';
+
+// Content
+export 'src/content/pack_loader.dart';
 
 // Scheduling
 export 'src/scheduling/consecration_planner.dart';
