@@ -7,6 +7,13 @@
 /// date-only discipline as resolution: the dates are reduced to local
 /// midnight calendar dates (`DateTime(year, month, day)`) and compared
 /// through their local calendar components — never a UTC rendering.
+///
+/// The evaluator is scoped to daily-cadence programs (consecutive
+/// positions on adjacent calendar days — see
+/// [MissedDayEvaluator.evaluate] for the cadence scope):
+/// anchor-recurring commitments are driven by
+/// `CommitmentState.evaluate` with the spec's restart policy, not by
+/// this evaluator.
 library;
 
 import '../models/progress_state.dart';
@@ -26,8 +33,9 @@ enum MissedDayVerdict {
   /// span.
   reset,
 
-  /// Leave the decision to the user — the state carries nothing
-  /// completed yet (nothing to reset), so the user starts afresh.
+  /// Leave the decision to the user — the state holds no fulfilled
+  /// ordinals yet (`fulfilledOrdinals == 0`: nothing to reset), so the
+  /// user starts afresh.
   askUser,
 }
 
@@ -41,12 +49,14 @@ class MissedDayEvaluator {
   /// `'permissive'`).
   ///
   /// * an unknown [policy] throws an [ArgumentError];
-  /// * `askUser` when the state has nothing completed yet
-  ///   (`ProgressState.fulfilledOrdinals` is zero): there is no streak to
-  ///   continue or reset, so the user must choose afresh;
+  /// * `askUser` when `ProgressState.fulfilledOrdinals` is zero (the
+  ///   rule itself): there is no streak to continue or reset, so the
+  ///   user must choose afresh;
   /// * otherwise the policy passes through: the `'strict'` policy yields
   ///   `reset` when a gap lies between [lastFulfilled] and [nextDue], and
-  ///   the `'permissive'` policy always yields `resume`.
+  ///   the `'permissive'` policy always yields `resume`. A [nextDue] on
+  ///   or before [lastFulfilled] is never a gap — under either policy
+  ///   such a pair resolves to `resume`.
   ///
   /// A gap is at least one calendar day lying strictly between the two
   /// dates: an evaluator without the anchor schedule takes a span wider
@@ -56,6 +66,17 @@ class MissedDayEvaluator {
   /// carry no such position). Only the local calendar components of the
   /// dates participate ([_dateOnly]); time-of-day never leaks into the
   /// decision.
+  ///
+  /// **Cadence scope.** The calendar-day rule is exact only for
+  /// consecutive positions on ADJACENT calendar days — daily programs
+  /// such as the 54-day novena. For anchor-recurring commitments
+  /// (monthly weekdays etc.) use `CommitmentState.evaluate` with the
+  /// spec's `RestartPolicy` — this evaluator must not drive those:
+  /// their spans are always wide, so the rule degenerates to `strict`
+  /// reading `reset` even when every consecutive position was kept (a
+  /// kept First Saturday followed by the next due one reads the same as
+  /// a skipped one — pinned by the cadence guard tests in
+  /// `test/progress/missed_day_test.dart`).
   ///
   /// The [state]'s own [ProgressState.lastFulfilled] does not decide;
   /// the [lastFulfilled] argument does (an app passes the date the

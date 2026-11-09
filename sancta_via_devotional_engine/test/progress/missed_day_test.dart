@@ -142,6 +142,52 @@ void main() {
     });
   });
 
+  group('cadence scope (documented behavior, not a bug)', () {
+    test('reads a wide span as a gap on an anchor-recurring cadence', () {
+      expect(
+        MissedDayEvaluator.evaluate(
+          'strict',
+          progressedState(),
+          DateTime(2026, 12, 5),
+          DateTime(2027, 1, 2),
+        ),
+        MissedDayVerdict.reset,
+        reason:
+            'DOCUMENTED behavior, not a bug: the gap rule counts calendar '
+            'days only, so on an anchor-recurring cadence (First '
+            'Saturdays, ~4 weeks apart) the span is always wide and '
+            'strict reads reset even when every consecutive position was '
+            'kept — CommitmentState.evaluate, not this evaluator, drives '
+            'such commitments',
+      );
+    });
+
+    test('CommitmentState.evaluate flags no gap for the kept same pair', () {
+      // The real First-Saturdays spec from the Task 6 test patterns:
+      final ConsecutiveCommitmentSpec spec = ConsecutiveCommitmentSpec(
+        anchor: NthWeekdayOfMonthSpec(DateTime.saturday, 1),
+        count: 5,
+        policy: RestartPolicy.strict,
+      );
+
+      // The same pair as the degenerate case above (kept 2026-12-05,
+      // next due 2027-01-02), judged by the strict commitment engine as
+      // of the day before the next due date — nextDue itself is today's
+      // due position, not an already-passed one:
+      final CommitmentState state = CommitmentState.evaluate(spec, <DateTime>{
+        DateTime(2026, 12, 5),
+      }, DateTime(2027, 1, 1));
+
+      expect(state.fulfilledOrdinals, equals(1));
+      expect(
+        state.labels,
+        isEmpty,
+        reason: 'Only one First Saturday has passed; none was skipped',
+      );
+      expect(state.lastFulfilledAnchor, equals(DateTime(2026, 12, 5)));
+    });
+  });
+
   group('BadgeRecord', () {
     test('rejects an empty title', () {
       expect(
