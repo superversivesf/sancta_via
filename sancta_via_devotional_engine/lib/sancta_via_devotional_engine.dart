@@ -47,3 +47,4 @@ export 'src/session/session_runner.dart';
 // Progress
 export 'src/progress/commitment_state.dart';
 export 'src/progress/missed_day_evaluator.dart';
+export 'src/progress/projection.dart';
