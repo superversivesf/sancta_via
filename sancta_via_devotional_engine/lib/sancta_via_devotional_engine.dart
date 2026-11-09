@@ -27,6 +27,7 @@ export 'src/content_validation_exception.dart';
 // Models
 export 'src/models/content_pack.dart';
 export 'src/models/prayer_text.dart';
+export 'src/models/progress_state.dart';
 export 'src/models/schedule_context.dart';
 export 'src/models/schedule_result.dart';
 export 'src/models/schedule_spec.dart';
@@ -45,3 +46,4 @@ export 'src/session/session_runner.dart';
 
 // Progress
 export 'src/progress/commitment_state.dart';
+export 'src/progress/missed_day_evaluator.dart';
