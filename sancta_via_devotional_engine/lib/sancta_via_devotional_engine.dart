@@ -29,11 +29,15 @@ export 'src/models/prayer_text.dart';
 export 'src/models/schedule_context.dart';
 export 'src/models/schedule_result.dart';
 export 'src/models/schedule_spec.dart';
+export 'src/models/session_script.dart';
 
 // Scheduling
 export 'src/scheduling/consecration_planner.dart';
 export 'src/scheduling/computus.dart';
 export 'src/scheduling/season_overrides.dart';
+
+// Sessions
+export 'src/session/session_runner.dart';
 
 // Progress
 export 'src/progress/commitment_state.dart';
