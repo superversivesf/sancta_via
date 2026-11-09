@@ -215,3 +215,64 @@ class EasterOffsetSpec extends ScheduleSpec {
   String toString() =>
       'EasterOffsetSpec(startOffset: $startOffset, lengthDays: $lengthDays)';
 }
+
+/// A schedule due on the [nth] occurrence of [weekday] within the calendar
+/// month of each resolved date, recurring in every month.
+///
+/// [weekday] is numbered as `DateTime` numbers weekdays:
+/// [DateTime.monday] = 1 through [DateTime.sunday] = 7. Resolution computes
+/// the due day by starting at the month's first day, advancing to the first
+/// occurrence of [weekday], and adding (nth − 1) whole weeks; the resulting
+/// day must still fall inside the month. When the month holds fewer than
+/// [nth] occurrences — e.g. a four-week February 2026 has no fifth Sunday —
+/// the spec is simply not due that month: the occurrence is never rolled
+/// into the following month, nor invented.
+class NthWeekdayOfMonthSpec extends ScheduleSpec {
+  /// The weekday of the due occurrence, numbered as `DateTime` numbers
+  /// weekdays: [DateTime.monday] = 1 through [DateTime.sunday] = 7.
+  final int weekday;
+
+  /// The 1-based occurrence of [weekday] within the month (e.g. 2 for the
+  /// second Saturday).
+  final int nth;
+
+  /// Creates a [NthWeekdayOfMonthSpec].
+  ///
+  /// Throws an [ArgumentError] when [weekday] is outside 1 (Monday)
+  /// through 7 (Sunday) or when [nth] is less than 1.
+  NthWeekdayOfMonthSpec(this.weekday, this.nth) {
+    final List<String> problems = <String>[];
+    if (weekday < DateTime.monday || weekday > DateTime.sunday) {
+      problems.add('weekday must be between 1 (Monday) and 7 (Sunday)');
+    }
+    if (nth < 1) {
+      problems.add('nth must be at least 1');
+    }
+    if (problems.isNotEmpty) {
+      throw ArgumentError(
+        'NthWeekdayOfMonthSpec($weekday, $nth) failed validation: '
+        '${problems.join('; ')}',
+      );
+    }
+  }
+
+  @override
+  ScheduleResult resolve(DateTime date, ScheduleContext context) {
+    final DateTime d = ScheduleSpec._dateOnly(date);
+    // The weekday of the month's first day (DateTime.monday..sunday);
+    // Dart's % on a possibly negative left operand is non-negative, so the
+    // offset lands in 0..6.
+    final int firstWeekday = DateTime(d.year, d.month, 1).weekday;
+    final int offsetToFirst = (weekday - firstWeekday) % 7;
+    final int targetDay = 1 + offsetToFirst + (nth - 1) * 7;
+    // Day 0 of the following month rolls back to this month's last day.
+    final int daysInMonth = DateTime(d.year, d.month + 1, 0).day;
+    if (targetDay > daysInMonth) {
+      return const ScheduleResult(due: false);
+    }
+    return ScheduleResult(due: d.day == targetDay);
+  }
+
+  @override
+  String toString() => 'NthWeekdayOfMonthSpec(weekday: $weekday, nth: $nth)';
+}
