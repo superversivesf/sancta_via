@@ -206,7 +206,7 @@ class VerseStep extends SessionStep { final String versicle; final String respon
 class ReflectionStep extends SessionStep { final PrayerText? text; final Duration duration; }
 class CheckpointStep extends SessionStep { final String item; final bool requiredForCompletion; }
 class IntercessionStep extends SessionStep { final String prompt; }
-sealed class SessionScript { final List<SessionStep> steps; final String id; }
+class SessionScript { final List<SessionStep> steps; final String id; }  // concrete, NOT sealed (Dart sealed types cannot be instantiated; packs/app consume a directly-constructible script type — Task 9 ruling)
 class SessionState { final String scriptId; final int stepIndex; final Map<int,int> recordedCounts; final Map<int,DateTime> completedAt; bool get isComplete; toJson/fromJson }
 class SessionRunner {
   static SessionState forState(SessionScript script);
