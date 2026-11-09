@@ -32,3 +32,6 @@ export 'src/models/schedule_spec.dart';
 
 // Scheduling
 export 'src/scheduling/computus.dart';
+
+// Progress
+export 'src/progress/commitment_state.dart';

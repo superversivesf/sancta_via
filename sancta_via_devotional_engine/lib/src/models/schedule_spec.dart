@@ -498,3 +498,153 @@ class SeasonVariant {
       'SeasonVariant(months: $months, seasons: $seasons, '
       'variantId: $variantId)';
 }
+
+/// How a consecutive commitment's fulfilled ordinals react to a gap: an
+/// anchor position in the series that was not completed.
+enum RestartPolicy {
+  /// A gap voids the series: the fulfilled ordinals count only from the
+  /// last gap onward — e.g. a skipped First Saturday unbinds every First
+  /// Saturday completed before it, and the series visibly restarts (the
+  /// missed anchor itself is labelled in the evaluated state either way).
+  strict,
+
+  /// Ordinals continue across a gap (e.g. a program restarted after a
+  /// lapse without voiding earlier completions); the gap itself is never
+  /// swallowed — the evaluated `CommitmentState` labels every missed
+  /// anchor.
+  permissive,
+}
+
+/// Item-level grace for a consecutive commitment: a permission for one
+/// item of the devotion to be completed within a whole-calendar-day window
+/// around an anchor date and still count for that anchor.
+///
+/// The classic case is the First Saturday devotion's confession, which may
+/// be made within 8 days before or after the First Saturday:
+/// `GraceWindow(item: 'confession', beforeDays: 8, afterDays: 8)`.
+///
+/// The window is date-diff based and reads only local calendar dates: it
+/// compares whole calendar days between the two dates (see
+/// [_wholeCalendarDays]), so it is immune to DST shifts and never consults
+/// a time-zone rendering.
+class GraceWindow {
+  /// The devotion item the window grants grace for (e.g. `'confession'`).
+  ///
+  /// The engine's progress evaluation compares completion dates only; the
+  /// item key documents which item's completions the window governs.
+  final String item;
+
+  /// How many whole calendar days before the anchor date the window opens
+  /// (inclusive; 0 admits the anchor day itself on the before side).
+  final int beforeDays;
+
+  /// How many whole calendar days after the anchor date the window closes
+  /// (inclusive; 0 admits the anchor day itself on the after side).
+  final int afterDays;
+
+  /// Creates a [GraceWindow].
+  ///
+  /// Throws an [ArgumentError] when [item] is empty or when [beforeDays]
+  /// or [afterDays] is negative.
+  GraceWindow({
+    required this.item,
+    required this.beforeDays,
+    required this.afterDays,
+  }) {
+    final List<String> problems = <String>[];
+    if (item.isEmpty) {
+      problems.add('item must not be empty');
+    }
+    if (beforeDays < 0) {
+      problems.add('beforeDays must not be negative');
+    }
+    if (afterDays < 0) {
+      problems.add('afterDays must not be negative');
+    }
+    if (problems.isNotEmpty) {
+      throw ArgumentError(
+        'GraceWindow(item: $item, beforeDays: $beforeDays, '
+        'afterDays: $afterDays) failed validation: '
+        '${problems.join('; ')}',
+      );
+    }
+  }
+
+  /// Whether a completion dated [completed] admits the anchor dated
+  /// [anchor]: true when [completed] lies within [beforeDays] days before
+  /// through [afterDays] days after [anchor], both edges inclusive.
+  ///
+  /// Only the local calendar components of the two dates participate: the
+  /// difference is taken in whole calendar days between date-only values,
+  /// never from time-of-day or UTC renderings.
+  bool admits(DateTime anchor, DateTime completed) {
+    final int days = _wholeCalendarDays(anchor, completed);
+    return days >= -beforeDays && days <= afterDays;
+  }
+
+  @override
+  String toString() =>
+      'GraceWindow(item: $item, beforeDays: $beforeDays, '
+      'afterDays: $afterDays)';
+}
+
+/// A consecutive commitment: a program of [count] fulfillments of the same
+/// recurring [anchor] spec (e.g. the Five First Saturdays, anchored to
+/// `NthWeekdayOfMonthSpec(DateTime.saturday, 1)`), evaluated against a
+/// person's completion dates by the `CommitmentState` evaluator in
+/// `src/progress/commitment_state.dart`.
+///
+/// Resolution of the commitment is the anchor's own resolution: the
+/// commitment is due wherever its anchor is due. Completion-aware state —
+/// the fulfilled ordinals, series restarts, gap labels, and the next
+/// fulfillment position — is the `CommitmentState.evaluate` concern, and
+/// the [policy] decides how a missed anchor (a gap) affects the ordinals:
+/// [RestartPolicy.strict] restarts the series at the last gap,
+/// [RestartPolicy.permissive] continues across it with the gap labelled.
+/// Either way, a missed anchor never silently rolls the ordinals forward.
+class ConsecutiveCommitmentSpec extends ScheduleSpec {
+  /// The per-position spec the program recurs on (e.g. the First Saturday
+  /// of every month).
+  final ScheduleSpec anchor;
+
+  /// The number of fulfillments the program asks for (e.g. 5 or 9).
+  ///
+  /// Evaluation does not stop at [count] — callers compare
+  /// `CommitmentState.fulfilledOrdinals` with it.
+  final int count;
+
+  /// How fulfilled ordinals react to a gap in the series.
+  final RestartPolicy policy;
+
+  /// Item-level grace windows admitting completions made near an anchor
+  /// date (e.g. a confession within 8 days of the First Saturday), or
+  /// empty for exact-anchor-date completion only.
+  final List<GraceWindow> windows;
+
+  /// Creates a [ConsecutiveCommitmentSpec].
+  ///
+  /// Throws an [ArgumentError] when [count] is below 1.
+  ConsecutiveCommitmentSpec({
+    required this.anchor,
+    required this.count,
+    required this.policy,
+    this.windows = const <GraceWindow>[],
+  }) {
+    if (count < 1) {
+      throw ArgumentError(
+        'ConsecutiveCommitmentSpec(count: $count) failed validation: '
+        'count must be at least 1',
+      );
+    }
+  }
+
+  @override
+  ScheduleResult resolve(DateTime date, ScheduleContext context) {
+    return anchor.resolve(date, context);
+  }
+
+  @override
+  String toString() =>
+      'ConsecutiveCommitmentSpec(anchor: $anchor, count: $count, '
+      'policy: $policy, windows: $windows)';
+}
