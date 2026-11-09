@@ -2,19 +2,27 @@
   "id": "daily_anchors",
   "title": "Daily Anchors",
   "family": "routine",
-  "schedule": {
-    "type": "timeOfDay",
-    "hour": 6,
-    "minute": 0,
-    "baseLabel": "angelus",
-    "variants": [
-      {
-        "months": [3, 4, 5],
-        "seasons": ["Eastertide", "Easter", "Pentecost"],
-        "variantId": "regina_caeli"
-      }
-    ]
-  },
+  "schedules": [
+    {
+      "type": "timeOfDay",
+      "hour": 6,
+      "minute": 0,
+      "baseLabel": "angelus",
+      "variants": [
+        {
+          "months": [3, 4, 5],
+          "seasons": ["Eastertide", "Easter", "Pentecost"],
+          "variantId": "regina_caeli"
+        }
+      ]
+    },
+    {
+      "type": "timeOfDay",
+      "hour": 15,
+      "minute": 0,
+      "baseLabel": "mercy_hour"
+    }
+  ],
   "session": {
     "id": "daily-anchors-session",
     "steps": [
@@ -87,14 +95,6 @@
       "text": "O Blood and Water, which gushed forth from the Heart of Jesus as a fountain of mercy for us, I trust in You.",
       "source": "The Diary of St. Faustina (short invocations)",
       "license": "short-phrase (attributed, widely-reproduced)"
-    }
-  },
-  "reminders": {
-    "mercy_hour": {
-      "type": "timeOfDay",
-      "hour": 15,
-      "minute": 0,
-      "baseLabel": "mercy_hour"
     }
   }
 }

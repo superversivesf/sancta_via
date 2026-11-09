@@ -13,6 +13,7 @@ import '../content_validation_exception.dart';
 import '../models/content_pack.dart';
 import '../models/prayer_text.dart';
 import '../models/schedule_context.dart';
+import '../models/schedule_spec.dart';
 
 /// Loads [ContentPack]s from decoded JSON, JSON strings, or fixture
 /// directories.
@@ -82,11 +83,11 @@ class PackValidator {
   ///
   /// Two checks:
   ///
-  /// 1. The pack's schedule must resolve to at least one due date within
-  ///    [fixtureYear]: every calendar day of the year is resolved with an
-  ///    empty [ScheduleContext]. A schedule with zero due dates (e.g. a
-  ///    one-shot session series planned entirely in another year) is a
-  ///    problem.
+  /// 1. Every schedule of [pack] must resolve to at least one due date
+  ///    within [fixtureYear]: every calendar day of the year is resolved
+  ///    with an empty [ScheduleContext] per schedule. A schedule with zero
+  ///    due dates (e.g. a one-shot session series planned entirely in
+  ///    another year) is a problem — one per offending schedule.
   /// 2. Every content prayer text must carry a non-empty source and
   ///    license. [PrayerText]'s constructor already enforces this at load
   ///    time; the check is repeated here so a caller handed only a
@@ -95,19 +96,21 @@ class PackValidator {
   static List<String> problems(ContentPack pack, int fixtureYear) {
     final List<String> problems = <String>[];
     final ScheduleContext context = ScheduleContext();
-    bool anyDue = false;
-    for (int month = 1; month <= 12 && !anyDue; month++) {
-      final int lastDay = DateTime(fixtureYear, month + 1, 0).day;
-      for (int day = 1; day <= lastDay && !anyDue; day++) {
-        if (pack.schedule
-            .resolve(DateTime(fixtureYear, month, day), context)
-            .due) {
-          anyDue = true;
+    for (final ScheduleSpec schedule in pack.schedules) {
+      bool anyDue = false;
+      for (int month = 1; month <= 12 && !anyDue; month++) {
+        final int lastDay = DateTime(fixtureYear, month + 1, 0).day;
+        for (int day = 1; day <= lastDay && !anyDue; day++) {
+          if (schedule
+              .resolve(DateTime(fixtureYear, month, day), context)
+              .due) {
+            anyDue = true;
+          }
         }
       }
-    }
-    if (!anyDue) {
-      problems.add('schedule resolves to zero due dates in $fixtureYear');
+      if (!anyDue) {
+        problems.add('schedule resolves to zero due dates in $fixtureYear');
+      }
     }
     for (final MapEntry<String, PrayerText> entry in pack.content.entries) {
       if (entry.value.source.isEmpty) {

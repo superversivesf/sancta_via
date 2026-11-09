@@ -23,6 +23,12 @@
 /// }
 /// ```
 ///
+/// The `schedule` key also accepts the plural `schedules` form — a
+/// non-empty list of schedule objects (e.g. a routine pack anchoring the
+/// 6:00 Angelus and the 15:00 Hour of Mercy); the two forms are mutually
+/// exclusive and both normalize into `ContentPack.schedules` (see the
+/// class-level "Schedule forms" doc).
+///
 /// Schedule `type` dispatch covers every [ScheduleSpec] class:
 /// `fixedDate|easterOffset|nthWeekdayOfMonth|consecutiveCommitments|weeklyLoop|timeOfDay`,
 /// plus `sessionSeries` for `SessionSeriesSpec` (brief lists six classes;
@@ -69,10 +75,26 @@ enum PackFamily {
   chaplet,
 }
 
-/// One complete devotional program: schedule, session script, and content.
+/// One complete devotional program: schedule(s), session script, and
+/// content.
 ///
-/// Everything is immutable; the [content], [reminders], and [variants]
-/// collections are unmodifiable. [id] and [title] must be non-empty.
+/// Everything is immutable; the [schedules], [content], [reminders], and
+/// [variants] collections are unmodifiable. [id] and [title] must be
+/// non-empty.
+///
+/// ## Schedule forms
+///
+/// A pack carries one or more [ScheduleSpec] anchors:
+///
+/// - `"schedule": {...}` — one schedule (the historical, still-supported
+///   single-anchor form);
+/// - `"schedules": [{...}, ...]` — a non-empty list of schedules (e.g. a
+///   routine pack anchoring the 6:00 Angelus and the 15:00 Hour of Mercy).
+///
+/// The two forms are mutually exclusive in one document. Both normalize to
+/// [schedules] (with [schedule] always aliasing the first entry), while
+/// [toJson] writes back whichever form the pack was built from, so a
+/// round trip reproduces the loaded document.
 class ContentPack {
   /// The stable identifier of the pack.
   final String id;
@@ -83,8 +105,19 @@ class ContentPack {
   /// The broad category of the program.
   final PackFamily family;
 
-  /// The schedule rule deciding when the session is due.
+  /// The primary (first) schedule rule deciding when the session is due.
+  ///
+  /// Alias for [schedules].first: every pack has at least one schedule,
+  /// whether built from the single `schedule` form or the `schedules` list.
   final ScheduleSpec schedule;
+
+  /// Every schedule anchor of the pack, normalized into one unmodifiable
+  /// list. Single-`schedule` packs carry exactly one entry.
+  final List<ScheduleSpec> schedules;
+
+  /// Whether this pack was built from the plural `schedules` form — the
+  /// shape [toJson] writes back (see the class-level "Schedule forms" doc).
+  final bool _serializedAsList;
 
   /// The ordered steps of the session the schedule makes due.
   final SessionScript session;
@@ -100,49 +133,45 @@ class ContentPack {
   /// Opaque app-layer display variants. Never interpreted by the engine.
   final List<Map<String, dynamic>> variants;
 
-  /// Creates a [ContentPack].
+  /// Creates a [ContentPack] from one or more [ScheduleSpec] anchors.
   ///
-  /// Throws an [ArgumentError] when [id] or [title] is empty. JSON loading
-  /// reports every problem — including these — through
+  /// Pass exactly one of [schedule] (single-anchor form) or [schedules]
+  /// (multi-anchor list); [schedule] and [schedules] both alias the
+  /// normalized list either way. Passing both keys is an [ArgumentError].
+  ///
+  /// Throws an [ArgumentError] when [id] or [title] is empty, or when the
+  /// schedule arguments are missing / both given / (for [schedules]) empty.
+  /// JSON loading reports every problem — including these — through
   /// [ContentPack.fromJson]'s accumulated [ContentValidationException]
   /// instead.
   ContentPack({
+    ScheduleSpec? schedule,
+    List<ScheduleSpec>? schedules,
     required this.id,
     required this.title,
     required this.family,
-    required this.schedule,
     required this.session,
     Map<String, PrayerText> content = const <String, PrayerText>{},
     Map<String, dynamic> reminders = const <String, dynamic>{},
     List<Map<String, dynamic>> variants = const <Map<String, dynamic>>[],
-  }) : content = Map<String, PrayerText>.unmodifiable(content),
+  }) : schedules = _normalizeScheduleArguments(schedule, schedules, id, title),
+       schedule = schedule ?? schedules!.first,
+       _serializedAsList = schedules != null,
+       content = Map<String, PrayerText>.unmodifiable(content),
        reminders = Map<String, dynamic>.unmodifiable(reminders),
-       variants = List<Map<String, dynamic>>.unmodifiable(variants) {
-    final List<String> problems = <String>[];
-    if (id.isEmpty) {
-      problems.add('id must not be empty');
-    }
-    if (title.isEmpty) {
-      problems.add('title must not be empty');
-    }
-    if (problems.isNotEmpty) {
-      throw ArgumentError(
-        'ContentPack(id: $id, title: $title) failed validation: '
-        '${problems.join('; ')}',
-      );
-    }
-  }
+       variants = List<Map<String, dynamic>>.unmodifiable(variants);
 
   /// Parses one pack from its JSON representation.
   ///
   /// Validates the whole document in a single pass — id, title, family,
-  /// schedule, session, content integrity (every step `contentRef` /
-  /// `closingRef` / `textRef` must resolve), reminders, and variants — and
-  /// throws one [ContentValidationException] carrying every problem
-  /// detected. Unknown `family` values, unknown schedule and step `type`
-  /// keys, unresolvable content references, and prayer texts failing their
-  /// source/license check are all content-level problems in that one
-  /// exception (spec constructor errors fold into the same list).
+  /// schedule (either the `schedule` object or the `schedules` list form),
+  /// session, content integrity (every step `contentRef` / `closingRef` /
+  /// `textRef` must resolve), reminders, and variants — and throws one
+  /// [ContentValidationException] carrying every problem detected. Unknown
+  /// `family` values, unknown schedule and step `type` keys, unresolvable
+  /// content references, and prayer texts failing their source/license
+  /// check are all content-level problems in that one exception (spec
+  /// constructor errors fold into the same list).
   ///
   /// The `content` map may be empty or absent. `reminders` and `variants`
   /// are optional.
@@ -172,10 +201,32 @@ class ContentPack {
     }
 
     ScheduleSpec? schedule;
-    if (json['schedule'] == null) {
+    List<ScheduleSpec> schedules = const <ScheduleSpec>[];
+    final Object? scheduleValue = json['schedule'];
+    final Object? schedulesValue = json['schedules'];
+    if (scheduleValue == null && schedulesValue == null) {
       problems.add("missing required field 'schedule'");
+    } else if (scheduleValue != null && schedulesValue != null) {
+      problems.add("'schedule' and 'schedules' must not both be provided");
+    } else if (scheduleValue != null) {
+      schedule = _parseScheduleSpec(scheduleValue, problems, 'schedule');
+    } else if (schedulesValue is! List) {
+      problems.add("'schedules' must be a JSON list");
+    } else if (schedulesValue.isEmpty) {
+      problems.add("'schedules' must not be empty");
     } else {
-      schedule = _parseScheduleSpec(json['schedule'], problems, 'schedule');
+      final List<ScheduleSpec> parsed = <ScheduleSpec>[];
+      for (int i = 0; i < schedulesValue.length; i++) {
+        final ScheduleSpec? entry = _parseScheduleSpec(
+          schedulesValue[i],
+          problems,
+          'schedules[$i]',
+        );
+        if (entry != null) {
+          parsed.add(entry);
+        }
+      }
+      schedules = parsed;
     }
 
     final Map<String, PrayerText> content = _parseContentMap(
@@ -226,11 +277,25 @@ class ContentPack {
         problems: problems,
       );
     }
+    if (schedule != null) {
+      return ContentPack(
+        id: idText!, // non-null and non-empty: guaranteed by the problems check
+        title: titleText!,
+        family: family!,
+        schedule: schedule,
+        session: session!,
+        content: content,
+        reminders: reminders,
+        variants: variants,
+      );
+    }
+    // The plural form: schedule == null here means 'schedules' was the
+    // loaded (and valid) form...
     return ContentPack(
       id: idText!, // non-null and non-empty: guaranteed by the problems check
       title: titleText!,
       family: family!,
-      schedule: schedule!,
+      schedules: schedules,
       session: session!,
       content: content,
       reminders: reminders,
@@ -241,16 +306,28 @@ class ContentPack {
   /// Serializes this pack to a JSON-compatible map.
   ///
   /// The result re-parses through [ContentPack.fromJson] to a pack with
-  /// the same id, title, family, schedule, and session. Step `contentRef`
+  /// the same id, title, family, schedules, and session. Step `contentRef`
   /// serialization emits the step's prayer's own id, so a round trip
   /// re-resolves against [content] when every step prayer is the content
   /// entry of that id (which [ContentPack.fromJson] guarantees it is).
+  ///
+  /// The schedule form is preserved: a pack built from the single
+  /// `schedule` form writes `"schedule": {...}`; a pack built from the
+  /// `schedules` list form writes `"schedules": [...]` (see the class-level
+  /// "Schedule forms" doc).
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
       'title': title,
       'family': family.name,
-      'schedule': _scheduleSpecToJson(schedule),
+      ...(_serializedAsList
+          ? <String, dynamic>{
+              'schedules': <Map<String, dynamic>>[
+                for (final ScheduleSpec schedule in schedules)
+                  _scheduleSpecToJson(schedule),
+              ],
+            }
+          : <String, dynamic>{'schedule': _scheduleSpecToJson(schedule)}),
       'session': _sessionScriptToJson(session),
       'content': <String, dynamic>{
         for (final MapEntry<String, PrayerText> entry in content.entries)
@@ -267,8 +344,44 @@ class ContentPack {
   @override
   String toString() =>
       'ContentPack(id: $id, title: $title, family: $family, '
-      'schedule: $schedule, session: $session, content: ${content.length} '
-      'prayers)';
+      'schedules: ${schedules.length}, session: $session, '
+      'content: ${content.length} prayers)';
+}
+
+/// Validates the constructor schedule arguments, normalizing them into the
+/// pack's schedule list. The [ArgumentError] every invalid combination
+/// (missing, both forms given, empty list — plus empty id/title) carries is
+/// thrown from here so the initializer list can reject a bad construction
+/// before any field is set.
+List<ScheduleSpec> _normalizeScheduleArguments(
+  ScheduleSpec? schedule,
+  List<ScheduleSpec>? schedules,
+  String id,
+  String title,
+) {
+  final List<String> problems = <String>[];
+  if (id.isEmpty) {
+    problems.add('id must not be empty');
+  }
+  if (title.isEmpty) {
+    problems.add('title must not be empty');
+  }
+  if (schedule == null && schedules == null) {
+    problems.add("missing required field 'schedule'");
+  } else if (schedule != null && schedules != null) {
+    problems.add("'schedule' and 'schedules' must not both be given");
+  } else if (schedules != null && schedules.isEmpty) {
+    problems.add("'schedules' must not be empty");
+  }
+  if (problems.isNotEmpty) {
+    throw ArgumentError(
+      'ContentPack(id: $id, title: $title) failed validation: '
+      '${problems.join('; ')}',
+    );
+  }
+  return List<ScheduleSpec>.unmodifiable(
+    schedules ?? <ScheduleSpec>[schedule!],
+  );
 }
 
 /// Resolves a `family` name, accumulating an unknown-value problem.

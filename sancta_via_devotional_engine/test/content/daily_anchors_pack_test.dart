@@ -24,6 +24,19 @@ ScheduleContext contextFor(DateTime date) {
   return ScheduleContext(seasonKeyValue: day?.seasonKey);
 }
 
+/// A hand-built pack shell for validator checks: caller-chosen schedules,
+/// no content, one content-free step.
+ContentPack shellPack(List<ScheduleSpec> schedules) => ContentPack(
+  id: 'schedules-shell',
+  title: 'Schedules Shell',
+  family: PackFamily.routine,
+  schedules: schedules,
+  session: SessionScript(
+    id: 'schedules-shell-session',
+    steps: <SessionStep>[IntercessionStep(id: 's-1', prompt: 'Pray.')],
+  ),
+);
+
 void main() {
   group('load', () {
     test('loads the daily_anchors pack from the fixtures directory', () {
@@ -34,20 +47,40 @@ void main() {
     });
   });
 
-  group('schedule resolution', () {
-    test('the pack schedule is the 6:00 angelus timeOfDay spec', () {
+  group('schedules', () {
+    test('carries two timeOfDay anchors: 6:00 angelus, 15:00 mercy hour', () {
       final ContentPack pack = loadAnchorsPack();
-      expect(pack.schedule, isA<TimeOfDaySpec>());
-      final TimeOfDaySpec schedule = pack.schedule as TimeOfDaySpec;
-      expect(schedule.hour, 6);
-      expect(schedule.minute, 0);
-      expect(schedule.baseLabel, 'angelus');
+      expect(pack.schedules, hasLength(2));
+
+      // Primary anchor: the Angelus at 6:00.
+      expect(pack.schedule, same(pack.schedules.first));
+      expect(pack.schedules[0], isA<TimeOfDaySpec>());
+      final TimeOfDaySpec angelus = pack.schedules[0] as TimeOfDaySpec;
+      expect(angelus.hour, 6);
+      expect(angelus.minute, 0);
+      expect(angelus.baseLabel, 'angelus');
+      expect(angelus.variants.single.variantId, 'regina_caeli');
+      expect(angelus.variants.single.months, <int>[3, 4, 5]);
+      expect(angelus.variants.single.seasons, <String>{
+        'Eastertide',
+        'Easter',
+        'Pentecost',
+      });
+
+      // Second anchor: the Hour of Mercy at 15:00.
+      expect(pack.schedules[1], isA<TimeOfDaySpec>());
+      final TimeOfDaySpec mercyHour = pack.schedules[1] as TimeOfDaySpec;
+      expect(mercyHour.hour, 15);
+      expect(mercyHour.minute, 0);
+      expect(mercyHour.baseLabel, 'mercy_hour');
+      expect(mercyHour.variants, isEmpty);
     });
 
     test(
       'resolves 2026-01-20 label angelus and 2026-04-20 label regina_caeli',
       () {
         final ContentPack pack = loadAnchorsPack();
+        final TimeOfDaySpec angelus = pack.schedules[0] as TimeOfDaySpec;
 
         // The embedded calendar data must cover both pins.
         final LiturgicalDayData? january =
@@ -59,13 +92,13 @@ void main() {
 
         // Through the pack: TimeOfDaySpec resolve with the real seasonKeys.
         expect(
-          pack.schedule
+          angelus
               .resolve(DateTime(2026, 1, 20), contextFor(DateTime(2026, 1, 20)))
               .labels,
           <String>['angelus'],
         );
         expect(
-          pack.schedule
+          angelus
               .resolve(DateTime(2026, 4, 20), contextFor(DateTime(2026, 4, 20)))
               .labels,
           <String>['regina_caeli'],
@@ -77,46 +110,25 @@ void main() {
       },
     );
 
-    test('the pack schedule is due every day (timeOfDay cadence)', () {
+    test('both anchors are due every day (timeOfDay cadence)', () {
       final ContentPack pack = loadAnchorsPack();
-      expect(
-        pack.schedule
-            .resolve(DateTime(2026, 1, 20), const ScheduleContext())
-            .due,
-        isTrue,
-      );
-      expect(
-        pack.schedule
-            .resolve(DateTime(2026, 4, 20), const ScheduleContext())
-            .due,
-        isTrue,
-      );
+      for (final ScheduleSpec schedule in pack.schedules) {
+        expect(
+          schedule.resolve(DateTime(2026, 1, 20), const ScheduleContext()).due,
+          isTrue,
+        );
+        expect(
+          schedule.resolve(DateTime(2026, 4, 20), const ScheduleContext()).due,
+          isTrue,
+        );
+      }
     });
   });
 
   group('mercy hour anchor', () {
-    test('the pack carries the 15:00 mercy_hour anchor', () {
-      final ContentPack pack = loadAnchorsPack();
-      final Object? entry = pack.reminders['mercy_hour'];
-      expect(entry, isA<Map<String, dynamic>>());
-      final Map<String, dynamic> reminder = entry! as Map<String, dynamic>;
-      expect(reminder['type'], 'timeOfDay');
-      expect(reminder['hour'], 15);
-      expect(reminder['minute'], 0);
-      expect(reminder['baseLabel'], 'mercy_hour');
-    });
-
     test("resolves label 'mercy_hour' on any date", () {
       final ContentPack pack = loadAnchorsPack();
-
-      // Build the engine spec the pack's anchor describes.
-      final Map<String, dynamic> reminder =
-          pack.reminders['mercy_hour']! as Map<String, dynamic>;
-      final TimeOfDaySpec anchor = TimeOfDaySpec(
-        reminder['hour']! as int,
-        reminder['minute']! as int,
-        baseLabel: reminder['baseLabel']! as String,
-      );
+      final TimeOfDaySpec anchor = pack.schedules[1] as TimeOfDaySpec;
 
       // Any date, any context: the label never strays from 'mercy_hour'.
       final List<DateTime> dates = <DateTime>[
@@ -286,6 +298,102 @@ void main() {
     test('PackValidator passes for fixture year 2026', () {
       final ContentPack pack = loadAnchorsPack();
       expect(PackValidator.problems(pack, 2026), isEmpty);
+    });
+  });
+
+  group('schedules list schema', () {
+    test("the loader rejects both 'schedule' and 'schedules' together", () {
+      final Map<String, dynamic> json = <String, dynamic>{
+        'id': 'both-forms',
+        'title': 'Both Forms',
+        'family': 'routine',
+        'schedule': <String, dynamic>{
+          'type': 'fixedDate',
+          'month': 11,
+          'day': 2,
+        },
+        'schedules': <Map<String, dynamic>>[
+          <String, dynamic>{'type': 'fixedDate', 'month': 11, 'day': 2},
+        ],
+        'session': <String, dynamic>{
+          'id': 'both-forms-session',
+          'steps': <Map<String, dynamic>>[
+            <String, dynamic>{
+              'type': 'intercession',
+              'id': 's-1',
+              'prompt': 'Pray.',
+            },
+          ],
+        },
+      };
+
+      expect(
+        () => PackLoader.load(json),
+        throwsA(
+          isA<ContentValidationException>().having(
+            (e) => e.problems,
+            'problems',
+            anyElement(contains("'schedule' and 'schedules' must not both")),
+          ),
+        ),
+      );
+    });
+
+    test("'schedules' entries dispatch like the single form", () {
+      final ContentPack pack = PackLoader.load(<String, dynamic>{
+        'id': 'list-form',
+        'title': 'List Form',
+        'family': 'routine',
+        'schedules': <Map<String, dynamic>>[
+          <String, dynamic>{'type': 'fixedDate', 'month': 11, 'day': 2},
+          <String, dynamic>{'type': 'timeOfDay', 'hour': 15, 'minute': 0},
+        ],
+        'session': <String, dynamic>{
+          'id': 'list-form-session',
+          'steps': <Map<String, dynamic>>[
+            <String, dynamic>{
+              'type': 'intercession',
+              'id': 's-1',
+              'prompt': 'Pray.',
+            },
+          ],
+        },
+      });
+
+      expect(pack.schedules, hasLength(2));
+      expect(pack.schedule, same(pack.schedules.first));
+      expect(pack.schedules[0], isA<FixedDateSpec>());
+      expect(pack.schedules[1], isA<TimeOfDaySpec>());
+
+      // The pack keeps the form it was loaded in: the list form round-trips
+      // as a list.
+      expect(pack.toJson().containsKey('schedule'), isFalse);
+      expect(pack.toJson()['schedules'], hasLength(2));
+    });
+
+    test('PackValidator sweeps every schedule for due dates', () {
+      // Both anchors resolve in 2026 → no problems.
+      expect(
+        PackValidator.problems(
+          shellPack(<ScheduleSpec>[
+            FixedDateSpec(12, 17),
+            TimeOfDaySpec(15, 0, baseLabel: 'mercy_hour'),
+          ]),
+          2026,
+        ),
+        isEmpty,
+      );
+
+      // One zero-due schedule among the anchors is one problem.
+      final List<String> problems = PackValidator.problems(
+        shellPack(<ScheduleSpec>[
+          FixedDateSpec(12, 17),
+          SessionSeriesSpec(startDate: DateTime(2027, 2, 14), lengthDays: 45),
+        ]),
+        2026,
+      );
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('zero due dates in 2026'));
     });
   });
 }
