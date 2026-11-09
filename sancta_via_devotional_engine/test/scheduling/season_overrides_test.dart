@@ -203,7 +203,26 @@ void main() {
       expect(marianAntiphonFor(beforeAdvent), 'salve_regina');
     });
 
-    test("returns no antiphon during Holy Week and the Triduum", () {
+    test('keeps salve for pre-Advent December days of Ordinary Time', () {
+      // 2028-12-01, Friday of the 34th week of Ordinary Time: the embedded
+      // data keys it 'Later Ordinary Time' (Advent I 2028 falls on
+      // December 3). The alma window may not be decided by calendar month
+      // alone; December days before Advent I remain Salve days.
+      final LiturgicalDayData? preAdventDecember = dayFor(
+        DateTime(2028, 12, 1),
+      );
+      expect(preAdventDecember, isNotNull);
+      expect(preAdventDecember?.seasonKey, 'Later Ordinary Time');
+      expect(marianAntiphonFor(preAdventDecember), 'salve_regina');
+
+      // For contrast, three days later the Advent branch gives alma.
+      final LiturgicalDayData? adventI = dayFor(DateTime(2028, 12, 3));
+      expect(adventI, isNotNull);
+      expect(adventI?.seasonKey, 'Advent');
+      expect(marianAntiphonFor(adventI), 'alma_redemptoris_mater');
+    });
+
+    test('returns no antiphon during Holy Week and the Triduum', () {
       // Palm Sunday and Holy Saturday 2026 both carry seasonKey 'Holy Week'.
       final LiturgicalDayData? palmSunday = dayFor(DateTime(2026, 3, 29));
       expect(palmSunday, isNotNull);

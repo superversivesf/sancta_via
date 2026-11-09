@@ -68,9 +68,11 @@ String angelusPrayerFor(DateTime date, LiturgicalDayData? day) {
 /// Returns the Marian antiphon key for [day]'s date:
 ///
 /// - `'alma_redemptoris_mater'` — First Vespers of Advent I through Candlemas
-///   (February 2, inclusive). This window is decided by date (December,
-///   January, February through the 2nd, plus late-November Advent days),
-///   because the Christmas season and pre-Lent February span several keys.
+///   (February 2, inclusive). Advent and Christmas days are keyed by
+///   seasonKey; January and February through the 2nd are keyed by date,
+///   because they are Christmas-era/pre-Lent Ordinary Time days whose
+///   seasonKey alone would send them to the Ave window. December days are
+///   never keyed by month, as pre-Advent December days remain Salve days.
 /// - `'ave_regina_caelorum'` — from Candlemas until Holy Week is reached:
 ///   post-Epiphany February 3 onward and Lent.
 /// - `'regina_caeli'` — Easter season through Pentecost (by `seasonKey`).
@@ -95,12 +97,14 @@ String marianAntiphonFor(LiturgicalDayData? day) {
     return 'regina_caeli';
   }
 
-  // Date-range window: Advent through Candlemas. December, January, and
-  // February through the 2nd belong to the Alma Redemptoris Mater era.
+  // Date-range window: only the January/February tail of the Alma era.
+  // December is deliberately NOT keyed by month: real pre-Advent December
+  // days exist ('Later Ordinary Time', e.g. 2028-12-01) and belong to the
+  // Salve era; December's Advent and Christmas days are covered by the
+  // seasonKey branch below.
   // (day.dateTime parses the embedded 'yyyy-mm-dd' string as a local date.)
   final DateTime date = day.dateTime;
   final bool inAlmaWindow =
-      date.month == DateTime.december ||
       date.month == DateTime.january ||
       (date.month == DateTime.february && date.day <= 2);
   if (inAlmaWindow) {
