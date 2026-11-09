@@ -300,6 +300,8 @@ class MissedDayEvaluator { static MissedDayVerdict evaluate(String policy, Progr
 - [ ] **Step 2: Failing test** — pack loads; resolves 2026-01-20 label `angelus` + 2026-04-20 label `regina_caeli`; session has 3 `verse` steps then 1 prayer; validator passes fixture years 2026.
 - [ ] **Step 3:** Fix until pass — **Step 4:** `cd sancta_via_devotional_engine && dart test test/content/daily_anchors_pack_test.dart` PASS — **Step 5:** `git commit -m "feat: daily anchors pack (angelus/regina caeli, mercy hour)"`
 
+> Ruling amendment (2026-11-09 fix round): the `daily_anchors` pack was split into two per-devotion packs — `test/fixtures/packs/angelus.json` (Angelus/Regina Caeli, variant keyed by seasonKey only, no month leak into Lent/post-Pentecost) and `test/fixtures/packs/mercy_hour.json` (15:00 Hour of Mercy); the `schedules` list schema from the round-1 ruling remains for future multi-anchor packs.
+
 ---
 
 ### Task 15: Content packs — Nine First Fridays & Five First Saturdays

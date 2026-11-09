@@ -2,16 +2,16 @@ import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart';
 import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart';
 import 'package:test/test.dart';
 
-/// Fixture directory the daily-anchors pack lives in (task 14).
+/// Fixture directory the daily-anchor packs live in (task 14).
 const String fixtureDir = 'test/fixtures/packs';
 
-/// The daily-anchors pack fixture, loaded once for this suite.
-ContentPack loadAnchorsPack() {
+/// Loads the fixture pack with the given [id] (one devotion per pack).
+ContentPack loadPack(String id) {
   final List<ContentPack> packs = PackLoader.loadFixturesIn(fixtureDir);
   return packs.firstWhere(
-    (ContentPack pack) => pack.id == 'daily_anchors',
+    (ContentPack pack) => pack.id == id,
     orElse: () => throw StateError(
-      'test/fixtures/packs must contain a daily_anchors pack; '
+      'test/fixtures/packs must contain a $id pack; '
       'loaded ids: ${packs.map((ContentPack p) => p.id).toList()}',
     ),
   );
@@ -23,6 +23,12 @@ ScheduleContext contextFor(DateTime date) {
   final LiturgicalDayData? day = LiturgicalCalendarService.getDayForDate(date);
   return ScheduleContext(seasonKeyValue: day?.seasonKey);
 }
+
+/// The Easter-season SeasonVariant the engine authority `angelusPrayerFor`
+/// implements (`_isEasterSeason`: Easter, Eastertide, Pentecost) — keyed
+/// purely by season, with no month match that could leak into Lent or the
+/// post-Pentecost stretch.
+const List<int> reginaCaeliMonths = <int>[];
 
 /// A hand-built pack shell for validator checks: caller-chosen schedules,
 /// no content, one content-free step.
@@ -38,97 +44,185 @@ ContentPack shellPack(List<ScheduleSpec> schedules) => ContentPack(
 );
 
 void main() {
-  group('load', () {
-    test('loads the daily_anchors pack from the fixtures directory', () {
-      final ContentPack pack = loadAnchorsPack();
-      expect(pack.id, 'daily_anchors');
+  group('angelus pack', () {
+    test('loads from the fixtures directory', () {
+      final ContentPack pack = loadPack('angelus');
+      expect(pack.id, 'angelus');
       expect(pack.family, PackFamily.routine);
       expect(pack.title, isNotEmpty);
     });
-  });
 
-  group('schedules', () {
-    test('carries two timeOfDay anchors: 6:00 angelus, 15:00 mercy hour', () {
-      final ContentPack pack = loadAnchorsPack();
-      expect(pack.schedules, hasLength(2));
+    test(
+      'schedules the 6:00 anchor with the season-pure regina_caeli variant',
+      () {
+        final ContentPack pack = loadPack('angelus');
+        expect(pack.schedules, hasLength(1));
+        expect(pack.schedule, same(pack.schedules.first));
+        expect(pack.schedules.single, isA<TimeOfDaySpec>());
+        final TimeOfDaySpec angelus = pack.schedules.single as TimeOfDaySpec;
+        expect(angelus.hour, 6);
+        expect(angelus.minute, 0);
+        expect(angelus.baseLabel, 'angelus');
+        expect(angelus.variants.single.variantId, 'regina_caeli');
+        expect(angelus.variants.single.months, reginaCaeliMonths);
+        expect(angelus.variants.single.seasons, <String>{
+          'Easter',
+          'Eastertide',
+          'Pentecost',
+        });
+      },
+    );
 
-      // Primary anchor: the Angelus at 6:00.
-      expect(pack.schedule, same(pack.schedules.first));
-      expect(pack.schedules[0], isA<TimeOfDaySpec>());
-      final TimeOfDaySpec angelus = pack.schedules[0] as TimeOfDaySpec;
-      expect(angelus.hour, 6);
-      expect(angelus.minute, 0);
-      expect(angelus.baseLabel, 'angelus');
-      expect(angelus.variants.single.variantId, 'regina_caeli');
-      expect(angelus.variants.single.months, <int>[3, 4, 5]);
-      expect(angelus.variants.single.seasons, <String>{
-        'Eastertide',
-        'Easter',
-        'Pentecost',
+    test('resolves regina_caeli only across the Easter season', () {
+      final ContentPack pack = loadPack('angelus');
+      final TimeOfDaySpec angelus = pack.schedules.single as TimeOfDaySpec;
+
+      // The embedded calendar data must cover every pin.
+      final Map<DateTime, String> goldens = <DateTime, String>{
+        DateTime(2026, 1, 20): 'angelus',
+        DateTime(2026, 3, 25): 'angelus', // Lent: no month match may leak in
+        DateTime(2026, 4, 20): 'regina_caeli',
+        DateTime(2026, 5, 30): 'angelus', // post-Pentecost Ordinary Time
+      };
+      goldens.forEach((DateTime date, String expected) {
+        final LiturgicalDayData? day = LiturgicalCalendarService.getDayForDate(
+          date,
+        );
+        expect(day, isNotNull, reason: 'calendar data must cover $date');
+        expect(angelus.resolve(date, contextFor(date)).labels, <String>[
+          expected,
+        ], reason: 'the pack must label $date as $expected');
+        // Parity with the engine authority on the same date.
+        expect(angelusPrayerFor(date, day), expected, reason: '$date');
       });
 
-      // Second anchor: the Hour of Mercy at 15:00.
-      expect(pack.schedules[1], isA<TimeOfDaySpec>());
-      final TimeOfDaySpec mercyHour = pack.schedules[1] as TimeOfDaySpec;
+      // The guard dates hold because of the data, not by luck: Lent for the
+      // Annunciation, post-Pentecost Ordinary Time for May 30.
+      expect(
+        LiturgicalCalendarService.getDayForDate(
+          DateTime(2026, 3, 25),
+        )!.seasonKey,
+        'Lent',
+      );
+      expect(
+        LiturgicalCalendarService.getDayForDate(
+          DateTime(2026, 5, 30),
+        )!.seasonKey,
+        isNot(anyOf('Easter', 'Eastertide', 'Pentecost')),
+      );
+    });
+
+    test('session: three verse steps then the collect prayer', () {
+      final ContentPack pack = loadPack('angelus');
+      final List<SessionStep> steps = pack.session.steps;
+      expect(pack.session.id, 'angelus-session');
+      expect(steps, hasLength(4));
+
+      expect(steps[0], isA<VerseStep>());
+      expect(steps[1], isA<VerseStep>());
+      expect(steps[2], isA<VerseStep>());
+      final VerseStep first = steps[0] as VerseStep;
+      final VerseStep second = steps[1] as VerseStep;
+      final VerseStep third = steps[2] as VerseStep;
+      expect(first.versicle, 'The Angel of the Lord declared unto Mary.');
+      expect(first.response, 'And she conceived of the Holy Spirit.');
+      expect(second.versicle, 'Behold the handmaid of the Lord.');
+      expect(second.response, 'Be it done unto me according to Thy word.');
+      expect(third.versicle, 'And the Word was made flesh.');
+      expect(third.response, 'And dwelt among us.');
+
+      // Then one prayer: the collect, resolved from the content map.
+      expect(steps[3], isA<PrayerStep>());
+      final PrayerStep collect = steps[3] as PrayerStep;
+      expect(collect.text, pack.content['angelus_collect']);
+      expect(
+        collect.text.text,
+        contains(
+          'Pour forth, we beseech Thee, O Lord, Thy grace into our hearts',
+        ),
+      );
+
+      // Exactly three verse steps carry the Angelus exchange.
+      expect(steps.whereType<VerseStep>().length, 3);
+    });
+
+    test('content: both Marian texts, self-contained and attributed', () {
+      final ContentPack pack = loadPack('angelus');
+      // Angelus (the pack default shown in the session) and Regina Caeli
+      // (the Eastertide swap the app layer resolves by label).
+      expect(
+        pack.content.keys,
+        containsAll(<String>[
+          'angelus_collect',
+          'regina_caeli_collect',
+          'regina_caeli_versicles',
+        ]),
+      );
+      for (final PrayerText entry in pack.content.values) {
+        expect(entry.source, isNotEmpty, reason: entry.id);
+        expect(entry.license, isNotEmpty, reason: entry.id);
+      }
+      expect(
+        pack.content['angelus_collect']!.source,
+        'Traditional Roman devotion',
+      );
+      expect(pack.content['regina_caeli_collect']!.license, 'public-domain');
+    });
+
+    test('the Regina Caeli texts carry no Hail Marys', () {
+      final ContentPack pack = loadPack('angelus');
+      final String versicles = pack.content['regina_caeli_versicles']!.text;
+      expect(versicles, contains('Queen of Heaven, rejoice, alleluia.'));
+      expect(versicles, contains('For the Lord hath truly risen, alleluia.'));
+      expect(versicles, isNot(contains('Hail Mary')));
+      expect(
+        pack.content['regina_caeli_collect']!.text,
+        contains('O God, who by the Resurrection'),
+      );
+    });
+
+    test('every step contentRef resolves into the content map', () {
+      final ContentPack pack = loadPack('angelus');
+      for (final SessionStep step in pack.session.steps) {
+        switch (step) {
+          case PrayerStep(:final PrayerText text):
+            expect(pack.content[text.id], text, reason: text.id);
+          case VerseStep():
+            continue;
+          default:
+            fail('unexpected step type ${step.runtimeType}');
+        }
+      }
+    });
+
+    test('PackValidator passes for fixture year 2026', () {
+      expect(PackValidator.problems(loadPack('angelus'), 2026), isEmpty);
+    });
+  });
+
+  group('mercy hour pack', () {
+    test('loads from the fixtures directory', () {
+      final ContentPack pack = loadPack('mercy_hour');
+      expect(pack.id, 'mercy_hour');
+      expect(pack.family, PackFamily.routine);
+      expect(pack.title, isNotEmpty);
+    });
+
+    test('schedules the 15:00 mercy_hour anchor', () {
+      final ContentPack pack = loadPack('mercy_hour');
+      expect(pack.schedules, hasLength(1));
+      expect(pack.schedule, same(pack.schedules.first));
+      expect(pack.schedules.single, isA<TimeOfDaySpec>());
+      final TimeOfDaySpec mercyHour = pack.schedules.single as TimeOfDaySpec;
       expect(mercyHour.hour, 15);
       expect(mercyHour.minute, 0);
       expect(mercyHour.baseLabel, 'mercy_hour');
       expect(mercyHour.variants, isEmpty);
     });
 
-    test(
-      'resolves 2026-01-20 label angelus and 2026-04-20 label regina_caeli',
-      () {
-        final ContentPack pack = loadAnchorsPack();
-        final TimeOfDaySpec angelus = pack.schedules[0] as TimeOfDaySpec;
-
-        // The embedded calendar data must cover both pins.
-        final LiturgicalDayData? january =
-            LiturgicalCalendarService.getDayForDate(DateTime(2026, 1, 20));
-        final LiturgicalDayData? april =
-            LiturgicalCalendarService.getDayForDate(DateTime(2026, 4, 20));
-        expect(january, isNotNull, reason: 'data must cover 2026-01-20');
-        expect(april, isNotNull, reason: 'data must cover 2026-04-20');
-
-        // Through the pack: TimeOfDaySpec resolve with the real seasonKeys.
-        expect(
-          angelus
-              .resolve(DateTime(2026, 1, 20), contextFor(DateTime(2026, 1, 20)))
-              .labels,
-          <String>['angelus'],
-        );
-        expect(
-          angelus
-              .resolve(DateTime(2026, 4, 20), contextFor(DateTime(2026, 4, 20)))
-              .labels,
-          <String>['regina_caeli'],
-        );
-
-        // Parity with the engine's own season rule.
-        expect(angelusPrayerFor(DateTime(2026, 1, 20), january), 'angelus');
-        expect(angelusPrayerFor(DateTime(2026, 4, 20), april), 'regina_caeli');
-      },
-    );
-
-    test('both anchors are due every day (timeOfDay cadence)', () {
-      final ContentPack pack = loadAnchorsPack();
-      for (final ScheduleSpec schedule in pack.schedules) {
-        expect(
-          schedule.resolve(DateTime(2026, 1, 20), const ScheduleContext()).due,
-          isTrue,
-        );
-        expect(
-          schedule.resolve(DateTime(2026, 4, 20), const ScheduleContext()).due,
-          isTrue,
-        );
-      }
-    });
-  });
-
-  group('mercy hour anchor', () {
     test("resolves label 'mercy_hour' on any date", () {
-      final ContentPack pack = loadAnchorsPack();
-      final TimeOfDaySpec anchor = pack.schedules[1] as TimeOfDaySpec;
+      final ContentPack pack = loadPack('mercy_hour');
+      final TimeOfDaySpec anchor = pack.schedules.single as TimeOfDaySpec;
 
       // Any date, any context: the label never strays from 'mercy_hour'.
       final List<DateTime> dates = <DateTime>[
@@ -152,25 +246,26 @@ void main() {
       }
     });
 
-    test('the session carries separate mercy-hour steps', () {
-      final ContentPack pack = loadAnchorsPack();
+    test('session: the hour-of-mercy prayer then the threefold invocation', () {
+      final ContentPack pack = loadPack('mercy_hour');
       final List<SessionStep> steps = pack.session.steps;
+      expect(pack.session.id, 'mercy-hour-session');
+      expect(steps, hasLength(2));
 
-      // Step 4 of 6: the Hour of Mercy prayer.
-      expect(steps[4], isA<PrayerStep>());
-      final PrayerStep mercyPrayer = steps[4] as PrayerStep;
+      expect(steps[0], isA<PrayerStep>());
+      final PrayerStep mercyPrayer = steps[0] as PrayerStep;
       expect(mercyPrayer.text.id, 'mercy_hour_prayer');
       expect(mercyPrayer.title, 'The Hour of Mercy');
 
-      // Step 5 of 6: "O Blood and Water..." repeated three times.
-      expect(steps[5], isA<RepetitionStep>());
-      final RepetitionStep mercyRepetition = steps[5] as RepetitionStep;
+      expect(steps[1], isA<RepetitionStep>());
+      final RepetitionStep mercyRepetition = steps[1] as RepetitionStep;
       expect(mercyRepetition.text.id, 'mercy_hour_repetition');
       expect(mercyRepetition.count, 3);
+      expect(mercyRepetition.title, 'O Blood and Water');
     });
 
     test('carries the short invocations verbatim, not Diary translations', () {
-      final ContentPack pack = loadAnchorsPack();
+      final ContentPack pack = loadPack('mercy_hour');
 
       final String? hourText = pack.content['mercy_hour_prayer']?.text;
       expect(
@@ -205,99 +300,9 @@ void main() {
         );
       }
     });
-  });
-
-  group('session structure', () {
-    test('three verse steps then the angelus collect prayer', () {
-      final ContentPack pack = loadAnchorsPack();
-      final List<SessionStep> steps = pack.session.steps;
-      expect(steps, hasLength(6));
-
-      // The three versicle/response pairs of the Angelus.
-      expect(steps[0], isA<VerseStep>());
-      expect(steps[1], isA<VerseStep>());
-      expect(steps[2], isA<VerseStep>());
-      final VerseStep first = steps[0] as VerseStep;
-      final VerseStep second = steps[1] as VerseStep;
-      final VerseStep third = steps[2] as VerseStep;
-      expect(first.versicle, 'The Angel of the Lord declared unto Mary.');
-      expect(first.response, 'And she conceived of the Holy Spirit.');
-      expect(second.versicle, 'Behold the handmaid of the Lord.');
-      expect(second.response, 'Be it done unto me according to Thy word.');
-      expect(third.versicle, 'And the Word was made flesh.');
-      expect(third.response, 'And dwelt among us.');
-
-      // Then one prayer: the collect, resolved from the content map.
-      expect(steps[3], isA<PrayerStep>());
-      final PrayerStep collect = steps[3] as PrayerStep;
-      expect(collect.text, pack.content['angelus_collect']);
-      expect(
-        collect.text.text,
-        contains(
-          'Pour forth, we beseech Thee, O Lord, Thy grace into our hearts',
-        ),
-      );
-
-      // Exactly three verse steps carry the Angelus exchange.
-      expect(pack.session.steps.whereType<VerseStep>().length, 3);
-    });
-
-    test('session id identifies the daily-anchors script', () {
-      final ContentPack pack = loadAnchorsPack();
-      expect(pack.session.id, 'daily-anchors-session');
-    });
-  });
-
-  group('content integrity', () {
-    test('content carries both Marian texts', () {
-      final ContentPack pack = loadAnchorsPack();
-      // Angelus (the pack default shown in the session) and Regina Caeli
-      // (the Eastertide swap the app layer resolves by label).
-      expect(
-        pack.content.keys,
-        containsAll(<String>[
-          'angelus_collect',
-          'regina_caeli_collect',
-          'regina_caeli_versicles',
-        ]),
-      );
-      expect(pack.content['angelus_collect']!.source, isNotEmpty);
-      expect(pack.content['angelus_collect']!.license, isNotEmpty);
-      expect(pack.content['regina_caeli_collect']!.source, isNotEmpty);
-      expect(pack.content['regina_caeli_collect']!.license, isNotEmpty);
-    });
-
-    test('the Regina Caeli texts carry no Hail Marys', () {
-      final ContentPack pack = loadAnchorsPack();
-      final String versicles = pack.content['regina_caeli_versicles']!.text;
-      expect(versicles, contains('Queen of Heaven, rejoice, alleluia.'));
-      expect(versicles, contains('For the Lord hath truly risen, alleluia.'));
-      expect(versicles, isNot(contains('Hail Mary')));
-      expect(
-        pack.content['regina_caeli_collect']!.text,
-        contains('O God, who by the Resurrection'),
-      );
-    });
-
-    test('every step contentRef resolves into the content map', () {
-      final ContentPack pack = loadAnchorsPack();
-      for (final SessionStep step in pack.session.steps) {
-        switch (step) {
-          case PrayerStep(:final PrayerText text):
-            expect(pack.content[text.id], text, reason: text.id);
-          case RepetitionStep(:final PrayerText text):
-            expect(pack.content[text.id], text, reason: text.id);
-          case VerseStep():
-            continue;
-          default:
-            fail('unexpected step type ${step.runtimeType}');
-        }
-      }
-    });
 
     test('PackValidator passes for fixture year 2026', () {
-      final ContentPack pack = loadAnchorsPack();
-      expect(PackValidator.problems(pack, 2026), isEmpty);
+      expect(PackValidator.problems(loadPack('mercy_hour'), 2026), isEmpty);
     });
   });
 
