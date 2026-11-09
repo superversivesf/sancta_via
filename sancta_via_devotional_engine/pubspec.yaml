@@ -4,7 +4,11 @@ version: 0.1.0
 repository: https://github.com/superversivesf/sancta_via_devotional_engine
 homepage: https://sancta-via.net
 
-# Package metadata for pub.dev
+# This package is consumed from the Sancta Via monorepo via path
+# dependencies and is not published to pub.dev.
+publish_to: none
+
+# Package metadata for discovery (see publish_to above).
 topics:
   - catholic
   - devotional
@@ -22,7 +26,9 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  # No dependencies - pure Dart library
+  # Only dependency: path-linked liturgical calendar data (pure Dart).
+  sancta_via_liturgical_calendar:
+    path: ../sancta_via_liturgical_calendar
 
 dev_dependencies:
   cider: ^0.2.8

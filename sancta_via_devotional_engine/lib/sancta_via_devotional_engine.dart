@@ -1,9 +1,9 @@
 /// Pure Dart engine for Catholic devotional programs.
 ///
 /// This library provides the core models for scheduling devotional sessions,
-/// representing prayer content, and tracking progress. It has no runtime
-/// dependencies and can be consumed by any Dart or Flutter project in the
-/// Sancta Via monorepo.
+/// representing prayer content, and tracking progress. Its only dependency
+/// is the pure Dart liturgical calendar library, and it can be consumed by
+/// any Dart or Flutter project in the Sancta Via monorepo.
 ///
 /// ## Basic Usage
 ///
@@ -33,6 +33,7 @@ export 'src/models/schedule_spec.dart';
 // Scheduling
 export 'src/scheduling/consecration_planner.dart';
 export 'src/scheduling/computus.dart';
+export 'src/scheduling/season_overrides.dart';
 
 // Progress
 export 'src/progress/commitment_state.dart';
