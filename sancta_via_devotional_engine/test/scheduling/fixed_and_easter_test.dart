@@ -182,13 +182,16 @@ void main() {
     test(
       'resolves a parsed date-only input by its local-shifted calendar self',
       () {
-        // DateTime.parse of a date-only string constructs the date at UTC
-        // midnight; in zones behind UTC that instant lands on the previous
-        // local day. The pinned discipline is that resolution follows the
-        // input's LOCAL calendar components (DateTime(year, month, day)) —
-        // never UTC components, instant arithmetic, or a string re-parse — so
-        // a parsed input must resolve exactly like a local date built from
-        // its own local components, in any time zone.
+        // A date-only DateTime.parse call yields local midnight on every
+        // host (no time-zone designator, so isUtc stays false) — the
+        // parsed input and the locally-constructed normalization below are
+        // the same instant by definition, making this guard documentation
+        // of the contract rather than an active drift detector. The
+        // load-bearing anti-UTC-drift enforcement is the boundary pins
+        // above, which construct every calendar value via
+        // DateTime(year, month, day), and ScheduleSpec._dateOnly, which
+        // resolves every input by its LOCAL calendar components and never
+        // by the input's UTC rendering.
         final DateTime parsed = DateTime.parse('2026-12-17');
         final DateTime localSelf = DateTime(
           parsed.year,
