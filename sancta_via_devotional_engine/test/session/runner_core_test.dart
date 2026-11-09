@@ -51,6 +51,39 @@ void main() {
         ),
       );
     });
+
+    test('steps is unmodifiable at the consumer surface', () {
+      expect(
+        () => script.steps.add(
+          IntercessionStep(id: 'late-addition', prompt: 'must not appear'),
+        ),
+        throwsUnsupportedError,
+        reason: 'steps is backed by an unmodifiable list',
+      );
+    });
+
+    test('steps does not alias the caller-supplied list', () {
+      final List<SessionStep> callerList = <SessionStep>[
+        PrayerStep(
+          id: 'opening-prayer',
+          title: 'Opening prayer',
+          text: memorare,
+        ),
+      ];
+      final SessionScript local = SessionScript(
+        id: 'no-aliasing',
+        steps: callerList,
+      );
+      expect(local.steps.length, equals(1));
+
+      // Mutating the input list after construction must not change steps.
+      callerList.add(
+        IntercessionStep(id: 'late-addition', prompt: 'must not appear'),
+      );
+
+      expect(local.steps.length, equals(1));
+      expect(local.steps.first.id, equals('opening-prayer'));
+    });
   });
 
   group('SessionRunner', () {
