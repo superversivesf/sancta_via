@@ -430,6 +430,13 @@ void main() {
         isNull,
         reason: '2027-01-02 is a Saturday, not a First Friday',
       );
+      expect(
+        strictState.isComplete,
+        isFalse,
+        reason:
+            'The strict series has reached only 6 of 9: the cap '
+            'follows the policy\'s ordinals, not the span\'s total',
+      );
 
       final CommitmentState permissiveState = CommitmentState.evaluate(
         ConsecutiveCommitmentSpec(
@@ -443,10 +450,14 @@ void main() {
 
       expect(
         permissiveState.fulfilledOrdinals,
-        11,
-        reason: 'Ordinals continue across the gap: 5 before, 6 after',
+        9,
+        reason:
+            'Ordinals continue across the gap until the program\'s 9 '
+            'fulfillments are reached: 5 before, 4 after, and the walk '
+            'caps at the 9th (2026-11-06)',
       );
-      expect(permissiveState.lastFulfilledAnchor, DateTime(2027, 1, 1));
+      expect(permissiveState.lastFulfilledAnchor, DateTime(2026, 11, 6));
+      expect(permissiveState.isComplete, isTrue);
       expect(permissiveState.labels, <String>['gap: 2026-07-03']);
     });
 
@@ -567,6 +578,177 @@ void main() {
         isNull,
         reason: 'July 15, 2026 is not a First Saturday anchor date',
       );
+    });
+
+    test(
+      'a future-dated grace-window completion admits nothing before today',
+      () {
+        // 2026-11-14 lies within the ±8 window of the 2026-11-07 anchor, but
+        // it is dated after today (2026-11-08): it must be ignored entirely,
+        // so the November anchor stays unfulfilled with its gap labelled.
+        final GraceWindow window = GraceWindow(
+          item: 'confession',
+          beforeDays: 8,
+          afterDays: 8,
+        );
+        final Set<DateTime> completed = <DateTime>{
+          DateTime(2026, 10, 3),
+          DateTime(2026, 11, 14),
+        };
+        final DateTime today = DateTime(2026, 11, 8);
+
+        final CommitmentState strictState = CommitmentState.evaluate(
+          ConsecutiveCommitmentSpec(
+            anchor: NthWeekdayOfMonthSpec(DateTime.saturday, 1),
+            count: 5,
+            policy: RestartPolicy.strict,
+            windows: <GraceWindow>[window],
+          ),
+          completed,
+          today,
+        );
+
+        expect(
+          strictState.fulfilledOrdinals,
+          0,
+          reason:
+              'The only non-future completion is 2026-10-03; the '
+              'November 7 anchor is neither completed nor admitted by the '
+              'future-dated 2026-11-14',
+        );
+        expect(
+          strictState.labels,
+          <String>['gap: 2026-11-07'],
+          reason:
+              'The miss is never silently swallowed by a future '
+              'completion',
+        );
+        expect(strictState.lastFulfilledAnchor, DateTime(2026, 10, 3));
+        expect(strictState.isComplete, isFalse);
+
+        final CommitmentState permissiveState = CommitmentState.evaluate(
+          ConsecutiveCommitmentSpec(
+            anchor: NthWeekdayOfMonthSpec(DateTime.saturday, 1),
+            count: 5,
+            policy: RestartPolicy.permissive,
+            windows: <GraceWindow>[window],
+          ),
+          completed,
+          today,
+        );
+
+        expect(permissiveState.fulfilledOrdinals, 1);
+        expect(permissiveState.labels, <String>['gap: 2026-11-07']);
+        expect(permissiveState.isComplete, isFalse);
+      },
+    );
+
+    test('a fulfilled program is not voided by anchors beyond it', () {
+      // Five First Saturdays completed 2026-09-05 through 2027-01-02; the
+      // program's count is 5, so the unfulfilled 2027-02-06 anchor is
+      // beyond the program and must not read as a gap that voids it.
+      final Set<DateTime> completed = <DateTime>{
+        DateTime(2026, 9, 5),
+        DateTime(2026, 10, 3),
+        DateTime(2026, 11, 7),
+        DateTime(2026, 12, 5),
+        DateTime(2027, 1, 2),
+      };
+
+      final CommitmentState strictState = CommitmentState.evaluate(
+        ConsecutiveCommitmentSpec(
+          anchor: NthWeekdayOfMonthSpec(DateTime.saturday, 1),
+          count: 5,
+          policy: RestartPolicy.strict,
+        ),
+        completed,
+        DateTime(2027, 2, 6),
+      );
+
+      expect(strictState.fulfilledOrdinals, 5);
+      expect(strictState.isComplete, isTrue);
+      expect(strictState.lastFulfilledAnchor, DateTime(2027, 1, 2));
+      expect(
+        strictState.labels,
+        isEmpty,
+        reason:
+            'No gap: the walk stops once the 5th is fulfilled, and '
+            'the 2027-02-06 anchor is beyond the program',
+      );
+
+      final CommitmentState permissiveState = CommitmentState.evaluate(
+        ConsecutiveCommitmentSpec(
+          anchor: NthWeekdayOfMonthSpec(DateTime.saturday, 1),
+          count: 5,
+          policy: RestartPolicy.permissive,
+        ),
+        completed,
+        DateTime(2027, 2, 6),
+      );
+
+      expect(permissiveState.fulfilledOrdinals, 5);
+      expect(permissiveState.isComplete, isTrue);
+      expect(permissiveState.lastFulfilledAnchor, DateTime(2027, 1, 2));
+      expect(permissiveState.labels, isEmpty);
+    });
+
+    test('a completed program stays complete on later evaluation dates', () {
+      // The same completed program, evaluated on 2027-03-06 with its
+      // missed anchor still beyond the program: the state is unchanged.
+      final Set<DateTime> completed = <DateTime>{
+        DateTime(2026, 9, 5),
+        DateTime(2026, 10, 3),
+        DateTime(2026, 11, 7),
+        DateTime(2026, 12, 5),
+        DateTime(2027, 1, 2),
+      };
+
+      final CommitmentState state = CommitmentState.evaluate(
+        ConsecutiveCommitmentSpec(
+          anchor: NthWeekdayOfMonthSpec(DateTime.saturday, 1),
+          count: 5,
+          policy: RestartPolicy.strict,
+        ),
+        completed,
+        DateTime(2027, 3, 6),
+      );
+
+      expect(state.fulfilledOrdinals, 5);
+      expect(state.isComplete, isTrue);
+      expect(state.labels, isEmpty);
+      expect(state.lastFulfilledAnchor, DateTime(2027, 1, 2));
+    });
+
+    test('a strict series restarted after a gap can still complete', () {
+      // Two First Saturdays, the November anchor missed, then three more:
+      // the strict series completes on 2027-02-06 — the walk must not be
+      // cut short by fulfillments made before the gap.
+      final CommitmentState state = CommitmentState.evaluate(
+        ConsecutiveCommitmentSpec(
+          anchor: NthWeekdayOfMonthSpec(DateTime.saturday, 1),
+          count: 3,
+          policy: RestartPolicy.strict,
+        ),
+        <DateTime>{
+          DateTime(2026, 9, 5),
+          DateTime(2026, 10, 3),
+          DateTime(2026, 12, 5),
+          DateTime(2027, 1, 2),
+          DateTime(2027, 2, 6),
+        },
+        DateTime(2027, 2, 6),
+      );
+
+      expect(
+        state.fulfilledOrdinals,
+        3,
+        reason:
+            'The strict count is the series since the November gap: '
+            '2026-12-05, 2027-01-02, 2027-02-06',
+      );
+      expect(state.isComplete, isTrue);
+      expect(state.lastFulfilledAnchor, DateTime(2027, 2, 6));
+      expect(state.labels, <String>['gap: 2026-11-07']);
     });
   });
 }

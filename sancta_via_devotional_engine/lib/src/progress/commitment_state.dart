@@ -50,15 +50,22 @@ class CommitmentState {
   /// How many consecutive positions of the program have been fulfilled,
   /// under the spec's [RestartPolicy]: the count of the current series
   /// since the last gap (strict), or the count of every fulfilled anchor
-  /// spanned, gap or not, continuing across gaps (permissive).
+  /// spanned, gap or not, continuing across gaps (permissive). The
+  /// evaluation walk stops once [count] is reached, so this never exceeds
+  /// the program's size.
   final int fulfilledOrdinals;
+
+  /// The number of fulfillments the evaluated program asks for, copied
+  /// from [ConsecutiveCommitmentSpec.count]; [isComplete] weighs
+  /// [fulfilledOrdinals] against it.
+  final int count;
 
   /// The most recently fulfilled anchor date in the evaluation span
   /// (independent of policy), or null when no anchor in the span counts as
   /// fulfilled.
   final DateTime? lastFulfilledAnchor;
 
-  /// One label per anchor position in the span that was NOT fulfilled
+  /// One label per walked anchor position that was NOT fulfilled
   /// (e.g. `'gap: 2026-12-05'`), under either policy — a missed anchor is
   /// never silently rolled forward: strict reflects it by restarting the
   /// ordinals, permissive by continuing across it, and both label it.
@@ -71,9 +78,16 @@ class CommitmentState {
   /// anchor is unfulfilled, otherwise the next anchor's).
   final int? nextOrdinal;
 
+  /// Whether the evaluated program is fulfilled: [fulfilledOrdinals] has
+  /// reached [count] under the capped walk. A completed program is stable:
+  /// anchor dates beyond it — met, missed, or never reached — can neither
+  /// extend it nor void it.
+  bool get isComplete => fulfilledOrdinals >= count;
+
   /// Creates a [CommitmentState].
   const CommitmentState({
     required this.fulfilledOrdinals,
+    required this.count,
     this.lastFulfilledAnchor,
     this.labels = const <String>[],
     this.nextOrdinal,
@@ -82,12 +96,14 @@ class CommitmentState {
   /// Evaluates [spec] against the completion dates [completedAnchorDates]
   /// as of [today].
   ///
-  /// The anchor dates the devotion recurs on are derived from
+  /// The anchor dates the devotion recurs on are walked out of
   /// [spec.anchor] itself — every date on which it resolves as due between
   /// the earliest completed date and [today] (both bounds inclusive;
-  /// completions dated after `today` are ignored). Consecutiveness is then
-  /// judged on that derived list, so a missed anchor position is detected
-  /// as such and can never be silently rolled forward:
+  /// completions dated after `today` are ignored, so a future-dated
+  /// completion can never admit an earlier in-span anchor through a grace
+  /// window). Consecutiveness is judged as the walk runs, so a missed
+  /// anchor position is detected as such and can never be silently rolled
+  /// forward:
   ///
   /// * an anchor counts as fulfilled when its date is in the completions,
   ///   or when any of [ConsecutiveCommitmentSpec.windows] admits the anchor
@@ -97,7 +113,12 @@ class CommitmentState {
   ///   gap (the series restarts), [RestartPolicy.permissive] continues
   ///   across it;
   /// * every unfulfilled anchor is reported in [labels] under either
-  ///   policy.
+  ///   policy;
+  /// * the walk stops once [ConsecutiveCommitmentSpec.count] positions are
+  ///   fulfilled under the policy — strict by its current series' length,
+  ///   permissive by its span total — so a fulfilled program
+  ///   ([isComplete]) reads as complete and stable: anchors beyond it can
+  ///   neither extend it nor void it.
   ///
   /// The evaluation span opens at the earliest completed date; anchors
   /// before it are not the commitment's history. When the span holds no
@@ -114,15 +135,25 @@ class CommitmentState {
     DateTime today,
   ) {
     final DateTime t = _dateOnly(today);
+    // Completions dated after today are ignored at the normalize step, so
+    // a future-dated completion can never admit an earlier in-span anchor
+    // through a grace window.
     final Set<DateTime> completed = <DateTime>{
-      for (final DateTime d in completedAnchorDates) _dateOnly(d),
+      for (final DateTime d in completedAnchorDates)
+        if (!_dateOnly(d).isAfter(t)) _dateOnly(d),
     };
 
-    // The anchor dates the devotion recurs on across the evaluation span,
-    // earliest completed date through today inclusive, walked day by day
-    // so recurrence — monthly, weekly, or otherwise — is the anchor spec's
-    // own judgment, not a month-arithmetic re-derivation here.
-    final List<DateTime> anchors = <DateTime>[];
+    // The anchor dates the devotion recurs on are walked day by day from
+    // the earliest completion through today inclusive, so recurrence —
+    // monthly, weekly, or otherwise — is the anchor spec's own judgment,
+    // not a month-arithmetic re-derivation here. Each anchor is classified
+    // as it is met, and the walk stops once the program's ordinals are
+    // fulfilled under the spec's policy: anchors beyond a fulfilled
+    // program are beyond the program — they can neither extend it nor
+    // void it.
+    final List<DateTime> missed = <DateTime>[];
+    DateTime? lastFulfilledAnchor;
+    int ordinals = 0;
     if (completed.isNotEmpty) {
       final DateTime firstCompleted = completed.reduce(
         (DateTime a, DateTime b) => a.isBefore(b) ? a : b,
@@ -133,40 +164,34 @@ class CommitmentState {
         !d.isAfter(t);
         d = DateTime(d.year, d.month, d.day + 1)
       ) {
-        if (spec.anchor.resolve(d, context).due) {
-          anchors.add(d);
+        if (!spec.anchor.resolve(d, context).due) {
+          continue;
+        }
+        if (_fulfilled(d, completed, spec.windows)) {
+          ordinals++;
+          lastFulfilledAnchor = d;
+        } else {
+          missed.add(d);
+          if (spec.policy == RestartPolicy.strict) {
+            ordinals = 0;
+          }
+        }
+        if (ordinals >= spec.count) {
+          break;
         }
       }
     }
 
-    final List<int> missedIndexes = <int>[];
-    DateTime? lastFulfilledAnchor;
-    for (int i = 0; i < anchors.length; i++) {
-      if (_fulfilled(anchors[i], completed, spec.windows)) {
-        lastFulfilledAnchor = anchors[i];
-      } else {
-        missedIndexes.add(i);
-      }
-    }
-
-    // Permissive counts every fulfilled anchor; strict counts only the
-    // anchors after the last gap (before it, the series was voided). With
-    // no gap both are the whole run.
-    final int permissiveCount = anchors.length - missedIndexes.length;
-    final int strictCount =
-        anchors.length - (missedIndexes.isEmpty ? 0 : missedIndexes.last + 1);
-    final int counts = spec.policy == RestartPolicy.strict
-        ? strictCount
-        : permissiveCount;
     final List<String> labels = <String>[
-      for (final int i in missedIndexes) 'gap: ${_stamp(anchors[i])}',
+      for (final DateTime missedOn in missed) 'gap: ${_stamp(missedOn)}',
     ];
     final int? nextOrdinal = spec.anchor.resolve(t, const ScheduleContext()).due
-        ? counts + 1
+        ? ordinals + 1
         : null;
 
     return CommitmentState(
-      fulfilledOrdinals: counts,
+      fulfilledOrdinals: ordinals,
+      count: spec.count,
       lastFulfilledAnchor: lastFulfilledAnchor,
       labels: labels,
       nextOrdinal: nextOrdinal,
@@ -176,6 +201,6 @@ class CommitmentState {
   @override
   String toString() =>
       'CommitmentState(fulfilledOrdinals: $fulfilledOrdinals, '
-      'lastFulfilledAnchor: $lastFulfilledAnchor, labels: $labels, '
-      'nextOrdinal: $nextOrdinal)';
+      'count: $count, lastFulfilledAnchor: $lastFulfilledAnchor, '
+      'labels: $labels, nextOrdinal: $nextOrdinal)';
 }

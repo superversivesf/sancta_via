@@ -609,8 +609,10 @@ class ConsecutiveCommitmentSpec extends ScheduleSpec {
 
   /// The number of fulfillments the program asks for (e.g. 5 or 9).
   ///
-  /// Evaluation does not stop at [count] — callers compare
-  /// `CommitmentState.fulfilledOrdinals` with it.
+  /// Evaluation walks anchor positions only until [count] ordinals are
+  /// fulfilled under [policy]: a fulfilled program is complete and stable,
+  /// and anchor dates beyond it — met or missed — can neither extend it
+  /// nor void it (`CommitmentState.isComplete` reports the state).
   final int count;
 
   /// How fulfilled ordinals react to a gap in the series.
