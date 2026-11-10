@@ -1,4 +1,6 @@
-# melos_managed_dependency_overrides: sancta_via_liturgical_calendar
+# melos_managed_dependency_overrides: sancta_via_liturgical_calendar,sancta_via_shared_ui
 dependency_overrides:
   sancta_via_liturgical_calendar:
     path: ../sancta_via_liturgical_calendar
+  sancta_via_shared_ui:
+    path: ../sancta_via_shared_ui

@@ -10,6 +10,9 @@ analyzer:
     - "**/*.chopper.dart"
     - build/**
     - .dart_tool/**
+    - android/**
+    - ios/**
+    - web/**
   
   strong-mode:
     implicit-casts: false
