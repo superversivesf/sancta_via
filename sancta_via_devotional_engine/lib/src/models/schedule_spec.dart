@@ -25,7 +25,10 @@ import 'schedule_result.dart';
 /// wrong day count (e.g. a 8-calendar-day window across one "spring
 /// forward".) The two calendar dates are re-anchored to UTC midnights purely
 /// as a DST-free difference backbone; the calendar values themselves remain
-/// the local year/month/day of the inputs, never UTC components.
+/// the local year/month/day of the inputs, never UTC components. No
+/// local-time meaning is ever converted to UTC here — the re-anchoring
+/// exists only so the difference is exact, consistent with this library's
+/// never-convert-engine-dates-to-UTC discipline.
 int _wholeCalendarDays(DateTime start, DateTime end) {
   return DateTime.utc(
     end.year,
@@ -91,10 +94,11 @@ class FixedDateSpec extends ScheduleSpec {
   ///
   /// Throws an [ArgumentError] when [month] or [day] is outside the
   /// calendar, when exactly one of [untilMonth] and [untilDay] is provided
-  /// (a window is defined by both, or by [untilDay] alone), when the window
-  /// end precedes the window start, or when the end would cross into a
-  /// different year (cross-year windows are not supported; anchor moving
-  /// windows with [EasterOffsetSpec] instead).
+  /// (a window is defined by both, or by [untilDay] alone), when the
+  /// window end precedes the window start (in either the cross-month or
+  /// the same-month form), or when the end would cross into a different
+  /// year (cross-year windows are not supported; anchor moving windows
+  /// with [EasterOffsetSpec] instead).
   FixedDateSpec(this.month, this.day, {this.untilMonth, this.untilDay}) {
     final List<String> problems = <String>[];
     final int? endMonth = untilMonth;
@@ -113,6 +117,19 @@ class FixedDateSpec extends ScheduleSpec {
     }
     if (endDay != null && (endDay < 1 || endDay > 31)) {
       problems.add('untilDay must be between 1 and 31');
+    }
+    if (problems.isEmpty &&
+        endMonth == null &&
+        endDay != null &&
+        endDay < day) {
+      // A reversed same-month window (e.g. day 8 with untilDay 1) would
+      // pass the cross-month ordering check below and then resolve
+      // not-due on every date — reject it here instead of letting a
+      // pack-author typo become a silently inert schedule.
+      problems.add(
+        'window end must not precede the window start '
+        '(untilDay $endDay is before day $day)',
+      );
     }
     if (problems.isEmpty && endMonth != null) {
       // The window end must fall on or after the start within the same

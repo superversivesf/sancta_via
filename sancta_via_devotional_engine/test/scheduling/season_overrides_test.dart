@@ -187,6 +187,45 @@ void main() {
       expect(marianAntiphonFor(christmas), 'alma_redemptoris_mater');
     });
 
+    test('accepts the alternate "Christmas" season spelling in the Alma '
+        'window', () {
+      // The embedded data spells the season 'Christmastide', but the
+      // rule set tolerates the alternate 'Christmas' spelling (the
+      // mysteries branch already does, via _isAdventOrChristmasSeason):
+      // a December Christmastide day re-keyed to the alternate spelling
+      // must keep its Alma Redemptoris Mater antiphon, which the
+      // seasonKey branch — not the January/February date window —
+      // decides for December days.
+      final LiturgicalDayData? christmastide = dayFor(DateTime(2026, 12, 28));
+      expect(christmastide, isNotNull);
+      expect(
+        christmastide?.seasonKey,
+        'Christmastide',
+        reason: '2026-12-28 must be a Christmastide day in the data',
+      );
+
+      LiturgicalDayData respelled(String seasonKey) => LiturgicalDayData(
+        date: christmastide!.date,
+        season: christmastide.season,
+        seasonKey: seasonKey,
+        celebration: christmastide.celebration,
+        liturgicalYear: christmastide.liturgicalYear,
+        psalterWeek: christmastide.psalterWeek,
+      );
+
+      expect(
+        marianAntiphonFor(respelled('Christmas')),
+        'alma_redemptoris_mater',
+      );
+      expect(
+        marianAntiphonFor(respelled('Christmas')),
+        equals(marianAntiphonFor(christmastide)),
+        reason:
+            'the alternate spelling must yield the same antiphon as '
+            "'Christmastide'",
+      );
+    });
+
     test('gives alma to November days of Advent, before December', () {
       // 2025-11-30, 1st Sunday of Advent: month rule alone cannot cover
       // Advent days that fall in late November.

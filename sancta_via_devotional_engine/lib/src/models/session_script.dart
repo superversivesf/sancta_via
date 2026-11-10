@@ -80,6 +80,9 @@ class CheckpointStep extends SessionStep {
   final String item;
 
   /// Whether the session cannot complete without this checkpoint recorded.
+  ///
+  /// Gating/skip semantics are an app-layer (Plan 2) contract; the engine
+  /// itself treats every step as walked-to-completion.
   final bool requiredForCompletion;
 
   /// Creates a [CheckpointStep].

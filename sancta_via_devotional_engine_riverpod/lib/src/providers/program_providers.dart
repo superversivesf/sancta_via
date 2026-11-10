@@ -129,6 +129,10 @@ final FutureProvider<List<EnrolledProgram>> enrolledProgramsProvider =
 /// resolution's `ordinal` names the position today's completion takes —
 /// the persisted streak plus one, the position
 /// `CommitmentState.evaluate` reports as `nextOrdinal` on an anchor day.
+/// A due [ConsecutiveCommitmentSpec] whose progress shows the
+/// commitment complete (`fulfilledOrdinals` at the commitment's
+/// `count`) is EXCLUDED from the list: a completed program is not due,
+/// and its completion renders through [programDetailProvider] instead.
 /// What a MISSED day does to the streak stays the app layer's decision
 /// (the engine's `MissedDayEvaluator` / `CommitmentState`, driven by the
 /// policy string [ProgramDetail.restartPolicy] surfaces); this provider
@@ -152,6 +156,13 @@ final FutureProvider<List<DueToday>> todayProgramsProvider =
             continue;
           }
           final ProgressState? progress = await repository.progressFor(pack.id);
+          if (schedule is ConsecutiveCommitmentSpec &&
+              (progress?.fulfilledOrdinals ?? 0) >= schedule.count) {
+            // The commitment is complete: a completed program is not due
+            // (its completion renders through programDetailProvider), so
+            // no later schedule may resurrect it into today's list.
+            break;
+          }
           due.add(
             DueToday(
               pack: pack,

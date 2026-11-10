@@ -112,6 +112,22 @@ void main() {
           throwsArgumentError,
         );
       });
+
+      test('rejects a reversed same-month window (untilDay before day)', () {
+        // FixedDateSpec(11, 8, untilDay: 1) passes no cross-month
+        // ordering check, but resolves not-due on every date: a
+        // reversed window is a pack-author typo, so it must fail at
+        // construction instead of silently never firing.
+        expect(() => FixedDateSpec(11, 8, untilDay: 1), throwsArgumentError);
+      });
+
+      test('keeps untilDay == day legal (a single-day window)', () {
+        final FixedDateSpec spec = FixedDateSpec(11, 8, untilDay: 8);
+
+        expect(spec.resolve(DateTime(2026, 11, 8), context).due, isTrue);
+        expect(spec.resolve(DateTime(2026, 11, 7), context).due, isFalse);
+        expect(spec.resolve(DateTime(2026, 11, 9), context).due, isFalse);
+      });
     });
   });
 

@@ -574,6 +574,29 @@ void main() {
       );
     });
 
+    test('folds a reversed same-month window into the problems list', () {
+      final Map<String, dynamic> json = validPackJson();
+      json['schedule'] = <String, dynamic>{
+        'type': 'fixedDate',
+        'month': 11,
+        'day': 8,
+        'untilDay': 1,
+      };
+
+      expect(
+        () => PackLoader.load(json),
+        throwsA(
+          isA<ContentValidationException>().having(
+            (e) => e.problems,
+            'problems',
+            anyElement(
+              contains('window end must not precede the window start'),
+            ),
+          ),
+        ),
+      );
+    });
+
     test('parses optional reminders and variants', () {
       final Map<String, dynamic> json = validPackJson();
       json['reminders'] = <String, dynamic>{'daily': '09:00'};

@@ -126,9 +126,22 @@ void main() {
       final SessionSeriesSpec series = p.schedules.single as SessionSeriesSpec;
       // The concrete fixture form (the enrollment contract recomputes the
       // start: a 54-day novena starts on whatever day the user picks, so
-      // no anchor feast metadata rides along).
+      // no anchor feast metadata rides along — the reminders.startAnchor
+      // block below documents that convention).
       expect(series.startDate, DateTime(2026, 11, 10));
       expect(series.lengthDays, 54);
+
+      // The startAnchor metadata rides in the pack's opaque reminders
+      // map — the same hook shape as the consecration pack's feastAnchor
+      // — and documents that startDate is a user-picked enrollment
+      // parameter whose fixture value is a placeholder.
+      expect(p.reminders.keys, <String>['startAnchor']);
+      final Map<String, dynamic> startAnchor =
+          p.reminders['startAnchor']! as Map<String, dynamic>;
+      expect(startAnchor['pickedBy'], 'user');
+      final String note = startAnchor['note']! as String;
+      expect(note, contains('user-picked'));
+      expect(note, contains('placeholder'));
 
       // Day 1 (2026-11-10) and day 54 (2027-01-02) are due with their
       // 1-based day indexes; the series end resolves 54, not 55.

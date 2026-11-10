@@ -228,6 +228,67 @@ void main() {
       );
     });
 
+    test('todayProgramsProvider keeps a mid-streak commitment due at '
+        'streak + 1', () async {
+      final InMemoryProgramRepository repository = InMemoryProgramRepository();
+      await repository.saveProgress(
+        ProgressState(packId: 'five_first_saturdays', fulfilledOrdinals: 2),
+      );
+
+      final ProviderContainer container = containerFor(
+        repository,
+        firstSaturday2026,
+      );
+      addTearDown(container.dispose);
+
+      final List<DueToday> due = await container.read(
+        todayProgramsProvider.future,
+      );
+
+      final DueToday firstSaturdays = due.firstWhere(
+        (DueToday program) => program.pack.id == 'five_first_saturdays',
+      );
+      expect(firstSaturdays.schedule.due, isTrue);
+      expect(
+        firstSaturdays.schedule.ordinal,
+        equals(3),
+        reason: 'progress 2: today takes the third commitment position',
+      );
+    });
+
+    test(
+      'todayProgramsProvider drops a completed commitment from the due list',
+      () async {
+        final InMemoryProgramRepository repository =
+            InMemoryProgramRepository();
+        // Five First Saturdays asks for 5 fulfillments: with all 5
+        // ordinals fulfilled the program is complete and must not show
+        // up "due" on later first Saturdays with a phantom 6th ordinal.
+        await repository.saveProgress(
+          ProgressState(packId: 'five_first_saturdays', fulfilledOrdinals: 5),
+        );
+
+        final ProviderContainer container = containerFor(
+          repository,
+          firstSaturday2026,
+        );
+        addTearDown(container.dispose);
+
+        final List<DueToday> due = await container.read(
+          todayProgramsProvider.future,
+        );
+
+        expect(
+          due.map((DueToday program) => program.pack.id).toList(),
+          equals(<String>['angelus', 'mercy_hour', 'novena_54_day', 'rosary']),
+          reason:
+              '2026-12-05: the completed Five First Saturdays drops out '
+              'of the otherwise-due set (programDetailProvider renders '
+              'its completion)',
+        );
+      },
+    );
+
     test(
       'todayProgramsProvider wires the liturgical season into resolution',
       () async {

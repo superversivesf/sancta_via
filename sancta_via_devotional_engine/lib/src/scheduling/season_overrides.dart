@@ -112,8 +112,9 @@ String marianAntiphonFor(LiturgicalDayData? day) {
   }
 
   // Advent days fall in late November (as early as November 27); they
-  // precede the December rule above.
-  if (seasonKey == 'Advent' || seasonKey == 'Christmastide') {
+  // precede the December rule above. Both season spellings behave the
+  // same here as in the mysteries branch (_isAdventOrChristmasSeason).
+  if (_isAdventOrChristmasSeason(seasonKey)) {
     return 'alma_redemptoris_mater';
   }
 

@@ -37,6 +37,10 @@ class SessionState {
 
   /// Whether every step of the script has been completed:
   /// [stepIndex] has reached [stepCount].
+  ///
+  /// Purely positional: [CheckpointStep.requiredForCompletion] gating is
+  /// an app-layer (Plan 2) contract, and the engine treats every step as
+  /// walked-to-completion.
   bool get isComplete => stepIndex >= stepCount;
 
   /// Creates a [SessionState] with unmodifiable copies of the maps.
