@@ -7,9 +7,9 @@
 /// - validates that every source book key resolves to exactly the 73-book
 ///   canonical DB vocabulary, and vice versa (per-source bijection);
 /// - counts chapters and verses per chapter for each translation with the
-///   adapters the builder will use (USFM `\c`/`\v` counting for engwebc,
-///   `chapter` map sizes for CPDV and drc; non-numeric `P` prologue chapters
-///   and the `charset` metadata key are skipped);
+///   adapters the builder will use (USFM `\c`/`\v` counting for engwebc and
+///   drc, `chapter` map sizes for CPDV; CPDV's non-numeric `P` prologue
+///   chapters and the `charset` metadata key are skipped);
 /// - verifies the reference verses pinned in this file against the snapshot
 ///   text (verse text is reconstructed with the same marker stripping the
 ///   parser will apply: footnote/cross-reference bodies dropped, `|strong=`
@@ -100,7 +100,7 @@ const List<_Pin> _pins = <_Pin>[
   _Pin(
     'drc',
     'REV',
-    'Revelation',
+    'Revelation of John',
     22,
     21,
     'The grace of our Lord Jesus Christ be',

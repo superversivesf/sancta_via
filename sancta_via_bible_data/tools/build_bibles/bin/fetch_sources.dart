@@ -10,11 +10,12 @@
 /// Two source kinds are supported:
 /// - Plain sources: `url` points at a single file that is stored as-is.
 /// - Joined sources (manifest entry has `joinList`): `url` is a raw-directory
-///   base; the committed sibling join list (e.g. `drc_file_list.json`) names
-///   the per-book files to fetch from it, they are shape-validated and
-///   joined into one `{<bookKey>: {<chapter>: {<verse>: "text"}}}` JSON
-///   object where `<bookKey>` is the file name minus `.json` (verbatim per
-///   upstream); per-file shape violations abort the join.
+///   base; a committed sibling join list of per-book file names names the
+///   files to fetch from it, they are shape-validated and joined into one
+///   `{<bookKey>: {<chapter>: {<verse>: "text"}}}` JSON object where
+///   `<bookKey>` is the file name minus `.json` (verbatim per upstream);
+///   per-file shape violations abort the join. (Retained tooling: no source
+///   currently uses this kind.)
 /// - Scraped sources (manifest entry has a `scrape` object): `url` is a
 ///   chapter-directory base (drbo.org `/chapter/`); every book 1..bookCount
 ///   is enumerated chapter 1..K as `<bb><ccc>.htm` codes (`bb` = 1-based

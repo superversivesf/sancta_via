@@ -6,7 +6,7 @@
         "https://ebible.org/Scriptures/engwebc2025eb.zip"
       ],
       "sha256": "add2ff69c0f07ed4059ee58a9dc391dc4ec77c0b8415dc38a865a1d9f1d3b9cb",
-      "fetchedAt": "2026-11-11T08:36:45.840733Z",
+      "fetchedAt": "2026-11-11T19:35:32.188201Z",
       "fileSize": 3091065,
       "revision": "engwebc2025eb"
     },
@@ -14,7 +14,7 @@
       "url": "https://raw.githubusercontent.com/draino7n7/cpdv/master/CPDV-JSON/EntireBible-CPDV.json",
       "fallbackUrls": [],
       "sha256": "748db8fa1e126d14cba5d5647991a50ffe460d02cd797e4005c1605c983df19d",
-      "fetchedAt": "2026-11-11T08:36:46.918530Z",
+      "fetchedAt": "2026-11-11T19:35:36.665578Z",
       "fileSize": 5722375,
       "revision": "draino7n7/cpdv@ea374e0c63c7e336fa3243644b3fcb67c782437f"
     },
@@ -22,7 +22,7 @@
       "url": "https://raw.githubusercontent.com/draino7n7/cpdv/master/CPDV-JSON/books.json",
       "fallbackUrls": [],
       "sha256": "db979ed66676760e26238018161f82c1c8cd79c1e95c80b7f4e20b4f726f40d0",
-      "fetchedAt": "2026-11-11T08:36:47.229006Z",
+      "fetchedAt": "2026-11-11T19:35:37.195235Z",
       "fileSize": 109577,
       "revision": "draino7n7/cpdv@66416f04fbfeec260f09eb3c095be9a289429f2d"
     },
@@ -30,8 +30,8 @@
       "url": "https://ebible.org/Scriptures/engDRA_usfm.zip",
       "fallbackUrls": [],
       "sha256": "fcb5de45f1f6083d56b738690e5b4b3bb6f0d87522d1d18329c57a4b09e05210",
-      "fileSize": "",
-      "fetchedAt": "",
+      "fileSize": 2942946,
+      "fetchedAt": "2026-11-11T19:35:38.837463Z",
       "revision": "eBible engDRA — Douay-Rheims 1899 American Edition (Challoner revision); public domain (PD statement inside the zip's copr.htm and on the eBible details page). Ruling 2026-11-12 (supersedes the drbo.org scrape): source drc from the plain USFM zip, sha256-pinned; the pinned hash below was verified by an independent structural pass (73 books incl. all 7 deuterocanon, 1334 chapters, 35811 verses, 0 contiguity violations, 0 empty texts, 0 markup; corruption probe RUT 4:1 correct). Retired in order: thomas992/catholicbible primary (HTTP 404, repo gone); exanx/bible-json DRB-73-Books join (upstream structurally corrupt: 21/73 books missing tail chapters, verse texts at wrong coordinates); drbo.org crawl (abandoned mid-run ~55/73 books after transient connection kills; scrape tooling retained in fetch_sources.dart for any future re-pinning, .drc_cache kept git-ignored)."
     }
   }
