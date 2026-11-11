@@ -12,20 +12,29 @@
 // The run is one-time, network-bound, and resumable:
 //   - a thumb that already exists is skipped (unless `--force`), so an
 //     interrupted run continues where it stopped;
-//   - each URL is retried once on error before its `{slug, url, error}` is
-//     recorded in `data/image_failures.json`; the ledger starts from the
-//     previous file's content (read + append), is deduplicated by slug on
-//     rewrite, and drops the entry of any slug whose thumb exists or is
-//     freshly written, so it always lists CURRENT failures.
-// Requests are strictly serialized: one request in flight, no concurrency,
-// no artificial delay (volume is ~1.4k images).
+//   - `fetchAndProcessOne` owns the per-URL retry budgets and pacing: every
+//     request is spaced at least 250 ms from the last (measure-elapsed-then-
+//     top-up, so slow downloads are not double-punished), a throttled
+//     response (HTTP 429 / 5xx) backs off honoring `Retry-After` (else the
+//     2s → 4s → 8s ladder, i.e. up to 4 attempts per URL), and exhaustion
+//     surfaces as `FetchThrottledException` — a DEFERRAL that is printed
+//     with a per-slug line and never recorded in the ledger, because the
+//     next re-run re-attempts it automatically;
+//   - permanent failure classes (other 4xx, unparseable URL, undecodable
+//     body, connection/timeout beyond the single retry) get the original
+//     retry-once budget and are then recorded as `{slug, url, error}` in
+//     `data/image_failures.json`; the ledger starts from the previous
+//     file's content (read + append), is deduplicated by slug on rewrite,
+//     and drops the entry of any slug whose thumb exists or is freshly
+//     written, so it always lists CURRENT failures.
+// Requests are strictly serialized: one request in flight, no concurrency.
 //
 // Wikimedia bot-policy note: every request carries a descriptive
 // `User-Agent` (`SanctaViaSaintDataBuild/1.0 (+https://sancta-via.net)`),
 // which is required for upload.wikimedia.org access.
 //
-// Dev-only: tools/ is never imported by runtime code (the test file imports
-// the pure URL function only).
+// Dev-only: tools/ is never imported by runtime code (the test files import
+// the pure URL function and the loopback-stub-drivable fetch seam).
 //
 // Usage (from the package root):
 //   dart run tools/fetch_saint_images.dart            # full resumable run
@@ -68,8 +77,34 @@ const int _thumbJpegQuality = 80;
 
 /// Per-request wall-clock cap so one hung connection cannot stall a
 /// background run. 120 s comfortably covers the largest original on a slow
-/// link; timeouts are treated like any other fetch error (retry, record).
+/// link; timeouts are permanent-class (see `fetchAndProcessOne`).
 const Duration _requestTimeout = Duration(seconds: 120);
+
+/// Politeness pacing: minimum spacing between the end of one HTTP request
+/// and the start of the next — across retries AND across URLs (the top-up
+/// runs after every completed request, including the last of each URL).
+/// The controller's first full run drowned in HTTP 429s with zero pacing
+/// (85 thumbs in ~1 minute); 250 ms keeps the loop under ~4 requests/s.
+const Duration _defaultMinRequestGap = Duration(milliseconds: 250);
+
+/// Backoff ladder for throttle-class responses (HTTP 429 / 5xx): the Nth
+/// throttle error of a URL waits rung N (clamped at the last). Combined
+/// with the initial request this gives a URL 4 fetch attempts against a
+/// throttle burst before the run defers it to the next re-run.
+const List<Duration> _throttleWaits = <Duration>[
+  Duration(seconds: 2),
+  Duration(seconds: 4),
+  Duration(seconds: 8),
+];
+
+/// Cap on an honored `Retry-After` header: Wikimedia's own backoff hint is
+/// obeyed, but one absurd value may not stall the whole background run.
+const Duration _maxRetryAfterDelay = Duration(seconds: 60);
+
+/// Pause before the single no-wait-budget retry for connection/timeout
+/// errors (no HTTP status, no `Retry-After` to honor): a blip is not
+/// re-hit instantly, and a URL failing twice is a ledger-able defect.
+const Duration _connectionRetryWait = Duration(milliseconds: 750);
 
 /// Matches the `<w>px-` width token of the LAST path segment: a run of
 /// digits followed by `px-`, then only non-slash characters to the end of
@@ -106,11 +141,76 @@ String wikimediaThumbUrl(String url, {int width = 256}) {
 }
 
 /// One saint image to download: the slug names the output file.
-class _ImageTarget {
-  const _ImageTarget(this.slug, this.url);
+///
+/// Internal to the tool, but public by name so the test files can drive
+/// `fetchAndProcessOne` and `wikimediaThumbUrl` directly.
+class ImageTarget {
+  const ImageTarget(this.slug, this.url);
 
   final String slug;
   final String url;
+}
+
+/// The wait before the [attempt]-th (1-based) throttle retry of a URL.
+///
+/// A `Retry-After` header value in whole seconds ([retryAfter]) wins over
+/// the ladder and is clamped to `_maxRetryAfterDelay`; anything it cannot
+/// parse (null, non-integer, negative) falls back to the ladder, whose
+/// [waits] default to 2s → 4s → 8s with the last rung repeated for any
+/// further attempt. Pure: pinned by `test/tools/thumb_fetch_pacing_test.dart`.
+Duration backoffDelayFor(
+  int attempt, {
+  String? retryAfter,
+  List<Duration>? waits,
+}) {
+  final List<Duration> ladder = waits ?? _throttleWaits;
+  if (retryAfter != null) {
+    final int? seconds = int.tryParse(retryAfter.trim());
+    if (seconds != null && seconds >= 0) {
+      final Duration parsed = Duration(seconds: seconds);
+      return parsed > _maxRetryAfterDelay ? _maxRetryAfterDelay : parsed;
+    }
+  }
+  return ladder[(attempt - 1).clamp(0, ladder.length - 1)];
+}
+
+/// Spacing owed after a completed HTTP request: tops a fast request up to
+/// [minRequestGap] between requests, while a slow download is not
+/// double-punished (it already provided the spacing). Pure: pinned by
+/// `test/tools/thumb_fetch_pacing_test.dart`.
+Duration pacingDelayAfter(
+  Duration previousRequestElapsed,
+  Duration minRequestGap,
+) {
+  if (previousRequestElapsed >= minRequestGap) {
+    return Duration.zero;
+  }
+  return minRequestGap - previousRequestElapsed;
+}
+
+/// A throttle-class fetch outcome (HTTP 429 / 5xx still throttled after the
+/// backoff ladder): a server-load state, NOT a data defect. The caller
+/// defers the URL to the next re-run and must NOT write it into the
+/// permanent failure ledger.
+class FetchThrottledException implements Exception {
+  FetchThrottledException(this.message);
+
+  final String message;
+
+  @override
+  String toString() => message;
+}
+
+/// A permanent-class fetch outcome: HTTP 4xx other than 429, a URL that
+/// cannot be parsed, an undecodable image body, or a connection/timeout
+/// beyond the single retry. The caller records this in the failure ledger.
+class FetchFailedException implements Exception {
+  FetchFailedException(this.message);
+
+  final String message;
+
+  @override
+  String toString() => message;
 }
 
 /// Parse summary from [main]: `--force` re-downloads existing thumbs;
@@ -210,7 +310,7 @@ Future<void> _run(_FetchArgs parsed) async {
   );
 
   // Load the image targets from the committed source snapshot.
-  final List<_ImageTarget> targets = <_ImageTarget>[];
+  final List<ImageTarget> targets = <ImageTarget>[];
   final Map<String, Object?> payload;
   try {
     final Object? decoded = jsonDecode(sourceFile.readAsStringSync());
@@ -234,7 +334,7 @@ Future<void> _run(_FetchArgs parsed) async {
     if (image is Map && image.isNotEmpty) {
       final Object? url = image['url'];
       if (url is String && url.isNotEmpty) {
-        targets.add(_ImageTarget(slug, url));
+        targets.add(ImageTarget(slug, url));
       } else {
         preFailures[slug] = <String, String>{
           'slug': slug,
@@ -258,11 +358,12 @@ Future<void> _run(_FetchArgs parsed) async {
   int downloaded = 0;
   int skipped = 0;
   int failedNow = 0;
+  int deferredNow = 0;
   int processed = 0;
 
   final http.Client client = http.Client();
   try {
-    for (final _ImageTarget target in targets) {
+    for (final ImageTarget target in targets) {
       if (limit != null && processed >= limit) {
         break;
       }
@@ -277,34 +378,34 @@ Future<void> _run(_FetchArgs parsed) async {
             targets.length,
             downloaded,
             failedNow,
+            deferredNow,
             skipped,
           );
         }
         continue;
       }
+      // fetchAndProcessOne owns ALL retry budgets (throttle ladder with
+      // Retry-After, the brief's single no-wait retry for permanent
+      // classes) and classifies its failures; the loop only routes them:
       try {
-        await _fetchAndProcessOne(client, target, thumbFile);
+        await fetchAndProcessOne(client, target, thumbFile);
         downloaded++;
         failures.remove(target.slug);
-      } on Object {
-        // One retry per URL; only the retry's error is recorded.
-        try {
-          await _fetchAndProcessOne(client, target, thumbFile);
-          downloaded++;
-          failures.remove(target.slug);
-        } on Object catch (retryError) {
-          failedNow++;
-          failures[target.slug] = <String, String>{
-            'slug': target.slug,
-            'url': target.url,
-            'error': _shortError(retryError),
-          };
-          _writeFailures(failuresFile, failures);
-          print(
-            'fetch_saint_images FAILURE ${target.slug}: '
-            '${failures[target.slug]!['error']}',
-          );
-        }
+      } on FetchThrottledException catch (error) {
+        // Transient server-side throttling: a re-run re-attempts this URL
+        // (skip-existing), so it must NOT be recorded as an image failure —
+        // the ledger only lists real data defects.
+        deferredNow++;
+        print('fetch_saint_images DEFERRED ${target.slug}: $error');
+      } on FetchFailedException catch (error) {
+        failedNow++;
+        failures[target.slug] = <String, String>{
+          'slug': target.slug,
+          'url': target.url,
+          'error': _shortError(error),
+        };
+        _writeFailures(failuresFile, failures);
+        print('fetch_saint_images FAILURE ${target.slug}: $error');
       }
       processed++;
       if (processed % 100 == 0) {
@@ -313,6 +414,7 @@ Future<void> _run(_FetchArgs parsed) async {
           targets.length,
           downloaded,
           failedNow,
+          deferredNow,
           skipped,
         );
       }
@@ -334,6 +436,10 @@ Future<void> _run(_FetchArgs parsed) async {
   print('  skipped (thumb exists): $skipped');
   print('  failed (recorded): $failedNow');
   print(
+    '  deferred (throttled, retry on next run): $deferredNow '
+    '(not recorded in the ledger)',
+  );
+  print(
     '  failures: ${failuresFile.path} '
     '(${failures.length} entries, deduplicated by slug)',
   );
@@ -345,36 +451,163 @@ void _printProgress(
   int total,
   int downloaded,
   int failedNow,
+  int deferredNow,
   int skipped,
 ) {
   print(
     'fetch_saint_images [$processed/$total] '
-    'downloaded=$downloaded failed=$failedNow skipped=$skipped',
+    'downloaded=$downloaded failed=$failedNow '
+    'deferred=$deferredNow skipped=$skipped',
   );
 }
 
-/// Downloads [target], center-crops square, resizes to 256×256 and encodes
+/// Fetches [target], center-crops square, resizes to 256×256 and encodes
 /// the JPEG atomically at [thumbFile] (`.part` + rename, so an interrupted
 /// run never leaves a half-written thumb that skip-exists would honor).
-Future<void> _fetchAndProcessOne(
+///
+/// Retry + pacing policy (all budgets are per URL, inside this function so
+/// the run loop stays a thin router):
+///   - HTTP 429 / 5xx (throttle class): the [throttleWaits] backoff ladder
+///     (default 2s → 4s → 8s), with a `Retry-After` header honored instead
+///     of the rung when present; exhausted, throws
+///     [FetchThrottledException] — the URL is DEFERRED to the next re-run
+///     and must not be recorded as a permanent failure;
+///   - every other error — other 4xx, unparseable URL, undecodable body,
+///     connection/timeout — gets the brief's single immediate retry (with
+///     [_connectionRetryWait] spacing for connection/timeout blips), then
+///     throws [FetchFailedException] for the caller to ledger;
+///   - every completed request is spaced by [minRequestGap] via
+///     `pacingDelayAfter` (top-up model), across retries and URLs — the
+///     first request of a URL pays nothing.
+/// Public so `test/tools/thumb_fetch_pacing_test.dart` can drive it against
+/// a loopback HTTP stub; [throttleWaits] is a test seam, not production
+/// configuration (production callers use the default ladder).
+Future<void> fetchAndProcessOne(
   http.Client client,
-  _ImageTarget target,
-  File thumbFile,
-) async {
+  ImageTarget target,
+  File thumbFile, {
+  List<Duration>? throttleWaits,
+  Duration minRequestGap = _defaultMinRequestGap,
+}) async {
   final String url = wikimediaThumbUrl(target.url, width: _requestThumbSize);
-  final Uri uri = Uri.parse(url);
-  final http.Response response = await client
-      .get(uri, headers: <String, String>{'User-Agent': _userAgent})
-      .timeout(_requestTimeout);
-  if (response.statusCode != 200) {
-    throw FetchSaintImagesException('HTTP ${response.statusCode} from $url');
+  final Uri uri;
+  try {
+    uri = Uri.parse(url);
+  } on FormatException catch (error) {
+    throw FetchFailedException('url could not be parsed: $url ($error)');
   }
+
+  final List<Duration> waits = throttleWaits ?? _throttleWaits;
+  int throttleRetries = 0;
+  bool permanentRetried = false;
+  final Stopwatch requestWatch = Stopwatch();
+  Duration lastRequestElapsed = Duration.zero;
+  bool firstRequest = true;
+
+  while (true) {
+    if (!firstRequest) {
+      final Duration gap = pacingDelayAfter(lastRequestElapsed, minRequestGap);
+      if (gap > Duration.zero) {
+        await Future<void>.delayed(gap);
+      }
+    }
+    firstRequest = false;
+
+    requestWatch
+      ..reset()
+      ..start();
+    http.Response response;
+    try {
+      response = await client
+          .get(uri, headers: <String, String>{'User-Agent': _userAgent})
+          .timeout(_requestTimeout);
+    } on TimeoutException catch (error) {
+      requestWatch.stop();
+      lastRequestElapsed = requestWatch.elapsed;
+      // No status code and no Retry-After to honor — but a consistent
+      // timeout is a defect worth seeing in the ledger, so it only gets
+      // the brief's single retry (not the throttle ladder).
+      if (!permanentRetried) {
+        permanentRetried = true;
+        await Future<void>.delayed(_connectionRetryWait);
+        continue;
+      }
+      throw FetchFailedException(
+        'timed out after ${_requestTimeout.inSeconds}s: $url '
+        '(${_shortError(error)})',
+      );
+    } on Object catch (error) {
+      // Connection-level failure (SocketException, http.ClientException, …).
+      requestWatch.stop();
+      lastRequestElapsed = requestWatch.elapsed;
+      if (!permanentRetried) {
+        permanentRetried = true;
+        await Future<void>.delayed(_connectionRetryWait);
+        continue;
+      }
+      throw FetchFailedException(
+        'connection failed for $url: ${_shortError(error)}',
+      );
+    }
+    requestWatch.stop();
+    lastRequestElapsed = requestWatch.elapsed;
+
+    if (response.statusCode == 200) {
+      try {
+        _writeThumb(response, url, thumbFile);
+      } on FetchFailedException {
+        // Undecodable/malformed body: same permanent class as a bad status,
+        // so it shares the brief's single immediate retry.
+        if (!permanentRetried) {
+          permanentRetried = true;
+          continue;
+        }
+        rethrow;
+      }
+      final Duration gap = pacingDelayAfter(lastRequestElapsed, minRequestGap);
+      if (gap > Duration.zero) {
+        await Future<void>.delayed(gap);
+      }
+      return;
+    }
+
+    if (response.statusCode == 429 || response.statusCode >= 500) {
+      if (throttleRetries >= waits.length) {
+        throw FetchThrottledException(
+          'still throttled (last HTTP ${response.statusCode}) after '
+          '${throttleRetries + 1} attempts: $url',
+        );
+      }
+      throttleRetries++;
+      await Future<void>.delayed(
+        backoffDelayFor(
+          throttleRetries,
+          retryAfter: response.headers[HttpHeaders.retryAfterHeader],
+          waits: waits,
+        ),
+      );
+      continue;
+    }
+
+    // Every other status (400, 403, 404, …) is permanent for this URL.
+    if (!permanentRetried) {
+      permanentRetried = true;
+      continue;
+    }
+    throw FetchFailedException('HTTP ${response.statusCode} from $url');
+  }
+}
+
+/// Decodes `response`'s body, center-crops square, resizes to 256×256 and
+/// writes the JPEG atomically at [thumbFile]. Decode failure is a
+/// permanent data defect: [FetchFailedException].
+void _writeThumb(http.Response response, String url, File thumbFile) {
   final img.Image? decoded = img.decodeImage(
     Uint8List.fromList(response.bodyBytes),
     frame: 0,
   );
   if (decoded == null) {
-    throw FetchSaintImagesException(
+    throw FetchFailedException(
       'image decode failed for $url '
       '(${response.bodyBytes.length} bytes)',
     );

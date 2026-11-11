@@ -94,10 +94,12 @@ void main() {
       expect(wikimediaThumbUrl('not a url'), 'not a url');
       expect(wikimediaThumbUrl(''), '');
       expect(
+        wikimediaThumbUrl(
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/'
+          'Fresco.jpg',
+        ),
         'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/'
-            'Fresco.jpg',
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/'
-            'Fresco.jpg',
+        'Fresco.jpg',
       );
     });
   });
