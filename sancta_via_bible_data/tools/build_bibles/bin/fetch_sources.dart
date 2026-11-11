@@ -43,7 +43,23 @@
 ///   lock over (with a log line) once the PID is gone. The lock file is left
 ///   in place on release for resume consistency; crashed runs are detected
 ///   by the dead PID on the next run.
+/// - Transient transport failures are retried with a bounded per-request
+///   budget of 3 attempts (1 try + 2 retries): retryable error classes are
+///   `HttpException`/`SocketException`/`TimeoutException` (the connection
+///   closed/reset and stalled-body family) plus the wrapped read-idle-timeout
+///   error; missing-page (404/redirect) responses, HTTP 5xx failures, bk/ch
+///   anchor aborts, and shape violations are never retried. Each retry is
+///   logged grep-ably as `[retry] <label> attempt N/3: <error>` and counts as
+///   a request for the delay. Spacing: the throttled scraper keeps >= 5s
+///   (its robots gap) between attempts, escalating to ~2x the gap before the
+///   final attempt; plain/joined requests wait 5s, then 10s. The scraped
+///   source opens one short-lived client per attempt (closed with the
+///   response), so no connection is reused across the idle gap between
+///   requests (the keep-alive close race) — a deliberate choice over
+///   connection reuse since the handshake cost is negligible at a 5s cadence.
 /// - Every fetched response must be complete: when `Content-Length` is
+///   present the collected bytes must match exactly, empty bodies are
+///   rejected, and a stalled body aborts with a read-idle timeout.
 /// Behaviour:
 /// - First fetch (manifest `sha256` empty): pins `sha256`, `fileSize` and
 ///   `fetchedAt` into the manifest (for scraped sources: when the joined
@@ -261,15 +277,25 @@ Future<_FetchResult> _processSource({
 
   // Snapshot content resolver: plain single-file download, or a validated join
   // over the committed join list.
-  Future<List<int>> _fetchSnapshotBytes() => joinListName.isEmpty
-      ? _download(url)
-      : _downloadJoined(
-          id: id,
-          baseUri: url,
-          joinListFile: File('${manifestDir.path}/$joinListName'),
-          joinListName: joinListName,
-          expectedFileCount: entry['fileCount'] as int?,
-        );
+  // Plain source: single logical request; retried on transient transport
+  // errors (connection closed/reset/timeouts) before the failure is final.
+  Future<List<int>> _fetchSnapshotBytes() {
+    if (joinListName.isNotEmpty) {
+      return _downloadJoined(
+        id: id,
+        baseUri: url,
+        joinListFile: File('${manifestDir.path}/$joinListName'),
+        joinListName: joinListName,
+        expectedFileCount: entry['fileCount'] as int?,
+      );
+    }
+    return _retryTransient(
+      'plain $id',
+      () => _download(url),
+      firstRetryDelayMs: _fetchRetryDelayMs,
+      escalatedRetryDelayMs: _fetchRetryEscalatedDelayMs,
+    );
+  }
 
   // Idempotent path: the snapshot exists and its checksum is pinned, so only
   // verify (no network access).
@@ -399,9 +425,11 @@ Future<List<int>> _collectCompleteBody(
     await for (final List<int> chunk in response.timeout(_readIdleTimeout)) {
       builder.add(chunk);
     }
-  } on TimeoutException {
-    throw FetchException(
-      'read timed out for $url (no data for ${_readIdleTimeout.inSeconds}s): '
+  } on TimeoutException catch (e) {
+    // Transport-class: the body stalled, so the request is retried like any
+    // other transient failure (the descriptive original message is kept).
+    throw _TransientFetchException(
+      '${e.toString()} for $url (no data for ${_readIdleTimeout.inSeconds}s): '
       'stalled body',
     );
   }
@@ -464,12 +492,19 @@ Future<List<int>> _downloadJoined({
       final Uri fileUrl = Uri.parse(
         '${baseUri.toString()}${Uri.encodeComponent(fileName)}',
       );
-      final HttpClientRequest request = await client.getUrl(fileUrl);
-      final HttpClientResponse response = await request.close();
-      if (response.statusCode != HttpStatus.ok) {
-        throw FetchException('HTTP ${response.statusCode} for $fileUrl');
-      }
-      String text = utf8.decode(await _collectCompleteBody(response, fileUrl));
+      String text = await _retryTransient(
+        'joined $id $fileName',
+        () async {
+          final HttpClientRequest request = await client.getUrl(fileUrl);
+          final HttpClientResponse response = await request.close();
+          if (response.statusCode != HttpStatus.ok) {
+            throw FetchException('HTTP ${response.statusCode} for $fileUrl');
+          }
+          return utf8.decode(await _collectCompleteBody(response, fileUrl));
+        },
+        firstRetryDelayMs: _fetchRetryDelayMs,
+        escalatedRetryDelayMs: _fetchRetryEscalatedDelayMs,
+      );
       if (text.startsWith('\uFEFF')) {
         text = text.substring(1);
       }
@@ -540,6 +575,84 @@ String? joinShapeViolation(Map<String, dynamic> bookJson, String fileName) {
     }
   }
   return null;
+}
+
+// ---------------------------------------------------------------------------
+// Transient-transport retry (shared by every fetch mode)
+// ---------------------------------------------------------------------------
+
+/// Maximum attempts per single logical request (1 try + 2 retries).
+const int _maxFetchAttempts = 3;
+
+/// Delay before the first retry of a non-throttled (plain/joined) request.
+const int _fetchRetryDelayMs = 5000;
+
+/// Delay before the final retry of a non-throttled request; the throttled
+/// scraper escalates by this much on top of its own robots gap instead.
+const int _fetchRetryEscalatedDelayMs = 10000;
+
+/// Whether [error] is a transport-class failure worth retrying: the connection
+/// was closed/reset mid-request or a timeout hit. Hard gates (HTTP 5xx
+/// [FetchException]s, 404 missing pages, bk/ch anchor aborts, shape
+/// violations) are never retried.
+bool _isTransientTransportError(Object error) {
+  return error is HttpException ||
+      error is SocketException ||
+      error is TimeoutException ||
+      error is _TransientFetchException;
+}
+
+/// A transport-class failure that is safe to retry (wrapped where the original
+/// type would otherwise be lost to a FetchException).
+final class _TransientFetchException implements Exception {
+  const _TransientFetchException(this.message);
+
+  final String message;
+
+  @override
+  String toString() => message;
+}
+
+/// Runs [action] with bounded retries for transient transport errors: at most
+/// [_maxFetchAttempts] attempts per logical request, each failure logged
+/// grep-ably (`[retry] … attempt N/M: <error>`), the original error rethrown
+/// unchanged once attempts are exhausted.
+///
+/// Spacing (documented behaviour): [firstRetryDelayMs] before the second
+/// attempt and [escalatedRetryDelayMs] before the final one — the throttled
+/// scraper passes 0 / `crawlDelayMs` because its own robots gap (>= 5s) is
+/// enforced per attempt inside the action, so retries land ~5s apart and the
+/// final retry ~2x that; plain/joined requests pass 5000 / 10000.
+Future<T> _retryTransient<T>(
+  String label,
+  Future<T> Function() action, {
+  required int firstRetryDelayMs,
+  required int escalatedRetryDelayMs,
+}) async {
+  for (int attempt = 1; ; attempt++) {
+    try {
+      return await action();
+    } on Object catch (e) {
+      if (!_isTransientTransportError(e)) {
+        rethrow;
+      }
+      if (attempt >= _maxFetchAttempts) {
+        stdout.writeln(
+          '[retry]     $label gave up after $_maxFetchAttempts attempts: $e',
+        );
+        rethrow;
+      }
+      stdout.writeln(
+        '[retry]     $label attempt ${attempt + 1}/$_maxFetchAttempts: $e',
+      );
+      final int extra = attempt >= _maxFetchAttempts - 1
+          ? escalatedRetryDelayMs
+          : firstRetryDelayMs;
+      if (extra > 0) {
+        await Future<void>.delayed(Duration(milliseconds: extra));
+      }
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -665,29 +778,50 @@ bool _pidIsAlive(int processId) {
 // Scraped sources (drbo.org; kind selected by a `scrape` manifest entry)
 // ---------------------------------------------------------------------------
 
-/// Throttled HTTP client for scraped sources: a single connection, sequential
-/// requests, and a minimum gap of `crawlDelayMs` between request starts, so
-/// the upstream robots.txt crawl-delay is honored exactly.
+/// Throttled HTTP client for scraped sources: requests are sequential with a
+/// minimum gap of `crawlDelayMs` between request starts (the upstream
+/// robots.txt crawl-delay is honored exactly), and every attempt opens its own
+/// short-lived client that is closed as soon as the response body is read —
+/// no connection is ever held open across the idle gap between requests, so
+/// the server cannot close a reused connection out from under the next
+/// request (keep-alive race), and each retry starts on a fresh connection.
 final class _ThrottledScraper {
-  _ThrottledScraper(this.crawlDelayMs, this._httpClient)
+  _ThrottledScraper(this.crawlDelayMs)
     : lastRequestStart = DateTime.fromMillisecondsSinceEpoch(0);
 
   final int crawlDelayMs;
-  final HttpClient _httpClient;
 
   /// Start time of the most recent request (used to enforce the gap).
   DateTime lastRequestStart;
 
-  /// Requests issued so far (excluding never-issued failures).
+  /// Requests issued so far; every retry attempt is its own request for the
+  /// delay and this counter.
   int requestCount = 0;
 
   /// Minimum observed start-to-start gap between two requests (ms), or -1
   /// before the second request; surfaced as a run-time delay proof.
   int minGapMs = -1;
 
-  /// GETs [url] with `followRedirects` disabled. Returns the status, any
-  /// `Location` header, and the fully-read body for 200 responses only.
-  Future<({int status, String location, List<int>? bytes})> get(Uri url) async {
+  /// GETs [url] with `followRedirects` disabled and bounded transient-error
+  /// retries. Returns the status, any `Location` header, and the fully-read
+  /// body for 200 responses only. [label] names the logical request in the
+  /// grep-able retry log.
+  Future<({int status, String location, List<int>? bytes})> get(
+    Uri url, {
+    required String label,
+  }) {
+    return _retryTransient(
+      label,
+      () => _attemptGet(url),
+      firstRetryDelayMs: 0,
+      escalatedRetryDelayMs: crawlDelayMs,
+    );
+  }
+
+  /// One throttled request attempt; each attempt counts for the delay.
+  Future<({int status, String location, List<int>? bytes})> _attemptGet(
+    Uri url,
+  ) async {
     final DateTime now = DateTime.now();
     final int wait =
         crawlDelayMs + 50 - now.difference(lastRequestStart).inMilliseconds;
@@ -704,28 +838,34 @@ final class _ThrottledScraper {
     lastRequestStart = start;
     requestCount += 1;
 
-    final HttpClientRequest request = await _httpClient.getUrl(url);
-    request.followRedirects = false;
-    final HttpClientResponse response = await request.close();
-    if (response.statusCode == HttpStatus.ok) {
-      final List<int> bytes = await _collectCompleteBody(response, url);
-      return (status: response.statusCode, location: '', bytes: bytes);
+    final HttpClient client = HttpClient()
+      ..autoUncompress = true
+      ..connectionTimeout = const Duration(seconds: 30)
+      ..userAgent = 'sancta-via-fetch-sources';
+    try {
+      final HttpClientRequest request = await client.getUrl(url);
+      request.followRedirects = false;
+      final HttpClientResponse response = await request.close();
+      if (response.statusCode == HttpStatus.ok) {
+        final List<int> bytes = await _collectCompleteBody(response, url);
+        return (status: response.statusCode, location: '', bytes: bytes);
+      }
+      if (response.statusCode == HttpStatus.movedPermanently ||
+          response.statusCode == HttpStatus.found ||
+          response.statusCode == HttpStatus.movedTemporarily ||
+          response.statusCode == HttpStatus.notFound) {
+        return (
+          status: response.statusCode,
+          location: response.headers.value(HttpHeaders.locationHeader) ?? '',
+          bytes: null,
+        );
+      }
+      throw FetchException('HTTP ${response.statusCode} for $url');
+    } finally {
+      // Per-request client: never hold a connection open across the idle gap
+      // between requests.
+      client.close(force: true);
     }
-    if (response.statusCode == HttpStatus.movedPermanently ||
-        response.statusCode == HttpStatus.found ||
-        response.statusCode == HttpStatus.movedTemporarily ||
-        response.statusCode == HttpStatus.notFound) {
-      return (
-        status: response.statusCode,
-        location: response.headers.value(HttpHeaders.locationHeader) ?? '',
-        bytes: null,
-      );
-    }
-    throw FetchException('HTTP ${response.statusCode} for $url');
-  }
-
-  void close() {
-    _httpClient.close(force: true);
   }
 }
 
@@ -1171,206 +1311,200 @@ Future<_FetchResult> _processScrapeSource({
     );
   }
 
-  final HttpClient client = HttpClient()
-    ..autoUncompress = true
-    ..connectionTimeout = const Duration(seconds: 30)
-    ..userAgent = 'sancta-via-fetch-sources';
-  final _ThrottledScraper scraper = _ThrottledScraper(crawlDelayRaw, client);
+  final _ThrottledScraper scraper = _ThrottledScraper(crawlDelayRaw);
   final Map<String, (String, int)> keyToBook = _loadBookNamesForScrape(
     '${packageRoot.path}/$_bookNamesJsonRelativePath',
   );
-  try {
-    // Book names: cached homepage first, otherwise one throttled fetch.
-    final File indexCache = File('${cacheDir.path}/index.htm');
-    String homepage;
-    if (indexCache.existsSync()) {
-      homepage = utf8.decode(indexCache.readAsBytesSync());
-      stdout.writeln('[scrape]   book-name index: cached (${indexCache.path})');
-    } else {
-      final r = await scraper.get(bookNamesUri);
-      if (r.status != HttpStatus.ok || r.bytes == null) {
-        throw FetchException(
-          'HTTP ${r.status} for the book-name index $bookNamesUrl',
-        );
-      }
-      homepage = utf8.decode(r.bytes!);
-      cacheDir.createSync(recursive: true);
-      indexCache.writeAsBytesSync(r.bytes!);
-      stdout.writeln('[scrape]   book-name index: fetched ($bookNamesUrl)');
+  // Book names: cached homepage first, otherwise one throttled fetch.
+  final File indexCache = File('${cacheDir.path}/index.htm');
+  String homepage;
+  if (indexCache.existsSync()) {
+    homepage = utf8.decode(indexCache.readAsBytesSync());
+    stdout.writeln('[scrape]   book-name index: cached (${indexCache.path})');
+  } else {
+    final r = await scraper.get(bookNamesUri, label: '$id book-name index');
+    if (r.status != HttpStatus.ok || r.bytes == null) {
+      throw FetchException(
+        'HTTP ${r.status} for the book-name index $bookNamesUrl',
+      );
     }
-    final Map<int, String> drboNames = _parseDrboBookNames(
-      homepage,
-      'book-name index',
-    );
+    homepage = utf8.decode(r.bytes!);
+    cacheDir.createSync(recursive: true);
+    indexCache.writeAsBytesSync(r.bytes!);
+    stdout.writeln('[scrape]   book-name index: fetched ($bookNamesUrl)');
+  }
+  final Map<int, String> drboNames = _parseDrboBookNames(
+    homepage,
+    'book-name index',
+  );
 
-    if (smoke) {
-      return await _scrapeSmoke(
+  if (smoke) {
+    return await _scrapeSmoke(
+      id: id,
+      scraper: scraper,
+      baseUri: baseUri,
+      drboNames: drboNames,
+      cacheDir: cacheDir,
+      metadata: metadata,
+      scrape: scrape,
+      keyToBook: keyToBook,
+    );
+  }
+
+  final (
+    Map<int, int> counts,
+    List<String> overridden,
+  ) = _drboChapterCountTable(
+    keyToBook: keyToBook,
+    drboNames: drboNames,
+    expectedStructurePath:
+        '${packageRoot.path}/$_expectedStructureRelativePath',
+    scrape: scrape,
+  );
+  final int totalChapters = counts.values.fold(
+    0,
+    (int sum, int count) => sum + count,
+  );
+
+  // Load (or initialize) the boundary-verification cache.
+  final Map<String, dynamic> meta = metadata.existsSync()
+      ? jsonDecode(metadata.readAsStringSync()) as Map<String, dynamic>
+      : <String, dynamic>{'books': <String, dynamic>{}};
+  final Object? booksRaw = meta['books'];
+  if (booksRaw is! Map<String, dynamic>) {
+    // repair or initialize
+  }
+  final Map<String, dynamic> booksMeta = booksRaw is Map<String, dynamic>
+      ? booksRaw
+      : <String, dynamic>{};
+  meta['books'] = booksMeta;
+
+  // Full crawl: boundary verification first (so a disagreement with the
+  // cpdv-derived table aborts before any chapter pages are fetched).
+  for (final MapEntry<int, String> bookEntry in drboNames.entries) {
+    final int bk = bookEntry.key;
+    final String name = bookEntry.value;
+    final int expectedCount = counts[bk]!;
+    if (!_boundaryVerified(booksMeta, bk, expectedCount)) {
+      await _verifyBookBoundary(
+        id: id,
         scraper: scraper,
         baseUri: baseUri,
-        drboNames: drboNames,
+        bk: bk,
+        name: name,
+        expectedCount: expectedCount,
         cacheDir: cacheDir,
-        metadata: metadata,
+        booksMeta: booksMeta,
         scrape: scrape,
-        keyToBook: keyToBook,
       );
+      _saveMeta(metadata, meta);
     }
-
-    final (
-      Map<int, int> counts,
-      List<String> overridden,
-    ) = _drboChapterCountTable(
-      keyToBook: keyToBook,
-      drboNames: drboNames,
-      expectedStructurePath:
-          '${packageRoot.path}/$_expectedStructureRelativePath',
-      scrape: scrape,
-    );
-    final int totalChapters = counts.values.fold(
-      0,
-      (int sum, int count) => sum + count,
-    );
-
-    // Load (or initialize) the boundary-verification cache.
-    final Map<String, dynamic> meta = metadata.existsSync()
-        ? jsonDecode(metadata.readAsStringSync()) as Map<String, dynamic>
-        : <String, dynamic>{'books': <String, dynamic>{}};
-    final Object? booksRaw = meta['books'];
-    if (booksRaw is! Map<String, dynamic>) {
-      // repair or initialize
-    }
-    final Map<String, dynamic> booksMeta = booksRaw is Map<String, dynamic>
-        ? booksRaw
-        : <String, dynamic>{};
-    meta['books'] = booksMeta;
-
-    // Full crawl: boundary verification first (so a disagreement with the
-    // cpdv-derived table aborts before any chapter pages are fetched).
-    for (final MapEntry<int, String> bookEntry in drboNames.entries) {
-      final int bk = bookEntry.key;
-      final String name = bookEntry.value;
-      final int expectedCount = counts[bk]!;
-      if (!_boundaryVerified(booksMeta, bk, expectedCount)) {
-        await _verifyBookBoundary(
-          scraper: scraper,
-          baseUri: baseUri,
-          bk: bk,
-          name: name,
-          expectedCount: expectedCount,
-          cacheDir: cacheDir,
-          booksMeta: booksMeta,
-          scrape: scrape,
-        );
-        _saveMeta(metadata, meta);
-      }
-    }
-
-    // Scrape every chapter of every book.
-    final Map<int, Map<int, Map<int, String>>> books =
-        <int, Map<int, Map<int, String>>>{};
-    int fetched = 0;
-    int cached = 0;
-    for (final MapEntry<int, String> bookEntry in drboNames.entries) {
-      final int bk = bookEntry.key;
-      final String name = bookEntry.value;
-      final int expectedCount = counts[bk]!;
-      final Map<int, Map<int, String>> chapterTexts = <int, Map<int, String>>{};
-      for (int chapter = 1; chapter <= expectedCount; chapter++) {
-        final String code = _drboCode(bk, chapter);
-        final File rawCache = File('${cacheDir.path}/$code.htm');
-        final String url = '${baseUri.toString()}$code.htm';
-        String page;
-        if (rawCache.existsSync()) {
-          page = utf8.decode(rawCache.readAsBytesSync());
-          cached += 1;
-        } else {
-          cacheDir.createSync(recursive: true);
-          final r = await scraper.get(Uri.parse(url));
-          if (_drboIsMissingPage(r.status, r.location)) {
-            throw FetchException(
-              'bk=$bk "$name" chapter $chapter ($url) does not exist although '
-              'the expected count is $expectedCount; aborting (boundary '
-              'disagreement? adjust scrape.chapterCountOverrides)',
-            );
-          }
-          if (r.status != HttpStatus.ok || r.bytes == null) {
-            throw FetchException('HTTP ${r.status} for $url');
-          }
-          rawCache.writeAsBytesSync(r.bytes!);
-          page = utf8.decode(r.bytes!);
-          fetched += 1;
-        }
-        final _DrboChapter parsed = _parseDrboChapterPage(
-          html: page,
-          requestedBk: bk,
-          requestedCh: chapter,
-          bookKey: name,
-          debugLabel: '$name $chapter ($code.htm)',
-        );
-        chapterTexts[chapter] = parsed.verses;
-      }
-      books[bk] = chapterTexts;
-      final int bookVerses = chapterTexts.values.fold(
-        0,
-        (int sum, Map<int, String> verses) => sum + verses.length,
-      );
-      stdout.writeln(
-        '[scrape]   bk=$bk "$name": $expectedCount chapters, '
-        '$bookVerses verses (fetched $fetched, cached $cached so far)',
-      );
-    }
-
-    // Shape-validate the full join before writing: verse keys exactly 1..N
-    // (the same gate validate_sources.dart applies to joined JSON snapshots).
-    final Map<String, Map<String, dynamic>> joined =
-        <String, Map<String, dynamic>>{};
-    int chapterTotal = 0;
-    int verseTotal = 0;
-    for (final MapEntry<int, String> bookEntry in drboNames.entries) {
-      final int bk = bookEntry.key;
-      final String name = bookEntry.value;
-      final Map<int, Map<int, String>> chapterTexts = books[bk]!;
-      joined[name] = <String, dynamic>{
-        for (final int chapter in chapterTexts.keys)
-          '$chapter': <String, String>{
-            for (final int verse in chapterTexts[chapter]!.keys)
-              '$verse': chapterTexts[chapter]![verse]!,
-          },
-      };
-      chapterTotal += chapterTexts.length;
-      verseTotal += chapterTexts.values.fold(
-        0,
-        (int sum, Map<int, String> verses) => sum + verses.length,
-      );
-    }
-    if (joined.length != bookCount!) {
-      throw FetchException(
-        'scrape produced ${joined.length} books, manifest expects $bookCount',
-      );
-    }
-    if (chapterTotal != totalChapters) {
-      throw FetchException(
-        'scrape produced $chapterTotal chapters, expected $totalChapters from the count table',
-      );
-    }
-
-    cacheDir.createSync(recursive: true);
-    const JsonEncoder encoder = JsonEncoder.withIndent('  ');
-    final List<int> bytes = utf8.encode('${encoder.convert(joined)}\n');
-    dest.writeAsBytesSync(bytes);
-    final String sha256Hex = _sha256OfBytes(bytes);
-    stdout.writeln(
-      '[scrape]   complete: wrote ${dest.path} ($chapterTotal chapters, '
-      '$verseTotal verses, ${bytes.length} bytes); '
-      'fetched $fetched, cached $cached; min request gap '
-      '${scraper.minGapMs}ms over ${scraper.requestCount} requests',
-    );
-    entry['sha256'] = sha256Hex;
-    entry['fileSize'] = bytes.length;
-    entry['fetchedAt'] = DateTime.now().toUtc().toIso8601String();
-    return _FetchResult.pinned;
-  } finally {
-    scraper.close();
   }
+
+  // Scrape every chapter of every book.
+  final Map<int, Map<int, Map<int, String>>> books =
+      <int, Map<int, Map<int, String>>>{};
+  int fetched = 0;
+  int cached = 0;
+  for (final MapEntry<int, String> bookEntry in drboNames.entries) {
+    final int bk = bookEntry.key;
+    final String name = bookEntry.value;
+    final int expectedCount = counts[bk]!;
+    final Map<int, Map<int, String>> chapterTexts = <int, Map<int, String>>{};
+    for (int chapter = 1; chapter <= expectedCount; chapter++) {
+      final String code = _drboCode(bk, chapter);
+      final File rawCache = File('${cacheDir.path}/$code.htm');
+      final String url = '${baseUri.toString()}$code.htm';
+      String page;
+      if (rawCache.existsSync()) {
+        page = utf8.decode(rawCache.readAsBytesSync());
+        cached += 1;
+      } else {
+        cacheDir.createSync(recursive: true);
+        final r = await scraper.get(Uri.parse(url), label: '$id chapter $code');
+        if (_drboIsMissingPage(r.status, r.location)) {
+          throw FetchException(
+            'bk=$bk "$name" chapter $chapter ($url) does not exist although '
+            'the expected count is $expectedCount; aborting (boundary '
+            'disagreement? adjust scrape.chapterCountOverrides)',
+          );
+        }
+        if (r.status != HttpStatus.ok || r.bytes == null) {
+          throw FetchException('HTTP ${r.status} for $url');
+        }
+        rawCache.writeAsBytesSync(r.bytes!);
+        page = utf8.decode(r.bytes!);
+        fetched += 1;
+      }
+      final _DrboChapter parsed = _parseDrboChapterPage(
+        html: page,
+        requestedBk: bk,
+        requestedCh: chapter,
+        bookKey: name,
+        debugLabel: '$name $chapter ($code.htm)',
+      );
+      chapterTexts[chapter] = parsed.verses;
+    }
+    books[bk] = chapterTexts;
+    final int bookVerses = chapterTexts.values.fold(
+      0,
+      (int sum, Map<int, String> verses) => sum + verses.length,
+    );
+    stdout.writeln(
+      '[scrape]   bk=$bk "$name": $expectedCount chapters, '
+      '$bookVerses verses (fetched $fetched, cached $cached so far)',
+    );
+  }
+
+  // Shape-validate the full join before writing: verse keys exactly 1..N
+  // (the same gate validate_sources.dart applies to joined JSON snapshots).
+  final Map<String, Map<String, dynamic>> joined =
+      <String, Map<String, dynamic>>{};
+  int chapterTotal = 0;
+  int verseTotal = 0;
+  for (final MapEntry<int, String> bookEntry in drboNames.entries) {
+    final int bk = bookEntry.key;
+    final String name = bookEntry.value;
+    final Map<int, Map<int, String>> chapterTexts = books[bk]!;
+    joined[name] = <String, dynamic>{
+      for (final int chapter in chapterTexts.keys)
+        '$chapter': <String, String>{
+          for (final int verse in chapterTexts[chapter]!.keys)
+            '$verse': chapterTexts[chapter]![verse]!,
+        },
+    };
+    chapterTotal += chapterTexts.length;
+    verseTotal += chapterTexts.values.fold(
+      0,
+      (int sum, Map<int, String> verses) => sum + verses.length,
+    );
+  }
+  if (joined.length != bookCount!) {
+    throw FetchException(
+      'scrape produced ${joined.length} books, manifest expects $bookCount',
+    );
+  }
+  if (chapterTotal != totalChapters) {
+    throw FetchException(
+      'scrape produced $chapterTotal chapters, expected $totalChapters from the count table',
+    );
+  }
+
+  cacheDir.createSync(recursive: true);
+  const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+  final List<int> bytes = utf8.encode('${encoder.convert(joined)}\n');
+  dest.writeAsBytesSync(bytes);
+  final String sha256Hex = _sha256OfBytes(bytes);
+  stdout.writeln(
+    '[scrape]   complete: wrote ${dest.path} ($chapterTotal chapters, '
+    '$verseTotal verses, ${bytes.length} bytes); '
+    'fetched $fetched, cached $cached; min request gap '
+    '${scraper.minGapMs}ms over ${scraper.requestCount} requests',
+  );
+  entry['sha256'] = sha256Hex;
+  entry['fileSize'] = bytes.length;
+  entry['fetchedAt'] = DateTime.now().toUtc().toIso8601String();
+  return _FetchResult.pinned;
 }
 
 /// Reads the cached boundary verdict for [bk]; returns whether a previous run
@@ -1395,6 +1529,7 @@ bool _boundaryVerified(
 /// small buffer further to report the verified structure, then fail - no data
 /// is emitted on disagreement.
 Future<void> _verifyBookBoundary({
+  required String id,
   required _ThrottledScraper scraper,
   required Uri baseUri,
   required int bk,
@@ -1409,7 +1544,10 @@ Future<void> _verifyBookBoundary({
   while (true) {
     final String code = _drboCode(bk, probe);
     final String url = '${baseUri.toString()}$code.htm';
-    final r = await scraper.get(Uri.parse(url));
+    final r = await scraper.get(
+      Uri.parse(url),
+      label: '$id boundary probe $code',
+    );
     if (_drboIsMissingPage(r.status, r.location)) {
       booksMeta['$bk'] = <String, dynamic>{
         'count': expectedCount,
@@ -1445,6 +1583,7 @@ void _saveMeta(File metadata, Map<String, dynamic> meta) {
 /// one-past boundary pages (which must not exist). Never writes the snapshot;
 /// prints shape, anchor, timing and gate evidence.
 Future<_FetchResult> _scrapeSmoke({
+  required String id,
   required _ThrottledScraper scraper,
   required Uri baseUri,
   required Map<int, String> drboNames,
@@ -1485,6 +1624,7 @@ Future<_FetchResult> _scrapeSmoke({
     } else {
       final r = await scraper.get(
         Uri.parse('${baseUri.toString()}$boundaryCode.htm'),
+        label: '$id boundary probe $boundaryCode [smoke]',
       );
       if (!_drboIsMissingPage(r.status, r.location)) {
         throw FetchException(
@@ -1513,7 +1653,10 @@ Future<_FetchResult> _scrapeSmoke({
       page = utf8.decode(rawCache.readAsBytesSync());
       stdout.writeln('[smoke]     $code.htm: cached');
     } else {
-      final rc = await scraper.get(Uri.parse(url));
+      final rc = await scraper.get(
+        Uri.parse(url),
+        label: '$id chapter $code [smoke]',
+      );
       if (rc.status != HttpStatus.ok || rc.bytes == null) {
         throw FetchException('smoke: HTTP ${rc.status} for $url');
       }
