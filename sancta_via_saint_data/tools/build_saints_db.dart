@@ -159,13 +159,16 @@ Future<void> _run() async {
       Saint.fromSourceJson(record),
   ];
 
-  // Cross-check the build against the committed manifest.
+  // Cross-check the build against the committed manifest. Counts describe the
+  // set the build actually inserts: draft records are the documented
+  // exclusion mechanism and never reach the database.
   final int expectedSaintCount = manifest['saintCount']! as int;
   final List<String> manifestMismatches = <String>[];
-  if (expectedSaintCount != records.length) {
+  if (expectedSaintCount != saints.length) {
     manifestMismatches.add(
-      'saintCount: manifest $expectedSaintCount vs source json '
-      '${records.length} records',
+      'saintCount: manifest $expectedSaintCount vs inserted '
+      '${saints.length} saints (${records.length} records, '
+      '${records.length - saints.length} drafts skipped)',
     );
   }
   final Map<String, int> computedCategoryCounts = <String, int>{
@@ -293,7 +296,8 @@ Future<void> _run() async {
     print('  records: ${records.length} (drafts skipped: $draftsSkipped)');
     print(
       '  manifest cross-check: saintCount $expectedSaintCount == '
-      '${records.length}; categoryCounts all match',
+      '${saints.length} inserted (drafts skipped: $draftsSkipped); '
+      'categoryCounts all match',
     );
     print('  saints rows: ${saints.length}');
     print(
