@@ -5,6 +5,7 @@
 /// search APIs grow in later tasks.
 library saint_data;
 
+export 'src/db/saints_schema.dart';
 export 'src/models/saint.dart';
 export 'src/models/saint_category.dart';
 export 'src/models/saint_search_result.dart';

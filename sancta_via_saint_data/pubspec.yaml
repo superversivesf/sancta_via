@@ -9,6 +9,7 @@ dependencies:
     sdk: flutter
   path: ^1.9.0
   sqflite: ^2.3.3+1
+  sqflite_common: ^2.5.0
 dev_dependencies:
   crypto: ^3.0.0
   flutter_lints: ^6.0.0
@@ -20,3 +21,15 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+
+# Dev/test/tool build-hook defines (only take effect when this package is the
+# build workspace root, never for apps depending on it). The sqlite3 bundled
+# native-assets build lacks FTS4 ("no such module: fts4"); spec section 6 pins
+# the search table to FTS4 + unicode61, so on host machines the hook links the
+# system SQLite, which enables FTS3/FTS4/FTS5. Device builds are unaffected.
+hooks:
+  user_defines:
+    sqlite3:
+      source:
+        macos: system
+        linux: system
