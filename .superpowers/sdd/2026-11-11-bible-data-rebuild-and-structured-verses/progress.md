@@ -57,3 +57,6 @@ Tasks tracked here (todo):
 
 Minor-findings register (fed to final review):
 (none yet)
+Task 2: fix round 1/5 — Important: no cross-process crawl guard (lockfile) — two concurrent fetch_sources instances would double the effective request rate and violate Crawl-delay 5 (fetch_sources.dart:528-623).
+Task 2: minor (deferred): manifest Esther-verification provenance typo 01916→19016/01917→19017; dead destructured `overridden` at _drboChapterCountTable call sites (:1077/:1315); dead cacheDir+scrape params in _verifyBookBoundary; dead empty `if (booksRaw is! Map...)` :1095-1097; lowercaset-only residual-entity regex; exanx-era fail message attributing post-crawl drc violations to the corrupt exanx join; --smoke summary counts drc as verified without qualifier; near-duplicate bookNames validators (dev-only tools). Final review triages.
+Task 2: fix round 1/5 (1 addressed, 0 open — cross-process crawl lock w/ stale-PID takeover; commits 832f942..56a3f1b)
