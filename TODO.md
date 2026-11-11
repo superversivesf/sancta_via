@@ -77,3 +77,7 @@
 ---
 
 *All issues in this document have been resolved. This file is retained for historical reference.*
+## Open roadmap ideas (2026-11-12)
+
+### Saint histories (saint-companion / saint-for-that extension)
+"Saint for that" currently ships each saint with a short story/blurb + a prayer (the saint_data snapshot mirrors it). Roadmap idea: extend to actual full saint HISTORIES (longer biographies — lives, dates, canonization, major patronage incidents) for the saint companion app's detail screen. Candidate sources for later research: traditional hagiography sources in the public domain (e.g. Butler's Lives of the Saints, Alban Butler rev. editions, catholicculture.org, newadvent.org/cathen) — license/PD per-source verification required like the DRC work. Record in the saint-companion plan's research doc when picked up (docs/superpowers/research/).
