@@ -7,6 +7,12 @@
 // overridden with a fixed `LiturgicalDayData` (or null) at every test, which
 // both pins the celebration rendering and keeps
 // `currentDateProvider`'s periodic timer out of the fake-async test zone.
+// Fix round 1 adds a real-path load-failure test: the production
+// `SaintRepository.instance` runs against a read-only corrupt database
+// fixture at a redirected databases path (same technique as the
+// saint_data loader tests).
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -263,6 +269,98 @@ void main() {
     }
   }
 
+  testWidgets(
+    'renders the load error state with a retry affordance when the real database load fails',
+    (WidgetTester tester) async {
+      // Fix round 1: the error state must be REACHABLE, not merely
+      // constructible. No provider stubs and no injected repository: the
+      // production `SaintRepository.instance` load path runs against a
+      // genuinely unopenable database. Mirroring the saint_data loader-test
+      // fixture: a read-only corrupt copy sits at the databases path, the
+      // refresh layer cannot heal it (the bundled `assets/saints.db` key is
+      // not part of this app's test asset bundle) and the OPEN itself
+      // fails — before the saint_data fix this surfaced as "No saints" +
+      // a 0-count grid; now `ensureLoaded` propagates the failure into the
+      // keyed error cards.
+      final ProviderContainer container = ProviderContainer(
+        overrides: <Override>[
+          currentLiturgicalDayProvider.overrideWith((Ref ref) => null),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      // All real-I/O work (fixture setup + the genuine production load
+      // path) must run inside the real-time zone: FFI isolate replies never
+      // resume awaits parked in the fake-async test zone. The fixture
+      // mirrors the saint_data loader tests: a read-only corrupt copy at a
+      // redirected databases path — the refresh layer cannot heal it (the
+      // bundled `assets/saints.db` key is not part of this app's test asset
+      // bundle) and the OPEN itself fails.
+      await tester.runAsync(() async {
+        final String previousDatabasesPath = await databaseFactory
+            .getDatabasesPath();
+        final Directory tempDir = await Directory.systemTemp.createTemp(
+          'saints_home_fail_',
+        );
+        await databaseFactory.setDatabasesPath(tempDir.path);
+        final String dbPath = '${tempDir.path}/saints.db';
+        await File(
+          dbPath,
+        ).writeAsBytes(List<int>.generate(5000, (int i) => i % 251));
+        await Process.run('chmod', <String>['444', dbPath]);
+
+        // Warm the three repository-backed providers through the production
+        // `SaintRepository.instance` — no stubs, no injected repository.
+        await Future.wait(<Future<Object?>>[
+          _settleFuture(container.read(saintsTodayProvider.future)),
+          _settleFuture(container.read(featuredSaintsProvider.future)),
+          _settleFuture(container.read(categoryCountsProvider.future)),
+        ]);
+
+        // Cleanup while still in the real-time zone.
+        await databaseFactory.setDatabasesPath(previousDatabasesPath);
+        await tempDir.delete(recursive: true);
+      });
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(home: HomeScreen()),
+        ),
+      );
+      await tester.pump();
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('load_error_state_today')), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('load_error_state_today')),
+          matching: find.byType(FilledButton),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('load_error_state_today')),
+          matching: find.text('Retry'),
+        ),
+        findsOneWidget,
+      );
+      // All three repository-backed sections carry their own key (they all
+      // fail through the same unavailable database).
+      expect(
+        find.byKey(const Key('load_error_state_featured')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('load_error_state_categories')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('today_empty_state')), findsNothing);
+      expect(find.text('St. Feast Today'), findsNothing);
+    },
+  );
+
   testWidgets('renders today\'s saint under today_saints_section', (
     WidgetTester tester,
   ) async {
@@ -359,6 +457,16 @@ void main() {
       expect(find.text('Saint Paul of the Cross'), findsOneWidget);
       expect(find.text('Memorial'), findsOneWidget);
 
+      // Spec §8 ordering (fix round 1): the celebration card leads the
+      // home screen, ahead of Today's Saints.
+      final Offset liturgicalTop = tester.getTopLeft(
+        find.byType(LiturgicalDayCard),
+      );
+      final Offset todayTop = tester.getTopLeft(
+        find.byKey(const Key('today_saints_section')),
+      );
+      expect(liturgicalTop.dy, lessThan(todayTop.dy));
+
       // The colored dot comes from celebrations' RED color (shared palette's
       // vibrant red).
       final Finder dotFinder = find.byWidgetPredicate(
@@ -370,28 +478,6 @@ void main() {
       expect(dotFinder, findsOneWidget);
       final Container dot = tester.widget<Container>(dotFinder);
       expect((dot.decoration! as BoxDecoration).color, const Color(0xFFD32F2F));
-    },
-  );
-
-  testWidgets(
-    'renders the load error state with a retry affordance when a provider fails',
-    (WidgetTester tester) async {
-      // Ledger preflight ruling: failed repository loads surface a
-      // keyed error state with a retry button instead of a blank screen.
-      await pumpHomeScreen(
-        tester,
-        preWarmToday: false, // the today provider is stubbed to throw
-        extraOverrides: <Override>[
-          saintsTodayProvider.overrideWith(
-            (Ref ref) async => throw Exception('saints db unavailable'),
-          ),
-        ],
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.byKey(const Key('load_error_state')), findsOneWidget);
-      expect(find.byType(FilledButton), findsOneWidget);
-      expect(find.text('Retry'), findsOneWidget);
     },
   );
 
@@ -409,4 +495,16 @@ void main() {
     expect(find.byType(Container), findsNothing);
     expect(find.byType(Icon), findsNothing);
   });
+}
+
+/// Awaits [future], returning its result or — when it completes with an
+/// error — the error itself, so the real-path load-failure warm-up can
+/// drive all three repository-backed providers regardless of whether the
+/// load fails (error expected) or silently succeeds (pre-fix behavior).
+Future<Object?> _settleFuture<T>(Future<T> future) async {
+  try {
+    return await future;
+  } on Object catch (error) {
+    return error;
+  }
 }

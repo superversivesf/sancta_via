@@ -51,11 +51,13 @@ void main() {
     appRouter.go('/nope');
     await tester.pumpAndSettle();
 
-    // Back-home affordance must be rendered
-    expect(find.byType(FilledButton), findsOneWidget);
+    // Back-home affordance must be rendered (targeted by text: the home
+    // screen may also show its own keyed Retry buttons when the saints
+    // database is unavailable in the test env)
+    expect(find.widgetWithText(FilledButton, 'Back to Home'), findsOneWidget);
 
     // Tapping it returns to home
-    await tester.tap(find.byType(FilledButton));
+    await tester.tap(find.widgetWithText(FilledButton, 'Back to Home'));
     await tester.pumpAndSettle();
     expect(find.text('Saints'), findsWidgets);
   });

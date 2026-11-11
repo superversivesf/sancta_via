@@ -39,6 +39,9 @@ class HomeScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              // Spec §8 order: the liturgical celebration card leads.
+              LiturgicalDayCard(day: liturgicalDay),
+              const SizedBox(height: 24),
               _HomeSection(
                 key: const Key('today_saints_section'),
                 title: "Today's Saints",
@@ -55,8 +58,6 @@ class HomeScreen extends ConsumerWidget {
                 title: 'Browse by Need',
                 child: _buildCategorySection(context, ref),
               ),
-              const SizedBox(height: 24),
-              LiturgicalDayCard(day: liturgicalDay),
             ],
           ),
         ),
@@ -70,8 +71,10 @@ class HomeScreen extends ConsumerWidget {
     final AsyncValue<List<Saint>> today = ref.watch(saintsTodayProvider);
     return today.when(
       loading: () => const _SectionSpinner(),
-      error: (Object error, StackTrace stackTrace) =>
-          _ErrorCard(onRetry: () => ref.invalidate(saintsTodayProvider)),
+      error: (Object error, StackTrace stackTrace) => _ErrorCard(
+        stateKey: const Key('load_error_state_today'),
+        onRetry: () => ref.invalidate(saintsTodayProvider),
+      ),
       data: (List<Saint> saints) {
         if (saints.isEmpty) {
           return const Padding(
@@ -97,8 +100,10 @@ class HomeScreen extends ConsumerWidget {
     final AsyncValue<List<Saint>> featured = ref.watch(featuredSaintsProvider);
     return featured.when(
       loading: () => const _SectionSpinner(),
-      error: (Object error, StackTrace stackTrace) =>
-          _ErrorCard(onRetry: () => ref.invalidate(featuredSaintsProvider)),
+      error: (Object error, StackTrace stackTrace) => _ErrorCard(
+        stateKey: const Key('load_error_state_featured'),
+        onRetry: () => ref.invalidate(featuredSaintsProvider),
+      ),
       data: (List<Saint> saints) {
         if (saints.isEmpty) {
           return const Padding(
@@ -134,8 +139,10 @@ class HomeScreen extends ConsumerWidget {
     );
     return counts.when(
       loading: () => const _SectionSpinner(),
-      error: (Object error, StackTrace stackTrace) =>
-          _ErrorCard(onRetry: () => ref.invalidate(categoryCountsProvider)),
+      error: (Object error, StackTrace stackTrace) => _ErrorCard(
+        stateKey: const Key('load_error_state_categories'),
+        onRetry: () => ref.invalidate(categoryCountsProvider),
+      ),
       data: (Map<SaintCategory, int> counts) {
         return GridView(
           // Fixed tile height (mainAxisExtent) keeps the two-line category
@@ -159,15 +166,20 @@ class HomeScreen extends ConsumerWidget {
 }
 
 /// A keyed error card with a retry button, shown when a provider fails.
+/// Each section passes [stateKey] (`load_error_state_<section>`) so keyed
+/// lookups target one section's error state.
 class _ErrorCard extends StatelessWidget {
-  const _ErrorCard({required this.onRetry});
+  const _ErrorCard({required this.stateKey, required this.onRetry});
+
+  /// Key for the rendered card, e.g. `Key('load_error_state_today')`.
+  final Key stateKey;
 
   final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      key: const Key('load_error_state'),
+      key: stateKey,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
