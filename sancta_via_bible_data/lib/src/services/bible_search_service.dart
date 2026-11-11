@@ -61,8 +61,10 @@ class BibleSearchService {
 
     // Create word boundary regex if wholeWords is true
     final searchPattern = wholeWords
-        ? RegExp(r'\b' + RegExp.escape(processedQuery) + r'\b',
-            caseSensitive: caseSensitive)
+        ? RegExp(
+            r'\b' + RegExp.escape(processedQuery) + r'\b',
+            caseSensitive: caseSensitive,
+          )
         : null;
 
     for (final book in bible.books) {
@@ -79,8 +81,9 @@ class BibleSearchService {
 
       for (final chapter in book.chapters) {
         for (final verse in chapter.verses) {
-          final verseText =
-              caseSensitive ? verse.text : verse.text.toLowerCase();
+          final verseText = caseSensitive
+              ? verse.text
+              : verse.text.toLowerCase();
           bool matches = false;
 
           if (wholeWords && searchPattern != null) {
@@ -91,19 +94,27 @@ class BibleSearchService {
 
           if (matches) {
             final reference = ScriptureReference.verse(
-                book.name, chapter.number, verse.number);
+              book.name,
+              chapter.number,
+              verse.number,
+            );
 
             // Calculate relevance score
-            final relevance =
-                _calculateRelevance(verse.text, processedQuery, caseSensitive);
+            final relevance = _calculateRelevance(
+              verse.text,
+              processedQuery,
+              caseSensitive,
+            );
 
-            results.add(SearchResult(
-              verse: verse,
-              book: book,
-              chapter: chapter,
-              reference: reference,
-              relevance: relevance,
-            ));
+            results.add(
+              SearchResult(
+                verse: verse,
+                book: book,
+                chapter: chapter,
+                reference: reference,
+                relevance: relevance,
+              ),
+            );
 
             if (results.length >= maxResults) {
               break;
@@ -183,8 +194,9 @@ class BibleSearchService {
     if (words.isEmpty) return [];
 
     final results = <SearchResult>[];
-    final processedWords =
-        caseSensitive ? words : words.map((w) => w.toLowerCase()).toList();
+    final processedWords = caseSensitive
+        ? words
+        : words.map((w) => w.toLowerCase()).toList();
 
     for (final book in bible.books) {
       // Apply filters
@@ -197,28 +209,38 @@ class BibleSearchService {
 
       for (final chapter in book.chapters) {
         for (final verse in chapter.verses) {
-          final verseText =
-              caseSensitive ? verse.text : verse.text.toLowerCase();
+          final verseText = caseSensitive
+              ? verse.text
+              : verse.text.toLowerCase();
 
           // Check if all words are present
-          final allWordsPresent =
-              processedWords.every((word) => verseText.contains(word));
+          final allWordsPresent = processedWords.every(
+            (word) => verseText.contains(word),
+          );
 
           if (allWordsPresent) {
             final reference = ScriptureReference.verse(
-                book.name, chapter.number, verse.number);
+              book.name,
+              chapter.number,
+              verse.number,
+            );
 
             // Calculate relevance based on all words
             final relevance = _calculateMultiWordRelevance(
-                verse.text, processedWords, caseSensitive);
+              verse.text,
+              processedWords,
+              caseSensitive,
+            );
 
-            results.add(SearchResult(
-              verse: verse,
-              book: book,
-              chapter: chapter,
-              reference: reference,
-              relevance: relevance,
-            ));
+            results.add(
+              SearchResult(
+                verse: verse,
+                book: book,
+                chapter: chapter,
+                reference: reference,
+                relevance: relevance,
+              ),
+            );
 
             if (results.length >= maxResults) break;
           }
@@ -253,16 +275,21 @@ class BibleSearchService {
       for (final chapter in book.chapters) {
         final verse = chapter.getVerse(verseNumber);
         if (verse != null) {
-          final reference =
-              ScriptureReference.verse(book.name, chapter.number, verse.number);
+          final reference = ScriptureReference.verse(
+            book.name,
+            chapter.number,
+            verse.number,
+          );
 
-          results.add(SearchResult(
-            verse: verse,
-            book: book,
-            chapter: chapter,
-            reference: reference,
-            relevance: 1.0, // All results are equally relevant
-          ));
+          results.add(
+            SearchResult(
+              verse: verse,
+              book: book,
+              chapter: chapter,
+              reference: reference,
+              relevance: 1.0, // All results are equally relevant
+            ),
+          );
 
           if (results.length >= maxResults) break;
         }
@@ -288,23 +315,32 @@ class BibleSearchService {
     final results = <SearchResult>[];
     final centerVerse = reference.startVerse ?? 1;
 
-    final startVerse =
-        (centerVerse - versesBefore).clamp(1, chapter.maxVerseNumber);
-    final endVerse =
-        (centerVerse + versesAfter).clamp(1, chapter.maxVerseNumber);
+    final startVerse = (centerVerse - versesBefore).clamp(
+      1,
+      chapter.maxVerseNumber,
+    );
+    final endVerse = (centerVerse + versesAfter).clamp(
+      1,
+      chapter.maxVerseNumber,
+    );
 
     for (int verseNum = startVerse; verseNum <= endVerse; verseNum++) {
       final verse = chapter.getVerse(verseNum);
       if (verse != null) {
-        final verseRef =
-            ScriptureReference.verse(book.name, chapter.number, verse.number);
-        results.add(SearchResult(
-          verse: verse,
-          book: book,
-          chapter: chapter,
-          reference: verseRef,
-          relevance: verseNum == centerVerse ? 1.0 : 0.5,
-        ));
+        final verseRef = ScriptureReference.verse(
+          book.name,
+          chapter.number,
+          verse.number,
+        );
+        results.add(
+          SearchResult(
+            verse: verse,
+            book: book,
+            chapter: chapter,
+            reference: verseRef,
+            relevance: verseNum == centerVerse ? 1.0 : 0.5,
+          ),
+        );
       }
     }
 
@@ -313,7 +349,10 @@ class BibleSearchService {
 
   /// Calculate relevance score for a single search term
   double _calculateRelevance(
-      String verseText, String query, bool caseSensitive) {
+    String verseText,
+    String query,
+    bool caseSensitive,
+  ) {
     final text = caseSensitive ? verseText : verseText.toLowerCase();
     final searchTerm = caseSensitive ? query : query.toLowerCase();
 
@@ -342,7 +381,10 @@ class BibleSearchService {
 
   /// Calculate relevance score for multiple search terms
   double _calculateMultiWordRelevance(
-      String verseText, List<String> queries, bool caseSensitive) {
+    String verseText,
+    List<String> queries,
+    bool caseSensitive,
+  ) {
     double totalScore = 0.0;
 
     for (final query in queries) {

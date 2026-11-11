@@ -6,8 +6,9 @@ checksum-verified by `tools/build_bibles/bin/fetch_sources.dart`; the pinned
 URLs, SHA-256 checksums, sizes, fetch timestamps, and upstream revisions are
 recorded in `tools/build_bibles/manifest.json`.
 
-The `fallbackUrls` entries in the manifest are recorded metadata only; they
-have **not** been downloaded and no snapshot for them exists here.
+The `fallbackUrls` entries in the manifest are recorded metadata only; the
+former `drc` fallback was authorized as the replacement primary after its
+pinned URL died, and is now fetched through the manifest's joined-source path.
 
 ## `engwebc_usfm.zip` — World English Bible (Catholic Edition) (WEB-C)
 
@@ -52,24 +53,29 @@ have **not** been downloaded and no snapshot for them exists here.
   chapter → verses map (Psalms 18 has 15 verses, Vulgate-style numbering);
   `books.json` records the 73-book canon, 1,335 chapters, and 35,839 verses.
 
-## `DRB.json` — Douay-Rheims (Challoner Revision) — NOT YET FETCHED
+## `drc.json` — Douay-Rheims (Challoner Revision) — built from joined per-book files
 
-- **Status: no snapshot present.** The pinned primary URL
+- **Status: fetched 2026-11-11 via the manifest's joined-source path.** The
+  pinned primary URL
   <https://raw.githubusercontent.com/thomas992/catholicbible/main/DRB.json>
-  returned HTTP 404 on 2026-11-11 during the initial pinning run: the
+  returned HTTP 404 during the initial pinning run (2026-11-11): the
   `thomas992/catholicbible` repository does not exist publicly (GitHub API
   returns "Not Found" for the repo, the owner's public repository list contains
   no Bible-related repository, and the Wayback Machine has no archived
-  snapshots of the raw URL). The `drc` manifest entry keeps the pinned URL and
-  checksum fields empty until the controller confirms a replacement URL.
-- Fallback (metadata only, not downloaded):
-  <https://raw.githubusercontent.com/exanx/bible-json/main/DRB-73-Books/<file>.json> —
-  per-book JSON files (`Genesis.json`, …, `Psalms.json`, …) under
-  <https://github.com/exanx/bible-json>, to be joined into a single
-  `DRB.json` object.
-- Intended attribution once fetched: Douay-Rheims Bible (Douay 1582 / Rheims
-  1610, Challoner Revision 1749–1752); public domain (published before
-  1929, no copyright claim in upstream distribution; upstream declares CC0).
+  snapshots of the raw URL). Per the controller's ruling, the `drc` source was
+  rebuilt from its `fallbackUrls` distribution: the 73 per-book JSON files
+  listed in `tools/build_bibles/drc_file_list.json`, fetched from
+  <https://raw.githubusercontent.com/exanx/bible-json/main/DRB-73-Books/>
+  (upstream revision `exanx/bible-json@55d8cce6fcff01fb3eac125c7675e170fbd276cd`)
+  and joined into a single `{book: {chapter: {verse: text}}}` object with the
+  upstream-verbatim book keys. The retired primary URL is still recorded in the
+  manifest's `fallbackUrls` for provenance.
+- Upstream: <https://github.com/exanx/bible-json> (Douay-Rheims
+  Challoner-Revision, 73 books; e.g. `Genesis.json`, …, `Psalms.json`,
+  `Zachariah.json`, `Ecclesiasticus.json`).
+- Attribution: Douay-Rheims Bible (Douay 1582 / Rheims 1610, Challoner Revision
+  1749–1752); public domain (published before 1929, no copyright claim in
+  upstream distribution; upstream declares CC0).
 
 ## License Summary
 

@@ -30,7 +30,8 @@ class Bible {
 
     // Extract translation info from metadata or top-level
     final metadataMap = Map<String, dynamic>.from(json['metadata'] ?? {});
-    final translationName = json['translation']?.toString() ??
+    final translationName =
+        json['translation']?.toString() ??
         metadataMap['name']?.toString() ??
         'Unknown Translation';
 
@@ -81,7 +82,8 @@ class Bible {
             final bookData = entry.value as Map<String, dynamic>;
             final bookName = bookData['name'] ?? 'Unknown';
             throw FormatException(
-                'Error parsing book at index ${entry.key} ("$bookName"): $e');
+              'Error parsing book at index ${entry.key} ("$bookName"): $e',
+            );
           }
         }).toList(),
         metadata: metadataMap,
@@ -103,8 +105,9 @@ class Bible {
   /// Get book by ID (case insensitive)
   BibleBook? getBook(String bookId) {
     try {
-      return books
-          .firstWhere((book) => book.id.toLowerCase() == bookId.toLowerCase());
+      return books.firstWhere(
+        (book) => book.id.toLowerCase() == bookId.toLowerCase(),
+      );
     } catch (e) {
       return null;
     }
@@ -116,20 +119,24 @@ class Bible {
 
     // First try exact matching
     try {
-      return books.firstWhere((book) =>
-          book.id.toLowerCase() == lowerId ||
-          book.name.toLowerCase() == lowerId ||
-          book.abbreviation.toLowerCase() == lowerId);
+      return books.firstWhere(
+        (book) =>
+            book.id.toLowerCase() == lowerId ||
+            book.name.toLowerCase() == lowerId ||
+            book.abbreviation.toLowerCase() == lowerId,
+      );
     } catch (e) {
       // If no exact match, try with Roman/Arabic numeral conversion
       final convertedId = _convertRomanArabicNumerals(bookIdentifier);
       if (convertedId != bookIdentifier) {
         try {
           final convertedLowerId = convertedId.toLowerCase();
-          return books.firstWhere((book) =>
-              book.id.toLowerCase() == convertedLowerId ||
-              book.name.toLowerCase() == convertedLowerId ||
-              book.abbreviation.toLowerCase() == convertedLowerId);
+          return books.firstWhere(
+            (book) =>
+                book.id.toLowerCase() == convertedLowerId ||
+                book.name.toLowerCase() == convertedLowerId ||
+                book.abbreviation.toLowerCase() == convertedLowerId,
+          );
         } catch (e) {
           // Still no match
         }
@@ -181,7 +188,11 @@ class Bible {
 
   /// Get verse range text
   String? getVerseRangeText(
-      String bookName, int chapter, int startVerse, int endVerse) {
+    String bookName,
+    int chapter,
+    int startVerse,
+    int endVerse,
+  ) {
     final book = findBook(bookName);
     final chapterObj = book?.getChapter(chapter);
     if (chapterObj == null) return null;
@@ -218,7 +229,10 @@ class Bible {
 
   @override
   int get hashCode => Object.hash(
-      translation, Object.hashAll(books), Object.hashAll(metadata.entries));
+    translation,
+    Object.hashAll(books),
+    Object.hashAll(metadata.entries),
+  );
 
   @override
   String toString() => 'Bible(${translation.name}, ${books.length} books)';

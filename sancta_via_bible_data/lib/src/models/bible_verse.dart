@@ -9,10 +9,7 @@ class BibleVerse {
   /// The text content of the verse
   final String text;
 
-  const BibleVerse({
-    required this.number,
-    required this.text,
-  });
+  const BibleVerse({required this.number, required this.text});
 
   /// Create a BibleVerse from JSON data
   factory BibleVerse.fromJson(Map<String, dynamic> json) {
@@ -28,18 +25,16 @@ class BibleVerse {
     }
 
     return BibleVerse(
-      number:
-          numberValue is int ? numberValue : int.parse(numberValue.toString()),
+      number: numberValue is int
+          ? numberValue
+          : int.parse(numberValue.toString()),
       text: textValue.toString().trim(), // Trim whitespace from text
     );
   }
 
   /// Convert to JSON representation
   Map<String, dynamic> toJson() {
-    return {
-      'number': number,
-      'text': text,
-    };
+    return {'number': number, 'text': text};
   }
 
   @override
@@ -56,13 +51,7 @@ class BibleVerse {
       'BibleVerse(number: $number, text: ${text.isEmpty ? '' : text.substring(0, text.length > 50 ? 50 : text.length)}...)';
 
   /// Create a copy with modified values
-  BibleVerse copyWith({
-    int? number,
-    String? text,
-  }) {
-    return BibleVerse(
-      number: number ?? this.number,
-      text: text ?? this.text,
-    );
+  BibleVerse copyWith({int? number, String? text}) {
+    return BibleVerse(number: number ?? this.number, text: text ?? this.text);
   }
 }

@@ -72,7 +72,8 @@ class ScriptureReference {
 
     if (chapterVerseIndex == -1) {
       throw ArgumentError(
-          'No chapter/verse found in reference: $referenceText');
+        'No chapter/verse found in reference: $referenceText',
+      );
     }
 
     book = parts.take(chapterVerseIndex).join(' ');
@@ -133,7 +134,11 @@ class ScriptureReference {
 
   /// Create a reference for a verse range
   factory ScriptureReference.range(
-      String book, int chapter, int startVerse, int endVerse) {
+    String book,
+    int chapter,
+    int startVerse,
+    int endVerse,
+  ) {
     return ScriptureReference(
       book: book,
       chapter: chapter,

@@ -10,10 +10,7 @@ class BibleChapter {
   /// List of verses in this chapter
   final List<BibleVerse> verses;
 
-  const BibleChapter({
-    required this.number,
-    required this.verses,
-  });
+  const BibleChapter({required this.number, required this.verses});
 
   /// Create a BibleChapter from JSON data
   factory BibleChapter.fromJson(Map<String, dynamic> json) {
@@ -43,7 +40,8 @@ class BibleChapter {
             return BibleVerse.fromJson(verse as Map<String, dynamic>);
           } catch (e) {
             throw FormatException(
-                'Error parsing verse in chapter $chapterNumber: $e');
+              'Error parsing verse in chapter $chapterNumber: $e',
+            );
           }
         }).toList(),
       );
@@ -82,7 +80,8 @@ class BibleChapter {
   List<BibleVerse> getVerseRange(int startVerse, int endVerse) {
     return verses
         .where(
-            (verse) => verse.number >= startVerse && verse.number <= endVerse)
+          (verse) => verse.number >= startVerse && verse.number <= endVerse,
+        )
         .toList();
   }
 
@@ -120,10 +119,7 @@ class BibleChapter {
       'BibleChapter(number: $number, verseCount: ${verses.length})';
 
   /// Create a copy with modified values
-  BibleChapter copyWith({
-    int? number,
-    List<BibleVerse>? verses,
-  }) {
+  BibleChapter copyWith({int? number, List<BibleVerse>? verses}) {
     return BibleChapter(
       number: number ?? this.number,
       verses: verses ?? this.verses,

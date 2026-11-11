@@ -6,12 +6,16 @@ void main() {
     test('BibleTranslation enum should have correct values', () {
       expect(BibleTranslation.cpdv.id, equals('cpdv'));
       expect(
-          BibleTranslation.cpdv.name, equals('Catholic Public Domain Version'));
+        BibleTranslation.cpdv.name,
+        equals('Catholic Public Domain Version'),
+      );
       expect(BibleTranslation.cpdv.abbreviation, equals('CPDV'));
 
       expect(BibleTranslation.fromId('cpdv'), equals(BibleTranslation.cpdv));
-      expect(BibleTranslation.fromId('invalid'),
-          equals(BibleTranslation.cpdv)); // default
+      expect(
+        BibleTranslation.fromId('invalid'),
+        equals(BibleTranslation.cpdv),
+      ); // default
 
       expect(BibleTranslation.isSupported('drc'), isTrue);
       expect(BibleTranslation.isSupported('invalid'), isFalse);
@@ -78,18 +82,17 @@ void main() {
 
       final normalized = ReferenceParser.normalize('Mt 5:3-12');
       expect(normalized, isNotNull);
-      expect(normalized,
-          contains('Matthew')); // Should expand abbreviation to full name
+      expect(
+        normalized,
+        contains('Matthew'),
+      ); // Should expand abbreviation to full name
 
       final bookName = ReferenceParser.extractBookName('2 Corinthians 12:9');
       expect(bookName, equals('2 Corinthians'));
     });
 
     test('BibleVerse should parse from JSON correctly', () {
-      final json = {
-        'number': 1,
-        'text': 'In the beginning was the Word',
-      };
+      final json = {'number': 1, 'text': 'In the beginning was the Word'};
 
       final verse = BibleVerse.fromJson(json);
       expect(verse.number, equals(1));
@@ -133,10 +136,14 @@ void main() {
 
       // Deuterocanonical books (orders 40-46) are OT
       expect(BibleBookMapping.isOldTestamentByOrder(40), isTrue); // Tobit
-      expect(BibleBookMapping.isOldTestamentByOrder(46),
-          isTrue); // Baruch (last OT)
-      expect(BibleBookMapping.isOldTestamentByIndex(45),
-          isTrue); // Baruch at index 45
+      expect(
+        BibleBookMapping.isOldTestamentByOrder(46),
+        isTrue,
+      ); // Baruch (last OT)
+      expect(
+        BibleBookMapping.isOldTestamentByIndex(45),
+        isTrue,
+      ); // Baruch at index 45
 
       // Matthew (order 47) is NT (first NT book)
       expect(BibleBookMapping.isOldTestamentByOrder(47), isFalse);

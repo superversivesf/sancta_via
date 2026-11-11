@@ -24,16 +24,18 @@ class ReferenceParser {
     // Remove common prefixes and suffixes
     String cleaned = referenceText
         .replaceAll(
-            RegExp(r'^(cf\.|see\s+|compare\s+)', caseSensitive: false), '')
+          RegExp(r'^(cf\.|see\s+|compare\s+)', caseSensitive: false),
+          '',
+        )
         .replaceAll(RegExp(r'\s*\([^)]*\)$'), '') // Remove trailing parentheses
         .trim();
 
     // Try different parsing strategies
 
     // Strategy 1: Handle books with numbers at the start
-    final numberBookMatch =
-        RegExp(r'^(\d+)\s+([a-zA-Z\s]+)\s+(\d+(?::\d+(?:-\d+)?)?)')
-            .firstMatch(cleaned);
+    final numberBookMatch = RegExp(
+      r'^(\d+)\s+([a-zA-Z\s]+)\s+(\d+(?::\d+(?:-\d+)?)?)',
+    ).firstMatch(cleaned);
     if (numberBookMatch != null) {
       final bookNumber = numberBookMatch.group(1)!;
       final bookName = numberBookMatch.group(2)!.trim();
@@ -41,7 +43,10 @@ class ReferenceParser {
 
       final fullBookName = '$bookNumber $bookName';
       return _parseWithBookAndChapterVerse(
-          fullBookName, chapterVerse, referenceText);
+        fullBookName,
+        chapterVerse,
+        referenceText,
+      );
     }
 
     // Strategy 2: Split on last numeric part
@@ -55,15 +60,19 @@ class ReferenceParser {
           // Validate book name
           if (BibleBookMapping.findBook(book) != null) {
             return _parseWithBookAndChapterVerse(
-                book, chapterVerse, referenceText);
+              book,
+              chapterVerse,
+              referenceText,
+            );
           }
         }
       }
     }
 
     // Strategy 3: Common abbreviations
-    final abbrevMatch = RegExp(r'^([a-zA-Z]{2,6}\.?)\s+(\d+(?::\d+(?:-\d+)?)?)')
-        .firstMatch(cleaned);
+    final abbrevMatch = RegExp(
+      r'^([a-zA-Z]{2,6}\.?)\s+(\d+(?::\d+(?:-\d+)?)?)',
+    ).firstMatch(cleaned);
     if (abbrevMatch != null) {
       final abbrev = abbrevMatch.group(1)!.replaceAll('.', '');
       final chapterVerse = abbrevMatch.group(2)!;
@@ -71,7 +80,10 @@ class ReferenceParser {
       final metadata = BibleBookMapping.getByAbbreviation(abbrev);
       if (metadata != null) {
         return _parseWithBookAndChapterVerse(
-            metadata.name, chapterVerse, referenceText);
+          metadata.name,
+          chapterVerse,
+          referenceText,
+        );
       }
     }
 
@@ -80,7 +92,10 @@ class ReferenceParser {
 
   /// Parse when we have separated book and chapter:verse
   static ScriptureReference _parseWithBookAndChapterVerse(
-      String book, String chapterVerse, String originalText) {
+    String book,
+    String chapterVerse,
+    String originalText,
+  ) {
     final colonParts = chapterVerse.split(':');
     final chapter = int.parse(colonParts[0]);
 
@@ -173,7 +188,8 @@ class ReferenceParser {
       final ref = parse(referenceText);
 
       // Use canonical book name if available
-      final metadata = BibleBookMapping.getByName(ref.book) ??
+      final metadata =
+          BibleBookMapping.getByName(ref.book) ??
           BibleBookMapping.getByAbbreviation(ref.book) ??
           BibleBookMapping.getById(ref.book);
       final bookName = metadata?.name ?? ref.book;

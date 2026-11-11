@@ -5,36 +5,38 @@
       "fallbackUrls": [
         "https://ebible.org/Scriptures/engwebc2025eb.zip"
       ],
-      "sha256": "",
-      "fetchedAt": "",
-      "fileSize": 0,
+      "sha256": "add2ff69c0f07ed4059ee58a9dc391dc4ec77c0b8415dc38a865a1d9f1d3b9cb",
+      "fetchedAt": "2026-11-11T08:36:45.840733Z",
+      "fileSize": 3091065,
       "revision": "engwebc2025eb"
     },
     "cpdv_entire": {
       "url": "https://raw.githubusercontent.com/draino7n7/cpdv/master/CPDV-JSON/EntireBible-CPDV.json",
       "fallbackUrls": [],
-      "sha256": "",
-      "fetchedAt": "",
-      "fileSize": 0,
+      "sha256": "748db8fa1e126d14cba5d5647991a50ffe460d02cd797e4005c1605c983df19d",
+      "fetchedAt": "2026-11-11T08:36:46.918530Z",
+      "fileSize": 5722375,
       "revision": "draino7n7/cpdv@ea374e0c63c7e336fa3243644b3fcb67c782437f"
     },
     "cpdv_books": {
       "url": "https://raw.githubusercontent.com/draino7n7/cpdv/master/CPDV-JSON/books.json",
       "fallbackUrls": [],
-      "sha256": "",
-      "fetchedAt": "",
-      "fileSize": 0,
+      "sha256": "db979ed66676760e26238018161f82c1c8cd79c1e95c80b7f4e20b4f726f40d0",
+      "fetchedAt": "2026-11-11T08:36:47.229006Z",
+      "fileSize": 109577,
       "revision": "draino7n7/cpdv@66416f04fbfeec260f09eb3c095be9a289429f2d"
     },
     "drc": {
-      "url": "https://raw.githubusercontent.com/thomas992/catholicbible/main/DRB.json",
+      "url": "https://raw.githubusercontent.com/exanx/bible-json/main/DRB-73-Books/",
+      "joinList": "drc_file_list.json",
+      "fileCount": 73,
       "fallbackUrls": [
-        "https://raw.githubusercontent.com/exanx/bible-json/main/DRB-73-Books/<file>.json"
+        "https://raw.githubusercontent.com/thomas992/catholicbible/main/DRB.json"
       ],
-      "sha256": "",
-      "fetchedAt": "",
-      "fileSize": 0,
-      "revision": ""
+      "sha256": "fe5dd30284fcac788286b4535b06dda8b95fdb29af6b1c6f7b1f52efb7f0c2ca",
+      "fetchedAt": "2026-11-11T08:37:10.062985Z",
+      "fileSize": 5002007,
+      "revision": "exanx/bible-json@55d8cce6fcff01fb3eac125c7675e170fbd276cd (joined DRB-73-Books per-book files; pinned primary thomas992/catholicbible/main/DRB.json is dead — HTTP 404, repo removed, verified 2026-11-11)"
     }
   }
 }

@@ -83,7 +83,10 @@ Future<void> main(List<String> args) async {
 
   final Directory packageRoot = _packageRoot();
   final File manifestFile = File('${packageRoot.path}/$_manifestRelativePath');
-  final Directory assetsDir = Directory('${packageRoot.path}/$_assetsRelativeDir');
+  final Directory manifestDir = manifestFile.parent;
+  final Directory assetsDir = Directory(
+    '${packageRoot.path}/$_assetsRelativeDir',
+  );
   stdout.writeln('Manifest: ${manifestFile.path}');
   if (!manifestFile.existsSync()) {
     stderr.writeln('Manifest file not found.');
@@ -109,11 +112,13 @@ Future<void> main(List<String> args) async {
   for (final MapEntry<String, dynamic> sourceEntry in sources.entries) {
     final String id = sourceEntry.key;
     try {
-      final Map<String, dynamic> entry = sourceEntry.value as Map<String, dynamic>;
+      final Map<String, dynamic> entry =
+          sourceEntry.value as Map<String, dynamic>;
       final _FetchResult result = await _processSource(
         id: id,
         entry: entry,
         assetsDir: assetsDir,
+        manifestDir: manifestDir,
         update: update,
       );
       switch (result) {
@@ -234,10 +239,13 @@ Future<_FetchResult> _processSource({
     return _FetchResult.pinned;
   }
 
-  final _FetchResult result =
-      pinnedSha256 == sha256Hex ? _FetchResult.verified : _FetchResult.failed;
+  final _FetchResult result = pinnedSha256 == sha256Hex
+      ? _FetchResult.verified
+      : _FetchResult.failed;
   if (result == _FetchResult.verified) {
-    stdout.writeln('[ok]       $id -> $fileName (re-downloaded, checksum matches)');
+    stdout.writeln(
+      '[ok]       $id -> $fileName (re-downloaded, checksum matches)',
+    );
   } else {
     stderr.writeln('[mismatch] $id ($fileName) after download');
     stderr.writeln('           manifest sha256: $pinnedSha256');
@@ -258,7 +266,9 @@ Future<_FetchResult> _processSource({
   }
   final Object? sources = decoded['sources'];
   if (sources is! Map<String, dynamic>) {
-    throw const FormatException('manifest.json must contain a "sources" object');
+    throw const FormatException(
+      'manifest.json must contain a "sources" object',
+    );
   }
   return (decoded, sources);
 }
@@ -359,8 +369,10 @@ Future<List<int>> _downloadJoined({
       <String, Map<String, dynamic>>{};
   try {
     for (final String fileName in fileNames) {
-      final String bookKey =
-          fileName.substring(0, fileName.length - '.json'.length);
+      final String bookKey = fileName.substring(
+        0,
+        fileName.length - '.json'.length,
+      );
       if (bookKey.isEmpty ||
           fileName.contains('/') ||
           !fileName.endsWith('.json')) {
@@ -369,24 +381,25 @@ Future<List<int>> _downloadJoined({
       if (joined.containsKey(bookKey)) {
         throw FetchException('duplicate book key "$bookKey" in $joinListName');
       }
-      final Uri fileUrl =
-          Uri.parse('${baseUri.toString()}${Uri.encodeComponent(fileName)}');
+      final Uri fileUrl = Uri.parse(
+        '${baseUri.toString()}${Uri.encodeComponent(fileName)}',
+      );
       final HttpClientRequest request = await client.getUrl(fileUrl);
       final HttpClientResponse response = await request.close();
       if (response.statusCode != HttpStatus.ok) {
         throw FetchException('HTTP ${response.statusCode} for $fileUrl');
       }
-      final BytesBuilder builder = BytesBuilder(copy: false);
-      await for (final List<int> chunk in response) {
-        builder.add(chunk);
-      }
-      String text = utf8.decode(builder.takeBytes());
+      String text = utf8.decode(await _collectCompleteBody(response, fileUrl));
       if (text.startsWith('\uFEFF')) {
         text = text.substring(1);
       }
       final Object? bookJson = jsonDecode(text);
       if (bookJson is! Map<String, dynamic>) {
         throw FetchException('$fileName: expected a JSON object of chapters');
+      }
+      final String? violation = joinShapeViolation(bookJson, fileName);
+      if (violation != null) {
+        throw FetchException('$fileName: $violation');
       }
       joined[bookKey] = bookJson;
     }
@@ -404,16 +417,16 @@ Future<List<int>> _downloadJoined({
     '(base: $baseUri)',
   );
 
-  final String psalmsKey =
-      joined.keys.firstWhere((String key) => key.toLowerCase().contains('psalm'),
-          orElse: () => '');
+  final String psalmsKey = joined.keys.firstWhere(
+    (String key) => key.toLowerCase().contains('psalm'),
+    orElse: () => '',
+  );
   if (psalmsKey.isNotEmpty) {
     final Map<String, dynamic> psalms =
         joined[psalmsKey] ?? <String, dynamic>{};
-    final Map<String, dynamic> psalm19 =
-        psalms['19'] is Map<String, dynamic>
-            ? psalms['19'] as Map<String, dynamic>
-            : <String, dynamic>{};
+    final Map<String, dynamic> psalm19 = psalms['19'] is Map<String, dynamic>
+        ? psalms['19'] as Map<String, dynamic>
+        : <String, dynamic>{};
     stdout.writeln(
       '[join]     $id: psalms book key "$psalmsKey"; '
       '$psalmsKey/19 has ${psalm19.length} verses',

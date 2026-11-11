@@ -85,13 +85,15 @@ class BibleBook {
             return BibleChapter.fromJson(chapter as Map<String, dynamic>);
           } catch (e) {
             throw FormatException(
-                'Error parsing chapter in book $bookName: $e');
+              'Error parsing chapter in book $bookName: $e',
+            );
           }
         }).toList(),
       );
     } catch (e) {
       throw FormatException(
-          'Error parsing BibleBook "$bookName": $e, JSON keys: ${json.keys.toList()}');
+        'Error parsing BibleBook "$bookName": $e, JSON keys: ${json.keys.toList()}',
+      );
     }
   }
 
@@ -152,8 +154,9 @@ class BibleBook {
     for (final chapter in chapters) {
       for (final verse in chapter.verses) {
         if (verse.text.toLowerCase().contains(lowerQuery)) {
-          results
-              .add('${name} ${chapter.number}:${verse.number} - ${verse.text}');
+          results.add(
+            '${name} ${chapter.number}:${verse.number} - ${verse.text}',
+          );
         }
       }
     }
@@ -175,7 +178,13 @@ class BibleBook {
 
   @override
   int get hashCode => Object.hash(
-      id, name, abbreviation, order, isOldTestament, Object.hashAll(chapters));
+    id,
+    name,
+    abbreviation,
+    order,
+    isOldTestament,
+    Object.hashAll(chapters),
+  );
 
   @override
   String toString() =>

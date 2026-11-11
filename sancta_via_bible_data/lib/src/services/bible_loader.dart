@@ -83,18 +83,19 @@ class AssetBibleLoader implements BibleLoader {
   /// Create an asset loader
   /// [assetBasePath] - Base path for assets (e.g., 'assets/bibles')
   /// [assetLoader] - Function to load asset content (e.g., rootBundle.loadString)
-  AssetBibleLoader({
-    required this.assetBasePath,
-    required this.assetLoader,
-  }) {
-    AppLogger.loader('AssetBibleLoader created with basePath: $assetBasePath',
-        'ASSET_LOADER');
+  AssetBibleLoader({required this.assetBasePath, required this.assetLoader}) {
+    AppLogger.loader(
+      'AssetBibleLoader created with basePath: $assetBasePath',
+      'ASSET_LOADER',
+    );
   }
 
   @override
   Future<Bible> loadBible(BibleTranslation translation) async {
-    AppLogger.loader('Loading Bible: ${translation.name} (${translation.id})',
-        'ASSET_LOADER');
+    AppLogger.loader(
+      'Loading Bible: ${translation.name} (${translation.id})',
+      'ASSET_LOADER',
+    );
 
     // Check cache first
     if (_cache.containsKey(translation)) {
@@ -108,17 +109,21 @@ class AssetBibleLoader implements BibleLoader {
 
       final jsonString = await assetLoader(assetPath);
       AppLogger.loader(
-          'Asset loaded successfully: ${jsonString.length} characters',
-          'ASSET_LOADER');
+        'Asset loaded successfully: ${jsonString.length} characters',
+        'ASSET_LOADER',
+      );
 
       final Map<String, dynamic> jsonData = json.decode(jsonString);
-      AppLogger.loader('JSON parsed successfully: ${jsonData.keys.join(', ')}',
-          'ASSET_LOADER');
+      AppLogger.loader(
+        'JSON parsed successfully: ${jsonData.keys.join(', ')}',
+        'ASSET_LOADER',
+      );
 
       final bible = Bible.fromJson(jsonData);
       AppLogger.loader(
-          'Bible created: ${bible.books.length} books, translation: ${bible.translation.name}',
-          'ASSET_LOADER');
+        'Bible created: ${bible.books.length} books, translation: ${bible.translation.name}',
+        'ASSET_LOADER',
+      );
 
       // Cache the loaded bible
       _cache[translation] = bible;
@@ -136,14 +141,18 @@ class AssetBibleLoader implements BibleLoader {
     try {
       final assetPath = '$assetBasePath/${translation.id}.json';
       AppLogger.loader(
-          'Checking availability of asset: $assetPath', 'ASSET_LOADER');
+        'Checking availability of asset: $assetPath',
+        'ASSET_LOADER',
+      );
 
       await assetLoader(assetPath);
       AppLogger.loader('Asset available: ${translation.name}', 'ASSET_LOADER');
       return true;
     } catch (e) {
       AppLogger.loader(
-          'Asset NOT available: ${translation.name} - $e', 'ASSET_LOADER');
+        'Asset NOT available: ${translation.name} - $e',
+        'ASSET_LOADER',
+      );
       return false;
     }
   }
@@ -155,23 +164,31 @@ class AssetBibleLoader implements BibleLoader {
 
     for (final translation in BibleTranslation.values) {
       AppLogger.loader(
-          'Checking translation: ${translation.name} (${translation.id})',
-          'ASSET_LOADER');
+        'Checking translation: ${translation.name} (${translation.id})',
+        'ASSET_LOADER',
+      );
       if (await isTranslationAvailable(translation)) {
         available.add(translation);
-        AppLogger.loader('✓ Added available translation: ${translation.name}',
-            'ASSET_LOADER');
+        AppLogger.loader(
+          '✓ Added available translation: ${translation.name}',
+          'ASSET_LOADER',
+        );
       } else {
         AppLogger.loader(
-            '✗ Translation not available: ${translation.name}', 'ASSET_LOADER');
+          '✗ Translation not available: ${translation.name}',
+          'ASSET_LOADER',
+        );
       }
     }
 
     AppLogger.loader(
-        'Total available translations: ${available.length} of ${BibleTranslation.values.length}',
-        'ASSET_LOADER');
-    AppLogger.loader('Available: ${available.map((t) => t.name).join(', ')}',
-        'ASSET_LOADER');
+      'Total available translations: ${available.length} of ${BibleTranslation.values.length}',
+      'ASSET_LOADER',
+    );
+    AppLogger.loader(
+      'Available: ${available.map((t) => t.name).join(', ')}',
+      'ASSET_LOADER',
+    );
 
     return available;
   }
@@ -191,10 +208,7 @@ class NetworkBibleLoader implements BibleLoader {
   /// Create a network loader
   /// [baseUrl] - Base URL for Bible data (e.g., 'https://api.example.com/bibles')
   /// [httpClient] - Function to fetch URL content
-  NetworkBibleLoader({
-    required this.baseUrl,
-    required this.httpClient,
-  });
+  NetworkBibleLoader({required this.baseUrl, required this.httpClient});
 
   @override
   Future<Bible> loadBible(BibleTranslation translation) async {

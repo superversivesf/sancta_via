@@ -10,7 +10,8 @@ void main() async {
   final ref1 = ScriptureReference.parse('John 3:16');
   print('   Parsed reference: ${ref1.displayText}');
   print(
-      '   Book: ${ref1.book}, Chapter: ${ref1.chapter}, Verse: ${ref1.startVerse}');
+    '   Book: ${ref1.book}, Chapter: ${ref1.chapter}, Verse: ${ref1.startVerse}',
+  );
   print('   Is single verse: ${ref1.isSingleVerse}');
 
   final ref2 = ScriptureReference.range('Romans', 8, 28, 30);
@@ -23,7 +24,8 @@ void main() async {
   final genesis = BibleBookMapping.getByName('Genesis');
   if (genesis != null) {
     print(
-        '   Genesis - ID: ${genesis.id}, Order: ${genesis.order}, OT: ${genesis.isOldTestament}');
+      '   Genesis - ID: ${genesis.id}, Order: ${genesis.order}, OT: ${genesis.isOldTestament}',
+    );
   }
 
   final matthew = BibleBookMapping.findBook('Mt');
@@ -61,7 +63,8 @@ void main() async {
   }
 
   print(
-      '\n   Default translation: ${BibleTranslation.defaultTranslation.name}');
+    '\n   Default translation: ${BibleTranslation.defaultTranslation.name}',
+  );
   print('   Available IDs: ${BibleTranslation.availableIds}');
 
   // Example 5: Mock Bible service usage (would need actual data)
