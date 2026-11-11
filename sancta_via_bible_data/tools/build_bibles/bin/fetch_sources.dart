@@ -1199,10 +1199,6 @@ Future<_FetchResult> _processScrapeSource({
         0,
         (int sum, Map<int, String> verses) => sum + verses.length,
       );
-      if (chapterTexts.length != mapping.$2 * 0 + chapterTexts.length) {
-        // placeholder (no-op): counts verified via boundary check above
-        continue;
-      }
     }
     if (joined.length != bookCount!) {
       throw FetchException(
