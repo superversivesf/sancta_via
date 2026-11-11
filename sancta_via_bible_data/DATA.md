@@ -55,11 +55,15 @@ All three texts are public domain.
 Verse and chapter numbers are kept exactly as the sources give them; the
 pipeline never renumbers:
 
-- **engwebc (WEB-C) and drc (DRA)**: Vulgate/LXX-order book set with LXX
-  psalm numbering (e.g. Psalms 18/19 keep their LXX shapes, not Hebrew
-  1:1-based splits).
-- **cpdv**: Vulgate psalm numbering and Vulgate-order book set (the CPDV
-  itself is a Vulgate-order translation).
+- **engwebc (WEB-C)**: native WEB (Hebrew) psalm numbering, superscriptions
+  kept as headings (not verse rows) — e.g. Psalms 18/19/78/119 have
+  50/14/72/176 verses. Its book set follows the Vulgate/LXX order.
+- **drc (DRA) and cpdv**: Vulgate/LXX psalm numbering with the superscription
+  as verse 1 — e.g. Psalms 18 = 15 verses (title included): the "heavens
+  declare the glory of God" psalm is Psalms 18 in Vulgate numbering and
+  Psalms 19 in WEB-C's Hebrew numbering, and WEB-C's 176-verse Psalms 119 is
+  Psalms 118 here. drc/engwebc follow the Vulgate/LXX book order; cpdv is
+  itself a Vulgate-order translation.
 - **Sirach prologue omitted**: the prologue is not part of the 73-book canon
   used here; Sirach therefore has 51 chapters in every translation.
 - **engwebc `verseNumbers` exception chapters**: in a handful of chapters
