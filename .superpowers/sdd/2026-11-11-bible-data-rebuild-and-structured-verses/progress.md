@@ -70,3 +70,4 @@ Task 2: fix round 3 re-review: all requirements addressed, independently verifie
 Task 2: fix round 4/5 dispatched — fold minors: rename drc pin book to 'Revelation of John' + re-emit manifest; stamp drc fileSize/fetchedAt via --update; fix both stale header docs.
 Task 2: fix round 4 re-review: all 4 findings ADDRESSED, no new breakage.
 Task 2: complete (commits 884e2c7..f97d64b, review clean after rounds 1-4; deferred minors ledgered above for final review)
+Task 3: complete (commits 1317299..a5b2dcf, review clean; deferred minors: dangling library doc comment; unexpected-chapter verses skip content checks; test-3 assertion looser than peers; test-2 fixture book differs from brief's literal parenthetical)
