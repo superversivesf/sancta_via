@@ -53,23 +53,23 @@ void main() {
 
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMessageHandler('flutter/assets', (ByteData? message) async {
-        if (message == null) {
-          return null;
-        }
-        // The outgoing message is the URL-encoded asset path as UTF-8 bytes.
-        final String assetPath = utf8.decode(
-          Uint8List.sublistView(message),
-        );
+            if (message == null) {
+              return null;
+            }
+            // The outgoing message is the URL-encoded asset path as UTF-8 bytes.
+            final String assetPath = utf8.decode(
+              Uint8List.sublistView(message),
+            );
 
-        if (assetPath.contains('cpdv.json')) {
-          final Uint8List replyBytes = Uint8List.fromList(
-            utf8.encode(cpdvJson),
-          );
-          return ByteData.sublistView(replyBytes);
-        }
-        // Asset not found: return null so rootBundle raises the expected error.
-        return null;
-      });
+            if (assetPath.contains('cpdv.json')) {
+              final Uint8List replyBytes = Uint8List.fromList(
+                utf8.encode(cpdvJson),
+              );
+              return ByteData.sublistView(replyBytes);
+            }
+            // Asset not found: return null so rootBundle raises the expected error.
+            return null;
+          });
 
       loader = AssetBibleLoader(
         assetBasePath: 'assets/bibles',

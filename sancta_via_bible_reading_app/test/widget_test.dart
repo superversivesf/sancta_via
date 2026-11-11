@@ -18,7 +18,9 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          currentDateProvider.overrideWith((ref) => Stream.value(DateTime.now())),
+          currentDateProvider.overrideWith(
+            (ref) => Stream.value(DateTime.now()),
+          ),
         ],
         child: const BibleReadingApp(),
       ),
