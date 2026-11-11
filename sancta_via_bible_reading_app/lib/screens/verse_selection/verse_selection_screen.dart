@@ -151,9 +151,8 @@ class VerseSelectionScreen extends ConsumerWidget {
       );
     }
 
-    // Parse actual verses from the Bible text
-    final verses = _parseVerses(scripture.text);
-    final verseCount = verses.length;
+    // True verse numbers come from the structured verses on the content.
+    final verseCount = scripture.verses.length;
 
     return Column(
       children: [
@@ -211,7 +210,9 @@ class VerseSelectionScreen extends ConsumerWidget {
             ),
             itemCount: verseCount,
             itemBuilder: (context, index) {
-              final verseNumber = index + 1;
+              // The tile's label AND navigation target use the TRUE verse
+              // number from the structured verses (not index + 1).
+              final verseNumber = scripture.verses[index].number;
 
               return Card(
                 elevation: 2,
@@ -298,63 +299,6 @@ class VerseSelectionScreen extends ConsumerWidget {
         ),
       ],
     );
-  }
-
-  List<String> _parseVerses(String chapterText) {
-    // Parse actual verses from the Bible text
-    // Most Bible texts start verses with numbers like "1 In the beginning..." or have verse markers
-
-    final verses = <String>[];
-
-    // Try to split by verse numbers (pattern: number followed by space at start of line or after whitespace)
-    final versePattern = RegExp(
-      r'(?:^|\s)(\d+)\s+([^0-9]*?)(?=\s\d+\s|$)',
-      multiLine: true,
-    );
-    final matches = versePattern.allMatches(chapterText);
-
-    if (matches.isNotEmpty) {
-      // Found verse patterns, use them
-      for (final match in matches) {
-        final verseText = match.group(2)?.trim() ?? '';
-        if (verseText.isNotEmpty) {
-          verses.add(verseText);
-        }
-      }
-    } else {
-      // Fallback: split by sentences and group them
-      final sentences = chapterText.split(RegExp(r'[.!?]+\s+'));
-
-      // Group sentences into reasonable verse-like chunks
-      for (int i = 0; i < sentences.length; i += 2) {
-        final verseText = sentences
-            .sublist(i, (i + 2).clamp(0, sentences.length))
-            .join('. ')
-            .trim();
-        if (verseText.isNotEmpty) {
-          verses.add(verseText);
-        }
-      }
-    }
-
-    // Ensure we have at least some verses
-    if (verses.isEmpty) {
-      // If all else fails, just split by periods and hope for the best
-      final parts = chapterText.split('.');
-      for (int i = 0; i < parts.length && i < 50; i++) {
-        final part = parts[i].trim();
-        if (part.isNotEmpty) {
-          verses.add(part);
-        }
-      }
-    }
-
-    // Ensure we have at least one verse
-    if (verses.isEmpty) {
-      verses.add(chapterText.isNotEmpty ? chapterText : 'Chapter text');
-    }
-
-    return verses;
   }
 
   void _navigateToChapterWithVerse(BuildContext context, int startVerse) {
