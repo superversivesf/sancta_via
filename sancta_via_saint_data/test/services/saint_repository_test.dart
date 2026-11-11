@@ -140,6 +140,26 @@ Future<Database> _createSeededDatabase() async {
     feastDay: 'unknown',
     bio: 'A bishop of Rome in early times.',
   );
+  await _seedSaint(
+    db,
+    slug: 'john-mary-vianney',
+    name: 'St. John Mary Vianney',
+    feastDay: '08-08',
+    bio: 'A parish priest famous for long hours in the confessional.',
+    patronages: <_Patronage>[
+      (need: 'fathers', category: SaintCategory.spiritual),
+    ],
+  );
+  await _seedSaint(
+    db,
+    slug: 'joseph-the-worker',
+    name: 'St. Joseph the Worker',
+    feastDay: '05-01',
+    bio: 'A carpenter who worked as a day laborer and trusted in honest work.',
+    patronages: <_Patronage>[
+      (need: 'day-laborers', category: SaintCategory.jobs),
+    ],
+  );
   await db.insert('need_synonyms', <String, Object?>{
     'need': 'lost items',
     'synonym': 'lost keys',
@@ -147,6 +167,10 @@ Future<Database> _createSeededDatabase() async {
   await db.insert('need_synonyms', <String, Object?>{
     'need': 'lost items',
     'synonym': 'misplaced objects',
+  });
+  await db.insert('need_synonyms', <String, Object?>{
+    'need': 'priests',
+    'synonym': 'fathers',
   });
   return db;
 }
@@ -367,14 +391,48 @@ void main() {
     });
   });
 
+  group('getSaintsForNeed bidirectional and raw keys (fix round 1)', () {
+    test('canonical input pulls in synonym-shaped patronages', () async {
+      // john-mary-vianney stores need 'fathers', a synonym of 'priests';
+      // the downward direction of the synonym union must reach him.
+      final List<Saint> saints = await repository.getSaintsForNeed('priests');
+      expect(<String>[
+        for (final Saint saint in saints) saint.slug,
+      ], contains('john-mary-vianney'));
+    });
+
+    test('raw synonym-shaped key matches directly and upward', () async {
+      final List<Saint> saints = await repository.getSaintsForNeed('fathers');
+      expect(<String>[
+        for (final Saint saint in saints) saint.slug,
+      ], contains('john-mary-vianney'));
+    });
+
+    test('hyphenated raw need key resolves', () async {
+      // 'day-laborers' passes through normalizeSearchText as 'daylaborers',
+      // which matches no stored raw value; the raw variant must resolve.
+      final List<Saint> saints = await repository.getSaintsForNeed(
+        'day-laborers',
+      );
+      expect(
+        <String>[for (final Saint saint in saints) saint.slug],
+        <String>['joseph-the-worker'],
+      );
+    });
+  });
+
   group('category aggregation', () {
     test('counts distinct saints per category', () async {
+      // Fixture extended in fix round 1 with john-mary-vianney (spiritual
+      // 'fathers' patronage) and joseph-the-worker (jobs 'day-laborers'
+      // patronage), so spiritual rises to 2 and jobs appears with 1.
       final Map<SaintCategory, int> counts = await repository
           .getCategoryCounts();
       expect(counts, <SaintCategory, int>{
         SaintCategory.everyday: 1,
-        SaintCategory.spiritual: 1,
+        SaintCategory.spiritual: 2,
         SaintCategory.military: 2,
+        SaintCategory.jobs: 1,
       });
     });
 
@@ -463,6 +521,70 @@ void main() {
         expect(<String>[
           for (final SaintSearchResult result in results) result.saint.slug,
         ], contains('anthony-of-padua'));
+      },
+    );
+
+    test('shipped synonym and raw-key needs resolve (fix round 1)', () async {
+      final SaintRepository committedRepository = SaintRepository.forDatabase(
+        committedDb,
+      );
+
+      // 69 saints store 'priests' directly and 18 more store need
+      // 'fathers' (a 'priests' synonym): both directions must resolve to
+      // the 87-saint union (before this fix only 69 were reachable).
+      final List<Saint> priests = await committedRepository.getSaintsForNeed(
+        'priests',
+      );
+      expect(priests.length, 87);
+      expect(<String>[
+        for (final Saint saint in priests) saint.slug,
+      ], contains('basil-the-elder'));
+
+      // The raw hyphenated need key must resolve against its two shipped
+      // saints (normalizeSearchText alone yields 'daylaborers', stored
+      // nowhere).
+      final List<Saint> dayLaborers = await committedRepository
+          .getSaintsForNeed('day-laborers');
+      expect(
+        <String>[for (final Saint saint in dayLaborers) saint.slug],
+        <String>['guy-of-anderlecht', 'vitalis-of-gaza'],
+      );
+
+      // The shipped synonym row 'cross-country skiing' -> 'skiers' must be
+      // reachable by the raw phrase; its normalized form 'crosscountry
+      // skiing' is stored nowhere.
+      expect(
+        await committedRepository.getSaintsForNeed('cross-country skiing'),
+        isNotEmpty,
+      );
+    });
+
+    test(
+      'invariant: every reported need resolves to at least one saint',
+      () async {
+        final SaintRepository committedRepository = SaintRepository.forDatabase(
+          committedDb,
+        );
+        final Set<String> allNeeds = <String>{};
+        for (final SaintCategory category in SaintCategory.values) {
+          final Map<String, int> needs = await committedRepository
+              .getNeedsForCategory(category);
+          expect(needs, isNotEmpty, reason: '${category.name} has patronages');
+          for (final String need in needs.keys) {
+            final List<Saint> saints = await committedRepository
+                .getSaintsForNeed(need);
+            expect(
+              saints,
+              isNotEmpty,
+              reason:
+                  'need "$need" (category ${category.name}) reported by '
+                  'getNeedsForCategory must be reachable by getSaintsForNeed',
+            );
+            allNeeds.add(need);
+          }
+        }
+        // The shipped dataset carries 183 distinct patronage needs.
+        expect(allNeeds.length, 183);
       },
     );
   });

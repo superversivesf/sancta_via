@@ -187,34 +187,54 @@ class SaintRepository {
     }, const <Saint>[]);
   }
 
-  /// Saints invoked for [need], including saints whose canonical need maps
-  /// to it through `need_synonyms` (e.g. `lost keys` -> `lost items`).
+  /// Saints invoked for [need] (spec section 7: direct patronage matches
+  /// plus saints matched via synonyms — in BOTH directions).
+  ///
+  /// Candidate need phrases (fix round 1 rule): `{input}` — the raw key —
+  /// unioned with `{canonical need : input is one of its synonyms}` and
+  /// `{synonyms : input is a canonical need}` (`priests` therefore also
+  /// reaches saints storing `fathers`, and `fathers` reaches `priests`
+  /// saints). Every candidate is matched against RAW stored
+  /// `patronages.need` values through both of its [_phraseVariants] forms
+  /// (raw-lowercase and normalized), chunked under the SQLite
+  /// host-variable limit. Results are name-ordered, then limited.
   Future<List<Saint>> getSaintsForNeed(String need, {int limit = 100}) {
     return _withDatabase<List<Saint>>((Database db) async {
-      final String normalized = normalizeSearchText(need);
-      if (normalized.isEmpty) {
+      final String input = need.trim();
+      if (input.isEmpty || limit <= 0) {
         return const <Saint>[];
       }
-      // The canonical need itself, plus every need that lists the input
-      // phrase as one of its synonyms.
-      final List<Map<String, Object?>> synonymRows = await db.query(
-        'need_synonyms',
-        where: 'synonym = ?',
-        whereArgs: <String>[normalized],
-      );
-      final Set<String> needs = <String>{
-        normalized,
-        for (final Map<String, Object?> row in synonymRows)
-          row['need']! as String,
-      };
-      final List<Map<String, Object?>> rows = await db.rawQuery(
-        'SELECT * FROM saints s WHERE EXISTS ('
-        'SELECT 1 FROM patronages p WHERE p.slug = s.slug '
-        "AND p.need IN (${needs.map((String _) => '?').join(', ')})) "
-        'ORDER BY s.name LIMIT ?',
-        <Object?>[...needs, limit],
-      );
-      return _loadSaints(db, rows);
+      final Set<String> phrases = <String>{input};
+      phrases.addAll(await _bidirectionalNeedPhrases(db, <String>{input}));
+      final Set<String> variants = <String>{};
+      for (final String phrase in phrases) {
+        variants.addAll(_phraseVariants(phrase));
+      }
+      // A saint may carry several matching needs across chunks: dedupe by
+      // slug, then order by name and apply the limit in Dart (the match
+      // set is split across chunked queries, so no single SQL ORDER/LIMIT
+      // would be correct).
+      final Map<String, Saint> saints = <String, Saint>{};
+      for (final List<String> chunk in _chunks(
+        variants.toList(),
+        _inClauseChunkSize,
+      )) {
+        final List<Map<String, Object?>> rows = await db.rawQuery(
+          'SELECT * FROM saints s WHERE EXISTS ('
+          'SELECT 1 FROM patronages p WHERE p.slug = s.slug '
+          'AND p.need IN (${List<String>.filled(chunk.length, '?').join(', ')}))',
+          chunk,
+        );
+        for (final Saint saint in await _loadSaints(db, rows)) {
+          saints[saint.slug] = saint;
+        }
+      }
+      final List<Saint> matches = saints.values.toList()
+        ..sort(
+          (Saint a, Saint b) =>
+              a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+        );
+      return matches.take(limit).toList();
     }, const <Saint>[]);
   }
 
@@ -238,27 +258,26 @@ class SaintRepository {
         ftsTerms,
       );
       // Tier 2: patronage FTS matches, unioned with the direct
-      // patronages-table hits for synonym-expanded canonical needs.
+      // patronages-table hits for synonym-expanded canonical needs (both
+      // synonym directions, matched through raw + normalized variants).
       final List<String> patronageSlugs = await _ftsSlugs(
         db,
         'WHERE patronages MATCH ?',
         ftsTerms,
       );
-      final Set<String> candidateNeeds = await _candidateNeeds(
+      final Set<String> candidateNeedVariants = await _candidateNeedVariants(
         db,
         tokens,
-        normalizeSearchText(query),
+        query,
       );
-      if (candidateNeeds.isNotEmpty) {
-        final List<String> placeholders = List<String>.filled(
-          candidateNeeds.length,
-          '?',
-        );
-        final List<Object?> args = <Object?>[...candidateNeeds];
+      for (final List<String> chunk in _chunks(
+        candidateNeedVariants.toList(),
+        _inClauseChunkSize,
+      )) {
         final List<Map<String, Object?>> directRows = await db.rawQuery(
           'SELECT DISTINCT slug FROM patronages '
-          'WHERE need IN (${placeholders.join(', ')})',
-          args,
+          'WHERE need IN (${List<String>.filled(chunk.length, '?').join(', ')})',
+          chunk,
         );
         patronageSlugs.addAll(<String>[
           for (final Map<String, Object?> row in directRows)
@@ -378,29 +397,78 @@ class SaintRepository {
     ];
   }
 
-  /// Canonical needs whose `need_synonyms` rows list [tokens] (or the whole
-  /// normalized [phrase]) as one of their synonyms.
-  Future<Set<String>> _candidateNeeds(
+  /// Match-ready need VARIANTS for the search tier-2 direct union.
+  ///
+  /// Lookup keys: every query token plus the whole query in raw-lowercase
+  /// and normalized form (a two-word raw phrase like `cross-country
+  /// skiing` hits the stored synonym row only in raw form, where
+  /// `normalizeSearchText` alone would produce `crosscountry skiing`,
+  /// stored nowhere). Expansion is BIDIRECTIONAL (fix round 1): where a
+  /// key is a synonym, its canonical need becomes a candidate; where a key
+  /// is a canonical need, its synonyms become candidates. Every key and
+  /// candidate then contributes both of its [_phraseVariants] forms to the
+  /// returned set, ready to `IN`-match the RAW `patronages.need` values.
+  Future<Set<String>> _candidateNeedVariants(
     Database db,
     List<String> tokens,
-    String phrase,
+    String query,
   ) async {
-    final Set<String> lookups = <String>{
+    final String rawQuery = query.trim().toLowerCase();
+    final Set<String> keys = <String>{
       ...tokens,
-      if (phrase.isNotEmpty) phrase,
+      if (rawQuery.isNotEmpty) rawQuery,
+      if (normalizeSearchText(query).isNotEmpty) normalizeSearchText(query),
     };
-    final Set<String> candidates = <String>{};
-    for (final String lookup in lookups) {
+    final Set<String> variants = <String>{};
+    for (final String phrase in <String>{
+      ...keys,
+      ...await _bidirectionalNeedPhrases(db, keys),
+    }) {
+      variants.addAll(_phraseVariants(phrase));
+    }
+    return variants;
+  }
+
+  /// Single-level bidirectional synonym expansion of [keys].
+  ///
+  /// For every key phrase, returns the union of `{canonical need : a
+  /// need_synonyms row lists the key (in any [_phraseVariants] form) as
+  /// its synonym}` and `{synonym : a row lists the key as its canonical
+  /// need}`. Queries are parameterized and chunked ([_inClauseChunkSize])
+  /// exactly like the other IN-lists. Input phrases themselves are NOT
+  /// added here — callers include them alongside the expansion.
+  Future<Set<String>> _bidirectionalNeedPhrases(
+    Database db,
+    Set<String> keys,
+  ) async {
+    final Set<String> expansion = <String>{};
+    final List<String> allVariants = <String>[
+      for (final String key in keys) ..._phraseVariants(key),
+    ];
+    // Upward: the key phrase is a synonym -> add its canonical need(s).
+    for (final List<String> chunk in _chunks(allVariants, _inClauseChunkSize)) {
       final List<Map<String, Object?>> rows = await db.query(
         'need_synonyms',
-        where: 'synonym = ?',
-        whereArgs: <String>[lookup],
+        where:
+            'synonym IN (${List<String>.filled(chunk.length, '?').join(', ')})',
+        whereArgs: chunk,
       );
       for (final Map<String, Object?> row in rows) {
-        candidates.add(row['need']! as String);
+        expansion.add(row['need']! as String);
       }
     }
-    return candidates;
+    // Downward: the key phrase is a canonical need -> add its synonyms.
+    for (final List<String> chunk in _chunks(allVariants, _inClauseChunkSize)) {
+      final List<Map<String, Object?>> rows = await db.query(
+        'need_synonyms',
+        where: 'need IN (${List<String>.filled(chunk.length, '?').join(', ')})',
+        whereArgs: chunk,
+      );
+      for (final Map<String, Object?> row in rows) {
+        expansion.add(row['synonym']! as String);
+      }
+    }
+    return expansion;
   }
 
   /// Hydrates [slugs] into `slug -> Saint` (patronages attached; sources
@@ -501,4 +569,28 @@ Iterable<List<T>> _chunks<T>(List<T> items, int size) sync* {
       start + size < items.length ? start + size : items.length,
     );
   }
+}
+
+/// Compare-time matching variants for a need phrase.
+///
+/// `patronages.need` and `need_synonyms` store RAW lowercase phrases
+/// (`day-laborers`, `cross-country skiing`) while the UI hands back those
+/// same raw keys — so the raw form (lowercased) must stay part of the
+/// match. The full [normalizeSearchText] form covers query-side
+/// case/diacritic folding (`Thérèse`-style input) — even though it strips
+/// characters the stored values keep (`day-laborers` -> `daylaborers`).
+/// Matching is hence performed against RAW stored values through both
+/// variants of every candidate; no normalized copies are stored anywhere
+/// (the build tool is out of scope this round).
+Set<String> _phraseVariants(String phrase) {
+  final String trimmed = phrase.trim();
+  if (trimmed.isEmpty) {
+    return const <String>{};
+  }
+  final Set<String> variants = <String>{trimmed.toLowerCase()};
+  final String normalized = normalizeSearchText(trimmed);
+  if (normalized.isNotEmpty) {
+    variants.add(normalized);
+  }
+  return variants;
 }
