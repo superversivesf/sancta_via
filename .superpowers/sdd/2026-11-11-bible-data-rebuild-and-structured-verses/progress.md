@@ -11,6 +11,13 @@ bump. If a task truly cannot converge at the cap, surface to the partner.
 Ruling: worktree consent — partner chose work-in-place on feature/devotionals-plan2 (Step 0 verified:
 normal checkout, clean, non-main branch).
 
+Crash-recovery ruling (2026-11-11): the original `feature/devotionals-plan2` branch died with the
+`~/Repos` deletion; Task-1 deliverables were reconstructed from session logs onto `main` (ed8cf5b).
+Ruling (drc): partner authorized building `drc.json` from the pinned `exanx/bible-json` fallback —
+73 `DRB-73-Books/*.json` per-book files joined via `joinList` (`drc_file_list.json`, committed);
+retired primary (thomas992/catholicbible, HTTP 404) kept in `fallbackUrls` for provenance.
+All four snapshots re-fetched and checksum-pinned 2026-11-11 (idempotent rerun verified=4 failed=0).
+
 Baseline: sancta_via_bible_data `flutter test` → 8/8 pass. Reading app suite running (will append).
 Ruling (T2 vocabulary): Task 2's canonical DB book vocabulary = the cpdv rows of the CURRENT
 (broken) bibles.db `books` table, EXCLUDING the 5 ghost books (I Esdras, II Esdras, Laodiceans,
@@ -32,7 +39,7 @@ wrong: book names drift from normalizer expectations; caught by asset validator 
 | All | Global constraints (no runtime deps; artifacts build-only) | — | Clean; archive+crypto are dev-only (T1 commits pubspec) |
 
 Tasks tracked here (todo):
-- Task 1: fetch tool + snapshots + manifest — pending
+- Task 1: fetch tool + snapshots + manifest — done (3fe163c originally; re-fetched and re-pinned after crash recovery; drc resolved via authorized exanx join)
 - Task 2: book-name map + expected-structure manifest — pending
 - Task 3: structure validator (TDD) — pending
 - Task 4: build JSONs + asset tests — pending

@@ -28,3 +28,8 @@ No contradictions with Global Constraints found. Spec present: docs/superpowers/
 
 ## Progress
 
+Crash-recovery note (2026-11-11): the `feature/saint-companion` worktree branch died with the
+`~/Repos` deletion; Task 1 (scaffold, 6251111) and Task 2 (models, 873c46d) deliverables were
+reconstructed from session logs onto `main` (ed8cf5b). Repaired: barrel `saint_data.dart` re-exports
+the three model files (recovery had dropped them — 28-model suite failed to load), `assets/`
+directory restored (pubspec declares it). Gates: analyze clean, 29/29 tests pass. Next: Task 3.

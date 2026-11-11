@@ -25,3 +25,13 @@ Model policy (user-directed 2026-11-11): implementers + reviewers restricted to 
 Scan: clean — no test-that-asserts-nothing or duplication mandates found; every task reuses the engine rather than re-implementing it.
 
 ## Task log
+
+### Task 1 — DONE (repaired post-crash)
+Original commit 5df1742 was lost with the 2026-11-11 `~/Repos` deletion; the ed8cf5b recovery
+reconstructed only lib/pubspec/Makefile/README/test. Repaired on 2026-11-11: pubspec path-dep keys
+for the bible packages restored to the DECLARED names (`bible_data`/`bible_data_riverpod`, the same
+fix as original deviation #1 — the recovery had reintroduced the directory-name bug); analysis
+options/.gitignore/scripts/update_build_info.sh copied verbatim from prayer_companion; six platform
+dirs regenerated via `flutter create` (org/bundle IDs match the original tool output); template
+`widget_test.dart` deleted again; pubspec_overrides.yaml (already on disk, melos-shaped) + force-added
+pubspec.lock committed. Gates: analyze clean, smoke test green. Next: Task 2.
