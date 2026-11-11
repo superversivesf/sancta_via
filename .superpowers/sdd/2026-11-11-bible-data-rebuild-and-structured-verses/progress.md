@@ -78,3 +78,4 @@ Task 5: complete (commits 2cec445..ac4a11a, review clean — Approved with revie
 Task 6: complete (commits dbb8b20..a5ac1df, review clean — Approved; deferred minors: `var i` loop index in test; whole-chapter test could pin exact length 13)
 Task 7: complete (commits d2a9523..a486cf8, review clean — Approved; deferred minors: centering heuristic uses true number vs key count threshold; no widget test for _scrollToVerseAccurate gap/-1 branches; numberSpanOf unchecked casts)
 Task 8: complete (commits 5d44ae3..d336610, review clean — Approved; deferred minors: fixture declaration order in test; mild setup duplication between gap tests; no tile-count assert in tap test)
+Task 9: complete (commits bd54f19..fbe8e83, review clean — Approved; reconciliation rulings recorded for spec §8 D1/D2/D3; deferred minors: report-provenance citation nit)
