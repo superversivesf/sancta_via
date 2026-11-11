@@ -21,6 +21,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+    - assets/thumbs/
 
 # Dev/test/tool build-hook defines (only take effect when this package is the
 # build workspace root, never for apps depending on it). The sqlite3 bundled

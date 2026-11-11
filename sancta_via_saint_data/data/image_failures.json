@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "casimir",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/f/f5/%C5%A0ventasis_Kazimieras%2C_1594.jpg",
+    "error": "HTTP 404 from https://upload.wikimedia.org/wikipedia/commons/f/f5/%C5%A0ventasis_Kazimieras%2C_1594.jpg"
+  },
+  {
+    "slug": "isaac-the-syrian",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/ISAAK_64729.jpg",
+    "error": "HTTP 404 from https://upload.wikimedia.org/wikipedia/commons/2/2b/ISAAK_64729.jpg"
+  },
+  {
+    "slug": "moses-the-black",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/b/bc/San_Moises_el_Negro.jpg",
+    "error": "HTTP 404 from https://upload.wikimedia.org/wikipedia/commons/b/bc/San_Moises_el_Negro.jpg"
+  },
+  {
+    "slug": "perpetuus",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Saintperpetuus.jpg",
+    "error": "HTTP 404 from https://upload.wikimedia.org/wikipedia/commons/c/c9/Saintperpetuus.jpg"
+  }
+]
