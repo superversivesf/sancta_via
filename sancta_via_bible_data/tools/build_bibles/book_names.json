@@ -1,0 +1,678 @@
+{
+  "GEN": {
+    "dbName": "Genesis",
+    "order": 1
+  },
+  "Genesis": {
+    "dbName": "Genesis",
+    "order": 1
+  },
+  "EXO": {
+    "dbName": "Exodus",
+    "order": 2
+  },
+  "Exodus": {
+    "dbName": "Exodus",
+    "order": 2
+  },
+  "LEV": {
+    "dbName": "Leviticus",
+    "order": 3
+  },
+  "Leviticus": {
+    "dbName": "Leviticus",
+    "order": 3
+  },
+  "NUM": {
+    "dbName": "Numbers",
+    "order": 4
+  },
+  "Numbers": {
+    "dbName": "Numbers",
+    "order": 4
+  },
+  "DEU": {
+    "dbName": "Deuteronomy",
+    "order": 5
+  },
+  "Deuteronomy": {
+    "dbName": "Deuteronomy",
+    "order": 5
+  },
+  "JOS": {
+    "dbName": "Joshua",
+    "order": 6
+  },
+  "Joshua": {
+    "dbName": "Joshua",
+    "order": 6
+  },
+  "JDG": {
+    "dbName": "Judges",
+    "order": 7
+  },
+  "Judges": {
+    "dbName": "Judges",
+    "order": 7
+  },
+  "RUT": {
+    "dbName": "Ruth",
+    "order": 8
+  },
+  "Ruth": {
+    "dbName": "Ruth",
+    "order": 8
+  },
+  "1SA": {
+    "dbName": "I Samuel",
+    "order": 9
+  },
+  "1-Samuel": {
+    "dbName": "I Samuel",
+    "order": 9
+  },
+  "1 Samuel": {
+    "dbName": "I Samuel",
+    "order": 9
+  },
+  "2SA": {
+    "dbName": "II Samuel",
+    "order": 10
+  },
+  "2-Samuel": {
+    "dbName": "II Samuel",
+    "order": 10
+  },
+  "2 Samuel": {
+    "dbName": "II Samuel",
+    "order": 10
+  },
+  "1KI": {
+    "dbName": "I Kings",
+    "order": 11
+  },
+  "1-Kings": {
+    "dbName": "I Kings",
+    "order": 11
+  },
+  "1 Kings": {
+    "dbName": "I Kings",
+    "order": 11
+  },
+  "2KI": {
+    "dbName": "II Kings",
+    "order": 12
+  },
+  "2-Kings": {
+    "dbName": "II Kings",
+    "order": 12
+  },
+  "2 Kings": {
+    "dbName": "II Kings",
+    "order": 12
+  },
+  "1CH": {
+    "dbName": "I Chronicles",
+    "order": 13
+  },
+  "1-Chronicles": {
+    "dbName": "I Chronicles",
+    "order": 13
+  },
+  "1 Chronicles": {
+    "dbName": "I Chronicles",
+    "order": 13
+  },
+  "2CH": {
+    "dbName": "II Chronicles",
+    "order": 14
+  },
+  "2-Chronicles": {
+    "dbName": "II Chronicles",
+    "order": 14
+  },
+  "2 Chronicles": {
+    "dbName": "II Chronicles",
+    "order": 14
+  },
+  "EZR": {
+    "dbName": "Ezra",
+    "order": 15
+  },
+  "Ezra": {
+    "dbName": "Ezra",
+    "order": 15
+  },
+  "NEH": {
+    "dbName": "Nehemiah",
+    "order": 16
+  },
+  "Nehemiah": {
+    "dbName": "Nehemiah",
+    "order": 16
+  },
+  "TOB": {
+    "dbName": "Tobit",
+    "order": 17
+  },
+  "Tobit": {
+    "dbName": "Tobit",
+    "order": 17
+  },
+  "JDT": {
+    "dbName": "Judith",
+    "order": 18
+  },
+  "Judith": {
+    "dbName": "Judith",
+    "order": 18
+  },
+  "ESG": {
+    "dbName": "Esther",
+    "order": 19
+  },
+  "Esther": {
+    "dbName": "Esther",
+    "order": 19
+  },
+  "JOB": {
+    "dbName": "Job",
+    "order": 20
+  },
+  "Job": {
+    "dbName": "Job",
+    "order": 20
+  },
+  "PSA": {
+    "dbName": "Psalms",
+    "order": 21
+  },
+  "Psalms": {
+    "dbName": "Psalms",
+    "order": 21
+  },
+  "PRO": {
+    "dbName": "Proverbs",
+    "order": 22
+  },
+  "Proverbs": {
+    "dbName": "Proverbs",
+    "order": 22
+  },
+  "ECC": {
+    "dbName": "Ecclesiastes",
+    "order": 23
+  },
+  "Ecclesiastes": {
+    "dbName": "Ecclesiastes",
+    "order": 23
+  },
+  "SNG": {
+    "dbName": "Song of Solomon",
+    "order": 24
+  },
+  "Song2": {
+    "dbName": "Song of Solomon",
+    "order": 24
+  },
+  "Song of Solomon": {
+    "dbName": "Song of Solomon",
+    "order": 24
+  },
+  "WIS": {
+    "dbName": "Wisdom",
+    "order": 25
+  },
+  "Wisdom": {
+    "dbName": "Wisdom",
+    "order": 25
+  },
+  "SIR": {
+    "dbName": "Sirach",
+    "order": 26
+  },
+  "Sirach": {
+    "dbName": "Sirach",
+    "order": 26
+  },
+  "Ecclesiasticus": {
+    "dbName": "Sirach",
+    "order": 26
+  },
+  "ISA": {
+    "dbName": "Isaiah",
+    "order": 27
+  },
+  "Isaiah": {
+    "dbName": "Isaiah",
+    "order": 27
+  },
+  "JER": {
+    "dbName": "Jeremiah",
+    "order": 28
+  },
+  "Jeremiah": {
+    "dbName": "Jeremiah",
+    "order": 28
+  },
+  "LAM": {
+    "dbName": "Lamentations",
+    "order": 29
+  },
+  "Lamentations": {
+    "dbName": "Lamentations",
+    "order": 29
+  },
+  "BAR": {
+    "dbName": "Baruch",
+    "order": 30
+  },
+  "Baruch": {
+    "dbName": "Baruch",
+    "order": 30
+  },
+  "EZK": {
+    "dbName": "Ezekiel",
+    "order": 31
+  },
+  "Ezekiel": {
+    "dbName": "Ezekiel",
+    "order": 31
+  },
+  "DAG": {
+    "dbName": "Daniel",
+    "order": 32
+  },
+  "Daniel": {
+    "dbName": "Daniel",
+    "order": 32
+  },
+  "HOS": {
+    "dbName": "Hosea",
+    "order": 33
+  },
+  "Hosea": {
+    "dbName": "Hosea",
+    "order": 33
+  },
+  "JOL": {
+    "dbName": "Joel",
+    "order": 34
+  },
+  "Joel": {
+    "dbName": "Joel",
+    "order": 34
+  },
+  "AMO": {
+    "dbName": "Amos",
+    "order": 35
+  },
+  "Amos": {
+    "dbName": "Amos",
+    "order": 35
+  },
+  "OBA": {
+    "dbName": "Obadiah",
+    "order": 36
+  },
+  "Obadiah": {
+    "dbName": "Obadiah",
+    "order": 36
+  },
+  "JON": {
+    "dbName": "Jonah",
+    "order": 37
+  },
+  "Jonah": {
+    "dbName": "Jonah",
+    "order": 37
+  },
+  "MIC": {
+    "dbName": "Micah",
+    "order": 38
+  },
+  "Micah": {
+    "dbName": "Micah",
+    "order": 38
+  },
+  "Micha": {
+    "dbName": "Micah",
+    "order": 38
+  },
+  "NAM": {
+    "dbName": "Nahum",
+    "order": 39
+  },
+  "Nahum": {
+    "dbName": "Nahum",
+    "order": 39
+  },
+  "HAB": {
+    "dbName": "Habakkuk",
+    "order": 40
+  },
+  "Habakkuk": {
+    "dbName": "Habakkuk",
+    "order": 40
+  },
+  "ZEP": {
+    "dbName": "Zephaniah",
+    "order": 41
+  },
+  "Zephaniah": {
+    "dbName": "Zephaniah",
+    "order": 41
+  },
+  "HAG": {
+    "dbName": "Haggai",
+    "order": 42
+  },
+  "Haggai": {
+    "dbName": "Haggai",
+    "order": 42
+  },
+  "ZEC": {
+    "dbName": "Zechariah",
+    "order": 43
+  },
+  "Zechariah": {
+    "dbName": "Zechariah",
+    "order": 43
+  },
+  "Zachariah": {
+    "dbName": "Zechariah",
+    "order": 43
+  },
+  "MAL": {
+    "dbName": "Malachi",
+    "order": 44
+  },
+  "Malachi": {
+    "dbName": "Malachi",
+    "order": 44
+  },
+  "1MA": {
+    "dbName": "I Maccabees",
+    "order": 45
+  },
+  "1-Maccabees": {
+    "dbName": "I Maccabees",
+    "order": 45
+  },
+  "1 Maccabees": {
+    "dbName": "I Maccabees",
+    "order": 45
+  },
+  "2MA": {
+    "dbName": "II Maccabees",
+    "order": 46
+  },
+  "2-Maccabees": {
+    "dbName": "II Maccabees",
+    "order": 46
+  },
+  "2 Maccabees": {
+    "dbName": "II Maccabees",
+    "order": 46
+  },
+  "MAT": {
+    "dbName": "Matthew",
+    "order": 47
+  },
+  "Matthew": {
+    "dbName": "Matthew",
+    "order": 47
+  },
+  "MRK": {
+    "dbName": "Mark",
+    "order": 48
+  },
+  "Mark": {
+    "dbName": "Mark",
+    "order": 48
+  },
+  "LUK": {
+    "dbName": "Luke",
+    "order": 49
+  },
+  "Luke": {
+    "dbName": "Luke",
+    "order": 49
+  },
+  "JHN": {
+    "dbName": "John",
+    "order": 50
+  },
+  "John": {
+    "dbName": "John",
+    "order": 50
+  },
+  "ACT": {
+    "dbName": "Acts",
+    "order": 51
+  },
+  "Acts": {
+    "dbName": "Acts",
+    "order": 51
+  },
+  "ROM": {
+    "dbName": "Romans",
+    "order": 52
+  },
+  "Romans": {
+    "dbName": "Romans",
+    "order": 52
+  },
+  "1CO": {
+    "dbName": "I Corinthians",
+    "order": 53
+  },
+  "1-Corinthians": {
+    "dbName": "I Corinthians",
+    "order": 53
+  },
+  "1 Corinthians": {
+    "dbName": "I Corinthians",
+    "order": 53
+  },
+  "2CO": {
+    "dbName": "II Corinthians",
+    "order": 54
+  },
+  "2-Corinthians": {
+    "dbName": "II Corinthians",
+    "order": 54
+  },
+  "2 Corinthians": {
+    "dbName": "II Corinthians",
+    "order": 54
+  },
+  "GAL": {
+    "dbName": "Galatians",
+    "order": 55
+  },
+  "Galatians": {
+    "dbName": "Galatians",
+    "order": 55
+  },
+  "EPH": {
+    "dbName": "Ephesians",
+    "order": 56
+  },
+  "Ephesians": {
+    "dbName": "Ephesians",
+    "order": 56
+  },
+  "PHP": {
+    "dbName": "Philippians",
+    "order": 57
+  },
+  "Philippians": {
+    "dbName": "Philippians",
+    "order": 57
+  },
+  "COL": {
+    "dbName": "Colossians",
+    "order": 58
+  },
+  "Colossians": {
+    "dbName": "Colossians",
+    "order": 58
+  },
+  "1TH": {
+    "dbName": "I Thessalonians",
+    "order": 59
+  },
+  "1-Thessalonians": {
+    "dbName": "I Thessalonians",
+    "order": 59
+  },
+  "1 Thessalonians": {
+    "dbName": "I Thessalonians",
+    "order": 59
+  },
+  "2TH": {
+    "dbName": "II Thessalonians",
+    "order": 60
+  },
+  "2-Thessalonians": {
+    "dbName": "II Thessalonians",
+    "order": 60
+  },
+  "2 Thessalonians": {
+    "dbName": "II Thessalonians",
+    "order": 60
+  },
+  "1TI": {
+    "dbName": "I Timothy",
+    "order": 61
+  },
+  "1-Timothy": {
+    "dbName": "I Timothy",
+    "order": 61
+  },
+  "1 Timothy": {
+    "dbName": "I Timothy",
+    "order": 61
+  },
+  "2TI": {
+    "dbName": "II Timothy",
+    "order": 62
+  },
+  "2-Timothy": {
+    "dbName": "II Timothy",
+    "order": 62
+  },
+  "2 Timothy": {
+    "dbName": "II Timothy",
+    "order": 62
+  },
+  "TIT": {
+    "dbName": "Titus",
+    "order": 63
+  },
+  "Titus": {
+    "dbName": "Titus",
+    "order": 63
+  },
+  "PHM": {
+    "dbName": "Philemon",
+    "order": 64
+  },
+  "Philemon": {
+    "dbName": "Philemon",
+    "order": 64
+  },
+  "HEB": {
+    "dbName": "Hebrews",
+    "order": 65
+  },
+  "Hebrews": {
+    "dbName": "Hebrews",
+    "order": 65
+  },
+  "JAS": {
+    "dbName": "James",
+    "order": 66
+  },
+  "James": {
+    "dbName": "James",
+    "order": 66
+  },
+  "1PE": {
+    "dbName": "I Peter",
+    "order": 67
+  },
+  "1-Peter": {
+    "dbName": "I Peter",
+    "order": 67
+  },
+  "1 Peter": {
+    "dbName": "I Peter",
+    "order": 67
+  },
+  "2PE": {
+    "dbName": "II Peter",
+    "order": 68
+  },
+  "2-Peter": {
+    "dbName": "II Peter",
+    "order": 68
+  },
+  "2 Peter": {
+    "dbName": "II Peter",
+    "order": 68
+  },
+  "1JN": {
+    "dbName": "I John",
+    "order": 69
+  },
+  "1-John": {
+    "dbName": "I John",
+    "order": 69
+  },
+  "1 John": {
+    "dbName": "I John",
+    "order": 69
+  },
+  "2JN": {
+    "dbName": "II John",
+    "order": 70
+  },
+  "2-John": {
+    "dbName": "II John",
+    "order": 70
+  },
+  "2 John": {
+    "dbName": "II John",
+    "order": 70
+  },
+  "3JN": {
+    "dbName": "III John",
+    "order": 71
+  },
+  "3-John": {
+    "dbName": "III John",
+    "order": 71
+  },
+  "3 John": {
+    "dbName": "III John",
+    "order": 71
+  },
+  "JUD": {
+    "dbName": "Jude",
+    "order": 72
+  },
+  "Jude": {
+    "dbName": "Jude",
+    "order": 72
+  },
+  "REV": {
+    "dbName": "Revelation of John",
+    "order": 73
+  },
+  "Revelation": {
+    "dbName": "Revelation of John",
+    "order": 73
+  }
+}
