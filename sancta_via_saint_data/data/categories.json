@@ -1,0 +1,52 @@
+[
+  {
+    "id": "everyday",
+    "label": "Everyday life",
+    "description": "Lost items, housework, errands, daily needs"
+  },
+  {
+    "id": "illness",
+    "label": "Illness & healing",
+    "description": "Diseases, mental health, specific conditions"
+  },
+  {
+    "id": "jobs",
+    "label": "Jobs & professions",
+    "description": "Vocations, trades, occupations"
+  },
+  {
+    "id": "travel",
+    "label": "Travel & transport",
+    "description": "Travelers, drivers, sailors, aviators"
+  },
+  {
+    "id": "persecution",
+    "label": "Persecution & prisoners",
+    "description": "Martyrs, oppressed, prisoners, refugees"
+  },
+  {
+    "id": "spiritual",
+    "label": "Spiritual life",
+    "description": "Doubt, conversion, prayer, temptations"
+  },
+  {
+    "id": "military",
+    "label": "Military & first responders",
+    "description": "Soldiers, police, firefighters, EMS"
+  },
+  {
+    "id": "family",
+    "label": "Children & family",
+    "description": "Children, mothers, fathers, fertility, marriage"
+  },
+  {
+    "id": "nature",
+    "label": "Animals & nature",
+    "description": "Pets, ecology, environment, weather"
+  },
+  {
+    "id": "special",
+    "label": "Special intentions",
+    "description": "Impossible causes, the dying, the poor"
+  }
+]

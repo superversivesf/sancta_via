@@ -1,0 +1,19 @@
+{
+  "sourceRepo": "/Users/jason/Repos/saint-for-that",
+  "sourceCommit": "8d5d73585b6f4bab3beaaa456cb5c28721b82f76",
+  "fetchedAt": "2026-11-11T21:15:36.984223Z",
+  "saintCount": 2174,
+  "categoryCounts": {
+    "everyday": 401,
+    "illness": 204,
+    "jobs": 296,
+    "travel": 148,
+    "persecution": 474,
+    "spiritual": 2771,
+    "military": 55,
+    "family": 276,
+    "nature": 72,
+    "special": 146
+  },
+  "snapshotSha256": "e727ea7929d7bfbd96b5ebb4e080c6aa98f594db1e4271107616ae6151028029"
+}

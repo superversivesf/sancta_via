@@ -1,0 +1,2617 @@
+[
+  {
+    "need": "accountants",
+    "synonyms": [
+      "bookkeepers",
+      "accounting",
+      "taxes",
+      "auditors",
+      "cpas",
+      "bookkeeping",
+      "tax preparation",
+      "finance",
+      "ledgers",
+      "tax filing"
+    ]
+  },
+  {
+    "need": "actors",
+    "synonyms": [
+      "acting",
+      "theater",
+      "theatre",
+      "performers",
+      "stage",
+      "drama",
+      "thespians",
+      "performing arts",
+      "actresses",
+      "performer"
+    ]
+  },
+  {
+    "need": "actresses",
+    "synonyms": [
+      "acting",
+      "actress",
+      "female actors",
+      "women performers",
+      "stage actresses",
+      "film stars",
+      "leading ladies",
+      "drama performers"
+    ]
+  },
+  {
+    "need": "abbot",
+    "synonyms": [
+      "abbots",
+      "monastery superior",
+      "monastic head",
+      "abbacy",
+      "cloister leader",
+      "monastery abbot",
+      "religious superior"
+    ]
+  },
+  {
+    "need": "abbots",
+    "synonyms": [
+      "monastery superior",
+      "monastic head",
+      "abbacy",
+      "cloister leader",
+      "monastery abbot",
+      "religious superior",
+      "abbot"
+    ]
+  },
+  {
+    "need": "archaeologists",
+    "synonyms": [
+      "archaeology",
+      "excavation",
+      "antiquities",
+      "digs",
+      "ancient artifacts",
+      " ruins",
+      "historical digs",
+      "paleontology",
+      "antiquarian"
+    ]
+  },
+  {
+    "need": "bachelors",
+    "synonyms": [
+      "unmarried men",
+      "single men",
+      "bachelorhood",
+      "celibate men",
+      "single life",
+      "unmarried",
+      "men living alone"
+    ]
+  },
+  {
+    "need": "bishops",
+    "synonyms": [
+      "bishop",
+      "episcopacy",
+      "episcopal",
+      "diocese",
+      "church leaders",
+      "prelates",
+      "shepherds",
+      "apostolic successors"
+    ]
+  },
+  {
+    "need": "captives",
+    "synonyms": [
+      "prisoners",
+      "hostages",
+      "captured",
+      "detainees",
+      "prisoners of war",
+      "the imprisoned",
+      "kidnap victims",
+      "hostage"
+    ]
+  },
+  {
+    "need": "conscience",
+    "synonyms": [
+      "moral conscience",
+      "scruples",
+      "moral sense",
+      "ethics",
+      "moral compass",
+      "right and wrong",
+      "guilt",
+      "moral clarity"
+    ]
+  },
+  {
+    "need": "day-laborers",
+    "synonyms": [
+      "laborers",
+      "day workers",
+      "manual labor",
+      "hired hands",
+      "temp workers",
+      "working class",
+      "day work",
+      "casual labor"
+    ]
+  },
+  {
+    "need": "deacons",
+    "synonyms": [
+      "deacon",
+      "diaconate",
+      "clergy",
+      "ministry",
+      "servants of the church",
+      "deacons office",
+      "deaconate"
+    ]
+  },
+  {
+    "need": "disabled people",
+    "synonyms": [
+      "disability",
+      "handicapped",
+      "the disabled",
+      "physically challenged",
+      "accessibility",
+      "special needs",
+      "wheelchair users"
+    ]
+  },
+  {
+    "need": "epilepsy",
+    "synonyms": [
+      "seizures",
+      "epileptic",
+      "fits",
+      "convulsions",
+      "seizure disorder",
+      "falling sickness",
+      "fits of falling"
+    ]
+  },
+  {
+    "need": "fertility",
+    "synonyms": [
+      "conception",
+      "fertility issues",
+      "trying to conceive",
+      "barrenness",
+      "childlessness",
+      "infertility",
+      "conceiving"
+    ]
+  },
+  {
+    "need": "hungary",
+    "synonyms": [
+      "hungarian",
+      "magyar",
+      "hungary saints",
+      "hungarian saints",
+      "buda",
+      "pest"
+    ]
+  },
+  {
+    "need": "infertility",
+    "synonyms": [
+      "infertile",
+      "barren",
+      "cannot conceive",
+      "childless couples",
+      "fertility problems",
+      "conception difficulties",
+      "barrenness"
+    ]
+  },
+  {
+    "need": "italy",
+    "synonyms": [
+      "italian",
+      "italian saints",
+      "rome",
+      "italian church",
+      "italian nation"
+    ]
+  },
+  {
+    "need": "mountaineers",
+    "synonyms": [
+      "mountain climbing",
+      "climbers",
+      "alpinists",
+      "mountaineering",
+      "rock climbing",
+      "himalayan",
+      "alps"
+    ]
+  },
+  {
+    "need": "netherlands",
+    "synonyms": [
+      "dutch",
+      "holland",
+      "dutch saints",
+      "low countries",
+      "netherlands saints"
+    ]
+  },
+  {
+    "need": "nobility",
+    "synonyms": [
+      "nobles",
+      "aristocracy",
+      "noble class",
+      "lords",
+      "ladies",
+      "royal court",
+      "noble birth",
+      "aristocrats"
+    ]
+  },
+  {
+    "need": "parents",
+    "synonyms": [
+      "parenting",
+      "mothers and fathers",
+      "parenthood",
+      "raising children",
+      "parental love",
+      "family",
+      "moms and dads"
+    ]
+  },
+  {
+    "need": "persecution",
+    "synonyms": [
+      "persecuted",
+      "oppressed",
+      "religious persecution",
+      "martyrdom",
+      "suffering for faith",
+      "harassment"
+    ]
+  },
+  {
+    "need": "pilgrims",
+    "synonyms": [
+      "pilgrimage",
+      "pilgrim",
+      "pilgrimages",
+      "holy journeys",
+      "religious travel",
+      "sacred journeys",
+      "shrine visits"
+    ]
+  },
+  {
+    "need": "poets",
+    "synonyms": [
+      "poetry",
+      "poem",
+      "verse",
+      "poems",
+      "poets and writers",
+      "bards",
+      "lyricists",
+      "rhyme",
+      "verse makers"
+    ]
+  },
+  {
+    "need": "poland",
+    "synonyms": [
+      "polish",
+      "polska",
+      "polish saints",
+      "polish church",
+      "polish martyrs"
+    ]
+  },
+  {
+    "need": "prostitutes",
+    "synonyms": [
+      "sex workers",
+      "fallen women",
+      "prostituted women",
+      "the wayward",
+      "redemption",
+      "reformed prostitutes"
+    ]
+  },
+  {
+    "need": "russia",
+    "synonyms": [
+      "russian",
+      "russian orthodox",
+      "russian saints",
+      "rus",
+      "russian church"
+    ]
+  },
+  {
+    "need": "scripture study",
+    "synonyms": [
+      "bible study",
+      "scripture",
+      "biblical studies",
+      "sacred scripture",
+      "reading the bible",
+      "bible reading"
+    ]
+  },
+  {
+    "need": "skiers",
+    "synonyms": [
+      "skiing",
+      "ski",
+      "winter sports",
+      "downhill skiing",
+      "cross-country skiing",
+      "snow skiing"
+    ]
+  },
+  {
+    "need": "slovakia",
+    "synonyms": [
+      "slovak",
+      "slovak saints",
+      "slovak church",
+      "slovakian",
+      "slovak nation"
+    ]
+  },
+  {
+    "need": "translators",
+    "synonyms": [
+      "translation",
+      "translating",
+      "interpreters",
+      "interpreting",
+      "language translation",
+      "bible translators",
+      "translating scripture"
+    ]
+  },
+  {
+    "need": "ukraine",
+    "synonyms": [
+      "ukrainian",
+      "ukrainian saints",
+      "ukrainian church",
+      "kievan rus",
+      "ukrainian nation"
+    ]
+  },
+  {
+    "need": "advertisers",
+    "synonyms": [
+      "advertising",
+      "marketing",
+      "ads",
+      "ad agencies",
+      "promotions",
+      "copywriting",
+      "publicity",
+      "campaigns",
+      "marketers",
+      "ad men"
+    ]
+  },
+  {
+    "need": "altar servers",
+    "synonyms": [
+      "altar boys",
+      "altar girls",
+      "serving mass",
+      "acolytes",
+      "mass servers",
+      "liturgical serving",
+      "altar serving",
+      "servers"
+    ]
+  },
+  {
+    "need": "animals",
+    "synonyms": [
+      "pets",
+      "livestock",
+      "animal welfare",
+      "animal care",
+      "wildlife",
+      "farm animals",
+      "creatures",
+      "beasts",
+      "vets",
+      "animal rescue"
+    ]
+  },
+  {
+    "need": "anxiety",
+    "synonyms": [
+      "worry",
+      "stress",
+      "nervousness",
+      "anxious",
+      "panic",
+      "anxiety attacks",
+      "angst",
+      "unease",
+      "apprehension",
+      "dread"
+    ]
+  },
+  {
+    "need": "architects",
+    "synonyms": [
+      "architecture",
+      "building design",
+      "drafting",
+      "building plans",
+      "architectural design",
+      "blueprints",
+      "structural design",
+      "design buildings",
+      "architect"
+    ]
+  },
+  {
+    "need": "artists",
+    "synonyms": [
+      "painting",
+      "art",
+      "painters",
+      "sculptors",
+      "artistry",
+      "drawing",
+      "sculpture",
+      "fine arts",
+      "visual arts",
+      "sketching"
+    ]
+  },
+  {
+    "need": "back pain",
+    "synonyms": [
+      "backache",
+      "back problems",
+      "lower back pain",
+      "backaches",
+      "spine pain",
+      "lumbar pain",
+      "slipped disc",
+      "sciatica",
+      "bad back",
+      "back ache"
+    ]
+  },
+  {
+    "need": "bakers",
+    "synonyms": [
+      "baking",
+      "bakery",
+      "bread making",
+      "bread",
+      "pastry",
+      "pastries",
+      "baking bread",
+      "dough",
+      "bake",
+      "baked goods"
+    ]
+  },
+  {
+    "need": "beekeepers",
+    "synonyms": [
+      "bees",
+      "beekeeping",
+      "honey",
+      "apiary",
+      "hives",
+      "honey bees",
+      "bee keeper",
+      "bee keeping",
+      "apiarists",
+      "honeybees"
+    ]
+  },
+  {
+    "need": "blindness",
+    "synonyms": [
+      "blind",
+      "vision loss",
+      "sight loss",
+      "visually impaired",
+      "cannot see",
+      "loss of sight",
+      "going blind",
+      "sight impaired",
+      "vision impaired"
+    ]
+  },
+  {
+    "need": "breast disease",
+    "synonyms": [
+      "breast cancer",
+      "breast health",
+      "mastitis",
+      "breast tumors",
+      "breast lumps",
+      "mammogram",
+      "breast care",
+      "breast ailments"
+    ]
+  },
+  {
+    "need": "brewers",
+    "synonyms": [
+      "brewing",
+      "beer",
+      "beer making",
+      "breweries",
+      "ale",
+      "ale making",
+      "brewing beer",
+      "brewmaster",
+      "fermentation",
+      "beer brewing"
+    ]
+  },
+  {
+    "need": "brides",
+    "synonyms": [
+      "bride",
+      "wedding",
+      "weddings",
+      "marriage",
+      "getting married",
+      "brides to be",
+      "engaged women",
+      "wedding day",
+      "bridal",
+      "bride to be"
+    ]
+  },
+  {
+    "need": "builders",
+    "synonyms": [
+      "building",
+      "construction",
+      "building trades",
+      "construction workers",
+      "carpentry",
+      "building houses",
+      "home builders",
+      "contractors",
+      "home construction"
+    ]
+  },
+  {
+    "need": "butchers",
+    "synonyms": [
+      "butchery",
+      "meat cutting",
+      "meat",
+      "meat cutters",
+      "slaughter",
+      "meat preparation",
+      "butchering",
+      "meat sellers",
+      "meat market"
+    ]
+  },
+  {
+    "need": "cancer",
+    "synonyms": [
+      "tumors",
+      "oncology",
+      "tumor",
+      "cancer treatment",
+      "chemotherapy",
+      "chemo",
+      "malignancy",
+      "malignant",
+      "cancer patients",
+      "carcinoma"
+    ]
+  },
+  {
+    "need": "canon lawyers",
+    "synonyms": [
+      "canon law",
+      "church law",
+      "ecclesiastical law",
+      "canon legal",
+      "church legal",
+      "canon law experts",
+      "catholic law",
+      "church courts"
+    ]
+  },
+  {
+    "need": "catechists",
+    "synonyms": [
+      "catechism",
+      "ccd",
+      "religious education",
+      "faith formation",
+      "ccd teachers",
+      "catechesis",
+      "catechism teachers",
+      "religious instruction",
+      "ccd classes"
+    ]
+  },
+  {
+    "need": "childbirth",
+    "synonyms": [
+      "labor",
+      "delivery",
+      "giving birth",
+      "birth",
+      "pregnant",
+      "contractions",
+      "birthing",
+      "labor and delivery",
+      "having a baby",
+      "child birth"
+    ]
+  },
+  {
+    "need": "children",
+    "synonyms": [
+      "kids",
+      "child",
+      "childhood",
+      "little ones",
+      "youngsters",
+      "pediatric",
+      "childrens health",
+      "school age",
+      "toddlers",
+      "babies"
+    ]
+  },
+  {
+    "need": "chronic pain",
+    "synonyms": [
+      "constant pain",
+      "persistent pain",
+      "ongoing pain",
+      "pain management",
+      "chronic suffering",
+      "long term pain",
+      "chronic pain syndrome",
+      "pain relief",
+      "chronic ache",
+      "intractable pain"
+    ]
+  },
+  {
+    "need": "church reform",
+    "synonyms": [
+      "reforming the church",
+      "church renewal",
+      "ecclesiastical reform",
+      "renewing the church",
+      "church changes",
+      "church improvement",
+      "church revitalization"
+    ]
+  },
+  {
+    "need": "church unity",
+    "synonyms": [
+      "christian unity",
+      "ecumenism",
+      "unity of christians",
+      "ecumenical",
+      "church reunion",
+      "christian reunion",
+      "unity of the churches",
+      "christian reconciliation",
+      "church fellowship"
+    ]
+  },
+  {
+    "need": "cobblers",
+    "synonyms": [
+      "cobbling",
+      "shoe making",
+      "shoe repair",
+      "shoemakers",
+      "shoes",
+      "shoe makers",
+      "shoe fixing",
+      "leather work",
+      "cobbler",
+      "shoemaker"
+    ]
+  },
+  {
+    "need": "computer users",
+    "synonyms": [
+      "computers",
+      "computing",
+      "computer work",
+      "using computers",
+      "pc users",
+      "screen time",
+      "computer screens",
+      "laptops",
+      "typing",
+      "desktop computers"
+    ]
+  },
+  {
+    "need": "confessors",
+    "synonyms": [
+      "confession",
+      "confessor",
+      "sacramental confession",
+      "confessing",
+      "reconciliation",
+      "penance",
+      "confessional",
+      "confessing sins",
+      "sacrament of confession",
+      "absolution"
+    ]
+  },
+  {
+    "need": "contemplation",
+    "synonyms": [
+      "contemplative prayer",
+      "meditation",
+      "contemplative",
+      "meditating",
+      "prayerful meditation",
+      "contemplative life",
+      "quiet prayer",
+      "silent prayer",
+      "reflecting",
+      "contemplating"
+    ]
+  },
+  {
+    "need": "contemplatives",
+    "synonyms": [
+      "contemplative life",
+      "contemplative",
+      "contemplative prayer",
+      "contemplative orders",
+      "meditation",
+      "prayerful life",
+      "religious life",
+      "contemplative religious",
+      "contemplative spirituality",
+      "inner life"
+    ]
+  },
+  {
+    "need": "conversion",
+    "synonyms": [
+      "converting",
+      "convert",
+      "change of heart",
+      "turning to god",
+      "faith conversion",
+      "religious conversion",
+      "converting to catholicism",
+      "spiritual conversion",
+      "coming to faith",
+      "conversion of heart"
+    ]
+  },
+  {
+    "need": "converts",
+    "synonyms": [
+      "convert",
+      "converted",
+      "new converts",
+      "new catholics",
+      "converts to catholicism",
+      "new christians",
+      "converted catholics",
+      "converts to the faith",
+      "neophytes",
+      "new believers"
+    ]
+  },
+  {
+    "need": "cooks",
+    "synonyms": [
+      "cooking",
+      "chefs",
+      "cook",
+      "kitchen",
+      "food preparation",
+      "culinary",
+      "culinary arts",
+      "cooking food",
+      "making meals",
+      "chef"
+    ]
+  },
+  {
+    "need": "dancers",
+    "synonyms": [
+      "dancing",
+      "dance",
+      "ballet",
+      "ballroom dancing",
+      "performance dance",
+      "choreography",
+      "dance performance",
+      "dance artists",
+      "ballet dancers",
+      "dancer"
+    ]
+  },
+  {
+    "need": "dentistry",
+    "synonyms": [
+      "dentists",
+      "dentist",
+      "teeth",
+      "dental",
+      "dental care",
+      "dental work",
+      "tooth care",
+      "oral health",
+      "cavities",
+      "dental hygiene"
+    ]
+  },
+  {
+    "need": "difficult marriages",
+    "synonyms": [
+      "marriage problems",
+      "troubled marriage",
+      "marriage difficulties",
+      "marriage struggles",
+      "struggling marriage",
+      "marital problems",
+      "marriage issues",
+      "marriage crisis",
+      "marital conflict",
+      "hard marriage"
+    ]
+  },
+  {
+    "need": "divorced people",
+    "synonyms": [
+      "divorce",
+      "divorced",
+      "divorcee",
+      "divorced catholics",
+      "divorced persons",
+      "divorce recovery",
+      "after divorce",
+      "going through divorce",
+      "separated",
+      "divorce support"
+    ]
+  },
+  {
+    "need": "earthquakes",
+    "synonyms": [
+      "earthquake",
+      "quakes",
+      "seismic activity",
+      "tremors",
+      "earth quakes",
+      "seismic events",
+      "earthquake disaster",
+      "earth quake",
+      "temblors",
+      "seismic"
+    ]
+  },
+  {
+    "need": "ecology",
+    "synonyms": [
+      "environment",
+      "ecological",
+      "environmental",
+      "eco",
+      "conservation",
+      "green",
+      "sustainability",
+      "environmentalism",
+      "eco friendly",
+      "ecosystem"
+    ]
+  },
+  {
+    "need": "engaged couples",
+    "synonyms": [
+      "engaged",
+      "engagement",
+      "getting married",
+      "engaged to be married",
+      "engagement period",
+      "pre cana",
+      "marriage preparation",
+      "preparing for marriage",
+      "betrothed"
+    ]
+  },
+  {
+    "need": "england",
+    "synonyms": [
+      "english",
+      "britain",
+      "english catholics",
+      "uk",
+      "british",
+      "england catholics",
+      "great britain",
+      "united kingdom",
+      "english christians",
+      "anglican convert"
+    ]
+  },
+  {
+    "need": "environment",
+    "synonyms": [
+      "environmental",
+      "ecology",
+      "conservation",
+      "environmentalism",
+      "green",
+      "nature",
+      "environmental protection",
+      "eco",
+      "environmental care",
+      "natural environment"
+    ]
+  },
+  {
+    "need": "europe",
+    "synonyms": [
+      "european",
+      "european catholics",
+      "europe catholics",
+      "european countries",
+      "european union",
+      "eu",
+      "european christians",
+      "europeans",
+      "continental europe",
+      "european nations"
+    ]
+  },
+  {
+    "need": "expectant mothers",
+    "synonyms": [
+      "pregnancy",
+      "childbirth",
+      "expecting",
+      "pregnant",
+      "expecting a baby",
+      "moms to be",
+      "pregnant women",
+      "expecting mothers",
+      "expectant moms",
+      "prenatal"
+    ]
+  },
+  {
+    "need": "eye diseases",
+    "synonyms": [
+      "eye problems",
+      "eye disease",
+      "eye health",
+      "vision problems",
+      "eye conditions",
+      "eye disorders",
+      "ophthalmology",
+      "eye ailments",
+      "eyesight problems",
+      "vision issues"
+    ]
+  },
+  {
+    "need": "families",
+    "synonyms": [
+      "family",
+      "family life",
+      "family members",
+      "family issues",
+      "family problems",
+      "household",
+      "relatives",
+      "family concerns",
+      "family struggles",
+      "family matters"
+    ]
+  },
+  {
+    "need": "farmers",
+    "synonyms": [
+      "farming",
+      "agriculture",
+      "farm",
+      "farm workers",
+      "farming life",
+      "agricultural workers",
+      "farm life",
+      "farming community",
+      "crops",
+      "ranchers"
+    ]
+  },
+  {
+    "need": "fathers",
+    "synonyms": [
+      "father",
+      "dads",
+      "fatherhood",
+      "parenting fathers",
+      "daddies",
+      "fathering",
+      "fatherly",
+      "being a dad",
+      "dad",
+      "fathers and children"
+    ]
+  },
+  {
+    "need": "firefighters",
+    "synonyms": [
+      "fire fighters",
+      "fire fighting",
+      "fire",
+      "firemen",
+      "fire rescue",
+      "fire department",
+      "fighting fires",
+      "fire service",
+      "firefighter",
+      "fire brigade"
+    ]
+  },
+  {
+    "need": "first communicants",
+    "synonyms": [
+      "first communion",
+      "communion",
+      "holy communion",
+      "first communion prep",
+      "first communion children",
+      "communion preparation",
+      "first eucharist",
+      "first communion kids",
+      "first communicant",
+      "eucharist"
+    ]
+  },
+  {
+    "need": "lost items",
+    "synonyms": [
+      "lost keys",
+      "missing things",
+      "misplaced objects",
+      "lost stuff",
+      "lost property",
+      "missing items",
+      "lost belongings",
+      "cant find",
+      "misplaced",
+      "lost and found"
+    ]
+  },
+  {
+    "need": "travelers",
+    "synonyms": [
+      "travel",
+      "journeys",
+      "trips",
+      "traveling",
+      "voyages",
+      "traveling abroad",
+      "road trips",
+      "tourists",
+      "traveling safely"
+    ]
+  },
+  {
+    "need": "soldiers",
+    "synonyms": [
+      "military",
+      "armed forces",
+      "army",
+      "troops",
+      "infantry",
+      "military service",
+      "service members",
+      "veterans",
+      "warfighters"
+    ]
+  },
+  {
+    "need": "impossible causes",
+    "synonyms": [
+      "hopeless causes",
+      "desperate situations",
+      "impossible situations",
+      "lost causes",
+      "hopeless cases",
+      "desperate causes",
+      "no hope",
+      "impossible problems",
+      "hopeless",
+      "desperate"
+    ]
+  },
+  {
+    "need": "students",
+    "synonyms": [
+      "studies",
+      "exams",
+      "learning",
+      "school",
+      "pupils",
+      "studying",
+      "test taking",
+      "college students",
+      "schoolwork",
+      "academic success"
+    ]
+  },
+  {
+    "need": "sick children",
+    "synonyms": [
+      "sick kids",
+      "ill children",
+      "sick little ones",
+      "childrens illness",
+      "kids health",
+      "sick toddlers",
+      "sick babies",
+      "ill kids",
+      "hospitalized children"
+    ]
+  },
+  {
+    "need": "mental illness",
+    "synonyms": [
+      "depression",
+      "mental health",
+      "anxiety disorders",
+      "bipolar",
+      "schizophrenia",
+      "mental health struggles",
+      "psychiatric",
+      "mental disorders",
+      "mental wellness"
+    ]
+  },
+  {
+    "need": "fishermen",
+    "synonyms": [
+      "fishing",
+      "fisher",
+      "anglers",
+      "fishing boats",
+      "fishing nets",
+      "commercial fishing",
+      "fish catch",
+      "trawler",
+      "fishing industry",
+      "fisherfolk"
+    ]
+  },
+  {
+    "need": "flight attendants",
+    "synonyms": [
+      "flight attendant",
+      "cabin crew",
+      "stewardesses",
+      "stewards",
+      "air hostesses",
+      "air stewards",
+      "cabin attendants",
+      "flight crew",
+      "airline crew",
+      "inflight crew"
+    ]
+  },
+  {
+    "need": "forgiveness",
+    "synonyms": [
+      "forgive",
+      "pardoning",
+      "mercy",
+      "reconciliation",
+      "letting go",
+      "absolution",
+      "forgiving others",
+      "being forgiven",
+      "pardon",
+      "grudges"
+    ]
+  },
+  {
+    "need": "gardeners",
+    "synonyms": [
+      "gardening",
+      "garden",
+      "gardener",
+      "horticulture",
+      "planting",
+      "garden care",
+      "tending gardens",
+      "growing plants",
+      "landscaping",
+      "green thumbs"
+    ]
+  },
+  {
+    "need": "germany",
+    "synonyms": [
+      "german",
+      "german catholics",
+      "germany catholics",
+      "germans",
+      "german christians",
+      "deutschland",
+      "german nation",
+      "german church",
+      "german bishops",
+      "german cathedrals"
+    ]
+  },
+  {
+    "need": "girls",
+    "synonyms": [
+      "girl",
+      "young girls",
+      "daughters",
+      "girls education",
+      "girls welfare",
+      "little girls",
+      "teenage girls",
+      "girls health",
+      "schoolgirls",
+      "girls youth"
+    ]
+  },
+  {
+    "need": "goldsmiths",
+    "synonyms": [
+      "goldsmith",
+      "gold working",
+      "gold work",
+      "jewelers",
+      "jewelry making",
+      "gold crafting",
+      "precious metals",
+      "gold artisans",
+      "jewelry artisans",
+      "goldsmithing"
+    ]
+  },
+  {
+    "need": "good weather",
+    "synonyms": [
+      "fine weather",
+      "fair weather",
+      "sunny weather",
+      "good climate",
+      "pleasant weather",
+      "weather blessing",
+      "clement weather",
+      "clear skies",
+      "good forecast",
+      "favorable weather"
+    ]
+  },
+  {
+    "need": "grandparents",
+    "synonyms": [
+      "grandparent",
+      "grandmothers",
+      "grandfathers",
+      "granny",
+      "grandpa",
+      "grandma",
+      "grandpas",
+      "grandmas",
+      "elderly relatives",
+      "senior relatives"
+    ]
+  },
+  {
+    "need": "headaches",
+    "synonyms": [
+      "headache",
+      "head pain",
+      "migraines",
+      "migraine",
+      "head ache",
+      "tension headaches",
+      "head pain relief",
+      "cranial pain",
+      "head pressure"
+    ]
+  },
+  {
+    "need": "healing",
+    "synonyms": [
+      "heal",
+      "healing miracles",
+      "curing",
+      "cure",
+      "physical healing",
+      "spiritual healing",
+      "healing prayer",
+      "recovery",
+      "restoring health",
+      "healed"
+    ]
+  },
+  {
+    "need": "hermits",
+    "synonyms": [
+      "hermit",
+      "hermitage",
+      "solitary religious",
+      "hermitic life",
+      "anchorites",
+      "anchoresses",
+      "desert fathers",
+      "solitary life",
+      "religious hermits",
+      "eremitic life"
+    ]
+  },
+  {
+    "need": "homemakers",
+    "synonyms": [
+      "homemaker",
+      "homemaking",
+      "stay at home parents",
+      "household management",
+      "home making",
+      "domestic work",
+      "home management",
+      "household work",
+      "home care",
+      "domestic engineers"
+    ]
+  },
+  {
+    "need": "home sale",
+    "synonyms": [
+      "selling a home",
+      "selling a house",
+      "home selling",
+      "house sale",
+      "property sale",
+      "selling property",
+      "real estate sale",
+      "home buyers",
+      "selling real estate",
+      "house selling"
+    ]
+  },
+  {
+    "need": "hospitals",
+    "synonyms": [
+      "hospital",
+      "hospital care",
+      "hospital patients",
+      "hospital stays",
+      "hospital chaplaincy",
+      "hospital staff",
+      "medical centers",
+      "inpatient care",
+      "hospital work"
+    ]
+  },
+  {
+    "need": "housekeepers",
+    "synonyms": [
+      "housekeeper",
+      "housekeeping",
+      "cleaning",
+      "domestic cleaning",
+      "maids",
+      "cleaning staff",
+      "domestic service",
+      "household cleaning",
+      "cleaners",
+      "maid service"
+    ]
+  },
+  {
+    "need": "humor",
+    "synonyms": [
+      "humour",
+      "comedy",
+      "jokes",
+      "jesting",
+      "laughter",
+      "funny",
+      "comedians",
+      "wit",
+      "comic",
+      "humorists"
+    ]
+  },
+  {
+    "need": "hunters",
+    "synonyms": [
+      "hunting",
+      "hunter",
+      "game hunting",
+      "huntsmen",
+      "hunting game",
+      "sportsmen",
+      "hunt",
+      "field sports",
+      "venery"
+    ]
+  },
+  {
+    "need": "immigrants",
+    "synonyms": [
+      "immigrant",
+      "immigration",
+      "newcomers",
+      "migrants",
+      "foreigners",
+      "immigrants welfare",
+      "immigrating",
+      "new arrivals",
+      "immigrant communities",
+      "settlers"
+    ]
+  },
+  {
+    "need": "innkeepers",
+    "synonyms": [
+      "innkeeper",
+      "inns",
+      "inn keeping",
+      "hoteliers",
+      "hotel keepers",
+      "tavern keepers",
+      "lodging",
+      "hostelries",
+      "publicans",
+      "inn"
+    ]
+  },
+  {
+    "need": "internet users",
+    "synonyms": [
+      "internet",
+      "online",
+      "web users",
+      "internet safety",
+      "online activity",
+      "surfing the web",
+      "internet addiction",
+      "web browsing",
+      "online users",
+      "internet use"
+    ]
+  },
+  {
+    "need": "journalists",
+    "synonyms": [
+      "journalism",
+      "journalist",
+      "reporters",
+      "news",
+      "newspaper",
+      "news writers",
+      "press",
+      "correspondents",
+      "newspeople",
+      "columnists"
+    ]
+  },
+  {
+    "need": "lawyers",
+    "synonyms": [
+      "lawyer",
+      "law",
+      "attorneys",
+      "legal profession",
+      "barristers",
+      "solicitors",
+      "legal counsel",
+      "legal practice",
+      "court",
+      "litigation"
+    ]
+  },
+  {
+    "need": "lepers",
+    "synonyms": [
+      "leper",
+      "leprosy patients",
+      "leper colonies",
+      "leper care",
+      "leprous",
+      "lepers welfare",
+      "caring for lepers",
+      "leper houses",
+      "leprosy sufferers",
+      "leper asylums"
+    ]
+  },
+  {
+    "need": "leprosy",
+    "synonyms": [
+      "hansens disease",
+      "leper",
+      "leprous",
+      "leprosy infection",
+      "mycobacterium leprae",
+      "leprosy patients",
+      "leprosy care",
+      "leprosy treatment",
+      "leper colonies",
+      "skin disease"
+    ]
+  },
+  {
+    "need": "librarians",
+    "synonyms": [
+      "librarian",
+      "libraries",
+      "library work",
+      "library science",
+      "library staff",
+      "archivists",
+      "library",
+      "book management",
+      "cataloging",
+      "library services"
+    ]
+  },
+  {
+    "need": "linguists",
+    "synonyms": [
+      "linguist",
+      "linguistics",
+      "languages",
+      "language study",
+      "translators",
+      "interpreters",
+      "language scholars",
+      "language experts",
+      "polyglots",
+      "language learning"
+    ]
+  },
+  {
+    "need": "marian devotion",
+    "synonyms": [
+      "devotion to mary",
+      "mary",
+      "blessed virgin",
+      "virgin mary",
+      "marian",
+      "devotion to the blessed virgin",
+      "our lady",
+      "mother of god",
+      "marian prayers",
+      "hail mary"
+    ]
+  },
+  {
+    "need": "martyrs",
+    "synonyms": [
+      "martyr",
+      "martyrdom",
+      "martyred",
+      "witnesses",
+      "dying for the faith",
+      "christian martyrs",
+      "martyrs of the church",
+      "religious martyrs",
+      "persecuted to death",
+      "faithful martyrs"
+    ]
+  },
+  {
+    "need": "merchants",
+    "synonyms": [
+      "merchant",
+      "merchandise",
+      "traders",
+      "commerce",
+      "trade",
+      "shopkeepers",
+      "business people",
+      "sellers",
+      "trading"
+    ]
+  },
+  {
+    "need": "metalworkers",
+    "synonyms": [
+      "metalworker",
+      "metal working",
+      "metalwork",
+      "blacksmiths",
+      "smiths",
+      "forge work",
+      "iron work",
+      "metal crafting",
+      "welders",
+      "metal smiths"
+    ]
+  },
+  {
+    "need": "migrants",
+    "synonyms": [
+      "migrant",
+      "migration",
+      "migrant workers",
+      "migrant communities",
+      "migrant families",
+      "migrant welfare",
+      "migrant rights",
+      "migrant labor",
+      "migrant laborers",
+      "migrating"
+    ]
+  },
+  {
+    "need": "military chaplains",
+    "synonyms": [
+      "chaplains",
+      "army chaplains",
+      "navy chaplains",
+      "air force chaplains",
+      "military chaplaincy",
+      "armed forces chaplains",
+      "chaplains in the military",
+      "military priests",
+      "field chaplains",
+      "combat chaplains"
+    ]
+  },
+  {
+    "need": "miners",
+    "synonyms": [
+      "mining",
+      "miner",
+      "coal miners",
+      "mine workers",
+      "mines",
+      "pit workers",
+      "colliers",
+      "mining communities",
+      "mineral extraction",
+      "quarrymen"
+    ]
+  },
+  {
+    "need": "miraculous medal devotees",
+    "synonyms": [
+      "miraculous medal",
+      "medal of the immaculate conception",
+      "our lady of the miraculous medal",
+      "miraculous medal devotion",
+      "mary medal",
+      "miraculous medal prayers",
+      "devotion to the miraculous medal",
+      "miraculous medal association",
+      "rue du bac",
+      "catherine laboure"
+    ]
+  },
+  {
+    "need": "missionaries",
+    "synonyms": [
+      "missionary",
+      "missions",
+      "mission work",
+      "missionary activity",
+      "evangelization",
+      "foreign missions",
+      "missionary work",
+      "missionary societies",
+      "church missions",
+      "evangelizing"
+    ]
+  },
+  {
+    "need": "missions",
+    "synonyms": [
+      "mission",
+      "missionary work",
+      "foreign missions",
+      "mission lands",
+      "mission territories",
+      "church missions",
+      "mission activity",
+      "missionary activity",
+      "propagation of the faith",
+      "mission countries"
+    ]
+  },
+  {
+    "need": "monks",
+    "synonyms": [
+      "monk",
+      "monastic",
+      "monasticism",
+      "monastic life",
+      "monasteries",
+      "religious brothers",
+      "cloistered monks",
+      "monastic orders",
+      "monks life",
+      "brothers"
+    ]
+  },
+  {
+    "need": "mothers",
+    "synonyms": [
+      "mother",
+      "mom",
+      "moms",
+      "motherhood",
+      "maternal",
+      "mothers and children",
+      "mothering",
+      "maternal care",
+      "mums",
+      "mamas"
+    ]
+  },
+  {
+    "need": "motorists",
+    "synonyms": [
+      "motorist",
+      "driving",
+      "drivers",
+      "car drivers",
+      "automobiles",
+      "car travel",
+      "automobile drivers",
+      "road travel",
+      "car safety",
+      "driving cars"
+    ]
+  },
+  {
+    "need": "musicians",
+    "synonyms": [
+      "musician",
+      "music",
+      "musical",
+      "musical performance",
+      "instrumentalists",
+      "singers",
+      "choirs",
+      "music making",
+      "musical artists",
+      "composers"
+    ]
+  },
+  {
+    "need": "mystics",
+    "synonyms": [
+      "mystic",
+      "mysticism",
+      "mystical",
+      "mystical theology",
+      "mystical experiences",
+      "mystical prayer",
+      "mystical life",
+      "contemplative mystics",
+      "mystical union",
+      "mystics of the church"
+    ]
+  },
+  {
+    "need": "native americans",
+    "synonyms": [
+      "native american",
+      "indigenous americans",
+      "american indians",
+      "first nations",
+      "native peoples",
+      "indigenous peoples",
+      "tribal peoples",
+      "native nations",
+      "indigenous"
+    ]
+  },
+  {
+    "need": "natural disasters",
+    "synonyms": [
+      "disaster",
+      "disasters",
+      "calamities",
+      "catastrophes",
+      "natural calamities",
+      "natural catastrophes",
+      "natural disaster relief",
+      "disaster relief",
+      "acts of god",
+      "disaster victims"
+    ]
+  },
+  {
+    "need": "nuns",
+    "synonyms": [
+      "nun",
+      "sisters",
+      "religious sisters",
+      "women religious",
+      "consecrated women",
+      "convents",
+      "cloistered nuns",
+      "nuns life",
+      "sisterhood",
+      "religious women"
+    ]
+  },
+  {
+    "need": "nursing",
+    "synonyms": [
+      "nurses",
+      "nurse",
+      "nursing care",
+      "nursing profession",
+      "healthcare",
+      "nursing patients",
+      "nursing staff",
+      "nursing homes",
+      "caregiving",
+      "nursing service"
+    ]
+  },
+  {
+    "need": "passion devotion",
+    "synonyms": [
+      "devotion to the passion",
+      "passion of christ",
+      "holy passion",
+      "passion prayers",
+      "sorrowful mystery",
+      "passion of the lord",
+      "devotion to christs passion",
+      "passion meditation",
+      "stations of the cross"
+    ]
+  },
+  {
+    "need": "peace",
+    "synonyms": [
+      "peacemaking",
+      "peaceful",
+      "world peace",
+      "peace of mind",
+      "reconciliation",
+      "nonviolence",
+      "pacifism",
+      "harmony",
+      "tranquility",
+      "calm"
+    ]
+  },
+  {
+    "need": "philosophers",
+    "synonyms": [
+      "philosophy",
+      "philosopher",
+      "thinkers",
+      "lovers of wisdom",
+      "philosophical",
+      "scholars of thought",
+      "metaphysicians",
+      "ethicists",
+      "philosophical inquiry",
+      "philosophizing"
+    ]
+  },
+  {
+    "need": "physicians",
+    "synonyms": [
+      "physician",
+      "doctors",
+      "doctor",
+      "medical doctors",
+      "medical practice",
+      "healing art",
+      "medics",
+      "general practitioners",
+      "clinicians",
+      "medical practitioners"
+    ]
+  },
+  {
+    "need": "plague",
+    "synonyms": [
+      "plagues",
+      "epidemic",
+      "pandemic",
+      "contagion",
+      "black death",
+      "bubonic plague",
+      "infectious disease",
+      "pestilence",
+      "outbreak",
+      "contagious disease"
+    ]
+  },
+  {
+    "need": "postal workers",
+    "synonyms": [
+      "postal",
+      "postmen",
+      "postwomen",
+      "mail carriers",
+      "mail delivery",
+      "letter carriers",
+      "postal service",
+      "mailmen",
+      "mail workers",
+      "postal employees"
+    ]
+  },
+  {
+    "need": "prayer life",
+    "synonyms": [
+      "praying",
+      "prayer",
+      "daily prayer",
+      "prayer habits",
+      "prayer routine",
+      "life of prayer",
+      "prayer practice",
+      "devotional life",
+      "praying regularly",
+      "prayer discipline"
+    ]
+  },
+  {
+    "need": "preachers",
+    "synonyms": [
+      "preacher",
+      "preaching",
+      "homilists",
+      "sermonizers",
+      "evangelists",
+      "preachers of the word",
+      "proclaimers",
+      "preaching the gospel",
+      "sermons",
+      "homilies"
+    ]
+  },
+  {
+    "need": "priests",
+    "synonyms": [
+      "priest",
+      "clergy",
+      "clergymen",
+      "parish priests",
+      "pastors",
+      "fathers",
+      "celebrants",
+      "ordained",
+      "parish clergy",
+      "diocesan priests"
+    ]
+  },
+  {
+    "need": "prisoners",
+    "synonyms": [
+      "prisoner",
+      "inmates",
+      "jail",
+      "incarcerated",
+      "convicts",
+      "captives",
+      "imprisoned",
+      "detainees",
+      "behind bars",
+      "prison ministry"
+    ]
+  },
+  {
+    "need": "protection",
+    "synonyms": [
+      "protect",
+      "protection from harm",
+      "safety",
+      "safekeeping",
+      "guardianship",
+      "shelter",
+      "protection from evil",
+      "safekeeping from danger",
+      "preservation",
+      "divine protection"
+    ]
+  },
+  {
+    "need": "publishers",
+    "synonyms": [
+      "publisher",
+      "publishing",
+      "booksellers",
+      "book publishers",
+      "press",
+      "printing",
+      "publication",
+      "publishing houses",
+      "editors",
+      "book publishing"
+    ]
+  },
+  {
+    "need": "racial justice",
+    "synonyms": [
+      "racial equality",
+      "racial reconciliation",
+      "antiracism",
+      "civil rights",
+      "racial harmony",
+      "racial equity",
+      "antiracist",
+      "racial fairness",
+      "interracial justice",
+      "fighting racism"
+    ]
+  },
+  {
+    "need": "rain",
+    "synonyms": [
+      "rainfall",
+      "precipitation",
+      "showers",
+      "downpour",
+      "rains",
+      "rainstorm",
+      "rain water",
+      "wet weather",
+      "rainy",
+      "rainy weather"
+    ]
+  },
+  {
+    "need": "retreats",
+    "synonyms": [
+      "retreat",
+      "spiritual retreat",
+      "retreat days",
+      "retreat houses",
+      "retreat experience",
+      "retreat programs",
+      "retreat centers",
+      "retreat movements",
+      "retreat weekends",
+      "retreats spiritual"
+    ]
+  },
+  {
+    "need": "sacred heart devotion",
+    "synonyms": [
+      "devotion to the sacred heart",
+      "sacred heart",
+      "sacred heart of jesus",
+      "sacred heart prayers",
+      "sacred heart feast",
+      "acts of reparation",
+      "first friday devotion",
+      "sacred heart images",
+      "sacred heart chaplet",
+      "litany of the sacred heart"
+    ]
+  },
+  {
+    "need": "sailors",
+    "synonyms": [
+      "sailor",
+      "seafarers",
+      "seamen",
+      "navy",
+      "mariners",
+      "sailing",
+      "seamen and sailors",
+      "merchant marine",
+      "nautical",
+      "ship crews"
+    ]
+  },
+  {
+    "need": "scholars",
+    "synonyms": [
+      "scholar",
+      "scholarship",
+      "academics",
+      "academic research",
+      "learned",
+      "intellectuals",
+      "researchers",
+      "professors",
+      "academic study",
+      "learned persons"
+    ]
+  },
+  {
+    "need": "scientists",
+    "synonyms": [
+      "scientist",
+      "science",
+      "scientific research",
+      "researchers",
+      "scientific community",
+      "science workers",
+      "laboratory",
+      "natural philosophers",
+      "experimenters",
+      "scientific inquiry"
+    ]
+  },
+  {
+    "need": "scruples",
+    "synonyms": [
+      "scrupulosity",
+      "scruple",
+      "religious ocd",
+      "moral anxiety",
+      "excessive guilt",
+      "scrupulous",
+      "oversensitive conscience",
+      "moral doubt",
+      "conscience anxiety",
+      "fear of sin"
+    ]
+  },
+  {
+    "need": "seminarians",
+    "synonyms": [
+      "seminarian",
+      "seminary",
+      "seminary students",
+      "seminary formation",
+      "seminary life",
+      "future priests",
+      "ordination students",
+      "seminary training",
+      "clerical students",
+      "seminarians formation"
+    ]
+  },
+  {
+    "need": "shepherds",
+    "synonyms": [
+      "shepherd",
+      "sheep",
+      "shepherding",
+      "flock",
+      "tending sheep",
+      "sheep herding",
+      "pastoral",
+      "sheep farming",
+      "sheep keepers",
+      "flock keeping"
+    ]
+  },
+  {
+    "need": "single women",
+    "synonyms": [
+      "single woman",
+      "unmarried women",
+      "single ladies",
+      "unmarried ladies",
+      "women living alone",
+      "single catholic women",
+      "single life women",
+      "spinsters",
+      "single girls"
+    ]
+  },
+  {
+    "need": "slaves",
+    "synonyms": [
+      "slave",
+      "captives",
+      "bondsmen",
+      "bondservants",
+      "enslaved",
+      "enslaved people",
+      "servitude",
+      "human trafficking",
+      "forced labor",
+      "slavery"
+    ]
+  },
+  {
+    "need": "souls in purgatory",
+    "synonyms": [
+      "purgatory",
+      "purgatorial souls",
+      "poor souls",
+      "holy souls",
+      "suffering souls",
+      "departed souls",
+      "faithful departed",
+      "purgatorial church",
+      "purgatory prayers"
+    ]
+  },
+  {
+    "need": "spiritual direction",
+    "synonyms": [
+      "spiritual director",
+      "spiritual guidance",
+      "soul guidance",
+      "spiritual counseling",
+      "soul direction",
+      "spiritual accompaniment",
+      "spiritual mentor",
+      "spiritual father",
+      "spiritual mentorship",
+      "directing souls"
+    ]
+  },
+  {
+    "need": "spiritual warfare",
+    "synonyms": [
+      "spiritual combat",
+      "spiritual battle",
+      "fighting temptation",
+      "fighting evil",
+      "spiritual struggle",
+      "fighting demons",
+      "spiritual protection",
+      "putting on the armor of god",
+      "spiritual weapons",
+      "discerning spirits"
+    ]
+  },
+  {
+    "need": "stomach ailments",
+    "synonyms": [
+      "stomach pain",
+      "stomach problems",
+      "stomach ache",
+      "tummy ache",
+      "abdominal pain",
+      "digestive problems",
+      "stomach illness",
+      "gastrointestinal",
+      "upset stomach",
+      "belly ache"
+    ]
+  },
+  {
+    "need": "storms",
+    "synonyms": [
+      "storm",
+      "tempests",
+      "thunderstorms",
+      "gales",
+      "severe weather",
+      "windstorms",
+      "rainstorms",
+      "lightning",
+      "tornadoes",
+      "hurricanes"
+    ]
+  },
+  {
+    "need": "tailors",
+    "synonyms": [
+      "tailor",
+      "tailoring",
+      "sewing",
+      "seamstresses",
+      "garment making",
+      "dressmakers",
+      "clothing makers",
+      "clothes making",
+      "needlework",
+      "sewing clothes"
+    ]
+  },
+  {
+    "need": "tanners",
+    "synonyms": [
+      "tanner",
+      "tanning",
+      "leather working",
+      "leather",
+      "leather workers",
+      "hides",
+      "leather tanning",
+      "leather goods",
+      "leather craft",
+      "leather crafters"
+    ]
+  },
+  {
+    "need": "teachers",
+    "synonyms": [
+      "teacher",
+      "teaching",
+      "educators",
+      "schoolteachers",
+      "instructors",
+      "professors",
+      "school teachers",
+      "teaching profession",
+      "tutors",
+      "educating"
+    ]
+  },
+  {
+    "need": "television",
+    "synonyms": [
+      "tv",
+      "televisions",
+      "television broadcasting",
+      "television watching",
+      "broadcasting",
+      "television media",
+      "television production",
+      "television industry",
+      "television programs",
+      "telecasting"
+    ]
+  },
+  {
+    "need": "the elderly",
+    "synonyms": [
+      "elderly",
+      "old people",
+      "seniors",
+      "senior citizens",
+      "the aged",
+      "old age",
+      "older people",
+      "elders",
+      "aged",
+      "old folks"
+    ]
+  },
+  {
+    "need": "the laity",
+    "synonyms": [
+      "lay people",
+      "lay catholics",
+      "lay faithful",
+      "laity",
+      "laypersons",
+      "lay men and women",
+      "lay members",
+      "lay christian",
+      "secular faithful",
+      "lay vocation"
+    ]
+  },
+  {
+    "need": "theologians",
+    "synonyms": [
+      "theologian",
+      "theology",
+      "theological",
+      "divinity",
+      "divine learning",
+      "religious scholars",
+      "theological studies",
+      "sacred doctrine",
+      "theological research",
+      "divinity scholars"
+    ]
+  },
+  {
+    "need": "the oppressed",
+    "synonyms": [
+      "oppressed",
+      "oppression",
+      "the downtrodden",
+      "the marginalized",
+      "the exploited",
+      "the afflicted",
+      "oppressed people",
+      "victims of injustice",
+      "the subjugated",
+      "the persecuted"
+    ]
+  },
+  {
+    "need": "the poor",
+    "synonyms": [
+      "poor",
+      "the poor people",
+      "poverty",
+      "poor people",
+      "the impoverished",
+      "the needy",
+      "the destitute",
+      "the less fortunate",
+      "the underprivileged",
+      "the poor and needy"
+    ]
+  },
+  {
+    "need": "the sick",
+    "synonyms": [
+      "sick",
+      "illness",
+      "ill",
+      "the ill",
+      "sick people",
+      "ailing",
+      "unwell",
+      "infirm",
+      "the unwell",
+      "the infirm"
+    ]
+  },
+  {
+    "need": "throat ailments",
+    "synonyms": [
+      "throat",
+      "sore throat",
+      "throat problems",
+      "throat pain",
+      "throat disease",
+      "hoarseness",
+      "laryngitis",
+      "pharyngitis",
+      "strep throat",
+      "throat trouble"
+    ]
+  },
+  {
+    "need": "trafficking victims",
+    "synonyms": [
+      "human trafficking",
+      "trafficked persons",
+      "trafficking survivors",
+      "modern slavery",
+      "trafficking",
+      "trafficked",
+      "victims of trafficking",
+      "sex trafficking",
+      "forced trafficking",
+      "trafficked people"
+    ]
+  },
+  {
+    "need": "urgent causes",
+    "synonyms": [
+      "urgent needs",
+      "urgent help",
+      "pressing causes",
+      "urgent requests",
+      "urgent matters",
+      "urgent petitions",
+      "urgent prayers",
+      "urgent appeals",
+      "pressing needs",
+      "urgent situations"
+    ]
+  },
+  {
+    "need": "weavers",
+    "synonyms": [
+      "weaver",
+      "weaving",
+      "loom",
+      "textile workers",
+      "loom workers",
+      "cloth making",
+      "textile crafts",
+      "woven goods",
+      "weaving cloth",
+      "fabric workers"
+    ]
+  },
+  {
+    "need": "widowers",
+    "synonyms": [
+      "widower",
+      "widowed men",
+      "bereaved husbands",
+      "men who lost spouses",
+      "grieving husbands",
+      "widowed fathers",
+      "widowers grief",
+      "widowers support",
+      "bereaved widowers"
+    ]
+  },
+  {
+    "need": "widows",
+    "synonyms": [
+      "widow",
+      "widowed women",
+      "bereaved wives",
+      "widowed",
+      "grieving wives",
+      "widows grief",
+      "widows support",
+      "widows and orphans",
+      "bereaved widows"
+    ]
+  },
+  {
+    "need": "workers",
+    "synonyms": [
+      "worker",
+      "working",
+      "labor",
+      "laborers",
+      "work",
+      "workforce",
+      "working class",
+      "wage earners",
+      "working people",
+      "working men and women"
+    ]
+  },
+  {
+    "need": "working parents",
+    "synonyms": [
+      "working moms",
+      "working dads",
+      "parents who work",
+      "working mothers",
+      "working fathers",
+      "dual income families",
+      "working families",
+      "juggling work and family",
+      "working parent",
+      "parents with jobs"
+    ]
+  },
+  {
+    "need": "writers",
+    "synonyms": [
+      "writer",
+      "writing",
+      "authors",
+      "writing craft",
+      "novelists",
+      "poets",
+      "writing books",
+      "writing profession",
+      "authorship",
+      "scribes"
+    ]
+  },
+  {
+    "need": "youth",
+    "synonyms": [
+      "young people",
+      "young adults",
+      "teenagers",
+      "teens",
+      "youths",
+      "young men and women",
+      "youth ministry",
+      "youth group",
+      "young persons",
+      "youthful"
+    ]
+  }
+]
