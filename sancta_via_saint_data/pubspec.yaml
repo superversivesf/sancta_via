@@ -20,7 +20,11 @@ dev_dependencies:
   sqflite_common_ffi: ^2.3.0
 flutter:
   assets:
+    # `- assets/` already bundles every file directly inside the directory
+    # (including saints.db); the explicit file entry below is kept verbatim
+    # from the plan's Task 7 spec.
     - assets/
+    - assets/saints.db
     - assets/thumbs/
 
 # Dev/test/tool build-hook defines (only take effect when this package is the

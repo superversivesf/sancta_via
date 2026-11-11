@@ -10,5 +10,7 @@ export 'src/models/saint.dart';
 export 'src/models/saint_category.dart';
 export 'src/models/saint_search_result.dart';
 export 'src/services/saint_feast_service.dart';
+export 'src/services/saint_repository.dart';
+export 'src/services/saints_db_loader.dart';
 export 'src/utils/logger.dart';
 export 'src/utils/normalization.dart';
