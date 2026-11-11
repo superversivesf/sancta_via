@@ -1186,7 +1186,6 @@ Future<_FetchResult> _processScrapeSource({
       final int bk = bookEntry.key;
       final String name = bookEntry.value;
       final Map<int, Map<int, String>> chapterTexts = books[bk]!;
-      final (String, int) mapping = keyToBook[name]!;
       joined[name] = <String, dynamic>{
         for (final int chapter in chapterTexts.keys)
           '$chapter': <String, String>{
