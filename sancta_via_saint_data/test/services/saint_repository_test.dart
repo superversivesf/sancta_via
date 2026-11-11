@@ -588,4 +588,74 @@ void main() {
       },
     );
   });
+
+  group('load failure propagation (fix round 1)', () {
+    late Directory tempDir;
+
+    setUpAll(() {
+      // Needed so openSaintsDatabase's default rootBundle asset loader works
+      // for the recovery attempt (mirrors the loader-test technique).
+      TestWidgetsFlutterBinding.ensureInitialized();
+    });
+
+    setUp(() async {
+      tempDir = await Directory.systemTemp.createTemp('saints_fail_test_');
+      await databaseFactory.setDatabasesPath(tempDir.path);
+      // Corrupt fixture (mirrors the loader suite's unreadable-file test):
+      // the on-device copy is garbage bytes, and it is made read-only so
+      // the loader's self-heal cannot replace it. The refresh layer swallows
+      // its failure (its contract), then the open lands on the corrupt file
+      // and FAILS — exactly the genuine first-load failure the home screen
+      // must surface.
+      final String dbPath = '${tempDir.path}/saints.db';
+      await File(
+        dbPath,
+      ).writeAsBytes(List<int>.generate(5000, (int i) => i % 251));
+      await Process.run('chmod', <String>['444', dbPath]);
+    });
+
+    tearDown(() async {
+      await tempDir.delete(recursive: true);
+    });
+
+    test('ensureLoaded rethrows the load failure', () async {
+      await expectLater(
+        SaintRepository.instance.ensureLoaded(),
+        throwsA(anything),
+        reason:
+            'a failed database open must propagate (spec §9: the app needs '
+            'an error-with-retry state, not silent empty data)',
+      );
+    });
+
+    test(
+      'query methods keep their safe defaults after a failed load',
+      () async {
+        // Red ruling: safe defaults belong to QUERY failures, not to the
+        // load path — a query that cannot reach the database still returns
+        // its fallback (and must not itself throw).
+        final List<Saint> featured = await SaintRepository.instance
+            .getFeaturedSaints();
+        expect(featured, isEmpty);
+      },
+    );
+
+    test(
+      'a later load attempt recovers once the fixture becomes openable',
+      () async {
+        // Self-heal allowed again: the belt re-copies the bundled asset and
+        // the retry must now succeed — this pins that the propagated failure
+        // does not poison the repository forever (the home retry button must
+        // be able to recover).
+        await Process.run('chmod', <String>[
+          '644',
+          '${tempDir.path}/saints.db',
+        ]);
+        await SaintRepository.instance.ensureLoaded();
+        final List<Saint> featured = await SaintRepository.instance
+            .getFeaturedSaints();
+        expect(featured, isNotEmpty);
+      },
+    );
+  });
 }

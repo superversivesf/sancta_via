@@ -1,8 +1,10 @@
 // SaintRepository: the runtime data layer over `assets/saints.db` (Task 7).
 //
 // All data access flows through this repository (no direct DB queries
-// elsewhere); every method logs failures via [SaintLogger] (tag
-// 'SAINT_DATA') and returns a safe default instead of throwing. Search
+// elsewhere); query methods log failures via [SaintLogger] (tag
+// 'SAINT_DATA') and return a safe default instead of throwing, while
+// [ensureLoaded] PROPAGATES a failed database open so the app can surface
+// an error-with-retry state (spec §9 — fix round 1). Search
 // implements the pinned 5-step tiered algorithm:
 //
 //   1. tokenize the query (empty tokens -> no results);
@@ -75,8 +77,15 @@ class SaintRepository {
   final AsyncLock _loadLock = AsyncLock();
 
   /// Opens the bundled database (no-op when a database was injected or is
-  /// already open). Failures are logged and swallowed; every access method
-  /// then returns its safe default.
+  /// already open).
+  ///
+  /// A failed open is logged AND rethrown so load failures are observable
+  /// by callers that surface data to the user (the app's Riverpod providers
+  /// build the spec §9 error-with-retry state from it). Per-query safe
+  /// defaults are unaffected: the query methods guard [ensureLoaded]
+  /// themselves and fall back on their own (they describe failures that
+  /// happen *around* queries; the load failure itself must not be
+  /// mistaken for "no data").
   Future<void> ensureLoaded() async {
     if (_injectedDatabase != null || _database != null) {
       return;
@@ -95,6 +104,10 @@ class SaintRepository {
           stackTrace,
           tag: _tag,
         );
+        // The loader recorded/logs its failure state (the asset refresh is
+        // legitimately swallow-and-recover, but an OPEN failure is a real
+        // unavailable-database condition); propagate it.
+        rethrow;
       }
     });
   }
@@ -105,7 +118,15 @@ class SaintRepository {
     Future<T> Function(Database db) action,
     T fallback,
   ) async {
-    await ensureLoaded();
+    try {
+      await ensureLoaded();
+    } catch (e) {
+      SaintLogger.warning(
+        'Saints database unavailable; returning a safe default',
+        tag: _tag,
+      );
+      return fallback;
+    }
     final Database? db = _injectedDatabase ?? _database;
     if (db == null) {
       SaintLogger.warning(
