@@ -83,6 +83,79 @@ void main() {
       expect(second.state.favoriteSlugs, <String>['st-george']);
       expect(second.state.recentSlugs, <String>['st-michael', 'st-george']);
     });
+    test('mutation racing the async load is never clobbered or lost', () async {
+      SharedPreferences.setMockInitialValues(<String, Object>{
+        SaintAppSettingsNotifier.storageKey:
+            '{"favoriteSlugs":["st-joan"],"recentSlugs":["st-joan"]}',
+      });
+      final notifier = SaintAppSettingsNotifier();
+
+      // Fire-and-forget mutations BEFORE the un-awaited load resolves,
+      // exactly like UI taps racing app startup.
+      final firstMutation = notifier.toggleFavorite('st-peter');
+      final secondMutation = notifier.addRecent('st-peter');
+      await firstMutation;
+      await secondMutation;
+      await settle();
+
+      // Both the user's tap and the stored favorite are present (union).
+      expect(notifier.isFavorite('st-peter'), isTrue);
+      expect(notifier.isFavorite('st-joan'), isTrue);
+      // Recents: current first, then loaded history.
+      expect(notifier.state.recentSlugs, <String>['st-peter', 'st-joan']);
+
+      // The merged state is re-persisted so disk keeps the union too.
+      final prefs = await SharedPreferences.getInstance();
+      final stored =
+          json.decode(
+                prefs.getString(SaintAppSettingsNotifier.storageKey) ?? '{}',
+              )
+              as Map<String, dynamic>;
+      expect(
+        (stored['favoriteSlugs'] as List<dynamic>),
+        containsAll(<String>['st-peter', 'st-joan']),
+      );
+    });
+
+    test(
+      'two rapid toggles persist in order so disk ends with final state',
+      () async {
+        SharedPreferences.setMockInitialValues(<String, Object>{});
+        final notifier = SaintAppSettingsNotifier();
+        await settle();
+
+        // Fire-and-forget, no awaits between: overlapping write requests.
+        final firstMutation = notifier.toggleFavorite('st-a');
+        final secondMutation = notifier.toggleFavorite('st-b');
+        await firstMutation;
+        await secondMutation;
+
+        final prefs = await SharedPreferences.getInstance();
+        final stored =
+            json.decode(
+                  prefs.getString(SaintAppSettingsNotifier.storageKey) ?? '{}',
+                )
+                as Map<String, dynamic>;
+        expect(stored['favoriteSlugs'], notifier.state.favoriteSlugs);
+        expect(stored['favoriteSlugs'], <String>['st-a', 'st-b']);
+      },
+    );
+
+    test(
+      'corrupt stored JSON falls back to defaults without throwing',
+      () async {
+        SharedPreferences.setMockInitialValues(<String, Object>{
+          SaintAppSettingsNotifier.storageKey: 'not json',
+        });
+
+        final notifier = SaintAppSettingsNotifier();
+        await settle();
+
+        expect(notifier.state.favoriteSlugs, isEmpty);
+        expect(notifier.state.recentSlugs, isEmpty);
+        expect(notifier.isFavorite('st-anything'), isFalse);
+      },
+    );
   });
 
   group('SaintAppSettings', () {
