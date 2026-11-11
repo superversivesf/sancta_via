@@ -6,15 +6,28 @@
 /// `tools/build_bibles/book_names.json` vocabulary, then:
 /// - validates that every source book key resolves to exactly the 73-book
 ///   canonical DB vocabulary, and vice versa (per-source bijection);
-/// - counts chapters and verses per chapter for each translation with the
-///   adapters the builder will use (USFM `\c`/`\v` counting for engwebc and
-///   drc, `chapter` map sizes for CPDV; CPDV's non-numeric `P` prologue
-///   chapters and the `charset` metadata key are skipped);
+/// - counts REAL verses per chapter for each translation with the shared
+///   USFM parser (`../lib/usfm_parser.dart`, also used by `build_json.dart`):
+///   note-only verse markers (footnote/cross-ref bodies only, including
+///   composite labels such as `\v 15-16`) produce no verse, and header lines
+///   (`\d`/`\s\d` acrostics, section titles) never append to verse text.
+///   engwebc and drc are both USFM zips keyed by their own `\id` codes
+///   (engwebc: `ESG`/`DAG` for Esther/Daniel; drc: `EST`/`DAN`);
+///   CPDV is a `{book: {chapter: {verse: text}}}` JSON snapshot (the
+///   `charset` metadata key and the non-numeric `P` prologue chapters are
+///   skipped — skip rules, not dropped verses);
+/// - verifies that drc and CPDV are gap-free: EVERY chapter of those two
+///   translations must have verse keys exactly 1..N. Any gap in them is a
+///   hard stop ([exit 1], `[needs-context]` evidence lines): a
+///   `verseNumbers` exception entry must never be forced for them;
+/// - emits an OPTIONAL per-translation `verseNumbers` map (decimal-string
+///   chapter -> exact ascending verse numbers) for the engwebc chapters whose
+///   real verse keys are NOT 1..N (footnote-only verse markers); chapters not
+///   listed remain strictly contiguous. This re-emit is the single source of
+///   truth for the manifest;
 /// - verifies the reference verses pinned in this file against the snapshot
 ///   text (verse text is reconstructed with the same marker stripping the
-///   parser will apply: footnote/cross-reference bodies dropped, `|strong=`
-///   style word attributes dropped, backslash tags dropped, whitespace
-///   collapsed); any mismatch fails the run;
+///   shared parser applies); any mismatch fails the run;
 /// - cross-checks the CPDV counts against the `CPDV-books.json`
 ///   `chapter_verses` metadata;
 /// - prints a human-readable per-book summary and emits the exact
@@ -34,6 +47,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:archive/archive.dart';
+
+import '../lib/usfm_parser.dart';
 
 const String _bookNamesRelativePath = 'tools/build_bibles/book_names.json';
 const String _sourcesRelativeDir = 'assets/sources';
@@ -127,41 +142,43 @@ void main() {
   final Map<String, (String, int)> keyToBook = _validateBookNames(bookNamesRaw);
   final List<String> canonicalOrder = _canonicalOrder(keyToBook);
 
-  final Map<String, Map<int, int>> usfmCounts = <String, Map<int, int>>{};
-  final Map<String, String> usfmText = <String, String>{};
-  _parseUsfmZip(
-    '${sourcesDir.path}/$_usfmZipName',
-    keyToBook,
-    usfmCounts,
-    usfmText,
-  );
+  // Parsed USFM books: code -> chapter -> verse -> text (REAL verses only;
+  // note-only markers are absent by construction of the shared parser).
+  final Map<String, Map<int, Map<int, String>>> engwebcParsed =
+      <String, Map<int, Map<int, String>>>{};
+  _parseUsfmZip('${sourcesDir.path}/$_usfmZipName', keyToBook, engwebcParsed);
 
-  // drc uses the same single-USFM-zip shape as engwebc (eBible engDRA); its
-  // counts and reference-verse texts are keyed by its own `\id` codes.
-  final Map<String, Map<int, int>> drcCounts = <String, Map<int, int>>{};
-  final Map<String, String> drcText = <String, String>{};
-  _parseUsfmZip(
-    '${sourcesDir.path}/$_drcUsfmZipName',
-    keyToBook,
-    drcCounts,
-    drcText,
-  );
+  final Map<String, Map<int, Map<int, String>>> drcParsed =
+      <String, Map<int, Map<int, String>>>{};
+  _parseUsfmZip('${sourcesDir.path}/$_drcUsfmZipName', keyToBook, drcParsed);
 
-  final Map<String, Map<int, int>> cpdvCounts = <String, Map<int, int>>{};
-  final List<String> cpdvViolations = <String>[];
   final Map<String, Map<String, dynamic>> cpdvRoot = _parseChapterVerseJson(
     '${sourcesDir.path}/$_cpdvJsonName',
     keyToBook,
     skipTopLevelKey: _cpdvMetadataKey,
-    counts: cpdvCounts,
-    violations: cpdvViolations,
   );
 
+  // Real-verse counts per translation, re-keyed onto canonical db books.
   final Map<String, Map<String, Map<int, int>>> perTranslation =
       <String, Map<String, Map<int, int>>>{
-        'engwebc': _byDbBook(usfmCounts, keyToBook, canonicalOrder, 'engwebc'),
-        'cpdv': _byDbBook(cpdvCounts, keyToBook, canonicalOrder, 'cpdv'),
-        'drc': _byDbBook(drcCounts, keyToBook, canonicalOrder, 'drc'),
+        'engwebc': _countsByDbBook(
+          _realCounts(engwebcParsed),
+          keyToBook,
+          canonicalOrder,
+          'engwebc',
+        ),
+        'cpdv': _countsByDbBook(
+          _cpdvCounts(cpdvRoot),
+          keyToBook,
+          canonicalOrder,
+          'cpdv',
+        ),
+        'drc': _countsByDbBook(
+          _realCounts(drcParsed),
+          keyToBook,
+          canonicalOrder,
+          'drc',
+        ),
       };
 
   _printCounts(perTranslation, canonicalOrder);
@@ -171,60 +188,74 @@ void main() {
     perTranslation['cpdv']!,
   );
 
+  // Optional verseNumbers exception maps per translation (gap chapters only).
+  final Map<String, Map<String, Map<String, List<int>>>> verseNumbers =
+      <String, Map<String, Map<String, List<int>>>>{
+        'engwebc': _verseNumbers(engwebcParsed, keyToBook, canonicalOrder),
+        'cpdv': _verseNumbersFromKeyedMap(cpdvRoot, canonicalOrder),
+        'drc': _verseNumbers(drcParsed, keyToBook, canonicalOrder),
+      };
+
+  // Hard stop: drc and CPDV must be gap-free. Never force verseNumbers onto
+  // them; a gap there means the pinned expectations are wrong (report
+  // NEEDS_CONTEXT with evidence instead).
+  final List<String> needsContext = <String>[];
+  for (final String id in const <String>['cpdv', 'drc']) {
+    if (verseNumbers[id]!.isEmpty) {
+      continue;
+    }
+    final Map<String, Map<int, int>> books = perTranslation[id]!;
+    final List<String> orderedBooks = canonicalOrder
+        .where((String book) => verseNumbers[id]!.containsKey(book))
+        .toList();
+    needsContext.add(id);
+    stderr.writeln(
+      '[needs-context] $id has gap chapters; expected_structure must stay '
+      'gap-free for $id rather than forcing verseNumbers lists:',
+    );
+    for (final String book in orderedBooks) {
+      for (final String chapter in verseNumbers[id]![book]!.keys) {
+        stderr.writeln(
+          '[needs-context]   $id $book $chapter: real verse keys '
+          '${verseNumbers[id]![book]![chapter]} (manifest counts '
+          '${books[book]?[int.parse(chapter)]})',
+        );
+      }
+    }
+  }
+  if (needsContext.isNotEmpty) {
+    stderr.writeln(
+      '[needs-context] STOP: report NEEDS_CONTEXT instead of building '
+      '(${needsContext.join(', ')} are not gap-free)',
+    );
+    exitCode = 1;
+    return;
+  }
+
   final List<String> failures = _verifyReferenceVerses(
-    usfmTexts: <String, Map<String, String>>{
-      'engwebc': usfmText,
-      'drc': drcText,
+    parsedUsfms: <String, Map<String, Map<int, Map<int, String>>>>{
+      'engwebc': engwebcParsed,
+      'drc': drcParsed,
     },
     snapshotRoots: <String, Map<String, Map<String, dynamic>>>{
       'cpdv': cpdvRoot,
     },
   );
 
-  final Map<String, String> excluded = <String, String>{};
-  if (cpdvViolations.isNotEmpty) {
-    excluded['cpdv'] =
-        'chapter/verse coordinate violations: ${cpdvViolations.length}';
-  }
   if (failures.isNotEmpty) {
-    excluded['engwebc'] =
-        'reference-verse verification failed: ${failures.length}';
-  }
-
-  stdout.writeln('--- BEGIN expected_structure.json ---');
-  stdout.writeln(_manifestJson(perTranslation, canonicalOrder, excluded));
-  stdout.writeln('--- END expected_structure.json ---');
-
-  if (excluded.isNotEmpty) {
-    for (final String id in _translationIds) {
-      if (excluded.containsKey(id)) {
-        stdout.writeln(
-          '[excluded] $id: ${excluded[id]} (omitted from the emitted manifest)',
-        );
-      }
-    }
-    if (cpdvViolations.isNotEmpty) {
-      stderr.writeln(
-        '[fail]     cpdv snapshot structure violations '
-        '(every chapter\'s verse keys must be exactly 1..N):',
-      );
-      for (final String violation in cpdvViolations.take(40)) {
-        stderr.writeln('  $violation');
-      }
-    }
-    if (failures.isNotEmpty) {
-      stderr.writeln('[fail]     reference-verse verification failures:');
-      for (final String failure in failures.take(20)) {
-        stderr.writeln('  $failure');
-      }
+    stderr.writeln('[fail]     reference-verse verification failures:');
+    for (final String failure in failures.take(20)) {
+      stderr.writeln('  $failure');
     }
     stderr.writeln(
-      '           The manifest above includes only translations whose '
-      'structure verified; excluded translations must not be built until '
-      'their sources are fixed.',
+      '           Fix the adapter/parser — never the manifest by hand.',
     );
     exitCode = 1;
   }
+
+  stdout.writeln('--- BEGIN expected_structure.json ---');
+  stdout.writeln(_manifestJson(perTranslation, canonicalOrder, verseNumbers));
+  stdout.writeln('--- END expected_structure.json ---');
 }
 
 /// Loads `book_names.json`, validates the pinned shape
@@ -295,13 +326,16 @@ List<String> _canonicalOrder(Map<String, (String, int)> keyToBook) {
 }
 
 /// Reads the committed USFM snapshot zip in memory and, for every `.usfm`
-/// entry whose `\id` code is a mapped book (front matter is skipped), counts
-/// verses per chapter and keeps the raw text for reference-verse extraction.
+/// entry whose `\id` code is a mapped book (front matter is skipped), parses
+/// the book with the shared USFM parser into REAL verses
+/// (code -> chapter -> verse -> text). Duplicate/composite markers with text
+/// throw inside [parseUsfmBook]; entry context is added around the failure.
+/// Non-integer raw verse labels are logged as informational composite
+/// (note-only) markers.
 void _parseUsfmZip(
   String zipPath,
   Map<String, (String, int)> keyToBook,
-  Map<String, Map<int, int>> counts,
-  Map<String, String> textByCode,
+  Map<String, Map<int, Map<int, String>>> parsedByCode,
 ) {
   final List<int> bytes = File(zipPath).readAsBytesSync();
   final Archive archive = ZipDecoder().decodeBytes(bytes);
@@ -324,45 +358,41 @@ void _parseUsfmZip(
       );
       exit(1);
     }
-    bookFiles += 1;
-    dbBookNames.add(keyToBook[code]!.$1);
-    final Map<int, int> chapters = <int, int>{};
-    final Set<String> seenVerseMarkers = <String>{};
-    int? current;
-    for (final String line in text.split('\n')) {
-      final String trimmed = line.trim();
-      final RegExpMatch? chapterMatch = RegExp(
-        r'\\c (\d+)\s*$',
-      ).firstMatch(trimmed);
-      if (chapterMatch != null) {
-        current = int.parse(chapterMatch.group(1)!);
-        chapters[current] = chapters[current] ?? 0;
-        continue;
-      }
-      if (current == null) {
-        continue;
-      }
-      for (final RegExpMatch match in RegExp(
-        r'\\v (\S+)',
-      ).allMatches(trimmed)) {
-        final String label = match.group(1)!;
-        if (int.tryParse(label) == null) {
-          stdout.writeln(
-            '[warn]     $baseName chapter $current: non-numeric verse marker '
-            '"$label" (footnote-style composite kept in counts)',
-          );
-        }
-        if (!seenVerseMarkers.add('$current/$label')) {
-          stderr.writeln(
-            '[fail]     $baseName duplicate verse marker "$current/$label"',
-          );
-          exit(1);
-        }
-        chapters[current] = (chapters[current] ?? 0) + 1;
+    for (final RegExpMatch match in RegExp(r'\\v (\S+)').allMatches(text)) {
+      final String label = match.group(1)!;
+      if (int.tryParse(label) == null) {
+        stdout.writeln(
+          '[info]     $baseName: composite verse marker "$label" is note-only '
+          '(no verse emitted for it)',
+        );
       }
     }
-    counts[code] = chapters;
-    textByCode[code] = text;
+    bookFiles += 1;
+    dbBookNames.add(keyToBook[code]!.$1);
+    final List<UsfmChapter> chapters;
+    try {
+      chapters = parseUsfmBook(text);
+    } on FormatException catch (e) {
+      stderr.writeln('[fail]     ${entry.name}: ${e.message}');
+      exit(1);
+    }
+    final Map<int, Map<int, String>> chapterVerses = <int, Map<int, String>>{};
+    for (final UsfmChapter chapter in chapters) {
+      final Map<int, String> verses = <int, String>{
+        for (final (int verse, String text) in chapter.verses) verse: text,
+      };
+      if (verses.length != chapter.verses.length) {
+        // Impossible: duplicate verse numbers would have thrown inside the
+        // parser; the map literal would otherwise silently collapse them.
+        stderr.writeln(
+          '[fail]     ${entry.name}: duplicate verse number collapsed in '
+          'chapter ${chapter.number}',
+        );
+        exit(1);
+      }
+      chapterVerses[chapter.number] = verses;
+    }
+    parsedByCode[code] = chapterVerses;
   }
   if (bookFiles != _expectedBookCount ||
       dbBookNames.length != _expectedBookCount) {
@@ -374,19 +404,15 @@ void _parseUsfmZip(
   }
 }
 
-/// Parses a `{<bookKey>: {<chapter>: {<verse>: "text"}}}` snapshot into
-/// per-source-key verse counts. Non-numeric chapter keys (`P` prologues) are
-/// skipped; an optional top-level metadata key (CPDV `charset`) is skipped.
-/// Verse keys inside every chapter are additionally checked to be exactly
-/// `1..N`; violations are collected into [violations] (grep-able, and the
-/// caller fails the run once the manifest has been emitted). Returns the
-/// parsed book maps for reference-verse lookups.
+/// Parses a `{<bookKey>: {<chapter>: {<verse>: "text"}}}` snapshot into its
+/// book maps. The optional top-level metadata key (CPDV `charset`) must be a
+/// string and is skipped; non-numeric chapter keys (`P` prologues) are
+/// skipped (skip rules, not dropped verses). Verse text must be a string.
+/// Returns the parsed book maps.
 Map<String, Map<String, dynamic>> _parseChapterVerseJson(
   String path,
   Map<String, (String, int)> keyToBook, {
   required String? skipTopLevelKey,
-  required Map<String, Map<int, int>> counts,
-  List<String>? violations,
 }) {
   final Map<String, dynamic> root = _loadJsonObject(
     File(path),
@@ -416,36 +442,17 @@ Map<String, Map<String, dynamic>> _parseChapterVerseJson(
       stderr.writeln('[fail]     $path book "$bookKey" is not an object');
       exit(1);
     }
-    final Map<int, int> chapters = <int, int>{};
     for (final MapEntry<String, dynamic> chapterEntry in value.entries) {
-      final int? chapter = int.tryParse(chapterEntry.key);
-      if (chapter == null) {
+      if (int.tryParse(chapterEntry.key) == null) {
         stdout.writeln(
           '[skipped]  $path $bookKey: prologue chapter "${chapterEntry.key}"',
         );
-        continue;
       }
       if (chapterEntry.value is! Map<String, dynamic>) {
         stderr.writeln(
           '[fail]     $path $bookKey chapter ${chapterEntry.key} is not an object',
         );
         exit(1);
-      }
-      if (violations != null) {
-        final List<int> verseNumbers =
-            chapterEntry.value.keys.map(int.tryParse).whereType<int>().toList()
-              ..sort();
-        final bool contiguous =
-            verseNumbers.length == chapterEntry.value.length &&
-            _isContiguousFromOne(verseNumbers);
-        if (!contiguous) {
-          violations.add(
-            '"$bookKey" chapter "${chapterEntry.key}": verse keys are not '
-            '1..${chapterEntry.value.length} '
-            '(${verseNumbers.isEmpty ? 'none numeric' : '${verseNumbers.first}..${verseNumbers.last}'}); '
-            'coordinates do not reflect the (book, chapter, verse) structure',
-          );
-        }
       }
       for (final String verseKey in chapterEntry.value.keys) {
         if (chapterEntry.value[verseKey] is! String) {
@@ -456,17 +463,42 @@ Map<String, Map<String, dynamic>> _parseChapterVerseJson(
           exit(1);
         }
       }
-      chapters[chapter] = chapterEntry.value.length;
     }
-    counts[bookKey] = chapters;
     bookMaps[bookKey] = value;
   }
   return bookMaps;
 }
 
+/// Real verse counts from a parsed USFM book map: chapter -> verse list size.
+Map<String, Map<int, int>> _realCounts(
+  Map<String, Map<int, Map<int, String>>> parsedByCode,
+) {
+  return <String, Map<int, int>>{
+    for (final MapEntry<String, Map<int, Map<int, String>>> code
+        in parsedByCode.entries)
+      code.key: <int, int>{
+        for (final MapEntry<int, Map<int, String>> chapter
+            in code.value.entries)
+          chapter.key: chapter.value.length,
+      },
+  };
+}
+
+/// Verse counts from the CPDV keyed snapshot: numeric chapter -> verse count.
+Map<String, Map<int, int>> _cpdvCounts(Map<String, Map<String, dynamic>> root) {
+  return <String, Map<int, int>>{
+    for (final MapEntry<String, Map<String, dynamic>> book in root.entries)
+      book.key: <int, int>{
+        for (final MapEntry<String, dynamic> chapter in book.value.entries)
+          if (int.tryParse(chapter.key) != null)
+            int.parse(chapter.key): chapter.value.length,
+      },
+  };
+}
+
 /// Re-keys per-source counts onto canonical db book names and validates that
 /// the source covers exactly the 73-book vocabulary.
-Map<String, Map<int, int>> _byDbBook(
+Map<String, Map<int, int>> _countsByDbBook(
   Map<String, Map<int, int>> sourceCounts,
   Map<String, (String, int)> keyToBook,
   List<String> canonicalOrder,
@@ -490,6 +522,66 @@ Map<String, Map<int, int>> _byDbBook(
       '${canonicalOrder.length} db books',
     );
     exit(1);
+  }
+  return result;
+}
+
+/// Builds the per-translation `verseNumbers` map (db book name ->
+/// decimal-string chapter -> exact ascending verse numbers) for chapters
+/// whose real verse keys are NOT exactly 1..N.
+Map<String, Map<String, List<int>>> _verseNumbers(
+  Map<String, Map<int, Map<int, String>>> parsedByCode,
+  Map<String, (String, int)> keyToBook,
+  List<String> canonicalOrder,
+) {
+  final Map<String, Map<String, List<int>>> result =
+      <String, Map<String, List<int>>>{};
+  for (final MapEntry<String, Map<int, Map<int, String>>> code
+      in parsedByCode.entries) {
+    final String dbBook = keyToBook[code.key]!.$1;
+    final Map<String, List<int>> listed = <String, List<int>>{};
+    for (final int chapter in code.value.keys.toList()..sort()) {
+      final List<int> numbers = code.value[chapter]!.keys.toList()..sort();
+      if (_isContiguousFromOne(numbers)) {
+        continue;
+      }
+      listed['$chapter'] = numbers;
+    }
+    if (listed.isNotEmpty) {
+      result[dbBook] = listed;
+    }
+  }
+  // Canonical book order in the emitted JSON.
+  return <String, Map<String, List<int>>>{
+    for (final String book in canonicalOrder)
+      if (result.containsKey(book)) book: result[book]!,
+  };
+}
+
+/// `verseNumbers` from the CPDV keyed snapshot (numeric chapter keys only);
+/// the exact ascending verse numbers come from the JSON keys themselves.
+Map<String, Map<String, List<int>>> _verseNumbersFromKeyedMap(
+  Map<String, Map<String, dynamic>> root,
+  List<String> canonicalOrder,
+) {
+  final Map<String, Map<String, List<int>>> result =
+      <String, Map<String, List<int>>>{};
+  for (final String book in canonicalOrder) {
+    final Map<String, dynamic>? chapters = root[book];
+    if (chapters == null) {
+      continue;
+    }
+    for (final MapEntry<String, dynamic> chapter in chapters.entries) {
+      final Object? verseMap = chapter.value;
+      if (verseMap is! Map<String, dynamic>) {
+        continue;
+      }
+      final List<int> numbers =
+          verseMap.keys.map(int.tryParse).whereType<int>().toList()..sort();
+      if (!_isContiguousFromOne(numbers)) {
+        (result[book] ??= <String, List<int>>{})[chapter.key] = numbers;
+      }
+    }
   }
   return result;
 }
@@ -586,12 +678,12 @@ void _crossCheckCpdvMetadata(
 /// Verifies each pinned reference verse against the snapshot text and prints
 /// an informational line for the known plan-vs-snapshot wording divergences.
 List<String> _verifyReferenceVerses({
-  required Map<String, Map<String, String>> usfmTexts,
+  required Map<String, Map<String, Map<int, Map<int, String>>>> parsedUsfms,
   required Map<String, Map<String, Map<String, dynamic>>> snapshotRoots,
 }) {
   final List<String> failures = <String>[];
   for (final _Pin pin in _pins) {
-    final String? text = _verseTextForPin(pin, usfmTexts, snapshotRoots);
+    final String? text = _verseTextForPin(pin, parsedUsfms, snapshotRoots);
     if (text == null) {
       failures.add(
         'missing verse ${pin.dbName} ${pin.chapter}:${pin.verse} in ${pin.translation}',
@@ -622,18 +714,20 @@ List<String> _verifyReferenceVerses({
 
 /// Resolves a pinned reference verse to its snapshot text, or null when the
 /// verse does not exist (which itself fails `.startsWith` verification).
-/// engwebc and drc are both USFM zips (per-translation code-keyed texts);
-/// cpdv is a `{bookKey: {chapter: {verse: text}}}` JSON snapshot.
+/// engwebc and drc are both USFM zips (decoded by the shared parser, hence
+/// REAL verses only); cpdv is a `{bookKey: {chapter: {verse: text}}}` JSON
+/// snapshot.
 String? _verseTextForPin(
   _Pin pin,
-  Map<String, Map<String, String>> usfmTexts,
+  Map<String, Map<String, Map<int, Map<int, String>>>> parsedUsfms,
   Map<String, Map<String, Map<String, dynamic>>> snapshotRoots,
 ) {
   switch (pin.translation) {
     case 'engwebc':
     case 'drc':
-      final String text = usfmTexts[pin.translation]?[pin.sourceKey] ?? '';
-      return _usfmVerseText(text, pin.chapter, pin.verse);
+      final Map<int, Map<int, String>>? chapters =
+          parsedUsfms[pin.translation]?[pin.sourceKey];
+      return chapters?[pin.chapter]?[pin.verse];
     case 'cpdv':
       final Object? book = snapshotRoots[pin.translation]?[pin.sourceKey];
       if (book is! Map<String, dynamic>) {
@@ -650,66 +744,6 @@ String? _verseTextForPin(
   }
 }
 
-/// Extracts one verse's text from USFM: the verse block starts at its
-/// `\v <n>` line and runs until the next `\v`/`\c`/section-header line.
-/// Footnote (`\f + … \f*`) and cross-reference (`\x + … \x*`) bodies are
-/// dropped, `|key="value"` word attributes are dropped, remaining backslash
-/// tags are dropped, the leading verse number is dropped, and whitespace is
-/// collapsed. Mirrors the parser the builder will use.
-String? _usfmVerseText(String usfm, int chapter, int verse) {
-  final List<String> lines = usfm.split('\n');
-  int? current;
-  int? startIndex;
-  for (int i = 0; i < lines.length; i++) {
-    final String trimmed = lines[i].trim();
-    final RegExpMatch? chapterMatch = RegExp(
-      r'\\c (\d+)\s*$',
-    ).firstMatch(trimmed);
-    if (chapterMatch != null) {
-      current = int.parse(chapterMatch.group(1)!);
-      continue;
-    }
-    if (current == chapter && trimmed.startsWith('\\v $verse ')) {
-      startIndex = i;
-      break;
-    }
-  }
-  if (startIndex == null) {
-    return null;
-  }
-  final List<String> body = <String>[lines[startIndex]];
-  for (int i = startIndex + 1; i < lines.length; i++) {
-    final String trimmed = lines[i].trim();
-    if (trimmed.isEmpty) {
-      continue;
-    }
-    final bool nextChapter = RegExp(r'\\c (\d+)').hasMatch(trimmed);
-    final bool nextVerse = trimmed.startsWith('\\v ');
-    final bool sectionHeader = RegExp(
-      r'\\(s\d|d\b|mt\d|ms\d|sp\b|cl\b|nb\b|pc\b)\b',
-    ).hasMatch(trimmed);
-    if (nextChapter || nextVerse || sectionHeader) {
-      break;
-    }
-    body.add(lines[i]);
-  }
-  String text = body.join('\n');
-  text = text
-      .replaceAll(RegExp(r'\\f \+[\s\S]*?\\f\*'), '')
-      .replaceAll(RegExp(r'\\x \+[\s\S]*?\\x\*'), '')
-      .replaceAll(RegExp(r'\|\w+="[^"]*"'), '')
-      .replaceAll(RegExp(r'\\[a-z0-9+]+\*?'), '');
-  final RegExpMatch? leadingNumber = RegExp(r'^\s*(\d+)\b').firstMatch(text);
-  if (leadingNumber != null) {
-    text = text.substring(leadingNumber.end);
-  }
-  text = text.replaceAll(RegExp(r'\s+'), ' ').trim();
-  if (text.contains('\\')) {
-    throw StateError('stripped verse text retains a backslash marker: $text');
-  }
-  return text;
-}
-
 /// Whether [numbers] is exactly 1..length (deep-compare, unlike `List ==`).
 bool _isContiguousFromOne(List<int> numbers) {
   for (int i = 0; i < numbers.length; i++) {
@@ -721,60 +755,90 @@ bool _isContiguousFromOne(List<int> numbers) {
 }
 
 /// Renders the manifest value:
-/// `{"translations": {"<id>": {"order": …, "chapters": …, "referenceVerses": …}}}`,
-/// emitting only translations not excluded by [excluded].
+/// `{"translations": {"<id>": {"order": …, "chapters": …,
+///  "verseNumbers"?: {book: {chapter: [verses]}}, "referenceVerses": …}}}`,
+/// emitting `verseNumbers` only for translations that have gap chapters
+/// (engwebc only, in practice — drc and CPDV are gap-free hard stops).
 Map<String, dynamic> _buildManifest(
   Map<String, Map<String, Map<int, int>>> perTranslation,
   List<String> canonicalOrder,
-  Map<String, String> excluded,
+  Map<String, Map<String, Map<String, List<int>>>> verseNumbers,
 ) {
   final List<String> ids = _translationIds
-      .where((String id) => !excluded.containsKey(id))
+      .where((String id) => perTranslation.containsKey(id))
       .toList();
   if (ids.isEmpty) {
-    stderr.writeln(
-      '[fail]     every translation was excluded; nothing to emit',
-    );
+    stderr.writeln('[fail]     no translation verified; nothing to emit');
     exit(1);
   }
   return <String, dynamic>{
     'translations': <String, dynamic>{
       for (final String id in ids)
-        id: <String, dynamic>{
-          'order': canonicalOrder,
-          'chapters': <String, dynamic>{
-            for (final String book in canonicalOrder)
-              book: <String, int>{
-                for (final int chapter
-                    in (perTranslation[id]![book] ?? <int, int>{}).keys.toList()
-                      ..sort())
-                  '$chapter':
-                      (perTranslation[id]![book] ?? <int, int>{})[chapter]!,
-              },
-          },
-          'referenceVerses': <Map<String, dynamic>>[
-            for (final _Pin pin in _pins.where((_Pin p) => p.translation == id))
-              <String, dynamic>{
-                'book': pin.dbName,
-                'chapter': pin.chapter,
-                'verse': pin.verse,
-                'startsWith': pin.startsWith,
-              },
-          ],
+        id: _translationEntry(id, perTranslation, canonicalOrder, verseNumbers),
+    },
+  };
+}
+
+/// One per-translation manifest entry.
+Map<String, dynamic> _translationEntry(
+  String id,
+  Map<String, Map<String, Map<int, int>>> perTranslation,
+  List<String> canonicalOrder,
+  Map<String, Map<String, Map<String, List<int>>>> verseNumbers,
+) {
+  final Map<String, dynamic> entry = <String, dynamic>{
+    'order': canonicalOrder,
+    'chapters': <String, dynamic>{
+      for (final String book in canonicalOrder)
+        book: <String, int>{
+          for (final int chapter
+              in (perTranslation[id]![book] ?? <int, int>{}).keys.toList()
+                ..sort())
+            '$chapter': (perTranslation[id]![book] ?? <int, int>{})[chapter]!,
         },
     },
   };
+  final Map<String, Map<String, List<int>>>? gaps = verseNumbers[id];
+  if (gaps != null && gaps.isNotEmpty) {
+    final Map<String, dynamic> listed = <String, dynamic>{};
+    for (final String book in canonicalOrder) {
+      final Map<String, List<int>>? chapters = gaps[book];
+      if (chapters == null) {
+        continue;
+      }
+      final Map<String, List<int>> sortedChapters = <String, List<int>>{};
+      for (final int chapterNo
+          in chapters.keys.map(int.tryParse).whereType<int>().toList()
+            ..sort()) {
+        final String chapterKey = '$chapterNo';
+        sortedChapters[chapterKey] = List<int>.of(chapters[chapterKey]!)
+          ..sort();
+      }
+      listed[book] = sortedChapters;
+    }
+    entry['verseNumbers'] = listed;
+  }
+  entry['referenceVerses'] = <Map<String, dynamic>>[
+    for (final _Pin pin in _pins.where((_Pin p) => p.translation == id))
+      <String, dynamic>{
+        'book': pin.dbName,
+        'chapter': pin.chapter,
+        'verse': pin.verse,
+        'startsWith': pin.startsWith,
+      },
+  ];
+  return entry;
 }
 
 /// Pretty-prints the manifest for the BEGIN/END stdout block.
 String _manifestJson(
   Map<String, Map<String, Map<int, int>>> perTranslation,
   List<String> canonicalOrder,
-  Map<String, String> excluded,
+  Map<String, Map<String, Map<String, List<int>>>> verseNumbers,
 ) {
   return const JsonEncoder.withIndent(
     '  ',
-  ).convert(_buildManifest(perTranslation, canonicalOrder, excluded));
+  ).convert(_buildManifest(perTranslation, canonicalOrder, verseNumbers));
 }
 
 /// Bounded prefix of `text` for log lines.
