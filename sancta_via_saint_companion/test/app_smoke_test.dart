@@ -9,12 +9,16 @@ void main() {
   testWidgets('SaintCompanionApp renders MaterialApp with Saints home header', (
     tester,
   ) async {
-    // Override the liturgical color provider so the app never mounts
+    // Override the liturgical day provider (the root of every other
+    // liturgical provider) with a fixed day so the app never mounts
     // currentDateProvider's periodic timer in the fake-async test zone.
     await tester.pumpWidget(
       ProviderScope(
         overrides: <Override>[
-          currentLiturgicalColorProvider.overrideWith((ref) => null),
+          currentLiturgicalDayProvider.overrideWith(
+            (ref) =>
+                LiturgicalCalendarService.getDayForDate(DateTime(2026, 11, 12)),
+          ),
         ],
         child: const SaintCompanionApp(),
       ),
@@ -23,7 +27,7 @@ void main() {
     // MaterialApp.router should be present
     expect(find.byType(MaterialApp), findsOneWidget);
 
-    // Placeholder home shows a Text('Saints') header
+    // Home shows a Text('Saints') header
     expect(find.text('Saints'), findsWidgets);
   });
 
@@ -33,7 +37,10 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: <Override>[
-          currentLiturgicalColorProvider.overrideWith((ref) => null),
+          currentLiturgicalDayProvider.overrideWith(
+            (ref) =>
+                LiturgicalCalendarService.getDayForDate(DateTime(2026, 11, 12)),
+          ),
         ],
         child: const SaintCompanionApp(),
       ),
