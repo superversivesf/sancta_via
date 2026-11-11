@@ -47,6 +47,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.0
+  sqflite_common_ffi: ^2.3.0
 
 flutter:
   uses-material-design: true
@@ -59,3 +60,16 @@ flutter_launcher_icons:
   ios: true
   image_path: "assets/app_icon.png"
   min_sdk_android: 21
+
+# Dev/test build-hook defines (only take effect when this package is the
+# build workspace root). The sqlite3 bundled native-assets build lacks FTS4
+# ("no such module: fts4"); the saint search table is pinned to FTS4 +
+# unicode61, so on host machines the hook loads the SYSTEM SQLite (FTS4
+# enabled) for the in-memory fixture database used by the provider tests.
+# Flat `source` schema: sqlite3 resolves to 3.5.2 here (3.9.1, used by
+# sancta_via_saint_data's platform-keyed form, needs Dart >= 3.10).
+# Device builds are unaffected.
+hooks:
+  user_defines:
+    sqlite3:
+      source: system
