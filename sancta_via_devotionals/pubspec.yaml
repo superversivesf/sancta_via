@@ -9,6 +9,10 @@ environment:
   sdk: ^3.9.2
 
 dependencies:
+  bible_data:
+    path: ../sancta_via_bible_data
+  bible_data_riverpod:
+    path: ../sancta_via_bible_data_riverpod
   cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
@@ -18,10 +22,6 @@ dependencies:
   go_router: ^15.1.2
   package_info_plus: ^8.3.0
   path: ^1.9.1
-  sancta_via_bible_data:
-    path: ../sancta_via_bible_data
-  sancta_via_bible_data_riverpod:
-    path: ../sancta_via_bible_data_riverpod
   sancta_via_devotional_engine:
     path: ../sancta_via_devotional_engine
   sancta_via_devotional_engine_riverpod:
