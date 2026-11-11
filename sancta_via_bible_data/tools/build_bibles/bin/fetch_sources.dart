@@ -35,9 +35,15 @@
 ///   the pinned smoke chapters (Genesis 1, Esther 1, Apocalypse 1) plus their
 ///   one-past boundary probes, writes the cache, and never emits the
 ///   snapshot.
+/// - Every run that may reach the network takes a cross-process run lock
+///   (`assets/sources/.drc_cache/fetch_sources.lock`, inside the git-ignored
+///   cache dir): an OS file lock (advisory, exclusive, per-instance) keeps a
+///   second instance from ever overlapping a running fetch's request stream,
+///   and a recorded PID refuses runs while that PID is alive, taking the
+///   lock over (with a log line) once the PID is gone. The lock file is left
+///   in place on release for resume consistency; crashed runs are detected
+///   by the dead PID on the next run.
 /// - Every fetched response must be complete: when `Content-Length` is
-///   present the collected bytes must match exactly, empty bodies are
-///   rejected, and a stalled body aborts with a read-idle timeout.
 /// Behaviour:
 /// - First fetch (manifest `sha256` empty): pins `sha256`, `fileSize` and
 ///   `fetchedAt` into the manifest (for scraped sources: when the joined
@@ -76,6 +82,7 @@ const String _expectedStructureRelativePath =
     'tools/build_bibles/expected_structure.json';
 const String _bookNamesJsonRelativePath = 'tools/build_bibles/book_names.json';
 const String _scrapeCacheRelativeDir = 'assets/sources/.drc_cache';
+const String _runLockFileName = 'fetch_sources.lock';
 
 /// Maximum dwell time between two body chunks of a download before the body
 /// is treated as stalled and the fetch aborts.
@@ -152,39 +159,56 @@ Future<void> main(List<String> args) async {
   final List<String> refreshed = <String>[];
   final List<String> failures = <String>[];
 
-  for (final MapEntry<String, dynamic> sourceEntry in sources.entries) {
-    final String id = sourceEntry.key;
-    try {
-      final Map<String, dynamic> entry =
-          sourceEntry.value as Map<String, dynamic>;
-      final _FetchResult result = await _processSource(
-        id: id,
-        entry: entry,
-        assetsDir: assetsDir,
-        manifestDir: manifestDir,
-        update: update,
-        smoke: smoke,
-      );
-      switch (result) {
-        case _FetchResult.verified:
-          verified.add(id);
-        case _FetchResult.pinned:
-          pinned.add(id);
-        case _FetchResult.updated:
-          refreshed.add(id);
-        case _FetchResult.failed:
-          failures.add(id);
-      }
-    } on Object catch (e) {
-      stderr.writeln('[fail]     $id: $e');
-      failures.add(id);
-    }
+  // Cross-process run lock: one fetch run at a time, so the per-request
+  // crawl delay cannot be doubled by a second instance.
+  _FetchRunLock runLock;
+  try {
+    runLock = _acquireFetchRunLock(
+      Directory('${packageRoot.path}/$_scrapeCacheRelativeDir'),
+    );
+  } on FetchException catch (e) {
+    stderr.writeln('[lock]     $e');
+    exitCode = 1;
+    return;
   }
 
-  if (pinned.isNotEmpty || refreshed.isNotEmpty) {
-    const JsonEncoder encoder = JsonEncoder.withIndent('  ');
-    manifestFile.writeAsStringSync('${encoder.convert(manifest)}\n');
-    stdout.writeln('Manifest updated: ${manifestFile.path}');
+  try {
+    for (final MapEntry<String, dynamic> sourceEntry in sources.entries) {
+      final String id = sourceEntry.key;
+      try {
+        final Map<String, dynamic> entry =
+            sourceEntry.value as Map<String, dynamic>;
+        final _FetchResult result = await _processSource(
+          id: id,
+          entry: entry,
+          assetsDir: assetsDir,
+          manifestDir: manifestDir,
+          update: update,
+          smoke: smoke,
+        );
+        switch (result) {
+          case _FetchResult.verified:
+            verified.add(id);
+          case _FetchResult.pinned:
+            pinned.add(id);
+          case _FetchResult.updated:
+            refreshed.add(id);
+          case _FetchResult.failed:
+            failures.add(id);
+        }
+      } on Object catch (e) {
+        stderr.writeln('[fail]     $id: $e');
+        failures.add(id);
+      }
+    }
+
+    if (pinned.isNotEmpty || refreshed.isNotEmpty) {
+      const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+      manifestFile.writeAsStringSync('${encoder.convert(manifest)}\n');
+      stdout.writeln('Manifest updated: ${manifestFile.path}');
+    }
+  } finally {
+    runLock.release();
   }
 
   stdout.writeln(
@@ -516,6 +540,125 @@ String? joinShapeViolation(Map<String, dynamic> bookJson, String fileName) {
     }
   }
   return null;
+}
+
+// ---------------------------------------------------------------------------
+// Cross-process run lock (guards the network request stream of any run)
+// ---------------------------------------------------------------------------
+
+/// Handle for the acquired per-run lock; [release] must be called in a
+/// `finally` so a finished run always yields the lock.
+final class _FetchRunLock {
+  const _FetchRunLock(this._file);
+
+  final RandomAccessFile _file;
+
+  /// Releases the OS file lock. The lock FILE stays on disk (with the
+  /// releasing PID) for resume consistency; the next run takes over once the
+  /// recorded PID is gone.
+  void release() {
+    _file.unlockSync();
+    _file.closeSync();
+  }
+}
+
+/// Acquires the exclusive cross-process run lock before the first network
+/// request, throwing [FetchException] (never overlapping the holder) when
+/// another fetch run is live.
+///
+/// Two layers keep two instances apart:
+/// - an OS file lock (`RandomAccessFile.lockSync`, advisory/exclusive) is
+///   atomic, so simultaneous starts cannot both win, and is released by the
+///   OS if a process dies; and
+/// - the lock FILE records the owner's PID, so a run whose predecessor is
+///   STILL ALIVE refuses (`another fetch is running (PID …)`) even when that
+///   predecessor predates the file lock (e.g. an in-flight legacy crawl) or
+///   the PID was reused. A dead PID is taken over with a log line.
+_FetchRunLock _acquireFetchRunLock(Directory cacheDir) {
+  final File lockFile = File('${cacheDir.path}/$_runLockFileName');
+  Directory(cacheDir.path).createSync(recursive: true);
+  // Append mode: opening never truncates, so the recorded owner stays
+  // readable before the lock is held.
+  final RandomAccessFile file = lockFile.openSync(mode: FileMode.append);
+  try {
+    file.lockSync(FileLock.exclusive);
+  } on Object {
+    file.closeSync();
+    throw const FetchException(
+      'another fetch is running (the run lock fetch_sources.lock is held); '
+      'refusing to overlap its request stream',
+    );
+  }
+  // The OS lock is ours: inspect the recorded owner.
+  final (int? recordedPid, String? startedAt) = _readLockOwner(lockFile);
+  if (recordedPid != null && recordedPid != pid) {
+    if (_pidIsAlive(recordedPid)) {
+      file.unlockSync();
+      file.closeSync();
+      throw FetchException(
+        'another fetch is running (PID $recordedPid'
+        '${startedAt == null ? '' : ', started $startedAt'}); '
+        'refusing to overlap its request stream',
+      );
+    }
+    stdout.writeln(
+      '[lock]     stale lock: recorded PID $recordedPid is gone; '
+      'taking over the run lock',
+    );
+  }
+  file.truncateSync(0);
+  file.setPositionSync(0);
+  file.writeStringSync(
+    '${jsonEncode(<String, String>{'pid': '$pid', 'startedAt': DateTime.now().toUtc().toIso8601String()})}\n',
+  );
+  return _FetchRunLock(file);
+}
+
+/// Reads the recorded owner from the lock file; `(null, null)` when absent,
+/// empty, or unreadable (a corrupt record is treated as no owner).
+(int?, String?) _readLockOwner(File lockFile) {
+  try {
+    // NUL bytes are stripped defensively: a record written by an older build
+    // (before the write position was pinned) could carry a zero-filled hole.
+    final String text = lockFile
+        .readAsStringSync()
+        .replaceAll('\u0000', '')
+        .trim();
+    if (text.isEmpty) {
+      return (null, null);
+    }
+    final Object? decoded = jsonDecode(text);
+    if (decoded is Map<String, dynamic>) {
+      final Object? pidRaw = decoded['pid'];
+      final int? recordedPid = pidRaw is int ? pidRaw : int.tryParse('$pidRaw');
+      final Object? startedAt = decoded['startedAt'];
+      return (recordedPid, startedAt is String ? startedAt : null);
+    }
+  } on Object {
+    // fall through: unreadable/corrupt record behaves as no owner
+  }
+  return (null, null);
+}
+
+/// Whether [processId] is alive (`kill -0`); a missing/unusable `kill`
+/// binary warns and reports dead so a broken checker cannot brick runs.
+bool _pidIsAlive(int processId) {
+  if (processId <= 0) {
+    return false;
+  }
+  try {
+    final ProcessResult result = Process.runSync('kill', <String>[
+      '-0',
+      '$processId',
+    ]);
+    return result.exitCode == 0;
+  } on Object {
+    stdout.writeln(
+      '[lock]     cannot check PID $processId liveness (kill unavailable); '
+      'treating the lock as stale',
+    );
+    return false;
+  }
 }
 
 // ---------------------------------------------------------------------------
