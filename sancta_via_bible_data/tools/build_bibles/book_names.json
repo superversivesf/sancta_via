@@ -47,6 +47,10 @@
     "dbName": "Joshua",
     "order": 6
   },
+  "Josue": {
+    "dbName": "Joshua",
+    "order": 6
+  },
   "JDG": {
     "dbName": "Judges",
     "order": 7
@@ -71,7 +75,7 @@
     "dbName": "I Samuel",
     "order": 9
   },
-  "1 Samuel": {
+  "1 Kings": {
     "dbName": "I Samuel",
     "order": 9
   },
@@ -83,7 +87,7 @@
     "dbName": "II Samuel",
     "order": 10
   },
-  "2 Samuel": {
+  "2 Kings": {
     "dbName": "II Samuel",
     "order": 10
   },
@@ -95,7 +99,7 @@
     "dbName": "I Kings",
     "order": 11
   },
-  "1 Kings": {
+  "3 Kings": {
     "dbName": "I Kings",
     "order": 11
   },
@@ -107,7 +111,7 @@
     "dbName": "II Kings",
     "order": 12
   },
-  "2 Kings": {
+  "4 Kings": {
     "dbName": "II Kings",
     "order": 12
   },
@@ -119,7 +123,7 @@
     "dbName": "I Chronicles",
     "order": 13
   },
-  "1 Chronicles": {
+  "1 Paralipomenon": {
     "dbName": "I Chronicles",
     "order": 13
   },
@@ -131,7 +135,7 @@
     "dbName": "II Chronicles",
     "order": 14
   },
-  "2 Chronicles": {
+  "2 Paralipomenon": {
     "dbName": "II Chronicles",
     "order": 14
   },
@@ -143,6 +147,10 @@
     "dbName": "Ezra",
     "order": 15
   },
+  "1 Esdras": {
+    "dbName": "Ezra",
+    "order": 15
+  },
   "NEH": {
     "dbName": "Nehemiah",
     "order": 16
@@ -151,11 +159,19 @@
     "dbName": "Nehemiah",
     "order": 16
   },
+  "2 Esdras": {
+    "dbName": "Nehemiah",
+    "order": 16
+  },
   "TOB": {
     "dbName": "Tobit",
     "order": 17
   },
   "Tobit": {
+    "dbName": "Tobit",
+    "order": 17
+  },
+  "Tobias": {
     "dbName": "Tobit",
     "order": 17
   },
@@ -215,7 +231,7 @@
     "dbName": "Song of Solomon",
     "order": 24
   },
-  "Song of Solomon": {
+  "Canticles": {
     "dbName": "Song of Solomon",
     "order": 24
   },
@@ -247,11 +263,19 @@
     "dbName": "Isaiah",
     "order": 27
   },
+  "Isaias": {
+    "dbName": "Isaiah",
+    "order": 27
+  },
   "JER": {
     "dbName": "Jeremiah",
     "order": 28
   },
   "Jeremiah": {
+    "dbName": "Jeremiah",
+    "order": 28
+  },
+  "Jeremias": {
     "dbName": "Jeremiah",
     "order": 28
   },
@@ -279,6 +303,10 @@
     "dbName": "Ezekiel",
     "order": 31
   },
+  "Ezechiel": {
+    "dbName": "Ezekiel",
+    "order": 31
+  },
   "DAG": {
     "dbName": "Daniel",
     "order": 32
@@ -292,6 +320,10 @@
     "order": 33
   },
   "Hosea": {
+    "dbName": "Hosea",
+    "order": 33
+  },
+  "Osee": {
     "dbName": "Hosea",
     "order": 33
   },
@@ -319,11 +351,19 @@
     "dbName": "Obadiah",
     "order": 36
   },
+  "Abdias": {
+    "dbName": "Obadiah",
+    "order": 36
+  },
   "JON": {
     "dbName": "Jonah",
     "order": 37
   },
   "Jonah": {
+    "dbName": "Jonah",
+    "order": 37
+  },
+  "Jonas": {
     "dbName": "Jonah",
     "order": 37
   },
@@ -335,7 +375,7 @@
     "dbName": "Micah",
     "order": 38
   },
-  "Micha": {
+  "Micheas": {
     "dbName": "Micah",
     "order": 38
   },
@@ -355,11 +395,19 @@
     "dbName": "Habakkuk",
     "order": 40
   },
+  "Habacuc": {
+    "dbName": "Habakkuk",
+    "order": 40
+  },
   "ZEP": {
     "dbName": "Zephaniah",
     "order": 41
   },
   "Zephaniah": {
+    "dbName": "Zephaniah",
+    "order": 41
+  },
+  "Sophonias": {
     "dbName": "Zephaniah",
     "order": 41
   },
@@ -371,6 +419,10 @@
     "dbName": "Haggai",
     "order": 42
   },
+  "Aggeus": {
+    "dbName": "Haggai",
+    "order": 42
+  },
   "ZEC": {
     "dbName": "Zechariah",
     "order": 43
@@ -379,7 +431,7 @@
     "dbName": "Zechariah",
     "order": 43
   },
-  "Zachariah": {
+  "Zacharias": {
     "dbName": "Zechariah",
     "order": 43
   },
@@ -391,6 +443,10 @@
     "dbName": "Malachi",
     "order": 44
   },
+  "Malachias": {
+    "dbName": "Malachi",
+    "order": 44
+  },
   "1MA": {
     "dbName": "I Maccabees",
     "order": 45
@@ -399,7 +455,7 @@
     "dbName": "I Maccabees",
     "order": 45
   },
-  "1 Maccabees": {
+  "1 Machabees": {
     "dbName": "I Maccabees",
     "order": 45
   },
@@ -411,7 +467,7 @@
     "dbName": "II Maccabees",
     "order": 46
   },
-  "2 Maccabees": {
+  "2 Machabees": {
     "dbName": "II Maccabees",
     "order": 46
   },
@@ -452,6 +508,10 @@
     "order": 51
   },
   "Acts": {
+    "dbName": "Acts",
+    "order": 51
+  },
+  "Acts of Apostles": {
     "dbName": "Acts",
     "order": 51
   },
@@ -672,6 +732,10 @@
     "order": 73
   },
   "Revelation": {
+    "dbName": "Revelation of John",
+    "order": 73
+  },
+  "Apocalypse": {
     "dbName": "Revelation of John",
     "order": 73
   }

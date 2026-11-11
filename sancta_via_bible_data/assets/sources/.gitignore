@@ -1,0 +1,3 @@
+# Scratch cache for the drbo.org scrape (raw chapter pages, run metadata).
+# Regenerable; never commit.
+.drc_cache/

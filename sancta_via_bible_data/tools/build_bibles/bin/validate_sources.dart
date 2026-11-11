@@ -101,7 +101,7 @@ const List<_Pin> _pins = <_Pin>[
     'Genesis',
     1,
     1,
-    'In the *beginning God created heaven',
+    'In the beginning God created heaven',
   ),
   _Pin(
     'drc',
@@ -109,11 +109,11 @@ const List<_Pin> _pins = <_Pin>[
     'Sirach',
     1,
     1,
-    'All *wisdom is from the Lord God, and',
+    'All wisdom is from the Lord God, and',
   ),
   _Pin(
     'drc',
-    'Revelation',
+    'Apocalypse',
     'Revelation',
     22,
     21,

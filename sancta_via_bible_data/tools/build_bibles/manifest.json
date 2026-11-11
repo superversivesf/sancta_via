@@ -27,16 +27,23 @@
       "revision": "draino7n7/cpdv@66416f04fbfeec260f09eb3c095be9a289429f2d"
     },
     "drc": {
-      "url": "https://raw.githubusercontent.com/exanx/bible-json/main/DRB-73-Books/",
-      "joinList": "drc_file_list.json",
-      "fileCount": 73,
+      "url": "https://www.drbo.org/chapter/",
+      "scrape": {
+        "codeFormat": "bbccc",
+        "bookCount": 73,
+        "crawlDelayMs": 5000,
+        "bookNamesUrl": "https://www.drbo.org/index.htm",
+        "chapterCountOverrides": {
+          "19": 16
+        }
+      },
       "fallbackUrls": [
         "https://raw.githubusercontent.com/thomas992/catholicbible/main/DRB.json"
       ],
-      "sha256": "fe5dd30284fcac788286b4535b06dda8b95fdb29af6b1c6f7b1f52efb7f0c2ca",
-      "fetchedAt": "2026-11-11T08:37:10.062985Z",
-      "fileSize": 5002007,
-      "revision": "exanx/bible-json@55d8cce6fcff01fb3eac125c7675e170fbd276cd (joined DRB-73-Books per-book files; pinned primary thomas992/catholicbible/main/DRB.json is dead — HTTP 404, repo removed, verified 2026-11-11)"
+      "sha256": "",
+      "fileSize": "",
+      "fetchedAt": "",
+      "revision": "drbo.org scrape (Douay-Rheims, Challoner Revision; public-domain text). Ruling 2026-11-11: source drc by scraping drbo.org honoring robots.txt Crawl-delay: 5, /chapter/ pages only, UA sancta-via-fetch-sources. exanx/bible-json DRB-73-Books join retired (upstream per-book files structurally corrupt: 21 books missing tail chapters; see Task 2 report). Retired also: thomas992/catholicbible primary (HTTP 404). chapterCountOverrides: drbo.org Esther (bk 19) has 16 chapters vs cpdv 15 - verified live 2026-11-11 (01916.htm=200, 01917.htm -> 404)."
     }
   }
 }

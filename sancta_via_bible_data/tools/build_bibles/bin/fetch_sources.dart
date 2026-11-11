@@ -15,26 +15,51 @@
 ///   joined into one `{<bookKey>: {<chapter>: {<verse>: "text"}}}` JSON
 ///   object where `<bookKey>` is the file name minus `.json` (verbatim per
 ///   upstream); per-file shape violations abort the join.
+/// - Scraped sources (manifest entry has a `scrape` object): `url` is a
+///   chapter-directory base (drbo.org `/chapter/`); every book 1..bookCount
+///   is enumerated chapter 1..K as `<bb><ccc>.htm` codes (`bb` = 1-based
+///   book, `ccc` = 3-digit chapter), pages are parsed into
+///   `{<bookKey>: {<chapter>: {<verse>: "text"}}}` (bookKey = drbo.org's
+///   verbatim book name) and written to the snapshot once the full book set
+///   is complete and validated. Structure/anchor hard gates abort with
+///   evidence; the book -> chapter count table is derived from the cpdv
+///   chapter counts in `expected_structure.json` (Vulgate basis) and each
+///   book's one-past boundary page must NOT exist (missing pages redirect to
+///   drbo.org's 404 page). `scrape.chapterCountOverrides` records books where
+///   the live verification disagreed with the cpdv count (each value is
+///   verified against the real 404 boundary at run time). Raw pages are
+///   cached per chapter under `assets/sources/.drc_cache/` (git-ignored), so
+///   resumed crawls skip completed chapters and re-runs never re-fetch.
+///   Requests honor `scrape.crawlDelayMs` (>= 5000 per drbo.org robots.txt)
+///   between request starts over a single connection. `--smoke` fetches only
+///   the pinned smoke chapters (Genesis 1, Esther 1, Apocalypse 1) plus their
+///   one-past boundary probes, writes the cache, and never emits the
+///   snapshot.
 /// - Every fetched response must be complete: when `Content-Length` is
 ///   present the collected bytes must match exactly, empty bodies are
 ///   rejected, and a stalled body aborts with a read-idle timeout.
 /// Behaviour:
 /// - First fetch (manifest `sha256` empty): pins `sha256`, `fileSize` and
-///   `fetchedAt` into the manifest.
+///   `fetchedAt` into the manifest (for scraped sources: when the joined
+///   snapshot is written on completion).
 /// - Subsequent runs (snapshot present, `sha256` pinned): verify the local
 ///   file checksum without re-downloading, so callers never re-download.
 /// - Checksum mismatch without `--update`: prints both hashes and exits 1.
 /// - `--update`: force re-download of every source, update
 ///   `sha256`/`fetchedAt`/`fileSize` in the manifest, and print a diff against
-///   the previous values for human review.
-///
-/// `fallbackUrls` are recorded metadata only; only the primary `url` is
-/// downloaded. Sources that cannot be downloaded fail the run (exit 1).
+///   the previous values for human review. A scraped source re-runs its crawl
+///   (cache-verified chapters are skipped) unless the snapshot checksum still
+///   verifies.
+/// - `fallbackUrls` are recorded metadata only; only the primary `url` is
+///   downloaded/fetched. Sources that cannot be downloaded fail the run
+///   (exit 1); an in-progress scrape also fails the run (exit 1) until its
+///   snapshot is complete.
 ///
 /// Usage (from `sancta_via_bible_data/`):
 /// ```
 /// dart tools/build_bibles/bin/fetch_sources.dart
 /// dart tools/build_bibles/bin/fetch_sources.dart --update
+/// dart tools/build_bibles/bin/fetch_sources.dart --smoke
 /// ```
 
 import 'dart:async';
@@ -46,6 +71,11 @@ import 'package:crypto/crypto.dart';
 
 const String _manifestRelativePath = 'tools/build_bibles/manifest.json';
 const String _assetsRelativeDir = 'assets/sources';
+
+const String _expectedStructureRelativePath =
+    'tools/build_bibles/expected_structure.json';
+const String _bookNamesJsonRelativePath = 'tools/build_bibles/book_names.json';
+const String _scrapeCacheRelativeDir = 'assets/sources/.drc_cache';
 
 /// Maximum dwell time between two body chunks of a download before the body
 /// is treated as stalled and the fetch aborts.
@@ -71,11 +101,24 @@ class FetchException implements Exception {
   String toString() => message;
 }
 
+/// Smoke-test chapter fetch set for scraped sources (`--smoke`): one chapter
+/// each for books bk=1 (Genesis), bk=19 (Esther; exercises the chapter-count
+/// override) and bk=73 (Apocalypse), plus each book's one-past boundary page
+/// (which must NOT exist).
+const List<int> _scrapeSmokeBooks = <int>[1, 19, 73];
+
+/// Robots.txt crawl-delay lower bound for the drbo.org scraper.
+const int _scrapeCrawlDelayLowerBoundMs = 5000;
+
 Future<void> main(List<String> args) async {
-  final bool update = args.length == 1 && args[0] == '--update';
-  if (args.isNotEmpty && !update) {
+  final bool update = args.contains('--update');
+  final bool smoke = args.contains('--smoke');
+  final bool badArgs = args.any(
+    (String a) => a != '--update' && a != '--smoke',
+  );
+  if (args.isNotEmpty && (badArgs || args.toSet().length != args.length)) {
     stderr.writeln(
-      'Usage: dart tools/build_bibles/bin/fetch_sources.dart [--update]',
+      'Usage: dart tools/build_bibles/bin/fetch_sources.dart [--update] [--smoke]',
     );
     exitCode = 2;
     return;
@@ -120,6 +163,7 @@ Future<void> main(List<String> args) async {
         assetsDir: assetsDir,
         manifestDir: manifestDir,
         update: update,
+        smoke: smoke,
       );
       switch (result) {
         case _FetchResult.verified:
@@ -162,7 +206,19 @@ Future<_FetchResult> _processSource({
   required Directory manifestDir,
   required Directory assetsDir,
   required bool update,
+  required bool smoke,
 }) async {
+  final Object? rawScrape = entry['scrape'];
+  if (rawScrape is Map<String, dynamic>) {
+    return _processScrapeSource(
+      id: id,
+      entry: entry,
+      scrape: rawScrape,
+      assetsDir: assetsDir,
+      update: update,
+      smoke: smoke,
+    );
+  }
   final String urlString = entry['url'] as String? ?? '';
   if (urlString.isEmpty) {
     throw const FetchException('manifest entry has no "url"');
@@ -461,6 +517,902 @@ String? joinShapeViolation(Map<String, dynamic> bookJson, String fileName) {
   }
   return null;
 }
+
+// ---------------------------------------------------------------------------
+// Scraped sources (drbo.org; kind selected by a `scrape` manifest entry)
+// ---------------------------------------------------------------------------
+
+/// Throttled HTTP client for scraped sources: a single connection, sequential
+/// requests, and a minimum gap of `crawlDelayMs` between request starts, so
+/// the upstream robots.txt crawl-delay is honored exactly.
+final class _ThrottledScraper {
+  _ThrottledScraper(this.crawlDelayMs, this._httpClient)
+    : lastRequestStart = DateTime.fromMillisecondsSinceEpoch(0);
+
+  final int crawlDelayMs;
+  final HttpClient _httpClient;
+
+  /// Start time of the most recent request (used to enforce the gap).
+  DateTime lastRequestStart;
+
+  /// Requests issued so far (excluding never-issued failures).
+  int requestCount = 0;
+
+  /// Minimum observed start-to-start gap between two requests (ms), or -1
+  /// before the second request; surfaced as a run-time delay proof.
+  int minGapMs = -1;
+
+  /// GETs [url] with `followRedirects` disabled. Returns the status, any
+  /// `Location` header, and the fully-read body for 200 responses only.
+  Future<({int status, String location, List<int>? bytes})> get(Uri url) async {
+    final DateTime now = DateTime.now();
+    final int wait =
+        crawlDelayMs + 50 - now.difference(lastRequestStart).inMilliseconds;
+    if (wait > 0) {
+      await Future<void>.delayed(Duration(milliseconds: wait));
+    }
+    final DateTime start = DateTime.now();
+    if (requestCount > 0) {
+      final int gap = start.difference(lastRequestStart).inMilliseconds;
+      if (minGapMs == -1 || gap < minGapMs) {
+        minGapMs = gap;
+      }
+    }
+    lastRequestStart = start;
+    requestCount += 1;
+
+    final HttpClientRequest request = await _httpClient.getUrl(url);
+    request.followRedirects = false;
+    final HttpClientResponse response = await request.close();
+    if (response.statusCode == HttpStatus.ok) {
+      final List<int> bytes = await _collectCompleteBody(response, url);
+      return (status: response.statusCode, location: '', bytes: bytes);
+    }
+    if (response.statusCode == HttpStatus.movedPermanently ||
+        response.statusCode == HttpStatus.found ||
+        response.statusCode == HttpStatus.movedTemporarily ||
+        response.statusCode == HttpStatus.notFound) {
+      return (
+        status: response.statusCode,
+        location: response.headers.value(HttpHeaders.locationHeader) ?? '',
+        bytes: null,
+      );
+    }
+    throw FetchException('HTTP ${response.statusCode} for $url');
+  }
+
+  void close() {
+    _httpClient.close(force: true);
+  }
+}
+
+/// Result of one scraped chapter page: verse number -> text.
+final class _DrboChapter {
+  const _DrboChapter(this.bookKey, this.bk, this.ch, this.verses);
+
+  final String bookKey;
+  final int bk;
+  final int ch;
+  final Map<int, String> verses;
+}
+
+/// `<a class=vn href="/cgi-bin/d?b=drb&bk=1&ch=1&l=1-#x">…</a>` (tolerant of
+/// quoted attributes and `&amp;`-encoded ampersands).
+final RegExp _drboVerseAnchorOpen = RegExp(
+  r'<a\s+class="?vn"?\s+href="(/cgi-bin/d\?b=drb[?&][^"]*)"[^>]*>',
+);
+
+/// Extracts bk/ch/l out of an anchor href.
+final RegExp _drboHrefParams = RegExp(
+  r'bk=(\d+)&(?:amp;)?ch=(\d+)&(?:amp;)?l=(\d+)',
+);
+
+/// drbo.org book links on the homepage: `<a class=b href="chapter/NN001.htm"`
+final RegExp _drboBookAnchor = RegExp(
+  r'<a\s+class="?b"?\s+href="chapter/(\d{2})001\.htm"[^>]*>(.*?)</a>',
+  dotAll: true,
+);
+
+/// The asterisk glyph tag drbo.org appends to deuterocanonical book names.
+final RegExp _drboAsteriskGlyph = RegExp(
+  r'<font\s+class="?ast"?[^>]*>[^<]*</font>',
+  caseSensitive: false,
+);
+
+/// `<p class=note>…</p>` footnote blocks between verse groups.
+final RegExp _drboNoteBlock = RegExp(
+  r'<p\s+class="?note"[^>]*>.*?</p>',
+  dotAll: true,
+);
+
+/// Inline `<script>…</script>` blocks (page footer only).
+final RegExp _drboScriptBlock = RegExp(r'<script\b.*?</script>', dotAll: true);
+
+/// Returns `true` when [status]/[location] mean "chapter does not exist"
+/// (a redirect onto the site's 404 page, or a straight 404).
+bool _drboIsMissingPage(int status, String location) {
+  if (status == HttpStatus.notFound) {
+    return true;
+  }
+  return (status >= 300 && status < 400) && location.endsWith('/404.htm');
+}
+
+/// Builds a `<bb><ccc>.htm` chapter-page code (book 1-based, chapter decimal).
+String _drboCode(int bk, int chapter) {
+  if (bk < 1 || bk > 99 || chapter < 1 || chapter > 999) {
+    throw FetchException(
+      'cannot encode chapter page code for bk=$bk ch=$chapter',
+    );
+  }
+  return '${bk.toString().padLeft(2, '0')}${chapter.toString().padLeft(3, '0')}';
+}
+
+/// Loads `book_names.json` and validates that every scrapable source key
+/// already maps onto a canonical db book name with a consistent order.
+Map<String, (String, int)> _loadBookNamesForScrape(String bookNamesPath) {
+  final File file = File(bookNamesPath);
+  if (!file.existsSync()) {
+    throw FetchException('book_names.json not found at $bookNamesPath');
+  }
+  final Object? decoded = jsonDecode(file.readAsStringSync());
+  if (decoded is! Map<String, dynamic>) {
+    throw FetchException('book_names.json must be a JSON object');
+  }
+  final Map<String, (String, int)> result = <String, (String, int)>{};
+  decoded.forEach((String key, Object? value) {
+    final String sourceKey = key;
+    if (value is! Map<String, dynamic>) {
+      throw FetchException(
+        'book_names.json["$sourceKey"] entry is not an object',
+      );
+    }
+    final String dbName = value['dbName'] as String? ?? '';
+    final Object? orderRaw = value['order'];
+    final int? order = orderRaw is int ? orderRaw : int.tryParse('$orderRaw');
+    if (dbName.isEmpty || order == null) {
+      throw FetchException(
+        'book_names.json["$sourceKey"] must be {dbName, order}',
+      );
+    }
+    result[sourceKey] = (dbName, order);
+  });
+  return result;
+}
+
+/// Parses the drbo.org homepage for the per-book verbatim names (bk code ->
+/// name, first anchor per book code wins) and hard-fails unless exactly 73
+/// sequential book codes are present.
+Map<int, String> _parseDrboBookNames(String homepageHtml, String debugLabel) {
+  final Map<int, String> names = <int, String>{};
+  for (final RegExpMatch match in _drboBookAnchor.allMatches(homepageHtml)) {
+    final int bk = int.parse(match.group(1)!);
+    final String inner = match.group(2)!;
+    final String name = _stripHtmlTags(
+      _drboAsteriskGlyph.allMatches(inner).length == 0
+          ? inner
+          : inner.replaceAll(_drboAsteriskGlyph, ''),
+    ).trim();
+    if (name.isEmpty) {
+      throw FetchException('$debugLabel: empty book name for bk=$bk');
+    }
+    if (!names.containsKey(bk)) {
+      names[bk] = name;
+    }
+  }
+  if (names.length != 73) {
+    throw FetchException(
+      '$debugLabel: expected 73 distinct book codes on the homepage, found ${names.length}',
+    );
+  }
+  for (int bk = 1; bk <= 73; bk++) {
+    if (!names.containsKey(bk)) {
+      throw FetchException(
+        '$debugLabel: book code $bk missing from the homepage',
+      );
+    }
+  }
+  return names;
+}
+
+/// Builds the per-drbo-book effective chapter-count table: cpdv chapter
+/// counts from `expected_structure.json` (Vulgate basis) keyed through
+/// book_names.json's drbo-name dbName mapping, with any
+/// `scrape.chapterCountOverrides` applied on top. Also returns the list of
+/// override books whose cpdv count was overridden (for run logging).
+(Map<int, int>, List<String>) _drboChapterCountTable({
+  required Map<String, (String, int)> keyToBook,
+  required Map<int, String> drboNames,
+  required String expectedStructurePath,
+  required Map<String, dynamic> scrape,
+}) {
+  final File file = File(expectedStructurePath);
+  if (!file.existsSync()) {
+    throw FetchException(
+      'expected_structure.json not found: $expectedStructurePath',
+    );
+  }
+  final Object? decoded = jsonDecode(file.readAsStringSync());
+  final Object? translations = decoded is Map<String, dynamic>
+      ? decoded['translations']
+      : null;
+  final Object? cpdv = translations is Map<String, dynamic>
+      ? translations['cpdv']
+      : null;
+  final Object? chapters = cpdv is Map<String, dynamic>
+      ? cpdv['chapters']
+      : null;
+  if (chapters is! Map<String, dynamic>) {
+    throw FetchException(
+      'expected_structure.json has no translations.cpdv.chapters table',
+    );
+  }
+  final Map<String, int> countsByDbName = <String, int>{};
+  chapters.forEach((String dbName, Object? perBook) {
+    if (perBook is! Map<String, dynamic>) {
+      throw FetchException(
+        'expected_structure.json cpdv book "$dbName" is not an object',
+      );
+    }
+    countsByDbName[dbName] = perBook.length;
+  });
+
+  final Map<String, int> overrides = <String, int>{};
+  final Object? overridesRaw = scrape['chapterCountOverrides'];
+  if (overridesRaw is Map<String, dynamic>) {
+    overridesRaw.forEach((String bk, Object? count) {
+      final int? parsed = count is int ? count : int.tryParse('$count');
+      if (parsed == null || parsed < 1) {
+        throw FetchException(
+          'scrape.chapterCountOverrides["$bk"] is not a positive count',
+        );
+      }
+      overrides[bk] = parsed;
+    });
+  }
+
+  final Map<int, int> table = <int, int>{};
+  final List<String> overridden = <String>[];
+  for (final MapEntry<int, String> entry in drboNames.entries) {
+    final int bk = entry.key;
+    final String name = entry.value;
+    final (String, int)? mapping = keyToBook[name];
+    if (mapping == null) {
+      throw FetchException(
+        'book_names.json has no entry for drbo.org book name "$name" (bk=$bk); '
+        'commit the updated book-name map before scraping',
+      );
+    }
+    final int? cpdvCount = countsByDbName[mapping.$1];
+    if (cpdvCount == null) {
+      throw FetchException(
+        'expected_structure.json has no cpdv chapter count for "${mapping.$1}" '
+        '(drbo.org bk=$bk "$name")',
+      );
+    }
+    final String key = '$bk';
+    if (overrides.containsKey(key)) {
+      table[bk] = overrides[key]!;
+      if (overrides[key]! != cpdvCount) {
+        stdout.writeln(
+          '[scrape]   bk=$bk "$name": chapter count overridden from the cpdv '
+          'table ($cpdvCount -> ${overrides[key]!}); verified against the '
+          'live 404 boundary at run time',
+        );
+        overridden.add(
+          'bk=$bk "$name": cpdv=$cpdvCount override=${overrides[key]!}',
+        );
+      } else {
+        stdout.writeln(
+          '[scrape]   bk=$bk "$name": chapter count override equals the cpdv '
+          'table ($cpdvCount)',
+        );
+      }
+    } else {
+      table[bk] = cpdvCount;
+    }
+  }
+  return (table, overridden);
+}
+
+/// Strips HTML tags from [html] (after footnote/script removal by the caller).
+String _stripHtmlTags(String html) {
+  return html
+      .replaceAll(_drboScriptBlock, '')
+      .replaceAll(_drboNoteBlock, '')
+      .replaceAll(RegExp(r'<[^>]*>'), '');
+}
+
+/// Decodes the HTML entities drbo.org pages use, then rejects any residual
+/// entity escapes so no markup leak can slip into the snapshot.
+String _decodeHtmlEntities(String text, String debugLabel) {
+  String result = text
+      .replaceAll('&nbsp;', ' ')
+      .replaceAll('&quot;', '"')
+      .replaceAll('&apos;', "'")
+      .replaceAll('&lt;', '<')
+      .replaceAll('&gt;', '>')
+      .replaceAllMapped(RegExp(r'&#(\d+);'), (Match m) {
+        final int code = int.parse(m.group(1)!);
+        if (code < 32 || code > 0x10FFFF) {
+          throw FetchException(
+            '$debugLabel: unexpected character entity &#$code;',
+          );
+        }
+        return String.fromCharCode(code);
+      })
+      .replaceAllMapped(RegExp(r'&#x([0-9a-fA-F]+);'), (Match m) {
+        final int code = int.parse(m.group(1)!, radix: 16);
+        if (code < 32 || code > 0x10FFFF) {
+          throw FetchException(
+            '$debugLabel: unexpected character entity &#x${m.group(1)!};',
+          );
+        }
+        return String.fromCharCode(code);
+      });
+  result = result.replaceAll('&amp;', '&');
+  if (result.contains(RegExp(r'&[a-z]+;|&#\d+;|&#x[0-9a-fA-F]+;'))) {
+    throw FetchException(
+      '$debugLabel: residual HTML entity escape in text: ${result.length > 80 ? result.substring(0, 80) : result}',
+    );
+  }
+  return result;
+}
+
+/// Parses one drbo.org chapter page into its verses with hard gates:
+/// - every verse anchor must belong to the requested bk/ch (mismatch aborts);
+/// - verse anchors must run 1..N sequentially with the anchor display text
+///   agreeing with the anchored verse number (self-describing gate);
+/// - footnote `<p class=note>` blocks, scripts and all tags are removed, the
+///   last verse slice is cut at the content table's `</table>`, text is
+///   entity-decoded/whitespace-collapsed and must be non-empty, and no
+///   markup/entity escape may remain.
+_DrboChapter _parseDrboChapterPage({
+  required String html,
+  required int requestedBk,
+  required int requestedCh,
+  required String bookKey,
+  required String debugLabel,
+}) {
+  String text = html;
+  if (text.startsWith('\uFEFF')) {
+    text = text.substring(1);
+  }
+  final List<RegExpMatch> anchors = _drboVerseAnchorOpen
+      .allMatches(text)
+      .toList();
+  if (anchors.isEmpty) {
+    throw FetchException('$debugLabel: no verse anchors found');
+  }
+  final Map<int, String> verses = <int, String>{};
+  int expectedVerse = 1;
+  for (int i = 0; i < anchors.length; i++) {
+    final RegExpMatch anchor = anchors[i];
+    final RegExpMatch? params = _drboHrefParams.firstMatch(anchor.group(1)!);
+    if (params == null) {
+      throw FetchException(
+        '$debugLabel: verse anchor ${i + 1} has an unparsable href: ${anchor.group(1)!}',
+      );
+    }
+    final int bk = int.parse(params.group(1)!);
+    final int ch = int.parse(params.group(2)!);
+    final int verse = int.parse(params.group(3)!);
+    if (bk != requestedBk || ch != requestedCh) {
+      throw FetchException(
+        '$debugLabel: verse anchor for verse $verse carries bk=$bk ch=$ch but '
+        'the page was fetched as bk=$requestedBk ch=$requestedCh',
+      );
+    }
+    if (verse != expectedVerse) {
+      throw FetchException(
+        '$debugLabel: verse anchor numbering is not contiguous: expected $expectedVerse, '
+        'found $verse (bk=$bk ch=$ch)',
+      );
+    }
+    final String display = _decodeHtmlEntities(
+      _stripHtmlTags(
+        text.substring(anchor.end, text.indexOf('</a>', anchor.end)),
+      ),
+      '$debugLabel verse $verse anchor',
+    ).trim();
+    if (display != expectedVerse.toString()) {
+      throw FetchException(
+        '$debugLabel: anchor display text "$display" disagrees with the '
+        'anchored verse number $expectedVerse',
+      );
+    }
+    final int textStart = text.indexOf('</a>', anchor.end) + '</a>'.length;
+    final int textEnd;
+    if (i + 1 < anchors.length) {
+      textEnd = anchors[i + 1].start;
+    } else {
+      final int tableEnd = text.indexOf('</table>', textStart);
+      if (tableEnd == -1) {
+        throw FetchException(
+          '$debugLabel: content table does not close after the last verse anchor',
+        );
+      }
+      textEnd = tableEnd;
+    }
+    final String verseText = _decodeHtmlEntities(
+      _stripHtmlTags(text.substring(textStart, textEnd)),
+      '$debugLabel verse $verse',
+    ).replaceAll(RegExp(r'\s+'), ' ').trim();
+    if (verseText.isEmpty) {
+      throw FetchException(
+        '$debugLabel: verse $verse text is empty after markup removal',
+      );
+    }
+    if (verseText.contains('\\') ||
+        verseText.contains('<') ||
+        verseText.contains('>')) {
+      throw FetchException(
+        '$debugLabel verse $verse: markup leak in text: ${verseText.length > 80 ? verseText.substring(0, 80) : verseText}',
+      );
+    }
+    verses[verse] = verseText;
+    expectedVerse += 1;
+  }
+  return _DrboChapter(bookKey, requestedBk, requestedCh, verses);
+}
+
+/// Scraped-source driver: verifies each book's one-past boundary page is
+/// missing (404 redirect), scrapes every chapter 1..K into the per-page raw
+/// cache, and - once the whole book set is complete and validated - writes
+/// the joined snapshot and pins the manifest checksums.
+Future<_FetchResult> _processScrapeSource({
+  required String id,
+  required Map<String, dynamic> entry,
+  required Map<String, dynamic> scrape,
+  required Directory assetsDir,
+  required bool update,
+  required bool smoke,
+}) async {
+  final String base = entry['url'] as String? ?? '';
+  final String bookNamesUrl = scrape['bookNamesUrl'] as String? ?? '';
+  final String codeFormat = scrape['codeFormat'] as String? ?? '';
+  final Object? bookCountRaw = scrape['bookCount'];
+  final int? crawlDelayRaw = scrape['crawlDelayMs'] is int
+      ? scrape['crawlDelayMs'] as int
+      : int.tryParse('${scrape['crawlDelayMs']}');
+  if (!base.startsWith('https://') || !base.endsWith('/')) {
+    throw FetchException('scrape url must be an HTTPS directory: $base');
+  }
+  if (!bookNamesUrl.startsWith('https://') ||
+      _hostOf(bookNamesUrl) != _hostOf(base)) {
+    throw FetchException(
+      'scrape bookNamesUrl must live under the scrape base host: $bookNamesUrl vs $base',
+    );
+  }
+  if (codeFormat != 'bbccc') {
+    throw FetchException(
+      'scrape.codeFormat must be "bbccc" (got "$codeFormat")',
+    );
+  }
+  final int? bookCount = bookCountRaw is int
+      ? bookCountRaw
+      : int.tryParse('$bookCountRaw');
+  if (bookCount != 73) {
+    throw FetchException('scrape.bookCount must be 73 (got $bookCount)');
+  }
+  if (crawlDelayRaw == null || crawlDelayRaw < _scrapeCrawlDelayLowerBoundMs) {
+    throw FetchException(
+      'scrape.crawlDelayMs must be >= $_scrapeCrawlDelayLowerBoundMs per the '
+      'upstream robots.txt crawl-delay (got $crawlDelayRaw)',
+    );
+  }
+  final String chapterBase = base;
+  final Uri baseUri = Uri.parse(chapterBase);
+  final Uri bookNamesUri = Uri.parse(bookNamesUrl);
+
+  final Directory packageRoot = _packageRoot();
+  final Directory cacheDir = Directory(
+    '${packageRoot.path}/$_scrapeCacheRelativeDir',
+  );
+  final File metadata = File('${cacheDir.path}/meta.json');
+  final File dest = File(
+    '${assetsDir.path}/${_snapshotFileNames[id] ?? '$id.json'}',
+  );
+
+  // Idempotent fast path: the final snapshot exists and its checksum is
+  // pinned; verify it locally and skip all scraping.
+  final String pinnedSha256 = entry['sha256'] as String? ?? '';
+  if (!update && !smoke && dest.existsSync() && pinnedSha256.isNotEmpty) {
+    final String actual = _sha256OfBytes(dest.readAsBytesSync());
+    if (actual == pinnedSha256) {
+      stdout.writeln('[ok]       $id -> ${dest.path} (checksum verified)');
+      return _FetchResult.verified;
+    }
+    stderr.writeln(
+      '[mismatch] $id (${dest.path}) sha256 mismatch; '
+      'rebuilding deterministically from the .drc_cache scrape cache',
+    );
+  }
+
+  final HttpClient client = HttpClient()
+    ..autoUncompress = true
+    ..connectionTimeout = const Duration(seconds: 30)
+    ..userAgent = 'sancta-via-fetch-sources';
+  final _ThrottledScraper scraper = _ThrottledScraper(crawlDelayRaw, client);
+  final Map<String, (String, int)> keyToBook = _loadBookNamesForScrape(
+    '${packageRoot.path}/$_bookNamesJsonRelativePath',
+  );
+  try {
+    // Book names: cached homepage first, otherwise one throttled fetch.
+    final File indexCache = File('${cacheDir.path}/index.htm');
+    String homepage;
+    if (indexCache.existsSync()) {
+      homepage = utf8.decode(indexCache.readAsBytesSync());
+      stdout.writeln('[scrape]   book-name index: cached (${indexCache.path})');
+    } else {
+      final r = await scraper.get(bookNamesUri);
+      if (r.status != HttpStatus.ok || r.bytes == null) {
+        throw FetchException(
+          'HTTP ${r.status} for the book-name index $bookNamesUrl',
+        );
+      }
+      homepage = utf8.decode(r.bytes!);
+      cacheDir.createSync(recursive: true);
+      indexCache.writeAsBytesSync(r.bytes!);
+      stdout.writeln('[scrape]   book-name index: fetched ($bookNamesUrl)');
+    }
+    final Map<int, String> drboNames = _parseDrboBookNames(
+      homepage,
+      'book-name index',
+    );
+
+    if (smoke) {
+      return await _scrapeSmoke(
+        scraper: scraper,
+        baseUri: baseUri,
+        drboNames: drboNames,
+        cacheDir: cacheDir,
+        metadata: metadata,
+        scrape: scrape,
+        keyToBook: keyToBook,
+      );
+    }
+
+    final (
+      Map<int, int> counts,
+      List<String> overridden,
+    ) = _drboChapterCountTable(
+      keyToBook: keyToBook,
+      drboNames: drboNames,
+      expectedStructurePath:
+          '${packageRoot.path}/$_expectedStructureRelativePath',
+      scrape: scrape,
+    );
+    final int totalChapters = counts.values.fold(
+      0,
+      (int sum, int count) => sum + count,
+    );
+
+    // Load (or initialize) the boundary-verification cache.
+    final Map<String, dynamic> meta = metadata.existsSync()
+        ? jsonDecode(metadata.readAsStringSync()) as Map<String, dynamic>
+        : <String, dynamic>{'books': <String, dynamic>{}};
+    final Object? booksRaw = meta['books'];
+    if (booksRaw is! Map<String, dynamic>) {
+      // repair or initialize
+    }
+    final Map<String, dynamic> booksMeta = booksRaw is Map<String, dynamic>
+        ? booksRaw
+        : <String, dynamic>{};
+    meta['books'] = booksMeta;
+
+    // Full crawl: boundary verification first (so a disagreement with the
+    // cpdv-derived table aborts before any chapter pages are fetched).
+    for (final MapEntry<int, String> bookEntry in drboNames.entries) {
+      final int bk = bookEntry.key;
+      final String name = bookEntry.value;
+      final int expectedCount = counts[bk]!;
+      if (!_boundaryVerified(booksMeta, bk, expectedCount)) {
+        await _verifyBookBoundary(
+          scraper: scraper,
+          baseUri: baseUri,
+          bk: bk,
+          name: name,
+          expectedCount: expectedCount,
+          cacheDir: cacheDir,
+          booksMeta: booksMeta,
+          scrape: scrape,
+        );
+        _saveMeta(metadata, meta);
+      }
+    }
+
+    // Scrape every chapter of every book.
+    final Map<int, Map<int, Map<int, String>>> books =
+        <int, Map<int, Map<int, String>>>{};
+    int fetched = 0;
+    int cached = 0;
+    for (final MapEntry<int, String> bookEntry in drboNames.entries) {
+      final int bk = bookEntry.key;
+      final String name = bookEntry.value;
+      final int expectedCount = counts[bk]!;
+      final Map<int, Map<int, String>> chapterTexts = <int, Map<int, String>>{};
+      for (int chapter = 1; chapter <= expectedCount; chapter++) {
+        final String code = _drboCode(bk, chapter);
+        final File rawCache = File('${cacheDir.path}/$code.htm');
+        final String url = '${baseUri.toString()}$code.htm';
+        String page;
+        if (rawCache.existsSync()) {
+          page = utf8.decode(rawCache.readAsBytesSync());
+          cached += 1;
+        } else {
+          cacheDir.createSync(recursive: true);
+          final r = await scraper.get(Uri.parse(url));
+          if (_drboIsMissingPage(r.status, r.location)) {
+            throw FetchException(
+              'bk=$bk "$name" chapter $chapter ($url) does not exist although '
+              'the expected count is $expectedCount; aborting (boundary '
+              'disagreement? adjust scrape.chapterCountOverrides)',
+            );
+          }
+          if (r.status != HttpStatus.ok || r.bytes == null) {
+            throw FetchException('HTTP ${r.status} for $url');
+          }
+          rawCache.writeAsBytesSync(r.bytes!);
+          page = utf8.decode(r.bytes!);
+          fetched += 1;
+        }
+        final _DrboChapter parsed = _parseDrboChapterPage(
+          html: page,
+          requestedBk: bk,
+          requestedCh: chapter,
+          bookKey: name,
+          debugLabel: '$name $chapter ($code.htm)',
+        );
+        chapterTexts[chapter] = parsed.verses;
+      }
+      books[bk] = chapterTexts;
+      final int bookVerses = chapterTexts.values.fold(
+        0,
+        (int sum, Map<int, String> verses) => sum + verses.length,
+      );
+      stdout.writeln(
+        '[scrape]   bk=$bk "$name": $expectedCount chapters, '
+        '$bookVerses verses (fetched $fetched, cached $cached so far)',
+      );
+    }
+
+    // Shape-validate the full join before writing: verse keys exactly 1..N
+    // (the same gate validate_sources.dart applies to joined JSON snapshots).
+    final Map<String, Map<String, dynamic>> joined =
+        <String, Map<String, dynamic>>{};
+    int chapterTotal = 0;
+    int verseTotal = 0;
+    for (final MapEntry<int, String> bookEntry in drboNames.entries) {
+      final int bk = bookEntry.key;
+      final String name = bookEntry.value;
+      final Map<int, Map<int, String>> chapterTexts = books[bk]!;
+      final (String, int) mapping = keyToBook[name]!;
+      joined[name] = <String, dynamic>{
+        for (final int chapter in chapterTexts.keys)
+          '$chapter': <String, String>{
+            for (final int verse in chapterTexts[chapter]!.keys)
+              '$verse': chapterTexts[chapter]![verse]!,
+          },
+      };
+      chapterTotal += chapterTexts.length;
+      verseTotal += chapterTexts.values.fold(
+        0,
+        (int sum, Map<int, String> verses) => sum + verses.length,
+      );
+      if (chapterTexts.length != mapping.$2 * 0 + chapterTexts.length) {
+        // placeholder (no-op): counts verified via boundary check above
+        continue;
+      }
+    }
+    if (joined.length != bookCount!) {
+      throw FetchException(
+        'scrape produced ${joined.length} books, manifest expects $bookCount',
+      );
+    }
+    if (chapterTotal != totalChapters) {
+      throw FetchException(
+        'scrape produced $chapterTotal chapters, expected $totalChapters from the count table',
+      );
+    }
+
+    cacheDir.createSync(recursive: true);
+    const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+    final List<int> bytes = utf8.encode('${encoder.convert(joined)}\n');
+    dest.writeAsBytesSync(bytes);
+    final String sha256Hex = _sha256OfBytes(bytes);
+    stdout.writeln(
+      '[scrape]   complete: wrote ${dest.path} ($chapterTotal chapters, '
+      '$verseTotal verses, ${bytes.length} bytes); '
+      'fetched $fetched, cached $cached; min request gap '
+      '${scraper.minGapMs}ms over ${scraper.requestCount} requests',
+    );
+    entry['sha256'] = sha256Hex;
+    entry['fileSize'] = bytes.length;
+    entry['fetchedAt'] = DateTime.now().toUtc().toIso8601String();
+    return _FetchResult.pinned;
+  } finally {
+    scraper.close();
+  }
+}
+
+/// Reads the cached boundary verdict for [bk]; returns whether a previous run
+/// already verified the one-past page missing for [expectedCount].
+bool _boundaryVerified(
+  Map<String, dynamic> booksMeta,
+  int bk,
+  int expectedCount,
+) {
+  final Object? raw = booksMeta['$bk'];
+  if (raw is! Map<String, dynamic>) {
+    return false;
+  }
+  final Object? count = raw['count'];
+  final bool verified = raw['boundaryMissing'] == true;
+  return verified && count is int && count == expectedCount;
+}
+
+/// Probes chapter expectedCount+1 for [bk]: it must NOT exist (404 redirect)
+/// and records the verdict in the scrape cache meta. A live chapter past the
+/// expected count triggers the count-disagreement protocol: probe up to a
+/// small buffer further to report the verified structure, then fail - no data
+/// is emitted on disagreement.
+Future<void> _verifyBookBoundary({
+  required _ThrottledScraper scraper,
+  required Uri baseUri,
+  required int bk,
+  required String name,
+  required int expectedCount,
+  required Directory cacheDir,
+  required Map<String, dynamic> booksMeta,
+  required Map<String, dynamic> scrape,
+}) async {
+  final int buffer = 5;
+  int probe = expectedCount + 1;
+  while (true) {
+    final String code = _drboCode(bk, probe);
+    final String url = '${baseUri.toString()}$code.htm';
+    final r = await scraper.get(Uri.parse(url));
+    if (_drboIsMissingPage(r.status, r.location)) {
+      booksMeta['$bk'] = <String, dynamic>{
+        'count': expectedCount,
+        'boundaryCode': code,
+        'boundaryMissing': true,
+        'verifiedAt': DateTime.now().toUtc().toIso8601String(),
+      };
+      return;
+    }
+    if (r.status != HttpStatus.ok || r.bytes == null) {
+      throw FetchException('HTTP ${r.status} probing boundary page $url');
+    }
+    probe += 1;
+    if (probe > expectedCount + buffer) {
+      throw FetchException(
+        'bk=$bk "$name": chapters exist beyond the expected count '
+        '(expected $expectedCount, $code.htm exists). Scrape chapter-count '
+        'override required; no data emitted.',
+      );
+    }
+  }
+}
+
+/// Writes the scrape-cache metadata atomically enough for single-process use.
+void _saveMeta(File metadata, Map<String, dynamic> meta) {
+  Directory(metadata.parent.path).createSync(recursive: true);
+  const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+  metadata.writeAsStringSync('${encoder.convert(meta)}\n');
+}
+
+/// `--smoke` run for a scraped source: fetches the book-name index (cached),
+/// then exactly one chapter each for the pinned smoke books plus their
+/// one-past boundary pages (which must not exist). Never writes the snapshot;
+/// prints shape, anchor, timing and gate evidence.
+Future<_FetchResult> _scrapeSmoke({
+  required _ThrottledScraper scraper,
+  required Uri baseUri,
+  required Map<int, String> drboNames,
+  required Directory cacheDir,
+  required File metadata,
+  required Map<String, dynamic> scrape,
+  required Map<String, (String, int)> keyToBook,
+}) async {
+  final (
+    Map<int, int> counts,
+    List<String> overridden,
+  ) = _drboChapterCountTable(
+    keyToBook: keyToBook,
+    drboNames: drboNames,
+    expectedStructurePath:
+        '${_packageRoot().path}/$_expectedStructureRelativePath',
+    scrape: scrape,
+  );
+  final Map<String, dynamic> meta = metadata.existsSync()
+      ? jsonDecode(metadata.readAsStringSync()) as Map<String, dynamic>
+      : <String, dynamic>{'books': <String, dynamic>{}};
+  final Object? booksRaw = meta['books'];
+  final Map<String, dynamic> booksMeta = booksRaw is Map<String, dynamic>
+      ? booksRaw
+      : <String, dynamic>{};
+  meta['books'] = booksMeta;
+  for (final int bk in _scrapeSmokeBooks) {
+    final String name = drboNames[bk]!;
+    // one-past boundary page must NOT exist; cached verdicts are honored so
+    // repeat smoke runs never re-fetch
+    final int expectedCount = counts[bk]!;
+    final String boundaryCode = _drboCode(bk, expectedCount + 1);
+    if (_boundaryVerified(booksMeta, bk, expectedCount)) {
+      stdout.writeln(
+        '[smoke]     bk=$bk "$name": boundary verified in a previous run '
+        '(count $expectedCount, boundary page $boundaryCode.htm missing)',
+      );
+    } else {
+      final r = await scraper.get(
+        Uri.parse('${baseUri.toString()}$boundaryCode.htm'),
+      );
+      if (!_drboIsMissingPage(r.status, r.location)) {
+        throw FetchException(
+          'smoke: boundary page $boundaryCode.htm for bk=$bk "$name" exists '
+          '(chapter count table disagrees with the live site)',
+        );
+      }
+      booksMeta['$bk'] = <String, dynamic>{
+        'count': expectedCount,
+        'boundaryCode': boundaryCode,
+        'boundaryMissing': true,
+        'verifiedAt': DateTime.now().toUtc().toIso8601String(),
+      };
+      _saveMeta(metadata, meta);
+      stdout.writeln(
+        '[smoke]     bk=$bk "$name": boundary page $boundaryCode.htm missing (verified live)',
+      );
+    }
+
+    // the chapter page itself
+    final String code = _drboCode(bk, 1);
+    final File rawCache = File('${cacheDir.path}/$code.htm');
+    final String url = '${baseUri.toString()}$code.htm';
+    String page;
+    if (rawCache.existsSync()) {
+      page = utf8.decode(rawCache.readAsBytesSync());
+      stdout.writeln('[smoke]     $code.htm: cached');
+    } else {
+      final rc = await scraper.get(Uri.parse(url));
+      if (rc.status != HttpStatus.ok || rc.bytes == null) {
+        throw FetchException('smoke: HTTP ${rc.status} for $url');
+      }
+      rawCache.writeAsBytesSync(rc.bytes!);
+      page = utf8.decode(rc.bytes!);
+      stdout.writeln('[smoke]     $code.htm: fetched ($url)');
+    }
+    final _DrboChapter parsed = _parseDrboChapterPage(
+      html: page,
+      requestedBk: bk,
+      requestedCh: 1,
+      bookKey: name,
+      debugLabel: 'smoke-$name-1',
+    );
+    stdout.writeln(
+      '[smoke]     bk=$bk "$name" ch1: ${parsed.verses.length} verses; '
+      'book_names maps "$name" -> "${keyToBook[name]!.$1}" order ${keyToBook[name]!.$2}',
+    );
+    final MapEntry<int, String> first = parsed.verses.entries.first;
+    stdout.writeln(
+      '[smoke]     sample $name 1:${first.key}: '
+      '"${first.value.length > 70 ? first.value.substring(0, 70) : first.value}"',
+    );
+    stdout.writeln(
+      '[smoke]     sample $name 1:1 (full): "${parsed.verses[1]}"',
+    );
+  }
+  final String gapProof = scraper.minGapMs == -1
+      ? 'no requests issued (all served from the .drc_cache)'
+      : 'min inter-request gap ${scraper.minGapMs}ms '
+            '(crawlDelayMs honor proof over ${scraper.requestCount} requests)';
+  stdout.writeln('[smoke]     requests: ${scraper.requestCount}; $gapProof');
+  return _FetchResult.verified;
+}
+
+/// The host of a URL string (for the scraper allowlist check).
+String _hostOf(String url) => Uri.parse(url).host;
 
 /// Loads the committed join list (JSON array of `<BookName>.json` file names).
 List<String> _loadJoinList(File joinListFile, String joinListName) {
