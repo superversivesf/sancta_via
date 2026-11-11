@@ -17,6 +17,12 @@ Ruling (drc): partner authorized building `drc.json` from the pinned `exanx/bibl
 73 `DRB-73-Books/*.json` per-book files joined via `joinList` (`drc_file_list.json`, committed);
 retired primary (thomas992/catholicbible, HTTP 404) kept in `fallbackUrls` for provenance.
 All four snapshots re-fetched and checksum-pinned 2026-11-11 (idempotent rerun verified=4 failed=0).
+Ruling (drc, Task 2): the authorized exanx join proved structurally corrupt UPSTREAM (21/73 books
+missing tail chapters, 20 books with verse texts at wrong coordinates; xxruyle/Bible-DouayRheims
+shares the same corrupted lineage — both carry "Then Booz went up to the gate" at Ruth[2][44]).
+Partner authorized scraping drbo.org (Douay-Rheims Challoner text is public domain; drbo.org
+robots.txt Allow: /, Disallow: only system dirs, Crawl-delay: 5 — honored at exactly 5s/request,
+~1334 chapter pages ≈ 2h background crawl). drc must re-enter the manifest before Task 2 review.
 
 Baseline: sancta_via_bible_data `flutter test` → 8/8 pass. Reading app suite running (will append).
 Ruling (T2 vocabulary): Task 2's canonical DB book vocabulary = the cpdv rows of the CURRENT
