@@ -48,6 +48,7 @@ dev_dependencies:
     sdk: flutter
   mocktail: ^1.0.0
   sqflite_common_ffi: ^2.3.0
+  sqlite3: ^3.9.1
 
 flutter:
   uses-material-design: true
@@ -63,13 +64,19 @@ flutter_launcher_icons:
 
 # Dev/test build-hook defines (only take effect when this package is the
 # build workspace root). The sqlite3 bundled native-assets build lacks FTS4
-# ("no such module: fts4"); the saint search table is pinned to FTS4 +
-# unicode61, so on host machines the hook loads the SYSTEM SQLite (FTS4
-# enabled) for the in-memory fixture database used by the provider tests.
-# Flat `source` schema: sqlite3 resolves to 3.5.2 here (3.9.1, used by
-# sancta_via_saint_data's platform-keyed form, needs Dart >= 3.10).
-# Device builds are unaffected.
+# ("no such module: fts4") and the saint search table is pinned to FTS4 +
+# unicode61, so the host build loads the SYSTEM SQLite (FTS4 enabled) for the
+# in-memory fixture database used by the provider tests. The `source` map
+# keys only host/build OSes — android/ios stay unmapped, which resolves to
+# the bundled precompiled binary at release-build time (verified against
+# sqlite3 3.9.1's hook: `forTargetOS` returns null for unmapped targets and
+# `case null:` builds/bundles the GitHub asset). The `sqlite3: ^3.9.1` dev
+# dep floor keeps the hook on the version whose parser accepts this
+# platform-keyed map shape (3.5.2, the version a bare resolve picked, only
+# understands the flat string form).
 hooks:
   user_defines:
     sqlite3:
-      source: system
+      source:
+        macos: system
+        linux: system

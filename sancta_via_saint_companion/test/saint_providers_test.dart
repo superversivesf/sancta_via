@@ -146,8 +146,10 @@ Future<Database> _createSeededDatabase() async {
       (need: 'day-laborers', category: SaintCategory.jobs),
     ],
   );
-  // Deterministic `saintsTodayProvider` result: today's feast key, and no
-  // patronages so the category counts above stay untouched.
+  // Gives `saintsTodayProvider` a guaranteed hit at today's MM-DD key (no
+  // patronages, so the category counts above stay untouched). The result may
+  // legitimately hold MORE than this saint: on dates coinciding with one of
+  // the fixed feast days above, that saint shares today's key.
   await _seedSaint(
     db,
     slug: 'feast-today',
@@ -200,7 +202,10 @@ void main() {
       final List<Saint> saints = await container.read(
         saintsTodayProvider.future,
       );
-      expect(saints.map((Saint saint) => saint.slug), <String>['feast-today']);
+      // `contains`, not an exact list: on dates that coincide with one of the
+      // fixed feast days in the fixture, that saint legitimately shares
+      // today's MM-DD key and joins the result.
+      expect(saints.map((Saint saint) => saint.slug), contains('feast-today'));
     });
   });
 

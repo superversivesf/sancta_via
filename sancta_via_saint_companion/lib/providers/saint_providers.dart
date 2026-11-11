@@ -32,6 +32,10 @@ Future<SaintRepository> _loadedRepository(Ref ref) async {
 
 /// Saints whose stored feast day is today (`MM-DD` via
 /// [SaintFeastService.feastKeyForDate]); unknown-feast saints never match.
+///
+/// Staleness: `DateTime.now()` is captured at first provider use, so the
+/// result refreshes on app restart or an `invalidate()` of this provider;
+/// the house `currentDateProvider` pattern could drive live rollover later.
 final FutureProvider<List<Saint>> saintsTodayProvider =
     FutureProvider<List<Saint>>((Ref ref) async {
       final SaintRepository repository = await _loadedRepository(ref);
