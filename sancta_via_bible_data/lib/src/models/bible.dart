@@ -39,15 +39,18 @@ class Bible {
     BibleTranslation translation;
     switch (translationName.toLowerCase()) {
       case 'catholic public domain version':
+      case 'catholic public domain version (2009 original edition)':
       case 'cpdv':
         translation = BibleTranslation.cpdv;
         break;
+      case 'douay-rheims 1899 american edition (challoner)':
       case 'douay-rheims 1899':
       case 'douay-rheims':
       case 'drc':
         translation = BibleTranslation.drc;
         break;
       case 'world english bible catholic':
+      case 'world english bible (catholic edition)':
       case 'world english bible':
       case 'web':
       case 'engwebc':
@@ -59,11 +62,13 @@ class Bible {
             metadataMap['abbreviation']?.toString().toLowerCase() ?? '';
         switch (abbreviation) {
           case 'drc':
+          case 'dra':
             translation = BibleTranslation.drc;
             break;
           case 'web':
           case 'web-c':
           case 'webc':
+          case 'engwebc':
             translation = BibleTranslation.engwebc;
             break;
           case 'cpdv':
