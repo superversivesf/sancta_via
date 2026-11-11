@@ -1,0 +1,51 @@
+name: sancta_via_devotionals
+description: 'Offline Catholic devotionals: Today pipeline, guided prayer sessions, and commitment trackers'
+publish_to: 'none'
+
+# Version: major.minor.patch+build
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  cupertino_icons: ^1.0.8
+  flutter:
+    sdk: flutter
+  flutter_local_notifications: ^17.2.3
+  flutter_riverpod: ^2.6.1
+  flutter_timezone: ^3.0.1
+  go_router: ^15.1.2
+  package_info_plus: ^8.3.0
+  path: ^1.9.1
+  sancta_via_bible_data:
+    path: ../sancta_via_bible_data
+  sancta_via_bible_data_riverpod:
+    path: ../sancta_via_bible_data_riverpod
+  sancta_via_devotional_engine:
+    path: ../sancta_via_devotional_engine
+  sancta_via_devotional_engine_riverpod:
+    path: ../sancta_via_devotional_engine_riverpod
+  sancta_via_liturgical_calendar:
+    path: ../sancta_via_liturgical_calendar
+  sancta_via_liturgical_calendar_riverpod:
+    path: ../sancta_via_liturgical_calendar_riverpod
+  sancta_via_shared_ui:
+    path: ../sancta_via_shared_ui
+  shared_preferences: ^2.5.3
+  sqflite: ^2.3.3+1
+  timezone: ^0.9.4
+
+dev_dependencies:
+  cider: ^0.2.8
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+  # Include the Material Icons font.
+  uses-material-design: true
