@@ -40,7 +40,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
 
   // Verse scrolling management
   final List<GlobalKey> _verseKeys = [];
-  List<String> _currentVerses = [];
+  List<BibleVerse> _currentVerses = [];
 
   @override
   void initState() {
@@ -441,7 +441,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                 ),
                 child: _buildSelectableChapterText(
                   context,
-                  scripture.text,
+                  scripture,
                   themeColor,
                 ),
               ),
@@ -457,10 +457,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
   /// Build selectable chapter text with verse formatting
   Widget _buildSelectableChapterText(
     BuildContext context,
-    String chapterText,
+    OptimizedScriptureContent scripture,
     Color? themeColor,
   ) {
-    final verses = _parseVersesFromChapter(chapterText);
+    final verses = scripture.verses;
 
     // Generate keys for each verse if needed
     _generateVerseKeys(verses.length);
@@ -469,13 +469,12 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: verses.asMap().entries.map((entry) {
-        final verseNumber = entry.key + 1;
-        final verseText = entry.value;
+        final verse = entry.value;
 
         return _buildTappableVerse(
           context,
-          verseNumber,
-          verseText,
+          verse.number,
+          verse.text,
           themeColor,
           entry.key,
         );
@@ -573,7 +572,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         'VERSE_TAP',
       );
     } catch (e) {
-      app_logger.AppLogger.debug('Error copying verse to clipboard: $e', 'VERSE_TAP');
+      app_logger.AppLogger.debug(
+        'Error copying verse to clipboard: $e',
+        'VERSE_TAP',
+      );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -696,58 +698,28 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     );
   }
 
-  List<String> _parseVersesFromChapter(String chapterText) {
-    final verses = <String>[];
-
-    // Try to split by verse numbers (pattern: number followed by space)
-    final versePattern = RegExp(
-      r'(?:^|\s)(\d+)\s+([^0-9]*?)(?=\s\d+\s|$)',
-      multiLine: true,
-    );
-    final matches = versePattern.allMatches(chapterText);
-
-    if (matches.isNotEmpty) {
-      // Found verse patterns, use them
-      for (final match in matches) {
-        final verseText = match.group(2)?.trim() ?? '';
-        if (verseText.isNotEmpty) {
-          verses.add(verseText);
-        }
-      }
-    } else {
-      // Fallback: split by sentences and group them
-      final sentences = chapterText.split(RegExp(r'[.!?]+\s+'));
-
-      // Group sentences into reasonable verse-like chunks
-      for (int i = 0; i < sentences.length; i += 2) {
-        final verseText = sentences
-            .sublist(i, (i + 2).clamp(0, sentences.length))
-            .join('. ')
-            .trim();
-        if (verseText.isNotEmpty) {
-          verses.add(verseText);
-        }
-      }
-    }
-
-    // Ensure we have at least one verse
-    if (verses.isEmpty) {
-      verses.add(chapterText.isNotEmpty ? chapterText : 'Chapter text');
-    }
-
-    return verses;
-  }
-
   void _scrollToVerseAccurate(int startVerse) {
-    if (startVerse <= 0 || startVerse > _verseKeys.length) {
+    if (_currentVerses.isEmpty) {
       app_logger.AppLogger.debug(
-        'Invalid verse number: $startVerse (available: ${_verseKeys.length})',
+        'No verses to scroll to: $startVerse',
         'CHAPTER',
       );
       return;
     }
 
-    final verseIndex = startVerse - 1; // Convert to 0-based index
+    // Map the requested TRUE verse number to its display index (verses may be
+    // gapped, e.g. 1, 5, 7).
+    final verseIndex = _currentVerses.indexWhere(
+      (verse) => verse.number == startVerse,
+    );
+    if (verseIndex == -1) {
+      app_logger.AppLogger.debug(
+        'Verse $startVerse not found (available: ${_currentVerses.length})',
+        'CHAPTER',
+      );
+      return;
+    }
+
     final verseKey = _verseKeys[verseIndex];
 
     app_logger.AppLogger.debug('=== ACCURATE SCROLL DEBUG ===', 'CHAPTER');
@@ -791,7 +763,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
             'CHAPTER',
           );
         } catch (e) {
-          app_logger.AppLogger.debug('Error during ensureVisible: $e', 'CHAPTER');
+          app_logger.AppLogger.debug(
+            'Error during ensureVisible: $e',
+            'CHAPTER',
+          );
         }
       } else {
         app_logger.AppLogger.debug(
@@ -800,7 +775,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         );
       }
 
-      app_logger.AppLogger.debug('=== END ACCURATE SCROLL DEBUG ===', 'CHAPTER');
+      app_logger.AppLogger.debug(
+        '=== END ACCURATE SCROLL DEBUG ===',
+        'CHAPTER',
+      );
     });
   }
 
@@ -810,7 +788,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     if (_verseKeys.length != verseCount) {
       _verseKeys.clear();
       _verseKeys.addAll(List.generate(verseCount, (index) => GlobalKey()));
-      app_logger.AppLogger.debug('Generated ${_verseKeys.length} verse keys', 'CHAPTER');
+      app_logger.AppLogger.debug(
+        'Generated ${_verseKeys.length} verse keys',
+        'CHAPTER',
+      );
     }
   }
 
