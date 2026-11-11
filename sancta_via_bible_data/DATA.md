@@ -124,8 +124,8 @@ and checked by the repository test suites:
 ```bash
 # From sancta_via_bible_data/ (validates assets/bibles/*.json against the
 # pinned manifest):
-dart test test/bible_assets_validation_test.dart
-dart test test/bible_structure_validator_test.dart
+flutter test test/bible_assets_validation_test.dart
+flutter test test/bible_structure_validator_test.dart
 ```
 
 `lib/src/utils/bible_structure_validator.dart` is the shared validator used by
@@ -150,7 +150,7 @@ cp ../sancta_via_bible_data/assets/bibles/*.json assets/bibles/
 dart tools/build_bible_database.dart
 
 # IMPORTANT: sqflite_common_ffi resolves *relative* database paths against
-# its own databases directory (`../../.dart_tool/sqflite_common_ffi/databases/`),
+# its own CWD-relative databases directory (`.dart_tool/sqflite_common_ffi/databases/`),
 # so the converter leaves its output there. Copy it to the shipped asset:
 cp .dart_tool/sqflite_common_ffi/databases/assets/bibles.db assets/bibles.db
 

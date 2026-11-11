@@ -594,6 +594,39 @@ void main() {
       expect(errors, hasLength(1));
     });
 
+    test('cross-checks the manifest verse count against a pinned verseNumbers '
+        'list', () {
+      final Map<String, dynamic> mismatchedManifest = _expectedStructure(
+        <String, dynamic>{
+          'engwebc': _translation(
+            order: const <String>['Sirach'],
+            chapters: const <String, Map<String, int>>{
+              'Sirach': <String, int>{'1': 5},
+            },
+            verseNumbers: const <String, Map<String, List<int>>>{
+              'Sirach': <String, List<int>>{
+                '1': <int>[1, 2, 3, 4, 6, 8],
+              },
+            },
+          ),
+        },
+      );
+
+      final List<String> errors = validateBibleStructure(
+        translations: validData,
+        expectedStructure: mismatchedManifest,
+      );
+
+      expect(
+        errors,
+        contains(
+          'engwebc Sirach 1: verseNumbers pinned list length 6 != manifest '
+          'chapters verse count 5',
+        ),
+      );
+      expect(errors, hasLength(1));
+    });
+
     test('reports malformed verseNumbers chapter keys', () {
       final Map<String, dynamic> malformedKey = _expectedStructure(
         <String, dynamic>{

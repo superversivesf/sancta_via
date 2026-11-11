@@ -17,7 +17,8 @@ below, which also records the retired drc attempts in order).
 - Source URL: <https://ebible.org/Scriptures/eng-web-c_usfm.zip>
 - Fallback (metadata only, not downloaded):
   <https://ebible.org/Scriptures/engwebc2025eb.zip> (Sword module)
-- Fetched: 2026-11-10T22:04:52Z (see `manifest.json`)
+- Fetched: see `manifest.json` — the manifest's `fetchedAt` stamps are the
+  authoritative record of when each snapshot was pulled.
 - License / public-domain notice (upstream, quoted from `copr.htm` in the
   snapshot): "The World English Bible is in the Public Domain. That means that
   it is not copyrighted. However, 'World English Bible' is a Trademark of
@@ -43,7 +44,8 @@ below, which also records the retired drc attempts in order).
   <https://www.sacredbible.org/catholic/>)
 - Fallback (spec metadata; not downloaded): `CPDV.json`/`DRB.json` published
   from the now-missing `thomas992/catholicbible` repository.
-- Fetched: 2026-11-10T22:04:53Z (see `manifest.json`; upstream revisions
+- Fetched: see `manifest.json` (authoritative `fetchedAt` stamps; upstream
+  revisions
   `draino7n7/cpdv@ea374e0c63c7e336fa3243644b3fcb67c782437f` [EntireBible] and
   `draino7n7/cpdv@66416f04fbfeec260f09eb3c095be9a289429f2d` [books]).
 - License / public-domain notice (upstream `books.json` metadata):
@@ -55,7 +57,8 @@ below, which also records the retired drc attempts in order).
 
 ## `drc_usfm.zip` — Douay-Rheims 1899 American Edition (eBible.org engDRA)
 
-- **Status: fetched 2026-11-12 via the manifest's plain-zip path**, checksum-pinned
+- **Status: fetched via the manifest's plain-zip path (see `manifest.json`
+  for the authoritative `fetchedAt` stamp)**, checksum-pinned
   in the manifest (SHA-256
   `fcb5de45f1f6083d56b738690e5b4b3bb6f0d87522d1d18329c57a4b09e05210`, 2,942,946
   bytes). 73 `\id`-keyed USFM book files (engDRA codes: the standard USFM set with

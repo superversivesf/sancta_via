@@ -234,7 +234,16 @@ List<String> _validateTranslation({
         }
       } else {
         // verseNumbers exception chapter: the data verse keys must EQUAL the
-        // pinned list exactly — no contiguous 1..N rule.
+        // pinned list exactly — no contiguous 1..N rule. The manifest must
+        // also agree with itself: the chapter's verse count must equal the
+        // pinned list length.
+        if (verseCount != pinnedVerses.length) {
+          errors.add(
+            '$translationId $book $chapter: verseNumbers pinned list length '
+            '${pinnedVerses.length} != manifest chapters verse count '
+            '$verseCount',
+          );
+        }
         final Set<int> pinnedSet = pinnedVerses.toSet();
         for (final int verse in pinnedSet) {
           if (!dataVerseNos.contains(verse)) {

@@ -42,9 +42,9 @@ Future<int> main() async {
 
   final List<String> errors = <String>[];
   try {
-    // sqflite_common_ffi resolves *relative* paths against its own databases
-    // directory (`../../.dart_tool/sqflite_common_ffi/databases/...`), not
-    // against the CWD. The build tool produces its DB there, and this tool
+    // sqflite_common_ffi resolves *relative* paths against its own
+    // CWD-relative databases directory (`.dart_tool/sqflite_common_ffi/databases/...`),
+    // not against the CWD. The build tool produces its DB there, and this tool
     // must validate the literal `assets/bibles.db` the app ships — so an
     // absolute path is used here. Same applies to `tools/build_bible_database.dart`:
     // after building, copy the produced DB into `assets/bibles.db`.

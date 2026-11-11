@@ -279,9 +279,13 @@ class BibleService {
     String referenceText,
     BibleTranslation translation,
   ) async {
+    // Parse failures are reported as notFound content; the delegated future
+    // is returned from outside the try block so its errors propagate to the
+    // caller exactly as before (getScriptureContent handles its own errors).
+    final Future<ScriptureContent> content;
     try {
       final reference = ReferenceParser.parse(referenceText);
-      return getScriptureContent(reference, translation);
+      content = getScriptureContent(reference, translation);
     } catch (e) {
       final dummyRef = ScriptureReference(
         book: 'Unknown',
@@ -294,6 +298,7 @@ class BibleService {
         errorMessage: 'Could not parse reference: $referenceText',
       );
     }
+    return content;
   }
 
   /// Search for text across the Bible
