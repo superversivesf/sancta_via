@@ -1,4 +1,5 @@
 import '../models/bible_translation.dart';
+import '../models/bible_verse.dart';
 import '../models/scripture_reference.dart';
 import '../utils/reference_parser.dart';
 import '../utils/logger.dart';
@@ -12,24 +13,31 @@ class OptimizedScriptureContent {
   final bool found;
   final String? errorMessage;
 
+  /// Structured verses backing the text, with their true numbers.
+  /// Empty when not found (or when no verses were available).
+  final List<BibleVerse> verses;
+
   const OptimizedScriptureContent({
     required this.reference,
     required this.text,
     required this.translation,
     required this.found,
     this.errorMessage,
+    this.verses = const [],
   });
 
   factory OptimizedScriptureContent.found({
     required ScriptureReference reference,
     required String text,
     required BibleTranslation translation,
+    List<BibleVerse> verses = const [],
   }) {
     return OptimizedScriptureContent(
       reference: reference,
       text: text,
       translation: translation,
       found: true,
+      verses: verses,
     );
   }
 
@@ -115,6 +123,7 @@ class OptimizedBibleService {
       }
 
       String text;
+      List<BibleVerse> structuredVerses;
 
       if (reference.startVerse != null && reference.endVerse != null) {
         // Get specific verse range
@@ -140,6 +149,7 @@ class OptimizedBibleService {
         }
 
         text = verses.map((verse) => '${verse.number} ${verse.text}').join(' ');
+        structuredVerses = verses;
         AppLogger.service(
           'Successfully retrieved ${verses.length} verses',
           'OPTIMIZED_SERVICE',
@@ -162,6 +172,7 @@ class OptimizedBibleService {
           );
         }
         text = chapter.fullText;
+        structuredVerses = chapter.verses;
         AppLogger.service(
           'Successfully retrieved entire chapter, text length: ${text.length}',
           'OPTIMIZED_SERVICE',
@@ -176,6 +187,7 @@ class OptimizedBibleService {
         reference: reference,
         text: text,
         translation: translation,
+        verses: structuredVerses,
       );
     } catch (e) {
       AppLogger.service(

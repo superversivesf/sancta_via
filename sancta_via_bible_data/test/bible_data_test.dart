@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:bible_data/bible_data.dart';
 
@@ -169,6 +171,64 @@ void main() {
       expect(matthew, isNotNull);
       expect(matthew!.order, equals(47));
       expect(matthew.isOldTestament, isFalse);
+    });
+  });
+
+  group('BibleService exposes structured verses on ScriptureContent', () {
+    late final BibleService service;
+
+    setUpAll(() {
+      final file = File('assets/bibles/engwebc.json');
+      if (!file.existsSync()) {
+        fail('missing rebuilt asset: ${file.path}');
+      }
+      EmbeddedBibleLoader.initialize({
+        BibleTranslation.engwebc: file.readAsStringSync(),
+      });
+      service = BibleService(EmbeddedBibleLoader());
+    });
+
+    test(
+      'whole chapter reference exposes every verse with true numbers',
+      () async {
+        final reference = ScriptureReference.chapter('1 Corinthians', 13);
+        final content = await service.getScriptureContent(
+          reference,
+          BibleTranslation.engwebc,
+        );
+
+        expect(content.found, isTrue);
+        expect(content.verses, isNotEmpty);
+        for (var i = 0; i < content.verses.length; i++) {
+          expect(content.verses[i].number, equals(i + 1), reason: 'verses[$i]');
+        }
+      },
+    );
+
+    test('2-verse range exposes exactly the requested verses', () async {
+      final reference = ScriptureReference.range('John', 3, 16, 17);
+      final content = await service.getScriptureContent(
+        reference,
+        BibleTranslation.engwebc,
+      );
+
+      expect(content.found, isTrue);
+      expect(content.verses.length, equals(2));
+      expect(content.verses[0].number, equals(16));
+      expect(content.verses[1].number, equals(17));
+      expect(content.text, contains('16 ${content.verses[0].text}'));
+      expect(content.text, contains('17 ${content.verses[1].text}'));
+    });
+
+    test('missing chapter returns notFound with empty verses', () async {
+      final reference = ScriptureReference.chapter('Genesis', 51);
+      final content = await service.getScriptureContent(
+        reference,
+        BibleTranslation.engwebc,
+      );
+
+      expect(content.found, isFalse);
+      expect(content.verses, isEmpty);
     });
   });
 }
