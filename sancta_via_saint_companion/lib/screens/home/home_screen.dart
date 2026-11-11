@@ -7,7 +7,9 @@ import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_ca
 import '../../providers/saint_providers.dart';
 import '../../widgets/category_card.dart';
 import '../../widgets/liturgical_day_card.dart';
+import '../../widgets/load_error_card.dart';
 import '../../widgets/saint_card.dart';
+import '../../widgets/section_spinner.dart';
 
 /// The saints home screen (Task 11): today's saints, featured saints,
 /// the category grid with counts, and today's liturgical celebration, in
@@ -70,8 +72,8 @@ class HomeScreen extends ConsumerWidget {
   Widget _buildTodaySection(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<Saint>> today = ref.watch(saintsTodayProvider);
     return today.when(
-      loading: () => const _SectionSpinner(),
-      error: (Object error, StackTrace stackTrace) => _ErrorCard(
+      loading: () => const SectionSpinner(),
+      error: (Object error, StackTrace stackTrace) => LoadErrorCard(
         stateKey: const Key('load_error_state_today'),
         onRetry: () => ref.invalidate(saintsTodayProvider),
       ),
@@ -99,8 +101,8 @@ class HomeScreen extends ConsumerWidget {
   Widget _buildFeaturedSection(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<Saint>> featured = ref.watch(featuredSaintsProvider);
     return featured.when(
-      loading: () => const _SectionSpinner(),
-      error: (Object error, StackTrace stackTrace) => _ErrorCard(
+      loading: () => const SectionSpinner(),
+      error: (Object error, StackTrace stackTrace) => LoadErrorCard(
         stateKey: const Key('load_error_state_featured'),
         onRetry: () => ref.invalidate(featuredSaintsProvider),
       ),
@@ -138,8 +140,8 @@ class HomeScreen extends ConsumerWidget {
       categoryCountsProvider,
     );
     return counts.when(
-      loading: () => const _SectionSpinner(),
-      error: (Object error, StackTrace stackTrace) => _ErrorCard(
+      loading: () => const SectionSpinner(),
+      error: (Object error, StackTrace stackTrace) => LoadErrorCard(
         stateKey: const Key('load_error_state_categories'),
         onRetry: () => ref.invalidate(categoryCountsProvider),
       ),
@@ -161,55 +163,6 @@ class HomeScreen extends ConsumerWidget {
           ],
         );
       },
-    );
-  }
-}
-
-/// A keyed error card with a retry button, shown when a provider fails.
-/// Each section passes [stateKey] (`load_error_state_<section>`) so keyed
-/// lookups target one section's error state.
-class _ErrorCard extends StatelessWidget {
-  const _ErrorCard({required this.stateKey, required this.onRetry});
-
-  /// Key for the rendered card, e.g. `Key('load_error_state_today')`.
-  final Key stateKey;
-
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      key: stateKey,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: <Widget>[
-            const Icon(Icons.error_outline, size: 32),
-            const SizedBox(height: 8),
-            Text(
-              'Could not load saints.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 12),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Centered spinner used for a section's loading state.
-class _SectionSpinner extends StatelessWidget {
-  const _SectionSpinner();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 32),
-        child: CircularProgressIndicator(),
-      ),
     );
   }
 }

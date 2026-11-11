@@ -69,6 +69,19 @@ saintsByCategoryProvider = FutureProvider.family<List<Saint>, SaintCategory>((
   return repository.getSaintsByCategory(category);
 });
 
+/// Need -> distinct saint count within [category], ordered count-desc then
+/// need-asc — the repository's anchor-chip shape for the category detail
+/// screen's need chips.
+final FutureProviderFamily<Map<String, int>, SaintCategory>
+needsForCategoryProvider =
+    FutureProvider.family<Map<String, int>, SaintCategory>((
+      Ref ref,
+      SaintCategory category,
+    ) async {
+      final SaintRepository repository = await _loadedRepository(ref);
+      return repository.getNeedsForCategory(category);
+    });
+
 /// Saints invoked for [need] (direct patronage matches plus saints matched
 /// via bidirectional synonym expansion), ordered by name.
 final FutureProviderFamily<List<Saint>, String> saintsByNeedProvider =
