@@ -17,6 +17,7 @@
 //      the ledger — while permanent classes (404, undecodable body,
 //      connection refused) surface as `FetchFailedException` after the
 //      plan's single no-wait retry and are ledger-able.
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -25,6 +26,25 @@ import 'package:http/http.dart' as http;
 import 'package:image/image.dart' as img;
 
 import '../../tools/fetch_saint_images.dart';
+
+/// PNG signature only (8 bytes): passes `findDecoderForData`'s magic check,
+/// but decoding it THROWS `ImageException` (image 4.12 does not null-return
+/// this shape, unlike garbage or a truncated JPEG) — the poison-pill body.
+const List<int> _pngSignatureOnly = <int>[
+  0x89,
+  0x50,
+  0x4E,
+  0x47,
+  0x0D,
+  0x0A,
+  0x1A,
+  0x0A,
+];
+
+/// A valid tiny PNG for the "the crawl continues to the next image" stub.
+final List<int> _validThumbBytes = img.encodePng(
+  img.Image(width: 8, height: 8),
+);
 
 void main() {
   group('backoffDelayFor', () {
@@ -222,6 +242,38 @@ void main() {
       expect(thumbFile('stub-garbage').existsSync(), isFalse);
     }, timeout: const Timeout(Duration(minutes: 2)));
 
+    test('a png-signature-only body (throws inside the decoder, unlike '
+        'null-returning garbage) is converted to a ledger-able '
+        'FetchFailedException', () async {
+      stub.script = <_StubResponse>[
+        _StubResponse(200, body: _pngSignatureOnly),
+      ];
+      final http.Client client = http.Client();
+      await expectLater(
+        fetchAndProcessOne(
+          client,
+          ImageTarget('stub-poison', stub.urlFor('/img.jpg')),
+          thumbFile('stub-poison'),
+          minRequestGap: Duration.zero,
+        ),
+        throwsA(
+          isA<FetchFailedException>().having(
+            (FetchFailedException error) => '$error',
+            'message',
+            contains('image processing failed'),
+          ),
+        ),
+      );
+      client.close();
+
+      expect(
+        stub.hits,
+        2,
+        reason: 'processing failures share the retry-once budget',
+      );
+      expect(thumbFile('stub-poison').existsSync(), isFalse);
+    }, timeout: const Timeout(Duration(minutes: 2)));
+
     test('a refused connection retries once after a brief pause, then '
         'surfaces as FetchFailedException', () async {
       // The stub is torn down by tearDown(); this test closes it EARLY and
@@ -284,6 +336,14 @@ void main() {
         '"attribution":"stub","altText":"stub"}}]}\n',
       );
 
+      // Ghost-hygiene (fix round 2): a ledger entry the previous
+      // run recorded for a slug about to be DEFERRED must be purged,
+      // or the ledger accumulates ghosts for slugs that never
+      // failed for real.
+      File('${fixture.path}/data/image_failures.json').writeAsStringSync(
+        '[{"slug":"stub-saint","url":"<stale>","error":"stale HTTP 429"}]\n',
+      );
+
       try {
         final ProcessResult result = await Process.run(
           _dartExecutable(),
@@ -326,6 +386,98 @@ void main() {
         }
       }
     }, timeout: const Timeout(Duration(minutes: 3)));
+
+    test(
+      'a poison-pill body (png signature only, throws inside the decoder) is '
+      'recorded, the crawl CONTINUES to the next image, and the exit is 0',
+      () async {
+        // Fixture run-loop test (same pattern as the deferral proof): the
+        // tool copied verbatim into a staged snapshot under .dart_tool/,
+        // driven as a subprocess against the loopback stub in this process.
+        final Directory tempDir = await Directory.systemTemp.createTemp(
+          'thumb-poison-stub-',
+        );
+        final _ScriptedStub poisonStub = _ScriptedStub()
+          ..script = <_StubResponse>[
+            // poison-saint: first attempt - decoder will throw.
+            _StubResponse(200, body: _pngSignatureOnly),
+            // poison-saint: its single immediate retry - throws again.
+            _StubResponse(200, body: _pngSignatureOnly),
+            // good-saint: must still download AFTER the poison pill.
+            _StubResponse(200, body: _validThumbBytes),
+          ];
+        await poisonStub.start();
+
+        final Directory fixture = Directory(
+          '${Directory.current.path}/.dart_tool/'
+          'fixture-fetch-poison-${DateTime.now().microsecondsSinceEpoch}',
+        );
+        Directory('${fixture.path}/data').createSync(recursive: true);
+        Directory('${fixture.path}/tools').createSync(recursive: true);
+        File(
+          '${Directory.current.path}/tools/fetch_saint_images.dart',
+        ).copySync('${fixture.path}/tools/fetch_saint_images.dart');
+        File('${fixture.path}/data/saints_source.json').writeAsStringSync(
+          '{"saints":[{'
+          '"slug":"poison-saint","name":"St. Poison",'
+          '"image":{"url":"${poisonStub.urlFor('/img.jpg')}",'
+          '"attribution":"stub","altText":"stub"}},'
+          '{"slug":"good-saint","name":"St. Good",'
+          '"image":{"url":"${poisonStub.urlFor('/img.jpg')}",'
+          '"attribution":"stub","altText":"stub"}}]}\n',
+        );
+
+        try {
+          final ProcessResult result = await Process.run(
+            _dartExecutable(),
+            <String>['run', 'tools/fetch_saint_images.dart', '--limit', '2'],
+            workingDirectory: fixture.path,
+          );
+
+          expect(
+            result.exitCode,
+            0,
+            reason:
+                'the crawl must survive a poisoned image; stderr: '
+                '${result.stderr}',
+          );
+          final String stdout = result.stdout as String;
+          expect(stdout, contains('FAILURE poison-saint'));
+          expect(stdout, contains('downloaded: 1'));
+          expect(stdout, contains('failed (recorded): 1'));
+          // Serial loop: poison twice (immediate retry), then good once.
+          expect(poisonStub.hits, 3);
+          // The ledger holds exactly ONE real data defect, with the slug.
+          final File ledger = File('${fixture.path}/data/image_failures.json');
+          final List<Object?> entries =
+              jsonDecode(ledger.readAsStringSync()) as List<Object?>;
+          expect(entries, hasLength(1));
+          final Map<String, Object?> entry =
+              entries.first! as Map<String, Object?>;
+          expect(entry['slug'], 'poison-saint');
+          expect(
+            entry['error']! as String,
+            contains('image processing failed'),
+          );
+          // The non-poisoned image was produced despite the abort risk.
+          expect(
+            File('${fixture.path}/assets/thumbs/good-saint.jpg').existsSync(),
+            isTrue,
+          );
+          expect(
+            File('${fixture.path}/assets/thumbs/poison-saint.jpg').existsSync(),
+            isFalse,
+          );
+        } finally {
+          await poisonStub.close();
+          tempDir.deleteSync(recursive: true);
+          if (fixture.existsSync()) {
+            fixture.deleteSync(recursive: true);
+          }
+        }
+      },
+      timeout: const Timeout(Duration(minutes: 3)),
+    );
   });
 }
 

@@ -394,7 +394,10 @@ Future<void> _run(_FetchArgs parsed) async {
       } on FetchThrottledException catch (error) {
         // Transient server-side throttling: a re-run re-attempts this URL
         // (skip-existing), so it must NOT be recorded as an image failure —
-        // the ledger only lists real data defects.
+        // the ledger only lists real data defects. Purge any ghost entry a
+        // previous run recorded for this slug: a deferral is the opposite
+        // of a recorded defect, never both.
+        failures.remove(target.slug);
         deferredNow++;
         print('fetch_saint_images DEFERRED ${target.slug}: $error');
       } on FetchFailedException catch (error) {
@@ -406,6 +409,24 @@ Future<void> _run(_FetchArgs parsed) async {
         };
         _writeFailures(failuresFile, failures);
         print('fetch_saint_images FAILURE ${target.slug}: $error');
+      } on Object catch (error) {
+        // Poison-pill guard: ANY other escape from the per-image path (the
+        // decoders can throw ImageException; partFile.writeAsBytesSync and
+        // partFile.renameSync can throw FileSystemException) is converted
+        // into a recorded, ledgerable failure — the crawl records it and
+        // CONTINUES instead of aborting with a nonzero exit on every re-run
+        // at the same image.
+        failedNow++;
+        failures[target.slug] = <String, String>{
+          'slug': target.slug,
+          'url': target.url,
+          'error': _shortError(error),
+        };
+        _writeFailures(failuresFile, failures);
+        print(
+          'fetch_saint_images FAILURE ${target.slug}: '
+          '${failures[target.slug]!['error']}',
+        );
       }
       processed++;
       if (processed % 100 == 0) {
@@ -555,14 +576,22 @@ Future<void> fetchAndProcessOne(
     if (response.statusCode == 200) {
       try {
         _writeThumb(response, url, thumbFile);
-      } on FetchFailedException {
-        // Undecodable/malformed body: same permanent class as a bad status,
-        // so it shares the brief's single immediate retry.
+      } on Object catch (error) {
+        // Decode/encode failures (the decoders throw ImageException for
+        // corrupt payloads) and .part write/rename failures
+        // (FileSystemException) surface here as well as undecodable bodies;
+        // ALL are permanent classes sharing the brief's single immediate
+        // retry, and NONE may escape raw past this function (poison pill).
         if (!permanentRetried) {
           permanentRetried = true;
           continue;
         }
-        rethrow;
+        if (error is FetchFailedException) {
+          rethrow;
+        }
+        throw FetchFailedException(
+          'image processing failed for $url: ${_shortError(error)}',
+        );
       }
       final Duration gap = pacingDelayAfter(lastRequestElapsed, minRequestGap);
       if (gap > Duration.zero) {
