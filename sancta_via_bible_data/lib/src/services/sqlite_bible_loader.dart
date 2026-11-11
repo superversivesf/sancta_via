@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
-import 'package:flutter/services.dart' show rootBundle;
 
 import '../models/bible.dart';
 import '../models/bible_translation.dart';
@@ -9,6 +8,7 @@ import '../models/bible_book.dart';
 import '../models/bible_chapter.dart';
 import '../models/bible_verse.dart';
 import 'bible_loader.dart';
+import 'database_asset_cache.dart';
 import '../utils/book_mapping.dart';
 import '../utils/logger.dart';
 import '../utils/async_lock.dart';
@@ -24,10 +24,21 @@ class SqliteBibleLoader implements BibleLoader {
   static final AsyncLock _dbLock = AsyncLock();
 
   final String databaseAssetPath;
+  final DatabaseAssetCache _assetCache;
 
   /// Create SQLite loader
+  ///
   /// [databaseAssetPath] - Path to the SQLite database in assets (e.g., 'assets/bibles.db')
-  SqliteBibleLoader({this.databaseAssetPath = 'assets/bibles.db'});
+  ///
+  /// [assetLoader] overrides how the bundled database asset's bytes are
+  /// loaded; production uses rootBundle.
+  SqliteBibleLoader({
+    this.databaseAssetPath = 'assets/bibles.db',
+    AssetBytesLoader? assetLoader,
+  }) : _assetCache = DatabaseAssetCache(
+         databaseAssetPath: databaseAssetPath,
+         assetLoader: assetLoader,
+       );
 
   /// Initialize the database connection (thread-safe)
   Future<Database> _getDatabase() async {
@@ -46,47 +57,11 @@ class SqliteBibleLoader implements BibleLoader {
         final documentsPath = await getDatabasesPath();
         final dbPath = path.join(documentsPath, 'bibles.db');
 
-        // Check if database already exists
-        final dbFile = File(dbPath);
-        final dbExists = await dbFile.exists();
-
-        if (!dbExists) {
-          // Copy database from assets
-          AppLogger.loader(
-            'Copying database from assets to $dbPath',
-            'SQLITE_LOADER',
-          );
-          final data = await rootBundle.load(databaseAssetPath);
-          final bytes = data.buffer.asUint8List(
-            data.offsetInBytes,
-            data.lengthInBytes,
-          );
-
-          // Ensure the directory exists
-          await dbFile.parent.create(recursive: true);
-
-          // Write the database file
-          await dbFile.writeAsBytes(bytes, flush: true);
-
-          // Set file permissions to be writable (important for SQLite metadata)
-          if (Platform.isIOS ||
-              Platform.isAndroid ||
-              Platform.isMacOS ||
-              Platform.isLinux) {
-            try {
-              // Make file readable and writable by owner
-              await Process.run('chmod', ['644', dbPath]);
-            } catch (e) {
-              AppLogger.loader(
-                'Warning: Could not set file permissions: $e',
-                'SQLITE_LOADER',
-              );
-              // Continue anyway - might still work
-            }
-          }
-
-          AppLogger.loader('Database copied successfully', 'SQLITE_LOADER');
-        }
+        // Make sure the on-device copy matches the bundled asset: the loader
+        // re-copies (overwrites) the database when the stamp of the shipped
+        // asset differs from the stored stamp, so devices that ran a prior
+        // build cannot keep serving an outdated database.
+        await _assetCache.ensureFresh(dbPath: dbPath, tag: 'SQLITE_LOADER');
 
         // Open database without read-only restriction
         // SQLite needs to write some metadata even for read operations

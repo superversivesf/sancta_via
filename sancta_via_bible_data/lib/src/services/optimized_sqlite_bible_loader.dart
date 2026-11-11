@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
-import 'package:flutter/services.dart' show rootBundle;
 
 import '../models/bible.dart';
 import '../models/bible_translation.dart';
@@ -12,6 +10,7 @@ import '../utils/book_name_normalizer.dart';
 import '../utils/book_mapping.dart';
 import '../utils/logger.dart';
 import 'bible_loader.dart';
+import 'database_asset_cache.dart';
 
 /// Cached chapter data for fast access
 class CachedChapter {
@@ -34,9 +33,19 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
   static const int _maxCacheSize = 50; // Keep last 50 accessed chapters
 
   final String databaseAssetPath;
+  final DatabaseAssetCache _assetCache;
 
   /// Create optimized SQLite loader
-  OptimizedSqliteBibleLoader({this.databaseAssetPath = 'assets/bibles.db'});
+  ///
+  /// [assetLoader] overrides how the bundled database asset's bytes are
+  /// loaded; production uses rootBundle.
+  OptimizedSqliteBibleLoader({
+    this.databaseAssetPath = 'assets/bibles.db',
+    AssetBytesLoader? assetLoader,
+  }) : _assetCache = DatabaseAssetCache(
+         databaseAssetPath: databaseAssetPath,
+         assetLoader: assetLoader,
+       );
 
   /// Initialize the database connection (same as before - this works well)
   Future<Database> _getDatabase() async {
@@ -48,44 +57,11 @@ class OptimizedSqliteBibleLoader implements BibleLoader {
       final documentsPath = await getDatabasesPath();
       final dbPath = path.join(documentsPath, 'bibles.db');
 
-      final dbFile = File(dbPath);
-      final dbExists = await dbFile.exists();
-
-      if (!dbExists) {
-        AppLogger.loader(
-          'Copying database from assets to $dbPath',
-          'OPTIMIZED_LOADER',
-        );
-        final data = await rootBundle.load(databaseAssetPath);
-        final bytes = data.buffer.asUint8List(
-          data.offsetInBytes,
-          data.lengthInBytes,
-        );
-
-        await dbFile.parent.create(recursive: true);
-        await dbFile.writeAsBytes(bytes, flush: true);
-
-        if (Platform.isIOS ||
-            Platform.isAndroid ||
-            Platform.isMacOS ||
-            Platform.isLinux) {
-          try {
-            await Process.run('chmod', ['644', dbPath]);
-          } catch (e) {
-            AppLogger.loader(
-              'Warning: Could not set file permissions: $e',
-              'OPTIMIZED_LOADER',
-            );
-          }
-        }
-
-        AppLogger.loader('Database copied successfully', 'OPTIMIZED_LOADER');
-      } else {
-        AppLogger.loader(
-          'Using existing database at $dbPath',
-          'OPTIMIZED_LOADER',
-        );
-      }
+      // Make sure the on-device copy matches the bundled asset: the loader
+      // re-copies (overwrites) the database when the stamp of the shipped
+      // asset differs from the stored stamp, so devices that ran a prior
+      // build cannot keep serving an outdated database.
+      await _assetCache.ensureFresh(dbPath: dbPath, tag: 'OPTIMIZED_LOADER');
 
       _database = await openDatabase(
         dbPath,
