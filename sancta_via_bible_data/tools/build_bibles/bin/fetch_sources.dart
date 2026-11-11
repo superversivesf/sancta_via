@@ -111,7 +111,7 @@ const Map<String, String> _snapshotFileNames = <String, String>{
   'engwebc_usfm': 'engwebc_usfm.zip',
   'cpdv_entire': 'EntireBible-CPDV.json',
   'cpdv_books': 'CPDV-books.json',
-  'drc': 'drc.json',
+  'drc': 'drc_usfm.zip',
 };
 
 /// Download failure / manifest shape failure; reported per source id.

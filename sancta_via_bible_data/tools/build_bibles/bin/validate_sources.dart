@@ -43,7 +43,7 @@ const int _expectedBookCount = 73;
 const String _cpdvJsonName = 'EntireBible-CPDV.json';
 const String _cpdvMetadataKey = 'charset';
 const String _cpdvBooksMetaName = 'CPDV-books.json';
-const String _drcJsonName = 'drc.json';
+const String _drcUsfmZipName = 'drc_usfm.zip';
 
 /// Canonical translation ids used as `expected_structure.json` keys.
 const List<String> _translationIds = <String>['engwebc', 'cpdv', 'drc'];
@@ -95,25 +95,11 @@ const List<_Pin> _pins = <_Pin>[
   _Pin('cpdv', 'Psalms', 'Psalms', 18, 1, 'Unto the end. A Psalm of David.'),
   _Pin('cpdv', 'Psalms', 'Psalms', 119, 7, 'With those who hated peace, I was'),
   _Pin('cpdv', 'Acts', 'Acts', 20, 7, 'Then, on the first Sabbath, when we'),
+  _Pin('drc', 'GEN', 'Genesis', 1, 1, 'In the beginning God created heaven'),
+  _Pin('drc', 'SIR', 'Sirach', 1, 1, 'All wisdom is from the Lord God, and'),
   _Pin(
     'drc',
-    'Genesis',
-    'Genesis',
-    1,
-    1,
-    'In the beginning God created heaven',
-  ),
-  _Pin(
-    'drc',
-    'Ecclesiasticus',
-    'Sirach',
-    1,
-    1,
-    'All wisdom is from the Lord God, and',
-  ),
-  _Pin(
-    'drc',
-    'Apocalypse',
+    'REV',
     'Revelation',
     22,
     21,
@@ -150,6 +136,17 @@ void main() {
     usfmText,
   );
 
+  // drc uses the same single-USFM-zip shape as engwebc (eBible engDRA); its
+  // counts and reference-verse texts are keyed by its own `\id` codes.
+  final Map<String, Map<int, int>> drcCounts = <String, Map<int, int>>{};
+  final Map<String, String> drcText = <String, String>{};
+  _parseUsfmZip(
+    '${sourcesDir.path}/$_drcUsfmZipName',
+    keyToBook,
+    drcCounts,
+    drcText,
+  );
+
   final Map<String, Map<int, int>> cpdvCounts = <String, Map<int, int>>{};
   final List<String> cpdvViolations = <String>[];
   final Map<String, Map<String, dynamic>> cpdvRoot = _parseChapterVerseJson(
@@ -158,16 +155,6 @@ void main() {
     skipTopLevelKey: _cpdvMetadataKey,
     counts: cpdvCounts,
     violations: cpdvViolations,
-  );
-
-  final Map<String, Map<int, int>> drcCounts = <String, Map<int, int>>{};
-  final List<String> drcViolations = <String>[];
-  final Map<String, Map<String, dynamic>> drcRoot = _parseChapterVerseJson(
-    '${sourcesDir.path}/$_drcJsonName',
-    keyToBook,
-    skipTopLevelKey: null,
-    counts: drcCounts,
-    violations: drcViolations,
   );
 
   final Map<String, Map<String, Map<int, int>>> perTranslation =
@@ -185,10 +172,12 @@ void main() {
   );
 
   final List<String> failures = _verifyReferenceVerses(
-    usfmText: usfmText,
+    usfmTexts: <String, Map<String, String>>{
+      'engwebc': usfmText,
+      'drc': drcText,
+    },
     snapshotRoots: <String, Map<String, Map<String, dynamic>>>{
       'cpdv': cpdvRoot,
-      'drc': drcRoot,
     },
   );
 
@@ -196,10 +185,6 @@ void main() {
   if (cpdvViolations.isNotEmpty) {
     excluded['cpdv'] =
         'chapter/verse coordinate violations: ${cpdvViolations.length}';
-  }
-  if (drcViolations.isNotEmpty) {
-    excluded['drc'] =
-        'chapter/verse coordinate violations: ${drcViolations.length}';
   }
   if (failures.isNotEmpty) {
     excluded['engwebc'] =
@@ -218,19 +203,14 @@ void main() {
         );
       }
     }
-    if (drcViolations.isNotEmpty) {
+    if (cpdvViolations.isNotEmpty) {
       stderr.writeln(
-        '[fail]     drc structure violations (committed exanx DRB join '
-        'is corrupt upstream; see Task 2 report):',
+        '[fail]     cpdv snapshot structure violations '
+        '(every chapter\'s verse keys must be exactly 1..N):',
       );
-      for (final String violation in drcViolations.take(40)) {
+      for (final String violation in cpdvViolations.take(40)) {
         stderr.writeln('  $violation');
       }
-      stderr.writeln(
-        '           ... total violations: ${drcViolations.length} across '
-        '${drcViolations.map((String v) => v.split('"')[1]).toSet().length} books '
-        '(plus missing tail chapters: 69 chapter keys short of the full DRB canon)',
-      );
     }
     if (failures.isNotEmpty) {
       stderr.writeln('[fail]     reference-verse verification failures:');
@@ -606,12 +586,12 @@ void _crossCheckCpdvMetadata(
 /// Verifies each pinned reference verse against the snapshot text and prints
 /// an informational line for the known plan-vs-snapshot wording divergences.
 List<String> _verifyReferenceVerses({
-  required Map<String, String> usfmText,
+  required Map<String, Map<String, String>> usfmTexts,
   required Map<String, Map<String, Map<String, dynamic>>> snapshotRoots,
 }) {
   final List<String> failures = <String>[];
   for (final _Pin pin in _pins) {
-    final String? text = _verseTextForPin(pin, usfmText, snapshotRoots);
+    final String? text = _verseTextForPin(pin, usfmTexts, snapshotRoots);
     if (text == null) {
       failures.add(
         'missing verse ${pin.dbName} ${pin.chapter}:${pin.verse} in ${pin.translation}',
@@ -642,17 +622,19 @@ List<String> _verifyReferenceVerses({
 
 /// Resolves a pinned reference verse to its snapshot text, or null when the
 /// verse does not exist (which itself fails `.startsWith` verification).
+/// engwebc and drc are both USFM zips (per-translation code-keyed texts);
+/// cpdv is a `{bookKey: {chapter: {verse: text}}}` JSON snapshot.
 String? _verseTextForPin(
   _Pin pin,
-  Map<String, String> usfmText,
+  Map<String, Map<String, String>> usfmTexts,
   Map<String, Map<String, Map<String, dynamic>>> snapshotRoots,
 ) {
   switch (pin.translation) {
     case 'engwebc':
-      final String text = usfmText[pin.sourceKey] ?? '';
+    case 'drc':
+      final String text = usfmTexts[pin.translation]?[pin.sourceKey] ?? '';
       return _usfmVerseText(text, pin.chapter, pin.verse);
     case 'cpdv':
-    case 'drc':
       final Object? book = snapshotRoots[pin.translation]?[pin.sourceKey];
       if (book is! Map<String, dynamic>) {
         return null;

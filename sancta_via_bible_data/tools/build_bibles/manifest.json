@@ -27,23 +27,12 @@
       "revision": "draino7n7/cpdv@66416f04fbfeec260f09eb3c095be9a289429f2d"
     },
     "drc": {
-      "url": "https://www.drbo.org/chapter/",
-      "scrape": {
-        "codeFormat": "bbccc",
-        "bookCount": 73,
-        "crawlDelayMs": 5000,
-        "bookNamesUrl": "https://www.drbo.org/index.htm",
-        "chapterCountOverrides": {
-          "19": 16
-        }
-      },
-      "fallbackUrls": [
-        "https://raw.githubusercontent.com/thomas992/catholicbible/main/DRB.json"
-      ],
-      "sha256": "",
+      "url": "https://ebible.org/Scriptures/engDRA_usfm.zip",
+      "fallbackUrls": [],
+      "sha256": "fcb5de45f1f6083d56b738690e5b4b3bb6f0d87522d1d18329c57a4b09e05210",
       "fileSize": "",
       "fetchedAt": "",
-      "revision": "drbo.org scrape (Douay-Rheims, Challoner Revision; public-domain text). Ruling 2026-11-11: source drc by scraping drbo.org honoring robots.txt Crawl-delay: 5, /chapter/ pages only, UA sancta-via-fetch-sources. exanx/bible-json DRB-73-Books join retired (upstream per-book files structurally corrupt: 21 books missing tail chapters; see Task 2 report). Retired also: thomas992/catholicbible primary (HTTP 404). chapterCountOverrides: drbo.org Esther (bk 19) has 16 chapters vs cpdv 15 - verified live 2026-11-11 (01916.htm=200, 01917.htm -> 404)."
+      "revision": "eBible engDRA — Douay-Rheims 1899 American Edition (Challoner revision); public domain (PD statement inside the zip's copr.htm and on the eBible details page). Ruling 2026-11-12 (supersedes the drbo.org scrape): source drc from the plain USFM zip, sha256-pinned; the pinned hash below was verified by an independent structural pass (73 books incl. all 7 deuterocanon, 1334 chapters, 35811 verses, 0 contiguity violations, 0 empty texts, 0 markup; corruption probe RUT 4:1 correct). Retired in order: thomas992/catholicbible primary (HTTP 404, repo gone); exanx/bible-json DRB-73-Books join (upstream structurally corrupt: 21/73 books missing tail chapters, verse texts at wrong coordinates); drbo.org crawl (abandoned mid-run ~55/73 books after transient connection kills; scrape tooling retained in fetch_sources.dart for any future re-pinning, .drc_cache kept git-ignored)."
     }
   }
 }

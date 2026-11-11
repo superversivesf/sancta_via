@@ -7,8 +7,8 @@ URLs, SHA-256 checksums, sizes, fetch timestamps, and upstream revisions are
 recorded in `tools/build_bibles/manifest.json`.
 
 The `fallbackUrls` entries in the manifest are recorded metadata only; the
-former `drc` fallback was authorized as the replacement primary after its
-pinned URL died, and is now fetched through the manifest's joined-source path.
+`drc` source is now the eBible.org `engDRA` plain-zip snapshot (see its section
+below, which also records the retired drc attempts in order).
 
 ## `engwebc_usfm.zip` — World English Bible (Catholic Edition) (WEB-C)
 
@@ -53,29 +53,41 @@ pinned URL died, and is now fetched through the manifest's joined-source path.
   chapter → verses map (Psalms 18 has 15 verses, Vulgate-style numbering);
   `books.json` records the 73-book canon, 1,335 chapters, and 35,839 verses.
 
-## `drc.json` — Douay-Rheims (Challoner Revision) — built from joined per-book files
+## `drc_usfm.zip` — Douay-Rheims 1899 American Edition (eBible.org engDRA)
 
-- **Status: fetched 2026-11-11 via the manifest's joined-source path.** The
-  pinned primary URL
+- **Status: fetched 2026-11-12 via the manifest's plain-zip path**, checksum-pinned
+  in the manifest (SHA-256
+  `fcb5de45f1f6083d56b738690e5b4b3bb6f0d87522d1d18329c57a4b09e05210`, 2,942,946
+  bytes). 73 `\id`-keyed USFM book files (engDRA codes: the standard USFM set with
+  `EST` and `DAN`, no WEB-C variants) plus upstream `copr.htm`, `gentium.css`,
+  `keys.asc`, `signature.txt.asc`.
+- Translation: **Douay-Rheims 1899 American Edition** — "The Holy Bible in
+  English, Douay-Rheims American Edition of 1899, translated from the Latin
+  Vulgate" = the 1749 Challoner revision. Attribution, verbatim from the zip's
+  `copr.htm`: "Language: English Dialect: archaic American **Translation by:
+  English College, Douai** This Public Domain Bible text is brought to you
+  courtesy of eBible.org. Help support free Bible access at
+  https://eBible.org/give.php . 2022-11-03 HTML generated with Haiola by
+  eBible.org 30 Oct 2026 from source files dated 3 Nov 2022 Public Domain".
+- Upstream: eBible.org module `engDRA`
+  (<https://ebible.org/Scriptures/engDRA_usfm.zip>, details page
+  https://ebible.org/find/details.php?id=engdra). Structural pass (2026-11-12,
+  independent verifier): 73 books incl. all 7 deuterocanon, 1,334 chapters,
+  35,811 verses, 0 contiguity violations, 0 empty texts, 0 markup; corruption
+  probe ("Then Booz went up to the gate…") at the correct coordinate `RUT 4:1`.
+- Provenance — retired `drc` attempts, in order: (1) the pinned primary
   <https://raw.githubusercontent.com/thomas992/catholicbible/main/DRB.json>
-  returned HTTP 404 during the initial pinning run (2026-11-11): the
-  `thomas992/catholicbible` repository does not exist publicly (GitHub API
-  returns "Not Found" for the repo, the owner's public repository list contains
-  no Bible-related repository, and the Wayback Machine has no archived
-  snapshots of the raw URL). Per the controller's ruling, the `drc` source was
-  rebuilt from its `fallbackUrls` distribution: the 73 per-book JSON files
-  listed in `tools/build_bibles/drc_file_list.json`, fetched from
-  <https://raw.githubusercontent.com/exanx/bible-json/main/DRB-73-Books/>
-  (upstream revision `exanx/bible-json@55d8cce6fcff01fb3eac125c7675e170fbd276cd`)
-  and joined into a single `{book: {chapter: {verse: text}}}` object with the
-  upstream-verbatim book keys. The retired primary URL is still recorded in the
-  manifest's `fallbackUrls` for provenance.
-- Upstream: <https://github.com/exanx/bible-json> (Douay-Rheims
-  Challoner-Revision, 73 books; e.g. `Genesis.json`, …, `Psalms.json`,
-  `Zachariah.json`, `Ecclesiasticus.json`).
-- Attribution: Douay-Rheims Bible (Douay 1582 / Rheims 1610, Challoner Revision
-  1749–1752); public domain (published before 1929, no copyright claim in
-  upstream distribution; upstream declares CC0).
+  returned HTTP 404 during the initial pinning run (2026-11-11; repository
+  gone); (2) the authorized exanx/bible-json `DRB-73-Books` join
+  (`exanx/bible-json@55d8cce6…`, joined via `drc_file_list.json` into the
+  retired `assets/sources/drc.json`) proved **structurally corrupt upstream**
+  (21/73 books missing tail chapters, verse texts at wrong coordinates — removed
+  this round); (3) a drbo.org scrape was authorized and partially run (~55/73
+  books) but abandoned (repeated transient connection kills); the scrape tooling
+  remains in `fetch_sources.dart` for any future re-pinning and the drbo partial
+  cache stays in the git-ignored `.drc_cache/`. All three text lineages were the
+  same Challoner DRB edition; engDRA is its complete, clean, machine-readable
+  form.
 
 ## License Summary
 
