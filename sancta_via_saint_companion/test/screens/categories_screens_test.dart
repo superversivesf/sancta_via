@@ -22,120 +22,7 @@ import 'package:saint_companion/widgets/category_card.dart';
 import 'package:saint_data/saint_data.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-/// Seeds one saint row + its patronages + its pre-normalized FTS row
-/// (same shape as the home screen test seeder).
-Future<void> _seedSaint(
-  Database db, {
-  required String slug,
-  required String name,
-  required String feastDay,
-  required String bio,
-  List<({String need, SaintCategory category})> patronages =
-      const <({String need, SaintCategory category})>[],
-}) async {
-  await db.insert('saints', <String, Object?>{
-    'slug': slug,
-    'name': name,
-    'feast_day': feastDay,
-    'bio': bio,
-    'prayer_text': null,
-    'prayer_source': null,
-    'featured': 0,
-    'thumb_asset': null,
-  });
-  for (final ({String need, SaintCategory category}) patronage in patronages) {
-    await db.insert('patronages', <String, Object?>{
-      'slug': slug,
-      'need': patronage.need,
-      'category': patronage.category.name,
-    });
-  }
-  await db.insert('saint_fts', <String, Object?>{
-    'slug': slug,
-    'name': normalizeSearchText(name),
-    'patronages': patronages
-        .map(
-          (({String need, SaintCategory category}) p) =>
-              normalizeSearchText(p.need),
-        )
-        .join(' '),
-    'bio': normalizeSearchText(bio),
-    'prayer': '',
-  });
-}
-
-/// Builds the seeded in-memory database: one saint per counted category
-/// (anthony/everyday, joseph/jobs), two spiritual saints, and two military
-/// saints sharing the `soldiers` need — the category counts are identical
-/// to the home screen fixture's (1, 2 ×2 nonzero, six zero-count categories).
-Future<Database> _createSeededDatabase() async {
-  final Database db = await openDatabase(
-    inMemoryDatabasePath,
-    singleInstance: false,
-  );
-  await createSaintsDatabase(db);
-  await _seedSaint(
-    db,
-    slug: 'anthony-of-padua',
-    name: 'St. Anthony of Padua',
-    feastDay: '06-13',
-    bio: 'A Franciscan preacher who helps find lost things.',
-    patronages: <({String need, SaintCategory category})>[
-      (need: 'lost items', category: SaintCategory.everyday),
-    ],
-  );
-  await _seedSaint(
-    db,
-    slug: 'therese-of-lisieux',
-    name: 'St. Thérèse of Lisieux',
-    feastDay: '10-01',
-    bio: 'A Carmelite nun known for her little way.',
-    patronages: <({String need, SaintCategory category})>[
-      (need: 'missions', category: SaintCategory.spiritual),
-    ],
-  );
-  await _seedSaint(
-    db,
-    slug: 'john-mary-vianney',
-    name: 'St. John Mary Vianney',
-    feastDay: '08-08',
-    bio: 'A parish priest famous for long hours in the confessional.',
-    patronages: <({String need, SaintCategory category})>[
-      (need: 'fathers', category: SaintCategory.spiritual),
-    ],
-  );
-  await _seedSaint(
-    db,
-    slug: 'joseph-the-worker',
-    name: 'St. Joseph the Worker',
-    feastDay: '05-01',
-    bio: 'A carpenter who worked as a day laborer and trusted in honest work.',
-    patronages: <({String need, SaintCategory category})>[
-      (need: 'day-laborers', category: SaintCategory.jobs),
-    ],
-  );
-  await _seedSaint(
-    db,
-    slug: 'joan-of-arc',
-    name: 'St. Joan of Arc',
-    feastDay: '05-30',
-    bio: 'She rallied France after lost battles.',
-    patronages: <({String need, SaintCategory category})>[
-      (need: 'soldiers', category: SaintCategory.military),
-    ],
-  );
-  await _seedSaint(
-    db,
-    slug: 'george',
-    name: 'St. George',
-    feastDay: '04-23',
-    bio: 'A dragon slaying knight.',
-    patronages: <({String need, SaintCategory category})>[
-      (need: 'soldiers', category: SaintCategory.military),
-    ],
-  );
-  return db;
-}
+import '../helpers/saint_fixture_db.dart';
 
 void main() {
   setUpAll(() {
@@ -146,7 +33,7 @@ void main() {
   late Database db;
 
   setUp(() async {
-    db = await _createSeededDatabase();
+    db = await createSeededDatabase();
   });
 
   tearDown(() async {
