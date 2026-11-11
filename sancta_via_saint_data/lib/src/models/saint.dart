@@ -195,8 +195,9 @@ class Saint {
       patronages: patronages,
       featured: json['featured'] as bool? ?? false,
       thumbAsset: image == null ? null : 'assets/thumbs/$slug.jpg',
-      imageAttribution:
-          sourceImage == null ? null : sourceImage['attribution'] as String?,
+      imageAttribution: sourceImage == null
+          ? null
+          : sourceImage['attribution'] as String?,
       imageAlt: sourceImage == null ? null : sourceImage['altText'] as String?,
       sources: sources,
     );
@@ -219,7 +220,9 @@ class Saint {
         ? null
         : SaintPrayer(
             text: prayerText as String,
-            source: prayerSource == null ? 'traditional' : prayerSource as String,
+            source: prayerSource == null
+                ? 'traditional'
+                : prayerSource as String,
           );
     return Saint(
       slug: row['slug'] as String,

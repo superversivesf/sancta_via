@@ -7,7 +7,8 @@ final Map<String, dynamic> garimaJson = <String, dynamic>{
   'slug': 'abba-garima',
   'name': 'St. Abba Garima',
   'feastDay': '06-24',
-  'bio': 'Abba Garima was one of the Nine Saints of Ethiopia, a group of '
+  'bio':
+      'Abba Garima was one of the Nine Saints of Ethiopia, a group of '
       'monastic fathers traditionally said to have arrived from the Roman '
       'East during the late fifth century. He is remembered as a father of '
       'monks, founding a monastery at Enda Garima in the highlands of Tigray.',
@@ -16,7 +17,8 @@ final Map<String, dynamic> garimaJson = <String, dynamic>{
     <String, dynamic>{'need': 'missionaries', 'category': 'spiritual'},
   ],
   'prayer': <String, dynamic>{
-    'text': 'O God, who sent blessed Garima among the Nine Saints to plant '
+    'text':
+        'O God, who sent blessed Garima among the Nine Saints to plant '
         'the monastic life and the Gospel in the highlands of Ethiopia, '
         'grant, we pray, that through his intercession the Church in every '
         'land may be built up in prayer, learning, and the fear of your '
@@ -33,13 +35,15 @@ final Map<String, dynamic> imagedJson = <String, dynamic>{
   'slug': 'aaron-of-aleth',
   'name': 'St. Aaron of Aleth',
   'feastDay': '06-22',
-  'bio': 'Aaron of Aleth was a hermit on an island off the Breton coast in '
+  'bio':
+      'Aaron of Aleth was a hermit on an island off the Breton coast in '
       'the sixth century.',
   'patronages': <Map<String, dynamic>>[
     <String, dynamic>{'need': 'hermits', 'category': 'spiritual'},
   ],
   'prayer': <String, dynamic>{
-    'text': 'O God, who called your servant Aaron to withdraw from the world, '
+    'text':
+        'O God, who called your servant Aaron to withdraw from the world, '
         'grant that we may follow him into prayer.',
     'source': 'traditional',
   },
@@ -47,7 +51,8 @@ final Map<String, dynamic> imagedJson = <String, dynamic>{
   'featured': true,
   'draft': true,
   'image': <String, dynamic>{
-    'url': 'https://upload.wikimedia.org/wikipedia/commons/6/63/Saint_Aaron.jpg',
+    'url':
+        'https://upload.wikimedia.org/wikipedia/commons/6/63/Saint_Aaron.jpg',
     'attribution': 'Wikimedia Commons',
     'altText': 'Portrait of St. Aaron of Aleth',
   },
@@ -58,7 +63,8 @@ final Map<String, dynamic> noPrayerJson = <String, dynamic>{
   'slug': 'nicholas-of-tolentino',
   'name': 'St. Nicholas of Tolentino',
   'feastDay': '09-10',
-  'bio': 'Nicholas of Tolentino was an Augustinian friar remembered for his '
+  'bio':
+      'Nicholas of Tolentino was an Augustinian friar remembered for his '
       'charity toward the souls in purgatory.',
   'patronages': <Map<String, dynamic>>[
     <String, dynamic>{'need': 'lost souls', 'category': 'spiritual'},
@@ -71,7 +77,8 @@ final Map<String, dynamic> noPrayerJson = <String, dynamic>{
 final Map<String, dynamic> minimalJson = <String, dynamic>{
   'slug': 'saint-cyril',
   'name': 'St. Cyril of Jerusalem',
-  'bio': 'Cyril of Jerusalem instructed catechumens in the faith in the '
+  'bio':
+      'Cyril of Jerusalem instructed catechumens in the faith in the '
       'fourth century.',
   'patronages': <Map<String, dynamic>>[
     <String, dynamic>{'need': 'catechists', 'category': 'spiritual'},
@@ -109,10 +116,9 @@ void main() {
         'name. We ask this through Christ our Lord. Amen.',
       );
       expect(saint.prayer?.source, 'original');
-      expect(
-        saint.sources,
-        <String>['https://en.wikipedia.org/wiki/Abba_Garima'],
-      );
+      expect(saint.sources, <String>[
+        'https://en.wikipedia.org/wiki/Abba_Garima',
+      ]);
       expect(saint.featured, isFalse);
       expect(saint.thumbAsset, isNull);
       expect(saint.imageAttribution, isNull);
@@ -142,8 +148,7 @@ void main() {
 
     test('round-trips every retained field through toSourceJson', () {
       final Saint original = Saint.fromSourceJson(imagedJson);
-      final Saint roundTripped =
-          Saint.fromSourceJson(original.toSourceJson());
+      final Saint roundTripped = Saint.fromSourceJson(original.toSourceJson());
 
       expect(roundTripped.slug, original.slug);
       expect(roundTripped.name, original.name);
@@ -162,8 +167,7 @@ void main() {
 
     test('round-trips prayerless records through toSourceJson', () {
       final Saint original = Saint.fromSourceJson(garimaJson);
-      final Saint roundTripped =
-          Saint.fromSourceJson(original.toSourceJson());
+      final Saint roundTripped = Saint.fromSourceJson(original.toSourceJson());
 
       expect(roundTripped.prayer, isNotNull);
       expect(roundTripped, original);
@@ -210,7 +214,8 @@ void main() {
       'name': 'St. Thérèse of Lisieux',
       'feast_day': '10-01',
       'canonized': '1925',
-      'bio': 'Therese of Lisieux was a Carmelite nun who taught the little '
+      'bio':
+          'Therese of Lisieux was a Carmelite nun who taught the little '
           'way of spiritual childhood.',
       'prayer_text': 'O little Therese, teach us your confident trust in God.',
       'prayer_source': 'traditional',
@@ -242,24 +247,32 @@ void main() {
       expect(saint.prayer?.source, 'traditional');
       expect(saint.hasPrayer, isTrue);
       expect(saint.featured, isTrue);
-      expect(saint.thumbAsset,
-          'packages/saint_data/assets/thumbs/therese-of-lisieux.jpg');
+      expect(
+        saint.thumbAsset,
+        'packages/saint_data/assets/thumbs/therese-of-lisieux.jpg',
+      );
       expect(saint.hasImage, isTrue);
       expect(saint.imageAttribution, 'Wikimedia Commons');
       expect(saint.imageAlt, 'Portrait of St. Therese of Lisieux');
       expect(saint.patronages, hasLength(2));
-      expect(saint.patronages[0], const SaintPatronage(
-        need: 'missions',
-        category: SaintCategory.spiritual,
-      ));
-      expect(saint.sources,
-          <String>['https://en.wikipedia.org/wiki/Th%C3%A9r%C3%A8se']);
+      expect(
+        saint.patronages[0],
+        const SaintPatronage(
+          need: 'missions',
+          category: SaintCategory.spiritual,
+        ),
+      );
+      expect(saint.sources, <String>[
+        'https://en.wikipedia.org/wiki/Th%C3%A9r%C3%A8se',
+      ]);
     });
 
     test('featured 0 and absent map to false', () {
       expect(
-        Saint.fromDbRow(<String, dynamic>{...thereseRow, 'featured': 0})
-            .featured,
+        Saint.fromDbRow(<String, dynamic>{
+          ...thereseRow,
+          'featured': 0,
+        }).featured,
         isFalse,
       );
       final Map<String, dynamic> absentRow = <String, dynamic>{...thereseRow}
@@ -307,10 +320,10 @@ void main() {
 
       expect(patronage.need, 'monks');
       expect(patronage.category, SaintCategory.spiritual);
-      expect(
-        patronage.toJson(),
-        <String, dynamic>{'need': 'monks', 'category': 'spiritual'},
-      );
+      expect(patronage.toJson(), <String, dynamic>{
+        'need': 'monks',
+        'category': 'spiritual',
+      });
       expect(
         SaintPatronage.fromJson(patronage.toJson()),
         const SaintPatronage(need: 'monks', category: SaintCategory.spiritual),
@@ -333,9 +346,8 @@ void main() {
 
     test('missing need throws', () {
       expect(
-        () => SaintPatronage.fromJson(
-          <String, dynamic>{'category': 'spiritual'},
-        ),
+        () =>
+            SaintPatronage.fromJson(<String, dynamic>{'category': 'spiritual'}),
         throwsFormatException,
       );
     });
@@ -361,20 +373,22 @@ void main() {
 
   group('SaintPrayer', () {
     test('fromJson parses text and source', () {
-      final SaintPrayer prayer = SaintPrayer.fromJson(
-        <String, dynamic>{'text': 'Pray for us.', 'source': 'traditional'},
-      );
+      final SaintPrayer prayer = SaintPrayer.fromJson(<String, dynamic>{
+        'text': 'Pray for us.',
+        'source': 'traditional',
+      });
 
       expect(prayer.text, 'Pray for us.');
       expect(prayer.source, 'traditional');
-      expect(prayer.toJson(),
-          <String, dynamic>{'text': 'Pray for us.', 'source': 'traditional'});
+      expect(prayer.toJson(), <String, dynamic>{
+        'text': 'Pray for us.',
+        'source': 'traditional',
+      });
     });
 
     test('isValid accepts known sources with text', () {
       expect(
-        const SaintPrayer(text: 'Pray for us.', source: 'traditional')
-            .isValid,
+        const SaintPrayer(text: 'Pray for us.', source: 'traditional').isValid,
         isTrue,
       );
       expect(
@@ -384,12 +398,18 @@ void main() {
     });
 
     test('isValid rejects empty text and unknown sources', () {
-      expect(const SaintPrayer(text: '   ', source: 'original').isValid,
-          isFalse);
-      expect(const SaintPrayer(text: '', source: 'traditional').isValid,
-          isFalse);
-      expect(const SaintPrayer(text: 'Pray for us.', source: 'blog').isValid,
-          isFalse);
+      expect(
+        const SaintPrayer(text: '   ', source: 'original').isValid,
+        isFalse,
+      );
+      expect(
+        const SaintPrayer(text: '', source: 'traditional').isValid,
+        isFalse,
+      );
+      expect(
+        const SaintPrayer(text: 'Pray for us.', source: 'blog').isValid,
+        isFalse,
+      );
     });
 
     test('fromJson requires text and source', () {
@@ -424,7 +444,10 @@ void main() {
 
       expect(parsed, SaintCategory.illness);
       expect(parsed!.label, 'Illness & healing');
-      expect(parsed.description, 'Diseases, mental health, specific conditions');
+      expect(
+        parsed.description,
+        'Diseases, mental health, specific conditions',
+      );
     });
 
     test("tryParse('bogus') returns null", () {

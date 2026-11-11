@@ -4,4 +4,7 @@
 /// dataset, database store, and search APIs grow in later tasks.
 library saint_data;
 
+export 'src/models/saint.dart';
+export 'src/models/saint_category.dart';
+export 'src/models/saint_search_result.dart';
 export 'src/utils/logger.dart';
