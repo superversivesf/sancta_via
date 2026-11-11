@@ -47,3 +47,5 @@ Task 6: fix round 1 re-review: both findings ADDRESSED, no Critical/Important br
 Task 6: fix round 2 dispatched.
 Task 6: fix round 2 re-review: both fixes ADDRESSED (poison pill ledger+continue with layer split; stale-ledger purge persists to disk), no new breakage; minors deferred (writeFailures infra-failure posture; post-run ledger skim owed before numbered final commit).
 Task 6: full thumbnail run launched by controller (1,358 targets; 85 thumbs skip-existing; pacing 250ms + 2/4/8s ladder; deferrals self-heal on re-run).
+Task 6: complete (commits 6ae89b4..ee7f696 after fix rounds 1-2, review clean; 1,439/1,443 thumbs, 4 genuine upstream 404s ledgered, idempotency proven, 85/85 tests)
+Task 6 carry-forward for Task 7+ (runtime): 4 saints (casimir, isaac-the-syrian, moses-the-black, perpetuus) have image != null upstream with no thumb file — the app detail/lists must fall back gracefully when the thumbAsset file is missing (errorBuilder / existence check); flagged in task-6-report for next tasks.
