@@ -1,0 +1,61 @@
+name: saint_companion
+description: A focused Catholic saints companion app with searchable saint profiles, categories, favorites, and feast-day celebrations
+publish_to: 'none'
+
+# App Store Information
+app_store:
+  display_name: "Sancta Via Saints"
+  short_description: "Catholic saint profiles, categories, and search"
+  full_description: |
+    Sancta Via Saints is a beautiful Catholic saints companion app that helps you stay connected
+    to the communion of saints. Features searchable saint profiles, category browsing, favorites,
+    and liturgical theming that adapts to the Church year.
+  keywords: "catholic, saints, feast days, church, patron saints, holiness, reference"
+  category: "Reference"
+  age_rating: "4+"
+
+# Version: major.minor.patch+build
+version: 1.0.0+1
+repository: https://github.com/superversivesf/sancta_via_saint_companion
+homepage: https://sancta-via.net
+
+environment:
+  sdk: ^3.9.2
+  flutter: ">=3.9.2"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.6.1
+  go_router: ^15.1.2
+  intl: ^0.20.2
+  package_info_plus: ^8.3.0
+  saint_data:
+    path: ../sancta_via_saint_data
+  sancta_via_liturgical_calendar:
+    path: ../sancta_via_liturgical_calendar
+  sancta_via_liturgical_calendar_riverpod:
+    path: ../sancta_via_liturgical_calendar_riverpod
+  sancta_via_shared_ui:
+    path: ../sancta_via_shared_ui
+  shared_preferences: ^2.5.3
+
+dev_dependencies:
+  cider: ^0.2.8
+  flutter_launcher_icons: ^0.14.4
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/app_icon.png
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_icon.png"
+  min_sdk_android: 21

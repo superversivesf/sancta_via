@@ -1,0 +1,51 @@
+# SanctaVia Standard Analysis Options
+# Copy this to all Flutter app root directories
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart" 
+    - "**/*.chopper.dart"
+    - build/**
+    - .dart_tool/**
+    - android/**
+    - ios/**
+    - web/**
+  
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+
+linter:
+  rules:
+    # Style Rules
+    prefer_single_quotes: true
+    require_trailing_commas: true
+    sort_pub_dependencies: true
+    
+    # Code Quality
+    avoid_print: false  # Allow prints for development/debugging
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    prefer_final_fields: true
+    prefer_final_locals: true
+    
+    # Flutter Specific
+    use_key_in_widget_constructors: true
+    avoid_unnecessary_containers: true
+    sized_box_for_whitespace: true
+    
+    # Readability
+    always_put_required_named_parameters_first: true
+    avoid_function_literals_in_foreach_calls: true
+    prefer_if_null_operators: true
+    prefer_null_aware_operators: true
+    
+    # Performance
+    avoid_slow_async_io: true
+    close_sinks: true
+    
+    # Security
+    avoid_web_libraries_in_flutter: true
