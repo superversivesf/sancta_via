@@ -6,7 +6,12 @@
 // - a round trip of one row per table,
 // - the `meta.schema_version = 1` stamp on first open plus the heal/upgrade
 //   stub behavior of `DatabaseMigrationService`,
-// - the value-set validation on write (status/kind → ArgumentError).
+// - the value-set validation on write (status/kind → ArgumentError),
+// - the default production open (`openDevotionalsDatabase`: sqflite
+//   onCreate/onUpgrade wiring) against a temp databases path, including a
+//   close→reopen that must not re-create, re-stamp, or conflict.
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sancta_via_devotionals/database/database_migration_service.dart';
 import 'package:sancta_via_devotionals/database/devotionals_database.dart';
@@ -444,6 +449,70 @@ void main() {
     test('value sets match the brief exactly', () {
       expect(notificationStatuses, <String>{'scheduled', 'fired', 'cancelled'});
       expect(intentionKinds, <String>{'intention', 'soul'});
+    });
+  });
+
+  group('default production open (sqflite onCreate/onUpgrade wiring)', () {
+    // The real default open resolves `getDatabasesPath()` + `'devotionals.db'`
+    // through the global factory (FFI-initialized in flutter_test_config).
+    // Pointing the factory at a temp directory makes that file-backed path
+    // hermetic; the other groups in this file use in-memory databases, which
+    // bypass the databases path entirely, so this never leaks into them.
+    late Directory databasesDir;
+    late DevotionalsDatabase wrapper;
+
+    setUpAll(() async {
+      databasesDir = await Directory.systemTemp.createTemp('devotionals_ffi_');
+      await databaseFactory.setDatabasesPath(databasesDir.path);
+      wrapper = DevotionalsDatabase();
+    });
+
+    tearDownAll(() async {
+      await wrapper.close();
+      if (databasesDir.existsSync()) {
+        await databasesDir.delete(recursive: true);
+      }
+    });
+
+    test('first open stamps schema 1 over all six tables, and a close→reopen '
+        'reuses the file without re-creation, re-stamping, or error', () async {
+      // First open = the production path: sqflite onCreate runs the pinned
+      // DDL + version stamp; wrapper.open() then re-verifies via
+      // ensureSchema (idempotent here).
+      final Database first = await wrapper.open();
+
+      for (final String table in DatabaseMigrationService.schemaTables) {
+        expect(
+          await first.rawQuery('PRAGMA table_info($table)'),
+          isNotEmpty,
+          reason: 'Table $table must exist after the production onCreate',
+        );
+      }
+      expect(await wrapper.getMeta('schema_version'), '1');
+      // Fresh store: the version stamp is the only meta row.
+      expect(await first.query('meta'), hasLength(1));
+
+      // Seed a row to prove the reopen reuses (not recreates) the store.
+      await wrapper.upsertPack(
+        id: 'reopen-pack',
+        json: '{}',
+        packVersion: '1.0.0',
+        embeddedAt: '2026-11-12T00:00:00Z',
+      );
+      await wrapper.close();
+
+      // Second open of the same file through the same resolution:
+      // onCreate must not re-run (a re-issued CREATE TABLE would fail
+      // loudly), onUpgrade/from==1→to==1 is a no-op, the stamp is
+      // unchanged, and no rows are duplicated.
+      final Database second = await wrapper.open();
+
+      expect(await DatabaseMigrationService.readSchemaVersion(second), 1);
+      expect(await wrapper.getMeta('schema_version'), '1');
+      expect(await second.query('meta'), hasLength(1));
+      expect(await wrapper.getAllPacks(), hasLength(1));
+
+      await wrapper.close();
     });
   });
 }
