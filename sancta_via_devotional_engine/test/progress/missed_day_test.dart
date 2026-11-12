@@ -140,6 +140,65 @@ void main() {
         throwsArgumentError,
       );
     });
+
+    group('evaluateTyped', () {
+      test(
+        'returns the same verdict as the strict string call on a '
+        'completed-but-reset gap',
+        () {
+          final MissedDayVerdict typed = MissedDayEvaluator.evaluateTyped(
+            policy: RestartPolicy.strict,
+            state: progressedState(),
+            lastFulfilled: DateTime(2026, 12, 5),
+            nextDue: DateTime(2027, 1, 1),
+          );
+          final MissedDayVerdict string = MissedDayEvaluator.evaluate(
+            'strict',
+            progressedState(),
+            DateTime(2026, 12, 5),
+            DateTime(2027, 1, 1),
+          );
+
+          expect(typed, equals(string));
+          expect(
+            typed,
+            MissedDayVerdict.reset,
+            reason: 'Full calendar days lie strictly between 2026-12-05 and '
+                '2027-01-01: strict voids the completed series, identically '
+                'for the typed policy',
+          );
+        },
+      );
+
+      test('resumes a permissive policy across the same gap', () {
+        expect(
+          MissedDayEvaluator.evaluateTyped(
+            policy: RestartPolicy.permissive,
+            state: progressedState(),
+            lastFulfilled: DateTime(2026, 12, 5),
+            nextDue: DateTime(2027, 1, 1),
+          ),
+          MissedDayVerdict.resume,
+          reason: 'Permissive continues across a skipped span, typed or not',
+        );
+      });
+
+      test(
+        'asks the user when the state has 0 ordinals and no completions',
+        () {
+          expect(
+            MissedDayEvaluator.evaluateTyped(
+              policy: RestartPolicy.strict,
+              state: freshState(),
+              lastFulfilled: DateTime(2026, 12, 5),
+              nextDue: DateTime(2027, 1, 1),
+            ),
+            MissedDayVerdict.askUser,
+            reason: 'There is no streak to reset, so the user starts afresh',
+          );
+        },
+      );
+    });
   });
 
   group('cadence scope (documented behavior, not a bug)', () {

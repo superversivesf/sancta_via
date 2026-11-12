@@ -17,6 +17,7 @@
 library;
 
 import '../models/progress_state.dart';
+import '../models/schedule_spec.dart';
 
 /// Reduces [d] to a local midnight date (a `DateTime(year, month, day)`
 /// construction), preserving the local calendar components.
@@ -112,5 +113,28 @@ class MissedDayEvaluator {
       return MissedDayVerdict.reset;
     }
     return MissedDayVerdict.resume;
+  }
+
+  /// Decides the [MissedDayVerdict] exactly as [evaluate] does, with the
+  /// pack's missed-day policy given as a [RestartPolicy] instead of its
+  /// string form.
+  ///
+  /// A thin delegate: [RestartPolicy.strict] maps to `'strict'` and
+  /// [RestartPolicy.permissive] to `'permissive'`, and the decision
+  /// itself is [evaluate]'s — one source of truth, no separately
+  /// maintained rule. The string-call contract above (the askUser rule,
+  /// the gap rule, the date-only discipline, the cadence scope) applies
+  /// unchanged; [evaluate] remains the public default.
+  static MissedDayVerdict evaluateTyped({
+    required RestartPolicy policy,
+    required ProgressState state,
+    required DateTime lastFulfilled,
+    required DateTime nextDue,
+  }) {
+    final String label = switch (policy) {
+      RestartPolicy.strict => 'strict',
+      RestartPolicy.permissive => 'permissive',
+    };
+    return evaluate(label, state, lastFulfilled, nextDue);
   }
 }
