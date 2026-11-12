@@ -400,6 +400,99 @@ void main() {
       );
     });
 
+    test('a routine evening anchor needs the evening reminder toggle', () {
+      // 19:00 is evening but NOT a night item (20:00+ is), so its gate is the
+      // evening reminder toggle and nothing else.
+      final ContentPack examen = _pack(
+        id: 'daily_examen',
+        title: 'Daily Examen',
+        family: PackFamily.routine,
+        schedules: <ScheduleSpec>[
+          TimeOfDaySpec(19, 0, baseLabel: 'evening_examen'),
+        ],
+      );
+
+      final List<PlannedNotification> off = const NotificationPlanner().plan(
+        now: tz.TZDateTime(_zone, 2026, 12, 1),
+        timeZoneName: _zoneName,
+        packs: <ContentPack>[examen],
+        enrollments: _enroll(<ContentPack>[examen]),
+        upcomingFeasts: const <LiturgicalDayData>[],
+        settings: DevotionsAppSettings.defaults(),
+        alreadyPending: const <PlannedNotification>[],
+      );
+      expect(off, isEmpty);
+
+      final List<PlannedNotification> on = const NotificationPlanner().plan(
+        now: tz.TZDateTime(_zone, 2026, 12, 1),
+        timeZoneName: _zoneName,
+        packs: <ContentPack>[examen],
+        enrollments: _enroll(<ContentPack>[examen]),
+        upcomingFeasts: const <LiturgicalDayData>[],
+        settings: DevotionsAppSettings.defaults().copyWith(
+          eveningReminderEnabled: true,
+        ),
+        alreadyPending: const <PlannedNotification>[],
+      );
+      expect(on, hasLength(60));
+      expect(
+        on.every(
+          (PlannedNotification n) =>
+              n.fireAt.hour == 19 && n.fireAt.minute == 0,
+        ),
+        isTrue,
+      );
+    });
+
+    test('a midday routine anchor follows the morning reminder toggle', () {
+      // A 12:00 routine anchor that is neither the Angelus nor Mercy has no
+      // dedicated toggle; it is gated by the morning reminder (the day's
+      // first half), and its clock is the Today assembly's noon mapping.
+      final ContentPack midday = _pack(
+        id: 'midday_prayer',
+        title: 'Midday Prayer',
+        family: PackFamily.routine,
+        schedules: <ScheduleSpec>[
+          TimeOfDaySpec(12, 0, baseLabel: 'midday_prayer'),
+        ],
+      );
+
+      final List<PlannedNotification> off = const NotificationPlanner().plan(
+        now: tz.TZDateTime(_zone, 2026, 12, 1),
+        timeZoneName: _zoneName,
+        packs: <ContentPack>[midday],
+        enrollments: _enroll(<ContentPack>[midday]),
+        upcomingFeasts: const <LiturgicalDayData>[],
+        settings: DevotionsAppSettings.defaults(),
+        alreadyPending: const <PlannedNotification>[],
+      );
+      expect(off, isEmpty);
+
+      final DevotionsAppSettings on = DevotionsAppSettings.defaults().copyWith(
+        morningReminderEnabled: true,
+        eveningReminderEnabled: false,
+      );
+      final List<PlannedNotification> planned = const NotificationPlanner()
+          .plan(
+            now: tz.TZDateTime(_zone, 2026, 12, 1),
+            timeZoneName: _zoneName,
+            packs: <ContentPack>[midday],
+            enrollments: _enroll(<ContentPack>[midday]),
+            upcomingFeasts: const <LiturgicalDayData>[],
+            settings: on,
+            alreadyPending: const <PlannedNotification>[],
+          );
+      expect(planned, hasLength(60));
+      final List<PlannedNotification> firstDay = _onDay(
+        planned,
+        DateTime(2026, 12, 1),
+      );
+      expect(firstDay, hasLength(1));
+      expect(firstDay.single.fireAt.hour, 12);
+      expect(firstDay.single.fireAt.minute, 0);
+      expect(firstDay.single.body, 'Midday Prayer');
+    });
+
     test('only enrolled packs are planned', () {
       final List<PlannedNotification> plan = const NotificationPlanner().plan(
         now: tz.TZDateTime(_zone, 2026, 12, 1),
@@ -512,6 +605,46 @@ void main() {
       );
       expect(immaculateConception.body, startsWith('Day 8 of 10'));
       expect(immaculateConception.body, contains('Immaculate Conception'));
+    });
+
+    test('a per-day calendar list names only the non-ferial days', () {
+      // The wiring shape the season-seam invites: EVERY horizon day in the
+      // list, not just the feasts. A ferial (weekday-rank) day must never
+      // append its celebration name to a body; a real celebration still does.
+      final ContentPack series = _seriesPack(
+        id: 'advent_series',
+        title: 'Advent Series',
+        startDate: DateTime(2026, 12, 1),
+        lengthDays: 10,
+      );
+      final List<LiturgicalDayData> everyDay = <LiturgicalDayData>[
+        for (int d = 1; d <= 8; d++)
+          if (LiturgicalCalendarService.getDayForDate(DateTime(2026, 12, d))
+              case final LiturgicalDayData day)
+            day,
+      ];
+      expect(everyDay, hasLength(8));
+
+      final List<PlannedNotification> plan = const NotificationPlanner().plan(
+        now: tz.TZDateTime(_zone, 2026, 12, 1),
+        timeZoneName: _zoneName,
+        packs: <ContentPack>[series],
+        enrollments: _enroll(<ContentPack>[series]),
+        upcomingFeasts: everyDay,
+        settings: DevotionsAppSettings.defaults(),
+        alreadyPending: const <PlannedNotification>[],
+      );
+
+      PlannedNotification onDay(DateTime date) => plan.firstWhere(
+        (PlannedNotification n) =>
+            n.fireAt.year == date.year &&
+            n.fireAt.month == date.month &&
+            n.fireAt.day == date.day,
+      );
+      // 2026-12-01 is a ferial weekday: the body stays the bare ordinal.
+      expect(onDay(DateTime(2026, 12, 1)).body, 'Day 1 of 10');
+      // …and a real celebration is still named.
+      expect(onDay(DateTime(2026, 12, 8)).body, contains('Immaculate'));
     });
 
     test('ids are deterministic across two plans of the same inputs', () {

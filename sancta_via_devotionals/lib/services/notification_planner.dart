@@ -25,7 +25,9 @@
 //   day ordinal (`'Day 6 of 9'` for a nine-day novena), a grace-window note
 //   when the pack has a [GraceWindow] (e.g. the First Saturdays confession's
 //   ±8 days), and the day's celebration name when the injected calendar seam
-//   supplies that day as a feast.
+//   supplies that day with a NON-FERIAL celebration — a weekday-rank day in
+//   the list is never appended, so a caller that feeds every horizon day (a
+//   per-day calendar list) does not garnish every body with a ferial title.
 //
 // ## Settings gating (the Task 12 ruling: notification-only)
 //
@@ -79,7 +81,11 @@
 // * Progress: the pinned signature carries no `ProgressState`, so a
 //   commitment's ordinal within its streak is not known here — the reminder
 //   says "due today" plus the pack's grace-window note rather than inventing
-//   a position. The Today screen (which has progress) shows the ordinal.
+//   a position. The Today screen (which has progress) shows the ordinal. And
+//   a completed consecutive commitment STILL RESOLVES DUE (its
+//   [ConsecutiveCommitmentSpec.resolve] is progress-free): the planner cannot
+//   see the completion, so the caller must filter completed commitments out
+//   of [packs] before calling [plan] — a Task 18 wiring requirement.
 // * Per-day seasons: [upcomingFeasts] is the calendar seam, and only the days
 //   it carries have a season key; on those days a season variant label
 //   (`regina_caeli` in Eastertide) shapes the anchor body. A full per-day
@@ -186,8 +192,9 @@ class NotificationPlanner {
   ///   read: a derived pack already carries its patched schedule (the Task 15
   ///   convention), so enrollment presence is the whole signal.
   /// * [upcomingFeasts] — the calendar seam: the days within the horizon whose
-  ///   celebration names belong in a body (and whose season key resolves
-  ///   season-aware anchor labels on that day).
+  ///   non-ferial celebration names belong in a body (a weekday-rank day in
+  ///   the list never appends its name) and whose season key resolves
+  ///   season-aware anchor labels on that day.
   /// * [settings] — the anchor times and the consent toggles (see the library
   ///   docs on gating).
   /// * [alreadyPending] — the ids currently scheduled on the device; ids that
@@ -459,7 +466,7 @@ class NotificationPlanner {
         notes.add(_windowNote(window));
       }
     }
-    if (feast != null) {
+    if (feast != null && !feast.isWeekday) {
       notes.add(feast.displayName);
     }
     if (notes.isEmpty) {
