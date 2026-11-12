@@ -85,7 +85,7 @@ import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.da
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart'
     show currentDateProvider;
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart'
-    show BaseSettingsModel;
+    show BaseSettingsModel, baseSettingsProvider;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -182,6 +182,18 @@ class _OnboardingHarness {
   Future<Map<String, dynamic>> storedSettings() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? raw = prefs.getString(DevotionsSettingsNotifier.storageKey);
+    if (raw == null) {
+      return const <String, dynamic>{};
+    }
+    return jsonDecode(raw) as Map<String, dynamic>;
+  }
+
+  /// The raw SharedPreferences store the SHARED base-settings notifier
+  /// persists to (its storage key lives in shared_ui's
+  /// `base_settings_provider.dart` — a private constant).
+  Future<Map<String, dynamic>> storedBaseSettings() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? raw = prefs.getString('sancta_via_base_settings');
     if (raw == null) {
       return const <String, dynamic>{};
     }
@@ -804,14 +816,23 @@ void main() {
     );
 
     testWidgets(
-      'enabling reminders requests permission once and writes the toggles',
+      'enabling reminders requests permission once and writes the toggles — '
+      'and opens the shared master gate so consents plan rows',
       (WidgetTester tester) async {
         final _OnboardingHarness harness = await _pumpOnboarding(
           tester,
           today: _frozenToday,
         );
         await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        // The routine step enrolls the Angelus first: the reminder consent's
+        // own refresh pass then has a plan input to schedule (the gate-open
+        // fix round 2 pin below is about the PLANNER's output, not just the
+        // flag).
         await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        await _tapAndDrain(
+          tester,
+          find.byKey(const Key('routine_toggle_angelus')),
+        );
         await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
 
         // Both reminder enables share ONE plugin initialization: the
@@ -848,10 +869,54 @@ void main() {
           isTrue,
         );
 
+        // Fix round 2: a consent given in onboarding opens the SHARED
+        // master gate in the same step — the walkthrough's promise is that
+        // the reminders actually arrive (the gate closes the plan; a taken
+        // consent must never schedule nothing).
+        expect(
+          harness.container.read(baseSettingsProvider).notificationsEnabled,
+          isTrue,
+        );
+        // The base settings store the shared notifier persists to (its
+        // storage key lives in shared_ui's base_settings_provider.dart).
+        expect(
+          (await harness.storedBaseSettings())['notificationsEnabled'],
+          isTrue,
+        );
+        // The one-way sync carried the gate into the app settings snapshot.
+        expect(
+          ((await harness.storedSettings())['baseSettings']
+              as Map<String, dynamic>)['notificationsEnabled'],
+          isTrue,
+        );
+        // And the consent's own refresh pass PLANNED: the enrolled
+        // Angelus's anchor reminders exist on the device and in the index —
+        // the invariant pinned end-to-end.
+        expect(harness.adapter.schedules, greaterThan(0));
+        final List<NotificationRow> plannedRows =
+            await tester.runAsync(
+              () => harness.repository.database.getAllNotifications(),
+            ) ??
+            const <NotificationRow>[];
+        expect(
+          plannedRows.where(
+            (NotificationRow row) =>
+                row.status == 'scheduled' &&
+                row.id.startsWith('angelus:anchor:'),
+          ),
+          isNotEmpty,
+        );
+
         await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
         await _tapAndDrain(tester, find.byKey(const Key('onboarding_done')));
         expect(harness.container.read(onboardingCompleteProvider), isTrue);
         expect(harness.adapter.initializeCalls, 1);
+        // The done step landed on Today with enrollments in place: the
+        // Today branch's assembly re-resolve runs REAL SQLite futures that
+        // the fake-async pumps cannot complete — settle them so no sqflite
+        // transaction-lock timer outlives the test (the recipe's real-time
+        // drain rounds).
+        await _drain(tester);
       },
     );
   });

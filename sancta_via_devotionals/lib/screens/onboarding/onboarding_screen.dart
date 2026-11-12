@@ -62,6 +62,7 @@ import 'package:sancta_via_devotional_engine_riverpod/sancta_via_devotional_engi
     show enrolledProgramsProvider, programDetailProvider, todayProgramsProvider;
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart'
     show currentDateProvider;
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart' hide AppLogger;
 
 import '../../providers/app_settings_provider.dart'
     show DevotionsSettingsNotifier, devotionsSettingsProvider;
@@ -371,10 +372,27 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   /// permission: the service's `initialize` (Task 18's seam — the plugin's
   /// permission request lives inside, idempotent) runs once, then a re-plan
   /// applies the new consent. Disabling only re-plans.
+  ///
+  /// Fix round 2: enabling ALSO opens the SHARED master gate
+  /// (`baseSettingsProvider.notificationsEnabled`) in the same step — the
+  /// gate closes the whole plan (Task 20 fix round 1), so a consent taken
+  /// here must yield scheduled reminders; the write happens BEFORE the
+  /// refresh below and persists through the base-settings setter. A
+  /// disabling write never closes the gate (the walkthrough exposes no
+  /// master switch; only the settings screen's own switch governs closing
+  /// it again).
   Future<void> _toggleReminder({
     required bool morning,
     required bool enabled,
   }) async {
+    // The gate write precedes the consent write (the same step): the
+    // refresh at the end of this method then plans over the gate-open
+    // state the walkthrough just persisted.
+    if (enabled) {
+      await ref
+          .read(baseSettingsProvider.notifier)
+          .setNotificationsEnabled(true);
+    }
     final DevotionsSettingsNotifier settings = ref.read(
       devotionsSettingsProvider.notifier,
     );
