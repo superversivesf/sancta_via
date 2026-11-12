@@ -142,33 +142,31 @@ void main() {
     });
 
     group('evaluateTyped', () {
-      test(
-        'returns the same verdict as the strict string call on a '
-        'completed-but-reset gap',
-        () {
-          final MissedDayVerdict typed = MissedDayEvaluator.evaluateTyped(
-            policy: RestartPolicy.strict,
-            state: progressedState(),
-            lastFulfilled: DateTime(2026, 12, 5),
-            nextDue: DateTime(2027, 1, 1),
-          );
-          final MissedDayVerdict string = MissedDayEvaluator.evaluate(
-            'strict',
-            progressedState(),
-            DateTime(2026, 12, 5),
-            DateTime(2027, 1, 1),
-          );
+      test('returns the same verdict as the strict string call on a '
+          'completed-but-reset gap', () {
+        final MissedDayVerdict typed = MissedDayEvaluator.evaluateTyped(
+          policy: RestartPolicy.strict,
+          state: progressedState(),
+          lastFulfilled: DateTime(2026, 12, 5),
+          nextDue: DateTime(2027, 1, 1),
+        );
+        final MissedDayVerdict string = MissedDayEvaluator.evaluate(
+          'strict',
+          progressedState(),
+          DateTime(2026, 12, 5),
+          DateTime(2027, 1, 1),
+        );
 
-          expect(typed, equals(string));
-          expect(
-            typed,
-            MissedDayVerdict.reset,
-            reason: 'Full calendar days lie strictly between 2026-12-05 and '
-                '2027-01-01: strict voids the completed series, identically '
-                'for the typed policy',
-          );
-        },
-      );
+        expect(typed, equals(string));
+        expect(
+          typed,
+          MissedDayVerdict.reset,
+          reason:
+              'Full calendar days lie strictly between 2026-12-05 and '
+              '2027-01-01: strict voids the completed series, identically '
+              'for the typed policy',
+        );
+      });
 
       test('resumes a permissive policy across the same gap', () {
         expect(
