@@ -33,21 +33,33 @@
 // evaluator's pinned cadence scope (daily series). Anchor-recurring
 // commitments are driven by `CommitmentState` through the session
 // completion writer, never by this verdict, so they render no missed-day
-// card. Within that scope the surfaced state is the verdict that needs the
-// user: `reset`. A permissive policy answers `resume` (the pack's own
-// policy already decided — nothing to apply, and `applyMissedDay(resume)`
-// is a documented no-op), and `askUser` means nothing is fulfilled yet —
-// neither renders a card; the ruled Apply affordance belongs to the card
-// the verdict actually carries. A verdict only exists on a live series
-// (today still inside the window); a closed window and a fresh program
-// (zero fulfilled) render nothing.
+// card. Within that scope the surfaced states are the ones needing the
+// user:
+//
+// * `reset` — the strict-policy gap card, with the ruled Apply affordance
+//   (applying clears the streak COUNT; the badge history and the series'
+//   start date stay — the count is not "reset to day 1", fix round 1);
+// * `askUser` WITH fulfilled ordinals — the un-anchored claim state (fix
+//   round 1): a persisted progress can carry ordinals without a
+//   `lastFulfilled` date (Task 19's claim shape), and `missedVerdict`
+//   answers `askUser` for exactly that; the card surfaces it read-only —
+//   the service refuses to apply an `askUser` verdict — naming what
+//   anchors it: the next completed day.
+//
+// A permissive policy answers `resume` (the pack's own policy already
+// decided — nothing to apply, and `applyMissedDay(resume)` is a
+// documented no-op), and a FRESH program (zero fulfilled) renders no
+// card: nothing is fulfilled, nothing lags. A verdict only exists on a
+// live series (today still inside the window); a closed window renders
+// nothing.
 //
 // ## The position chips (the Review Focus 2 shape)
 //
-// * a consecutive commitment renders `'N of M'` from the persisted streak —
-//   the progress-surface reading of the counter (Today already reports the
-//   NEXT position through `DueToday.schedule.ordinal`); the lifetime history
-//   lives in the badges;
+// * a consecutive commitment renders `'N of M'` at the position the next
+//   completion takes — the persisted streak plus one, the SAME position
+//   `DueToday.schedule.ordinal` reports on Today (fix round 1: a fresh
+//   program reads `'1 of M'`, never a completions-style `'0 of M'`); the
+//   fulfilled history lives in the badges;
 // * a session series renders `'day N of M'` from the SCHEDULE's own day
 //   index — the same day the session player resolves, so the phase banner
 //   and the player always describe the same day; before the user-picked
@@ -154,9 +166,11 @@ class ProgressEntry {
   /// banner for the consecration / 54-day shapes.
   final String? seriesPhase;
 
-  /// The surfaced missed-day verdict — non-null ONLY when the engine's
-  /// `ProgressService.missedVerdict` (with the per-pack policy) answered
-  /// `reset` on a live daily series (see the library docs).
+  /// The surfaced missed-day verdict: `reset` (the strict-policy gap, with
+  /// the Apply affordance) or `askUser` on a live daily series with
+  /// fulfilled ordinals but no `lastFulfilled` date (the un-anchored claim
+  /// state, surfaced read-only). Null for every other state — resume,
+  /// fresh programs, and non-series shapes (see the library docs).
   final MissedDayVerdict? missedVerdict;
 
   /// Whether the program's count is fully fulfilled: a commitment at its
@@ -181,7 +195,10 @@ class ProgressEntry {
     final int fulfilled = progress?.fulfilledOrdinals ?? 0;
     switch (schedule) {
       case ConsecutiveCommitmentSpec(:final int count):
-        return isComplete ? 'Complete' : '$fulfilled of $count';
+        // The position the next completion takes: the persisted streak
+        // plus one — the same position `DueToday.schedule.ordinal`
+        // reports (fix round 1; a fresh program reads '1 of $count').
+        return isComplete ? 'Complete' : '${fulfilled + 1} of $count';
       case SessionSeriesSpec(:final DateTime startDate, :final int lengthDays):
         if (isComplete) {
           return 'Complete';
@@ -311,6 +328,10 @@ progressAssemblyProvider = FutureProvider<ProgressAssembly>((Ref ref) async {
       }
       // The verdict: engine decision over the persisted progress, with
       // the per-pack policy, on a live series with something fulfilled.
+      // Surfaced: reset (the strict gap — actionable) and askUser with
+      // ordinals (the un-anchored claim — read-only). Resume (kept-current
+      // strict, or the permissive policy's own answer) and fresh programs
+      // render nothing.
       MissedDayVerdict? verdict;
       if (resolution.due && (progress?.fulfilledOrdinals ?? 0) > 0) {
         final MissedDayVerdict decided = ProgressService.missedVerdict(
@@ -318,7 +339,8 @@ progressAssemblyProvider = FutureProvider<ProgressAssembly>((Ref ref) async {
           policy,
           asOf,
         );
-        if (decided == MissedDayVerdict.reset) {
+        if (decided == MissedDayVerdict.reset ||
+            decided == MissedDayVerdict.askUser) {
           verdict = decided;
         }
       }

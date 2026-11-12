@@ -9,8 +9,9 @@
 // `_drain` recipe for fake-async SQLite futures).
 //
 // Pinned cases (brief steps + Review Focus):
-// 1. an in-progress commitment renders the ordinal counter chip ('3 of 9')
-//    AND the Projection.remainingDates line ('next: …') from the wrapper's
+// 1. an in-progress commitment renders the ordinal counter chip at the
+//    ruled position (persisted+1, fix round 1: '4 of 9') AND the
+//    Projection.remainingDates line ('next: …') from the wrapper's
 //    programDetailProvider;
 // 2. Review Focus 2 / plan pin: a 5/5 First-Saturdays program renders
 //    'Complete' with its dated badges — NEVER an ordinal chip and no
@@ -34,6 +35,17 @@
 //    one-per-day plenary cap note;
 // 9. with nothing enrolled the tab shows an honest empty state, and the
 //    intentions editor still renders.
+//
+// Fix round 1:
+// 10. a fresh commitment renders the NEXT position ('1 of 9'), never the
+//     completions reading '0 of 9' (the chip counts persisted+1, the same
+//     position Today's `ordinal` badge reports);
+// 11. the reset card's copy promises what the reset does — the streak
+//     count clears, badge history stays — never 'day 1' (startDate is
+//     untouched);
+// 12. a progress claim with ordinals but no completion date surfaces the
+//     un-anchored state read-only: `askUser` is no longer swallowed, and
+//     the service's refusal to apply it is honored with no Apply button.
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -187,12 +199,15 @@ void main() {
         },
       );
 
-      // The ordinal counter chip: 3 fulfilled of the 9 First Fridays.
+      // The ordinal counter chip at the ruled position (fix round 1): the
+      // position the NEXT completion takes — persisted streak + 1, the
+      // same position Today's `ordinal` badge reports — of the 9 First
+      // Fridays.
       expect(
         find.byKey(const Key('position_chip_nine_first_fridays')),
         findsOneWidget,
       );
-      expect(find.text('3 of 9'), findsOneWidget);
+      expect(find.text('4 of 9'), findsOneWidget);
 
       // The projection line (the wrapper's Projection.remainingDates): the
       // next First Fridays after 2026-12-05 are Jan 1, Feb 5, Mar 5, …
@@ -211,6 +226,36 @@ void main() {
         find.byKey(const Key('lifetime_count')),
       );
       expect(lifetime.data, '1');
+    },
+  );
+
+  testWidgets(
+    'a fresh commitment renders the next position (1 of 9) — never 0 of 9 '
+    '(fix round 1: the chip counts the ruled persisted+1 position)',
+    (WidgetTester tester) async {
+      await _pumpProgress(
+        tester,
+        today: DateTime(2026, 12, 5),
+        enrollments: const <String, Map<String, dynamic>>{
+          'nine_first_fridays': <String, dynamic>{},
+        },
+      );
+
+      // No progress yet: the chip reads the position the FIRST completion
+      // takes (persisted + 1 — the same position Today's `ordinal` badge
+      // reports), never the '0 of 9' completions reading.
+      expect(
+        find.byKey(const Key('position_chip_nine_first_fridays')),
+        findsOneWidget,
+      );
+      expect(find.text('1 of 9'), findsOneWidget);
+      expect(find.text('0 of 9'), findsNothing);
+
+      // The fresh program's projection still points at the next anchors.
+      expect(
+        find.byKey(const Key('projection_line_nine_first_fridays')),
+        findsOneWidget,
+      );
     },
   );
 
@@ -372,6 +417,11 @@ void main() {
       // affordance.
       expect(find.byKey(const Key('missed_day_novena_54_day')), findsOneWidget);
       expect(find.textContaining('Missed days'), findsOneWidget);
+      // Fix round 1: the copy promises what the reset actually does — the
+      // streak COUNT clears and the badge history stays (startDate is not
+      // touched; "day 1" is never promised).
+      expect(find.textContaining('clears your streak count'), findsOneWidget);
+      expect(find.textContaining('resets the count to day 1'), findsNothing);
       final Finder apply = find.byKey(
         const Key('apply_missed_day_novena_54_day'),
       );
@@ -429,6 +479,43 @@ void main() {
         find.byKey(const Key('apply_missed_day_novena_54_day')),
         findsOneWidget,
       );
+    },
+  );
+
+  testWidgets(
+    'a progress claim that wrote ordinals without a completion date renders '
+    'the un-anchored state read-only (fix round 1: askUser is not swallowed)',
+    (WidgetTester tester) async {
+      await _pumpProgress(
+        tester,
+        today: DateTime(2026, 11, 15),
+        enrollments: const <String, Map<String, dynamic>>{
+          'novena_54_day': <String, dynamic>{'via': 'test'},
+        },
+        progress: <String, ProgressState>{
+          // The Task-19 claim shape: ordinals recorded, NO lastFulfilled —
+          // missedVerdict reads askUser for exactly this state.
+          'novena_54_day': ProgressState(
+            packId: 'novena_54_day',
+            fulfilledOrdinals: 7,
+          ),
+        },
+      );
+
+      // The un-anchored card surfaces the state explicitly, read-only: the
+      // service refuses to apply an askUser verdict, so there is no Apply.
+      expect(
+        find.byKey(const Key('unanchored_progress_novena_54_day')),
+        findsOneWidget,
+      );
+      expect(find.textContaining('un-anchored'), findsOneWidget);
+      expect(
+        find.byKey(const Key('apply_missed_day_novena_54_day')),
+        findsNothing,
+      );
+      // It is not a reset card, and the chip still reads the schedule's day.
+      expect(find.byKey(const Key('missed_day_novena_54_day')), findsNothing);
+      expect(find.text('day 6 of 54'), findsOneWidget);
     },
   );
 

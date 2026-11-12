@@ -151,9 +151,12 @@ class ProgressService {
   /// * `askUser` surfaces first when the state holds no fulfilled ordinals
   ///   (nothing to continue or reset) — the engine's own rule, and it wins
   ///   over the policy;
-  /// * a state with nothing fulfilled at all (null, or no `lastFulfilled`)
-  ///   also reads `askUser`: there is no last fulfilled date to measure a gap
-  ///   from;
+  /// * a null [state], OR a state carrying no `lastFulfilled` date, also
+  ///   reads `askUser`: there is no last fulfilled date to measure a gap
+  ///   from. Such a state MAY still carry ordinals — a progress claim can
+  ///   record them without a completion date (Task 19's shape) — so
+  ///   `askUser` is NOT only the fresh-program state: callers must surface
+  ///   the un-anchored case distinctly (fix round 1, Task 16);
   /// * otherwise the policy decides: `'strict'` yields `reset` across a gap
   ///   and `'permissive'` always `resume` (dates on or before the last
   ///   fulfilled date are never a gap).

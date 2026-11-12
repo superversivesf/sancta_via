@@ -109,10 +109,10 @@ class _ProgressBody extends ConsumerStatefulWidget {
 
 class _ProgressBodyState extends ConsumerState<_ProgressBody> {
   /// Applies the surfaced missed-day verdict for [packId] through Task 9's
-  /// service — the ruled affordance: applying a strict gap resets the
-  /// streak while the badge history stays. The affected reads then
-  /// re-resolve (the wrapper's progress list, the pack's projection, and
-  /// this tab's assembly).
+  /// service — the ruled affordance: applying a strict gap clears the
+  /// streak COUNT (the badge history and the schedule stay). The affected
+  /// reads then re-resolve (the wrapper's progress list, the pack's
+  /// projection, and this tab's assembly).
   Future<void> _applyMissedDay(String packId) async {
     final SqliteProgramRepository repository = ref.read(
       appProgramRepositoryProvider,
@@ -312,9 +312,12 @@ class _ProgramCard extends StatelessWidget {
   }
 }
 
-/// The missed-day verdict card: what the engine decided (reset) and what
-/// applying does, with the Apply affordance — the natural home Task 12's
-/// reset wiring was predicted to need.
+/// The missed-day verdict card, in the verdict's own variant (fix round 1):
+/// the `reset` state — the strict gap — says exactly what applying does
+/// (the streak COUNT clears; badge history and schedule stay) and carries
+/// the ruled Apply affordance; the `askUser`-with-ordinals state — a
+/// progress claim counted without a completion date — surfaces read-only
+/// (the service refuses to apply an `askUser` verdict; nothing to apply).
 class _MissedDayCard extends StatelessWidget {
   const _MissedDayCard({required this.entry, required this.onApplyMissedDay});
 
@@ -325,12 +328,24 @@ class _MissedDayCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    // The entry carries only surfacable verdicts: reset, and askUser with
+    // fulfilled ordinals (the un-anchored claim; see progress_providers).
+    final bool isReset = entry.missedVerdict == MissedDayVerdict.reset;
+    final Color contentColor = isReset
+        ? theme.colorScheme.onErrorContainer
+        : theme.colorScheme.onSurfaceVariant;
     return Container(
-      key: Key('missed_day_${entry.pack.id}'),
+      key: Key(
+        isReset
+            ? 'missed_day_${entry.pack.id}'
+            : 'unanchored_progress_${entry.pack.id}',
+      ),
       margin: const EdgeInsets.symmetric(vertical: 4),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.errorContainer,
+        color: isReset
+            ? theme.colorScheme.errorContainer
+            : theme.colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -339,35 +354,39 @@ class _MissedDayCard extends StatelessWidget {
           Row(
             children: <Widget>[
               Icon(
-                Icons.event_busy,
+                isReset ? Icons.event_busy : Icons.anchor_outlined,
                 size: 18,
-                color: theme.colorScheme.onErrorContainer,
+                color: contentColor,
               ),
               const SizedBox(width: 8),
               Text(
-                'Missed days',
+                isReset ? 'Missed days' : 'Un-anchored progress',
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onErrorContainer,
+                  color: contentColor,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 6),
           Text(
-            'A due day was missed, and this program\'s missed-day policy is '
-            'strict: the streak is void. Applying resets the count to day 1 '
-            '— your badge history stays.',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onErrorContainer,
+            isReset
+                ? 'A due day was missed, and this program\'s missed-day '
+                      'policy is strict. Applying clears your streak count — '
+                      'your badge history stays.'
+                : 'This program\'s progress claim is un-anchored: it counts '
+                      'completed days without a recorded last-completed date. '
+                      'Complete the next due day to anchor your streak.',
+            style: theme.textTheme.bodyMedium?.copyWith(color: contentColor),
+          ),
+          if (isReset) ...<Widget>[
+            const SizedBox(height: 8),
+            FilledButton(
+              key: Key('apply_missed_day_${entry.pack.id}'),
+              onPressed: () => onApplyMissedDay(entry.pack.id),
+              child: const Text('Apply reset'),
             ),
-          ),
-          const SizedBox(height: 8),
-          FilledButton(
-            key: Key('apply_missed_day_${entry.pack.id}'),
-            onPressed: () => onApplyMissedDay(entry.pack.id),
-            child: const Text('Apply reset'),
-          ),
+          ],
         ],
       ),
     );
