@@ -21,6 +21,15 @@
 //   provider keys under test prewarmed inside `tester.runAsync` (Task
 //   11/12 pattern) — the widget phase then renders `AsyncData`
 //   synchronously and `pumpAndSettle` is safe.
+// - The FAILURE pin uses the REAL production path (Task 11/12/13
+//   reachability ruling): `SaintRepository.instance` against a genuinely
+//   unopenable database (read-only corrupt copy at a redirected databases
+//   path) — `searchSaints` itself never throws through the real
+//   repository (`_withDatabase` swallows query errors and returns the
+//   fallback), so the production route to the error card is the
+//   first-load `ensureLoaded` failure.
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -65,16 +74,17 @@ SaintSearchResult _hit(Saint saint, String rationale) =>
 
 /// A repository whose [searchSaints] resolves canned results through a
 /// synchronously-completing future (so the provider resolves under the
-/// test's fake-async zone — see the file header), or fails when
-/// [failSearch] is set (the error-state test). [calls] records every
+/// test's fake-async zone — see the file header). [calls] records every
 /// `(query, category)` family key actually searched — the narrowing test
-/// reads it to prove the provider key switched.
+/// reads it to prove the provider key switched. Failure-path coverage does
+/// NOT go through this fake: the real repository never throws from
+/// [SaintRepository.searchSaints], so the error-state test drives the real
+/// `ensureLoaded` failure instead (Task 11/12/13 reachability ruling).
 class _FakeSearchRepository extends Fake implements SaintRepository {
-  _FakeSearchRepository({required this.resultsFor, this.failSearch = false});
+  _FakeSearchRepository({required this.resultsFor});
 
   final List<SaintSearchResult> Function(String query, SaintCategory? category)
   resultsFor;
-  final bool failSearch;
 
   final List<(String, SaintCategory?)> calls = <(String, SaintCategory?)>[];
 
@@ -88,11 +98,6 @@ class _FakeSearchRepository extends Fake implements SaintRepository {
     int limit = 100,
   }) {
     calls.add((query, category));
-    if (failSearch) {
-      return Future<List<SaintSearchResult>>.error(
-        Exception('search index unavailable'),
-      );
-    }
     return Future<List<SaintSearchResult>>.value(
       List<SaintSearchResult>.of(resultsFor(query, category)),
     );
@@ -508,16 +513,60 @@ void main() {
   testWidgets(
     'search failures render search_error_state with a retry affordance',
     (WidgetTester tester) async {
-      final _FakeSearchRepository repository = _FakeSearchRepository(
-        resultsFor: _typingResults,
-        failSearch: true,
+      // Reachability ruling carried over from home/categories/detail (Task
+      // 11/12/13 fix rounds): no fake injection. The real repository NEVER
+      // throws from searchSaints (`_withDatabase` swallows query errors and
+      // returns the fallback, which would render the empty state instead);
+      // the only production path to the error card is a first-load
+      // `ensureLoaded` failure — the production `SaintRepository.instance`
+      // opened against a genuinely unopenable database (read-only corrupt
+      // copy at a redirected databases path), same technique as
+      // categories_screens_test.dart.
+      final ProviderContainer container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      await tester.runAsync(() async {
+        final String previousDatabasesPath = await databaseFactory
+            .getDatabasesPath();
+        final Directory tempDir = await Directory.systemTemp.createTemp(
+          'saints_search_fail_',
+        );
+        await databaseFactory.setDatabasesPath(tempDir.path);
+        final String dbPath = '${tempDir.path}/saints.db';
+        await File(
+          dbPath,
+        ).writeAsBytes(List<int>.generate(5000, (int i) => i % 251));
+        await Process.run('chmod', <String>['444', dbPath]);
+
+        // Warm the search provider through the production instance — the
+        // first-load failure is expected, so the result is settled (expected
+        // error) either way; the cached AsyncError then lands synchronously
+        // when the screen watches this key.
+        await _settleFuture(
+          container.read(saintSearchProvider(('lost keys', null)).future),
+        );
+
+        await databaseFactory.setDatabasesPath(previousDatabasesPath);
+        await tempDir.delete(recursive: true);
+      });
+
+      // No repository override: the production instance stays wired.
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(home: SearchScreen()),
+        ),
       );
-      await pumpSearchScreen(tester, repository: repository);
+      await tester.pumpAndSettle();
 
       await tester.enterText(find.byKey(_searchFieldKey), 'lost keys');
       await tester.pump();
-      await tester.pump();
+      await tester.pumpAndSettle();
 
+      // The cached ensureLoaded AsyncError surfaces as the keyed error card
+      // with its retry affordance — NOT the empty state (a swallowed-query
+      // repository would have produced empty results, which is exactly what
+      // this pin distinguishes).
       expect(find.byKey(const Key('search_error_state')), findsOneWidget);
       expect(
         find.descendant(
@@ -526,15 +575,20 @@ void main() {
         ),
         findsOneWidget,
       );
+      expect(find.byKey(const Key('search_empty_state')), findsNothing);
       expect(find.byKey(_rationaleBadgeKey), findsNothing);
-
-      // Retry invalidates the failing provider; the error surface persists
-      // while the fake keeps failing.
-      await tester.tap(find.text('Retry'));
-      await tester.pump();
-      await tester.pump();
-
-      expect(find.byKey(const Key('search_error_state')), findsOneWidget);
     },
   );
+}
+
+/// Awaits [future], returning its result or — when it completes with an
+/// error — the error itself, so the real-path load-failure warm-up drives
+/// the provider regardless of whether the load fails (error expected) or
+/// silently succeeds (pre-fix behavior). Mirrors categories_screens_test.dart.
+Future<Object?> _settleFuture<T>(Future<T> future) async {
+  try {
+    return await future;
+  } on Object catch (error) {
+    return error;
+  }
 }
