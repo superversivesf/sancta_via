@@ -35,3 +35,5 @@ options/.gitignore/scripts/update_build_info.sh copied verbatim from prayer_comp
 dirs regenerated via `flutter create` (org/bundle IDs match the original tool output); template
 `widget_test.dart` deleted again; pubspec_overrides.yaml (already on disk, melos-shaped) + force-added
 pubspec.lock committed. Gates: analyze clean, smoke test green. Next: Task 2.
+Environment re-ruled (2026-11-12): the feature/devotionals-plan2 branch died with the 2026-11-11 ~/Repos deletion; Task-1 deliverables reconstructed onto main (ed8cf5b) and repaired (e760dec: platform dirs, pubspec keys, overrides; verified pub get + tests). Work-in-place on main for the remainder (house ruling since bible-data). Partner directives: commit early, push often, expect interruptions — controller stops and waits if a disconnection blocks a subagent/report. Standing model policy unchanged (all subagents flash-tier; deepseek on integration tasks + their reviews; rotate glm/minimax).
+Task 2: starting.
