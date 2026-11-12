@@ -10,12 +10,8 @@ class TodayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sancta Via Devotionals'),
-      ),
-      body: const Center(
-        child: Text('Today — placeholder'),
-      ),
+      appBar: AppBar(title: const Text('Sancta Via Devotionals')),
+      body: const Center(child: Text('Today — placeholder')),
     );
   }
 }

@@ -4,8 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sancta_via_devotionals/main.dart';
 
 void main() {
-  testWidgets('root widget renders the Sancta Via Devotionals app bar',
-      (WidgetTester tester) async {
+  testWidgets('root widget renders the Sancta Via Devotionals app bar', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       const ProviderScope(child: SanctaViaDevotionalsApp()),
     );
