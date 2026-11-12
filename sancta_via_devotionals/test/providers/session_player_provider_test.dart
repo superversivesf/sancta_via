@@ -24,6 +24,7 @@ import 'package:sancta_via_devotional_engine_riverpod/sancta_via_devotional_engi
     show ProgramRepository;
 import 'package:sancta_via_devotionals/database/devotionals_database.dart';
 import 'package:sancta_via_devotionals/providers/session_player_provider.dart';
+import 'package:sancta_via_devotionals/services/substitution_service.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -88,6 +89,43 @@ Future<Map<String, dynamic>?> _snapshot(
     return null;
   }
   return jsonDecode(raw) as Map<String, dynamic>;
+}
+
+/// Every user-visible string of [script] in step order — the comparison basis
+/// for the resume identity pin (substituted text must survive the round trip
+/// byte-for-byte).
+List<String> _stepTexts(SessionScript script) {
+  final List<String> texts = <String>[];
+  for (final SessionStep step in script.steps) {
+    texts.addAll(switch (step) {
+      PrayerStep() => <String>[
+        step.title ?? '',
+        step.text.text,
+        step.text.latin ?? '',
+      ],
+      VerseStep() => <String>[
+        step.title ?? '',
+        step.versicle,
+        step.response,
+        step.closing?.text ?? '',
+      ],
+      ReflectionStep() => <String>[step.title ?? '', step.text?.text ?? ''],
+      CheckpointStep() => <String>[step.title ?? '', step.item],
+      IntercessionStep() => <String>[step.title ?? '', step.prompt],
+      BeadGroupStep() => <String>[
+        step.title ?? '',
+        step.mysteryTitle ?? '',
+        step.mysteryFruit ?? '',
+      ],
+      RepetitionStep() => <String>[step.title ?? '', step.text.text],
+      LitanyStep() => <String>[
+        step.title ?? '',
+        step.response,
+        ...step.invocations,
+      ],
+    });
+  }
+  return texts;
 }
 
 void main() {
@@ -157,9 +195,10 @@ void main() {
         final _FakeProgramRepository repository = _FakeProgramRepository(
           packs: <ContentPack>[novena],
         );
+        final DevotionalsDatabase database = _inMemoryDatabase();
         final SessionPlayerController controller = SessionPlayerController(
           repository: repository,
-          database: _inMemoryDatabase(),
+          database: database,
           clock: () => DateTime(2026, 12, 6, 8),
         );
 
@@ -200,17 +239,64 @@ void main() {
             expect(step.text.text, isNot(contains('{{')));
           }
         }
+
+        // Pause/resume keeps the day's substituted text byte-identical: the
+        // script is re-derived from the PERSISTED tokens/variant, so the
+        // delivered strings survive the round trip unchanged.
+        final List<String> before = _stepTexts(controller.state.script);
+        final SessionPlayerController resumed = SessionPlayerController(
+          repository: repository,
+          database: database,
+          clock: () => DateTime(2026, 12, 7, 8),
+          resumePackId: 'novena_54_day',
+        );
+        await resumed.ready;
+
+        expect(resumed.state.status, SessionPlayerStatus.active);
+        expect(resumed.state.tokens['day'], '27', reason: 'snapshot tokens');
+        expect(_stepTexts(resumed.state.script), before);
       },
     );
+
+    test('an in-text {{day}} placeholder is substituted on delivery', () async {
+      final ContentPack mercy = _assetPack('divine_mercy_novena');
+      final _FakeProgramRepository repository = _FakeProgramRepository(
+        packs: <ContentPack>[mercy],
+      );
+      final SessionPlayerController controller = SessionPlayerController(
+        repository: repository,
+        database: _inMemoryDatabase(),
+        clock: () => DateTime(2026, 4, 5, 9),
+      );
+
+      // Easter Sunday 2026 is the window's day 3 (Good Friday + 2).
+      await controller.startSession(
+        'divine_mercy_novena',
+        forDate: DateTime(2026, 4, 5),
+      );
+      expect(controller.state.tokens['day'], '3');
+
+      final IntercessionStep intercession = controller.state.script.steps
+          .whereType<IntercessionStep>()
+          .single;
+      expect(intercession.prompt, isNot(contains('{{')));
+      expect(intercession.prompt, contains('3 of the Divine Mercy Novena'));
+      expect(
+        SubstitutionService.requireFullySubstituted(intercession.prompt),
+        intercession.prompt,
+        reason: 'the delivered text passes the render gate',
+      );
+    });
 
     test('a repetition step blocks completeStep before its target', () async {
       final ContentPack rosary = _assetPack('rosary');
       final _FakeProgramRepository repository = _FakeProgramRepository(
         packs: <ContentPack>[rosary],
       );
+      final DevotionalsDatabase database = _inMemoryDatabase();
       final SessionPlayerController controller = SessionPlayerController(
         repository: repository,
-        database: _inMemoryDatabase(),
+        database: database,
         clock: () => DateTime(2026, 12, 14, 9),
       );
 
@@ -241,6 +327,17 @@ void main() {
       );
 
       await controller.record(3);
+
+      // The record transition persisted the engine counter in the snapshot.
+      final Map<String, dynamic>? recorded = await _snapshot(
+        database,
+        'rosary',
+      );
+      expect(
+        (recorded!['session'] as Map<String, dynamic>)['recordedCounts'],
+        <String, dynamic>{'3': 3},
+      );
+
       await controller.completeStep();
       expect(controller.state.session.stepIndex, 4);
     });
@@ -400,6 +497,24 @@ void main() {
           hasLength(first.state.script.steps.length),
         );
         expect(second.state.currentStep, isA<BeadGroupStep>());
+
+        // The checkpoint's completion DATE survived the round trip: walking
+        // on to the gate and finalizing writes the confession record with the
+        // original session day, proving `checkpointDates` was restored (not
+        // re-dated by the resume's clock).
+        await _walkToEnd(second);
+        await second.toggleCheckpoint('communion');
+        expect(second.state.status, SessionPlayerStatus.finalized);
+        final ProgressState? written = await repository.progressFor(
+          'five_first_saturdays',
+        );
+        expect(
+          written!.completedItemsByDay.keys,
+          containsAll(<String>[
+            'confession:2026-12-05',
+            'communion:2026-12-05',
+          ]),
+        );
       },
     );
 
@@ -437,6 +552,87 @@ void main() {
         'five_first_saturdays',
       );
       expect(snapshot!['day'], '2027-01-02');
+    });
+
+    test('a completed snapshot that outlived its completion write is resumed '
+        'finalized and never written twice', () async {
+      final ContentPack saturdays = _assetPack('five_first_saturdays');
+      final _FakeProgramRepository repository = _FakeProgramRepository(
+        packs: <ContentPack>[saturdays],
+      );
+      final DevotionalsDatabase database = _inMemoryDatabase();
+
+      // The walk the crash left behind: complete, with the required
+      // checkpoint recorded (Task 9's gate is satisfied).
+      SessionState walked = SessionRunner.forState(saturdays.session);
+      while (!walked.isComplete) {
+        final SessionStep step = saturdays.session.steps[walked.stepIndex];
+        if (step is BeadGroupStep) {
+          walked = SessionRunner.record(walked, step.hailMaryCount);
+        }
+        walked = SessionRunner.completeCurrent(
+          walked,
+          script: saturdays.session,
+        );
+      }
+      // The completion landed (saveProgress done) and the app died before
+      // the snapshot was cleared: ordinal 1, one badge, both on disk.
+      final ProgressState alreadyWritten = ProgressState(
+        packId: 'five_first_saturdays',
+        fulfilledOrdinals: 1,
+        lastFulfilled: DateTime(2026, 12, 5),
+        completedItemsByDay: const <String, String>{
+          'communion:2026-12-05': 'done',
+        },
+        badges: <BadgeRecord>[
+          BadgeRecord(title: saturdays.title, date: DateTime(2026, 12, 5)),
+        ],
+      );
+      repository.progress['five_first_saturdays'] = alreadyWritten;
+      await database.setMeta(
+        'active_session_five_first_saturdays',
+        jsonEncode(<String, dynamic>{
+          'packId': 'five_first_saturdays',
+          'day': '2026-12-05',
+          'dayIndex': null,
+          'variant': <String, dynamic>{},
+          'session': walked.toJson(),
+          'checkpoints': <String, bool>{'communion': true},
+          'checkpointDates': <String, String>{'communion': '2026-12-05'},
+          'reflectionEndsAt': null,
+          'tokens': <String, String>{},
+        }),
+      );
+
+      final SessionPlayerController controller = SessionPlayerController(
+        repository: repository,
+        database: database,
+        clock: () => DateTime(2026, 12, 5, 20),
+        resumePackId: 'five_first_saturdays',
+      );
+      await controller.ready;
+
+      expect(controller.state.status, SessionPlayerStatus.finalized);
+      expect(controller.state.isFinalizable, isTrue);
+      expect(
+        await _snapshot(database, 'five_first_saturdays'),
+        isNull,
+        reason: 'the stale completed snapshot is cleared on resume',
+      );
+      expect(repository.saves, isEmpty, reason: 'no completion was written');
+
+      // Any later player interaction stays out of the completion writer.
+      await controller.toggleCheckpoint('communion');
+      await controller.completeStep();
+
+      expect(repository.saves, isEmpty);
+      final ProgressState? progressed = await repository.progressFor(
+        'five_first_saturdays',
+      );
+      expect(progressed!.fulfilledOrdinals, 1);
+      expect(progressed.badges, hasLength(1));
+      expect(progressed.lastFulfilled, DateTime(2026, 12, 5));
+      expect(await _snapshot(database, 'five_first_saturdays'), isNull);
     });
   });
 
@@ -487,6 +683,19 @@ void main() {
       expect(
         snapshot!['reflectionEndsAt'],
         now.add(const Duration(minutes: 5)).toIso8601String(),
+      );
+
+      // Pause/resume restores the running deadline from the snapshot.
+      final SessionPlayerController resumed = SessionPlayerController(
+        repository: repository,
+        database: database,
+        clock: () => now.add(const Duration(minutes: 2)),
+        resumePackId: 'reflection_pack',
+      );
+      await resumed.ready;
+      expect(
+        resumed.state.reflectionEndsAt,
+        now.add(const Duration(minutes: 5)),
       );
 
       await controller.tickReflection(Duration.zero);

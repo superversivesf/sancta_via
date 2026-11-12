@@ -67,6 +67,20 @@
 // the PERSISTED tokens/variant (same day, same text) so the substitution gate
 // re-runs and resumed text is byte-identical to the start snapshot.
 //
+// **Completion is at-most-once.** The snapshot is a cache of the walk, not
+// the source of truth (the written `ProgressState` is), so snapshot
+// write/clear failures are logged and swallowed rather than failing the
+// prayer session. The finalize order is: persist the finished snapshot, then
+// write the completion, then clear the snapshot. If the app dies inside that
+// last window, a complete, gate-satisfied snapshot survives beside its
+// written completion; resuming such a snapshot publishes it as FINALIZED and
+// clears it WITHOUT calling the completion writer — a later checkpoint
+// toggle can then never append a second ordinal/badge. The deliberate
+// trade-off is at-most-once: a crash between the finished snapshot and the
+// completion write (the narrower window) resumes as finalized and does not
+// re-write the completion; double-counting a finished devotion is the worse
+// harm, and the day can be reopened from the Today surface.
+//
 // ## Dates
 //
 // The session's day (local midnight) is fixed at start ([startSession]'s
@@ -450,25 +464,55 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
           saved != null &&
           saved.session.scriptId == pack.session.id &&
           (requestedDay == null || _isSameDay(saved.day, requestedDay));
-      final _ActiveSession active;
       if (resumable) {
-        active = _activeFromSaved(pack, saved);
+        final _ActiveSession resumed = _activeFromSaved(pack, saved);
+        if (generation != _generation || !mounted) {
+          return;
+        }
+        // Completion is at-most-once. A complete, gate-satisfied snapshot
+        // that outlived its completion write can only mean the app died
+        // inside the finalize window (the snapshot is persisted just before
+        // `completeSession` runs). Publishing it ACTIVE would let a later
+        // checkpoint toggle re-enter `persistCompletion` and write a second
+        // ordinal/badge, so it is published FINALIZED and cleared without
+        // touching progress.
+        final bool completionAlreadyLanded =
+            resumed.session.isComplete &&
+            ProgressService.missingRequiredItems(
+              pack,
+              resumed.checkpoints,
+            ).isEmpty;
+        _active = resumed;
+        if (completionAlreadyLanded) {
+          _publish(SessionPlayerStatus.finalized);
+          _active = null;
+          await _clearActive(pack.id);
+          AppLogger.info(
+            'Resumed the completed session of "${pack.id}" as finalized — '
+                'its completion was already written; the snapshot is cleared '
+                'without a second write',
+            'SESSION',
+          );
+          return;
+        }
+        _publish(SessionPlayerStatus.active);
         AppLogger.info(
           'Resumed "${pack.id}" at step ${saved.session.stepIndex} of '
               '${saved.session.stepCount}',
           'SESSION',
         );
-      } else {
-        active = _startFresh(pack, requestedDay ?? _dateOnly(_clock()));
+        return;
       }
+      final _ActiveSession active = _startFresh(
+        pack,
+        requestedDay ?? _dateOnly(_clock()),
+      );
       if (generation != _generation || !mounted) {
         return;
       }
       _active = active;
       _publish(SessionPlayerStatus.active);
-      if (!resumable) {
-        await _persistActive();
-      }
+      await _persistActive();
     } catch (e, stackTrace) {
       AppLogger.error(
         'Failed to start the session for "$packId"',
@@ -590,6 +634,14 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
   /// active snapshot cleared; the gate held → the walked state stays active
   /// and persists, with [SessionPlayerState.missingRequiredItems] naming what
   /// is missing.
+  ///
+  /// The active session AND the start generation are captured at ENTRY, so a
+  /// `startSession` that lands while the completion write is in flight
+  /// invalidates this call's publish (the walk it finalizes is the one it
+  /// captured) — narrowing the interleave window to the write itself.
+  /// Completion is at-most-once: a gate-satisfied finished snapshot that
+  /// survives a crash is resumed FINALIZED by [startSession] instead of
+  /// being written again (see the library docs).
   Future<void> _finalize() async {
     final _ActiveSession? active = _active;
     if (active == null) {
@@ -894,7 +946,8 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
   }
 
   /// Serializes [write] behind the queue; a failed write is logged and never
-  /// poisons the chain.
+  /// poisons the chain — the snapshot is a resume cache, not the source of
+  /// truth, so losing a cache write must never fail the prayer session.
   Future<void> _scheduleWrite(Future<void> Function() write) {
     final Future<void> preceding = _writeQueue ?? Future<void>.value();
     final Future<void> next = preceding.then((_) => write());
