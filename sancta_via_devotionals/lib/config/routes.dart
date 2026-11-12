@@ -8,7 +8,8 @@ import '../screens/practice/practice_screen.dart';
 import '../screens/practice/program_detail_screen.dart';
 import '../screens/progress/progress_screen.dart';
 import '../screens/session/session_player_screen.dart';
-import '../screens/settings/settings_screen.dart';
+import '../screens/settings/devotionals_settings_screen.dart'
+    show DevotionalsSettingsScreen;
 
 /// Whether the first-launch onboarding walkthrough has completed, read LIVE
 /// at every redirect evaluation.
@@ -85,8 +86,13 @@ GoRouter appRouter = buildAppRouter();
 ///     time-grouped sections (Task 13), fed by the Today assembly;
 ///   - `/practice` — the Practice catalog: every seeded pack grouped by
 ///     family (Task 14);
-///   - `/progress` — the Progress placeholder (Task 16 replaces it);
-///   - `/settings` — the Settings placeholder (Task 20 replaces it);
+///   - `/progress` — the Progress tab: enrolled programs' ordinals, phases,
+///     badges, missed-day surfacing, and the intentions editor (Task 16);
+///   - `/settings` — the Settings tab: the shared unified settings
+///     composition plus the app's devotional section (anchor times and
+///     toggles, night items, missed-day policy, Latin/Luminous), whose
+///     base-settings controls feed the MaterialApp wiring in `main.dart`
+///     (Task 20);
 /// * `/onboarding` — the onboarding walkthrough (Task 19): welcome (value
 ///   statement, free/offline note), the claim of existing progress (one
 ///   "already N in" stepper per commitment pack), the routine picker (the
@@ -167,7 +173,7 @@ GoRouter buildAppRouter({String initialLocation = '/'}) {
                 path: '/settings',
                 name: 'settings',
                 builder: (BuildContext context, GoRouterState state) =>
-                    const SettingsScreen(),
+                    const DevotionalsSettingsScreen(),
               ),
             ],
           ),

@@ -53,7 +53,10 @@ Future<void> main() async {
 /// link, and it runs the app-open refresh hook once, after the content
 /// catalog is seeded. It also wires the onboarding gate ([appOnboardingGate])
 /// through which the router holds an un-onboarded app in the walkthrough
-/// (Task 19).
+/// (Task 19), and — Task 20 — the MaterialApp plumbing from the settings
+/// composition: the locale follows the shared base settings' default
+/// language and the theme mode follows the shared theme-mode store, so the
+/// base-settings controls on the settings screen drive the running app.
 class SanctaViaDevotionalsApp extends ConsumerStatefulWidget {
   /// Creates the root app.
   ///
@@ -135,11 +138,23 @@ class _SanctaViaDevotionalsAppState
 
   @override
   Widget build(BuildContext context) {
+    // Task 20's material plumbing: what the settings screen's shared
+    // base-settings controls write is what the app runs with — the locale
+    // from `baseSettingsProvider`'s default language and the theme mode
+    // from the shared theme store the `ThemeModeSelector` drives (the
+    // base-settings model itself carries no theme-mode field; the shared
+    // theme providers are its storage, as in the sibling apps).
+    final AppLanguage language = ref
+        .watch(baseSettingsProvider)
+        .defaultLanguage;
+    final ThemeMode themeMode = ref.watch(themeModeProvider);
     return MaterialApp.router(
       title: 'Sancta Via Devotionals',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme(),
       darkTheme: AppTheme.darkTheme(),
+      themeMode: themeMode,
+      locale: Locale(language.code),
       routerConfig: widget.router ?? appRouter,
     );
   }
