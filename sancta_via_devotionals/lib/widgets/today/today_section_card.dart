@@ -37,10 +37,14 @@ class TodaySectionCard extends StatelessWidget {
               children: <Widget>[
                 Icon(icon, size: 20, color: theme.colorScheme.primary),
                 const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                // Bounded so long titles wrap instead of overflowing the
+                // card (the Progress tab passes whole pack titles).
+                Expanded(
+                  child: Text(
+                    title,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],

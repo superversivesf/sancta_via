@@ -17,6 +17,7 @@ import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart';
 
 import 'database_migration_service.dart';
+import '../repositories/intentions_repository.dart';
 
 /// Allowed `notification_index.status` value set.
 const Set<String> notificationStatuses = <String>{
@@ -227,6 +228,15 @@ class DevotionalsDatabase {
   final Future<Database> Function() _openDatabase;
 
   Database? _database;
+
+  IntentionsRepository? _intentionsRepository;
+
+  /// The intentions CRUD wrapper over THIS store's `intentions` table
+  /// (Plan 2, Task 16). Built lazily over exactly this wrapper, so the
+  /// repository and the raw table helpers act on one and the same store —
+  /// never a separately-opened one (the Task 6 one-store ruling).
+  IntentionsRepository get intentions =>
+      _intentionsRepository ??= IntentionsRepository(database: this);
 
   /// [open] overrides how the backing database handle is produced. Defaults
   /// to the runtime file-backed resolution.
