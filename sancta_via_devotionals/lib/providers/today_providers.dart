@@ -209,6 +209,13 @@ class TodayAssembly {
   /// Celebrations in the 14 days after [date].
   final List<TodayItem> feastsComing;
 
+  /// Whether the enrolled set is non-empty — the enrollment signal Task 13's
+  /// empty-state CTA copy consumes (fix round 1): "nothing due today" and
+  /// "nothing enrolled" are different days (an enrolled program that is not
+  /// due still leaves every section empty), and the screen must not claim
+  /// enrollment is absent when it is not.
+  final bool hasEnrolledPrograms;
+
   /// Creates a [TodayAssembly].
   const TodayAssembly({
     required this.date,
@@ -217,6 +224,7 @@ class TodayAssembly {
     this.evening = const <TodayItem>[],
     this.commitments = const <TodayItem>[],
     this.feastsComing = const <TodayItem>[],
+    this.hasEnrolledPrograms = false,
   });
 
   /// Whether the day carries no devotional item at all — the Today screen's
@@ -360,5 +368,6 @@ final FutureProvider<TodayAssembly> todayAssemblyProvider =
         evening: List<TodayItem>.unmodifiable(evening),
         commitments: List<TodayItem>.unmodifiable(commitments),
         feastsComing: List<TodayItem>.unmodifiable(feastsComing),
+        hasEnrolledPrograms: enrolled.isNotEmpty,
       );
     });

@@ -22,8 +22,15 @@
 // 4. `enableMercyHourAnchor` OFF hides the corresponding anchor (the
 //    presentation-layer visibility Task 13 owns — the provider does not
 //    filter);
-// 5. `enableAngelusAnchors` OFF hides the Angelus anchor while the due
+// 5. `enableAngelusAnchors` OFF hides the Angelus anchor while due
 //    commitments stay.
+//
+// Fix round 1:
+// 6. the player is a PUSHED route (spec §7): Today remains beneath the
+//    session route after a tile tap, and the delegate stack holds both;
+// 7. enrolled-but-nothing-due still shows the CTA — with nothing-due-today
+//    copy ('Nothing scheduled right now' / 'Take up a devotion'), never the
+//    enrollment-claiming copy, and the CTA still routes to `/onboarding`.
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -44,9 +51,10 @@ import 'package:sancta_via_devotionals/providers/content_providers.dart'
         contentLoadedProvider,
         programRepositoryOverride;
 import 'package:sancta_via_devotionals/providers/today_providers.dart'
-    show todayAssemblyProvider;
+    show TodayAssembly, todayAssemblyProvider;
 import 'package:sancta_via_devotionals/repositories/program_repository.dart'
     show SqliteProgramRepository;
+import 'package:sancta_via_devotionals/screens/home/today_screen.dart';
 import 'package:sancta_via_devotionals/screens/onboarding/onboarding_screen.dart'
     show OnboardingScreen;
 import 'package:sancta_via_devotionals/screens/session/session_player_screen.dart'
@@ -255,9 +263,8 @@ void main() {
     },
   );
 
-  testWidgets('a Today tile tap navigates to the session deep-link route', (
-    WidgetTester tester,
-  ) async {
+  testWidgets('a Today tile tap pushes the session deep-link route over '
+      'Today', (WidgetTester tester) async {
     final _ScreenHarness harness = await _pumpToday(
       tester,
       today: DateTime(2026, 12, 5),
@@ -268,12 +275,25 @@ void main() {
     await tester.tap(find.text('Five First Saturdays of Our Lady'));
     await tester.pump(const Duration(milliseconds: 100));
     await tester.pump(const Duration(milliseconds: 100));
-
+    // Pushed (Spec §7; fix round 1): the delegate stack holds Today AND the
+    // player — `go` would swap Today out (and system back would then exit
+    // the app). Note the raw reported location is not the push evidence:
+    // go_router 15 keeps the provider's value on the base for imperative
+    // pushes, so the stack itself is asserted.
+    final RouteMatchList configuration =
+        harness.router.routerDelegate.currentConfiguration;
+    expect(configuration.matches.length, 2);
+    expect(configuration.matches.first.matchedLocation, '/');
     expect(
-      harness.location,
-      '/session/five_first_saturdays?forDate=2026-12-05',
+      configuration.matches.last.matchedLocation,
+      '/session/five_first_saturdays',
     );
     expect(find.byType(SessionPlayerScreen), findsOneWidget);
+    expect(
+      find.byType(TodayScreen),
+      findsOneWidget,
+      reason: 'the player is a pushed route over Today (spec §7)',
+    );
   });
 
   testWidgets(
@@ -285,13 +305,65 @@ void main() {
         today: DateTime(2026, 12, 5),
       );
 
+      // A truly-empty install: the fresh-start copy and CTA.
+      expect(find.text('Nothing scheduled right now'), findsOneWidget);
       expect(find.byKey(const Key('onboarding_cta')), findsOneWidget);
+      expect(find.text('Get started'), findsOneWidget);
       await tester.tap(find.byKey(const Key('onboarding_cta')));
       await tester.pump(const Duration(milliseconds: 100));
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(harness.location, '/onboarding');
       expect(find.byType(OnboardingScreen), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'an enrolled program with nothing due shows the CTA without claiming '
+    'enrollment is absent',
+    (WidgetTester tester) async {
+      // 2026-12-06 is the day after the first Saturday of December: the
+      // Five First Saturdays ARE enrolled but resolve due nowhere — every
+      // devotion section is empty all the same ("empty" ≠ "not enrolled",
+      // fix round 1).
+      final _ScreenHarness harness = await _pumpToday(
+        tester,
+        today: DateTime(2026, 12, 6),
+        enroll: <String>['five_first_saturdays'],
+        onboardingComplete: true,
+      );
+
+      final TodayAssembly assembly = harness.container
+          .read(todayAssemblyProvider)
+          .value!;
+      expect(assembly.isEmpty, isTrue);
+      expect(
+        assembly.hasEnrolledPrograms,
+        isTrue,
+        reason:
+            'the enrolled set is non-empty even though nothing resolves '
+            'due today',
+      );
+
+      // Nothing-due-today copy — and the CTA takes a devotion, it does not
+      // claim the program list is empty.
+      expect(find.text('Nothing scheduled right now'), findsOneWidget);
+      expect(find.textContaining('nothing due right now'), findsOneWidget);
+      expect(find.text('Take up a devotion'), findsOneWidget);
+      expect(
+        find.textContaining('Nothing is enrolled'),
+        findsNothing,
+        reason:
+            'the enrollment-claiming copy of round 1 must never render '
+            'while a program is enrolled',
+      );
+
+      // The CTA still routes to onboarding (it also serves "take up a
+      // devotion").
+      await tester.tap(find.byKey(const Key('onboarding_cta')));
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(harness.location, '/onboarding');
     },
   );
 

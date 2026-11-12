@@ -18,9 +18,12 @@
 //   visibility decision. The Angelus' anchors are recognised by their
 //   engine labels (`angelus` / `regina_caeli`), mirroring the label seam.
 //   The toggles never touch commitments.
-// * The empty state ("nothing enrolled") is the ASSEMBLY's emptiness — the
-//   onboarding CTA shows only there; a day hidden whole by the toggles is
-//   a settings outcome, not an onboarding one.
+// * The empty state ("nothing due today") is the ASSEMBLY's emptiness — the
+//   onboarding CTA shows only there. Empty ≠ "nothing enrolled": the copy is
+//   keyed on the assembly's [TodayAssembly.hasEnrolledPrograms] signal (fix
+//   round 1) so an enrolled program that is not due never sees a
+//   "nothing is enrolled" claim; a day hidden whole by the toggles is a
+//   settings outcome, not this state.
 //
 // The header reads `currentLiturgicalDayProvider`, which derives from the
 // same `currentDateProvider` the assembly froze on, so header and tiles
@@ -164,6 +167,7 @@ class _TodayList extends StatelessWidget {
         const SizedBox(height: 8),
         if (day.isEmpty) ...<Widget>[
           EmptyToday(
+            hasEnrolledPrograms: day.hasEnrolledPrograms,
             onboardingComplete: settings.onboardingComplete,
             onStartOnboarding: () => context.go('/onboarding'),
           ),

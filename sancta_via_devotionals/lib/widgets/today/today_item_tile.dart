@@ -29,8 +29,10 @@ IconData _iconFor(TodayItem item) {
 /// resolution carries one, its position badge (a commitment's ordinal label
 /// or a novena's day index); the trailing chip shows the anchor instant —
 /// a tile's wall-clock time, or a feast's calendar date. A tap deep-links
-/// into the session player (`context.go`, the day-locked link the assembly
-/// built); a feast has no link and stays inert.
+/// into the session player with `context.push` (fix round 1: Spec §7 pins
+/// the player as a PUSHED route — `go` would swap it onto the stack and
+/// let system back exit the app; the day-locked link stays the assembly's).
+/// A feast has no link and stays inert.
 class TodayItemTile extends StatelessWidget {
   /// Creates a tile for [item].
   const TodayItemTile({required this.item, super.key});
@@ -76,7 +78,7 @@ class TodayItemTile extends StatelessWidget {
           ? null
           : _deepLink == null
           ? null
-          : () => context.go(_deepLink!),
+          : () => context.push(_deepLink!),
     );
   }
 }
