@@ -73,6 +73,7 @@ import 'package:sancta_via_devotional_engine_riverpod/sancta_via_devotional_engi
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 
 import '../repositories/program_repository.dart';
+import '../services/notification_service.dart';
 import 'app_settings_provider.dart';
 import 'content_providers.dart';
 
@@ -371,3 +372,50 @@ final FutureProvider<TodayAssembly> todayAssemblyProvider =
         hasEnrolledPrograms: enrolled.isNotEmpty,
       );
     });
+
+// ---------------------------------------------------------------------------
+// Notification wiring (Plan 2, Task 18)
+//
+// The service reads the CURRENT settings at each refresh (a settings change
+// is applied at the next refresh point, never by a listener — spec §9). The
+// refresh points are the app open below, every session completion
+// (`session_player_provider.dart`), and a notification tap (the service
+// itself).
+
+/// The notification service over the app's own SQLite store (the same
+/// repository instance the content pipeline seeds, so the
+/// `notification_index` rows and the packs it plans from live in one store)
+/// and the real plugin adapter.
+///
+/// Tests override this provider with a service built on a recording adapter;
+/// nothing else in the app constructs the service directly.
+final Provider<NotificationService> notificationServiceProvider =
+    Provider<NotificationService>((Ref ref) {
+      final SqliteProgramRepository repository = ref.watch(
+        appProgramRepositoryProvider,
+      );
+      final NotificationService service = NotificationService(
+        database: repository.database,
+        repository: repository,
+        settings: () => ref.read(devotionsSettingsProvider),
+      );
+      ref.onDispose(service.dispose);
+      return service;
+    });
+
+/// The app-open refresh hook (Task 18): wait for the content catalog to be
+/// seeded (`ensureContentLoaded` — the Task 6/13 pattern), then initialize the
+/// plugin and re-plan the reminders.
+///
+/// `main.dart` awaits this once at startup (fire-and-forget with logging); a
+/// failure surfaces as this provider's error, never as a crashed app — but the
+/// service itself swallows and logs its failures, so in practice this resolves
+/// even when the platform plugin is unavailable.
+final FutureProvider<void> notificationRefreshProvider = FutureProvider<void>((
+  Ref ref,
+) async {
+  await ref.watch(contentLoadedProvider.future);
+  final NotificationService service = ref.watch(notificationServiceProvider);
+  await service.initialize();
+  await service.refresh();
+});

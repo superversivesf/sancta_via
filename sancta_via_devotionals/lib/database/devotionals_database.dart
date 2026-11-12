@@ -476,6 +476,21 @@ class DevotionalsDatabase {
     ];
   }
 
+  /// Reads every `notification_index` row, oldest fire time first (Task 18's
+  /// diff reads the whole index: the planner's planned ids against every
+  /// stored status, so a `cancelled` row can be rescheduled and a stale
+  /// `scheduled` row can be cancelled).
+  Future<List<NotificationRow>> getAllNotifications() async {
+    final Database db = await open();
+    final List<Map<String, Object?>> rows = await db.query(
+      'notification_index',
+      orderBy: 'fire_at ASC',
+    );
+    return <NotificationRow>[
+      for (final Map<String, Object?> row in rows) NotificationRow.fromRow(row),
+    ];
+  }
+
   /// Reads `scheduled` notifications whose `fire_at` is at or before
   /// [beforeIso] (ISO-8601 string compare), oldest fire time first.
   Future<List<NotificationRow>> notificationsDue({

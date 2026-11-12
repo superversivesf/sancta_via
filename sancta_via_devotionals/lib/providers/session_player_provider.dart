@@ -92,6 +92,7 @@
 // composition can credit it).
 library;
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -101,7 +102,9 @@ import 'package:sancta_via_devotional_engine_riverpod/sancta_via_devotional_engi
 
 import '../database/devotionals_database.dart';
 import '../providers/content_providers.dart';
+import '../providers/today_providers.dart' show notificationServiceProvider;
 import '../repositories/program_repository.dart';
+import '../services/notification_service.dart';
 import '../services/progress_service.dart';
 import '../services/substitution_service.dart';
 import '../services/variant_service.dart';
@@ -380,12 +383,18 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
   /// (pause/resume on a fresh player): the load runs un-awaited — as a
   /// `StateNotifier` constructor cannot await — and [ready] completes when it
   /// settles.
+  ///
+  /// [onSessionCompleted] is the notification refresh point (Task 18): it runs
+  /// once per FINALIZED session, fire-and-forget (a failed hook is logged and
+  /// never fails the prayer session). Null in unit tests that do not wire
+  /// notifications.
   SessionPlayerController({
     required this.repository,
     required this.database,
     ProgressService? progressService,
     DateTime Function()? clock,
     String? resumePackId,
+    this.onSessionCompleted,
   }) : progress = progressService ?? ProgressService(repository: repository),
        _clock = clock ?? DateTime.now,
        super(SessionPlayerState.idle()) {
@@ -404,6 +413,10 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
 
   /// The completion writer (Task 9).
   final ProgressService progress;
+
+  /// The optional session-completion hook (Task 18's notification refresh
+  /// point) — see the constructor docs.
+  final Future<void> Function()? onSessionCompleted;
 
   final DateTime Function() _clock;
 
@@ -684,6 +697,7 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
               '${_stamp(active.day)}',
           'SESSION',
         );
+        _notifyCompleted();
       } else {
         _publish(SessionPlayerStatus.active);
         await _persistActive();
@@ -698,6 +712,30 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
       // resumable and the next checkpoint toggle retries finalization.
       AppLogger.error(
         'Failed to finalize the session of "${active.pack.id}"',
+        e,
+        stackTrace,
+        'SESSION',
+      );
+    }
+  }
+
+  /// Runs the optional session-completion hook (Task 18's refresh point),
+  /// fire-and-forget: the completion is already persisted, so a failing
+  /// notification refresh must never surface as a session failure.
+  void _notifyCompleted() {
+    final Future<void> Function()? hook = onSessionCompleted;
+    if (hook == null) {
+      return;
+    }
+    unawaited(_runCompletionHook(hook));
+  }
+
+  Future<void> _runCompletionHook(Future<void> Function() hook) async {
+    try {
+      await hook();
+    } catch (e, stackTrace) {
+      AppLogger.error(
+        'Session-completion notification refresh failed',
         e,
         stackTrace,
         'SESSION',
@@ -1048,9 +1086,16 @@ final sessionPlayerControllerProvider = StateNotifierProvider.autoDispose
       final SqliteProgramRepository repository = ref.watch(
         appProgramRepositoryProvider,
       );
+      // Task 18's session-completion refresh point. The service is read once
+      // here (not inside the callback), so the hook never touches a disposed
+      // provider; the provider itself is app-lifetime.
+      final NotificationService notifications = ref.watch(
+        notificationServiceProvider,
+      );
       return SessionPlayerController(
         repository: repository,
         database: repository.database,
         resumePackId: packId,
+        onSessionCompleted: notifications.refresh,
       );
     });
