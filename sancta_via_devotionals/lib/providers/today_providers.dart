@@ -14,10 +14,10 @@
 // * [TodayAssembly.morning] — every enrolled pack's `TimeOfDaySpec` anchor in
 //   the 06:00–11:59 window (the Angelus' morning anchor and, once the routine
 //   packs ship, the Morning Offering);
-// * [TodayAssembly.anchors] — the 12:00–16:59 anchors, EXCLUDING the 15:00
-//   Hour of Mercy;
-// * [TodayAssembly.mercy] — the 15:00 Hour of Mercy anchor, the Anchors
-//   section's own 3pm subsection (§7's "3pm" group);
+// * [TodayAssembly.anchors] — the 12:00–16:59 anchors, the Hour of Mercy
+//   included: the pinned five-section contract keeps the 3pm anchor in
+//   Anchors, and the screen partitions it out (`anchor!.hour == 15` /
+//   `label == 'mercy_hour'`) for §7's "3pm" group in the visual order;
 // * [TodayAssembly.evening] — the 17:00-onward anchors (the Angelus' evening
 //   anchor, the daily Examen, night prayers);
 // * [TodayAssembly.commitments] — the programs due today, as the wrapper
@@ -51,15 +51,18 @@
 //   so it is pinned to `DateTime.now()` and would ignore the frozen date. The
 //   service's own `fromDate` seam is used instead (same celebration filter,
 //   same 14-day window, keyed to the assembly's day).
+// * The enrolled set uses `enrollmentParamsFor(packId) != null` rather than
+//   the wrapper's `enrolledProgramsProvider`, which lists EVERY catalog pack
+//   with its progress and carries no enrollment filter (Task 5/6 ruling).
 // * The variant labels come from `ScheduleResult.labels` — the engine's own
 //   `TimeOfDaySpec` resolution. `VariantService` resolves SESSION substitution
 //   tokens; re-deriving schedule labels from it here would duplicate the
 //   engine.
 //
-// Deferred (Task 13's presentation filter): the settings' `enableAngelusAnchors`
-// / `enableMercyHourAnchor` toggles. The assembly reports what the catalog
-// anchors; hiding a user-disabled anchor is the Today screen's rendering
-// decision.
+// Settings-toggle ownership (fix round 1 ruling, notification-only here): the
+// `enableAngelusAnchors` / `enableMercyHourAnchor` toggles are NOT applied at
+// this layer. The assembly reports the catalog's anchors; hiding a
+// user-disabled anchor is Task 13's Today-visibility decision.
 library;
 
 import 'package:flutter/material.dart';
@@ -93,16 +96,14 @@ String _sessionLink(String packId, DateTime day) =>
     '/session/$packId?forDate=${_stamp(day)}';
 
 /// Which time-of-day section an anchor belongs to.
-enum _AnchorSection { morning, noon, mercy, evening }
+enum _AnchorSection { morning, noon, evening }
 
 /// The section of a [TimeOfDaySpec] anchor at [hour]: 6 → Morning, 12 → the
-/// noon anchors, 15 → the 3pm mercy subsection, 18 → Evening. Anything else
-/// falls into the natural window (before noon → Morning, up to 17:00 → noon
-/// anchors, later → Evening) so future routine anchors land somewhere honest.
+/// noon anchors, 18 → Evening. Anything else falls into the natural window
+/// (before noon → Morning, up to 17:00 → noon anchors, later → Evening) so
+/// future routine anchors land somewhere honest. The 15:00 Hour of Mercy is a
+/// noon-section anchor; the screen partitions it out for the 3pm group.
 _AnchorSection _sectionFor(int hour) {
-  if (hour == 15) {
-    return _AnchorSection.mercy;
-  }
   if (hour < 12) {
     return _AnchorSection.morning;
   }
@@ -192,12 +193,10 @@ class TodayAssembly {
   /// Morning Offering).
   final List<TodayItem> morning;
 
-  /// Noon anchors: 12:00–16:59 time-of-day packs, excluding the 15:00 Hour of
-  /// Mercy.
+  /// Noon anchors: 12:00–16:59 time-of-day packs, the 15:00 Hour of Mercy
+  /// included (the screen partitions the 3pm anchor out by `anchor!.hour ==
+  /// 15` / `label == 'mercy_hour'`).
   final List<TodayItem> anchors;
-
-  /// The 3pm Hour of Mercy subsection of the Anchors section (15:00).
-  final List<TodayItem> mercy;
 
   /// Evening anchors: 17:00-onward time-of-day packs (Angelus evening anchor,
   /// Daily Examen, night prayers).
@@ -215,7 +214,6 @@ class TodayAssembly {
     required this.date,
     this.morning = const <TodayItem>[],
     this.anchors = const <TodayItem>[],
-    this.mercy = const <TodayItem>[],
     this.evening = const <TodayItem>[],
     this.commitments = const <TodayItem>[],
     this.feastsComing = const <TodayItem>[],
@@ -230,15 +228,14 @@ class TodayAssembly {
   bool get isEmpty =>
       morning.isEmpty &&
       anchors.isEmpty &&
-      mercy.isEmpty &&
       evening.isEmpty &&
       commitments.isEmpty;
 
   @override
   String toString() =>
       'TodayAssembly(date: ${_stamp(date)}, morning: ${morning.length}, '
-      'anchors: ${anchors.length}, mercy: ${mercy.length}, '
-      'evening: ${evening.length}, commitments: ${commitments.length}, '
+      'anchors: ${anchors.length}, evening: ${evening.length}, '
+      'commitments: ${commitments.length}, '
       'feastsComing: ${feastsComing.length})';
 }
 
@@ -283,9 +280,12 @@ final FutureProvider<TodayAssembly> todayAssemblyProvider =
         }
       }
 
+      // The settings' visibility toggles (`enableAngelusAnchors` /
+      // `enableMercyHourAnchor`) are deliberately NOT applied here: this layer
+      // reports the catalog's anchors, and Task 13 decides Today visibility
+      // (fix round 1 ruling).
       final List<TodayItem> morning = <TodayItem>[];
       final List<TodayItem> anchors = <TodayItem>[];
-      final List<TodayItem> mercy = <TodayItem>[];
       final List<TodayItem> evening = <TodayItem>[];
       for (final ContentPack pack in enrolled) {
         for (final ScheduleSpec spec in pack.schedules) {
@@ -308,8 +308,6 @@ final FutureProvider<TodayAssembly> todayAssemblyProvider =
               morning.add(item);
             case _AnchorSection.noon:
               anchors.add(item);
-            case _AnchorSection.mercy:
-              mercy.add(item);
             case _AnchorSection.evening:
               evening.add(item);
           }
@@ -359,7 +357,6 @@ final FutureProvider<TodayAssembly> todayAssemblyProvider =
         date: today,
         morning: List<TodayItem>.unmodifiable(morning),
         anchors: List<TodayItem>.unmodifiable(anchors),
-        mercy: List<TodayItem>.unmodifiable(mercy),
         evening: List<TodayItem>.unmodifiable(evening),
         commitments: List<TodayItem>.unmodifiable(commitments),
         feastsComing: List<TodayItem>.unmodifiable(feastsComing),

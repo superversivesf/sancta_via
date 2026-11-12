@@ -167,7 +167,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   test(
-    'frozen 2026-12-05 assembles Morning, mercy, Commitments, and Feasts past today',
+    'frozen 2026-12-05 assembles Morning, the mercy anchor, Commitments, and Feasts past today',
     () async {
       final ProviderContainer container = await _container(
         today: DateTime(2026, 12, 5),
@@ -199,12 +199,18 @@ void main() {
         reason: 'the deep link carries the assembled day, never the clock day',
       );
 
-      // No 12:00 anchor ships yet; the 15:00 Hour of Mercy is its own
-      // subsection of Anchors.
-      expect(assembly.anchors, isEmpty);
-      expect(_ids(assembly.mercy), <String>['mercy_hour']);
-      expect(assembly.mercy.single.label, 'mercy_hour');
-      expect(assembly.mercy.single.anchor, DateTime(2026, 12, 5, 15));
+      // No 12:00 anchor ships yet. The 15:00 Hour of Mercy is an ANCHOR: the
+      // pinned five-section contract keeps it in `anchors`, and the screen
+      // partitions it out (anchor.hour == 15 / label == 'mercy_hour') for the
+      // 3pm group in §7's visual order.
+      expect(_ids(assembly.anchors), <String>['mercy_hour']);
+      expect(assembly.anchors.single.label, 'mercy_hour');
+      expect(assembly.anchors.single.anchor, DateTime(2026, 12, 5, 15));
+      expect(
+        assembly.anchors.single.anchor!.hour,
+        15,
+        reason: 'the 3pm partition seam Task 13 renders by',
+      );
       expect(assembly.evening, isEmpty);
 
       // Due programs, in pack-id order — the First Saturday carries the
@@ -242,6 +248,38 @@ void main() {
     },
   );
 
+  test('a celebration today is excluded from the feast window', () async {
+    // 2026-12-08 is the Immaculate Conception — a solemnity inside the raw
+    // 14-day window, and the day itself. The header owns today; FeastsComing
+    // is strictly AFTER it.
+    final DateTime today = DateTime(2026, 12, 8);
+    final List<LiturgicalDayData> raw =
+        LiturgicalCalendarService.getUpcomingFeasts(
+          daysAhead: 14,
+          fromDate: today,
+        );
+    expect(
+      raw.map((LiturgicalDayData day) => day.displayName),
+      contains('Immaculate Conception'),
+      reason: 'the raw window includes today, so the exclusion is meaningful',
+    );
+
+    final ProviderContainer container = await _container(today: today);
+    final TodayAssembly assembly = await _assembly(container);
+
+    expect(assembly.date, today);
+    expect(assembly.feastsComing, isNotEmpty);
+    expect(
+      assembly.feastsComing.any(
+        (TodayItem item) => item.title == 'Immaculate Conception',
+      ),
+      isFalse,
+    );
+    for (final TodayItem feast in assembly.feastsComing) {
+      expect(feast.anchor!.isAfter(today), isTrue);
+    }
+  });
+
   test('a completed commitment is omitted from the day', () async {
     final ProviderContainer container = await _container(
       today: DateTime(2026, 12, 5),
@@ -260,6 +298,23 @@ void main() {
       ),
       isFalse,
     );
+  });
+
+  test('a due commitment carries its position in the streak', () async {
+    final ProviderContainer container = await _container(
+      today: DateTime(2026, 12, 5),
+      enroll: <String>['five_first_saturdays'],
+      // Two First Saturdays are already fulfilled: today's completion takes
+      // the third position (the wrapper's persisted streak + 1).
+      progress: <String, int>{'five_first_saturdays': 2},
+    );
+
+    final TodayAssembly assembly = await _assembly(container);
+
+    expect(_ids(assembly.commitments), <String>['five_first_saturdays']);
+    final TodayItem item = assembly.commitments.single;
+    expect(item.resolution?.ordinal, 3);
+    expect(item.ordinalLabel, 'ordinal 3');
   });
 
   test('Eastertide relabels the Angelus regina_caeli', () async {
@@ -301,7 +356,12 @@ void main() {
   test('time-of-day anchors land in the section matching their hour', () async {
     final ProviderContainer container = await _container(
       today: DateTime(2026, 12, 5),
-      enroll: <String>['noon_anchor', 'evening_anchor', 'night_anchor'],
+      enroll: <String>[
+        'noon_anchor',
+        'evening_anchor',
+        'night_anchor',
+        'mercy_anchor',
+      ],
       extraPacks: <ContentPack>[
         _timeOfDayPack(
           id: 'noon_anchor',
@@ -309,6 +369,13 @@ void main() {
           hour: 12,
           minute: 0,
           baseLabel: 'noon',
+        ),
+        _timeOfDayPack(
+          id: 'mercy_anchor',
+          title: 'Three O\'Clock Anchor',
+          hour: 15,
+          minute: 0,
+          baseLabel: 'three_oclock',
         ),
         _timeOfDayPack(
           id: 'night_anchor',
@@ -330,9 +397,11 @@ void main() {
     final TodayAssembly assembly = await _assembly(container);
 
     expect(_ids(assembly.morning), isEmpty);
-    expect(_ids(assembly.anchors), <String>['noon_anchor']);
-    expect(assembly.anchors.single.anchor, DateTime(2026, 12, 5, 12));
-    expect(_ids(assembly.mercy), isEmpty);
+    // 12:00 AND 15:00 are Anchors (the five-section contract); the screen
+    // partitions the 3pm one by anchor.hour. Pack id order within a section.
+    expect(_ids(assembly.anchors), <String>['mercy_anchor', 'noon_anchor']);
+    expect(assembly.anchors.first.anchor, DateTime(2026, 12, 5, 15));
+    expect(assembly.anchors.last.anchor, DateTime(2026, 12, 5, 12));
     // 18:00 and 20:30 both belong to the evening; pack id order within it.
     expect(_ids(assembly.evening), <String>['evening_anchor', 'night_anchor']);
     expect(assembly.evening.first.anchor, DateTime(2026, 12, 5, 18));
@@ -356,7 +425,7 @@ void main() {
     final TodayAssembly assembly = await _assembly(container);
 
     expect(assembly.morning.single.anchor, DateTime(2026, 12, 5, 7, 30));
-    expect(assembly.mercy.single.anchor, DateTime(2026, 12, 5, 15, 30));
+    expect(assembly.anchors.single.anchor, DateTime(2026, 12, 5, 15, 30));
   });
 
   test('unenrolled packs never surface', () async {
@@ -371,7 +440,7 @@ void main() {
 
     expect(_ids(assembly.morning), <String>['angelus']);
     expect(assembly.commitments, isEmpty);
-    expect(assembly.mercy, isEmpty);
+    expect(assembly.anchors, isEmpty);
     expect(assembly.evening, isEmpty);
     // Liturgical data is not enrollment state: the feast window still shows.
     expect(assembly.feastsComing, isNotEmpty);
