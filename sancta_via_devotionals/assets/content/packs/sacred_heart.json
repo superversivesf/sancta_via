@@ -1,0 +1,68 @@
+{
+  "id": "sacred_heart",
+  "title": "The Sacred Heart Novena",
+  "family": "novena",
+  "schedule": {
+    "type": "easterOffset",
+    "startOffset": 59,
+    "lengthDays": 9
+  },
+  "session": {
+    "id": "sacred-heart-novena-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "sh-sign-of-cross",
+        "title": "Sign of the Cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen."
+      },
+      {
+        "type": "verse",
+        "id": "sh-verse",
+        "title": "Versicle and response",
+        "versicle": "Heart of Jesus, burning with love of us:",
+        "response": "Inflame our hearts with love of Thee."
+      },
+      {
+        "type": "prayer",
+        "id": "sh-daily-prayer",
+        "title": "The Daily Novena Prayer",
+        "contentRef": "sh_daily_prayer"
+      },
+      {
+        "type": "intercession",
+        "id": "sh-intention",
+        "title": "Novena Intention",
+        "prompt": "Offer your Sacred Heart novena intention for day {{day}} of the nine days of preparation for the Solemnity."
+      },
+      {
+        "type": "prayer",
+        "id": "sh-closing",
+        "title": "Prayer to the Sacred Heart",
+        "contentRef": "prayer_to_sacred_heart"
+      }
+    ]
+  },
+  "content": {
+    "sh_daily_prayer": {
+      "id": "sh_daily_prayer",
+      "text": "O Sacred Heart of Jesus, burning furnace of charity: in these days of preparation before Thy Solemnity, make of my heart a throne for Thee. Burn away what is unworthy of Thee, enlighten what is dark in me, and set my will on fire with Thine own love, that I may honor Thy feast not in word but in life. Amen.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    },
+    "prayer_to_sacred_heart": {
+      "id": "prayer_to_sacred_heart",
+      "text": "O most holy Heart of Jesus,\nfountain of every blessing,\nI adore you, I love you, and with a lively sorrow for my sins,\nI offer you this poor heart of mine.\nMake me humble, patient, pure, and wholly obedient to your will.\nGrant, good Jesus, that I may live in you and for you.\nProtect me in the midst of danger;\ncomfort me in my afflictions;\ngive me health of body,\nassistance in my temporal needs,\nyour blessing on all that I do,\nand the grace of a holy death.\nAmen.\n\nSweet Heart of Jesus, be my love.\nSweet Heart of Jesus, be my salvation.\nSacred Heart of Jesus, I trust in you.\nSacred Heart of Jesus, I believe in your love for me.\nJesus, meek and humble of heart, make my heart like unto yours.",
+      "latin": "O Cor Iesu sacratissimum,\nfons omnis benedictionis,\nte adoro, te amo, et viva peccatorum meorum paenitentia,\nhoc meum cor tibi offero.\nFac me humilem, patientem, purum et tuae voluntati omnino obedientem.\nDa, bone Iesu, ut in te vivam et pro te.\nIn periculis protege me;\nin afflictionibus consolare me;\nsanitatem corporis,\nin temporalibus necessitatibus auxilium,\nbenedictionem tuam in omnibus quae ago,\net sanctae mortis gratiam concede.\nAmen.\n\nDulce Cor Iesu, esto amor meus.\nDulce Cor Iesu, esto salus mea.\nSacrum Cor Iesu, in te confido.\nSacrum Cor Iesu, credo in amorem tuum erga me.\nIesu, mitis et humilis corde, fac cor meum secundum cor tuum.",
+      "source": "Traditional devotion, popularized by St. Margaret Mary Alacoque (17th century)",
+      "license": "public-domain"
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "brief_offset_correction": "The brief pinned 'easterOffset +61 (Friday after Corpus Christi week)': under the engine's semantics +61 is the Friday after Corpus Christi itself (Corpus Christi is Easter+60, a Thursday), not the nine-day preparation. Corrected to +59: the window is Easter+59..+67, and it completes ON the solemnity, Easter+68 — the Friday after Corpus Christi week, exactly 19 days after Pentecost (pinned by the pack test for 2026 and 2027) — with the divine_mercy_novena convention of the feast day itself not due.",
+      "note": "The annual nine-day preparation for the Solemnity of the Sacred Heart: nine days ending at the vigil of the feast (the novena completes on the solemnity, which the pack leaves out of its due window). The daily exercise is uniform across the nine days, so the session is a single static session; the {{day}} token in the intercession prompt resolves from the window's day index."
+    }
+  }
+}

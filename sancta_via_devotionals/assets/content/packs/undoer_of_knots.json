@@ -1,0 +1,80 @@
+{
+  "id": "undoer_of_knots",
+  "title": "The Novena to Mary, Undoer of Knots",
+  "family": "novena",
+  "schedule": {
+    "type": "fixedDate",
+    "month": 9,
+    "day": 19,
+    "untilDay": 27
+  },
+  "session": {
+    "id": "undoer-of-knots-novena-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "uwk-sign-of-cross",
+        "title": "Sign of the Cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen."
+      },
+      {
+        "type": "verse",
+        "id": "uwk-verse",
+        "title": "Versicle and response",
+        "versicle": "Mary, Undoer of Knots:",
+        "response": "Pray for us."
+      },
+      {
+        "type": "prayer",
+        "id": "uwk-daily-prayer",
+        "title": "The Daily Novena Prayer",
+        "contentRef": "uwk_daily_prayer"
+      },
+      {
+        "type": "prayer",
+        "id": "uwk-hail-mary",
+        "title": "Hail Mary",
+        "contentRef": "hail_mary"
+      },
+      {
+        "type": "intercession",
+        "id": "uwk-intention",
+        "title": "Novena Intention",
+        "prompt": "Entrust to Our Lady Undoer of Knots the knot you carry today, and let her untie it in God's time."
+      },
+      {
+        "type": "prayer",
+        "id": "uwk-closing",
+        "title": "Closing Prayer",
+        "contentRef": "uwk_closing"
+      }
+    ]
+  },
+  "content": {
+    "uwk_daily_prayer": {
+      "id": "uwk_daily_prayer",
+      "text": "O Mary, Undoer of Knots: as St. Irenaeus taught of old, the knot of Eve's disobedience was untied by thy obedience. Untie in me the knots of my confusion, my fears, and my sins; make straight in me the road to my Lord; and keep me in the peace of His grace until it is done. Amen.",
+      "source": "original (after St. Irenaeus, Against Heresies III, 22)",
+      "license": "original (dedicated to the public domain)"
+    },
+    "hail_mary": {
+      "id": "hail_mary",
+      "text": "Hail Mary, full of grace, the Lord is with thee.\nBlessed art thou among women,\nand blessed is the fruit of thy womb, Jesus.\nHoly Mary, Mother of God,\npray for us sinners,\nnow and at the hour of our death.\nAmen.",
+      "latin": "Ave Maria, gratia plena, Dominus tecum.\nBenedicta tu in mulieribus,\net benedictus fructus ventris tui, Iesus.\nSancta Maria, Mater Dei,\nora pro nobis peccatoribus,\nnunc et in hora mortis nostrae.\nAmen.",
+      "source": "Based on Luke 1:28, 42",
+      "license": "public-domain (scriptural formula)"
+    },
+    "uwk_closing": {
+      "id": "uwk_closing",
+      "text": "Mary, Undoer of Knots, I leave my knot in thy hands. Pray for us now, and at the hour of our death. Amen.",
+      "source": "original (title reference; Hail Mary petition formula)",
+      "license": "original (dedicated to the public domain)"
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The nine days before the September 28 memorial of Mary, Undoer of Knots (a locally-observed memorial; some calendars mark September 27). The session is a single static session; the pack deliberately ships short original invocations with the title reference only — the famous full novena liturgy circulated for this devotion is copyrighted, so no part of it is reproduced."
+    }
+  }
+}

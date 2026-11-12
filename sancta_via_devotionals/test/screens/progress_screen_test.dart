@@ -149,14 +149,15 @@ Future<_ProgressHarness> _pumpProgress(
 }
 
 /// Flushes a tap's await chain (Task 15's recipe, widened; re-widened by
-/// Task 21): the fake-async zone's queued microtasks clear one layer per
-/// real-time window, so the rounds settle a write's reads/writes AND the
-/// post-write provider invalidations' recompute — which re-resolves the
-/// whole enrolled catalog (params + progress + detail; the SQLite round
-/// trips scale with the shipped pack count, 14 since the Task-21 routine
-/// packs joined the catalog), more than Task 15's two-write flows needed.
+/// Task 21, and by Task 22): the fake-async zone's queued microtasks clear
+/// one layer per real-time window, so the rounds settle a write's
+/// reads/writes AND the post-write provider invalidations' recompute —
+/// which re-resolves the whole enrolled catalog (params + progress +
+/// detail; the SQLite round trips scale with the shipped pack count, 23
+/// since the Task-22 novena packs joined the catalog), more than Task 15's
+/// two-write flows needed.
 Future<void> _drain(WidgetTester tester) async {
-  for (int round = 0; round < 40; round++) {
+  for (int round = 0; round < 60; round++) {
     await tester.runAsync(() async {
       await Future<void>.delayed(const Duration(milliseconds: 15));
     });

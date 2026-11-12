@@ -1,0 +1,99 @@
+{
+  "id": "novena_for_the_dead",
+  "title": "The Novena for the Dead",
+  "family": "novena",
+  "schedule": {
+    "type": "fixedDate",
+    "month": 11,
+    "day": 2,
+    "untilDay": 10
+  },
+  "session": {
+    "id": "novena-for-the-dead-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "dfr-sign-of-cross",
+        "title": "Sign of the Cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen."
+      },
+      {
+        "type": "prayer",
+        "id": "dfr-eternal-rest",
+        "title": "Eternal Rest",
+        "contentRef": "eternal_rest"
+      },
+      {
+        "type": "prayer",
+        "id": "dfr-de-profundis",
+        "title": "De Profundis (Psalm 129)",
+        "contentRef": "de_profundis"
+      },
+      {
+        "type": "prayer",
+        "id": "dfr-st-gertrude",
+        "title": "St. Gertrude's Prayer for the Holy Souls",
+        "contentRef": "st_gertrude_holy_souls"
+      },
+      {
+        "type": "prayer",
+        "id": "dfr-our-father",
+        "title": "Our Father",
+        "contentRef": "our_father"
+      },
+      {
+        "type": "intercession",
+        "id": "dfr-intention",
+        "title": "Novena Intention",
+        "prompt": "Place before God now, by name, the departed you carry, and ask the mercy of eternal rest for them."
+      },
+      {
+        "type": "prayer",
+        "id": "dfr-closing",
+        "title": "Closing Collect",
+        "contentRef": "dfr_requiem_collect"
+      }
+    ]
+  },
+  "content": {
+    "eternal_rest": {
+      "id": "eternal_rest",
+      "text": "Eternal rest grant unto them, O Lord,\nand let perpetual light shine upon them.\nMay the souls of the faithful departed,\nthrough the mercy of God,\nrest in peace.\nAmen.",
+      "latin": "Requiem aeternam dona eis, Domine,\net lux perpetua luceat eis.\nAnimae fidelium defunctorum,\nper misericordiam Dei,\nrequiescant in pace.\nAmen.",
+      "source": "Traditional Catholic Prayer",
+      "license": "public-domain"
+    },
+    "de_profundis": {
+      "id": "de_profundis",
+      "text": "Out of the depths I have cried to thee, O Lord:\nLord, hear my voice.\nLet thy ears be attentive\nto the voice of my supplication.\nIf thou, O Lord, wilt mark iniquities:\nLord, who shall stand it?\nFor with thee there is merciful forgiveness:\nand by reason of thy law, I have waited for thee, O Lord.\nMy soul hath relied on his word:\nmy soul hath hoped in the Lord.\nFrom the morning watch even until night,\nlet Israel hope in the Lord.\nBecause with the Lord there is mercy:\nand with him plentiful redemption.\nAnd he shall redeem Israel from all his iniquities.",
+      "source": "Psalm 129 (De profundis), Douay-Rheims Psalter",
+      "license": "public-domain (scriptural formula)"
+    },
+    "st_gertrude_holy_souls": {
+      "id": "st_gertrude_holy_souls",
+      "text": "Eternal Father,\nI offer Thee the Most Precious Blood\nof Thy Divine Son, Jesus,\nin union with the Masses said\nthroughout the world today,\nfor all the holy souls in Purgatory,\nfor sinners everywhere,\nfor sinners in the universal Church,\nthose in my own home\nand within my family.\nAmen.",
+      "latin": "Æterne Pater,\noffero Tibi Pretiosissimum Sanguinem\nDivini Filii Tui, Jesu,\nin unione cum Missis hodie\nper totum mundum celebratis,\npro omnibus sanctis animabus in Purgatorio,\npro peccatoribus ubique terrarum,\npro peccatoribus in Ecclesia universali,\npro his qui sunt in domo mea\net in familia mea.\nAmen.",
+      "source": "St. Gertrude the Great (13th century)",
+      "license": "public-domain (ancient attribution)"
+    },
+    "our_father": {
+      "id": "our_father",
+      "text": "Our Father, who art in heaven,\nhallowed be thy name;\nthy kingdom come;\nthy will be done on earth as it is in heaven.\nGive us this day our daily bread;\nand forgive us our trespasses\nas we forgive those who trespass against us;\nand lead us not into temptation,\nbut deliver us from evil.\nAmen.",
+      "latin": "Pater noster, qui es in caelis,\nsanctificetur nomen tuum;\nadveniat regnum tuum;\nfiat voluntas tua, sicut in caelo, et in terra.\nPanem nostrum cotidianum da nobis hodie;\net dimitte nobis debita nostra,\nsicut et nos dimittimus debitoribus nostris;\net ne nos inducas in tentationem;\nsed libera nos a malo.\nAmen.",
+      "source": "Jesus Christ (Matthew 6:9-13)",
+      "license": "public-domain (scriptural formula)"
+    },
+    "dfr_requiem_collect": {
+      "id": "dfr_requiem_collect",
+      "text": "O God, Creator and Redeemer of all the faithful: grant to the souls of Thy servants and handmaids the remission of all their sins; that, through pious supplications, they may obtain the pardon they have always desired. Amen.",
+      "source": "Traditional Requiem collect (pre-1969 traditional rendering)",
+      "license": "public-domain (traditional rendering)"
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The All Souls novena: the nine days of prayer for the dead beginning on All Souls' Day itself (November 2 through 10), the window's first day being the feast. The session is a single static session of public-domain formulas; it is also the tradition's form for praying for a particular soul in any nine days of need."
+    }
+  }
+}

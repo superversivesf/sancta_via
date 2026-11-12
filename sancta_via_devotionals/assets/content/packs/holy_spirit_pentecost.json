@@ -1,0 +1,152 @@
+{
+  "id": "holy_spirit_pentecost",
+  "title": "The Novena to the Holy Spirit",
+  "family": "novena",
+  "schedule": {
+    "type": "easterOffset",
+    "startOffset": 40,
+    "lengthDays": 9
+  },
+  "session": {
+    "id": "holy-spirit-pentecost-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "hsp-sign-of-cross",
+        "title": "Sign of the Cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen."
+      },
+      {
+        "type": "prayer",
+        "id": "hsp-veni-creator",
+        "title": "Veni, Creator Spiritus (the novena's traditional opening)",
+        "contentRef": "veni_creator_spiritus"
+      },
+      {
+        "type": "intercession",
+        "id": "hsp-gift-of-the-day",
+        "title": "The Gift of the Day",
+        "prompt": "Day {{day}}: {{invocation}}"
+      },
+      {
+        "type": "verse",
+        "id": "hsp-send-forth",
+        "title": "Versicle and response",
+        "versicle": "Send forth Thy Spirit, and they shall be created:",
+        "response": "And Thou shalt renew the face of the earth."
+      },
+      {
+        "type": "prayer",
+        "id": "hsp-veni-sancte",
+        "title": "Veni, Sancte Spiritus (the closing sequence)",
+        "contentRef": "veni_sancte_spiritus"
+      }
+    ]
+  },
+  "content": {
+    "veni_creator_spiritus": {
+      "id": "veni_creator_spiritus",
+      "text": "Come, Creator Spirit,\nvisit the minds of your people;\nfill with divine grace the hearts\nwhich you have created.\n\nYou who are called the Paraclete,\ngift of God most high,\nliving spring, fire, love\nand spiritual anointing.\n\nYou are sevenfold in your gifts,\nfinger of God's right hand;\nyou are the Father's solemn promise\nenriching our speech with power.\n\nKindle our senses from above,\nand make our hearts overflow with love;\nwith patience firm and faith secure\nstrengthen our frail flesh.\n\nDrive far from us our ghostly foe,\nand give us your peace instead;\nso shall we not, with you as guide,\nturn from the path of life.\n\nTeach us to know the Father, Son,\nand you, of both, to be the love:\nthat through the ages all along\nthis may be our endless song:\n\nPraise to your eternal merit,\nFather, Son, and Holy Spirit.\nAmen.",
+      "latin": "Veni, creator Spiritus,\nmentes tuorum visita,\nimple superna gratia,\nquae tu creasti, pectora.\n\nQui diceris Paraclitus,\naltissimi donum Dei,\nfons vivus, ignis, caritas,\net spiritalis unctio.\n\nTu, septiformis munere,\ndigitus paternae dexterae,\ntu rite promissum Patris,\nsermone ditans guttura.\n\nAccende lumen sensibus,\ninfunde amorem cordibus,\ninfirma nostri corporis\nvirtute firmans perpeti.\n\nHostem repellas longius,\npacemque dones protinus,\nductore sic te praevio\nvitemus omne noxium.\n\nPer te sciamus da Patrem,\nnoscamus atque Filium;\nteque utriusque Spiritum\ncredamus omni tempore.\n\nDeo Patri sit gloria,\net Filio, qui a mortuis\nsurrexit, ac Paraclito,\nin saeculorum saecula.\nAmen.",
+      "source": "Attributed to Rabanus Maurus (9th century)",
+      "license": "public-domain (ancient attribution)"
+    },
+    "veni_sancte_spiritus": {
+      "id": "veni_sancte_spiritus",
+      "text": "Come, Holy Spirit,\nand send forth from heaven\nthe ray of your light.\n\nCome, Father of the poor;\ncome, giver of gifts;\ncome, light of hearts.\n\nBest consoler,\nsweet guest of the soul,\nsweet coolness:\n\nIn labor, rest;\nin heat, refreshment;\nin tears, solace.\n\nO most blessed light,\nfill the inmost heart\nof your faithful.\n\nWithout your divine power,\nthere is nothing in man,\nand nothing innocent.\n\nCleanse what is base,\nwater what is dry,\nheal what is wounded.\n\nBend what is rigid,\nwarm what is chilled,\nmake right what is crooked.\n\nGive to your faithful,\nwho trust in you,\nthe sevenfold gifts.\n\nGrant the reward of virtue,\ngrant the deliverance of salvation,\ngrant eternal joy.\n\nAmen.",
+      "latin": "Veni, Sancte Spiritus,\net emitte caelitus\nlucis tuae radium.\n\nVeni, pater pauperum,\nveni, dator munerum,\nveni, lumen cordium.\n\nConsolator optime,\ndulcis hospes animae,\ndulce refrigerium:\n\nIn labore requies,\nin aestu temperies,\nin fletu solatium.\n\nO lux beatissima,\nreple cordis intima\ntuorum fidelium.\n\nSine tuo numine,\nnihil est in homine,\net nihil innoxium.\n\nLava quod est sordidum,\nriga quod est aridum,\nsana quod est saucium.\n\nFlecte quod est rigidum,\nfove quod est frigidum,\nrege quod est devium.\n\nDa tuis fidelibus,\nin te confidentibus,\nsacrum septenarium.\n\nDa virtutis meritum,\nda salutis exitum,\nda perenne gaudium.\n\nAmen.",
+      "source": "Attributed to Stephen Langton (c. 1150-1228), Archbishop of Canterbury",
+      "license": "public-domain (ancient attribution)"
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "brief_offset_correction": "The brief pinned 'easterOffset startOffset -10 length 9 (ends Pentecost)': under the engine's semantics a -10 offset relative to EASTER would place the window in Holy Week, not before Pentecost. Corrected to +40: the window is Easter+40..+48 (the traditional nine days from the Friday after Ascension to the Pentecost vigil), with the divine_mercy_novena convention of a length-9 window completing ON the feast and the feast day itself not due.",
+      "note": "The Church's oldest novena (the nine days of the apostles between the Ascension and Pentecost, Acts 1:14): from the Friday after Ascension (day 1) through the Pentecost vigil (day 9), completing on the feast of Pentecost. The tradition's per-day focus is the seven gifts of the Holy Spirit (days 1-7) carried as day variants."
+    }
+  },
+  "variants": [
+    {
+      "id": "day-1",
+      "title": "Day 1",
+      "dayIndex": 1,
+      "gift": "Wisdom",
+      "invocation": "O Holy Spirit, bestow on my soul the gift of Wisdom, that I may taste how sweet Thou art and prize Thee above every created good.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    },
+    {
+      "id": "day-2",
+      "title": "Day 2",
+      "dayIndex": 2,
+      "gift": "Understanding",
+      "invocation": "O Holy Spirit, bestow on my soul the gift of Understanding, that the mysteries of faith may shine out of my darkness.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    },
+    {
+      "id": "day-3",
+      "title": "Day 3",
+      "dayIndex": 3,
+      "gift": "Counsel",
+      "invocation": "O Holy Spirit, bestow on my soul the gift of Counsel, that I may find Thy way in every choice and follow it at once.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    },
+    {
+      "id": "day-4",
+      "title": "Day 4",
+      "dayIndex": 4,
+      "gift": "Fortitude",
+      "invocation": "O Holy Spirit, bestow on my soul the gift of Fortitude, that with Thy strength I may carry the cross Thou choosest for me.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    },
+    {
+      "id": "day-5",
+      "title": "Day 5",
+      "dayIndex": 5,
+      "gift": "Knowledge",
+      "invocation": "O Holy Spirit, bestow on my soul the gift of Knowledge, that I may know the things that lead me to Thee and turn from them that turn me away.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    },
+    {
+      "id": "day-6",
+      "title": "Day 6",
+      "dayIndex": 6,
+      "gift": "Piety",
+      "invocation": "O Holy Spirit, bestow on my soul the gift of Piety, that as Thy child I may serve Thee with tenderness and joy.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    },
+    {
+      "id": "day-7",
+      "title": "Day 7",
+      "dayIndex": 7,
+      "gift": "Fear of the Lord",
+      "invocation": "O Holy Spirit, bestow on my soul the gift of Fear of the Lord, that reverent awe may keep me from sin and near to Thee.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    },
+    {
+      "id": "day-8",
+      "title": "Day 8",
+      "dayIndex": 8,
+      "gift": "The Fruits of the Spirit",
+      "invocation": "O Holy Spirit, pour into my soul the fruits of Thy dwelling: charity, joy, peace, patience, kindness, and the whole harvest of Thy presence.",
+      "source": "original (after the fruits of Galatians 5:22-23)",
+      "license": "original (dedicated to the public domain)"
+    },
+    {
+      "id": "day-9",
+      "title": "Day 9",
+      "dayIndex": 9,
+      "gift": "Renewal at the Vigil",
+      "invocation": "O Holy Spirit, come anew into my heart on this vigil day: make the feast of Pentecost an open door for Thy gifts, and renew the face of my earth.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    }
+  ]
+}

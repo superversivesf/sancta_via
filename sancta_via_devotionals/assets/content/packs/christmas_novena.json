@@ -1,0 +1,168 @@
+{
+  "id": "christmas_novena",
+  "title": "The Christmas Novena",
+  "family": "novena",
+  "schedule": {
+    "type": "fixedDate",
+    "month": 12,
+    "day": 16,
+    "untilDay": 24
+  },
+  "session": {
+    "id": "christmas-novena-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "xmas-sign-of-cross",
+        "title": "Sign of the Cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen."
+      },
+      {
+        "type": "verse",
+        "id": "xmas-antiphon",
+        "title": "The antiphon of the day",
+        "versicle": "{{antiphon}}",
+        "response": "Amen. Come, Lord Jesus."
+      },
+      {
+        "type": "intercession",
+        "id": "xmas-intention",
+        "title": "Novena Intention",
+        "prompt": "Offer your Christmas novena intention for day {{day}} of the nine days before the Nativity."
+      },
+      {
+        "type": "prayer",
+        "id": "xmas-daily-prayer",
+        "title": "The Daily Novena Prayer",
+        "contentRef": "xmas_daily_prayer"
+      },
+      {
+        "type": "prayer",
+        "id": "xmas-our-father",
+        "title": "Our Father",
+        "contentRef": "our_father"
+      },
+      {
+        "type": "prayer",
+        "id": "xmas-hail-mary",
+        "title": "Hail Mary",
+        "contentRef": "hail_mary"
+      },
+      {
+        "type": "prayer",
+        "id": "xmas-glory-be",
+        "title": "Glory Be",
+        "contentRef": "glory_be"
+      }
+    ]
+  },
+  "content": {
+    "xmas_daily_prayer": {
+      "id": "xmas_daily_prayer",
+      "text": "Lord Jesus Christ, Infant King: as Thy holy Nativity draws near, prepare in me a place for Thee. Empty my heart of what crowds Thee out; kindle in me Thy own patient love; and let these nine days of waiting be an offering of my whole self, that on the feast of Thy birth I may receive Thee not as a stranger, but as my King. Amen.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    },
+    "our_father": {
+      "id": "our_father",
+      "text": "Our Father, who art in heaven,\nhallowed be thy name;\nthy kingdom come;\nthy will be done on earth as it is in heaven.\nGive us this day our daily bread;\nand forgive us our trespasses\nas we forgive those who trespass against us;\nand lead us not into temptation,\nbut deliver us from evil.\nAmen.",
+      "latin": "Pater noster, qui es in caelis,\nsanctificetur nomen tuum;\nadveniat regnum tuum;\nfiat voluntas tua, sicut in caelo, et in terra.\nPanem nostrum cotidianum da nobis hodie;\net dimitte nobis debita nostra,\nsicut et nos dimittimus debitoribus nostris;\net ne nos inducas in tentationem;\nsed libera nos a malo.\nAmen.",
+      "source": "Jesus Christ (Matthew 6:9-13)",
+      "license": "public-domain (scriptural formula)"
+    },
+    "hail_mary": {
+      "id": "hail_mary",
+      "text": "Hail Mary, full of grace, the Lord is with thee.\nBlessed art thou among women,\nand blessed is the fruit of thy womb, Jesus.\nHoly Mary, Mother of God,\npray for us sinners,\nnow and at the hour of our death.\nAmen.",
+      "latin": "Ave Maria, gratia plena, Dominus tecum.\nBenedicta tu in mulieribus,\net benedictus fructus ventris tui, Iesus.\nSancta Maria, Mater Dei,\nora pro nobis peccatoribus,\nnunc et in hora mortis nostrae.\nAmen.",
+      "source": "Based on Luke 1:28, 42",
+      "license": "public-domain (scriptural formula)"
+    },
+    "glory_be": {
+      "id": "glory_be",
+      "text": "Glory be to the Father,\nand to the Son,\nand to the Holy Spirit,\nas it was in the beginning,\nis now, and ever shall be,\nworld without end.\nAmen.",
+      "latin": "Gloria Patri, et Filio,\net Spiritui Sancto,\nsicut erat in principio,\net nunc, et semper,\net in saecula saeculorum.\nAmen.",
+      "source": "Traditional Doxology",
+      "license": "public-domain"
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The traditional Christmas novena: nine days before the Nativity, December 16 through 24 (Advent's 'Great O' antiphon days December 17-23 carry the per-day antiphon as the session's day variant). The fixed window is year-agnostic: every year's December 16..24 resolves, with Christmas Day completing the novena outside the due window."
+    }
+  },
+  "variants": [
+    {
+      "id": "day-1",
+      "title": "Day 1",
+      "dayIndex": 1,
+      "antiphon": "Drop down dew, O ye heavens, from above, and let the clouds rain the just: let the earth be opened and bring forth a Saviour.",
+      "source": "Rorate caeli (Isaiah 45:8; the traditional rendering of the Advent introit)",
+      "license": "public-domain (traditional rendering)"
+    },
+    {
+      "id": "day-2",
+      "title": "Day 2",
+      "dayIndex": 2,
+      "antiphon": "O Wisdom, coming forth from the mouth of the Most High,\nreaching from one end to the other mightily,\nand sweetly disposing all things:\nCome and teach us the way of prudence.",
+      "source": "Traditional \"Great O\" Advent Antiphons (7th-8th century; rendering per the companion import o_antiphons)",
+      "license": "public-domain"
+    },
+    {
+      "id": "day-3",
+      "title": "Day 3",
+      "dayIndex": 3,
+      "antiphon": "O Adonai, and leader of the House of Israel,\nwho appeared to Moses in the fire of the burning bush\nand gave him the law on Sinai:\nCome and redeem us with an outstretched arm.",
+      "source": "Traditional \"Great O\" Advent Antiphons (7th-8th century; rendering per the companion import o_antiphons)",
+      "license": "public-domain"
+    },
+    {
+      "id": "day-4",
+      "title": "Day 4",
+      "dayIndex": 4,
+      "antiphon": "O Root of Jesse, standing as an ensign before the peoples,\nbefore whom kings keep silence,\nand unto whom the Gentiles shall make supplication:\nCome to deliver us, and tarry not.",
+      "source": "Traditional \"Great O\" Advent Antiphons (7th-8th century; rendering per the companion import o_antiphons)",
+      "license": "public-domain"
+    },
+    {
+      "id": "day-5",
+      "title": "Day 5",
+      "dayIndex": 5,
+      "antiphon": "O Key of David, and sceptre of the House of Israel,\nwho opens and no one shuts,\nwho shuts and no one opens:\nCome and bring forth from prison the captive who sits in darkness and in the shadow of death.",
+      "source": "Traditional \"Great O\" Advent Antiphons (7th-8th century; rendering per the companion import o_antiphons)",
+      "license": "public-domain"
+    },
+    {
+      "id": "day-6",
+      "title": "Day 6",
+      "dayIndex": 6,
+      "antiphon": "O Dayspring, brightness of light everlasting,\nand Sun of righteousness:\nCome and enlighten those who sit in darkness and in the shadow of death.",
+      "source": "Traditional \"Great O\" Advent Antiphons (7th-8th century; rendering per the companion import o_antiphons)",
+      "license": "public-domain"
+    },
+    {
+      "id": "day-7",
+      "title": "Day 7",
+      "dayIndex": 7,
+      "antiphon": "O King of Nations, and their desired one,\nthe cornerstone that binds two into one:\nCome and save mankind, whom you fashioned from clay.",
+      "source": "Traditional \"Great O\" Advent Antiphons (7th-8th century; rendering per the companion import o_antiphons)",
+      "license": "public-domain"
+    },
+    {
+      "id": "day-8",
+      "title": "Day 8",
+      "dayIndex": 8,
+      "antiphon": "O Emmanuel, our King and Lawgiver,\nthe desire of the nations and their Savior:\nCome and save us, O Lord our God.",
+      "source": "Traditional \"Great O\" Advent Antiphons (7th-8th century; rendering per the companion import o_antiphons)",
+      "license": "public-domain"
+    },
+    {
+      "id": "day-9",
+      "title": "Day 9",
+      "dayIndex": 9,
+      "antiphon": "For a child is born to us, and a son is given to us, and the government is upon his shoulder: and his name shall be called Wonderful, Counsellor, God the Mighty, the Father of the world to come, the Prince of Peace.",
+      "source": "Isaiah 9:6 (Douay-Rheims Christmas Eve vigil text)",
+      "license": "public-domain (scriptural formula)"
+    }
+  ]
+}

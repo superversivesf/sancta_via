@@ -12,6 +12,9 @@
 //   fixed morning/night) — AUTHORED in this app's assets, not copied from
 //   the engine; `test/content/routine_packs_test.dart` pins their shape, and
 //   the committed import mapping under `assets/content/prayers/`.
+// * The nine Task-22 novena packs — authored in this app's assets too;
+//   `test/content/novena_packs_test.dart` pins their shape, schedules, and
+//   the single-copy rule over their embedded companion prayers.
 //
 // The REAL rootBundle (not a test fake) must resolve every declared path the
 // pipeline keys off:
@@ -29,22 +32,33 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart';
 
-/// The committed pack assets, in filename order (the pins' order).
+/// The committed pack assets, in filename order (the pins' order): the 8
+/// engine-fixture packs, the 6 Task-21 routine packs, and the 9 Task-22
+/// novena packs.
 const List<String> _packFilenames = <String>[
   'angelus.json',
+  'christmas_novena.json',
   'daily_examen.json',
   'divine_mercy_novena.json',
   'five_first_saturdays.json',
   'fixed_prayers_morning.json',
   'fixed_prayers_night.json',
+  'holy_spirit_pentecost.json',
   'lectio_divina.json',
   'meal_night_prayers.json',
   'mercy_hour.json',
+  'miraculous_medal.json',
   'morning_offering.json',
   'nine_first_fridays.json',
   'novena_54_day.json',
+  'novena_for_the_dead.json',
+  'perpetual_help.json',
   'rosary.json',
+  'sacred_heart.json',
+  'st_joseph.json',
+  'st_jude.json',
   'total_consecration.json',
+  'undoer_of_knots.json',
 ];
 
 /// The engine-fixture-origin pack assets (byte-for-byte copies). The Task-21

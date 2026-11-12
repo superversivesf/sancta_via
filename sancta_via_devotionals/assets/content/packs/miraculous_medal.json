@@ -1,0 +1,80 @@
+{
+  "id": "miraculous_medal",
+  "title": "The Novena to Our Lady of the Miraculous Medal",
+  "family": "novena",
+  "schedule": {
+    "type": "fixedDate",
+    "month": 11,
+    "day": 18,
+    "untilDay": 26
+  },
+  "session": {
+    "id": "miraculous-medal-novena-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "mm-sign-of-cross",
+        "title": "Sign of the Cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen."
+      },
+      {
+        "type": "prayer",
+        "id": "mm-invocation",
+        "title": "The Medal Invocation",
+        "contentRef": "mm_invocation"
+      },
+      {
+        "type": "prayer",
+        "id": "mm-hail-mary",
+        "title": "Hail Mary",
+        "contentRef": "hail_mary"
+      },
+      {
+        "type": "prayer",
+        "id": "mm-daily-prayer",
+        "title": "The Daily Novena Prayer",
+        "contentRef": "mm_daily_prayer"
+      },
+      {
+        "type": "intercession",
+        "id": "mm-intention",
+        "title": "Novena Intention",
+        "prompt": "Offer your intention to Our Lady of the Miraculous Medal, with confidence in her motherly aid."
+      },
+      {
+        "type": "verse",
+        "id": "mm-closing-verse",
+        "title": "Versicle and response",
+        "versicle": "Pray for us, O Mother of the Miraculous Medal:",
+        "response": "That we may be made worthy of the promises of Christ."
+      }
+    ]
+  },
+  "content": {
+    "mm_invocation": {
+      "id": "mm_invocation",
+      "text": "O Mary, conceived without sin, pray for us who have recourse to Thee.",
+      "source": "The Miraculous Medal invocation (Paris, 1830)",
+      "license": "public-domain (universally reproduced)"
+    },
+    "hail_mary": {
+      "id": "hail_mary",
+      "text": "Hail Mary, full of grace, the Lord is with thee.\nBlessed art thou among women,\nand blessed is the fruit of thy womb, Jesus.\nHoly Mary, Mother of God,\npray for us sinners,\nnow and at the hour of our death.\nAmen.",
+      "latin": "Ave Maria, gratia plena, Dominus tecum.\nBenedicta tu in mulieribus,\net benedictus fructus ventris tui, Iesus.\nSancta Maria, Mater Dei,\nora pro nobis peccatoribus,\nnunc et in hora mortis nostrae.\nAmen.",
+      "source": "Based on Luke 1:28, 42",
+      "license": "public-domain (scriptural formula)"
+    },
+    "mm_daily_prayer": {
+      "id": "mm_daily_prayer",
+      "text": "O Holy Virgin Mary, who didst promise signal graces to those who wear thy Medal with faith: in these nine days before thy feast, keep me in constant recourse to thee, and let thy motherly intercession obtain from thine only-begotten Son the graces I ask. Amen.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The nine days before the November 27 feast of Our Lady of the Miraculous Medal (the window completes on the feast, which is not due). The shrines' weekly perpetual novenas (Mondays at the Philadelphia Basilica since 1930; Tuesdays at many parishes) are a separate practice documented here, not this pack's schedule; the Association of the Miraculous Medal's novena booklet is copyrighted, so the session is a single static session of public-domain formulas plus short original invocations."
+    }
+  }
+}

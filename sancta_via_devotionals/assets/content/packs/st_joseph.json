@@ -1,0 +1,107 @@
+{
+  "id": "st_joseph",
+  "title": "The Novena to St. Joseph",
+  "family": "novena",
+  "schedule": {
+    "type": "fixedDate",
+    "month": 3,
+    "day": 10,
+    "untilDay": 18
+  },
+  "session": {
+    "id": "st-joseph-novena-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "sjo-sign-of-cross",
+        "title": "Sign of the Cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen."
+      },
+      {
+        "type": "verse",
+        "id": "sjo-verse",
+        "title": "Versicle and response",
+        "versicle": "Pray for us, O blessed St. Joseph:",
+        "response": "That we may be made worthy of the promises of Christ."
+      },
+      {
+        "type": "prayer",
+        "id": "sjo-prayer",
+        "title": "Prayer to St. Joseph",
+        "contentRef": "prayer_to_st_joseph"
+      },
+      {
+        "type": "prayer",
+        "id": "sjo-our-father",
+        "title": "Our Father",
+        "contentRef": "our_father"
+      },
+      {
+        "type": "prayer",
+        "id": "sjo-hail-mary",
+        "title": "Hail Mary",
+        "contentRef": "hail_mary"
+      },
+      {
+        "type": "prayer",
+        "id": "sjo-glory-be",
+        "title": "Glory Be",
+        "contentRef": "glory_be"
+      },
+      {
+        "type": "intercession",
+        "id": "sjo-intention",
+        "title": "Novena Intention",
+        "prompt": "Offer your novena intention through the hands of St. Joseph."
+      },
+      {
+        "type": "prayer",
+        "id": "sjo-closing",
+        "title": "Closing Prayer",
+        "contentRef": "sjo_closing"
+      }
+    ]
+  },
+  "content": {
+    "prayer_to_st_joseph": {
+      "id": "prayer_to_st_joseph",
+      "text": "O St. Joseph, whose protection is so great, so strong, so prompt before the throne of God,\nI place in you all my interests and desires.\nO St. Joseph, do assist me by your powerful intercession\nand obtain for me from your divine Son\nall spiritual blessings through Jesus Christ, our Lord;\nso that having engaged here below your heavenly power,\nI may offer my thanksgiving and homage to the most loving of fathers.\nO St. Joseph, I never weary of contemplating you and Jesus asleep in your arms;\nI dare not approach while He reposes near your heart.\nPress Him in my name and kiss His fine head for me,\nand ask Him to return the kiss when I draw my dying breath.\nSt. Joseph, patron of departing souls, pray for us.\nAmen.",
+      "latin": "O Sancte Ioseph, cuius protectio tam magna, tam fortis, tam prompta est ante thronum Dei, commendo tibi omnia mea studia atque desideria. O Sancte Ioseph, adiuva me tua potenti intercessione, et impetra mihi a divino Filio tuo omnes benedictiones spirituales per Iesum Christum Dominum nostrum, ut cum caelesti virtute tua hic in terris usus fuerim, gratiarum actionem et obsequium offerre possim amantissimo Patri. O Sancte Ioseph, nunquam fatigor te contemplari et Iesum dormientem in brachiis tuis; non audeo accedere dum Ipse requiescit iuxta cor tuum. Preme Eum meo nomine et osculare pulchrum caput eius pro me, et roga Eum ut osculum reddat cum spiritum efflavero. Sancte Ioseph, patrōne morientium, ora pro nobis. Amen.",
+      "source": "Pope Pius X",
+      "license": "public-domain (attributed, pre-1928)"
+    },
+    "our_father": {
+      "id": "our_father",
+      "text": "Our Father, who art in heaven,\nhallowed be thy name;\nthy kingdom come;\nthy will be done on earth as it is in heaven.\nGive us this day our daily bread;\nand forgive us our trespasses\nas we forgive those who trespass against us;\nand lead us not into temptation,\nbut deliver us from evil.\nAmen.",
+      "latin": "Pater noster, qui es in caelis,\nsanctificetur nomen tuum;\nadveniat regnum tuum;\nfiat voluntas tua, sicut in caelo, et in terra.\nPanem nostrum cotidianum da nobis hodie;\net dimitte nobis debita nostra,\nsicut et nos dimittimus debitoribus nostris;\net ne nos inducas in tentationem;\nsed libera nos a malo.\nAmen.",
+      "source": "Jesus Christ (Matthew 6:9-13)",
+      "license": "public-domain (scriptural formula)"
+    },
+    "hail_mary": {
+      "id": "hail_mary",
+      "text": "Hail Mary, full of grace, the Lord is with thee.\nBlessed art thou among women,\nand blessed is the fruit of thy womb, Jesus.\nHoly Mary, Mother of God,\npray for us sinners,\nnow and at the hour of our death.\nAmen.",
+      "latin": "Ave Maria, gratia plena, Dominus tecum.\nBenedicta tu in mulieribus,\net benedictus fructus ventris tui, Iesus.\nSancta Maria, Mater Dei,\nora pro nobis peccatoribus,\nnunc et in hora mortis nostrae.\nAmen.",
+      "source": "Based on Luke 1:28, 42",
+      "license": "public-domain (scriptural formula)"
+    },
+    "glory_be": {
+      "id": "glory_be",
+      "text": "Glory be to the Father,\nand to the Son,\nand to the Holy Spirit,\nas it was in the beginning,\nis now, and ever shall be,\nworld without end.\nAmen.",
+      "latin": "Gloria Patri, et Filio,\net Spiritui Sancto,\nsicut erat in principio,\net nunc, et semper,\net in saecula saeculorum.\nAmen.",
+      "source": "Traditional Doxology",
+      "license": "public-domain"
+    },
+    "sjo_closing": {
+      "id": "sjo_closing",
+      "text": "St. Joseph, chaste spouse of Mary and guardian of the Child Jesus: keep me under thy protection as thou didst keep them, and bring my nine days to the joy of thy solemnity. Obtain for me, through thy intercession, the grace I ask in this novena, if it be for the greater glory of God and the good of my soul. Amen.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The traditional nine days before the Solemnity of St. Joseph: March 10 through 18, completing on the feast (March 19, not due). The session is a single static session; the pack embeds the committed companion import's prayer attributed to Pope Pius X in preference to the modern copyrighted novena booklets."
+    }
+  }
+}

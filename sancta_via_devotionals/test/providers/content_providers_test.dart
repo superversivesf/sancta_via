@@ -33,22 +33,32 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 /// The pack ids in repository order (`packs.id ASC`): the eight
-/// engine-fixture packs plus the six Task-21 routine packs.
+/// engine-fixture packs, the six Task-21 routine packs, and the nine
+/// Task-22 novena packs.
 const List<String> _packIds = <String>[
   'angelus',
+  'christmas_novena',
   'daily_examen',
   'divine_mercy_novena',
   'five_first_saturdays',
   'fixed_prayers_morning',
   'fixed_prayers_night',
+  'holy_spirit_pentecost',
   'lectio_divina',
   'meal_night_prayers',
   'mercy_hour',
+  'miraculous_medal',
   'morning_offering',
   'nine_first_fridays',
   'novena_54_day',
+  'novena_for_the_dead',
+  'perpetual_help',
   'rosary',
+  'sacred_heart',
+  'st_joseph',
+  'st_jude',
   'total_consecration',
+  'undoer_of_knots',
 ];
 
 /// A fresh FFI in-memory store open factory (isolated per call).

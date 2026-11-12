@@ -1,0 +1,98 @@
+{
+  "id": "st_jude",
+  "title": "The Novena to St. Jude",
+  "family": "novena",
+  "schedule": {
+    "type": "weeklyLoop",
+    "weekdays": [3]
+  },
+  "session": {
+    "id": "st-jude-novena-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "sjd-sign-of-cross",
+        "title": "Sign of the Cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen."
+      },
+      {
+        "type": "prayer",
+        "id": "sjd-novena-prayer",
+        "title": "The Novena Prayer",
+        "contentRef": "st_jude_novena"
+      },
+      {
+        "type": "prayer",
+        "id": "sjd-our-father",
+        "title": "Our Father",
+        "contentRef": "our_father"
+      },
+      {
+        "type": "prayer",
+        "id": "sjd-hail-mary",
+        "title": "Hail Mary",
+        "contentRef": "hail_mary"
+      },
+      {
+        "type": "prayer",
+        "id": "sjd-glory-be",
+        "title": "Glory Be",
+        "contentRef": "glory_be"
+      },
+      {
+        "type": "intercession",
+        "id": "sjd-intention",
+        "title": "Novena Intention",
+        "prompt": "Entrust to St. Jude the cause that seems beyond all hope, and wait on God's answer in trust."
+      },
+      {
+        "type": "prayer",
+        "id": "sjd-thanksgiving",
+        "title": "Act of Thanksgiving",
+        "contentRef": "sjd_thanksgiving"
+      }
+    ]
+  },
+  "content": {
+    "st_jude_novena": {
+      "id": "st_jude_novena",
+      "text": "Most holy Apostle, St. Jude,\nfaithful servant and friend of Jesus,\nthe Church honors and invokes you universally\nas the patron of hopeless cases,\nof things almost despaired of.\nPray for me, I am so helpless and alone.\n\nIntercede with God for me\nthat He bring visible and speedy help\nwhere help is almost despaired of.\nCome to my assistance in this great need\nthat I may receive the consolation\nand help of heaven in all my necessities,\ntribulations, and sufferings,\nparticularly [mention your request],\nand that I may praise God with you and all the saints\nforever.\n\nI promise, O blessed St. Jude,\nto be ever mindful of this great favor\ngranted me by God\nand to always honor you\nas my special and powerful patron,\nand to gratefully encourage devotion to you.\nAmen.",
+      "latin": "Sanctissime Apostole, Sancte Iuda,\nfidelis serve et amice Iesu,\nEcclesia te honorat et invocat universaliter\ntanquam patronum casuum desperatorum,\nrerum fere desperatarum.\nOra pro me, tam inops et solus sum.\n\nIntercede apud Deum pro me\nut Ipse adferat visibile et veloce auxilium\nubi auxilium fere desperatur.\nVeni in auxilium meum in hac magna necessitate\nut consolationem accipiam\net auxilium caeli in omnibus necessitatibus meis,\ntribulationibus et passionibus,\npraesertim [mentio petitionem tuam],\net ut Deum laudem tecum et omnibus sanctis\nin perpetuum.\nAmen.",
+      "source": "Traditional Novena Prayer to St. Jude",
+      "license": "public-domain"
+    },
+    "our_father": {
+      "id": "our_father",
+      "text": "Our Father, who art in heaven,\nhallowed be thy name;\nthy kingdom come;\nthy will be done on earth as it is in heaven.\nGive us this day our daily bread;\nand forgive us our trespasses\nas we forgive those who trespass against us;\nand lead us not into temptation,\nbut deliver us from evil.\nAmen.",
+      "latin": "Pater noster, qui es in caelis,\nsanctificetur nomen tuum;\nadveniat regnum tuum;\nfiat voluntas tua, sicut in caelo, et in terra.\nPanem nostrum cotidianum da nobis hodie;\net dimitte nobis debita nostra,\nsicut et nos dimittimus debitoribus nostris;\net ne nos inducas in tentationem;\nsed libera nos a malo.\nAmen.",
+      "source": "Jesus Christ (Matthew 6:9-13)",
+      "license": "public-domain (scriptural formula)"
+    },
+    "hail_mary": {
+      "id": "hail_mary",
+      "text": "Hail Mary, full of grace, the Lord is with thee.\nBlessed art thou among women,\nand blessed is the fruit of thy womb, Jesus.\nHoly Mary, Mother of God,\npray for us sinners,\nnow and at the hour of our death.\nAmen.",
+      "latin": "Ave Maria, gratia plena, Dominus tecum.\nBenedicta tu in mulieribus,\net benedictus fructus ventris tui, Iesus.\nSancta Maria, Mater Dei,\nora pro nobis peccatoribus,\nnunc et in hora mortis nostrae.\nAmen.",
+      "source": "Based on Luke 1:28, 42",
+      "license": "public-domain (scriptural formula)"
+    },
+    "glory_be": {
+      "id": "glory_be",
+      "text": "Glory be to the Father,\nand to the Son,\nand to the Holy Spirit,\nas it was in the beginning,\nis now, and ever shall be,\nworld without end.\nAmen.",
+      "latin": "Gloria Patri, et Filio,\net Spiritui Sancto,\nsicut erat in principio,\net nunc, et semper,\net in saecula saeculorum.\nAmen.",
+      "source": "Traditional Doxology",
+      "license": "public-domain"
+    },
+    "sjd_thanksgiving": {
+      "id": "sjd_thanksgiving",
+      "text": "St. Jude, apostle of Jesus and patron of the hopeless: I thank thee, with all the angels and saints, for thy unfailing intercession, and I will make known the mercy of God received through thee. Amen.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The weekly novena: due Wednesdays per the brief's pinned weekday. The session is a single static session (the weekly tradition prays the same exercise every week, continuing week to week); the pack embeds the committed companion import's Traditional Novena Prayer to St. Jude in preference to the modern copyrighted novena cards."
+    }
+  }
+}
