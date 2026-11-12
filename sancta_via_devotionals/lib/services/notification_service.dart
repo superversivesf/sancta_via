@@ -28,6 +28,12 @@
 //   (`id`, pack id, `fire_at` ISO, title, body, `deep_link`, status
 //   `scheduled`). A second refresh on unchanged inputs performs ZERO plugin
 //   writes — the idempotency property the diff exists for.
+// * The SHARED base settings' `notificationsEnabled` is the master gate
+//   over the whole stack (fix round 1): with the gate closed the plan is
+//   empty and every scheduled row/device notification is cancelled by the
+//   same diff path a settings toggle-off takes. The gate is read from the
+//   app settings' synced `baseSettings` snapshot (Task 3's one-way sync
+//   from `baseSettingsProvider`) on every pass.
 // * [taps] yields the `deep_link` of a tapped notification (`/session/…`);
 //   the app shell routes it through the router. The tap handler also marks
 //   the row `fired` and runs a refresh (a spec §9 refresh point).
@@ -530,16 +536,35 @@ class NotificationService {
         if (row.status == 'scheduled') _plannedFromRow(row),
     ];
 
-    final List<PlannedNotification> plan = _planner.plan(
-      now: now,
-      timeZoneName: zoneName,
-      packs: plannedPacks,
-      enrollments: enrollments,
-      // Binding note 2: the FEAST-ONLY seam (see the library docs).
-      upcomingFeasts: _upcomingFeasts(now),
-      settings: settings,
-      alreadyPending: alreadyPending,
-    );
+    // The master gate (fix round 1): the SHARED base settings'
+    // `notificationsEnabled` is the kill switch over ALL of this app's
+    // reminders. With the gate closed the plan is EMPTY and the diff below
+    // cancels every scheduled row and device notification — the same code
+    // path as a settings toggle-off (the ruling pinned: `refresh` still
+    // runs the full diff, never a bare early return). The read goes through
+    // the app settings' synced `baseSettings` snapshot, which
+    // `DevotionsSettingsNotifier` replaces on every `baseSettingsProvider`
+    // change (Task 3's pinned one-way sync), so a gate flip on the settings
+    // screen takes effect at the very next refresh pass.
+    final bool reminderGateOpen = settings.baseSettings.notificationsEnabled;
+    final List<PlannedNotification> plan = reminderGateOpen
+        ? _planner.plan(
+            now: now,
+            timeZoneName: zoneName,
+            packs: plannedPacks,
+            enrollments: enrollments,
+            // Binding note 2: the FEAST-ONLY seam (see the library docs).
+            upcomingFeasts: _upcomingFeasts(now),
+            settings: settings,
+            alreadyPending: alreadyPending,
+          )
+        : <PlannedNotification>[];
+    if (!reminderGateOpen) {
+      AppLogger.debug(
+        'Notification gate closed — every reminder suppressed',
+        'NOTIF',
+      );
+    }
 
     // The device's pending snapshot, keyed by the planner id in its payload.
     final Map<String, PendingNotification> pendingById =
@@ -736,7 +761,8 @@ class NotificationService {
 
   /// The store's `fire_at` rendering: the zoned instant's own ISO-8601 form
   /// (local wall clock plus that date's offset, e.g.
-  /// `2026-12-01T06:00:00.000-05:00`), so reading a row back keeps the
+  /// `2026-12-01T06:00:00.000-0500` — `toIso8601String` renders the offset
+  /// WITHOUT a colon), so reading a row back keeps the
   /// instant and the offset that produced it.
   static String _iso(DateTime fireAt) => fireAt.toIso8601String();
 

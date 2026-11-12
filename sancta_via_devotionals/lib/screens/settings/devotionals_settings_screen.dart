@@ -13,11 +13,15 @@
 // settings' default language) and the theme mode (the dark/light/system
 // choice) — so the controls on this screen drive the running app.
 //
-// The app section carries the [DevotionsAppSettings] fields the brief pins:
+// The app section carries the [DevotionsAppSettings] fields the brief pins
+// (amended in fix round 1 to add the two routine reminder consents):
 //
 // * the four anchor reminder times (time pickers over
 //   `anchorTimesProvider`, written through the notifier setters);
 // * the Angelus and Divine-Mercy-Hour anchor toggles;
+// * the morning and evening reminder consent toggles (plan inputs the
+//   planner gates the non-anchor routine anchors on; onboarding takes the
+//   consents first, this screen is the post-onboarding surface);
 // * the meal & night anchors toggle, with its explicit "off by default"
 //   warning (the setting is a consent, not a default);
 // * the missed-day default policy selector — only `MissedDayEvaluator`'s own
@@ -33,15 +37,16 @@
 //
 // ## Notification refresh
 //
-// A change the planner reads at plan time — the anchor times, the anchor
-// toggles, and the night-items gate (see `NotificationPlanner.plan`'s
-// settings reads) — fires ONE `NotificationService.refresh()` per change
-// event, fire-and-forget with logging and never awaited, the same discipline
-// as Task 18's three wired refresh points. No debounce is needed: the
-// service serializes refreshes through its own queue, and a second change
-// event lands its own pass over the then-current settings. Display/content
-// preferences (Latin, Luminous), the missed-day policy, and the shared
-// base-settings gate are not plan inputs, so they do not refresh.
+// A change the planner or the master gate reads at plan time — the anchor
+// times, the anchor toggles, the morning/evening reminder consents, the
+// night-items gate, and the SHARED `baseSettingsProvider` master gate
+// (`notificationsEnabled`, fix round 1) — fires ONE
+// `NotificationService.refresh()` per change event, fire-and-forget with
+// logging and never awaited, the same discipline as Task 18's three wired
+// refresh points. No debounce is needed: the service serializes refreshes
+// through its own queue, and a second change event lands its own pass over
+// the then-current settings. Display/content preferences (Latin, Luminous)
+// and the missed-day policy are not plan inputs, so they do not refresh.
 library;
 
 import 'dart:async';
@@ -81,6 +86,19 @@ class DevotionalsSettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // The shared master gate is a plan input (fix round 1): the
+    // `NotificationsSettings` switch writes `baseSettingsProvider` directly,
+    // so the screen listens for ITS changes and fires one refresh per gate
+    // event — with the gate closed the next pass cancels every reminder,
+    // with it open the next pass re-plans (the diff's own work).
+    ref.listen<BaseSettingsModel>(baseSettingsProvider, (
+      BaseSettingsModel? previous,
+      BaseSettingsModel next,
+    ) {
+      if (previous?.notificationsEnabled != next.notificationsEnabled) {
+        _refreshAfterScheduleChange(ref);
+      }
+    });
     return FutureBuilder<PackageInfo>(
       future: PackageInfo.fromPlatform(),
       builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {
@@ -181,6 +199,41 @@ class DevotionalsSettingsScreen extends ConsumerWidget {
             ref
                 .read(devotionsSettingsProvider.notifier)
                 .setMercyHourAnchorEnabled(value);
+            _refreshAfterScheduleChange(ref);
+          },
+        ),
+        // ── Routine reminder consents (the post-onboarding surface —
+        // fix round 1 brief amendment; the planner gates the non-anchor
+        // routine anchors on these two flags).
+        SwitchListTile(
+          key: const Key('toggle_morning_reminder'),
+          secondary: const Icon(Icons.wb_sunny_outlined),
+          title: const Text('Morning reminders'),
+          subtitle: const Text(
+            'Reminders for the routine anchors before 5pm (e.g. the '
+            'Morning Offering)',
+          ),
+          value: settings.morningReminderEnabled,
+          onChanged: (bool value) {
+            ref
+                .read(devotionsSettingsProvider.notifier)
+                .setMorningReminderEnabled(value);
+            _refreshAfterScheduleChange(ref);
+          },
+        ),
+        SwitchListTile(
+          key: const Key('toggle_evening_reminder'),
+          secondary: const Icon(Icons.nights_stay_outlined),
+          title: const Text('Evening reminders'),
+          subtitle: const Text(
+            'Reminders for the routine anchors from 5pm (e.g. the daily '
+            'Examen)',
+          ),
+          value: settings.eveningReminderEnabled,
+          onChanged: (bool value) {
+            ref
+                .read(devotionsSettingsProvider.notifier)
+                .setEveningReminderEnabled(value);
             _refreshAfterScheduleChange(ref);
           },
         ),
@@ -318,9 +371,10 @@ class DevotionalsSettingsScreen extends ConsumerWidget {
 }
 
 /// One schedule-relevant change event → one fire-and-forget refresh (see
-/// the library docs): the planner reads the anchor times, the anchor
-/// toggles, and the night-items gate at plan time, so each of those change
-/// events re-plans the reminders over the settings the change just wrote.
+/// the library docs): the planner and the master gate read the anchor
+/// times, the anchor toggles, the reminder consents, the night-items gate,
+/// and the shared base gate at plan time, so each of those change events
+/// re-plans the reminders over the settings the change just wrote.
 void _refreshAfterScheduleChange(WidgetRef ref) {
   final NotificationService service = ref.read(notificationServiceProvider);
   unawaited(_runRefresh(service));

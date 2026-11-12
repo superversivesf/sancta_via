@@ -32,6 +32,8 @@ import 'package:sancta_via_devotionals/repositories/program_repository.dart';
 import 'package:sancta_via_devotionals/services/notification_service.dart';
 import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart'
     show LiturgicalDayData;
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart'
+    show BaseSettingsModel;
 import 'package:sqflite/sqflite.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
@@ -162,7 +164,15 @@ void main() {
     );
     repository = SqliteProgramRepository(database: database);
     adapter = _FakeNotificationPluginAdapter();
-    settings = DevotionsAppSettings.defaults();
+    // These tests pin PLAN CONTENT (which anchors are planned, at which
+    // times); the shared master gate is a plan input too, so the fixture
+    // opens it explicitly. The gate's own behavior is pinned by the
+    // gate-on/off test below.
+    settings = DevotionsAppSettings(
+      baseSettings: BaseSettingsModel.defaults().copyWith(
+        notificationsEnabled: true,
+      ),
+    );
     service = NotificationService(
       database: database,
       repository: repository,
@@ -276,6 +286,56 @@ void main() {
       expect(adapter.pending, isEmpty);
       expect(adapter.cancelled, hasLength(60));
     });
+
+    test(
+      'the master notifications gate off plans nothing — everything cancels',
+      () async {
+        await repository.seedPacks(<ContentPack>[
+          _assetPack('angelus'),
+        ], packVersion: 'test-1');
+        await repository.enroll('angelus', <String, dynamic>{});
+
+        // Gate open (the fixture): 60 anchors scheduled.
+        await service.refresh();
+        expect(adapter.pending, hasLength(60));
+
+        // The SHARED base-settings master gate closes: the plan is empty and
+        // the diff cancels every scheduled row and device notification, the
+        // same code path as a settings toggle-off.
+        settings = settings.copyWith(
+          baseSettings: settings.baseSettings.copyWith(
+            notificationsEnabled: false,
+          ),
+        );
+        await service.refresh();
+
+        final List<NotificationRow> rows = await database.getAllNotifications();
+        expect(rows, hasLength(60));
+        expect(
+          rows.every((NotificationRow row) => row.status == 'cancelled'),
+          isTrue,
+        );
+        expect(adapter.pending, isEmpty);
+        expect(adapter.cancelled, hasLength(60));
+
+        // And a later refresh with the gate back open re-schedules the same
+        // ids (closed ids are not terminal — the ruling's toggle symmetry).
+        settings = settings.copyWith(
+          baseSettings: settings.baseSettings.copyWith(
+            notificationsEnabled: true,
+          ),
+        );
+        await service.refresh();
+        final List<NotificationRow> rescheduled = await database
+            .getAllNotifications();
+        expect(rescheduled, hasLength(60));
+        expect(
+          rescheduled.every((NotificationRow row) => row.status == 'scheduled'),
+          isTrue,
+        );
+        expect(adapter.pending, hasLength(60));
+      },
+    );
 
     test('a completed commitment produces no reminders', () async {
       await repository.seedPacks(<ContentPack>[

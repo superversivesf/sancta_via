@@ -326,6 +326,71 @@ void main() {
     );
 
     testWidgets(
+      'the morning and evening reminder toggles update settings and trigger '
+      'one refresh per change, off and on',
+      (WidgetTester tester) async {
+        final _SettingsHarness harness = await _pumpSettings(tester);
+
+        // The defaults are OFF (Task 3's pinned defaults; onboarding is
+        // where the consents are first taken — the settings screen is the
+        // post-onboarding surface).
+        expect(
+          harness.container
+              .read(devotionsSettingsProvider)
+              .morningReminderEnabled,
+          isFalse,
+        );
+        expect(
+          harness.container
+              .read(devotionsSettingsProvider)
+              .eveningReminderEnabled,
+          isFalse,
+        );
+        expect(harness.adapter.refreshes, 0);
+
+        // Morning ON: settings update + exactly one refresh (both are plan
+        // inputs for the routine anchors, wired like the anchor toggles).
+        await _tapAndDrain(
+          tester,
+          find.byKey(const Key('toggle_morning_reminder')),
+        );
+        expect(
+          harness.container
+              .read(devotionsSettingsProvider)
+              .morningReminderEnabled,
+          isTrue,
+        );
+        expect(harness.adapter.refreshes, 1);
+
+        // Evening ON: one more refresh.
+        await _tapAndDrain(
+          tester,
+          find.byKey(const Key('toggle_evening_reminder')),
+        );
+        expect(
+          harness.container
+              .read(devotionsSettingsProvider)
+              .eveningReminderEnabled,
+          isTrue,
+        );
+        expect(harness.adapter.refreshes, 2);
+
+        // The off direction refreshes too.
+        await _tapAndDrain(
+          tester,
+          find.byKey(const Key('toggle_morning_reminder')),
+        );
+        expect(
+          harness.container
+              .read(devotionsSettingsProvider)
+              .morningReminderEnabled,
+          isFalse,
+        );
+        expect(harness.adapter.refreshes, 3);
+      },
+    );
+
+    testWidgets(
       'changing an anchor time through the picker updates the settings, the '
       'rendered time, and triggers one refresh; cancelling changes nothing',
       (WidgetTester tester) async {
@@ -465,7 +530,9 @@ void main() {
       );
 
       // The shared notifications gate (NotificationsSettings' main
-      // switch) delegates to baseSettingsProvider.
+      // switch) delegates to baseSettingsProvider — and it IS a
+      // schedule-relevant change (fix round 1: the master gate is a plan
+      // input), so the screen fires exactly one refresh for it.
       await _tapAndDrain(
         tester,
         find.widgetWithText(SwitchListTile, 'Notifications'),
@@ -474,8 +541,7 @@ void main() {
         harness.container.read(baseSettingsProvider).notificationsEnabled,
         isTrue,
       );
-      // A base-gate change is not schedule-relevant: no planner refresh.
-      expect(harness.adapter.refreshes, 0);
+      expect(harness.adapter.refreshes, 1);
 
       // The shared language selector delegates to baseSettingsProvider —
       // and the app settings snapshot syncs it one-way.
