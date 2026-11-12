@@ -23,6 +23,7 @@ import '../models/saint_search_result.dart';
 import '../utils/async_lock.dart';
 import '../utils/logger.dart';
 import '../utils/normalization.dart';
+import 'saint_feast_service.dart';
 import 'saints_db_loader.dart';
 
 /// The logging tag for the saint repository, per AGENTS.md.
@@ -60,12 +61,29 @@ String buildFtsTerms(List<String> terms) {
 
 /// Singleton data layer over the bundled saints SQLite database.
 class SaintRepository {
-  SaintRepository._internal() : _injectedDatabase = null;
+  SaintRepository._internal()
+    : _injectedDatabase = null,
+      _databaseAssetPath = null;
 
   /// Testing-only constructor: runs every method against [database] and
   /// never touches the bundled asset or the databases directory.
   @visibleForTesting
-  SaintRepository.forDatabase(Database database) : _injectedDatabase = database;
+  SaintRepository.forDatabase(Database database)
+    : _injectedDatabase = database,
+      _databaseAssetPath = null;
+
+  /// Testing-only constructor: a repository whose [ensureLoaded] performs
+  /// the REAL production first load through [openSaintsDatabase] against
+  /// [assetPath] — not a no-op injection like [SaintRepository.forDatabase].
+  ///
+  /// The seam exists so tests can force genuine first-load failures (e.g. an
+  /// asset path that resolves nowhere, hitting the loader's loud
+  /// missing-asset path) or drive the full refresh + open flow, without
+  /// depending on the test environment lacking bundled assets.
+  @visibleForTesting
+  SaintRepository.forAssetPath(String assetPath)
+    : _injectedDatabase = null,
+      _databaseAssetPath = assetPath;
 
   static final SaintRepository _instance = SaintRepository._internal();
 
@@ -73,6 +91,10 @@ class SaintRepository {
   static SaintRepository get instance => _instance;
 
   final Database? _injectedDatabase;
+
+  /// The asset path [ensureLoaded] opens from; null keeps the bundled
+  /// default (`assets/saints.db`).
+  final String? _databaseAssetPath;
   Database? _database;
   final AsyncLock _loadLock = AsyncLock();
 
@@ -96,7 +118,9 @@ class SaintRepository {
         return;
       }
       try {
-        _database = await openSaintsDatabase();
+        _database = await openSaintsDatabase(
+          databaseAssetPath: _databaseAssetPath ?? 'assets/saints.db',
+        );
       } catch (e, stackTrace) {
         SaintLogger.error(
           'Failed to load the saints database',
@@ -147,19 +171,47 @@ class SaintRepository {
   ///
   /// `'unknown'` is never a match result: unknown-feast saints stay
   /// discoverable via categories and search only (spec section 7).
-  Future<List<Saint>> getSaintsForFeastDay(String feastKey) {
+  ///
+  /// Feb-29 fallback (final-review ruling, lookup side): when [year]
+  /// (defaulting to the current year) is NOT a leap year, the `'02-28'`
+  /// lookup ALWAYS also returns the saints whose feast day is `'02-29'` —
+  /// a Feb-29 celebration has no calendar slot in ordinary years and
+  /// transfers to Feb 28. The union is NOT conditional on Feb 28's own
+  /// match count (Feb 28 has its own saints) and is deduped by slug. Leap
+  /// years match exactly; every other key is an exact match in every year
+  /// (and a direct `'02-29'` lookup can only come from a leap year through
+  /// [SaintFeastService.feastKeyForDate], which wraps non-leap Feb 29 to
+  /// March 1).
+  Future<List<Saint>> getSaintsForFeastDay(String feastKey, {int? year}) {
     return _withDatabase<List<Saint>>((Database db) async {
       final String key = feastKey.trim();
       if (key.isEmpty || key == 'unknown') {
         return const <Saint>[];
       }
+      // Lookup-side Feb-29 fallback: in a non-leap year the '02-28' key
+      // always unions the '02-29' rows (no emptiness conditional).
+      final int lookupYear = year ?? DateTime.now().year;
+      final List<String> keys = <String>[
+        key,
+        if (key == '02-28' && !SaintFeastService.isLeapYear(lookupYear))
+          '02-29',
+      ];
       final List<Map<String, Object?>> rows = await db.query(
         'saints',
-        where: 'feast_day = ?',
-        whereArgs: <String>[key],
+        where:
+            'feast_day IN (${List<String>.filled(keys.length, '?').join(', ')})',
+        whereArgs: keys,
         orderBy: 'name',
       );
-      return _loadSaints(db, rows);
+      final List<Saint> saints = await _loadSaints(db, rows);
+      // Ruling: dedupe by slug, name order preserved. With the pinned
+      // schema (slug is the saints PRIMARY KEY) one slug stores exactly one
+      // feast_day, so the union cannot repeat a slug — the pass stays
+      // defensive against duplicate rows.
+      final Map<String, Saint> deduped = <String, Saint>{
+        for (final Saint saint in saints) saint.slug: saint,
+      };
+      return deduped.values.toList();
     }, const <Saint>[]);
   }
 

@@ -308,6 +308,24 @@ void main() {
         expect(counts.single['n'], 2174);
       },
     );
+
+    test(
+      'rethrows instead of opening an empty store when the asset is missing',
+      () async {
+        // Final-review ruling: an empty saints store is worse than the
+        // properly propagated error state. When the bundled asset cannot be
+        // copied (here: an asset path that resolves nowhere), the onCreate
+        // fallback must be LOUD — log the missing asset and rethrow, never
+        // hand back a schema-only empty database.
+        await expectLater(
+          openSaintsDatabase(databaseAssetPath: 'assets/no-such-saints.db'),
+          throwsA(anything),
+          reason:
+              'a missing saints asset must surface as a load failure, not '
+              'as a silently empty saints store',
+        );
+      },
+    );
   });
 }
 

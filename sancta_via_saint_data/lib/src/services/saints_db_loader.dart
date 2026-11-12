@@ -18,8 +18,11 @@
 //    healed by re-copying the bundled asset.
 //
 // Refresh failures are logged and swallowed: the app then opens whatever
-// copy already exists (openDatabase may create an empty database, whose
-// schema is then created on the fly) and never crashes on the refresh path.
+// copy already exists and never crashes on the refresh path. The onCreate
+// path is the exception (final-review ruling): when the bundled asset
+// could not be copied, [openSaintsDatabase] logs the missing asset and
+// RETHROWS instead of opening an empty schema — an empty store is worse
+// than the properly propagated error state (spec §9).
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -104,9 +107,14 @@ final AsyncLock _openLock = AsyncLock();
 /// [refreshSaintsDatabaseAsset]) whenever the on-device copy is missing,
 /// older, or stale, then opens it — WITHOUT `readOnly`, because SQLite
 /// needs to write some metadata even for read operations (the same rule
-/// `SqliteBibleLoader` follows). If an empty database ends up opened
-/// because every asset copy failed, its schema is created on the fly so
-/// callers see a queryable (just empty) store.
+/// `SqliteBibleLoader` follows).
+///
+/// The onCreate path is the loud failure: it fires only when the bundled
+/// asset could not be copied (the copied asset bytes carry the schema
+/// version, so a successful copy never re-creates), and an empty schema-only
+/// store is worse than the propagated error state (final-review ruling).
+/// The fallback therefore logs the missing asset and rethrows instead of
+/// creating tables on the fly.
 Future<Database> openSaintsDatabase({
   String databaseAssetPath = 'assets/saints.db',
   String dbName = 'saints.db',
@@ -122,12 +130,21 @@ Future<Database> openSaintsDatabase({
         dbPath,
         version: saintsSchemaVersion,
         onCreate: (Database db, int version) {
-          SaintLogger.info(
-            'Creating saints schema on an empty copy '
-            '(asset copy unavailable)',
+          final Object error = StateError(
+            'Saints database asset copy unavailable: "$databaseAssetPath" '
+            'did not resolve in the bundle, so no bundled copy could be '
+            'opened. Refusing to fall back to an empty saints store; '
+            'propagating the first-load failure instead.',
+          );
+          SaintLogger.error(
+            'Creating (not opening) the saints schema: the bundled asset '
+            'copy is unavailable — rethrowing instead of serving an empty '
+            'store',
+            error,
+            StackTrace.current,
             tag: saintsLoaderTag,
           );
-          return createSaintsDatabase(db);
+          throw error;
         },
         onOpen: (Database db) {
           SaintLogger.info(

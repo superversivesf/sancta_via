@@ -251,6 +251,21 @@ void main() {
       }
     });
 
+    test('matches exactly every non-Feb-28 feast key', () async {
+      // The Feb-29 union is keyed ONLY onto the '02-28' lookup (see the
+      // Feb-29 fallback group below); every other feast key stays an exact
+      // single-key match.
+      expect(
+        <String>[
+          for (final Saint saint in await repository.getSaintsForFeastDay(
+            '06-13',
+          ))
+            saint.slug,
+        ],
+        <String>['anthony-of-padua'],
+      );
+    });
+
     test('never returns the unknown-feast saint', () async {
       expect(await repository.getSaintsForFeastDay('unknown'), isEmpty);
       expect(await repository.getSaintsForFeastDay('12-25'), isEmpty);
@@ -261,6 +276,120 @@ void main() {
         slugs.addAll(<String>[for (final Saint saint in saints) saint.slug]);
       }
       expect(slugs, isNot(contains('zephyrinus')));
+    });
+  });
+
+  group('getSaintsForFeastDay Feb-29 fallback (final-review ruling)', () {
+    // Shipped data holds saints on both `02-28` and `02-29`; a Feb-29
+    // celebration has NO calendar slot in a non-leap year, so the final-
+    // review ruling moves the fallback to the feast LOOKUP side: the
+    // '02-28' key ALWAYS unions the '02-29' rows in a NON-leap year (no
+    // emptiness conditional — Feb 28 has its own saints), deduped by slug.
+    // Leap years match exactly. The year is an explicit seam ([year]),
+    // defaulting to the current year for the runtime provider.
+    late Database febDb;
+    late SaintRepository febRepository;
+
+    setUp(() async {
+      febDb = await openDatabase(inMemoryDatabasePath, singleInstance: false);
+      await createSaintsDatabase(febDb);
+      await _seedSaint(
+        febDb,
+        slug: 'february-28',
+        name: 'St. February Twenty-Eight',
+        feastDay: '02-28',
+        bio: 'A saint remembered on February 28.',
+      );
+      await _seedSaint(
+        febDb,
+        slug: 'february-29',
+        name: 'St. February Twenty-Nine',
+        feastDay: '02-29',
+        bio: 'A saint remembered on February 29.',
+      );
+      febRepository = SaintRepository.forDatabase(febDb);
+    });
+
+    tearDown(() async {
+      await febDb.close();
+    });
+
+    test('non-leap year: 02-28 unions the 02-29 saints, deduped', () async {
+      final List<Saint> saints = await febRepository.getSaintsForFeastDay(
+        '02-28',
+        year: 2027,
+      );
+      expect(
+        <String>[for (final Saint saint in saints) saint.slug],
+        <String>['february-28', 'february-29'],
+        reason:
+            'in a non-leap year the Feb-29 celebration has no slot and '
+            'transfers to Feb 28: BOTH saints must resolve, name-ordered',
+      );
+      expect(
+        saints.map((Saint saint) => saint.slug).toSet().length,
+        saints.length,
+        reason: 'the union must be deduped by slug',
+      );
+    });
+
+    test('leap year: 02-28 matches exactly', () async {
+      final List<Saint> saints = await febRepository.getSaintsForFeastDay(
+        '02-28',
+        year: 2028,
+      );
+      expect(
+        <String>[for (final Saint saint in saints) saint.slug],
+        <String>['february-28'],
+        reason: 'a leap year gives Feb 29 its own slot: exact match only',
+      );
+    });
+
+    test(
+      'a direct 02-29 lookup keeps its exact rows in both year kinds',
+      () async {
+        // The ruling constrains ONLY the '02-28' lookup (Feb-29 saints fall
+        // back onto Feb 28 in ordinary years). Dart never produces the '02-29'
+        // key in a non-leap year (it wraps to March 1), so a direct '02-29'
+        // request stays a plain exact-match lookup in every year.
+        for (final int year in <int>[2027, 2028]) {
+          final List<Saint> saints = await febRepository.getSaintsForFeastDay(
+            '02-29',
+            year: year,
+          );
+          expect(
+            <String>[for (final Saint saint in saints) saint.slug],
+            <String>['february-29'],
+          );
+        }
+      },
+    );
+
+    test('a non-Feb-28 key never unions anything else', () async {
+      // Sanity pin inside the same fixture: non-leap '06-13'-style keys
+      // keep their exact semantics with an explicit year.
+      final List<Saint> saints = await febRepository.getSaintsForFeastDay(
+        '02-27',
+        year: 2027,
+      );
+      expect(saints, isEmpty);
+    });
+
+    test('an omitted year resolves to the current year', () async {
+      final List<Saint> omitted = await febRepository.getSaintsForFeastDay(
+        '02-28',
+      );
+      final List<Saint> explicit = await febRepository.getSaintsForFeastDay(
+        '02-28',
+        year: DateTime.now().year,
+      );
+      expect(
+        <String>[for (final Saint saint in omitted) saint.slug],
+        <String>[for (final Saint saint in explicit) saint.slug],
+        reason:
+            'the runtime provider resolves the current year; the omitted '
+            'form must agree with the explicit one at any clock time',
+      );
     });
   });
 
@@ -655,6 +784,64 @@ void main() {
         final List<Saint> featured = await SaintRepository.instance
             .getFeaturedSaints();
         expect(featured, isNotEmpty);
+      },
+    );
+  });
+
+  group('forAssetPath seam (final-review ruling b)', () {
+    // The testing-only seam for genuine first-load behavior: unlike
+    // [SaintRepository.forDatabase] (whose ensureLoaded is a no-op), a
+    // forAssetPath repository performs the REAL production open through
+    // [openSaintsDatabase] against the given asset path — so tests can
+    // force genuine first-load failures (and successes) without relying on
+    // the environment lacking any assets.
+    late Directory tempDir;
+
+    setUpAll(() {
+      TestWidgetsFlutterBinding.ensureInitialized();
+    });
+
+    setUp(() async {
+      tempDir = await Directory.systemTemp.createTemp('saints_asset_path_');
+      await databaseFactory.setDatabasesPath(tempDir.path);
+    });
+
+    tearDown(() async {
+      await tempDir.delete(recursive: true);
+    });
+
+    test('drives the real open path: the bundled asset loads', () async {
+      final SaintRepository repository = SaintRepository.forAssetPath(
+        'assets/saints.db',
+      );
+      await repository.ensureLoaded();
+      final List<Saint> featured = await repository.getFeaturedSaints();
+      expect(
+        featured,
+        isNotEmpty,
+        reason:
+            'forAssetPath must run the genuine production first load (asset '
+            'refresh + open), not a no-op injection; the committed database '
+            'ships featured saints',
+      );
+    });
+
+    test(
+      'ensureLoaded propagates a genuine first-load failure for a missing asset',
+      () async {
+        final SaintRepository repository = SaintRepository.forAssetPath(
+          'assets/does-not-exist.db',
+        );
+        await expectLater(
+          repository.ensureLoaded(),
+          throwsA(anything),
+          reason:
+              'the seam must expose genuine first-load failures (the loader '
+              'now rethrows on the empty-onCreate path) so consumers can pin '
+              'their error states against a forced load failure',
+        );
+        // Safe defaults still apply around queries on the failed instance.
+        expect(await repository.getFeaturedSaints(), isEmpty);
       },
     );
   });
