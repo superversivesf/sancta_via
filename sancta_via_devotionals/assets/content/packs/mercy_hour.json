@@ -1,0 +1,45 @@
+{
+  "id": "mercy_hour",
+  "title": "The Hour of Mercy",
+  "family": "routine",
+  "schedules": [
+    {
+      "type": "timeOfDay",
+      "hour": 15,
+      "minute": 0,
+      "baseLabel": "mercy_hour"
+    }
+  ],
+  "session": {
+    "id": "mercy-hour-session",
+    "steps": [
+      {
+        "type": "prayer",
+        "id": "mercy-hour-prayer",
+        "title": "The Hour of Mercy",
+        "contentRef": "mercy_hour_prayer"
+      },
+      {
+        "type": "repetition",
+        "id": "mercy-hour-repetition",
+        "title": "O Blood and Water",
+        "contentRef": "mercy_hour_repetition",
+        "count": 3
+      }
+    ]
+  },
+  "content": {
+    "mercy_hour_prayer": {
+      "id": "mercy_hour_prayer",
+      "text": "You expired, Jesus, but the source of life gushed forth for souls, and an ocean of mercy opened up for the whole world. O Blood and Water, which gushed forth from the Heart of Jesus as a fountain of mercy for us, I trust in You.",
+      "source": "The Diary of St. Faustina (short invocations)",
+      "license": "short-phrase (attributed, widely-reproduced)"
+    },
+    "mercy_hour_repetition": {
+      "id": "mercy_hour_repetition",
+      "text": "O Blood and Water, which gushed forth from the Heart of Jesus as a fountain of mercy for us, I trust in You.",
+      "source": "The Diary of St. Faustina (short invocations)",
+      "license": "short-phrase (attributed, widely-reproduced)"
+    }
+  }
+}

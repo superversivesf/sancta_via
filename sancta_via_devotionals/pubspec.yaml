@@ -13,6 +13,7 @@ dependencies:
     path: ../sancta_via_bible_data
   bible_data_riverpod:
     path: ../sancta_via_bible_data_riverpod
+  crypto: ^3.0.8
   cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
@@ -48,5 +49,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    # The content pack catalog ships from the APP bundle (Plan 2, Task 6):
+    # the content pipeline resolves `assets/content/packs/*.json` against
+    # this app's own asset manifest. The files are byte-for-byte copies of
+    # `sancta_via_devotional_engine/test/fixtures/packs/` (single source of
+    # truth = the engine fixtures; regenerate via copy whenever they change).
+    - assets/content/packs/
   # Include the Material Icons font.
   uses-material-design: true

@@ -1,0 +1,101 @@
+{
+  "id": "five_first_saturdays",
+  "title": "Five First Saturdays of Our Lady",
+  "family": "commitment",
+  "schedule": {
+    "type": "consecutiveCommitments",
+    "anchor": {
+      "type": "nthWeekdayOfMonth",
+      "weekday": 6,
+      "nth": 1
+    },
+    "count": 5,
+    "policy": "strict",
+    "windows": [
+      {
+        "item": "confession",
+        "beforeDays": 8,
+        "afterDays": 8
+      }
+    ]
+  },
+  "session": {
+    "id": "five-first-saturdays-session",
+    "steps": [
+      {
+        "type": "checkpoint",
+        "id": "ffs-confession",
+        "title": "Sacramental Confession",
+        "item": "confession",
+        "requiredForCompletion": false
+      },
+      {
+        "type": "checkpoint",
+        "id": "ffs-communion",
+        "title": "Holy Communion",
+        "item": "communion",
+        "requiredForCompletion": true
+      },
+      {
+        "type": "beadGroup",
+        "id": "ffs-decade-1",
+        "title": "The First Joyful Mystery",
+        "mysteryTitle": "The Annunciation",
+        "mysteryFruit": "Humility",
+        "hailMaryCount": 10,
+        "includeFatimaPrayer": true
+      },
+      {
+        "type": "beadGroup",
+        "id": "ffs-decade-2",
+        "title": "The Second Joyful Mystery",
+        "mysteryTitle": "The Visitation",
+        "mysteryFruit": "Charity",
+        "hailMaryCount": 10,
+        "includeFatimaPrayer": true
+      },
+      {
+        "type": "beadGroup",
+        "id": "ffs-decade-3",
+        "title": "The Third Joyful Mystery",
+        "mysteryTitle": "The Nativity",
+        "mysteryFruit": "Poverty of spirit",
+        "hailMaryCount": 10,
+        "includeFatimaPrayer": true
+      },
+      {
+        "type": "beadGroup",
+        "id": "ffs-decade-4",
+        "title": "The Fourth Joyful Mystery",
+        "mysteryTitle": "The Presentation",
+        "mysteryFruit": "Obedience",
+        "hailMaryCount": 10,
+        "includeFatimaPrayer": true
+      },
+      {
+        "type": "beadGroup",
+        "id": "ffs-decade-5",
+        "title": "The Fifth Joyful Mystery",
+        "mysteryTitle": "The Finding in the Temple",
+        "mysteryFruit": "Seeking God",
+        "hailMaryCount": 10,
+        "includeFatimaPrayer": true
+      },
+      {
+        "type": "reflection",
+        "id": "ffs-meditation",
+        "title": "Fifteen Minutes of Meditation",
+        "textRef": "ffs_meditation",
+        "durationSeconds": 900
+      }
+    ]
+  },
+  "content": {
+    "ffs_meditation": {
+      "id": "ffs_meditation",
+      "text": "Set apart these fifteen minutes for Our Lady, as she asked on the First Saturdays: a quarter-hour of meditation on the mysteries of the Holy Rosary, kept in reparation to her Immaculate Heart. Sit with her now, mystery by mystery. At the Annunciation, ask for her humility, for God found in her His dwelling because she made herself lowly. At the Visitation, learn her charity, for no sooner had she conceived than she crossed the hill country to serve. At the Nativity, adore the Child in poverty of spirit, laid in a manger because there was no room. At the Presentation, follow her obedience, for she kept every ordinance of the Law for Him who gave the Law. At the Finding in the Temple, seek God as she sought Him, sorrowing and believing until she found Him. Close by returning to her Heart, pierced and thorn-crowned by our sins, and offer her your company as the reparation she asked for: one First Saturday more in the series of five, for the glory of her Son.",
+      "source": "Fatima 1917 request",
+      "license": "public-domain (Our Lady's First Saturday request)"
+    }
+  }
+}

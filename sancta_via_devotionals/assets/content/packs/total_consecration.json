@@ -1,0 +1,354 @@
+{
+  "id": "total_consecration",
+  "title": "Total Consecration to Jesus through Mary",
+  "family": "commitment",
+  "schedule": {
+    "type": "sessionSeries",
+    "startDate": "2027-02-20",
+    "lengthDays": 34
+  },
+  "session": {
+    "id": "total-consecration-session",
+    "steps": [
+      {
+        "type": "prayer",
+        "id": "tc-come-holy-spirit",
+        "title": "Come, Holy Spirit",
+        "contentRef": "come-holy-spirit"
+      },
+      {
+        "type": "prayer",
+        "id": "tc-veni-creator",
+        "title": "Veni Creator Spiritus",
+        "contentRef": "veni-creator-spiritus"
+      },
+      {
+        "type": "prayer",
+        "id": "tc-ave-maris-stella",
+        "title": "Ave Maris Stella",
+        "contentRef": "ave-maris-stella"
+      },
+      {
+        "type": "prayer",
+        "id": "tc-magnificat",
+        "title": "Magnificat",
+        "contentRef": "magnificat"
+      },
+      {
+        "type": "reflection",
+        "id": "tc-daily-reading",
+        "title": "Daily Reading and Meditation",
+        "textRef": "daily-reading-prompt",
+        "durationSeconds": 600
+      },
+      {
+        "type": "prayer",
+        "id": "tc-daily-renewal",
+        "title": "Daily Renewal of Consecration",
+        "contentRef": "daily-renewal"
+      },
+      {
+        "type": "prayer",
+        "id": "tc-act-of-consecration",
+        "title": "Act of Consecration (consecration day)",
+        "contentRef": "act-of-consecration"
+      }
+    ]
+  },
+  "content": {
+    "come-holy-spirit": {
+      "id": "come-holy-spirit",
+      "text": "Come, O Holy Spirit, fill the hearts of Thy faithful, and kindle in them the fire of Thy love.\nV. Send forth Your Spirit, and they shall be created.\nR. And You shall renew the face of the earth.\nLet us pray. O God, who hast taught the hearts of the faithful by the light of the Holy Spirit, grant that by the gift of the same Spirit we may be always truly wise, and ever rejoice in His consolation. Through Christ our Lord. Amen.",
+      "latin": "Veni, Sancte Spiritus, reple tuorum corda fidelium: et tui amoris in eis ignem accende.\nV. Emitte Spiritum tuum, et creabuntur.\nR. Et renovabis faciem terrae.\nOremus. Deus, qui corda fidelium Sancti Spiritus illustratione docuisti: da nobis in eodem Spiritu recta sapere, et de Ejus semper consolatione gaudere. Per Christum Dominum nostrum. Amen.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    },
+    "veni-creator-spiritus": {
+      "id": "veni-creator-spiritus",
+      "text": "Come, Holy Spirit, Creator blest, and in our souls take up Thy rest; come with Thy grace and heavenly aid to fill the hearts which Thou hast made.\nO Comforter, to Thee we cry, O heavenly gift of God Most High, O Fount of life and fire of love, and sweet anointing from above.\nThou in Thy sevenfold gifts are known: Thou, Finger of God's hand we own; Thou, promise of the Father, Thou Who dost the tongue with power imbue.\nKindle our sense from above, and make our hearts o'erflow with love; with patience firm and virtue high the weakness of our flesh supply.\nFar from us drive the foe we dread, and grant us Thy peace instead; so shall we not, with Thee for guide, turn from the path of life aside.\nOh, may Thy grace on us bestow the Father and the Son to know; and Thee, through endless times confessed, of both the eternal Spirit blest.\nNow to the Father and the Son, Who rose from death, be glory given, with Thee, O Holy Comforter, henceforth by all in earth and heaven. Amen.",
+      "latin": "Veni, Creator Spiritus, mentes tuorum visita, imple superna gratia quae tu creasti pectora.\nQui diceris Paraclitus, altissimi donum Dei, fons vivus, ignis, caritas, et spiritalis unctio.\nTu, septiformis munere, digitus paternae dexterae, Tu rite promissum Patris, sermone ditans guttura.\nAccende lumen sensibus: infunde amorem cordibus: infirma nostri corporis virtute firmans perpeti.\nHostem repellas longius, pacemque dones protinus: ductore sic te praevio vitemus omne noxium.\nPer te sciamus da Patrem, noscamus atque Filium: Teque utriusque Spiritum credamus omni tempore.\nDeo Patri sit gloria, et Filio, qui a mortuis surrexit, ac Paraclito, in saeculorum saecula. Amen.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    },
+    "ave-maris-stella": {
+      "id": "ave-maris-stella",
+      "text": "Hail, O Star of the ocean, God's own Mother blest, ever sinless Virgin, gate of heaven's rest.\nTaking that sweet Ave, which from Gabriel came, peace confirm within us, changing Eve's name.\nBreak the sinners' fetters, make our blindness day, chase all evils from us, for all blessings pray.\nShow thyself a Mother: may the Word divine, born for us thine Infant, hear our prayers through thine.\nVirgin all excelling, mildest of the mild, free from guilt preserve us, meek and undefiled.\nKeep our life all spotless, make our way secure, till we find in Jesus, joy for evermore.\nPraise to God the Father, honor to the Son, in the Holy Spirit, be the glory one. Amen.",
+      "latin": "Ave, maris stella, Dei Mater alma, atque semper Virgo, felix caeli porta.\nSumens illud Ave Gabrielis ore, funda nos in pace, mutans Evae nomen.\nSolve vincula reis, profer lumen caecis, mala nostra pelle, bona cuncta posce.\nMonstra te esse matrem: sumat per te preces, qui pro nobis natus, tulit esse tuus.\nVirgo singularis, inter omnes mitis, nos culpis solutos, mites fac et castos.\nVitam praesta puram, iter para tutum: ut videntes Iesum semper collaetemur.\nSit laus Deo Patri, summo Christo decus, Spiritui Sancto, tribus honor unus. Amen.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    },
+    "magnificat": {
+      "id": "magnificat",
+      "text": "My soul doth magnify the Lord.\nAnd my spirit hath rejoiced in God my Saviour.\nBecause he hath regarded the humility of his handmaid: for behold from henceforth all generations shall call me blessed.\nBecause he that is mighty hath done great things to me, and holy is his name.\nAnd his mercy is from generation unto generations, to them that fear him.\nHe hath shewed might in his arm: he hath scattered the proud in the conceit of their heart.\nHe hath put down the mighty from their seat, and hath exalted the humble.\nHe hath filled the hungry with good things: and the rich he hath sent empty away.\nHe hath received Israel his servant, being mindful of his mercy.\nAs he spoke to our fathers: to Abraham and to his seed for ever.\nGlory be to the Father, and to the Son, and to the Holy Ghost.\nAs it was in the beginning, is now, and ever shall be, world without end. Amen.",
+      "latin": "Magnificat anima mea Dominum.\nEt exsultavit spiritus meus in Deo salutari meo.\nQuia respexit humilitatem ancillae suae: ecce enim ex hoc beatam me dicent omnes generationes.\nQuia fecit mihi magna qui potens est: et sanctum nomen ejus.\nEt misericordia ejus in progenies et progenies timentibus eum.\nFecit potentiam in brachio suo: dispersit superbos mente cordis sui.\nDeposuit potentes de sede, et exaltavit humiles.\nEsurientes implevit bonis: et divites dimisit inanes.\nSuscepit Israel puerum suum, recordatus misericordiae suae.\nSicut locutus est ad patres nostros, Abraham et semini ejus in saecula.\nGloria Patri, et Filio, et Spiritui Sancto.\nSicut erat in principio, et nunc, et semper, et in saecula saeculorum. Amen.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    },
+    "daily-reading-prompt": {
+      "id": "daily-reading-prompt",
+      "text": "Day {{day}} of the 33-day preparation — read today's assigned pages (see the day's variant for the reading title and daily prompt).",
+      "source": "St. Louis de Montfort, True Devotion to Mary / Secret of Mary (public-domain English translations)",
+      "license": "public-domain"
+    },
+    "daily-renewal": {
+      "id": "daily-renewal",
+      "text": "I am all yours and all I have is yours, O dear Jesus, through Mary, your holy Mother.",
+      "source": "True Devotion to Mary, §233",
+      "license": "public-domain"
+    },
+    "act-of-consecration": {
+      "id": "act-of-consecration",
+      "text": "O Eternal and Incarnate Wisdom! O sweetest and most adorable Jesus! True God and true Man, only Son of the Eternal Father, and of Mary, always virgin! I adore Thee profoundly in the bosom and splendors of Thy Father during eternity; and I adore Thee also in the virginal bosom of Mary, Thy most worthy Mother, in the time of Thine incarnation. I give Thee thanks for that Thou hast annihilated Thyself, taking the form of a slave in order to rescue me from the cruel slavery of the devil. I praise and glorify Thee for that Thou hast been pleased to submit Thyself to Mary, Thy holy Mother, in all things, in order to make me Thy faithful slave through her. But, alas! Ungrateful and faithless as I have been, I have not kept the promises which I made so solemnly to Thee in my Baptism; I have not fulfilled my obligations; I do not deserve to be called Thy child, nor yet Thy slave; and as there is nothing in me which does not merit Thine anger and Thy repulse, I dare not come by myself before Thy most holy and august Majesty. It is on this account that I have recourse to the intercession of Thy most holy Mother, whom Thou hast given me for a mediatrix with Thee. It is through her that I hope to obtain of Thee contrition, the pardon of my sins, and the acquisition and preservation of wisdom.\n\nHail, then, O Immaculate Mary, living tabernacle of the Divinity, where the Eternal Wisdom willed to be hidden and to be adored by angels and by men! Hail, O Queen of Heaven and earth, to whose empire everything is subject which is under God. Hail, O sure refuge of sinners, whose mercy fails no one. Hear the desires which I have of the Divine Wisdom; and for that end receive the vows and offerings which in my lowliness I present to thee. I, a faithless sinner, renew and ratify today in thy hands the vows of my Baptism; I renounce forever Satan, his pomps and works; and I give myself entirely to Jesus Christ, the Incarnate Wisdom, to carry my cross after Him all the days of my life, and to be more faithful to Him than I have ever been before. In the presence of all the heavenly court I choose thee this day for my Mother and Mistress. I deliver and consecrate to thee, as thy slave, my body and soul, my goods, both interior and exterior, and even the value of all my good actions, past, present and future; leaving to thee the entire and full right of disposing of me, and all that belongs to me, without exception, according to thy good pleasure, for the greater glory of God in time and in eternity.\n\nReceive, O benignant Virgin, this little offering of my slavery, in honor of, and in union with, that subjection which the Eternal Wisdom deigned to have to thy maternity; in homage to the power which both of you have over this poor sinner, and in thanksgiving for the privileges with which the Holy Trinity has favored thee. I declare that I wish henceforth, as thy true slave, to seek thy honor and to obey thee in all things.\n\nO admirable Mother, present me to thy dear Son as His eternal slave, so that as He has redeemed me by thee, by thee He may receive me! O Mother of mercy, grant me the grace to obtain the true Wisdom of God; and for that end receive me among those whom thou lovest and teachest, whom thou leadest, nourishest and protectest as thy children and thy slaves. O faithful Virgin, make me in all things so perfect a disciple, imitator and slave of the Incarnate Wisdom, Jesus Christ thy Son, that I may attain, by thine intercession and by thine example, to the fullness of His age on earth and of His glory in Heaven. Amen.",
+      "source": "St. Louis de Montfort, True Devotion to Mary / Secret of Mary (public-domain English translations)",
+      "license": "public-domain"
+    }
+  },
+  "reminders": {
+    "feastAnchor": {
+      "feast": "annunciation",
+      "date": "03-25"
+    }
+  },
+  "variants": [
+    {
+      "id": "day-1",
+      "dayIndex": 1,
+      "phase": "emptying",
+      "reading": "Matthew 5:1-19 — the Beatitudes: poor in spirit, meek, clean of heart",
+      "prompt": "Renounce the spirit of the world: sit with the day's reading and ask for detachment from the world's vanity."
+    },
+    {
+      "id": "day-2",
+      "dayIndex": 2,
+      "phase": "emptying",
+      "reading": "Matthew 5:48, 6:1-15 — on perfection, justice in secret, and the Our Father",
+      "prompt": "Renounce the spirit of the world: sit with the day's reading and ask for detachment from the world's vanity."
+    },
+    {
+      "id": "day-3",
+      "dayIndex": 3,
+      "phase": "emptying",
+      "reading": "Matthew 7:1-14 — judge not, and enter by the narrow gate",
+      "prompt": "Renounce the spirit of the world: sit with the day's reading and ask for detachment from the world's vanity."
+    },
+    {
+      "id": "day-4",
+      "dayIndex": 4,
+      "phase": "emptying",
+      "reading": "Imitation of Christ Bk. III, chs. 7 and 40 — that man has no good of himself",
+      "prompt": "Renounce the spirit of the world: sit with the day's reading and ask for detachment from the world's vanity."
+    },
+    {
+      "id": "day-5",
+      "dayIndex": 5,
+      "phase": "emptying",
+      "reading": "Imitation of Christ Bk. III, ch. 40 — casting away the consolations of creatures",
+      "prompt": "Renounce the spirit of the world: sit with the day's reading and ask for detachment from the world's vanity."
+    },
+    {
+      "id": "day-6",
+      "dayIndex": 6,
+      "phase": "emptying",
+      "reading": "Imitation of Christ Bk. I, ch. 18 — on the examples of the holy Fathers",
+      "prompt": "Renounce the spirit of the world: sit with the day's reading and ask for detachment from the world's vanity."
+    },
+    {
+      "id": "day-7",
+      "dayIndex": 7,
+      "phase": "emptying",
+      "reading": "Imitation of Christ Bk. I, ch. 18 (conclusion) — outward want, inward peace",
+      "prompt": "Renounce the spirit of the world: sit with the day's reading and ask for detachment from the world's vanity."
+    },
+    {
+      "id": "day-8",
+      "dayIndex": 8,
+      "phase": "emptying",
+      "reading": "Imitation of Christ Bk. I, ch. 13 — of resisting temptations",
+      "prompt": "Renounce the spirit of the world: sit with the day's reading and ask for detachment from the world's vanity."
+    },
+    {
+      "id": "day-9",
+      "dayIndex": 9,
+      "phase": "emptying",
+      "reading": "Imitation of Christ Bk. I, ch. 13 (conclusion) — fire tries iron: temptation tries the just man",
+      "prompt": "Renounce the spirit of the world: sit with the day's reading and ask for detachment from the world's vanity."
+    },
+    {
+      "id": "day-10",
+      "dayIndex": 10,
+      "phase": "emptying",
+      "reading": "Imitation of Christ Bk. III, ch. 10 — that it is sweet to despise the world and to serve God",
+      "prompt": "Renounce the spirit of the world: sit with the day's reading and ask for detachment from the world's vanity."
+    },
+    {
+      "id": "day-11",
+      "dayIndex": 11,
+      "phase": "emptying",
+      "reading": "Imitation of Christ Bk. I, ch. 25 — on the fervent amendment of our whole life",
+      "prompt": "Renounce the spirit of the world: sit with the day's reading and ask for detachment from the world's vanity."
+    },
+    {
+      "id": "day-12",
+      "dayIndex": 12,
+      "phase": "emptying",
+      "reading": "Imitation of Christ Bk. I, ch. 25 (conclusion) — the eager amendment of our whole life",
+      "prompt": "Renounce the spirit of the world: sit with the day's reading and ask for detachment from the world's vanity."
+    },
+    {
+      "id": "day-13",
+      "dayIndex": 13,
+      "phase": "self",
+      "reading": "Litany of the Holy Spirit — opening the week of knowledge of self",
+      "prompt": "Ask the Holy Spirit for light to know yourself: your misery and your capacity for grace."
+    },
+    {
+      "id": "day-14",
+      "dayIndex": 14,
+      "phase": "self",
+      "reading": "Imitation of Christ Bk. III, ch. 13 — of the obedience of one in humble subjection",
+      "prompt": "Ask the Holy Spirit for light to know yourself: your misery and your capacity for grace."
+    },
+    {
+      "id": "day-15",
+      "dayIndex": 15,
+      "phase": "self",
+      "reading": "Luke 13:1-5 — examples inviting repentance",
+      "prompt": "Ask the Holy Spirit for light to know yourself: your misery and your capacity for grace."
+    },
+    {
+      "id": "day-16",
+      "dayIndex": 16,
+      "phase": "self",
+      "reading": "True Devotion to Mary §228 — on the preparatory exercises",
+      "prompt": "Ask the Holy Spirit for light to know yourself: your misery and your capacity for grace."
+    },
+    {
+      "id": "day-17",
+      "dayIndex": 17,
+      "phase": "self",
+      "reading": "Imitation of Christ Bk. I, ch. 24 — of judgment and the punishment of sinners",
+      "prompt": "Ask the Holy Spirit for light to know yourself: your misery and your capacity for grace."
+    },
+    {
+      "id": "day-18",
+      "dayIndex": 18,
+      "phase": "self",
+      "reading": "Luke 17:1-10 — woe to scandals; faith, humility, and duty",
+      "prompt": "Ask the Holy Spirit for light to know yourself: your misery and your capacity for grace."
+    },
+    {
+      "id": "day-19",
+      "dayIndex": 19,
+      "phase": "self",
+      "reading": "Luke 18:15-30 — let the children come; the danger of riches",
+      "prompt": "Ask the Holy Spirit for light to know yourself: your misery and your capacity for grace."
+    },
+    {
+      "id": "day-20",
+      "dayIndex": 20,
+      "phase": "mary",
+      "reading": "Litany of Loreto — opening the week of knowledge of the Blessed Virgin",
+      "prompt": "Ask the Holy Spirit for a true knowledge of Mary: who she is in God's plan and in your soul."
+    },
+    {
+      "id": "day-21",
+      "dayIndex": 21,
+      "phase": "mary",
+      "reading": "Secret of Mary §§23-24 — true devotion to our Blessed Lady",
+      "prompt": "Ask the Holy Spirit for a true knowledge of Mary: who she is in God's plan and in your soul."
+    },
+    {
+      "id": "day-22",
+      "dayIndex": 22,
+      "phase": "mary",
+      "reading": "True Devotion to Mary §§106-110 — marks of authentic devotion to Our Lady",
+      "prompt": "Ask the Holy Spirit for a true knowledge of Mary: who she is in God's plan and in your soul."
+    },
+    {
+      "id": "day-23",
+      "dayIndex": 23,
+      "phase": "mary",
+      "reading": "True Devotion to Mary §§120-121 — the nature of perfect devotion and consecration to Jesus through Mary",
+      "prompt": "Ask the Holy Spirit for a true knowledge of Mary: who she is in God's plan and in your soul."
+    },
+    {
+      "id": "day-24",
+      "dayIndex": 24,
+      "phase": "mary",
+      "reading": "True Devotion to Mary §§152-164 — a smooth, short, perfect and sure way",
+      "prompt": "Ask the Holy Spirit for a true knowledge of Mary: who she is in God's plan and in your soul."
+    },
+    {
+      "id": "day-25",
+      "dayIndex": 25,
+      "phase": "mary",
+      "reading": "True Devotion to Mary §§213-225 — the wonderful effects of this devotion",
+      "prompt": "Ask the Holy Spirit for a true knowledge of Mary: who she is in God's plan and in your soul."
+    },
+    {
+      "id": "day-26",
+      "dayIndex": 26,
+      "phase": "mary",
+      "reading": "True Devotion to Mary §§12-38 — understanding the Mother through the Son",
+      "prompt": "Ask the Holy Spirit for a true knowledge of Mary: who she is in God's plan and in your soul."
+    },
+    {
+      "id": "day-27",
+      "dayIndex": 27,
+      "phase": "jesus",
+      "reading": "Litany of the Holy Name of Jesus — opening the week of knowledge of Jesus Christ",
+      "prompt": "Ask the Holy Spirit for the knowledge of Jesus Christ crucified, living in Mary: your sovereign King."
+    },
+    {
+      "id": "day-28",
+      "dayIndex": 28,
+      "phase": "jesus",
+      "reading": "Matthew 26:1, 26-29, 36-46 — the Last Supper and the Agony in Gethsemani",
+      "prompt": "Ask the Holy Spirit for the knowledge of Jesus Christ crucified, living in Mary: your sovereign King."
+    },
+    {
+      "id": "day-29",
+      "dayIndex": 29,
+      "phase": "jesus",
+      "reading": "Imitation of Christ Bk. I, ch. 1 — of the imitation of Christ and contempt for all the vanities of the world",
+      "prompt": "Ask the Holy Spirit for the knowledge of Jesus Christ crucified, living in Mary: your sovereign King."
+    },
+    {
+      "id": "day-30",
+      "dayIndex": 30,
+      "phase": "jesus",
+      "reading": "Matthew 27:36-44 — the Crucifixion",
+      "prompt": "Ask the Holy Spirit for the knowledge of Jesus Christ crucified, living in Mary: your sovereign King."
+    },
+    {
+      "id": "day-31",
+      "dayIndex": 31,
+      "phase": "jesus",
+      "reading": "Imitation of Christ Bk. IV, ch. 2 — the great goodness and love of God shown us in this Sacrament",
+      "prompt": "Ask the Holy Spirit for the knowledge of Jesus Christ crucified, living in Mary: your sovereign King."
+    },
+    {
+      "id": "day-32",
+      "dayIndex": 32,
+      "phase": "jesus",
+      "reading": "Imitation of Christ Bk. II, ch. 7 — of the love of Jesus above all things",
+      "prompt": "Ask the Holy Spirit for the knowledge of Jesus Christ crucified, living in Mary: your sovereign King."
+    },
+    {
+      "id": "day-33",
+      "dayIndex": 33,
+      "phase": "jesus",
+      "reading": "Imitation of Christ Bk. IV, ch. 11 — that the Blood of Christ and the Holy Scriptures are most necessary",
+      "prompt": "Ask the Holy Spirit for the knowledge of Jesus Christ crucified, living in Mary: your sovereign King."
+    },
+    {
+      "id": "day-34",
+      "dayIndex": 34,
+      "phase": "consecration",
+      "reading": "The Act of Consecration, True Devotion §§225-233 — with the renewal of baptismal vows",
+      "prompt": "Make today the Act of Consecration to Jesus through Mary, and resolve to renew it daily.",
+      "actOfConsecration": true,
+      "badge": "Consecrated to Jesus through Mary"
+    }
+  ]
+}

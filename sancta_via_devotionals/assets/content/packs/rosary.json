@@ -1,0 +1,332 @@
+{
+  "id": "rosary",
+  "title": "The Holy Rosary",
+  "family": "routine",
+  "schedule": {
+    "type": "weeklyLoop",
+    "weekdays": [1, 2, 3, 4, 5, 6, 7]
+  },
+  "session": {
+    "id": "rosary-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "rosary-sign-of-cross",
+        "title": "Sign of the Cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen."
+      },
+      {
+        "type": "prayer",
+        "id": "rosary-creed",
+        "title": "The Apostles' Creed",
+        "contentRef": "apostles-creed"
+      },
+      {
+        "type": "prayer",
+        "id": "rosary-our-father",
+        "title": "Our Father",
+        "contentRef": "our-father"
+      },
+      {
+        "type": "repetition",
+        "id": "rosary-hail-marys",
+        "title": "Three Hail Marys (on the first beads)",
+        "contentRef": "hail-mary",
+        "count": 3
+      },
+      {
+        "type": "prayer",
+        "id": "rosary-glory-be",
+        "title": "Glory Be",
+        "contentRef": "glory-be"
+      },
+      {
+        "type": "beadGroup",
+        "id": "rosary-decade-1",
+        "title": "First Decade",
+        "mysteryTitle": "{{mysteryTitle}}",
+        "mysteryFruit": "{{mysteryFruit}}",
+        "hailMaryCount": 10,
+        "includeFatimaPrayer": true
+      },
+      {
+        "type": "beadGroup",
+        "id": "rosary-decade-2",
+        "title": "Second Decade",
+        "mysteryTitle": "{{mysteryTitle}}",
+        "mysteryFruit": "{{mysteryFruit}}",
+        "hailMaryCount": 10,
+        "includeFatimaPrayer": true
+      },
+      {
+        "type": "beadGroup",
+        "id": "rosary-decade-3",
+        "title": "Third Decade",
+        "mysteryTitle": "{{mysteryTitle}}",
+        "mysteryFruit": "{{mysteryFruit}}",
+        "hailMaryCount": 10,
+        "includeFatimaPrayer": true
+      },
+      {
+        "type": "beadGroup",
+        "id": "rosary-decade-4",
+        "title": "Fourth Decade",
+        "mysteryTitle": "{{mysteryTitle}}",
+        "mysteryFruit": "{{mysteryFruit}}",
+        "hailMaryCount": 10,
+        "includeFatimaPrayer": true
+      },
+      {
+        "type": "beadGroup",
+        "id": "rosary-decade-5",
+        "title": "Fifth Decade",
+        "mysteryTitle": "{{mysteryTitle}}",
+        "mysteryFruit": "{{mysteryFruit}}",
+        "hailMaryCount": 10,
+        "includeFatimaPrayer": true
+      },
+      {
+        "type": "prayer",
+        "id": "rosary-hail-holy-queen",
+        "title": "Hail, Holy Queen",
+        "contentRef": "hail-holy-queen"
+      },
+      {
+        "type": "prayer",
+        "id": "rosary-closing-collect",
+        "title": "Closing Collect",
+        "contentRef": "rosary-closing-collect"
+      }
+    ]
+  },
+  "content": {
+    "apostles-creed": {
+      "id": "apostles-creed",
+      "text": "I believe in God, the Father Almighty, Creator of heaven and earth; and in Jesus Christ, His only Son, our Lord; who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died, and was buried. He descended into hell; the third day He arose again from the dead. He ascended into heaven, sits at the right hand of God, the Father Almighty; from thence He shall come to judge the living and the dead. I believe in the Holy Spirit, the holy Catholic Church, the communion of Saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    },
+    "our-father": {
+      "id": "our-father",
+      "text": "Our Father, Who art in heaven, hallowed be Thy name; Thy kingdom come; Thy will be done on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    },
+    "hail-mary": {
+      "id": "hail-mary",
+      "text": "Hail Mary, full of grace, the Lord is with thee; blessed art thou amongst women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    },
+    "glory-be": {
+      "id": "glory-be",
+      "text": "Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    },
+    "fatima-prayer": {
+      "id": "fatima-prayer",
+      "text": "O my Jesus, forgive us our sins, save us from the fires of hell, lead all souls to Heaven, especially those in most need of Thy mercy. Amen.",
+      "source": "Fatima prayer tradition (1910s)",
+      "license": "public-domain"
+    },
+    "hail-holy-queen": {
+      "id": "hail-holy-queen",
+      "text": "Hail, Holy Queen, Mother of Mercy, our life, our sweetness and our hope. To thee do we cry, poor banished children of Eve. To thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious Advocate, thine eyes of mercy toward us, and after this our exile show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    },
+    "rosary-closing-collect": {
+      "id": "rosary-closing-collect",
+      "text": "V. Pray for us, O holy Mother of God.\nR. That we may be made worthy of the promises of Christ.\n\nLet us pray. O God, whose only-begotten Son, by His life, death, and resurrection, has purchased for us the rewards of eternal life; grant, we beseech Thee, that meditating upon these mysteries of the most Holy Rosary of the Blessed Virgin Mary, we may imitate what they contain and obtain what they promise, through the same Christ our Lord. Amen.",
+      "source": "Traditional Roman devotion",
+      "license": "public-domain"
+    }
+  },
+  "reminders": {
+    "mysterySource": "rosaryMysteriesFor"
+  },
+  "variants": [
+    {
+      "id": "joyful-1",
+      "setTitle": "joyful",
+      "index": 1,
+      "mystery": "The Annunciation",
+      "fruit": "Humility",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "joyful-2",
+      "setTitle": "joyful",
+      "index": 2,
+      "mystery": "The Visitation",
+      "fruit": "Love of Neighbor",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "joyful-3",
+      "setTitle": "joyful",
+      "index": 3,
+      "mystery": "The Nativity",
+      "fruit": "Poverty",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "joyful-4",
+      "setTitle": "joyful",
+      "index": 4,
+      "mystery": "The Presentation",
+      "fruit": "Obedience",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "joyful-5",
+      "setTitle": "joyful",
+      "index": 5,
+      "mystery": "The Finding in the Temple",
+      "fruit": "Joy in Finding Jesus",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "sorrowful-1",
+      "setTitle": "sorrowful",
+      "index": 1,
+      "mystery": "The Agony in the Garden",
+      "fruit": "Contrition",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "sorrowful-2",
+      "setTitle": "sorrowful",
+      "index": 2,
+      "mystery": "The Scourging at the Pillar",
+      "fruit": "Purity",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "sorrowful-3",
+      "setTitle": "sorrowful",
+      "index": 3,
+      "mystery": "The Crowning with Thorns",
+      "fruit": "Moral Courage",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "sorrowful-4",
+      "setTitle": "sorrowful",
+      "index": 4,
+      "mystery": "The Carrying of the Cross",
+      "fruit": "Patience",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "sorrowful-5",
+      "setTitle": "sorrowful",
+      "index": 5,
+      "mystery": "The Crucifixion",
+      "fruit": "Perseverance",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "glorious-1",
+      "setTitle": "glorious",
+      "index": 1,
+      "mystery": "The Resurrection",
+      "fruit": "Faith",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "glorious-2",
+      "setTitle": "glorious",
+      "index": 2,
+      "mystery": "The Ascension",
+      "fruit": "Hope",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "glorious-3",
+      "setTitle": "glorious",
+      "index": 3,
+      "mystery": "The Descent of the Holy Spirit",
+      "fruit": "Love of God",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "glorious-4",
+      "setTitle": "glorious",
+      "index": 4,
+      "mystery": "The Assumption",
+      "fruit": "Devotion to Mary",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "glorious-5",
+      "setTitle": "glorious",
+      "index": 5,
+      "mystery": "The Coronation",
+      "fruit": "Eternal Love",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "luminous-1",
+      "setTitle": "luminous",
+      "index": 1,
+      "mystery": "The Baptism in the Jordan",
+      "fruit": "Openness to the Holy Spirit",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "luminous-2",
+      "setTitle": "luminous",
+      "index": 2,
+      "mystery": "The Wedding Feast at Cana",
+      "fruit": "To Jesus through Mary",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "luminous-3",
+      "setTitle": "luminous",
+      "index": 3,
+      "mystery": "The Proclamation of the Kingdom of God",
+      "fruit": "Repentance and Trust in God",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "luminous-4",
+      "setTitle": "luminous",
+      "index": 4,
+      "mystery": "The Transfiguration",
+      "fruit": "Desire for Holiness",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    },
+    {
+      "id": "luminous-5",
+      "setTitle": "luminous",
+      "index": 5,
+      "mystery": "The Institution of the Eucharist",
+      "fruit": "Eucharistic Adoration",
+      "source": "Rosarium Virginis Mariae (JPII 2002); traditional for pre-Luminous sets",
+      "license": "public-domain (Rosarium Virginis Mariae 2002 mystery set)"
+    }
+  ]
+}

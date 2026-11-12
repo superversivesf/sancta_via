@@ -3,9 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart' hide AppLogger;
 
 import 'config/routes.dart';
+import 'providers/content_providers.dart';
 
 void main() {
-  runApp(const ProviderScope(child: SanctaViaDevotionalsApp()));
+  runApp(
+    ProviderScope(
+      // Route the wrapper's program providers through the app's SQLite
+      // repository (Task 6): the same instance the content pipeline seeds.
+      overrides: <Override>[programRepositoryOverride],
+      child: const SanctaViaDevotionalsApp(),
+    ),
+  );
 }
 
 /// Root widget of the Sancta Via Devotionals application.

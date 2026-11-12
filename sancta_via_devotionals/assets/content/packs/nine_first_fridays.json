@@ -1,0 +1,53 @@
+{
+  "id": "nine_first_fridays",
+  "title": "Nine First Fridays of the Sacred Heart",
+  "family": "commitment",
+  "schedule": {
+    "type": "consecutiveCommitments",
+    "anchor": {
+      "type": "nthWeekdayOfMonth",
+      "weekday": 5,
+      "nth": 1
+    },
+    "count": 9,
+    "policy": "strict"
+  },
+  "session": {
+    "id": "nine-first-fridays-session",
+    "steps": [
+      {
+        "type": "prayer",
+        "id": "nff-offering",
+        "title": "Act of Offering",
+        "contentRef": "nff_act_of_offering"
+      },
+      {
+        "type": "checkpoint",
+        "id": "nff-communion",
+        "title": "Holy Communion",
+        "item": "communion",
+        "requiredForCompletion": true
+      },
+      {
+        "type": "prayer",
+        "id": "nff-reparation",
+        "title": "Act of Reparation",
+        "contentRef": "nff_act_of_reparation"
+      }
+    ]
+  },
+  "content": {
+    "nff_act_of_offering": {
+      "id": "nff_act_of_offering",
+      "text": "Adorable Heart of Jesus, I come this First Friday to fulfill the devotion Thou Thyself didst ask of those who love Thee. In union with the Heart of Thy Blessed Mother, and with the offering which Thy Divine Heart made to Thy Eternal Father upon the altar of the Cross, I offer Thee my heart, my prayers, and all that I am this day: an act of love, of thanksgiving, and of reparation for the sins committed against Thee. Receive this offering, I beseech Thee, and let these nine First Fridays be for the glory of Thy Heart and for the salvation of my soul. Amen.",
+      "source": "Traditional Sacred Heart devotions (19th-century collections)",
+      "license": "public-domain"
+    },
+    "nff_act_of_reparation": {
+      "id": "nff_act_of_reparation",
+      "text": "O Sacred Heart of Jesus, loving and merciful beyond all measure, I adore Thee and I love Thee with my whole heart. Behold me prostrate before Thee in a spirit of reparation, offering Thee satisfaction for all the sins by which I have offended Thy love, and for all the indifference and irreverence with which Thy Heart is wounded wherever It is least loved. For the glory of Thy Heart, for the conversion of sinners, and for the grace of final repentance which Thou hast promised to those who honor Thee in nine First Fridays, I unite my poor prayers to the homages of Thy Blessed Mother and of all Thy faithful servants. Heart of Jesus, offended by our sins, have mercy on us. Sacred Heart of Jesus, I trust in Thee. Amen.",
+      "source": "Traditional Sacred Heart devotions (19th-century collections)",
+      "license": "public-domain"
+    }
+  }
+}
