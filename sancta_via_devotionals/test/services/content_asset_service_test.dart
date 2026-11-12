@@ -21,8 +21,10 @@
 //   problems, and seeds nothing,
 // - two assets declaring the same pack id are an authoring error,
 // - a bundle with no pack assets is an authoring error,
-// - store rows whose id is absent from the bundle are pruned after a seed
-//   (removed-pack reconciliation),
+// - reconciliation prunes store rows absent from the bundle BEFORE the
+//   version stamp (fix round 1): a failed prune leaves the version
+//   unadvanced (the next call retries) and the prune-before-stamp order
+//   keeps the post-prune catalog authoritative,
 // - the seeded catalog reads back whole through the repository.
 import 'dart:convert';
 import 'dart:io';
@@ -30,6 +32,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart';
+import 'package:sancta_via_devotionals/database/database_migration_service.dart';
 import 'package:sancta_via_devotionals/database/devotionals_database.dart';
 import 'package:sancta_via_devotionals/repositories/program_repository.dart';
 import 'package:sancta_via_devotionals/services/content_asset_service.dart';
@@ -189,6 +192,22 @@ class _SeedCountingRepository extends SqliteProgramRepository {
 /// A fresh FFI in-memory store open factory (isolated per call).
 Future<Database> _openInMemory() =>
     openDatabase(inMemoryDatabasePath, singleInstance: false);
+
+/// A store whose `deletePack` fails until [pruneBroken] flips — the retry pin
+/// for prune-before-stamp reconciliation (fix round 1).
+class _PruneSwitchDatabase extends DevotionalsDatabase {
+  _PruneSwitchDatabase({required super.open});
+
+  bool pruneBroken = true;
+
+  @override
+  Future<bool> deletePack(String id) async {
+    if (pruneBroken) {
+      throw StateError('prune unavailable');
+    }
+    return super.deletePack(id);
+  }
+}
 
 /// The harness built by [_openService]: a fresh in-memory store, the seed
 /// counter, and the service wired to both.
@@ -451,6 +470,64 @@ void main() {
     });
 
     test(
+      'a failed prune aborts before the stamp and is retried on the next call',
+      () async {
+        final _PruneSwitchDatabase database = _PruneSwitchDatabase(
+          open: _openInMemory,
+        );
+        await database.upsertPack(
+          id: 'zombie_pack',
+          json: _minimalPackJson('zombie_pack'),
+          packVersion: 'v-old',
+          embeddedAt: '2026-01-01T00:00:00Z',
+        );
+        // The store carries a previous migration's stamp, so this call is a
+        // real version advance — a failed prune must leave it unadvanced.
+        await database.setMeta(
+          DatabaseMigrationService.contentVersionMetaKey,
+          'v-old',
+        );
+        final _SeedCountingRepository repository = _SeedCountingRepository(
+          database: database,
+        );
+        final ContentAssetService service = ContentAssetService(
+          assets: _FakeAssetBundle(assets: _stagedAssets()),
+          repository: repository,
+          database: database,
+        );
+
+        await expectLater(
+          service.ensureContentLoaded(),
+          throwsStateError,
+          reason: 'a prune failure aborts the migration',
+        );
+        expect(repository.seedPacksCalls, 0, reason: 'no seed before an abort');
+        expect(
+          await repository.persistedPackVersion(),
+          'v-old',
+          reason:
+              'the version must NOT advance past a failed prune, '
+              'or the zombie row is permanent',
+        );
+        expect(await database.getPack('zombie_pack'), isNotNull);
+
+        // The next launch's retry: reconciliation completes, the zombie is
+        // pruned, and only then does the version advance.
+        database.pruneBroken = false;
+        final List<ContentPack> catalog = await service.ensureContentLoaded();
+        expect(repository.seedPacksCalls, 1);
+        expect(await database.getPack('zombie_pack'), isNull);
+        expect(catalog.map((ContentPack p) => p.id), _packIds);
+        expect(await repository.persistedPackVersion(), isNot(equals('v-old')));
+        final List<PackRow> rows = await database.getAllPacks();
+        expect(
+          rows.map((PackRow row) => row.packVersion),
+          everyElement((await repository.persistedPackVersion())!),
+        );
+      },
+    );
+
+    test(
       'seeding prunes store rows whose id is absent from the bundle',
       () async {
         final DevotionalsDatabase database = DevotionalsDatabase(
@@ -471,10 +548,20 @@ void main() {
           database: database,
         );
 
+        // Warm the loadPacks cache with the pre-prune catalog: the
+        // reconciliation must not leave that cached view in place (the
+        // seed's cache invalidation follows the prune — fix round 1).
+        final List<ContentPack> prePrune = await repository.loadPacks();
+        expect(prePrune.map((ContentPack p) => p.id), contains('zombie_pack'));
+
         final List<ContentPack> catalog = await service.ensureContentLoaded();
 
         expect(await database.getPack('zombie_pack'), isNull);
         expect(catalog.map((ContentPack p) => p.id), _packIds);
+        expect(
+          (await repository.loadPacks()).map((ContentPack p) => p.id),
+          _packIds,
+        );
         expect(repository.seedPacksCalls, 1);
       },
     );

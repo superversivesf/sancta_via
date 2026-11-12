@@ -29,12 +29,15 @@
 // — text fix, schedule change, new or removed pack — changes it and triggers
 // the one-shot re-seed below.
 //
-// Removed-pack reconciliation: after a successful seed, store rows whose id is
-// absent from the bundle are deleted through [DevotionalsDatabase.deletePack],
-// so a pack removed from the asset set does not linger in the catalog. The
-// prune is content-only: enrollment, progress, and notification rows of a
-// removed id are outside this service's remit (Task 9 owns progress
-// reconciliation).
+// Removed-pack reconciliation: on a version-changing migration, store rows
+// whose id is absent from the bundle are pruned through
+// [DevotionalsDatabase.deletePack] BEFORE the version stamp, so a pack
+// removed from the asset set does not linger in the catalog and a failed
+// prune leaves the version unadvanced (the next launch retries the whole
+// migration). The prune is content-only: enrollment, progress, and
+// notification rows of a removed id are outside this service's remit
+// (Task 9 owns progress reconciliation; see _pruneRemovedPacks for the
+// invariant).
 //
 // Ordering: the seeded catalog flows back through [SqliteProgramRepository
 // .loadPacks], which returns the store's `packs.id ASC` order — the bundle's
@@ -92,15 +95,17 @@ class ContentAssetService {
   /// Ensures the repository carries the bundle's catalog: loads every
   /// `$_packAssetPrefix*.json` declared in the asset manifest, computes the
   /// bundle's content version, and — only when it differs from the stored
-  /// `meta.content_version` — seeds the repository and prunes store rows
-  /// absent from the bundle. Returns the whole catalog in the repository's
-  /// stable id order.
+  /// `meta.content_version` — prunes store rows absent from the bundle
+  /// (BEFORE the stamp, fix round 1) and then seeds the repository. Returns
+  /// the whole catalog in the repository's stable id order.
   ///
   /// An unparseable pack asset (or a bundle with none declared, or two
   /// assets declaring one pack id) throws a [ContentValidationException]
-  /// naming the file; nothing is seeded in that case. A seed or prune write
-  /// failure propagates after logging — a failed migration must not look
-  /// like a successful one.
+  /// naming the file; nothing is written in that case. A prune or seed write
+  /// failure propagates after logging — the version stamp only lands after
+  /// both completed, so a failed migration leaves the previous version in
+  /// place and the next launch retries the whole thing rather than
+  /// permanently claiming a completed one.
   Future<List<ContentPack>> ensureContentLoaded() async {
     final List<_AssetPack> loaded = await _loadPackAssets();
     final String version = _contentVersion(loaded);
@@ -108,12 +113,23 @@ class ContentAssetService {
     if (stored == version) {
       return repository.loadPacks();
     }
-    await repository.seedPacks(<ContentPack>[
-      for (final _AssetPack assetPack in loaded) assetPack.pack,
-    ], packVersion: version);
+    // Removed-pack reconciliation runs BEFORE the version stamp (fix round
+    // 1): a failed or killed prune must not leave `meta.content_version`
+    // claiming a completed migration — stamped last, an unadvanced version
+    // retries the whole migration on the next launch, and the deleted ids
+    // were leaving the catalog regardless. (The previous seed-then-prune
+    // order would make a failed/killed prune permanent.) The prune also
+    // mutates the store without touching the Task-5 cache generation, so
+    // running it before the seed keeps [SqliteProgramRepository.seedPacks]'s
+    // clearCache() the LAST mutation: any loadPacks that raced the prune and
+    // cached the pre-prune catalog is evicted by the seed instead of being
+    // cached permanently.
     await _pruneRemovedPacks(<String>{
       for (final _AssetPack assetPack in loaded) assetPack.pack.id,
     });
+    await repository.seedPacks(<ContentPack>[
+      for (final _AssetPack assetPack in loaded) assetPack.pack,
+    ], packVersion: version);
     return repository.loadPacks();
   }
 
@@ -194,6 +210,14 @@ class ContentAssetService {
         stackTrace: stackTrace,
       );
     } on Object catch (e, stackTrace) {
+      // Deliberately broad for THIS asset only: platform bundles surface
+      // missing/dead assets as FlutterError (an Error, not an Exception),
+      // and staged test bundles throw their own failures — every per-file
+      // failure is an authoring/packaging error that must name its file
+      // rather than skip silently. Anything raised inside this try belongs
+      // to loading/parsing THIS asset, so converting it keeps the loud,
+      // file-naming failure instead of letting an Error-class escape mask
+      // the file that caused it.
       throw _authoringError(
         path,
         'could not load the asset: $e',
@@ -237,9 +261,15 @@ class ContentAssetService {
     return sha256.convert(utf8.encode(entries.join('\n'))).toString();
   }
 
-  /// After a seed: removes store pack rows whose id is absent from the bundle
+  /// Removes store pack rows whose id is absent from the bundle
   /// ([DevotionalsDatabase.deletePack]), logging each prune. A failure logs
-  /// and rethrows.
+  /// and rethrows, so it can abort the migration BEFORE the version stamp
+  /// lands (see [ensureContentLoaded]).
+  ///
+  /// Invariant (Plan 3 note): the `packs` table is CONTENT, not user state —
+  /// this prune touches only pack rows. An id's enrollment, progress, and
+  /// notification rows are the user's, stay untouched by design, and remain
+  /// their owners' responsibility (Task 9 owns progress reconciliation).
   Future<void> _pruneRemovedPacks(Set<String> bundleIds) async {
     final List<PackRow> rows = await database.getAllPacks();
     for (final PackRow row in rows) {

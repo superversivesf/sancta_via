@@ -27,7 +27,6 @@ import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart';
 import 'package:sancta_via_devotional_engine_riverpod/sancta_via_devotional_engine_riverpod.dart'
     show programRepositoryProvider;
 
-import '../database/devotionals_database.dart';
 import '../repositories/program_repository.dart';
 import '../services/content_asset_service.dart';
 
@@ -50,10 +49,19 @@ final Override programRepositoryOverride = programRepositoryProvider
 /// the provider's error state.
 final FutureProvider<List<ContentPack>> contentLoadedProvider =
     FutureProvider<List<ContentPack>>((Ref ref) {
+      final SqliteProgramRepository repository = ref.watch(
+        appProgramRepositoryProvider,
+      );
       final ContentAssetService service = ContentAssetService(
         assets: rootBundle,
-        repository: ref.watch(appProgramRepositoryProvider),
-        database: DevotionalsDatabase.instance,
+        repository: repository,
+        // The repository's OWN store (fix round 1: no separate
+        // DevotionalsDatabase.instance), so the seed and the removed-pack
+        // reconciliation act on one and the same database — the
+        // split-brain hazard (prune one store, catalog another) cannot
+        // recur, and an injected test repository carries its own store
+        // through.
+        database: repository.database,
       );
       return service.ensureContentLoaded();
     });

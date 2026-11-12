@@ -48,6 +48,11 @@ class SqliteProgramRepository implements ProgramRepository {
 
   final DevotionalsDatabase _database;
 
+  /// The backing store this repository reads and writes — the seam the content
+  /// pipeline's removed-pack reconciliation (Task 6) uses so it acts on
+  /// exactly this repository's store, never a separately-opened one.
+  DevotionalsDatabase get database => _database;
+
   /// The parsed packs of the last successful read, or null when a re-read is
   /// needed ([clearCache] or a seed invalidated it).
   List<ContentPack>? _packsCache;
