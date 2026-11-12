@@ -48,7 +48,9 @@ import 'package:sancta_via_devotionals/providers/content_providers.dart'
     show intentionsProvider;
 import 'package:sancta_via_devotionals/providers/session_player_provider.dart';
 import 'package:sancta_via_devotionals/screens/session/session_player_screen.dart';
-import 'package:sancta_via_devotionals/screens/today/today_screen.dart';
+import 'package:sancta_via_devotionals/screens/home/today_screen.dart';
+import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart'
+    show currentDateProvider;
 
 /// A repository double carrying the packs under test and recording writes/// (Task 10's seam — `loadPacks` also backs the screen's pack-title header
 /// and the summary's completion read).
@@ -155,6 +157,13 @@ Future<_PlayerHarness> _pumpPlayer(
       ),
       intentionsProvider.overrideWith((Ref ref) async => intentions),
       latinDisplayProvider.overrideWithValue(false),
+      // Task 13: "Back to Today" now mounts the real TodayScreen, whose
+      // calendar provider keeps `currentDateProvider`'s periodic midnight
+      // timer alive — pending forever in a widget test. The ruled harness
+      // pattern freezes it on a fixed day.
+      currentDateProvider.overrideWith(
+        (Ref ref) => Stream<DateTime>.value(DateTime(2026, 12, 5)),
+      ),
       ...extraOverrides,
     ],
   );
@@ -351,9 +360,14 @@ void main() {
       expect(find.textContaining('Badge earned: The Angelus'), findsOneWidget);
       expect(find.text('Back to Today'), findsOneWidget);
 
-      // Back to Today returns to the root route.
+      // Back to Today returns to the root route — which now mounts the REAL
+      // TodayScreen (Task 13). Fixed pumps, not `pumpAndSettle`: that
+      // screen's loading state is a spinner `pumpAndSettle` can never
+      // settle, and this smoke container's provider chain intentionally
+      // carries no repository overrides.
       await tester.tap(find.text('Back to Today'));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.byType(TodayScreen), findsOneWidget);
     },
   );

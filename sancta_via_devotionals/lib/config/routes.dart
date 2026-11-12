@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../screens/home/today_screen.dart';
+import '../screens/onboarding/onboarding_screen.dart';
 import '../screens/session/session_player_screen.dart';
-import '../screens/today/today_screen.dart';
 
 /// Central navigation configuration for the devotionals app.
 final GoRouter appRouter = buildAppRouter();
@@ -11,7 +12,10 @@ final GoRouter appRouter = buildAppRouter();
 /// their own; `appRouter` stays the app-wide one).
 ///
 /// Route table:
-/// * `/` — the Today pipeline (placeholder until the Today tasks land);
+/// * `/` — the Today screen: the liturgical header, the day's time-grouped
+///   sections (Task 13), fed by the Today assembly;
+/// * `/onboarding` — the onboarding walkthrough placeholder (the real flow
+///   lands in Task 19; Today's empty-state CTA routes here today);
 /// * `/session/:packId?forDate=yyyy-MM-dd` — the full-screen session
 ///   player for the pack, optionally fixed to a calendar day (the deep
 ///   link's `forDate`; the session resumes across days exactly as the
@@ -21,12 +25,17 @@ GoRouter buildAppRouter({String initialLocation = '/'}) {
     initialLocation: initialLocation,
     debugLogDiagnostics: false,
     routes: <RouteBase>[
-      // Today pipeline — placeholder until the Today assembly tasks land.
       GoRoute(
         path: '/',
         name: 'today',
         builder: (BuildContext context, GoRouterState state) =>
             const TodayScreen(),
+      ),
+      GoRoute(
+        path: '/onboarding',
+        name: 'onboarding',
+        builder: (BuildContext context, GoRouterState state) =>
+            const OnboardingScreen(),
       ),
       GoRoute(
         path: '/session/:packId',

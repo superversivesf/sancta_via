@@ -2,17 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sancta_via_devotionals/main.dart';
+import 'package:sancta_via_devotionals/screens/home/today_screen.dart';
+import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart'
+    show currentDateProvider;
 
 void main() {
-  testWidgets('root widget renders the Sancta Via Devotionals app bar', (
+  testWidgets('root widget renders the Today home route', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
-      const ProviderScope(child: SanctaViaDevotionalsApp()),
+      // The Today screen's calendar provider derives from
+      // `currentDateProvider`, whose production stream keeps a periodic
+      // midnight timer — pending forever in a widget test. The ruled
+      // harness pattern freezes it on a fixed day (Task 5/12; the smoke
+      // scope stays otherwise real: no repository or settings overrides —
+      // the home route mounts and shows its honest loading state).
+      ProviderScope(
+        overrides: <Override>[
+          currentDateProvider.overrideWith(
+            (Ref ref) => Stream<DateTime>.value(DateTime(2026, 12, 5)),
+          ),
+        ],
+        child: const SanctaViaDevotionalsApp(),
+      ),
     );
-    await tester.pumpAndSettle();
+    // Fixed pumps, not `pumpAndSettle`: the Today screen's loading state is
+    // a spinner (an animation `pumpAndSettle` can never settle), and the
+    // smoke scope's assembly load stays pending — the smoke test only pins
+    // that the app builds and mounts its real home screen.
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
 
     expect(find.byType(AppBar), findsOneWidget);
-    expect(find.text('Sancta Via Devotionals'), findsOneWidget);
+    expect(find.byType(TodayScreen), findsOneWidget);
+    expect(find.text('Today'), findsOneWidget);
   });
 }
