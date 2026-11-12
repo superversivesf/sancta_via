@@ -2,15 +2,32 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart' hide AppLogger;
 
 import 'config/routes.dart';
+import 'providers/app_settings_provider.dart'
+    show
+        devotionsSettingsProvider,
+        onboardingCompleteProvider,
+        readPersistedOnboardingComplete;
 import 'providers/content_providers.dart';
 import 'providers/today_providers.dart';
 import 'services/notification_service.dart';
 import 'utils/logger.dart';
 
-void main() {
+Future<void> main() async {
+  // The cold-start entry route (Task 19): go_router reads `initialLocation`
+  // once, and the persisted onboarding flag decides it BEFORE the first
+  // frame — a returning user opens Today, a fresh install the walkthrough —
+  // so the async settings load can never strand a complete user inside the
+  // walkthrough. From there the redirect gate (wired below) holds an
+  // un-onboarded app in the walkthrough at every navigation.
+  WidgetsFlutterBinding.ensureInitialized();
+  final bool onboardingComplete = await readPersistedOnboardingComplete();
+  appRouter = buildAppRouter(
+    initialLocation: onboardingComplete ? '/' : '/onboarding',
+  );
   runApp(
     ProviderScope(
       // Route the wrapper's program providers through the app's SQLite
@@ -26,9 +43,19 @@ void main() {
 /// Besides the router it owns the notification wiring's app-side half
 /// (Task 18): it listens to the service's tap stream and routes each deep
 /// link, and it runs the app-open refresh hook once, after the content
-/// catalog is seeded.
+/// catalog is seeded. It also wires the onboarding gate ([appOnboardingGate])
+/// through which the router holds an un-onboarded app in the walkthrough
+/// (Task 19).
 class SanctaViaDevotionalsApp extends ConsumerStatefulWidget {
-  const SanctaViaDevotionalsApp({super.key});
+  /// Creates the root app.
+  ///
+  /// [router] presents the app-wide [appRouter] (whose entry route [main]
+  /// rebuilt from the persisted onboarding flag) unless a test supplies its
+  /// own instance.
+  const SanctaViaDevotionalsApp({this.router, super.key});
+
+  /// The router configuration, or null for the app-wide [appRouter].
+  final GoRouter? router;
 
   @override
   ConsumerState<SanctaViaDevotionalsApp> createState() =>
@@ -42,6 +69,16 @@ class _SanctaViaDevotionalsAppState
   @override
   void initState() {
     super.initState();
+    // The onboarding gate (Task 19): the router's redirect re-reads the LIVE
+    // settings through this closure at every navigation. Until the async
+    // settings load resolved, the closure says "complete" — a pre-load
+    // default `onboardingComplete: false` may still be a returning user
+    // mid-load, whose entry route was already decided from the store in
+    // `main`; the redirect never holds the app in the walkthrough on
+    // guesswork. Installed once — the app runs for the process lifetime.
+    appOnboardingGate = () =>
+        !ref.read(devotionsSettingsProvider.notifier).isLoaded ||
+        ref.read(onboardingCompleteProvider);
     // Attach the tap listener BEFORE the first initialize: the cold-start
     // launch payload is emitted from initialize (the service buffers nothing,
     // so the listener must already be there).
@@ -89,7 +126,7 @@ class _SanctaViaDevotionalsAppState
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme(),
       darkTheme: AppTheme.darkTheme(),
-      routerConfig: appRouter,
+      routerConfig: widget.router ?? appRouter,
     );
   }
 }

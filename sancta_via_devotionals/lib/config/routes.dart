@@ -10,11 +10,39 @@ import '../screens/progress/progress_screen.dart';
 import '../screens/session/session_player_screen.dart';
 import '../screens/settings/settings_screen.dart';
 
+/// Whether the first-launch onboarding walkthrough has completed, read LIVE
+/// at every redirect evaluation.
+typedef OnboardingGate = bool Function();
+
+/// The production onboarding gate the router's redirect evaluates.
+///
+/// `main.dart`'s root app installs a closure reading the app's live settings;
+/// while it reports `false`, the redirect sends every location that is not
+/// `/onboarding` THERE — the walkthrough owns an un-onboarded app (cold start
+/// included: a notification's deep link cannot pull the walkthrough away).
+/// A completed install is left alone, so Today's re-entry CTA ("Set up your
+/// day") can open the walkthrough again, and the walkthrough's done step
+/// navigates to Today itself.
+///
+/// Null — every harness that does not wire it, including all existing widget
+/// tests — disables the redirect entirely: Task 13's pinned Today behaviors
+/// are untouched, and no test needs to know onboarding exists.
+OnboardingGate? appOnboardingGate;
+
 /// Central navigation configuration for the devotionals app.
-final GoRouter appRouter = buildAppRouter();
+GoRouter appRouter = buildAppRouter();
 
 /// Builds the app router (a fresh instance per call — widget tests build
-/// their own; `appRouter` stays the app-wide one).
+/// their own; `appRouter` stays the app-wide one, rebuilt once by `main.dart`
+/// because go_router reads `initialLocation` once and the persisted onboarding
+/// flag decides the cold-start entry route — see `main.dart`).
+///
+/// The redirect rule: with the [appOnboardingGate] wired, an un-onboarded app
+/// is held in the walkthrough (`!gate() && path != '/onboarding'` →
+/// `/onboarding`) and any completed install routes freely. The gate is read
+/// FRESH at each evaluation, so flipping the flag mid-session (the walkthrough
+/// completing) is honored by the next navigation without rebuilding the
+/// router.
 ///
 /// Route table (Task 14's shell restructure — Task 1's flat root grown into
 /// the four-branch [StatefulShellRoute]):
@@ -27,8 +55,14 @@ final GoRouter appRouter = buildAppRouter();
 ///     family (Task 14);
 ///   - `/progress` — the Progress placeholder (Task 16 replaces it);
 ///   - `/settings` — the Settings placeholder (Task 20 replaces it);
-/// * `/onboarding` — the onboarding walkthrough placeholder (the real flow
-///   lands in Task 19; Today's empty-state CTA routes here today);
+/// * `/onboarding` — the onboarding walkthrough (Task 19): welcome (value
+///   statement, free/offline note), the claim of existing progress (one
+///   "already N in" stepper per commitment pack), the routine picker (the
+///   catalog's routine packs, plus the meal & night anchors consent), the
+///   reminder toggles (whose enables request notification permission through
+///   Task 18's initialize seam), and the done step that flips the settings'
+///   `onboardingComplete` and opens Today. An un-onboarded app is held here
+///   by the redirect above, and Today's empty-state CTA routes here;
 /// * `/session/:packId?forDate=yyyy-MM-dd` — the full-screen session
 ///   player for the pack, optionally fixed to a calendar day (the deep
 ///   link's `forDate`; the session resumes across days exactly as the
@@ -46,6 +80,16 @@ GoRouter buildAppRouter({String initialLocation = '/'}) {
   return GoRouter(
     initialLocation: initialLocation,
     debugLogDiagnostics: false,
+    redirect: (BuildContext context, GoRouterState state) {
+      final OnboardingGate? gate = appOnboardingGate;
+      if (gate == null) {
+        return null;
+      }
+      if (!gate() && state.uri.path != '/onboarding') {
+        return '/onboarding';
+      }
+      return null;
+    },
     routes: <RouteBase>[
       StatefulShellRoute.indexedStack(
         builder:

@@ -50,6 +50,13 @@ class DevotionsSettingsNotifier extends StateNotifier<DevotionsAppSettings> {
   /// Whether a mutation happened before the async load resolved.
   bool _mutationSinceLoad = false;
 
+  /// Whether the async load resolved. The cold-start redirect gate reads
+  /// this: until it is true, a default `onboardingComplete: false` may
+  /// still be a RETURNING user mid-load, whose entry route was already
+  /// decided from the store in `main.dart` — the gate must send nobody to
+  /// the walkthrough on guesswork.
+  bool _loaded = false;
+
   /// Tail of the serialized persist chain.
   Future<void>? _persistQueue;
 
@@ -64,6 +71,9 @@ class DevotionsSettingsNotifier extends StateNotifier<DevotionsAppSettings> {
       }
     });
   }
+
+  /// Whether the settings load resolved (see [_loaded]).
+  bool get isLoaded => _loaded;
 
   Future<void> _loadSettings() async {
     try {
@@ -100,6 +110,9 @@ class DevotionsSettingsNotifier extends StateNotifier<DevotionsAppSettings> {
       // Corrupt or unreadable store: continue with the current state —
       // never crash the app on a bad settings store.
     }
+    // Every path above (stored read, missing store, unreadable store) has
+    // now decided the truth about the walkthrough flag.
+    _loaded = true;
   }
 
   /// Merge a racing mutation's [current] state with [loaded] stored settings
@@ -283,3 +296,27 @@ final latinDisplayProvider = Provider<bool>((ref) {
 final onboardingCompleteProvider = Provider<bool>((ref) {
   return ref.watch(devotionsSettingsProvider).onboardingComplete;
 });
+
+/// The persisted onboarding flag, read at cold start (`main.dart`).
+///
+/// go_router reads its `initialLocation` ONCE, so the cold-start entry route
+/// is decided from the STORE before the first frame — a returning user whose
+/// store says the walkthrough completed must open Today, not the walkthrough,
+/// even though the in-memory settings had not loaded yet. Any unreadable
+/// store (absent, corrupt, or of the wrong shape) reads `false` — a fresh or
+/// damaged install has not onboarded — and never throws into the cold start.
+Future<bool> readPersistedOnboardingComplete() async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final String? settingsJson = prefs.getString(
+      DevotionsSettingsNotifier.storageKey,
+    );
+    if (settingsJson == null) {
+      return false;
+    }
+    final settingsMap = json.decode(settingsJson) as Map<String, dynamic>;
+    return DevotionsAppSettings.fromJson(settingsMap).onboardingComplete;
+  } catch (_) {
+    return false;
+  }
+}
