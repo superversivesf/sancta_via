@@ -7,15 +7,16 @@
 // overridden with a fixed `LiturgicalDayData` (or null) at every test, which
 // both pins the celebration rendering and keeps
 // `currentDateProvider`'s periodic timer out of the fake-async test zone.
-// Fix round 1 adds a real-path load-failure test: the production
-// `SaintRepository.instance` runs against a read-only corrupt database
-// fixture at a redirected databases path (same technique as the
-// saint_data loader tests).
+// Fix round 1 adds a real-path load-failure test; the final-review wave
+// rehomes it onto `SaintRepository.forAssetPath('assets/does-not-exist.db')`
+// (the saint_data error seam) because the app now bundles a working
+// `assets/saints.db` and asset absence can no longer force the failure.
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:saint_companion/providers/saint_providers.dart';
 import 'package:saint_companion/screens/home/home_screen.dart';
 import 'package:saint_companion/widgets/category_card.dart';
@@ -229,6 +230,9 @@ void main() {
   /// whose container carries the repository override plus the liturgical
   /// day override ([liturgicalDay], null when omitted).
   ///
+  /// With [router], the screen is reached through that router instead
+  /// (`MaterialApp.router`) so menu navigation can be observed for real.
+  ///
   /// The sqflite FFI queries run on a real background isolate and never
   /// land inside the fake-async test zone, so the [preWarm] providers are
   /// first resolved for real (via `tester.runAsync`) — after which the
@@ -240,6 +244,7 @@ void main() {
     List<Override> extraOverrides = const <Override>[],
     bool preWarmToday = true,
     bool pumpSettleFrames = true,
+    GoRouter? router,
   }) async {
     final ProviderContainer container = ProviderContainer(
       overrides: <Override>[
@@ -258,11 +263,11 @@ void main() {
         if (preWarmToday) container.read(saintsTodayProvider.future),
       ]);
     });
+    final Widget app = router != null
+        ? MaterialApp.router(routerConfig: router)
+        : const MaterialApp(home: HomeScreen());
     await tester.pumpWidget(
-      UncontrolledProviderScope(
-        container: container,
-        child: const MaterialApp(home: HomeScreen()),
-      ),
+      UncontrolledProviderScope(container: container, child: app),
     );
     if (pumpSettleFrames) {
       await tester.pumpAndSettle();
@@ -272,30 +277,33 @@ void main() {
   testWidgets(
     'renders the load error state with a retry affordance when the real database load fails',
     (WidgetTester tester) async {
-      // Fix round 1: the error state must be REACHABLE, not merely
-      // constructible. No provider stubs and no injected repository: the
-      // production `SaintRepository.instance` load path runs against a
-      // genuinely unopenable database. Mirroring the saint_data loader-test
-      // fixture: a read-only corrupt copy sits at the databases path, the
-      // refresh layer cannot heal it (the bundled `assets/saints.db` key is
-      // not part of this app's test asset bundle) and the OPEN itself
-      // fails — before the saint_data fix this surfaced as "No saints" +
-      // a 0-count grid; now `ensureLoaded` propagates the failure into the
-      // keyed error cards.
+      // Final-review fix wave: the app now BUNDLES a working
+      // `assets/saints.db` (the on-device fix itself), so asset absence can
+      // no longer force a first-load failure. The reachability pin rehomes
+      // onto the saint_data error seam
+      // `saintRepositoryProvider.overrideWithValue(
+      // SaintRepository.forAssetPath('assets/does-not-exist.db'))`: a
+      // repository whose ensureLoaded performs the genuine production
+      // first-load against an asset key that resolves nowhere — the refresh
+      // fails harmlessly and the loader's onCreate path now RETHROWS (an
+      // empty store is worse than a propagated error state), so the cached
+      // AsyncError lands as the keyed error cards exactly as it does for a
+      // real device failure. No weakening of the original pinned
+      // assertions.
       final ProviderContainer container = ProviderContainer(
         overrides: <Override>[
+          saintRepositoryProvider.overrideWithValue(
+            SaintRepository.forAssetPath('assets/does-not-exist.db'),
+          ),
           currentLiturgicalDayProvider.overrideWith((Ref ref) => null),
         ],
       );
       addTearDown(container.dispose);
 
-      // All real-I/O work (fixture setup + the genuine production load
-      // path) must run inside the real-time zone: FFI isolate replies never
-      // resume awaits parked in the fake-async test zone. The fixture
-      // mirrors the saint_data loader tests: a read-only corrupt copy at a
-      // redirected databases path — the refresh layer cannot heal it (the
-      // bundled `assets/saints.db` key is not part of this app's test asset
-      // bundle) and the OPEN itself fails.
+      // All real-I/O work runs inside the real-time zone: FFI isolate
+      // replies never resume awaits parked in the fake-async test zone. The
+      // databases path redirects to a temp directory so the failing first
+      // load never materializes files in the real user path.
       await tester.runAsync(() async {
         final String previousDatabasesPath = await databaseFactory
             .getDatabasesPath();
@@ -303,22 +311,19 @@ void main() {
           'saints_home_fail_',
         );
         await databaseFactory.setDatabasesPath(tempDir.path);
-        final String dbPath = '${tempDir.path}/saints.db';
-        await File(
-          dbPath,
-        ).writeAsBytes(List<int>.generate(5000, (int i) => i % 251));
-        await Process.run('chmod', <String>['444', dbPath]);
-
-        // Warm the three repository-backed providers through the production
-        // `SaintRepository.instance` — no stubs, no injected repository.
-        await Future.wait(<Future<Object?>>[
-          _settleFuture(container.read(saintsTodayProvider.future)),
-          _settleFuture(container.read(featuredSaintsProvider.future)),
-          _settleFuture(container.read(categoryCountsProvider.future)),
-        ]);
-
-        // Cleanup while still in the real-time zone.
-        await databaseFactory.setDatabasesPath(previousDatabasesPath);
+        try {
+          // Warm the three repository-backed providers through the
+          // forAssetPath first-load failure — expected, so the result is
+          // settled (value or error) either way.
+          await Future.wait(<Future<Object?>>[
+            _settleFuture(container.read(saintsTodayProvider.future)),
+            _settleFuture(container.read(featuredSaintsProvider.future)),
+            _settleFuture(container.read(categoryCountsProvider.future)),
+          ]);
+        } finally {
+          // Cleanup while still in the real-time zone.
+          await databaseFactory.setDatabasesPath(previousDatabasesPath);
+        }
         await tempDir.delete(recursive: true);
       });
 
@@ -494,6 +499,81 @@ void main() {
     expect(find.byKey(_placeholderKey), findsNothing);
     expect(find.byType(Container), findsNothing);
     expect(find.byType(Icon), findsNothing);
+  });
+
+  group('AppBar overflow menu navigation (final-review fix wave)', () {
+    // The home AppBar previously offered ONLY the search action, leaving
+    // /categories, /favorites, and /settings unreachable (spec §8 lists
+    // them as screens of the app). The minimal chrome is an overflow menu.
+
+    /// Builds a probe router over the real home route: every menu
+    /// destination renders a keyed probe and its builder captures the
+    /// matched location (the Task-8/12 location-capture pattern — go_router
+    /// 15's `routeInformationProvider` keeps the INITIAL location across
+    /// pushes, so navigations are pinned through the route builder).
+    GoRouter probeRouter({void Function(String path)? onProbe}) {
+      return GoRouter(
+        initialLocation: '/',
+        routes: <RouteBase>[
+          GoRoute(
+            path: '/',
+            builder: (BuildContext context, GoRouterState state) =>
+                const HomeScreen(),
+          ),
+          for (final String path in <String>[
+            '/categories',
+            '/favorites',
+            '/settings',
+          ])
+            GoRoute(
+              path: path,
+              builder: (BuildContext context, GoRouterState state) {
+                onProbe?.call(state.uri.path);
+                return Scaffold(body: Text('PROBE:$path'));
+              },
+            ),
+        ],
+      );
+    }
+
+    testWidgets(
+      'opens with Browse, Favorites, and Settings entries, keeping search',
+      (WidgetTester tester) async {
+        await pumpHomeScreen(tester);
+
+        await tester.tap(find.byKey(const Key('nav_menu')));
+        await tester.pumpAndSettle();
+
+        expect(find.byKey(const Key('nav_menu_browse')), findsOneWidget);
+        expect(find.byKey(const Key('nav_menu_favorites')), findsOneWidget);
+        expect(find.byKey(const Key('nav_menu_settings')), findsOneWidget);
+        // The search action stays as the AppBar's own IconButton.
+        expect(find.byTooltip('Search saints'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'tapping Favorites navigates to /favorites (location capture)',
+      (WidgetTester tester) async {
+        String capturedPath = '';
+        final GoRouter router = probeRouter(
+          onProbe: (String path) => capturedPath = path,
+        );
+        await pumpHomeScreen(tester, router: router);
+
+        await tester.tap(find.byKey(const Key('nav_menu')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('nav_menu_favorites')));
+        await tester.pumpAndSettle();
+
+        expect(
+          capturedPath,
+          '/favorites',
+          reason: 'the Favorites menu entry must reach the /favorites route',
+        );
+        expect(find.text('PROBE:/favorites'), findsOneWidget);
+      },
+    );
   });
 }
 

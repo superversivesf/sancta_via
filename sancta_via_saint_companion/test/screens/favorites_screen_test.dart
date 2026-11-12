@@ -13,11 +13,12 @@
 // the settings notifier) is created, and the fire-and-forget async load is
 // drained inside the same `runAsync` warm-up.
 //
-// The FAILURE pin uses the REAL production path (Task 11/12/13/14
-// reachability ruling): `SaintRepository.instance` against a genuinely
-// unopenable database (read-only corrupt copy at a redirected databases
-// path) — the first-load `ensureLoaded` failure is the production route to
-// the keyed error card.
+// The FAILURE pin uses the REAL production first-load path (Task
+// 11/12/13/14 reachability ruling; final-review wave rehome) through
+// `SaintRepository.forAssetPath('assets/does-not-exist.db')` (the app now
+// bundles a working `assets/saints.db`, so asset absence can no longer
+// force the failure) — the first-load `ensureLoaded` failure remains the
+// production route to the keyed error card.
 import 'dart:convert';
 import 'dart:io';
 
@@ -321,12 +322,19 @@ void main() {
   testWidgets(
     'favorites_error_state renders with a retry affordance when the real database load fails',
     (WidgetTester tester) async {
-      // Reachability ruling carried over from home/categories/detail/search
-      // (Tasks 11-14 fix rounds): no injected repository — the production
-      // `SaintRepository.instance` load path runs against a genuinely
-      // unopenable database, so the keyed error card is reached through the
-      // app's real failure mode. Presence-only assertion (Task-15 ruling).
-      final ProviderContainer container = ProviderContainer();
+      // Final-review fix wave rehome (was: SaintRepository.instance against
+      // a genuinely unopenable database — a technique that relied on the
+      // app NOT bundling `assets/saints.db`): the reachability pin now
+      // forces the genuine first-load failure through the saint_data error
+      // seam SaintRepository.forAssetPath (no injected repository stub).
+      // Presence-only assertion (Task-15 ruling) unchanged.
+      final ProviderContainer container = ProviderContainer(
+        overrides: <Override>[
+          saintRepositoryProvider.overrideWithValue(
+            SaintRepository.forAssetPath('assets/does-not-exist.db'),
+          ),
+        ],
+      );
       addTearDown(container.dispose);
 
       await tester.runAsync(() async {
@@ -346,23 +354,21 @@ void main() {
           'saints_favorites_fail_',
         );
         await databaseFactory.setDatabasesPath(tempDir.path);
-        final String dbPath = '${tempDir.path}/saints.db';
-        await File(
-          dbPath,
-        ).writeAsBytes(List<int>.generate(5000, (int i) => i % 251));
-        await Process.run('chmod', <String>['444', dbPath]);
-
-        // Warm the per-slug lookup through the production instance — the
-        // first-load failure is expected, so the result is settled (error)
-        // either way; the cached AsyncError then lands synchronously when
-        // the screen watches this key.
         try {
-          await container.read(saintBySlugProvider('anthony-of-padua').future);
-        } on Object catch (_) {
-          // Expected: the ensureLoaded failure surfaces here.
+          // Warm the per-slug lookup through the genuine first-load
+          // failure — expected, so the result is settled (error) either
+          // way; the cached AsyncError then lands synchronously when the
+          // screen watches this key.
+          try {
+            await container.read(
+              saintBySlugProvider('anthony-of-padua').future,
+            );
+          } on Object catch (_) {
+            // Expected: the ensureLoaded failure surfaces here.
+          }
+        } finally {
+          await databaseFactory.setDatabasesPath(previousDatabasesPath);
         }
-
-        await databaseFactory.setDatabasesPath(previousDatabasesPath);
         await tempDir.delete(recursive: true);
       });
 

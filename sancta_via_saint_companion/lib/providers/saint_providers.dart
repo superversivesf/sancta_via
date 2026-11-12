@@ -32,6 +32,10 @@ Future<SaintRepository> _loadedRepository(Ref ref) async {
 
 /// Saints whose stored feast day is today (`MM-DD` via
 /// [SaintFeastService.feastKeyForDate]); unknown-feast saints never match.
+/// The calendar year is captured alongside the key so the repository's
+/// Feb-29 lookup-side fallback resolves against the same captured date
+/// (final-review ruling: in non-leap years the '02-28' lookup unions the
+/// '02-29' saints).
 ///
 /// Staleness: `DateTime.now()` is captured at first provider use, so the
 /// result refreshes on app restart or an `invalidate()` of this provider;
@@ -39,8 +43,10 @@ Future<SaintRepository> _loadedRepository(Ref ref) async {
 final FutureProvider<List<Saint>> saintsTodayProvider =
     FutureProvider<List<Saint>>((Ref ref) async {
       final SaintRepository repository = await _loadedRepository(ref);
+      final DateTime now = DateTime.now();
       return repository.getSaintsForFeastDay(
-        SaintFeastService.feastKeyForDate(DateTime.now()),
+        SaintFeastService.feastKeyForDate(now),
+        year: now.year,
       );
     });
 

@@ -55,6 +55,14 @@ flutter:
 
   assets:
     - assets/app_icon.png
+    # The saint database ships from the APP bundle: SaintRepository's open
+    # resolves the literal key `assets/saints.db` against this app's own
+    # asset bundle (package assets from a dependency resolve only under
+    # `packages/saint_data/...`, which the repository's literal key never
+    # requests — the trap that silently blanked the app on devices, fixed in
+    # the final-review wave). House precedent:
+    # sancta_via_bible_reading_app/assets/bibles.db.
+    - assets/saints.db
 
 flutter_launcher_icons:
   android: true

@@ -21,12 +21,13 @@
 //   provider keys under test prewarmed inside `tester.runAsync` (Task
 //   11/12 pattern) — the widget phase then renders `AsyncData`
 //   synchronously and `pumpAndSettle` is safe.
-// - The FAILURE pin uses the REAL production path (Task 11/12/13
-//   reachability ruling): `SaintRepository.instance` against a genuinely
-//   unopenable database (read-only corrupt copy at a redirected databases
-//   path) — `searchSaints` itself never throws through the real
-//   repository (`_withDatabase` swallows query errors and returns the
-//   fallback), so the production route to the error card is the
+// - The FAILURE pin uses the REAL production first-load path (Task
+//   11/12/13 reachability ruling; final-review wave rehome) through
+//   `SaintRepository.forAssetPath('assets/does-not-exist.db')` (the app
+//   now bundles a working `assets/saints.db`, so asset absence can no
+//   longer force the failure) — `searchSaints` itself never throws through
+//   the real repository (`_withDatabase` swallows query errors and returns
+//   the fallback), so the production route to the error card is the
 //   first-load `ensureLoaded` failure.
 import 'dart:io';
 
@@ -518,11 +519,18 @@ void main() {
       // throws from searchSaints (`_withDatabase` swallows query errors and
       // returns the fallback, which would render the empty state instead);
       // the only production path to the error card is a first-load
-      // `ensureLoaded` failure — the production `SaintRepository.instance`
-      // opened against a genuinely unopenable database (read-only corrupt
-      // copy at a redirected databases path), same technique as
-      // categories_screens_test.dart.
-      final ProviderContainer container = ProviderContainer();
+      // `ensureLoaded` failure. Final-review fix wave rehome: the app now
+      // bundles a working `assets/saints.db`, so the genuine first-load
+      // failure is forced through the saint_data error seam
+      // SaintRepository.forAssetPath (no injected repository stub), same
+      // technique as categories_screens_test.dart.
+      final ProviderContainer container = ProviderContainer(
+        overrides: <Override>[
+          saintRepositoryProvider.overrideWithValue(
+            SaintRepository.forAssetPath('assets/does-not-exist.db'),
+          ),
+        ],
+      );
       addTearDown(container.dispose);
 
       await tester.runAsync(() async {
@@ -532,25 +540,21 @@ void main() {
           'saints_search_fail_',
         );
         await databaseFactory.setDatabasesPath(tempDir.path);
-        final String dbPath = '${tempDir.path}/saints.db';
-        await File(
-          dbPath,
-        ).writeAsBytes(List<int>.generate(5000, (int i) => i % 251));
-        await Process.run('chmod', <String>['444', dbPath]);
-
-        // Warm the search provider through the production instance — the
-        // first-load failure is expected, so the result is settled (expected
-        // error) either way; the cached AsyncError then lands synchronously
-        // when the screen watches this key.
-        await _settleFuture(
-          container.read(saintSearchProvider(('lost keys', null)).future),
-        );
-
-        await databaseFactory.setDatabasesPath(previousDatabasesPath);
+        try {
+          // Warm the search provider through the genuine first-load failure
+          // — expected, so the result is settled (expected error) either
+          // way; the cached AsyncError then lands synchronously when the
+          // screen watches this key.
+          await _settleFuture(
+            container.read(saintSearchProvider(('lost keys', null)).future),
+          );
+        } finally {
+          await databaseFactory.setDatabasesPath(previousDatabasesPath);
+        }
         await tempDir.delete(recursive: true);
       });
 
-      // No repository override: the production instance stays wired.
+      // The forAssetPath repository stays wired through the provider seam.
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,

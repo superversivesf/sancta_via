@@ -14,7 +14,9 @@ import '../../widgets/section_spinner.dart';
 /// The saints home screen (Task 11): today's saints, featured saints,
 /// the category grid with counts, and today's liturgical celebration, in
 /// that order. Failed repository loads surface a keyed error card with a
-/// retry affordance.
+/// retry affordance. The AppBar keeps the search action plus an overflow
+/// menu that reaches the spec §8 screens (/categories, /favorites,
+/// /settings).
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
@@ -31,6 +33,32 @@ class HomeScreen extends ConsumerWidget {
             icon: const Icon(Icons.search),
             tooltip: 'Search saints',
             onPressed: () => context.push('/search'),
+          ),
+          // Spec §8 screens (/categories, /favorites, /settings) are
+          // reachable through this overflow menu (final-review fix wave:
+          // they had no navigation at all); the search action stays.
+          PopupMenuButton<String>(
+            key: const Key('nav_menu'),
+            icon: const Icon(Icons.more_vert),
+            tooltip: 'More',
+            onSelected: (String route) => context.push(route),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                key: Key('nav_menu_browse'),
+                value: '/categories',
+                child: Text('Browse'),
+              ),
+              const PopupMenuItem<String>(
+                key: Key('nav_menu_favorites'),
+                value: '/favorites',
+                child: Text('Favorites'),
+              ),
+              const PopupMenuItem<String>(
+                key: Key('nav_menu_settings'),
+                value: '/settings',
+                child: Text('Settings'),
+              ),
+            ],
           ),
         ],
       ),

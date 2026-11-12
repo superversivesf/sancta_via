@@ -7,9 +7,11 @@
 // carry-forward saints). The repository-backed provider is resolved for
 // real inside `tester.runAsync` before pumping (Task 11/12 harness) so the
 // widget phase renders `AsyncData` synchronously and `pumpAndSettle` is
-// safe. The load-failure test uses the REAL production path
-// (`SaintRepository.instance`) against a read-only corrupt database
-// fixture, same technique as categories_screens_test.dart.
+// safe. The load-failure test uses the REAL production first-load path
+// through `SaintRepository.forAssetPath('assets/does-not-exist.db')`
+// (final-review wave rehome: the app now bundles a working
+// `assets/saints.db`, so asset absence can no longer force the failure),
+// same technique as categories_screens_test.dart.
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -380,12 +382,19 @@ void main() {
   testWidgets(
     'renders detail_error_state with a retry affordance when the real database load fails',
     (WidgetTester tester) async {
-      // Reachability ruling carried over from home/categories (Task 11/12):
-      // no injected repository — the production `SaintRepository.instance`
-      // load path runs against a genuinely unopenable database (read-only
-      // corrupt copy at a redirected databases path), so the keyed error
-      // card is reached through the app's real failure mode.
-      final ProviderContainer container = ProviderContainer();
+      // Final-review fix wave rehome (was: SaintRepository.instance against
+      // a read-only corrupt copy — a technique that relied on the app NOT
+      // bundling `assets/saints.db`): the reachability pin forces the
+      // genuine first-load failure through the saint_data error seam
+      // SaintRepository.forAssetPath (no injected repository stub). Pinned
+      // assertions unchanged.
+      final ProviderContainer container = ProviderContainer(
+        overrides: <Override>[
+          saintRepositoryProvider.overrideWithValue(
+            SaintRepository.forAssetPath('assets/does-not-exist.db'),
+          ),
+        ],
+      );
       addTearDown(container.dispose);
 
       await tester.runAsync(() async {
@@ -395,20 +404,15 @@ void main() {
           'saints_detail_fail_',
         );
         await databaseFactory.setDatabasesPath(tempDir.path);
-        final String dbPath = '${tempDir.path}/saints.db';
-        await File(
-          dbPath,
-        ).writeAsBytes(List<int>.generate(5000, (int i) => i % 251));
-        await Process.run('chmod', <String>['444', dbPath]);
-
-        // Warm the slug provider through the production instance — the
-        // failure is expected, so the result is settled (value or error)
-        // either way.
-        await _settleFuture(
-          container.read(saintBySlugProvider('george').future),
-        );
-
-        await databaseFactory.setDatabasesPath(previousDatabasesPath);
+        try {
+          // Warm the slug provider through the genuine first-load failure —
+          // expected, so the result is settled (value or error) either way.
+          await _settleFuture(
+            container.read(saintBySlugProvider('george').future),
+          );
+        } finally {
+          await databaseFactory.setDatabasesPath(previousDatabasesPath);
+        }
         await tempDir.delete(recursive: true);
       });
 
