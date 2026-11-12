@@ -52,6 +52,34 @@ Future<Database> _createDetailSeededDatabase() async {
   return db;
 }
 
+/// A saint resolved by [_FakeSaintRepository] for the visit-tracking tests:
+/// enough fields for the screen to render a populated detail page.
+const Saint _fakeJoseph = Saint(
+  slug: 'joseph-the-worker',
+  name: 'St. Joseph the Worker',
+  feastDay: '05-01',
+  bio: 'A carpenter who worked as a day laborer and trusted in honest work.',
+);
+
+/// A repository whose [SaintRepository.getBySlug] completes synchronously
+/// with [resolve]() (null = not-found). The visit-tracking tests must drive
+/// the deferred initState task's await through the TEST's fake-async zone:
+/// futures resolved for real inside `tester.runAsync` (prewarm) are created
+/// in the binding's real-time zone and never resume under fake-async, which
+/// would leave the deferred task suspended instead of exercising the mounted
+/// re-check and the null guard.
+class _FakeSaintRepository extends Fake implements SaintRepository {
+  _FakeSaintRepository(this.resolve);
+
+  final Future<Saint?> Function() resolve;
+
+  @override
+  Future<void> ensureLoaded() async {}
+
+  @override
+  Future<Saint?> getBySlug(String slug) => resolve();
+}
+
 void main() {
   setUpAll(() {
     sqfliteFfiInit();
@@ -77,23 +105,29 @@ void main() {
   /// `UncontrolledProviderScope` whose container carries the repository
   /// override. The slug provider is resolved for real inside
   /// `tester.runAsync` (unless [preWarm] is false) — see the file header.
-  /// Returns the container so provider-state asserts can read it after taps.
+  /// When [fakeResolver] is set it replaces the seeded repository (and the
+  /// prewarm step) with [_FakeSaintRepository] — see the visit-tracking
+  /// tests below for why. Returns the container so provider-state asserts
+  /// can read it after taps.
   Future<ProviderContainer> pumpSaintDetail(
     WidgetTester tester, {
     required String slug,
     bool preWarm = true,
+    Future<Saint?> Function()? fakeResolver,
     List<Override> extraOverrides = const <Override>[],
   }) async {
     final ProviderContainer container = ProviderContainer(
       overrides: <Override>[
         saintRepositoryProvider.overrideWithValue(
-          SaintRepository.forDatabase(db),
+          fakeResolver == null
+              ? SaintRepository.forDatabase(db)
+              : _FakeSaintRepository(fakeResolver),
         ),
         ...extraOverrides,
       ],
     );
     addTearDown(container.dispose);
-    if (preWarm) {
+    if (fakeResolver == null && preWarm) {
       await tester.runAsync(() async {
         await container.read(saintBySlugProvider(slug).future);
       });
@@ -216,9 +250,14 @@ void main() {
   testWidgets('records the saint in the recents provider state on open', (
     WidgetTester tester,
   ) async {
+    // Fake-resolver harness (see [_FakeSaintRepository]): drives the
+    // deferred visit task's await through the test's fake-async zone so the
+    // mounted re-checks and the non-null guard actually execute, then the
+    // write lands.
     final ProviderContainer container = await pumpSaintDetail(
       tester,
       slug: 'joseph-the-worker',
+      fakeResolver: () async => _fakeJoseph,
     );
 
     // On open (initState) the screen calls addRecent — the settings state
@@ -227,6 +266,58 @@ void main() {
       'joseph-the-worker',
     ]);
   });
+
+  testWidgets('unknown slug leaves the recents provider state untouched', (
+    WidgetTester tester,
+  ) async {
+    // Fix round 1 ruling: recents record only RESOLVED saints — the null
+    // guard executes for real here (fake-resolver harness), and an unknown
+    // slug never enters the list.
+    final ProviderContainer container = await pumpSaintDetail(
+      tester,
+      slug: 'unknown-saint',
+      fakeResolver: () async => null,
+    );
+
+    expect(container.read(saintAppSettingsProvider).recentSlugs, isEmpty);
+  });
+
+  testWidgets(
+    'a screen disposed before its deferred visit turn records nothing',
+    (WidgetTester tester) async {
+      final ProviderContainer container = ProviderContainer(
+        overrides: <Override>[
+          saintRepositoryProvider.overrideWithValue(
+            SaintRepository.forDatabase(db),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+      // Resolve the saint for real BEFORE pumping, so that a missing guard
+      // would let the deferred task's await complete and still write recents —
+      // the test must not pass merely because the future never resolves.
+      await tester.runAsync(() async {
+        await container.read(saintBySlugProvider('george').future);
+      });
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(home: SaintDetailScreen(slug: 'george')),
+        ),
+      );
+      // A plain pumpWidget does not advance the fake clock, so the zero-delay
+      // (Future-run) visit task is still pending. Popping the route here —
+      // disposing the screen before its deferred turn — is the review's
+      // scenario: without the [mounted] guard, riverpod 2.6.1 raises
+      // `StateError: Cannot use "ref" after the widget was disposed.` from the
+      // timer callback (consumer.dart _assertNotDisposed).
+      await tester.pumpWidget(const SizedBox());
+      // Flush the deferred turn now that the screen is gone.
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(container.read(saintAppSettingsProvider).recentSlugs, isEmpty);
+    },
+  );
 
   testWidgets(
     'prayer card copy button copies the prayer and shows a snack bar',

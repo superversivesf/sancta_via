@@ -10,6 +10,7 @@ import 'package:saint_data/saint_data.dart';
 import '../../models/saint_app_settings.dart';
 import '../../providers/saint_app_settings_provider.dart';
 import '../../providers/saint_providers.dart';
+import '../../utils/logger.dart';
 import '../../widgets/load_error_card.dart';
 import '../../widgets/patronage_chip.dart';
 import '../../widgets/saint_image.dart';
@@ -62,14 +63,35 @@ class _SaintDetailScreenState extends ConsumerState<SaintDetailScreen> {
   @override
   void initState() {
     super.initState();
-    // The visit is recorded when the screen opens (Task 13 contract).
-    // Riverpod forbids mutating a provider inside a build-phase life-cycle,
-    // so the addRecent is deferred one event-loop turn (the framework's own
-    // suggested remedy); it lands inside pumpAndSettle in tests. If the
-    // mutation races the async settings load, the merge rule keeps it —
-    // never clobbered (SaintAppSettingsNotifier's racing rule).
+    // The visit is recorded when the screen opens — for RESOLVED saints
+    // only. Riverpod forbids mutating a provider inside a build-phase
+    // life-cycle, so this runs deferred (the framework's own suggested
+    // remedy); it resolves the saint OUTSIDE the widget tree and re-checks
+    // [mounted] before and after the await. A route popped before the
+    // deferred turn (or before resolution) never touches `ref` again —
+    // riverpod's `_assertNotDisposed` raises a StateError from the timer
+    // callback otherwise — and an unknown slug never enters recents.
     unawaited(
-      Future<void>(() {
+      Future<void>(() async {
+        if (!mounted) {
+          return;
+        }
+        Saint? saint;
+        try {
+          saint = await ref.read(saintBySlugProvider(widget.slug).future);
+        } on Object catch (error) {
+          // A failed load resolves through the keyed error card instead
+          // (`detail_error_state`); the failure itself is already logged by
+          // the repository/load layer (spec §9: safe defaults, no crash).
+          AppLogger.debug(
+            'Visit not recorded; saint lookup failed: $error',
+            'SAINT_DETAIL',
+          );
+          return;
+        }
+        if (!mounted || saint == null) {
+          return;
+        }
         ref.read(saintAppSettingsProvider.notifier).addRecent(widget.slug);
       }),
     );
