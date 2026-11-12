@@ -67,6 +67,21 @@ final FutureProvider<List<ContentPack>> contentLoadedProvider =
       return service.ensureContentLoaded();
     });
 
+/// Whether the user is enrolled in the program [packId] names — the
+/// Task 5/6 ruling's enrollment signal (`enrollmentParamsFor(packId) !=
+/// null`), never the catalog itself.
+///
+/// The detail surface consumes this to show an enrolled state in place of
+/// the Enroll CTA. Task 15's enrollment flow should invalidate this provider
+/// (by pack) after a successful enroll so the badge flips reactively.
+final FutureProviderFamily<bool, String> programEnrolledProvider =
+    FutureProvider.family<bool, String>((Ref ref, String packId) async {
+      final SqliteProgramRepository repository = ref.watch(
+        appProgramRepositoryProvider,
+      );
+      return await repository.enrollmentParamsFor(packId) != null;
+    });
+
 /// The session player's current-intentions readout (Task 11 placeholder
 /// seam, Plan 2 Task 11 IntercessionStep contract).
 ///

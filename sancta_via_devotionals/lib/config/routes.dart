@@ -3,7 +3,12 @@ import 'package:go_router/go_router.dart';
 
 import '../screens/home/today_screen.dart';
 import '../screens/onboarding/onboarding_screen.dart';
+import '../screens/practice/enroll_placeholder_screen.dart';
+import '../screens/practice/practice_screen.dart';
+import '../screens/practice/program_detail_screen.dart';
+import '../screens/progress/progress_screen.dart';
 import '../screens/session/session_player_screen.dart';
+import '../screens/settings/settings_screen.dart';
 
 /// Central navigation configuration for the devotionals app.
 final GoRouter appRouter = buildAppRouter();
@@ -11,25 +16,85 @@ final GoRouter appRouter = buildAppRouter();
 /// Builds the app router (a fresh instance per call — widget tests build
 /// their own; `appRouter` stays the app-wide one).
 ///
-/// Route table:
-/// * `/` — the Today screen: the liturgical header, the day's time-grouped
-///   sections (Task 13), fed by the Today assembly;
+/// Route table (Task 14's shell restructure — Task 1's flat root grown into
+/// the four-branch [StatefulShellRoute]):
+///
+/// * the shell — four tab branches under one [NavigationBar] shell
+///   ([_AppShell]); the branches keep their state across tab switches:
+///   - `/` — the Today screen: the liturgical header, the day's
+///     time-grouped sections (Task 13), fed by the Today assembly;
+///   - `/practice` — the Practice catalog: every seeded pack grouped by
+///     family (Task 14);
+///   - `/progress` — the Progress placeholder (Task 16 replaces it);
+///   - `/settings` — the Settings placeholder (Task 20 replaces it);
 /// * `/onboarding` — the onboarding walkthrough placeholder (the real flow
 ///   lands in Task 19; Today's empty-state CTA routes here today);
 /// * `/session/:packId?forDate=yyyy-MM-dd` — the full-screen session
 ///   player for the pack, optionally fixed to a calendar day (the deep
 ///   link's `forDate`; the session resumes across days exactly as the
-///   controller's rules decide).
+///   controller's rules decide). TOP-LEVEL, outside the shell: a session
+///   is a focused, full-screen walk, and the deep link stays usable from
+///   anywhere (the Task-13 pins rely on this shape — a pushed session
+///   leaves the shell match of the branch beneath it on the stack);
+/// * `/program/:packId` — the program detail (Task 14): description,
+///   schedule preview, phase and policy explainers, and the Enroll CTA.
+///   Top-level like the session: a detail is a focused page, not a tab;
+/// * `/program/:packId/enroll` — the enrollment flow placeholder (Task 15
+///   replaces it with the real enroll screen).
 GoRouter buildAppRouter({String initialLocation = '/'}) {
   return GoRouter(
     initialLocation: initialLocation,
     debugLogDiagnostics: false,
     routes: <RouteBase>[
-      GoRoute(
-        path: '/',
-        name: 'today',
-        builder: (BuildContext context, GoRouterState state) =>
-            const TodayScreen(),
+      StatefulShellRoute.indexedStack(
+        builder:
+            (
+              BuildContext context,
+              GoRouterState state,
+              StatefulNavigationShell navigationShell,
+            ) => _AppShell(navigationShell: navigationShell),
+        branches: <StatefulShellBranch>[
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/',
+                name: 'today',
+                builder: (BuildContext context, GoRouterState state) =>
+                    const TodayScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/practice',
+                name: 'practice',
+                builder: (BuildContext context, GoRouterState state) =>
+                    const PracticeScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/progress',
+                name: 'progress',
+                builder: (BuildContext context, GoRouterState state) =>
+                    const ProgressScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/settings',
+                name: 'settings',
+                builder: (BuildContext context, GoRouterState state) =>
+                    const SettingsScreen(),
+              ),
+            ],
+          ),
+        ],
       ),
       GoRoute(
         path: '/onboarding',
@@ -48,12 +113,70 @@ GoRouter buildAppRouter({String initialLocation = '/'}) {
               ),
             ),
       ),
+      GoRoute(
+        path: '/program/:packId',
+        name: 'program-detail',
+        builder: (BuildContext context, GoRouterState state) =>
+            ProgramDetailScreen(packId: state.pathParameters['packId']!),
+      ),
+      GoRoute(
+        path: '/program/:packId/enroll',
+        name: 'program-enroll',
+        builder: (BuildContext context, GoRouterState state) =>
+            const EnrollPlaceholderScreen(),
+      ),
     ],
     errorBuilder: (BuildContext context, GoRouterState state) => Scaffold(
       appBar: AppBar(title: const Text('Page not found')),
       body: Center(child: Text('Route not found: ${state.uri}')),
     ),
   );
+}
+
+/// The shell chrome around the four tab branches: the branch content above
+/// a minimal [NavigationBar] (icons + labels — the Task 21-25 polish comes
+/// later). Re-tapping the current branch resets it to its root, the
+/// standard tab-navigation behavior.
+class _AppShell extends StatelessWidget {
+  const _AppShell({required this.navigationShell});
+
+  final StatefulNavigationShell navigationShell;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: navigationShell,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: (int index) => navigationShell.goBranch(
+          index,
+          initialLocation: index == navigationShell.currentIndex,
+        ),
+        destinations: const <Widget>[
+          NavigationDestination(
+            icon: Icon(Icons.today_outlined),
+            selectedIcon: Icon(Icons.today),
+            label: 'Today',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.self_improvement_outlined),
+            selectedIcon: Icon(Icons.self_improvement),
+            label: 'Practice',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.insights_outlined),
+            selectedIcon: Icon(Icons.insights),
+            label: 'Progress',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings_outlined),
+            selectedIcon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 /// The session route's optional `forDate` query parameter — the deep link's

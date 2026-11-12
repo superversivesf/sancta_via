@@ -35,6 +35,9 @@ void main() {
 
     expect(find.byType(AppBar), findsOneWidget);
     expect(find.byType(TodayScreen), findsOneWidget);
-    expect(find.text('Today'), findsOneWidget);
+    // Task 14's shell grew a NavigationBar whose Today destination label
+    // carries the same string as the AppBar title — the pin now means "the
+    // home route mounts under its own title" (present, not unique).
+    expect(find.text('Today'), findsWidgets);
   });
 }
