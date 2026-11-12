@@ -1,3 +1,14 @@
+/// Local AppLogger implementation for the devotionals app.
+///
+/// This file intentionally does NOT import or export from shared_ui
+/// to avoid name conflicts. Files that need both this AppLogger
+/// and shared_ui components should use:
+/// ```dart
+/// import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart' hide AppLogger;
+/// import '../utils/logger.dart';
+/// ```
+library;
+
 import 'package:flutter/foundation.dart';
 
 /// Minimal app logger for the devotionals app, mirroring the sibling apps'

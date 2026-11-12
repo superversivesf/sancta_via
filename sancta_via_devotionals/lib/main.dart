@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
+import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart' hide AppLogger;
 
 import 'config/routes.dart';
 

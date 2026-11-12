@@ -99,14 +99,76 @@ class _ThrowingDevotionalsDatabase extends DevotionalsDatabase {
 void main() {
   late DevotionalsDatabase database;
   late SqliteProgramRepository repository;
+  late List<String> logs;
+  late DebugPrintCallback originalDebugPrint;
 
   setUp(() {
     database = DevotionalsDatabase(open: _openInMemory);
     repository = SqliteProgramRepository(database: database);
+    logs = <String>[];
+    originalDebugPrint = debugPrint;
+    debugPrint = (String? message, {int? wrapWidth}) {
+      if (message != null) {
+        logs.add(message);
+      }
+    };
   });
 
   tearDown(() async {
+    debugPrint = originalDebugPrint;
     await database.close();
+  });
+
+  group('corrupt rows', () {
+    test('a corrupt packs row is skipped and logged while the good rows '
+        'still load', () async {
+      await repository.seedPacks(<ContentPack>[
+        _pack('good-a'),
+        _pack('good-b'),
+      ], packVersion: '1.0.0');
+      await database.upsertPack(
+        id: 'broken-pack',
+        json: '{not valid json',
+        packVersion: '1.0.0',
+        embeddedAt: '2026-11-12T00:00:00Z',
+      );
+      repository.clearCache();
+
+      final List<ContentPack> loaded = await repository.loadPacks();
+      expect(
+        <String>[for (final ContentPack pack in loaded) pack.id],
+        <String>['good-a', 'good-b'],
+      );
+      expect(
+        logs.any(
+          (String line) =>
+              line.contains('Failed to parse pack row "broken-pack"'),
+        ),
+        isTrue,
+      );
+    });
+
+    test('a corrupt progress state logs distinctly and still reads as '
+        'absent', () async {
+      await database.saveProgress(
+        packId: 'broken-progress',
+        stateJson: '{not valid json',
+        updatedAt: '2026-11-12T00:00:00Z',
+      );
+
+      expect(await repository.progressFor('broken-progress'), isNull);
+      expect(
+        logs.any(
+          (String line) =>
+              line.contains('present but unparsable') &&
+              line.contains('broken-progress'),
+        ),
+        isTrue,
+      );
+      // The row is left in place for Task 9 to reconcile; reading does not
+      // delete or overwrite it.
+      expect(await database.getProgress('broken-progress'), isNotNull);
+    });
   });
 
   group('seedPacks and loadPacks', () {
@@ -315,23 +377,6 @@ void main() {
   });
 
   group('safe defaults on database errors', () {
-    late List<String> logs;
-    late DebugPrintCallback originalDebugPrint;
-
-    setUp(() {
-      logs = <String>[];
-      originalDebugPrint = debugPrint;
-      debugPrint = (String? message, {int? wrapWidth}) {
-        if (message != null) {
-          logs.add(message);
-        }
-      };
-    });
-
-    tearDown(() {
-      debugPrint = originalDebugPrint;
-    });
-
     test('loadPacks returns [] and logs', () async {
       final SqliteProgramRepository failing = SqliteProgramRepository(
         database: _ThrowingDevotionalsDatabase(),

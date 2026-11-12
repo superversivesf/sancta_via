@@ -10,9 +10,11 @@
 //
 // Read failures degrade to the safe defaults the build rules pin — `[]` for
 // [loadPacks], null for [progressFor] / [enrollmentParamsFor] /
-// [persistedPackVersion] — and are logged through [AppLogger]. Writes log and
-// rethrow: a swallowed write would leave the UI claiming state the store
-// never took.
+// [persistedPackVersion] — and are logged through [AppLogger]. A corrupt pack
+// row is skipped rather than emptying the catalog, and a present-but-
+// unparsable progress row logs distinctly from a missing one (Task 9 owns
+// reconciling that hazard). Writes log and rethrow: a swallowed write would
+// leave the UI claiming state the store never took.
 library;
 
 import 'dart:convert';
@@ -28,7 +30,8 @@ import '../utils/logger.dart';
 /// [loadPacks] returns the current `packs` rows parsed through the engine's
 /// [PackLoader], in the rows' id order (the store's stable order) — an empty
 /// store returns `[]`; seeding is the content pipeline's job, not the
-/// repository's. [enroll] / [saveProgress] upsert their single rows on the
+/// repository's. A row that fails to parse is logged by id and skipped, so
+/// one corrupt row never empties the whole catalog. [enroll] / [saveProgress] upsert their single rows on the
 /// pinned primary keys, so re-enrolling replaces params instead of
 /// duplicating them and saving progress never touches the enrollment.
 /// [unenroll] removes the user's enrollment, progress, and notification rows
@@ -167,34 +170,57 @@ class SqliteProgramRepository implements ProgramRepository {
       return cached;
     }
     final int generation = _packsGeneration;
+    final List<PackRow> rows;
     try {
-      final List<PackRow> rows = await _database.getAllPacks();
-      final List<ContentPack> packs = List<ContentPack>.unmodifiable(
-        <ContentPack>[
-          for (final PackRow row in rows)
-            PackLoader.loadFromJsonString(row.json),
-        ],
-      );
-      // A seed that finished while this read was in flight bumped the
-      // generation: returning the pre-seed rows once is harmless, but they
-      // must not stay cached.
-      if (generation == _packsGeneration) {
-        _packsCache = packs;
-      }
-      return packs;
+      rows = await _database.getAllPacks();
     } catch (e, stackTrace) {
       AppLogger.error('Failed to load program packs', e, stackTrace, 'REPO');
       return <ContentPack>[];
     }
+
+    // One corrupt row must not take the whole catalog down: skip it, log it
+    // by id, and still return every pack that parses.
+    final List<ContentPack> parsed = <ContentPack>[];
+    for (final PackRow row in rows) {
+      try {
+        parsed.add(PackLoader.loadFromJsonString(row.json));
+      } catch (e, stackTrace) {
+        AppLogger.error(
+          'Failed to parse pack row "${row.id}"',
+          e,
+          stackTrace,
+          'REPO',
+        );
+      }
+    }
+    final List<ContentPack> packs = List<ContentPack>.unmodifiable(parsed);
+    // A seed that finished while this read was in flight bumped the
+    // generation: returning the pre-seed rows once is harmless, but they
+    // must not stay cached.
+    if (generation == _packsGeneration) {
+      _packsCache = packs;
+    }
+    return packs;
   }
 
   @override
   Future<ProgressState?> progressFor(String packId) async {
+    final ProgressRow? row;
     try {
-      final ProgressRow? row = await _database.getProgress(packId);
-      if (row == null) {
-        return null;
-      }
+      row = await _database.getProgress(packId);
+    } catch (e, stackTrace) {
+      AppLogger.error(
+        'Failed to load progress for "$packId"',
+        e,
+        stackTrace,
+        'REPO',
+      );
+      return null;
+    }
+    if (row == null) {
+      return null;
+    }
+    try {
       final Object? decoded = jsonDecode(row.stateJson);
       if (decoded is! Map<String, dynamic>) {
         throw FormatException(
@@ -203,8 +229,12 @@ class SqliteProgramRepository implements ProgramRepository {
       }
       return ProgressState.fromJson(decoded);
     } catch (e, stackTrace) {
+      // The row EXISTS but cannot be read: a distinct signal from "no
+      // progress yet". The safe default is still null, but the log tells
+      // the missed-day flow the difference before a save overwrites it.
       AppLogger.error(
-        'Failed to load progress for "$packId"',
+        'Progress state present but unparsable for "$packId" — '
+            'treating as absent',
         e,
         stackTrace,
         'REPO',
