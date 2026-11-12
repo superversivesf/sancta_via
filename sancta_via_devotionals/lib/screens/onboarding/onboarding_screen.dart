@@ -13,15 +13,20 @@
 //   mirror of `Projection.remainingDates`' forward walk) — and NO completion
 //   records and NO badges (badges are earned by completion). The next
 //   completion lands on the position the engine composes: persisted streak
-//   plus one. Zeroing a claim this walkthrough run made (back, zero, next)
-//   takes it back entirely via `unenroll`;
+//   plus one. An UNCHANGED advance writes nothing (the persisted state is the
+//   claim: recomputing would fabricate a recent `lastFulfilled` and erase a
+//   lapsed gap). Zeroing a claim this run made (back, zero, next) restores the
+//   captured pre-run state exactly (fix round 1);
 // * **routine** — the catalog's own routine-family packs (the seeded Angelus,
 //   Hour of Mercy, Holy Rosary) as enrollment toggles through
 //   [EnrollmentService], plus the meal & night anchors consent (the
 //   off-by-default `nightItemsEnabled` setting — it is a settings flag, not a
-//   pack). The brief's Morning Offering / Examen are not seeded packs yet, so
-//   they appear here exactly when the catalog carries them — the catalog is
-//   the authority, nothing is hard-coded;
+//   pack). Onboarding only ADDS anchors: a switch-off of a program the user
+//   already had enrolled is a local UI choice and the enrollment persists
+//   (Practice owns removal); only a pack this run enrolled is un-enrolled on
+//   switch-off (fix round 1). The brief's Morning Offering / Examen are not
+//   seeded packs yet, so they appear here exactly when the catalog carries
+//   them — the catalog is the authority, nothing is hard-coded;
 // * **reminders** — the morning/evening consent toggles. Enabling one is the
 //   consent that requests permission: the service's own `initialize` (Task
 //   18's seam — the plugin's permission request lives there, idempotent, so
@@ -88,6 +93,19 @@ const List<String> _weekdayNames = <String>[
   'Sunday',
 ];
 
+/// The pre-run state of one commitment pack, captured before the walkthrough's
+/// first write so a take-back restores it exactly (fix round 1).
+class _ClaimBaseline {
+  const _ClaimBaseline({required this.progress, required this.params});
+
+  /// The persisted progress before the run, or null when the pack had none.
+  final ProgressState? progress;
+
+  /// The enrollment params before the run, or null when the pack was not
+  /// enrolled (this run's enrollment is then the only row to remove).
+  final Map<String, dynamic>? params;
+}
+
 /// The onboarding walkthrough screen (`/onboarding`).
 class OnboardingScreen extends ConsumerStatefulWidget {
   /// Creates the walkthrough.
@@ -106,6 +124,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   /// The packs THIS walkthrough run claimed (zeroing one takes it back).
   final Set<String> _claimedThisRun = <String>{};
+
+  /// The pre-run claim state per pack, captured before this run's first
+  /// write so a take-back can restore it exactly (see [_applyClaims]).
+  final Map<String, _ClaimBaseline> _priorClaims = <String, _ClaimBaseline>{};
+
+  /// The routine packs THIS run enrolled (a switch-off takes back only these;
+  /// a pre-existing enrollment persists — see [_toggleRoutine]).
+  final Set<String> _routineAddedThisRun = <String>{};
 
   /// The routine-pack enrollment states (seeded from the store).
   final Map<String, bool> _routineOn = <String, bool>{};
@@ -179,8 +205,21 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   /// The claim step's writes, applied on ADVANCE (one write per step, never
-  /// per spin): a claim enroll + progress with the claimed ordinals and the
-  /// last anchor before today; a zeroed claim taken back entirely.
+  /// per spin).
+  ///
+  /// Two history rules (fix round 1):
+  ///
+  /// * **An unchanged advance writes NOTHING** — the seeded stepper already
+  ///   shows the persisted claim, and the persisted state IS the claim.
+  ///   Rewriting it would recompute `lastFulfilled` to the last anchor before
+  ///   today (fabricating a recent fulfillment, erasing the lapse a
+  ///   missed-day gap is measured from) and zero `repetitionsToday`,
+  ///   contradicting the step's own "nothing is backdated" promise.
+  /// * **A take-back restores the pre-run state, never destroys history** —
+  ///   the pre-run progress and enrollment params are captured before the
+  ///   first write; zeroing the claim this run made restores them exactly
+  ///   (or, for a program this run enrolled, removes only the rows this run
+  ///   wrote via `unenroll`).
   Future<void> _applyClaims() async {
     final DateTime? today = _today;
     final List<ContentPack>? claimables = _claimables;
@@ -197,13 +236,26 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         continue;
       }
       final int claimed = _claims[pack.id] ?? 0;
+      final ProgressState? prior = await repository.progressFor(pack.id);
+
+      if (claimed > 0 && prior?.fulfilledOrdinals == claimed) {
+        // Unchanged: the persisted state IS the claim — no write at all.
+        continue;
+      }
       if (claimed > 0) {
+        if (!_priorClaims.containsKey(pack.id)) {
+          // Capture the pre-run state BEFORE the first write, so a take-back
+          // can restore it exactly (a null params map = not enrolled before).
+          _priorClaims[pack.id] = _ClaimBaseline(
+            progress: prior,
+            params: await repository.enrollmentParamsFor(pack.id),
+          );
+        }
         // A claim is an enrollment plus the records-free progress write:
         // ordinals as claimed, the last anchor BEFORE today as
         // lastFulfilled, and the existing records/badges PRESERVED (a fresh
         // claim has none — the pinned shape).
         await service.enroll(pack: pack, params: <String, dynamic>{});
-        final ProgressState? prior = await repository.progressFor(pack.id);
         await repository.saveProgress(
           ProgressState(
             packId: pack.id,
@@ -215,12 +267,29 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           ),
         );
         _claimedThisRun.add(pack.id);
-      } else if (_claimedThisRun.contains(pack.id)) {
-        // Zeroing a claim this run made un-enrolls it again: the walkthrough
-        // owns the state it wrote, and the store keeps nothing behind.
-        await repository.unenroll(pack.id);
+        _invalidateForWrite(pack.id);
+        continue;
       }
-      _invalidateForWrite(pack.id);
+      if (_claimedThisRun.contains(pack.id)) {
+        // Take-back (fix-round ruling (a)): restore the pre-run state. A
+        // program this run enrolled is un-enrolled (only rows this run
+        // wrote); a pre-existing enrollment is KEPT — its progress and
+        // params are restored, or (when it carried no progress) only the
+        // progress row this run wrote is deleted.
+        final _ClaimBaseline? baseline = _priorClaims.remove(pack.id);
+        if (baseline == null || baseline.params == null) {
+          await repository.unenroll(pack.id);
+        } else {
+          if (baseline.progress != null) {
+            await repository.saveProgress(baseline.progress!);
+          } else {
+            await repository.database.deleteProgress(pack.id);
+          }
+          await repository.enroll(pack.id, baseline.params!);
+        }
+        _claimedThisRun.remove(pack.id);
+        _invalidateForWrite(pack.id);
+      }
     }
   }
 
@@ -247,19 +316,33 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   /// Enroll or un-enroll one routine pack (the SwitchListTile's write).
+  ///
+  /// Onboarding only ADDS anchors (fix-round ruling (b)): a switch-on enrolls
+  /// the pack (remembering when the enrollment is this run's), and a
+  /// switch-off is a LOCAL UI choice — only a pack THIS run enrolled is
+  /// un-enrolled. A program the user already had enrolled stays enrolled (and
+  /// keeps its progress): the walkthrough never destroys history it did not
+  /// create, and Practice owns removal.
   Future<void> _toggleRoutine(ContentPack pack, bool enroll) async {
     final SqliteProgramRepository repository = ref.read(
       appProgramRepositoryProvider,
     );
     try {
       if (enroll) {
+        if (await repository.enrollmentParamsFor(pack.id) == null) {
+          _routineAddedThisRun.add(pack.id);
+        }
         await EnrollmentService(
           repository: repository,
         ).enroll(pack: pack, params: <String, dynamic>{});
-      } else {
-        await repository.unenroll(pack.id);
+        _invalidateForWrite(pack.id);
+        return;
       }
-      _invalidateForWrite(pack.id);
+      if (_routineAddedThisRun.contains(pack.id)) {
+        await repository.unenroll(pack.id);
+        _routineAddedThisRun.remove(pack.id);
+        _invalidateForWrite(pack.id);
+      }
     } catch (error, stackTrace) {
       AppLogger.error(
         'Onboarding routine toggle failed for "${pack.id}"',

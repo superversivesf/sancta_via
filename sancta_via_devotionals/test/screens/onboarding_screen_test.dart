@@ -44,7 +44,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart'
-    show ConsecutiveCommitmentSpec, ContentPack, Projection, ProgressState;
+    show
+        BadgeRecord,
+        ConsecutiveCommitmentSpec,
+        ContentPack,
+        Projection,
+        ProgressState;
 import 'package:sancta_via_devotionals/config/routes.dart';
 import 'package:sancta_via_devotionals/database/devotionals_database.dart';
 import 'package:sancta_via_devotionals/main.dart' show SanctaViaDevotionalsApp;
@@ -187,10 +192,15 @@ class _OnboardingHarness {
 /// Pumps the REAL onboarding walkthrough through the app router over the
 /// production provider chain (catalog prewarmed; settings over the mock
 /// store; notification service on a recording adapter).
+///
+/// [seed] runs INSIDE the prewarm (after the catalog is seeded, before the
+/// widget phase), so a test can plant pre-existing enrollment/progress the
+/// walkthrough's own store-seeding pass then reads — the re-entry shape.
 Future<_OnboardingHarness> _pumpOnboarding(
   WidgetTester tester, {
   required DateTime today,
   bool onboardingComplete = false,
+  Future<void> Function(SqliteProgramRepository repository)? seed,
 }) async {
   _setMockSettings(onboardingComplete: onboardingComplete);
   final DevotionalsDatabase database = DevotionalsDatabase(open: _openInMemory);
@@ -230,6 +240,9 @@ Future<_OnboardingHarness> _pumpOnboarding(
     container.read(devotionsSettingsProvider.notifier);
     await Future<void>.delayed(const Duration(milliseconds: 20));
     await container.read(contentLoadedProvider.future);
+    if (seed != null) {
+      await seed(repository);
+    }
   });
 
   tester.view.physicalSize = const Size(600, 1800);
@@ -518,6 +531,211 @@ void main() {
       );
     });
 
+    // ---------------------------------------------------------------------
+    // Fix round 1: the claim step never rewrites what it did not change, and
+    // the take-back / routine switch-off paths never destroy history.
+    // ---------------------------------------------------------------------
+
+    testWidgets(
+      'advancing the claim step unchanged never rewrites a lapsed prior '
+      'state (no fabricated lastFulfilled, no repetitions reset)',
+      (WidgetTester tester) async {
+        final _OnboardingHarness harness = await _pumpOnboarding(
+          tester,
+          today: _frozenToday,
+          // A re-entry user whose claim lapsed months ago: the missed-day
+          // gap is measured from this lastFulfilled, and the day's
+          // repetitions are part of the persisted state.
+          seed: (SqliteProgramRepository repository) async {
+            await repository.enroll(
+              'five_first_saturdays',
+              <String, dynamic>{},
+            );
+            await repository.saveProgress(
+              ProgressState(
+                packId: 'five_first_saturdays',
+                fulfilledOrdinals: 3,
+                lastFulfilled: DateTime(2026, 9, 10),
+                repetitionsToday: 2,
+              ),
+            );
+          },
+        );
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+
+        // The stepper seeds from the persisted claim…
+        expect(_claimValue(tester, 'five_first_saturdays'), 3);
+
+        // …and advancing WITHOUT touching it must be a pure no-op: the
+        // step's own copy promises nothing is backdated, so the persisted
+        // lastFulfilled must NOT be recomputed to the last anchor before
+        // today (that would fabricate a recent fulfillment and erase the
+        // lapse), and repetitionsToday must survive.
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_done')));
+
+        final ProgressState? progress = await tester.runAsync<ProgressState?>(
+          () => harness.repository.progressFor('five_first_saturdays'),
+        );
+        expect(progress, isNotNull);
+        expect(progress!.fulfilledOrdinals, 3);
+        expect(
+          progress.lastFulfilled,
+          DateTime(2026, 9, 10),
+          reason: 'an unchanged claim never fabricates a recent fulfillment',
+        );
+        expect(
+          progress.repetitionsToday,
+          2,
+          reason: 'an unchanged claim never resets the day\'s repetitions',
+        );
+      },
+    );
+
+    testWidgets(
+      'a take-back restores the pre-run state: earned badges and records '
+      'survive a 3→0 claim withdrawal',
+      (WidgetTester tester) async {
+        final _OnboardingHarness harness = await _pumpOnboarding(
+          tester,
+          today: _frozenToday,
+          // A re-entry user with earned history: one prior fulfillment and
+          // two badges (badges are dated completions, not streak state).
+          seed: (SqliteProgramRepository repository) async {
+            await repository.enroll(
+              'five_first_saturdays',
+              <String, dynamic>{},
+            );
+            await repository.saveProgress(
+              ProgressState(
+                packId: 'five_first_saturdays',
+                fulfilledOrdinals: 1,
+                lastFulfilled: DateTime(2026, 10, 3),
+                completedItemsByDay: const <String, String>{
+                  'communion:2026-10-03': '2026-10-03',
+                },
+                badges: <BadgeRecord>[
+                  BadgeRecord(
+                    title: 'Five First Saturdays of Our Lady',
+                    date: DateTime(2026, 8, 1),
+                  ),
+                  BadgeRecord(
+                    title: 'Five First Saturdays of Our Lady',
+                    date: DateTime(2026, 10, 3),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        expect(_claimValue(tester, 'five_first_saturdays'), 1);
+
+        // Claim 3, advance, come back, and withdraw the claim entirely.
+        await _claimTo(tester, 'five_first_saturdays', 2);
+        expect(_claimValue(tester, 'five_first_saturdays'), 3);
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_back')));
+        for (int i = 0; i < 3; i++) {
+          await tester.tap(
+            find.byKey(const Key('claim_minus_five_first_saturdays')),
+          );
+        }
+        await tester.pump(const Duration(milliseconds: 20));
+        expect(_claimValue(tester, 'five_first_saturdays'), 0);
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_done')));
+
+        // RULING (a): the take-back restores the prior state — the
+        // enrollment and the earned history both survive.
+        expect(
+          await tester.runAsync(
+            () =>
+                harness.repository.enrollmentParamsFor('five_first_saturdays'),
+          ),
+          isNotNull,
+          reason: 'a take-back never unenrolls a pre-existing program',
+        );
+        final ProgressState? progress = await tester.runAsync<ProgressState?>(
+          () => harness.repository.progressFor('five_first_saturdays'),
+        );
+        expect(progress, isNotNull);
+        expect(progress!.fulfilledOrdinals, 1);
+        expect(progress.lastFulfilled, DateTime(2026, 10, 3));
+        expect(progress.badges.length, 2, reason: 'earned badges survive');
+        expect(progress.completedItemsByDay, <String, String>{
+          'communion:2026-10-03': '2026-10-03',
+        });
+      },
+    );
+
+    testWidgets(
+      'a routine switch-off never destroys a pre-existing enrollment (only '
+      'programs this run enrolled are un-enrolled)',
+      (WidgetTester tester) async {
+        final _OnboardingHarness harness = await _pumpOnboarding(
+          tester,
+          today: _frozenToday,
+          seed: (SqliteProgramRepository repository) async {
+            await repository.enroll('rosary', <String, dynamic>{
+              'via': 'practice',
+            });
+            await repository.saveProgress(
+              ProgressState(packId: 'rosary', fulfilledOrdinals: 4),
+            );
+          },
+        );
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+
+        // The rosary seeds ON from the store; switching it off is a LOCAL UI
+        // choice this run — onboarding only ADDS toggles, and it never
+        // destroys an enrollment (or its progress) it did not create.
+        await _tapAndDrain(
+          tester,
+          find.byKey(const Key('routine_toggle_rosary')),
+        );
+        // A pack this run enrolled and switched back off IS taken back.
+        await _tapAndDrain(
+          tester,
+          find.byKey(const Key('routine_toggle_angelus')),
+        );
+        await _tapAndDrain(
+          tester,
+          find.byKey(const Key('routine_toggle_angelus')),
+        );
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
+        await _tapAndDrain(tester, find.byKey(const Key('onboarding_done')));
+
+        expect(
+          await tester.runAsync(
+            () => harness.repository.enrollmentParamsFor('rosary'),
+          ),
+          isNotNull,
+          reason: 'a pre-existing enrollment persists through a switch-off',
+        );
+        expect(
+          await tester.runAsync<ProgressState?>(
+            () => harness.repository.progressFor('rosary'),
+          ),
+          isNotNull,
+          reason: 'and so does its persisted progress',
+        );
+        expect(
+          await tester.runAsync(
+            () => harness.repository.enrollmentParamsFor('angelus'),
+          ),
+          isNull,
+          reason: 'a program enrolled only by this run is taken back',
+        );
+      },
+    );
+
     testWidgets(
       'the routine step toggles the catalog routine packs and the night '
       'anchors setting through',
@@ -788,6 +1006,84 @@ void main() {
         reason: 'the app widget wires the gate over its live settings',
       );
       expect(find.byType(OnboardingScreen), findsOneWidget);
+    });
+
+    // Fix round 1: the cold-start race the `isLoaded` guard exists for — the
+    // gate must treat an UNRESOLVED settings load as "complete" (a returning
+    // user's entry route was already decided from the store in `main`), so a
+    // pre-load default `onboardingComplete: false` never bounces the router
+    // into the walkthrough.
+    testWidgets('an unresolved settings load never bounces the router into the '
+        'walkthrough', (WidgetTester tester) async {
+      // The store DOES say complete — the shape a returning user has.
+      _setMockSettings(onboardingComplete: true);
+      final DevotionalsDatabase database = DevotionalsDatabase(
+        open: _openInMemory,
+      );
+      final SqliteProgramRepository repository = SqliteProgramRepository(
+        database: database,
+      );
+      final GoRouter router = buildAppRouter(initialLocation: '/');
+      final ProviderContainer container = ProviderContainer(
+        overrides: <Override>[
+          appProgramRepositoryProvider.overrideWithValue(repository),
+          programRepositoryOverride,
+          currentDateProvider.overrideWith(
+            (Ref ref) => Stream<DateTime>.value(_frozenToday),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      // The catalog prewarm (asset loads need `runAsync`); the settings
+      // load is deliberately NOT touched yet — it is the thing under test.
+      await tester.runAsync(() async {
+        await container.read(contentLoadedProvider.future);
+      });
+
+      // The notifier's async load is in flight at construction: the
+      // in-memory state is the defaults (`onboardingComplete: false`) and
+      // `isLoaded` is false. main.dart's gate rule, evaluated here, treats
+      // that as complete — the pinned `!isLoaded ||` branch.
+      final DevotionsSettingsNotifier notifier = container.read(
+        devotionsSettingsProvider.notifier,
+      );
+      expect(notifier.isLoaded, isFalse);
+      expect(notifier.state.onboardingComplete, isFalse);
+      bool gate() =>
+          !container.read(devotionsSettingsProvider.notifier).isLoaded ||
+          container.read(onboardingCompleteProvider);
+      expect(
+        gate(),
+        isTrue,
+        reason: 'an unresolved load must never be held in the walkthrough',
+      );
+
+      // The app boots on the store's entry route ('/') with the load still
+      // unresolved: the first frame must NOT bounce.
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: SanctaViaDevotionalsApp(router: router),
+        ),
+      );
+      expect(router.routeInformationProvider.value.uri.toString(), '/');
+
+      // Let the load resolve: the store says complete, so still no bounce.
+      await tester.runAsync(() async {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+      });
+      await tester.pump(const Duration(milliseconds: 50));
+      expect(
+        container.read(devotionsSettingsProvider.notifier).isLoaded,
+        isTrue,
+      );
+      expect(
+        container.read(onboardingCompleteProvider),
+        isTrue,
+        reason: 'the store\'s completed flag lands with the load',
+      );
+      expect(router.routeInformationProvider.value.uri.toString(), '/');
     });
   });
 }
