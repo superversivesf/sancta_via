@@ -7,10 +7,15 @@
 //    is the engine's `MissedDayEvaluator.evaluateTyped` over the PERSISTED
 //    progress (the state's own `lastFulfilled`), so `askUser` surfaces before
 //    anything new lands, and [ProgressService.applyMissedDay] applies only a
-//    decided verdict: `reset` zeroes the streak (`fulfilledOrdinals`,
-//    `lastFulfilled`, and the badges the void streak earned), `resume` keeps
-//    the state untouched, and `askUser` is refused — it is the user's choice
-//    to make, never a verdict the service may apply on its own.
+//    decided verdict: `reset` zeroes the streak (`fulfilledOrdinals` and
+//    `lastFulfilled`) while keeping the earned badge history — badges are
+//    dated completions, not streak state, and the lifetime count is their
+//    count — `resume` keeps the state untouched, and `askUser` is refused: it
+//    is the user's choice to make, never a verdict the service may apply on
+//    its own. The evaluator is scoped to DAILY-cadence series (the engine's
+//    documented cadence guard): anchor-recurring commitments must be driven by
+//    `CommitmentState` through [ProgressService.persistCompletion], never by
+//    this verdict.
 //
 // 2. **The checkpoint gate** — Plan-2 contract (a). [ProgressService
 //    .completeSession] runs after `SessionRunner` has walked the script and
@@ -21,25 +26,38 @@
 //    and renders what is missing (see [ProgressService.missingRequiredItems]).
 //
 // [ProgressService.persistCompletion] derives the next `ProgressState` and
-// saves it. For a consecutive commitment the anchor credits come from the
-// union of the two rules the engine and Task 8's service split between them:
+// saves it. Two separate questions are answered by two separate authorities,
+// and they must not be conflated:
 //
-// * grace-window items (e.g. the First Saturdays confession, ±8 days) are
-//   credited by `GraceWindowService.creditCheckpointsForAnchors` — the
-//   multi-anchor evaluation, because the per-anchor view would let one
-//   in-window completion credit two overlapping anchors;
-// * anchor-day items (e.g. First Saturdays communion, First Fridays
-//   communion) get NO credit from that service, exactly as the engine's own
-//   anchor-day rule has it: they count only when their
-//   `<item>:<yyyy-mm-dd anchor>` record exists.
+// * **The ordinal is streak arithmetic.** Every finished session advances the
+//   persisted streak by one (`persisted.fulfilledOrdinals + 1`) — the same
+//   position `DueToday.schedule.ordinal` reports, which the program providers
+//   document as the persisted streak plus one. A caller's claimed progress
+//   therefore advances one position per completion even when no completion
+//   records exist (e.g. a pack claimed during onboarding).
+// * **Anchor fulfillment is the item composition**, exposed as
+//   [ProgressService.fulfilledAnchorDates]: which past anchor dates the
+//   completion records actually satisfy, from the union of the two rules the
+//   engine and Task 8's service split between them:
 //
-// An anchor is fulfilled when every checkpoint item of the pack's session is
-// satisfied that way; the resulting fulfilment dates are then handed to
-// `CommitmentState.evaluate`, which owns the restart policy, the gap walk
-// (strict restarts the series at a gap, permissive continues across it) and
-// the last fulfilled anchor. For a pack with no checkpoint steps at all the
-// engine's own date rule stands unchanged (any completion date, exact-day or
-// grace-window-admitted), so no behaviour is invented for such packs.
+//   - grace-window items (e.g. the First Saturdays confession, ±8 days) are
+//     credited by `GraceWindowService.creditCheckpointsForAnchors` — the
+//     multi-anchor evaluation, because the per-anchor view would let one
+//     in-window completion credit two overlapping anchors;
+//   - anchor-day items (e.g. First Saturdays communion, First Fridays
+//     communion) get NO credit from that service, exactly as the engine's own
+//     anchor-day rule has it: they count only when their
+//     `<item>:<yyyy-mm-dd anchor>` record exists.
+//
+//   An anchor is fulfilled when every checkpoint item of the pack's session is
+//   satisfied that way; packs whose session declares no checkpoint fall back
+//   to the engine's documented date rule (the anchor day completed, or a
+//   grace window admitting a completion date). This composition is what the
+//   app surfaces (the player can warn that a session completes while its
+//   anchor still asks for an item; the progress surface shows the credit); it
+//   never rewrites the stored ordinal. Corrections to a streak that fell behind
+//   its true position — a gap under a strict policy — are
+//   [ProgressService.applyMissedDay]'s job.
 //
 // Date discipline: local midnights only, as everywhere in the engine — dates
 // are reduced with `DateTime(year, month, day)` and rendered zero-padded, and
@@ -165,12 +183,13 @@ class ProgressService {
   /// [packId].
   ///
   /// * [MissedDayVerdict.reset] zeroes the streak: `fulfilledOrdinals` 0,
-  ///   `lastFulfilled` null, `repetitionsToday` 0 and no badges — a void
-  ///   streak keeps none of the badges it earned. The completion records
-  ///   (`completedItemsByDay`) are kept: they are raw history, and the
-  ///   engine's own strict evaluation of that history reproduces the reset
-  ///   (it counts only from the last gap), so keeping them cannot resurrect
-  ///   the voided series.
+  ///   `lastFulfilled` null and `repetitionsToday` 0 — a void streak keeps
+  ///   none of its positions. The earned badges are KEPT, as are the
+  ///   completion records: badges are the dated completion history the
+  ///   lifetime count is built from (the design separates `badgeHistory[]`
+  ///   from the streak), and `completedItemsByDay` is raw history the
+  ///   engine's own strict evaluation reproduces the reset from, so neither
+  ///   can resurrect the voided series.
   /// * [MissedDayVerdict.resume] keeps the state untouched and writes
   ///   nothing.
   /// * [MissedDayVerdict.askUser] throws an [ArgumentError]: the user has not
@@ -211,11 +230,13 @@ class ProgressService {
     final ProgressState reset = ProgressState(
       packId: packId,
       completedItemsByDay: progress.completedItemsByDay,
+      badges: progress.badges,
     );
     await repository.saveProgress(reset);
     AppLogger.info(
       'Missed-day verdict reset zeroed "$packId" '
-          '(was ordinal ${progress.fulfilledOrdinals}, now 0)',
+          '(was ordinal ${progress.fulfilledOrdinals}, now 0; '
+          '${progress.badges.length} earned badges kept)',
       'PROGRESS',
     );
   }
@@ -315,15 +336,17 @@ class ProgressService {
   ///
   /// Derivation:
   ///
-  /// * `fulfilledOrdinals` — for a consecutive commitment, the engine's
-  ///   `CommitmentState.evaluate` over the anchor dates fulfilled by the
-  ///   union of the grace-window and anchor-day rules (see the library docs),
-  ///   which also applies the pack's restart policy. The engine's evaluation
-  ///   is the same position `DueToday.schedule.ordinal` reports (that
-  ///   provider computes persisted ordinals + 1,
-  ///   `program_providers.dart`), so this service derives it rather than
-  ///   trusting a second source. Every other pack advances one position:
-  ///   `progress.fulfilledOrdinals + 1`.
+  /// * `fulfilledOrdinals` — the persisted streak plus one
+  ///   (`progress.fulfilledOrdinals + 1`), for every pack shape. This is the
+  ///   pinned `DueToday.schedule.ordinal` source: the program providers
+  ///   document that position as the persisted streak plus one
+  ///   (`program_providers.dart`), so a finished session always advances the
+  ///   streak by exactly one position — including a pack whose earlier
+  ///   positions were claimed without completion records (onboarding claims).
+  ///   Anchor fulfilment is NOT consulted here: it answers “which anchors the
+  ///   records satisfy” ([fulfilledAnchorDates]) and never rewrites the
+  ///   ordinal. A streak that fell behind its true position is corrected by
+  ///   [applyMissedDay]’s reset, not by this writer.
   /// * `lastFulfilled` — [today], never earlier than the persisted
   ///   `lastFulfilled` (a backdated completion cannot move it backwards).
   /// * `repetitionsToday` — reset to 0.
@@ -338,9 +361,9 @@ class ProgressService {
   /// with that day's date by design.
   ///
   /// Completions dated after [today] are carried in the persisted records but
-  /// never evaluated: they cannot admit an anchor (the engine's own
-  /// "ignore completions after today" convention, which the grace-window
-  /// service leaves to its callers).
+  /// never evaluated ([fulfilledAnchorDates] filters them out): they cannot
+  /// admit an anchor (the engine's own "ignore completions after today"
+  /// convention, which the grace-window service leaves to its callers).
   Future<void> persistCompletion({
     required ContentPack pack,
     required ProgressState progress,
@@ -357,24 +380,7 @@ class ProgressService {
       ...progress.completedItemsByDay,
       ...completedItemsByDay,
     };
-    final Map<String, String> evaluated = <String, String>{
-      for (final MapEntry<String, String> entry in completions.entries)
-        if (_isOnOrBefore(entry.key, day)) entry.key: entry.value,
-    };
-
-    final ScheduleSpec schedule = pack.schedule;
-    final int ordinals = schedule is ConsecutiveCommitmentSpec
-        ? CommitmentState.evaluate(
-            schedule,
-            _fulfilledAnchorDates(
-              pack: pack,
-              spec: schedule,
-              completions: evaluated,
-              today: day,
-            ),
-            day,
-          ).fulfilledOrdinals
-        : progress.fulfilledOrdinals + 1;
+    final int ordinals = progress.fulfilledOrdinals + 1;
 
     final DateTime? lastFulfilled = progress.lastFulfilled;
     final ProgressState next = ProgressState(
@@ -398,41 +404,77 @@ class ProgressService {
     );
   }
 
-  /// The anchor dates of [spec] that [completions] fulfil, for
-  /// `CommitmentState.evaluate`.
+  /// The anchor dates of [spec] that [completedItemsByDay] fulfil as of
+  /// [today] — the composition of the grace-window and anchor-day rules, for
+  /// callers to surface (the player can warn that a session completes while
+  /// its anchor still asks for an item; the progress surface shows the
+  /// credit). The written ordinal is NOT derived from this set: it is the
+  /// persisted streak plus one (see [persistCompletion]).
   ///
-  /// Every completion key's date, reduced to a local midnight. When the pack's
-  /// session declares NO checkpoint steps there is no item-level rule to
-  /// apply, so the completion dates are handed to the engine as they are —
-  /// its own anchor-day/grace-window rule decides, unchanged.
+  /// The anchors are the dates the pack's anchor spec resolves as due between
+  /// the earliest completion and [today] inclusive — the same calendar walk
+  /// `CommitmentState.evaluate` performs (`commitment_state.dart`) — reduced
+  /// to local midnights (the returned set’s values are exactly those dates, so
+  /// callers must look them up by the same normalization, never by raw
+  /// `DateTime` identity).
   ///
-  /// Otherwise the pack's checkpoint items gate each anchor: an item with a
-  /// `GraceWindow` in [spec] must be credited to the anchor by
-  /// `GraceWindowService.creditCheckpointsForAnchors` (the authoritative
-  /// multi-anchor evaluation; the per-anchor view would double-count when
-  /// windows overlap), and an item without a window must have its exact
-  /// `<item>:<yyyy-mm-dd anchor>` record. The anchors are the dates the
-  /// pack's anchor spec resolves as due between the earliest completion and
-  /// [today] inclusive — the same span `CommitmentState.evaluate` walks
-  /// (`commitment_state.dart`).
-  Set<DateTime> _fulfilledAnchorDates({
+  /// Which anchors are fulfilled:
+  ///
+  /// * packs whose session declares no checkpoint items fall back to the
+  ///   engine’s documented date rule: the anchor day itself completed, or a
+  ///   `GraceWindow` admitting one of the completion dates (the expression
+  ///   `CommitmentState` applies in its own `_fulfilled`, `commitment_state.dart`);
+  /// * otherwise every checkpoint item of the session must be satisfied for
+  ///   the anchor: an item with a `GraceWindow` in [spec] must be credited to
+  ///   it by `GraceWindowService.creditCheckpointsForAnchors` (the
+  ///   authoritative multi-anchor evaluation — the per-anchor view would let
+  ///   one in-window completion credit two overlapping anchors), and an item
+  ///   without a window must have its exact `<item>:<yyyy-mm-dd anchor>`
+  ///   record. Every checkpoint gates the anchor, not only the
+  ///   `requiredForCompletion` ones: that flag is the SESSION gate (contract
+  ///   (a)), while the devotion’s anchor still asks for a grace-window item
+  ///   such as the First Saturdays confession.
+  ///
+  /// Completions dated after [today] are ignored entirely, as the engine
+  /// ignores them: a future-dated grace-window completion can never admit an
+  /// earlier anchor (the grace-window service leaves that filtering to its
+  /// callers). Keys outside the zero-padded `<item>:<yyyy-mm-dd>` convention
+  /// carry no date and never credit anything.
+  static Set<DateTime> fulfilledAnchorDates({
     required ContentPack pack,
     required ConsecutiveCommitmentSpec spec,
-    required Map<String, String> completions,
+    required Map<String, String> completedItemsByDay,
     required DateTime today,
   }) {
+    final DateTime day = _dateOnly(today);
+    final Map<String, String> completions = <String, String>{
+      for (final MapEntry<String, String> entry in completedItemsByDay.entries)
+        if (_isOnOrBefore(entry.key, day)) entry.key: entry.value,
+    };
     final Set<DateTime> completedDates = <DateTime>{
       for (final String key in completions.keys)
-        if (_completionDay(key) case final DateTime day) day,
+        if (_completionDay(key) case final DateTime completed) completed,
     };
-    final List<String> items = _checkpointItems(pack);
-    if (items.isEmpty || completedDates.isEmpty) {
-      return completedDates;
+    if (completedDates.isEmpty) {
+      return const <DateTime>{};
     }
     final DateTime first = completedDates.reduce(
       (DateTime a, DateTime b) => a.isBefore(b) ? a : b,
     );
-    final List<DateTime> anchors = _anchorDates(spec.anchor, first, today);
+    final List<DateTime> anchors = _anchorDates(spec.anchor, first, day);
+    final List<String> items = _checkpointItems(pack);
+    if (items.isEmpty) {
+      return <DateTime>{
+        for (final DateTime anchor in anchors)
+          if (completedDates.contains(anchor) ||
+              spec.windows.any(
+                (GraceWindow window) => completedDates.any(
+                  (DateTime completed) => window.admits(anchor, completed),
+                ),
+              ))
+            anchor,
+      };
+    }
     final Map<DateTime, Map<String, DateTime>> credits =
         GraceWindowService.creditCheckpointsForAnchors(
           spec: spec,

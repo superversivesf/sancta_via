@@ -235,8 +235,11 @@ void main() {
     test(
       'strict reads reset across a gap after the persisted lastFulfilled',
       () {
+        // A daily-cadence series (the 54-day novena shape): the evaluator's
+        // gap rule is exact for consecutive positions on adjacent calendar
+        // days, and anchor-recurring commitments must not be driven by it.
         final ProgressState state = _progressed(
-          packId: 'five_first_saturdays',
+          packId: 'novena_54_day',
           ordinals: 5,
           lastFulfilled: DateTime(2026, 12, 5),
         );
@@ -253,7 +256,7 @@ void main() {
 
     test('permissive reads resume across the same gap', () {
       final ProgressState state = _progressed(
-        packId: 'five_first_saturdays',
+        packId: 'novena_54_day',
         ordinals: 5,
         lastFulfilled: DateTime(2026, 12, 5),
       );
@@ -271,7 +274,7 @@ void main() {
     test('strict resumes when the evaluation date directly follows the '
         'lastFulfilled date', () {
       final ProgressState state = _progressed(
-        packId: 'five_first_saturdays',
+        packId: 'novena_54_day',
         ordinals: 5,
         lastFulfilled: DateTime(2026, 12, 31),
       );
@@ -287,7 +290,7 @@ void main() {
       expect(
         () => ProgressService.missedVerdict(
           _progressed(
-            packId: 'five_first_saturdays',
+            packId: 'novena_54_day',
             ordinals: 5,
             lastFulfilled: DateTime(2026, 12, 5),
           ),
@@ -302,7 +305,7 @@ void main() {
 
   group('ProgressService.applyMissedDay', () {
     test(
-      'a strict reset zeroes the ordinals, lastFulfilled and badges',
+      'a strict reset zeroes the streak but keeps the earned badges',
       () async {
         final ContentPack pack = _firstSaturdaysPack();
         final ProgressState persisted = _progressed(
@@ -334,12 +337,14 @@ void main() {
         expect(reset, isNotNull);
         expect(reset!.fulfilledOrdinals, 0);
         expect(reset.lastFulfilled, isNull);
+        expect(reset.repetitionsToday, 0);
         expect(
           reset.badges,
-          isEmpty,
-          reason: 'The void streak keeps no badges',
+          persisted.badges,
+          reason:
+              'Badges are the dated completion history the lifetime count is '
+              'built from, not streak state: a reset voids only the streak',
         );
-        expect(reset.repetitionsToday, 0);
         expect(
           reset.completedItemsByDay,
           persisted.completedItemsByDay,
@@ -541,12 +546,98 @@ void main() {
         );
         expect(
           written!.fulfilledOrdinals,
-          0,
+          1,
           reason:
-              'The devotion\'s anchor still asks for the confession: with '
-              'no credit in the ±8-day window the anchor is unfulfilled, and '
-              'the engine\'s strict walk reports the reset',
+              'The ordinal is streak arithmetic (persisted 0 + 1); the '
+              'anchor itself is NOT credited — the composition answers that '
+              'separately',
         );
+        expect(
+          ProgressService.fulfilledAnchorDates(
+            pack: pack,
+            spec: pack.schedule as ConsecutiveCommitmentSpec,
+            completedItemsByDay: written.completedItemsByDay,
+            today: DateTime(2026, 11, 7),
+          ),
+          isEmpty,
+          reason:
+              'The devotion\'s anchor still asks for the confession: with no '
+              'credit in the ±8-day window no anchor is fulfilled',
+        );
+      },
+    );
+
+    test(
+      'a required checkpoint that is present and FALSE blocks the gate',
+      () async {
+        // The ruling proves the gate end-to-end at the service level: a
+        // checkpoint the player has recorded as not done is exactly as
+        // blocking as one that was never touched.
+        final ContentPack pack = _firstSaturdaysPack();
+        final _FakeProgramRepository repository = _FakeProgramRepository(
+          packs: <ContentPack>[pack],
+        );
+        final ProgressService service = ProgressService(repository: repository);
+        final SessionState walked = _walked(pack);
+
+        final SessionState result = await service.completeSession(
+          state: walked,
+          pack: pack,
+          checkpointStates: <String, bool>{
+            'confession': true,
+            'communion': false,
+          },
+          completedItemsByDay: _saturdayCompletions(<DateTime>[
+            DateTime(2026, 11, 7),
+          ]),
+          today: DateTime(2026, 11, 7),
+        );
+
+        expect(result, same(walked));
+        expect(
+          ProgressService.missingRequiredItems(pack, <String, bool>{
+            'communion': false,
+          }),
+          <String>['communion'],
+        );
+        expect(repository.saves, isEmpty);
+        expect(await repository.progressFor(pack.id), isNull);
+      },
+    );
+
+    test(
+      'a records-free completion advances claimed ordinals by one',
+      () async {
+        // Task 20's onboarding claims positions without completion records
+        // (e.g. 3 ordinals, "I have kept three First Saturdays"). The ordinal
+        // is the persisted streak plus one, so the first completed session
+        // lands on 4 — no completion records needed.
+        final ContentPack pack = _firstSaturdaysPack();
+        final _FakeProgramRepository repository = _FakeProgramRepository(
+          packs: <ContentPack>[pack],
+        );
+        repository.progress[pack.id] = ProgressState(
+          packId: pack.id,
+          fulfilledOrdinals: 3,
+          lastFulfilled: DateTime(2026, 10, 3),
+        );
+        final ProgressService service = ProgressService(repository: repository);
+
+        await service.completeSession(
+          state: _walked(pack),
+          pack: pack,
+          checkpointStates: <String, bool>{
+            'confession': true,
+            'communion': true,
+          },
+          completedItemsByDay: const <String, String>{},
+          today: DateTime(2026, 11, 7),
+        );
+
+        final ProgressState? written = await repository.progressFor(pack.id);
+        expect(written!.fulfilledOrdinals, 4);
+        expect(written.lastFulfilled, DateTime(2026, 11, 7));
+        expect(written.badges, hasLength(1));
       },
     );
 
@@ -624,6 +715,16 @@ void main() {
         expect(written.lastFulfilled, DateTime(2027, 1, 2));
         expect(written.badges, hasLength(5));
         expect(
+          ProgressService.fulfilledAnchorDates(
+            pack: pack,
+            spec: pack.schedule as ConsecutiveCommitmentSpec,
+            completedItemsByDay: written.completedItemsByDay,
+            today: DateTime(2027, 1, 2),
+          ),
+          _fiveSaturdays.toSet(),
+          reason: 'All five anchors are fulfilled by their records',
+        );
+        expect(
           written.badges.last.date,
           DateTime(2027, 1, 2),
           reason: 'The fifth badge is dated today',
@@ -643,34 +744,28 @@ void main() {
       () async {
         // Four anchors are fully satisfied; the fifth has its anchor-day
         // communion but no confession anywhere in the ±8-day window, so the
-        // anchor is NOT fulfilled. Permissive isolates the item gate: the
-        // series continues, at 4 not 5.
-        final ContentPack pack = _firstSaturdaysPack(
-          policy: RestartPolicy.permissive,
-        );
-        final _FakeProgramRepository repository = _FakeProgramRepository(
-          packs: <ContentPack>[pack],
-        );
+        // fifth anchor is NOT fulfilled (the service credits only
+        // grace-window items). The stored ordinal is streak arithmetic and is
+        // not rewritten by this: the composition is what reports the miss.
+        final ContentPack pack = _firstSaturdaysPack();
         final Map<String, String> completions = _saturdayCompletions(
           _fiveSaturdays.take(4).toList(),
         );
         completions['communion:2027-01-02'] = 'First Saturday Mass';
-        final ProgressService service = ProgressService(repository: repository);
-
-        await service.persistCompletion(
+        final ConsecutiveCommitmentSpec commitment =
+            pack.schedule as ConsecutiveCommitmentSpec;
+        final Set<DateTime> fulfilled = ProgressService.fulfilledAnchorDates(
           pack: pack,
-          progress: ProgressState(packId: pack.id),
+          spec: commitment,
           completedItemsByDay: completions,
           today: DateTime(2027, 1, 2),
         );
 
-        final ProgressState? written = await repository.progressFor(pack.id);
+        expect(fulfilled, _fiveSaturdays.take(4).toSet());
         expect(
-          written!.fulfilledOrdinals,
-          4,
-          reason:
-              'The service credits only grace-window items, and the fifth '
-              "anchor's confession never came",
+          fulfilled,
+          isNot(contains(DateTime(2027, 1, 2))),
+          reason: "The fifth anchor's confession never came",
         );
       },
     );
@@ -679,42 +774,30 @@ void main() {
       'an anchor-day required item is not credited by any grace window',
       () async {
         // Mirror of the previous case: the fifth anchor has its confession but
-        // no communion on the anchor day. CommitmentState's anchor-day rule
-        // decides that item; no window can credit it.
-        final ContentPack pack = _firstSaturdaysPack(
-          policy: RestartPolicy.permissive,
-        );
-        final _FakeProgramRepository repository = _FakeProgramRepository(
-          packs: <ContentPack>[pack],
-        );
+        // no communion on the anchor day. The engine's anchor-day rule decides
+        // that item; no window can credit it.
+        final ContentPack pack = _firstSaturdaysPack();
         final Map<String, String> completions = _saturdayCompletions(
           _fiveSaturdays.take(4).toList(),
         );
         completions['confession:2027-01-02'] = 'First Saturday confession';
-        final ProgressService service = ProgressService(repository: repository);
-
-        await service.persistCompletion(
+        final Set<DateTime> fulfilled = ProgressService.fulfilledAnchorDates(
           pack: pack,
-          progress: ProgressState(packId: pack.id),
+          spec: pack.schedule as ConsecutiveCommitmentSpec,
           completedItemsByDay: completions,
           today: DateTime(2027, 1, 2),
         );
 
-        final ProgressState? written = await repository.progressFor(pack.id);
-        expect(written!.fulfilledOrdinals, 4);
+        expect(fulfilled, _fiveSaturdays.take(4).toSet());
       },
     );
 
     test('a window-only completion credits its anchor', () async {
       final ContentPack pack = _firstSaturdaysPack();
-      final _FakeProgramRepository repository = _FakeProgramRepository(
-        packs: <ContentPack>[pack],
-      );
-      final ProgressService service = ProgressService(repository: repository);
 
-      await service.persistCompletion(
+      final Set<DateTime> fulfilled = ProgressService.fulfilledAnchorDates(
         pack: pack,
-        progress: ProgressState(packId: pack.id),
+        spec: pack.schedule as ConsecutiveCommitmentSpec,
         completedItemsByDay: <String, String>{
           'communion:2026-11-07': 'First Saturday Mass',
           'confession:2026-10-30': 'eight days early',
@@ -722,12 +805,9 @@ void main() {
         today: DateTime(2026, 11, 7),
       );
 
-      final ProgressState? written = await repository.progressFor(pack.id);
-      expect(
-        written!.fulfilledOrdinals,
-        1,
-        reason: 'The confession sits on the inclusive -8 day edge',
-      );
+      expect(fulfilled, <DateTime>{
+        DateTime(2026, 11, 7),
+      }, reason: 'The confession sits on the inclusive -8 day edge');
     });
 
     test('a future-dated completion never credits an anchor', () async {
@@ -741,6 +821,17 @@ void main() {
       );
       final ProgressService service = ProgressService(repository: repository);
 
+      final Set<DateTime> fulfilled = ProgressService.fulfilledAnchorDates(
+        pack: pack,
+        spec: pack.schedule as ConsecutiveCommitmentSpec,
+        completedItemsByDay: <String, String>{
+          'communion:2026-11-07': 'First Saturday Mass',
+          'confession:2026-11-15': 'recorded ahead of time',
+        },
+        today: DateTime(2026, 11, 7),
+      );
+      expect(fulfilled, isEmpty);
+
       await service.persistCompletion(
         pack: pack,
         progress: ProgressState(packId: pack.id),
@@ -752,9 +843,8 @@ void main() {
       );
 
       final ProgressState? written = await repository.progressFor(pack.id);
-      expect(written!.fulfilledOrdinals, 0);
       expect(
-        written.completedItemsByDay,
+        written!.completedItemsByDay,
         contains('confession:2026-11-15'),
         reason: 'The record is kept — only the evaluation ignores it',
       );
@@ -764,22 +854,17 @@ void main() {
       'a commitment without grace windows uses its anchor-day items only',
       () async {
         final ContentPack pack = _firstFridaysPack();
-        final _FakeProgramRepository repository = _FakeProgramRepository(
-          packs: <ContentPack>[pack],
-        );
-        final ProgressService service = ProgressService(repository: repository);
 
-        await service.persistCompletion(
+        final Set<DateTime> fulfilled = ProgressService.fulfilledAnchorDates(
           pack: pack,
-          progress: ProgressState(packId: pack.id),
+          spec: pack.schedule as ConsecutiveCommitmentSpec,
           completedItemsByDay: <String, String>{
             'communion:2026-11-06': 'First Friday Mass',
           },
           today: DateTime(2026, 11, 6),
         );
 
-        final ProgressState? written = await repository.progressFor(pack.id);
-        expect(written!.fulfilledOrdinals, 1);
+        expect(fulfilled, <DateTime>{DateTime(2026, 11, 6)});
       },
     );
 
