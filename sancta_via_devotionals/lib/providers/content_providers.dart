@@ -27,6 +27,7 @@ import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart';
 import 'package:sancta_via_devotional_engine_riverpod/sancta_via_devotional_engine_riverpod.dart'
     show programRepositoryProvider;
 
+import '../database/devotionals_database.dart' show IntentionRow;
 import '../repositories/program_repository.dart';
 import '../services/content_asset_service.dart';
 
@@ -64,4 +65,23 @@ final FutureProvider<List<ContentPack>> contentLoadedProvider =
         database: repository.database,
       );
       return service.ensureContentLoaded();
+    });
+
+/// The session player's current-intentions readout (Task 11 placeholder
+/// seam, Plan 2 Task 11 IntercessionStep contract).
+///
+/// The `intentions` TABLE and its CRUD helpers exist (Task 4); the
+/// intentions UI and its provider do not yet. The intercession card needs
+/// the honest minimal seam: a read-only pass-through over the app
+/// repository's OWN store (`getAllIntentions`, oldest first, both kinds —
+/// `intention` and `soul` are both "current intentions" for the prayer).
+/// The intentions-management task will replace this with its own surfaced
+/// provider; until then this is deliberately tiny and real. A store error
+/// surfaces here as the card's "unavailable" fallback.
+final FutureProvider<List<IntentionRow>> intentionsProvider =
+    FutureProvider<List<IntentionRow>>((Ref ref) async {
+      final SqliteProgramRepository repository = ref.watch(
+        appProgramRepositoryProvider,
+      );
+      return repository.database.getAllIntentions();
     });
