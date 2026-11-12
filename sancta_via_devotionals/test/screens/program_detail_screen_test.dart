@@ -40,7 +40,7 @@ import 'package:sancta_via_devotionals/providers/content_providers.dart'
         programRepositoryOverride;
 import 'package:sancta_via_devotionals/repositories/program_repository.dart'
     show SqliteProgramRepository;
-import 'package:sancta_via_devotionals/screens/practice/enroll_placeholder_screen.dart';
+import 'package:sancta_via_devotionals/screens/practice/enroll_screen.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart'
     show currentDateProvider;
 import 'package:sqflite/sqflite.dart';
@@ -169,7 +169,7 @@ void main() {
         configuration.matches.last.matchedLocation,
         '/program/five_first_saturdays/enroll',
       );
-      expect(find.byType(EnrollPlaceholderScreen), findsOneWidget);
+      expect(find.byType(EnrollScreen), findsOneWidget);
     },
   );
 

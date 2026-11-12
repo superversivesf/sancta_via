@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../screens/home/today_screen.dart';
 import '../screens/onboarding/onboarding_screen.dart';
-import '../screens/practice/enroll_placeholder_screen.dart';
+import '../screens/practice/enroll_screen.dart';
 import '../screens/practice/practice_screen.dart';
 import '../screens/practice/program_detail_screen.dart';
 import '../screens/progress/progress_screen.dart';
@@ -39,8 +39,9 @@ final GoRouter appRouter = buildAppRouter();
 /// * `/program/:packId` — the program detail (Task 14): description,
 ///   schedule preview, phase and policy explainers, and the Enroll CTA.
 ///   Top-level like the session: a detail is a focused page, not a tab;
-/// * `/program/:packId/enroll` — the enrollment flow placeholder (Task 15
-///   replaces it with the real enroll screen).
+/// * `/program/:packId/enroll` — the commitment-aware enrollment flow
+///   (Task 15): the consecration feast picker, the 54-day explainer and policy
+///   choice, and the write-through enroll action. Top-level like the detail.
 GoRouter buildAppRouter({String initialLocation = '/'}) {
   return GoRouter(
     initialLocation: initialLocation,
@@ -123,7 +124,7 @@ GoRouter buildAppRouter({String initialLocation = '/'}) {
         path: '/program/:packId/enroll',
         name: 'program-enroll',
         builder: (BuildContext context, GoRouterState state) =>
-            const EnrollPlaceholderScreen(),
+            EnrollScreen(packId: state.pathParameters['packId']!),
       ),
     ],
     errorBuilder: (BuildContext context, GoRouterState state) => Scaffold(
