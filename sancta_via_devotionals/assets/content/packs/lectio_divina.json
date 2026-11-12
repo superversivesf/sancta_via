@@ -1,0 +1,97 @@
+{
+  "id": "lectio_divina",
+  "title": "Lectio Divina",
+  "family": "routine",
+  "schedules": [
+    {
+      "type": "timeOfDay",
+      "hour": 9,
+      "minute": 0,
+      "baseLabel": "lectio_divina"
+    }
+  ],
+  "session": {
+    "id": "lectio-divina-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "lectio-readings",
+        "title": "Today's readings",
+        "versicle": "Today's readings",
+        "response": "Read aloud, slowly — the app resolves today's texts (see the readings note)."
+      },
+      {
+        "type": "reflection",
+        "id": "lectio-lectio",
+        "title": "Lectio — read",
+        "textRef": "lectio_read",
+        "durationSeconds": 60
+      },
+      {
+        "type": "reflection",
+        "id": "lectio-meditatio",
+        "title": "Meditatio — meditate",
+        "textRef": "lectio_meditate",
+        "durationSeconds": 120
+      },
+      {
+        "type": "reflection",
+        "id": "lectio-oratio",
+        "title": "Oratio — pray",
+        "textRef": "lectio_pray",
+        "durationSeconds": 120
+      },
+      {
+        "type": "reflection",
+        "id": "lectio-contemplatio",
+        "title": "Contemplatio — rest",
+        "textRef": "lectio_contemplate",
+        "durationSeconds": 120
+      },
+      {
+        "type": "prayer",
+        "id": "lectio-closing",
+        "title": "Closing prayer",
+        "contentRef": "lectio_closing_prayer"
+      }
+    ]
+  },
+  "content": {
+    "lectio_read": {
+      "id": "lectio_read",
+      "text": "Lectio (read). Read the day's readings aloud, slowly, more than once. Notice which word or phrase stays with you.",
+      "source": "Traditional Lectio Divina framework (house adaptation)",
+      "license": "public-domain"
+    },
+    "lectio_meditate": {
+      "id": "lectio_meditate",
+      "text": "Meditatio (meditate). Hold that word before your heart, pondering what God is saying to you through it today.",
+      "source": "Traditional Lectio Divina framework (house adaptation)",
+      "license": "public-domain"
+    },
+    "lectio_pray": {
+      "id": "lectio_pray",
+      "text": "Oratio (pray). Answer the Word with your own words — praise, thanksgiving, sorrow, petition.",
+      "source": "Traditional Lectio Divina framework (house adaptation)",
+      "license": "public-domain"
+    },
+    "lectio_contemplate": {
+      "id": "lectio_contemplate",
+      "text": "Contemplatio (contemplate). Rest in God's presence beyond words, letting the reading settle into your life and your day.",
+      "source": "Traditional Lectio Divina framework (house adaptation)",
+      "license": "public-domain"
+    },
+    "lectio_closing_prayer": {
+      "id": "lectio_closing_prayer",
+      "text": "O Lord Jesus Christ, Word of the living God: open my heart to your Word, that I may read it with faith, ponder it with love, carry it into my day, and rest in you. Amen.",
+      "source": "Traditional Lectio Divina framework (house adaptation)",
+      "license": "public-domain"
+    }
+  },
+  "reminders": {
+    "readings": {
+      "feed": "app-side (dynamic; never embedded in this pack)",
+      "note": "The verse step is the skeleton placeholder: on playback the app resolves the day's readings. The real seam is the bible riverpod layer (sancta_via_bible_data_riverpod): bibleServiceNotifierProvider loads the bundled public-domain CPDV/DRC translations (bible_data), selectedBibleTranslationProvider picks the user's translation, and scriptureByReferenceProvider / multipleScripturesProvider fetch the texts by reference. A readingsFor(date) provider (one day's lectionary readings by date) is the intended app-side integration point wrapping those providers — the pack stores only this skeleton and never embeds dynamic readings."
+    }
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "id": "fixed_prayers_morning",
+  "title": "Fixed Morning Prayers",
+  "family": "routine",
+  "schedules": [
+    {
+      "type": "timeOfDay",
+      "hour": 7,
+      "minute": 0,
+      "baseLabel": "fixed_morning"
+    }
+  ],
+  "session": {
+    "id": "fixed-prayers-morning-session",
+    "steps": [
+      {
+        "type": "prayer",
+        "id": "sign-of-the-cross",
+        "title": "Sign of the Cross",
+        "contentRef": "sign_of_the_cross"
+      },
+      {
+        "type": "prayer",
+        "id": "apostles-creed",
+        "title": "Apostles' Creed",
+        "contentRef": "apostles_creed"
+      },
+      {
+        "type": "prayer",
+        "id": "our-father",
+        "title": "Our Father",
+        "contentRef": "our_father"
+      },
+      {
+        "type": "prayer",
+        "id": "hail-mary",
+        "title": "Hail Mary",
+        "contentRef": "hail_mary"
+      },
+      {
+        "type": "prayer",
+        "id": "glory-be",
+        "title": "Glory Be",
+        "contentRef": "glory_be"
+      },
+      {
+        "type": "prayer",
+        "id": "acts-of-virtue",
+        "title": "Act of Faith, Hope, and Charity",
+        "contentRef": "act_of_faith_hope_charity"
+      },
+      {
+        "type": "prayer",
+        "id": "guardian-angel",
+        "title": "Guardian Angel Prayer",
+        "contentRef": "guardian_angel_prayer"
+      },
+      {
+        "type": "prayer",
+        "id": "morning-thanksgiving",
+        "title": "Morning Thanksgiving Prayer",
+        "contentRef": "morning_thanksgiving"
+      }
+    ]
+  },
+  "content": {
+    "sign_of_the_cross": {
+      "id": "sign_of_the_cross",
+      "text": "In the name of the Father,\nand of the Son,\nand of the Holy Spirit.\nAmen.",
+      "source": "Traditional Catholic Prayer",
+      "license": "public-domain",
+      "latin": "In nomine Patris,\net Filii,\net Spiritus Sancti.\nAmen."
+    },
+    "apostles_creed": {
+      "id": "apostles_creed",
+      "text": "I believe in God, the Father almighty,\nCreator of heaven and earth,\nand in Jesus Christ, his only Son, our Lord,\nwho was conceived by the Holy Spirit,\nborn of the Virgin Mary,\nsuffered under Pontius Pilate,\nwas crucified, died and was buried;\nhe descended into hell;\non the third day he rose again from the dead;\nhe ascended into heaven,\nand is seated at the right hand of God the Father almighty;\nfrom there he will come to judge the living and the dead.\nI believe in the Holy Spirit,\nthe holy catholic Church,\nthe communion of saints,\nthe forgiveness of sins,\nthe resurrection of the body,\nand life everlasting.\nAmen.",
+      "source": "Apostolic Tradition (2nd century)",
+      "license": "public-domain (ancient attribution)",
+      "latin": "Credo in Deum Patrem omnipotentem,\nCreatorem caeli et terrae,\net in Iesum Christum, Filium Eius unicum, Dominum nostrum,\nqui conceptus est de Spiritu Sancto,\nnatus ex Maria Virgine,\npassus sub Pontio Pilato,\ncrucifixus, mortuus, et sepultus,\ndescendit ad inferos,\ntertia die resurrexit a mortuis,\nascendit ad caelos,\nsedet ad dexteram Dei Patris omnipotentis,\ninde venturus est iudicare vivos et mortuos.\nCredo in Spiritum Sanctum,\nsanctam Ecclesiam catholicam,\nsanctorum communionem,\nremissionem peccatorum,\ncarnis resurrectionem,\nvitam aeternam.\nAmen."
+    },
+    "our_father": {
+      "id": "our_father",
+      "text": "Our Father, who art in heaven,\nhallowed be thy name;\nthy kingdom come;\nthy will be done on earth as it is in heaven.\nGive us this day our daily bread;\nand forgive us our trespasses\nas we forgive those who trespass against us;\nand lead us not into temptation,\nbut deliver us from evil.\nAmen.",
+      "source": "Jesus Christ (Matthew 6:9-13)",
+      "license": "public-domain (scriptural formula)",
+      "latin": "Pater noster, qui es in caelis,\nsanctificetur nomen tuum;\nadveniat regnum tuum;\nfiat voluntas tua, sicut in caelo, et in terra.\nPanem nostrum cotidianum da nobis hodie;\net dimitte nobis debita nostra,\nsicut et nos dimittimus debitoribus nostris;\net ne nos inducas in tentationem;\nsed libera nos a malo.\nAmen."
+    },
+    "hail_mary": {
+      "id": "hail_mary",
+      "text": "Hail Mary, full of grace, the Lord is with thee.\nBlessed art thou among women,\nand blessed is the fruit of thy womb, Jesus.\nHoly Mary, Mother of God,\npray for us sinners,\nnow and at the hour of our death.\nAmen.",
+      "source": "Based on Luke 1:28, 42",
+      "license": "public-domain (scriptural formula)",
+      "latin": "Ave Maria, gratia plena, Dominus tecum.\nBenedicta tu in mulieribus,\net benedictus fructus ventris tui, Iesus.\nSancta Maria, Mater Dei,\nora pro nobis peccatoribus,\nnunc et in hora mortis nostrae.\nAmen."
+    },
+    "glory_be": {
+      "id": "glory_be",
+      "text": "Glory be to the Father,\nand to the Son,\nand to the Holy Spirit,\nas it was in the beginning,\nis now, and ever shall be,\nworld without end.\nAmen.",
+      "source": "Traditional Doxology",
+      "license": "public-domain",
+      "latin": "Gloria Patri, et Filio,\net Spiritui Sancto,\nsicut erat in principio,\net nunc, et semper,\net in saecula saeculorum.\nAmen."
+    },
+    "act_of_faith_hope_charity": {
+      "id": "act_of_faith_hope_charity",
+      "text": "O my God, I firmly believe\nthat you are one God in three divine Persons,\nFather, Son, and Holy Spirit.\nI believe that your divine Son became man\nand died for our sins and that he will come\nto judge the living and the dead.\nI believe these and all the truths\nwhich the Holy Catholic Church teaches\nbecause you have revealed them\nwho are eternal truth and wisdom,\nwho can neither deceive nor be deceived.\nIn this faith I intend to live and die.\nAmen.\n\nO Lord God, I hope by your grace\nfor the pardon of all my sins\nand after life here to gain eternal happiness\nbecause you have promised it\nwho are infinitely powerful, faithful, kind,\nand merciful.\nIn this hope I intend to live and die.\nAmen.\n\nO my God, I love you above all things\nwith my whole heart and soul\nbecause you are all good and worthy of all my love.\nI love my neighbor as myself for the love of you.\nI forgive all who have injured me\nand I ask pardon of those whom I have injured.\nIn this love I intend to live and die.\nAmen.",
+      "source": "Traditional Catholic Prayer",
+      "license": "public-domain"
+    },
+    "guardian_angel_prayer": {
+      "id": "guardian_angel_prayer",
+      "text": "Angel of God, my guardian dear,\nto whom God's love commits me here,\never this day be at my side,\nto light and guard, to rule and guide.\nAmen.",
+      "source": "Traditional Catholic Prayer",
+      "license": "public-domain",
+      "latin": "Angele Dei, qui custos es mei,\nme tibi commissum pietate superna,\nhodie illumina, custodi, rege et guberna.\nAmen."
+    },
+    "morning_thanksgiving": {
+      "id": "morning_thanksgiving",
+      "text": "I give you thanks, O holy Lord,\nalmighty Father, eternal God,\nwho have brought me safely\nto the beginning of this day\nby your great goodness.\nBy that same love,\nsave me today from all sin and evil,\nthat all my words, thoughts, and actions\nmay be pleasing to you.\nI place myself, and all that I am,\ninto your most sacred hands.\nAmen.",
+      "source": "Traditional Catholic Morning Prayer",
+      "license": "public-domain",
+      "latin": "Gratias tibi ago, Domine sancte,\nPater omnipotens, aeterne Deus,\nqui me in hunc diem\ntua magna bonitate perducere dignatus es.\nEadem caritate salva me hodie\nab omni peccato et malo,\nut omnia verba mea, cogitationes et actiones\ntibi placeant.\nMe ipsum, et omnia mea,\nin tuas sanctissimas manus commendo.\nAmen."
+    }
+  }
+}

@@ -32,12 +32,19 @@ import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_ca
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-/// The pack ids in repository order (`packs.id ASC`).
+/// The pack ids in repository order (`packs.id ASC`): the eight
+/// engine-fixture packs plus the six Task-21 routine packs.
 const List<String> _packIds = <String>[
   'angelus',
+  'daily_examen',
   'divine_mercy_novena',
   'five_first_saturdays',
+  'fixed_prayers_morning',
+  'fixed_prayers_night',
+  'lectio_divina',
+  'meal_night_prayers',
   'mercy_hour',
+  'morning_offering',
   'nine_first_fridays',
   'novena_54_day',
   'rosary',

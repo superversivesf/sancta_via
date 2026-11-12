@@ -52,9 +52,19 @@ flutter:
   assets:
     # The content pack catalog ships from the APP bundle (Plan 2, Task 6):
     # the content pipeline resolves `assets/content/packs/*.json` against
-    # this app's own asset manifest. The files are byte-for-byte copies of
+    # this app's own asset manifest. The engine-fixture-origin pack files
+    # are byte-for-byte copies of
     # `sancta_via_devotional_engine/test/fixtures/packs/` (single source of
-    # truth = the engine fixtures; regenerate via copy whenever they change).
+    # truth = the engine fixtures; regenerate via copy whenever they
+    # change); the Task 21 routine packs are authored here — the pin test
+    # distinguishes the two.
     - assets/content/packs/
+    # The imported companion prayers (Plan 2, Task 21): one engine
+    # PrayerText JSON per prayer, written by `tool/import_prayers.dart` and
+    # committed. They ride the SAME asset manifest as the packs (the
+    # pipeline's pack loader filters `assets/content/packs/`, so prayer
+    # files are never parsed as packs); the pin test pins the manifest keys
+    # and the import mapping.
+    - assets/content/prayers/
   # Include the Material Icons font.
   uses-material-design: true

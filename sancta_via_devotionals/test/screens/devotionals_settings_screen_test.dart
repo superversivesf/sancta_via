@@ -217,8 +217,14 @@ Future<_SettingsHarness> _pumpSettings(
 }
 
 /// Flushes a tap's await chain (the Task 15/16 recipe).
+/// Flushes a tap's await chain (the Task 15/16 recipe, budget widened by
+/// Task 21): the fake-async zone's queued microtasks clear one layer per
+/// real-time window, and the planner-refresh chain's SQLite round trips
+/// scale with the shipped pack count (14 packs since the Task-21 routine
+/// packs joined the catalog), so the rounds must cover the widest chain a
+/// settings change triggers.
 Future<void> _drain(WidgetTester tester) async {
-  for (int round = 0; round < 10; round++) {
+  for (int round = 0; round < 40; round++) {
     await tester.runAsync(() async {
       await Future<void>.delayed(const Duration(milliseconds: 15));
     });

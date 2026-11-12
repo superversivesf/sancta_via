@@ -271,9 +271,14 @@ Future<_OnboardingHarness> _pumpOnboarding(
   return _OnboardingHarness(container, repository, router, adapter);
 }
 
-/// Flushes a tap's await chain (the enroll-screen harness's drained rounds).
+/// Flushes a tap's await chain (the enroll-screen harness's drained rounds;
+/// Task 21 widened the budget): the fake-async zone's queued microtasks
+/// clear one layer per real-time window and the refresh/recompute depth
+/// scales with the shipped pack count (each SQLite round trip is a layer —
+/// 14 packs since the Task-21 routine packs joined the catalog), so the
+/// rounds must cover the widest chain the taps trigger.
 Future<void> _drain(WidgetTester tester) async {
-  for (int round = 0; round < 10; round++) {
+  for (int round = 0; round < 40; round++) {
     await tester.runAsync(() async {
       await Future<void>.delayed(const Duration(milliseconds: 15));
     });

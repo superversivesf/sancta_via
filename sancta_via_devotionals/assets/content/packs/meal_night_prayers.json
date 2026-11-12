@@ -1,0 +1,79 @@
+{
+  "id": "meal_night_prayers",
+  "title": "Meal and Night Prayers",
+  "family": "routine",
+  "schedules": [
+    {
+      "type": "timeOfDay",
+      "hour": 11,
+      "minute": 45,
+      "baseLabel": "meal_grace"
+    },
+    {
+      "type": "timeOfDay",
+      "hour": 20,
+      "minute": 30,
+      "baseLabel": "night_prayers"
+    }
+  ],
+  "session": {
+    "id": "meal-night-prayers-session",
+    "steps": [
+      {
+        "type": "prayer",
+        "id": "meal-grace-before",
+        "title": "Grace Before Meals",
+        "contentRef": "grace_before_meals"
+      },
+      {
+        "type": "prayer",
+        "id": "meal-grace-after",
+        "title": "Grace After Meals",
+        "contentRef": "grace_after_meals"
+      },
+      {
+        "type": "prayer",
+        "id": "night-before-sleep",
+        "title": "Prayer Before Sleep",
+        "contentRef": "prayer_before_sleep"
+      },
+      {
+        "type": "prayer",
+        "id": "night-children",
+        "title": "Children's Bedtime Prayer",
+        "contentRef": "children_bedtime_prayer"
+      }
+    ]
+  },
+  "content": {
+    "grace_before_meals": {
+      "id": "grace_before_meals",
+      "text": "Bless us, O Lord,\nand these thy gifts,\nwhich we are about to receive\nfrom thy bounty,\nthrough Christ our Lord.\nAmen.",
+      "source": "Traditional Catholic Prayer",
+      "license": "public-domain",
+      "latin": "Benedic, Domine, nos et haec tua dona\nquae de tua largitate sumus sumpturi,\nper Christum Dominum nostrum.\nAmen."
+    },
+    "grace_after_meals": {
+      "id": "grace_after_meals",
+      "text": "We give you thanks, almighty God,\nfor all your benefits,\nwho live and reign forever and ever.\nAnd may the souls of the faithful departed,\nthrough the mercy of God,\nrest in peace.\nAmen.",
+      "source": "Traditional Catholic Prayer",
+      "license": "public-domain",
+      "latin": "Agimus tibi gratias, omnipotens Deus,\npro universis beneficiis tuis,\nqui vivis et regnas in saecula saeculorum.\nEt animae fidelium defunctorum\nper misericordiam Dei requiescant in pace.\nAmen."
+    },
+    "prayer_before_sleep": {
+      "id": "prayer_before_sleep",
+      "text": "Now I lay me down to sleep,\nI pray the Lord my soul to keep.\nIf I should die before I wake,\nI pray the Lord my soul to take.\nBless my family through the night,\nand wake me with the morning light.\nAmen.",
+      "source": "Traditional Catholic Evening Prayer",
+      "license": "public-domain"
+    },
+    "children_bedtime_prayer": {
+      "id": "children_bedtime_prayer",
+      "text": "Matthew, Mark, Luke, and John,\nbless the bed that I lie on.\nFour corners to my bed,\nfour angels round my head;\none to watch and one to pray,\nand two to bear my soul away.",
+      "source": "Traditional English Children's Prayer",
+      "license": "public-domain"
+    }
+  },
+  "reminders": {
+    "anchors": "11:45 — the grace before/after meals window; 20:30 — the night set. One session carries both; either anchor makes the session due."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "id": "morning_offering",
+  "title": "Morning Offering",
+  "family": "routine",
+  "schedules": [
+    {
+      "type": "timeOfDay",
+      "hour": 6,
+      "minute": 0,
+      "baseLabel": "morning_offering"
+    }
+  ],
+  "session": {
+    "id": "morning-offering-session",
+    "steps": [
+      {
+        "type": "prayer",
+        "id": "morning-offering-prayer",
+        "title": "Morning Offering",
+        "contentRef": "morning_offering"
+      },
+      {
+        "type": "intercession",
+        "id": "morning-offering-papal-intention",
+        "title": "For the Holy Father's intentions",
+        "prompt": "For the intentions of the Holy Father this month."
+      }
+    ]
+  },
+  "content": {
+    "morning_offering": {
+      "id": "morning_offering",
+      "text": "O Jesus, through the Immaculate Heart of Mary,\nI offer you my prayers, works, joys, and sufferings of this day\nfor all the intentions of your Sacred Heart,\nin union with the Holy Sacrifice of the Mass throughout the world,\nfor the salvation of souls, the reparation of sins, the reunion of all Christians,\nand in particular for the intentions of the Holy Father this month.\nAmen.",
+      "source": "Apostleship of Prayer (1844)",
+      "license": "public-domain (attributed, pre-1928)",
+      "latin": "O Iesu, per Cor Immaculatum Mariae,\ntibi offero orationes, actiones et passiones huius diei\nin omnibus finibus Cordis tui Sanctissimi,\nin unione cum Sanctissimo Sacrificio Missae per totum mundum,\npro redemptione peccatorum, in adiunctis intentionibus Sancti Patris.\nAmen."
+    }
+  },
+  "reminders": {
+    "papal_intention": {
+      "cadence": "monthly",
+      "current": "For the intentions of the Holy Father this month.",
+      "note": "Manually-updated content (spec risk #6): the intercession step's prompt above is shipped, not fetched. When the Pope's Worldwide Prayer Network publishes the next monthly intention, edit the 'current' value and the intercession prompt (keep them equal) and re-ship the pack — the content pipeline reseeds on the content-version bump. No network fetch in-app."
+    }
+  }
+}

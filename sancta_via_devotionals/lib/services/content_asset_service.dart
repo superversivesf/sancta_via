@@ -1,11 +1,15 @@
 // Content asset pipeline + first-launch migration (Plan 2, Task 6).
 //
 // `sancta_via_devotional_engine/test/fixtures/packs/` is the single source of
-// truth for the catalog; this app ships byte-for-byte copies of it under
-// `assets/content/packs/` (declared in the app pubspec — regenerate via copy
-// whenever the engine fixtures change; the pin test
+// truth for the EIGHT engine-fixture packs; this app ships byte-for-byte
+// copies of it under `assets/content/packs/` (declared in the app pubspec —
+// regenerate via copy whenever the engine fixtures change; the pin test
 // `test/services/content_app_asset_pin_test.dart` guards both the declaration
-// and the byte equality). On the first launch — and whenever the bundle's
+// and the byte equality). The six Task-21 routine packs are AUTHORED in the
+// app assets instead (see `test/content/routine_packs_test.dart`); the
+// imported companion prayers under `assets/content/prayers/` ride the same
+// manifest but are not packs (the loader's prefix filter skips them). On the
+// first launch — and whenever the bundle's
 // computed content version differs from the stored `meta.content_version` —
 // every declared pack asset is parsed through the engine's [PackLoader] and
 // seeded into the SQLite program repository.

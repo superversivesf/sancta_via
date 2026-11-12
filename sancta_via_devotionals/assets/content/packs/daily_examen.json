@@ -1,0 +1,98 @@
+{
+  "id": "daily_examen",
+  "title": "Daily Examen",
+  "family": "routine",
+  "schedules": [
+    {
+      "type": "timeOfDay",
+      "hour": 19,
+      "minute": 0,
+      "baseLabel": "daily_examen"
+    }
+  ],
+  "session": {
+    "id": "daily-examen-session",
+    "steps": [
+      {
+        "type": "reflection",
+        "id": "examen-presence",
+        "title": "Presence",
+        "textRef": "examen_1",
+        "durationSeconds": 60
+      },
+      {
+        "type": "reflection",
+        "id": "examen-grace",
+        "title": "Grace",
+        "textRef": "examen_2",
+        "durationSeconds": 60
+      },
+      {
+        "type": "reflection",
+        "id": "examen-review",
+        "title": "Review",
+        "textRef": "examen_3",
+        "durationSeconds": 120
+      },
+      {
+        "type": "reflection",
+        "id": "examen-reflect",
+        "title": "Reflection",
+        "textRef": "examen_4",
+        "durationSeconds": 60
+      },
+      {
+        "type": "reflection",
+        "id": "examen-resolve",
+        "title": "Resolve",
+        "textRef": "examen_5",
+        "durationSeconds": 60
+      },
+      {
+        "type": "prayer",
+        "id": "examen-closing",
+        "title": "Glory Be",
+        "contentRef": "glory_be"
+      }
+    ]
+  },
+  "content": {
+    "glory_be": {
+      "id": "glory_be",
+      "text": "Glory be to the Father,\nand to the Son,\nand to the Holy Spirit,\nas it was in the beginning,\nis now, and ever shall be,\nworld without end.\nAmen.",
+      "source": "Traditional Doxology",
+      "license": "public-domain",
+      "latin": "Gloria Patri, et Filio,\net Spiritui Sancto,\nsicut erat in principio,\net nunc, et semper,\net in saecula saeculorum.\nAmen."
+    },
+    "examen_1": {
+      "id": "examen_1",
+      "text": "Place yourself in God's presence.\nGive thanks for God's great love for you.",
+      "source": "St. Ignatius of Loyola, Spiritual Exercises",
+      "license": "public-domain (attributed, pre-1928)"
+    },
+    "examen_2": {
+      "id": "examen_2",
+      "text": "Pray for the grace to understand how God is acting in your life.",
+      "source": "St. Ignatius of Loyola, Spiritual Exercises",
+      "license": "public-domain (attributed, pre-1928)"
+    },
+    "examen_3": {
+      "id": "examen_3",
+      "text": "Review your day — recall specific moments and your feelings at the time.\nWhere was God present? Where did you resist God's grace?",
+      "source": "St. Ignatius of Loyola, Spiritual Exercises",
+      "license": "public-domain (attributed, pre-1928)"
+    },
+    "examen_4": {
+      "id": "examen_4",
+      "text": "Reflect on what you did, said, or thought in those moments.\nWere you drawing closer to God, or further away?",
+      "source": "St. Ignatius of Loyola, Spiritual Exercises",
+      "license": "public-domain (attributed, pre-1928)"
+    },
+    "examen_5": {
+      "id": "examen_5",
+      "text": "Look toward tomorrow — ask for God's help and guidance.\nResolve to grow in holiness.",
+      "source": "St. Ignatius of Loyola, Spiritual Exercises",
+      "license": "public-domain (attributed, pre-1928)"
+    }
+  }
+}
