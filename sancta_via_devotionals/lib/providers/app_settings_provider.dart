@@ -39,7 +39,9 @@ typedef AnchorTimes = ({
 /// Base-setting sync is one-way: the shared [baseSettingsProvider] is
 /// authoritative. When it changes, the app's [DevotionsAppSettings.baseSettings]
 /// is replaced (and persisted as a snapshot); the app never pushes its own
-/// snapshot back into the shared provider.
+/// snapshot back into the shared provider. Restore likewise overlays the live
+/// base map on the stored snapshot — the snapshot is a fallback only for the
+/// app-specific fields.
 class DevotionsSettingsNotifier extends StateNotifier<DevotionsAppSettings> {
   static const String storageKey = 'devotionals_app_settings';
 
@@ -79,7 +81,14 @@ class DevotionsSettingsNotifier extends StateNotifier<DevotionsAppSettings> {
             state = _mergeSettings(state, settings);
             await _scheduleSave();
           } else {
-            state = settings;
+            // baseSettingsProvider is authoritative: restore app fields from
+            // our snapshot but always overlay the live base map. Reading the
+            // provider also guarantees its async load fires the listener, so
+            // a not-yet-loaded base corrects this overlay as soon as it
+            // resolves.
+            state = settings.updateBaseSettings(
+              _ref.read(baseSettingsProvider),
+            );
           }
         }
       } else if (!_mutationSinceLoad && mounted) {

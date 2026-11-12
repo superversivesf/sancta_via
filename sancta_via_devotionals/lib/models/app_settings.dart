@@ -98,8 +98,10 @@ class DevotionsAppSettings {
     return DevotionsAppSettings(baseSettings: BaseSettingsModel.defaults());
   }
 
-  /// Create from JSON map; missing or malformed fields fall back to defaults
-  /// (times clamp into their valid ranges).
+  /// Create from JSON map. Missing keys and malformed [TimeOfDay] maps fall
+  /// back to defaults (times clamp into their valid ranges); a field of the
+  /// wrong type throws, which callers treat as a corrupt store and reset to
+  /// defaults.
   factory DevotionsAppSettings.fromJson(Map<String, dynamic> json) {
     final defaults = DevotionsAppSettings.defaults();
     return DevotionsAppSettings(

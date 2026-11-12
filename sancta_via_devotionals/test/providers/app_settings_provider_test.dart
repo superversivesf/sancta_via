@@ -53,6 +53,34 @@ void main() {
       expect(state.onboardingComplete, isTrue);
     });
 
+    test(
+      'restore uses the live base settings, not our stored snapshot',
+      () async {
+        SharedPreferences.setMockInitialValues(<String, Object>{
+          DevotionsSettingsNotifier.storageKey:
+              '{"baseSettings":{"fontSize":22},"latinDisplayEnabled":false}',
+          // Deliberately NO value under the shared base-settings key: the
+          // authoritative provider sits at defaults, so a stale snapshot of
+          // fontSize 22 must not be resurrected on restore.
+        });
+        final container = ProviderContainer();
+        addTearDown(container.dispose);
+
+        container.read(devotionsSettingsProvider);
+        await settle();
+
+        final state = container.read(devotionsSettingsProvider);
+        expect(
+          state.baseSettings,
+          container.read(baseSettingsProvider),
+          reason:
+              'baseSettingsProvider is authoritative over our JSON snapshot',
+        );
+        expect(state.baseSettings.fontSize, 18.0);
+        expect(state.latinDisplayEnabled, isFalse);
+      },
+    );
+
     test('base settings sync replaces baseSettings and persists it', () async {
       SharedPreferences.setMockInitialValues(<String, Object>{});
       final container = ProviderContainer();
@@ -74,6 +102,34 @@ void main() {
         20.0,
       );
     });
+
+    test(
+      'base settings sync does not clobber user devotional fields',
+      () async {
+        SharedPreferences.setMockInitialValues(<String, Object>{});
+        final container = ProviderContainer();
+        addTearDown(container.dispose);
+
+        final notifier = container.read(devotionsSettingsProvider.notifier);
+        await settle();
+
+        // User mutates a devotional field, then base settings change.
+        await notifier.setLatinDisplayEnabled(false);
+        await container.read(baseSettingsProvider.notifier).setFontSize(20.0);
+        await settle();
+
+        final state = container.read(devotionsSettingsProvider);
+        expect(state.latinDisplayEnabled, isFalse);
+        expect(state.baseSettings.fontSize, 20.0);
+
+        final stored = await storedSettingsJson();
+        expect(stored['latinDisplayEnabled'], isFalse);
+        expect(
+          (stored['baseSettings'] as Map<String, dynamic>)['fontSize'],
+          20.0,
+        );
+      },
+    );
 
     test('mutation racing the async load is merged, not clobbered', () async {
       SharedPreferences.setMockInitialValues(<String, Object>{
