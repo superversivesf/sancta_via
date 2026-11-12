@@ -14,6 +14,38 @@ import '../screens/settings/settings_screen.dart';
 /// at every redirect evaluation.
 typedef OnboardingGate = bool Function();
 
+/// The cold-start onboarding rule (fix round 2) — the ONE home of the
+/// unresolved-load decision, extracted so it can be pinned directly.
+///
+/// go_router reads the entry route ONCE, from the persisted store, in `main`
+/// ([readPersistedOnboardingComplete] — the store read is the loaded path).
+/// The redirect gate, however, re-evaluates at every navigation and may run
+/// while the async settings load is still in flight; until it resolves the
+/// live state is the constructor defaults (`onboardingComplete: false`), so a
+/// returning user's pre-load value is a lie.
+///
+/// The rule:
+///
+/// * `isLoaded == false` — the PERSISTED entry route stands: [persistedEntry]
+///   is the route the store already implied ('/onboarding' for a fresh
+///   install, '/' for a returning user), and no live default may move the app
+///   off it. This is the branch that stops the cold-start bounce;
+/// * `isLoaded == true` — the live [onboardingComplete] decides: complete
+///   opens Today ('/'), incomplete holds the walkthrough ('/onboarding').
+///
+/// Pure and total (`String` in, `String` out) so the branch is directly
+/// red-able when the guard is deleted.
+String decideColdStartRoute({
+  required bool isLoaded,
+  required bool onboardingComplete,
+  required String persistedEntry,
+}) {
+  if (!isLoaded) {
+    return persistedEntry;
+  }
+  return onboardingComplete ? '/' : '/onboarding';
+}
+
 /// The production onboarding gate the router's redirect evaluates.
 ///
 /// `main.dart`'s root app installs a closure reading the app's live settings;

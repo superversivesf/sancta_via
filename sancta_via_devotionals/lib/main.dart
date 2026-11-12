@@ -26,7 +26,15 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final bool onboardingComplete = await readPersistedOnboardingComplete();
   appRouter = buildAppRouter(
-    initialLocation: onboardingComplete ? '/' : '/onboarding',
+    // The store read above IS the loaded path of the cold-start rule (the
+    // persisted truth was awaited before the first frame), so the live flag
+    // decides the entry route; `persistedEntry` is only read while a load is
+    // unresolved (see [decideColdStartRoute]).
+    initialLocation: decideColdStartRoute(
+      isLoaded: true,
+      onboardingComplete: onboardingComplete,
+      persistedEntry: '/',
+    ),
   );
   runApp(
     ProviderScope(
@@ -70,15 +78,21 @@ class _SanctaViaDevotionalsAppState
   void initState() {
     super.initState();
     // The onboarding gate (Task 19): the router's redirect re-reads the LIVE
-    // settings through this closure at every navigation. Until the async
-    // settings load resolved, the closure says "complete" — a pre-load
-    // default `onboardingComplete: false` may still be a returning user
-    // mid-load, whose entry route was already decided from the store in
-    // `main`; the redirect never holds the app in the walkthrough on
-    // guesswork. Installed once — the app runs for the process lifetime.
+    // settings through this closure at every navigation, and the PURE
+    // cold-start rule ([decideColdStartRoute]) answers. Until the async
+    // settings load resolved, the rule keeps the persisted entry — the app
+    // is already open where the store sent it, so the gate stays open; a
+    // loaded store saying incomplete is what closes it into the walkthrough.
+    // Installed once — the app runs for the process lifetime.
     appOnboardingGate = () =>
-        !ref.read(devotionsSettingsProvider.notifier).isLoaded ||
-        ref.read(onboardingCompleteProvider);
+        decideColdStartRoute(
+          isLoaded: ref.read(devotionsSettingsProvider.notifier).isLoaded,
+          onboardingComplete: ref.read(onboardingCompleteProvider),
+          // The gate's "persisted entry": the app is already open at the
+          // route `main` chose from the store.
+          persistedEntry: '/',
+        ) ==
+        '/';
     // Attach the tap listener BEFORE the first initialize: the cold-start
     // launch payload is emitted from initialize (the service buffers nothing,
     // so the listener must already be there).

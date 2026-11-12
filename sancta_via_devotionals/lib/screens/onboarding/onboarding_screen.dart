@@ -774,6 +774,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 'these any time in Practice.',
               ),
             ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 4),
+              child: Text(
+                'Turning a switch off here never removes a program you '
+                'already had enrolled — its enrollment and progress stay; '
+                'Practice manages removal.',
+              ),
+            ),
           ],
         ),
         for (final ContentPack pack in packs)

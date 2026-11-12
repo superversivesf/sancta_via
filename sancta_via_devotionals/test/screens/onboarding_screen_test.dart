@@ -333,6 +333,9 @@ void main() {
         find.byKey(const Key('routine_toggle_night_items')),
         findsOneWidget,
       );
+      // The round-1 minor: the routine card says switching off never removes
+      // an already-enrolled program.
+      expect(find.textContaining('never remove'), findsOneWidget);
       await _tapAndDrain(tester, find.byKey(const Key('onboarding_next')));
       expect(find.byKey(const Key('reminders_step')), findsOneWidget);
       expect(find.byKey(const Key('reminder_toggle_morning')), findsOneWidget);
@@ -853,6 +856,62 @@ void main() {
     );
   });
 
+  group('the cold-start rule', () {
+    test('an unresolved settings load keeps the persisted entry route', () {
+      // Fresh install: the store opened the walkthrough, and the pre-load
+      // live default (`onboardingComplete: false`) agrees.
+      expect(
+        decideColdStartRoute(
+          isLoaded: false,
+          onboardingComplete: false,
+          persistedEntry: '/onboarding',
+        ),
+        '/onboarding',
+      );
+      // Returning user: the pre-load live default is STILL `false`, but the
+      // persisted entry wins — the app must never bounce into the walkthrough
+      // before the store is read.
+      expect(
+        decideColdStartRoute(
+          isLoaded: false,
+          onboardingComplete: false,
+          persistedEntry: '/',
+        ),
+        '/',
+      );
+      // The branch itself: while un-loaded even a live "complete" cannot move
+      // the app off the persisted entry. Deleting the `!isLoaded` guard flips
+      // this to '/' and the pin fails (the red-able mechanism).
+      expect(
+        decideColdStartRoute(
+          isLoaded: false,
+          onboardingComplete: true,
+          persistedEntry: '/onboarding',
+        ),
+        '/onboarding',
+      );
+    });
+
+    test('once loaded, the live flag decides the entry route', () {
+      expect(
+        decideColdStartRoute(
+          isLoaded: true,
+          onboardingComplete: false,
+          persistedEntry: '/',
+        ),
+        '/onboarding',
+      );
+      expect(
+        decideColdStartRoute(
+          isLoaded: true,
+          onboardingComplete: true,
+          persistedEntry: '/onboarding',
+        ),
+        '/',
+      );
+    });
+  });
+
   group("the app router's onboarding gate", () {
     // A settled production chain under every gate probe: the screens the
     // router renders (Today, onboarding, settings) all consume providers.
@@ -1043,19 +1102,20 @@ void main() {
 
       // The notifier's async load is in flight at construction: the
       // in-memory state is the defaults (`onboardingComplete: false`) and
-      // `isLoaded` is false. main.dart's gate rule, evaluated here, treats
-      // that as complete — the pinned `!isLoaded ||` branch.
+      // `isLoaded` is false. The PURE cold-start rule (the one production's
+      // gate calls) keeps the persisted entry — no guesswork bounce.
       final DevotionsSettingsNotifier notifier = container.read(
         devotionsSettingsProvider.notifier,
       );
       expect(notifier.isLoaded, isFalse);
       expect(notifier.state.onboardingComplete, isFalse);
-      bool gate() =>
-          !container.read(devotionsSettingsProvider.notifier).isLoaded ||
-          container.read(onboardingCompleteProvider);
       expect(
-        gate(),
-        isTrue,
+        decideColdStartRoute(
+          isLoaded: notifier.isLoaded,
+          onboardingComplete: notifier.state.onboardingComplete,
+          persistedEntry: '/',
+        ),
+        '/',
         reason: 'an unresolved load must never be held in the walkthrough',
       );
 
