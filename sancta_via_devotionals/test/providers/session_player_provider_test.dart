@@ -130,6 +130,61 @@ List<String> _stepTexts(SessionScript script) {
 
 void main() {
   group('SessionPlayerController.startSession', () {
+    test(
+      'SessionPlayerState.day exposes the started day and round-trips',
+      () async {
+        // Fix round 1 (review finding 3): the additive `day` field — the
+        // session's calendar day, local midnight — so a deep link opened
+        // WITHOUT forDate still renders a meaningful day label. The snapshot
+        // round-trip is the persistence path: a resumed session carries the
+        // ORIGINAL started day, not the resume clock's day.
+        final ContentPack saturdays = _assetPack('five_first_saturdays');
+        final _FakeProgramRepository repository = _FakeProgramRepository(
+          packs: <ContentPack>[saturdays],
+        );
+        final DevotionalsDatabase database = _inMemoryDatabase();
+        final SessionPlayerController controller = SessionPlayerController(
+          repository: repository,
+          database: database,
+          clock: () => DateTime(2026, 12, 5, 8),
+        );
+        await controller.startSession(
+          'five_first_saturdays',
+          forDate: DateTime(2026, 12, 5),
+        );
+        expect(controller.state.day, DateTime(2026, 12, 5));
+        expect(controller.state.status, SessionPlayerStatus.active);
+
+        await controller.completeStep();
+        expect(controller.state.day, DateTime(2026, 12, 5));
+
+        // The resume publishes the snapshot's day, never the resume clock's
+        // day — and a different day's fresh start replaces it.
+        final SessionPlayerController resumed = SessionPlayerController(
+          repository: repository,
+          database: database,
+          clock: () => DateTime(2026, 12, 6, 20),
+          resumePackId: 'five_first_saturdays',
+        );
+        await resumed.ready;
+        expect(resumed.state.status, SessionPlayerStatus.active);
+        expect(resumed.state.day, DateTime(2026, 12, 5));
+
+        await controller.startSession(
+          'five_first_saturdays',
+          forDate: DateTime(2027, 1, 2),
+        );
+        expect(controller.state.day, DateTime(2027, 1, 2));
+
+        // No session loaded — no day.
+        expect(
+          SessionPlayerState.idle().day,
+          isNull,
+          reason: 'the idle sentinel carries no started day',
+        );
+      },
+    );
+
     test('an angelus walk completes and persists its JSON snapshot', () async {
       final ContentPack angelus = _assetPack('angelus');
       final _FakeProgramRepository repository = _FakeProgramRepository(

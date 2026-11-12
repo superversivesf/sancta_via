@@ -155,4 +155,54 @@ void main() {
       );
     },
   );
+
+  test(
+    'the app repository store flows current intentions through intentionsProvider',
+    () async {
+      // Fix round 1 (review finding 1): the intercession card's intentions
+      // readout was override-tested only; this pins the REAL production
+      // wiring — appProgramRepositoryProvider → repository.database
+      // .getAllIntentions() — with rows seeded into the app-repository
+      // store itself.
+      final DevotionalsDatabase database = DevotionalsDatabase(
+        open: _openInMemory,
+      );
+      final SqliteProgramRepository appRepository = SqliteProgramRepository(
+        database: database,
+      );
+      await database.insertIntention(
+        id: 'i1',
+        kind: 'intention',
+        text: 'For the sick',
+        createdAt: '2026-01-01T00:00:00Z',
+      );
+      await database.insertIntention(
+        id: 'i2',
+        kind: 'soul',
+        text: 'For grandpa',
+        createdAt: '2026-01-02T00:00:00Z',
+      );
+
+      final ProviderContainer container = ProviderContainer(
+        overrides: <Override>[
+          appProgramRepositoryProvider.overrideWithValue(appRepository),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final List<IntentionRow> rows = await container.read(
+        intentionsProvider.future,
+      );
+      // Oldest-first, both kinds (the readout renders every current
+      // intention).
+      expect(rows.map((IntentionRow r) => r.text), <String>[
+        'For the sick',
+        'For grandpa',
+      ]);
+      expect(rows.map((IntentionRow r) => r.kind), <String>[
+        'intention',
+        'soul',
+      ]);
+    },
+  );
 }

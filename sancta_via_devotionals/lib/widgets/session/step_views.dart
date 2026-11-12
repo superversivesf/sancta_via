@@ -497,6 +497,7 @@ class _RepetitionStepCard extends StatelessWidget {
         children: <Widget>[
           ?_stepHeader(step.title),
           Text(step.text.text),
+          _AttributionLine(text: step.text),
           const SizedBox(height: 12),
           Center(
             child: GestureDetector(
@@ -628,7 +629,10 @@ class _ReflectionStepCardState extends State<_ReflectionStepCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ?_stepHeader(widget.step.title),
-          if (widget.step.text != null) Text(widget.step.text!.text),
+          if (widget.step.text != null) ...<Widget>[
+            Text(widget.step.text!.text),
+            _AttributionLine(text: widget.step.text!),
+          ],
           const SizedBox(height: 12),
           Center(
             child: SizedBox(

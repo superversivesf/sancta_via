@@ -500,6 +500,9 @@ void main() {
       expect(find.text('Fifteen Minutes of Meditation'), findsOneWidget);
       expect(find.text('15:00'), findsOneWidget);
       expect(_continueEnabled(tester), isFalse);
+      // The meditation's attributed Fatima-request text carries its
+      // attribution line on the reflection card (fix round 1, finding 2).
+      expect(find.textContaining('Fatima 1917 request'), findsOneWidget);
       await tester.pump(const Duration(milliseconds: 30));
       expect(harness.controller.state.reflectionEndsAt, isNotNull);
 
@@ -579,6 +582,46 @@ void main() {
         findsOneWidget,
       );
       expect(harness.repository.progress['five_first_saturdays'], isNotNull);
+    },
+  );
+
+  testWidgets(
+    'the repetition card carries its attributed text\'s attribution line',
+    (WidgetTester tester) async {
+      await _pumpPlayer(
+        tester,
+        packId: 'mercy_hour',
+        packs: <ContentPack>[_assetPack('mercy_hour')],
+        startForDate: DateTime(2026, 12, 4),
+        openWithForDate: DateTime(2026, 12, 4),
+      );
+
+      // The Hour of Mercy prayer, then the short-phrase Diary repetition.
+      await _tap(
+        tester,
+        find.byKey(const Key('session_step_mercy-hour-prayer')),
+      );
+      expect(find.text('O Blood and Water'), findsOneWidget);
+      // Fix round 1 (finding 2): the repetition's attributed Diary text
+      // renders its attribution line, as the prayer/verse cards already do.
+      expect(find.textContaining('Diary of St. Faustina'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'the no-forDate open renders the state\'s started day as the day label',
+    (WidgetTester tester) async {
+      // Fix round 1 (finding 3): deep links without forDate still show a
+      // meaningful day label — SessionPlayerState.day (the session's own
+      // calendar day), formatted the same way the deep link's forDate is.
+      await _pumpPlayer(
+        tester,
+        packId: 'angelus',
+        packs: <ContentPack>[_assetPack('angelus')],
+        // The prewarmed session's day: 2026-12-05 local midnight.
+        startForDate: DateTime(2026, 12, 5),
+      );
+      expect(find.text('December 5, 2026'), findsOneWidget);
     },
   );
 

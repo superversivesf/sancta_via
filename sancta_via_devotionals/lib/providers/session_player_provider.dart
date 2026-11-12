@@ -152,9 +152,10 @@ enum SessionPlayerStatus {
 ///
 /// The pinned fields are [session], [checkpoints], [reflectionEndsAt], and
 /// [tokens]. [script] (the resolved, substituted script snapshot), [variant]
-/// (the day-variant snapshot), [status], [errorMessage], and
-/// [missingRequiredItems] are additive fields the UI needs to render the
-/// player; they never replace or reinterpret the pinned four.
+/// (the day-variant snapshot), [day] (the started calendar day — Task 11
+/// fix round 1), [status], [errorMessage], and [missingRequiredItems] are
+/// additive fields the UI needs to render the player; they never replace or
+/// reinterpret the pinned four.
 class SessionPlayerState {
   /// The engine cursor of the running session.
   final SessionState session;
@@ -176,6 +177,14 @@ class SessionPlayerState {
   /// the same day's data.
   final Map<String, dynamic> variant;
 
+  /// The calendar day the session was started for (local midnight), an
+  /// additive field Task 11's header renders when a deep link opens the
+  /// player WITHOUT its `forDate` parameter. It survives the active-session
+  /// snapshot's round trip (the resume publishes the snapshot's original
+  /// day, never the resume clock's day) and is null whenever no session is
+  /// loaded (idle/loading/error).
+  final DateTime? day;
+
   /// Where the player is in its lifecycle.
   final SessionPlayerStatus status;
 
@@ -194,6 +203,7 @@ class SessionPlayerState {
     this.reflectionEndsAt,
     this.tokens = const <String, String>{},
     this.variant = const <String, dynamic>{},
+    this.day,
     this.status = SessionPlayerStatus.idle,
     this.errorMessage,
     this.missingRequiredItems = const <String>[],
@@ -232,6 +242,7 @@ class SessionPlayerState {
   String toString() =>
       'SessionPlayerState(status: ${status.name}, '
       'stepIndex: ${session.stepIndex}/${session.stepCount}, '
+      'day: ${day == null ? '-' : _stamp(day!)}, '
       'checkpoints: $checkpoints, tokens: ${tokens.length}, '
       'missing: $missingRequiredItems)';
 }
@@ -920,6 +931,7 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
       reflectionEndsAt: active.reflectionEndsAt,
       tokens: active.tokens,
       variant: active.variant,
+      day: active.day,
       status: status,
       missingRequiredItems: ProgressService.missingRequiredItems(
         active.pack,

@@ -150,7 +150,9 @@ class _SessionPlayerScreenState extends ConsumerState<SessionPlayerScreen> {
   }
 
   /// The header's day label: the day variant's own title (the novena
-  /// variants carry theirs), else the day token, else the deep-linked date.
+  /// variants carry theirs), else the day token, else the session's started
+  /// day (the deep link's `forDate` when given, the additive
+  /// `SessionPlayerState.day` otherwise).
   String? _dayLabel(SessionPlayerState state) {
     final Object? variantTitle = state.variant['title'];
     if (variantTitle is String && variantTitle.isNotEmpty) {
@@ -160,12 +162,17 @@ class _SessionPlayerScreenState extends ConsumerState<SessionPlayerScreen> {
     if (dayToken != null && dayToken.isNotEmpty) {
       return 'Day $dayToken';
     }
-    final DateTime? forDate = widget.forDate;
-    if (forDate != null) {
-      final DateTime day = DateTime(forDate.year, forDate.month, forDate.day);
-      return '${_monthNames[day.month - 1]} ${day.day}, ${day.year}';
+    final DateTime? sessionDay = state.day ?? widget.forDate;
+    if (sessionDay != null) {
+      return _formatSessionDay(sessionDay);
     }
     return null;
+  }
+
+  /// The `MMMM d, yyyy` rendering of a local-midnight session day.
+  String _formatSessionDay(DateTime forDate) {
+    final DateTime day = DateTime(forDate.year, forDate.month, forDate.day);
+    return '${_monthNames[day.month - 1]} ${day.day}, ${day.year}';
   }
 
   /// The player's app bar with the attribution action for viewed text.
@@ -194,21 +201,12 @@ class _SessionPlayerScreenState extends ConsumerState<SessionPlayerScreen> {
   }
 
   /// "Back to Today": the root route — the Today deep link this screen is
-  /// reached from. Router-less hosts (plain `MaterialApp`) have no
-  /// `GoRouter` above them; there the fallback is a plain pop.
+  /// reached from. (Fix round 1, review finding 4: go_router 15 does not
+  /// throw on a missing router above a widget-test host — its assert fires
+  /// instead — so there is no catch-and-pop fallback to keep; every
+  /// production install carries the app router.)
   void _backToToday() {
-    try {
-      context.go('/');
-    } on GoError catch (e) {
-      AppLogger.warning(
-        'Back-to-Today could not resolve the router navigation — '
-            'falling back to a pop: $e',
-        'SESSION',
-      );
-      if (context.canPop()) {
-        context.pop();
-      }
-    }
+    context.go('/');
   }
 
   @override
