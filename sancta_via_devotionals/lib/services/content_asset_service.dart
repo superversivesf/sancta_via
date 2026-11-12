@@ -39,6 +39,31 @@
 // (Task 9 owns progress reconciliation; see _pruneRemovedPacks for the
 // invariant).
 //
+// Enrollment reconciliation (the Task-6/Task-15 seam): a version-changing seed
+// upserts the ASSET JSON over every bundled id, which would overwrite the
+// DERIVED rows the enrollment flow writes — a consecration's planned day 1, or
+// the 54-day novena's user-picked start date, would silently regress to the
+// fixture placeholder. Immediately AFTER the seed, this service re-applies
+// every stored enrollment: for each `enrollments` row whose pack id is still
+// in the bundle it decodes the stored params, asks Task 15's
+// [EnrollmentService] to derive the pack, and upserts that derived row under
+// the version the seed just stamped. The repair calls no `setMeta` (so
+// `meta.content_version` is never stamped twice) and never recurses into a
+// re-seed. It runs ONLY on the version-changing path: an unchanged version
+// skips both the seed and the repair.
+//
+// Repair-failure semantics (deliberate): the version is already stamped when
+// the repair runs, so a repair failure must neither abort the launch nor roll
+// the content back. Each id is isolated: unparsable stored params, a derive
+// [ArgumentError] (e.g. params the updated pack can no longer satisfy), or a
+// failed row write is logged loudly under the CONTENT tag and that id is
+// SKIPPED while the remaining enrollments reconcile. The seeded asset row
+// stays, the enrollment row stays as the durable source of truth, and the
+// version remains advanced. A skipped id is not retried until the next
+// version-changing migration or a fresh enrollment; user state is never
+// deleted. If the enrollment list itself cannot be read, the whole repair is
+// skipped with the same loud log — the seeded content is already correct.
+//
 // Ordering: the seeded catalog flows back through [SqliteProgramRepository
 // .loadPacks], which returns the store's `packs.id ASC` order — the bundle's
 // filename/manifest order is the parse order, not an exposed ordering
@@ -54,6 +79,7 @@ import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart';
 import '../database/devotionals_database.dart';
 import '../repositories/program_repository.dart';
 import '../utils/logger.dart';
+import 'enrollment_service.dart';
 
 /// Log tag for the content pipeline.
 const String _tag = 'CONTENT';
@@ -79,15 +105,22 @@ class ContentAssetService {
   /// against (the real [rootBundle] in the app; a staged fake in tests).
   /// [repository] is seeded and read back through; [database] is the same
   /// underlying store, used for the removed-pack reconciliation only.
+  /// [enrollmentService] optionally overrides the Task-15 repair seam (tests
+  /// count its derive calls); it must share [repository]'s store.
   ContentAssetService({
     required this.assets,
     required this.repository,
     required this.database,
-  });
+    EnrollmentService? enrollmentService,
+  }) : _enrollmentService =
+           enrollmentService ?? EnrollmentService(repository: repository);
 
   final AssetBundle assets;
   final SqliteProgramRepository repository;
   final DevotionalsDatabase database;
+
+  /// The Task-15 derive seam used by the post-seed enrollment repair.
+  final EnrollmentService _enrollmentService;
 
   /// The bundle directory the pack assets live under.
   static const String _packAssetPrefix = 'assets/content/packs/';
@@ -96,8 +129,10 @@ class ContentAssetService {
   /// `$_packAssetPrefix*.json` declared in the asset manifest, computes the
   /// bundle's content version, and — only when it differs from the stored
   /// `meta.content_version` — prunes store rows absent from the bundle
-  /// (BEFORE the stamp, fix round 1) and then seeds the repository. Returns
-  /// the whole catalog in the repository's stable id order.
+  /// (BEFORE the stamp, fix round 1), then seeds the repository, then
+  /// re-applies the stored enrollments over the freshly seeded rows (the
+  /// Task-15 repair; see the library header). Returns the whole catalog in the
+  /// repository's stable id order.
   ///
   /// An unparseable pack asset (or a bundle with none declared, or two
   /// assets declaring one pack id) throws a [ContentValidationException]
@@ -105,7 +140,9 @@ class ContentAssetService {
   /// failure propagates after logging — the version stamp only lands after
   /// both completed, so a failed migration leaves the previous version in
   /// place and the next launch retries the whole thing rather than
-  /// permanently claiming a completed one.
+  /// permanently claiming a completed one. An enrollment-repair failure is
+  /// DIFFERENT: it runs after the stamp, so it logs and skips the affected id
+  /// (never aborting the migration or re-stamping the version).
   Future<List<ContentPack>> ensureContentLoaded() async {
     final List<_AssetPack> loaded = await _loadPackAssets();
     final String version = _contentVersion(loaded);
@@ -121,15 +158,20 @@ class ContentAssetService {
     // order would make a failed/killed prune permanent.) The prune also
     // mutates the store without touching the Task-5 cache generation, so
     // running it before the seed keeps [SqliteProgramRepository.seedPacks]'s
-    // clearCache() the LAST mutation: any loadPacks that raced the prune and
+    // clearCache() after the prune; any loadPacks that raced the prune and
     // cached the pre-prune catalog is evicted by the seed instead of being
-    // cached permanently.
+    // cached permanently. The enrollment repair below is the only later
+    // mutation and clears the cache itself after a derived-row write.
     await _pruneRemovedPacks(<String>{
       for (final _AssetPack assetPack in loaded) assetPack.pack.id,
     });
-    await repository.seedPacks(<ContentPack>[
+    final List<ContentPack> bundlePacks = <ContentPack>[
       for (final _AssetPack assetPack in loaded) assetPack.pack,
-    ], packVersion: version);
+    ];
+    await repository.seedPacks(bundlePacks, packVersion: version);
+    // The seed upserted the ASSET JSON over every bundled id; the enrollment
+    // repair now puts the user's derived rows back on top (Task-15 seam).
+    await _reconcileEnrolledPacks(bundlePacks, version);
     return repository.loadPacks();
   }
 
@@ -290,6 +332,103 @@ class ContentAssetService {
         );
         rethrow;
       }
+    }
+  }
+
+  /// Re-applies the stored enrollment choices over the freshly seeded asset
+  /// rows (the Task-15 derived-pack seam).
+  ///
+  /// For each enrollment row whose pack id is still in [bundlePacks], decodes
+  /// `params_json`, asks [EnrollmentService.derivePack] for the derived pack,
+  /// and upserts the derived row under [version] (the version the seed just
+  /// stamped; `setMeta` is deliberately never called here). A commitment's
+  /// derive returns the bundle pack unchanged, so nothing is rewritten.
+  ///
+  /// Every failure is isolated to its id and loud: a bad params JSON, a derive
+  /// [ArgumentError], or a failed row write logs under CONTENT and skips that
+  /// id; the rest reconcile and the migration completes. An enrollment row for
+  /// a pack no longer in the bundle is skipped (its pack row was pruned; the
+  /// user row stays outside this service's remit). A failure to LIST the
+  /// enrollments logs and skips the whole repair — the seeded content is
+  /// already correct and the version is stamped.
+  Future<void> _reconcileEnrolledPacks(
+    List<ContentPack> bundlePacks,
+    String version,
+  ) async {
+    final Map<String, ContentPack> byId = <String, ContentPack>{
+      for (final ContentPack pack in bundlePacks) pack.id: pack,
+    };
+
+    final List<EnrollmentRow> enrollments;
+    try {
+      enrollments = await database.getAllEnrollments();
+    } catch (e, stackTrace) {
+      AppLogger.error(
+        'Failed to read enrollments for the post-update repair; the seeded '
+        'catalog stays authoritative this launch',
+        e,
+        stackTrace,
+        _tag,
+      );
+      return;
+    }
+
+    bool repaired = false;
+    for (final EnrollmentRow row in enrollments) {
+      final ContentPack? assetPack = byId[row.packId];
+      if (assetPack == null) {
+        AppLogger.debug(
+          'Enrollment for "${row.packId}" has no bundled pack (removed '
+          'content); leaving the user row untouched',
+          _tag,
+        );
+        continue;
+      }
+      try {
+        final Object? decoded = jsonDecode(row.paramsJson);
+        if (decoded is! Map<String, dynamic>) {
+          throw FormatException(
+            'enrollment params for "${row.packId}" are not a JSON object',
+          );
+        }
+        final ContentPack derived = await _enrollmentService.derivePack(
+          pack: assetPack,
+          params: decoded,
+        );
+        if (identical(derived, assetPack)) {
+          // No derivation applies (a commitment or routine pack): the seeded
+          // asset row is already the enrolled shape.
+          continue;
+        }
+        await database.upsertPack(
+          id: assetPack.id,
+          json: jsonEncode(derived.toJson()),
+          packVersion: version,
+          embeddedAt: DateTime.now().toUtc().toIso8601String(),
+        );
+        repaired = true;
+        AppLogger.info(
+          'Re-applied the enrollment parameters of "${assetPack.id}" over '
+          'the updated content',
+          _tag,
+        );
+      } on Object catch (e, stackTrace) {
+        // The version stamp is already written: a broken repair must be loud
+        // but must not abort the launch or roll content back. The seeded asset
+        // row and the durable enrollment row both stay.
+        AppLogger.error(
+          'Failed to re-apply enrollment parameters for "${row.packId}" over '
+          'the updated content; keeping the seeded pack row this launch',
+          e,
+          stackTrace,
+          _tag,
+        );
+      }
+    }
+    if (repaired) {
+      // A targeted row write bypassed the Task-5 cache generation; evict any
+      // catalog read that raced it so the returned catalog is the repaired one.
+      repository.clearCache();
     }
   }
 }

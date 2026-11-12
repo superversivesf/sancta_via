@@ -25,10 +25,17 @@
 //   version stamp (fix round 1): a failed prune leaves the version
 //   unadvanced (the next call retries) and the prune-before-stamp order
 //   keeps the post-prune catalog authoritative,
-// - the seeded catalog reads back whole through the repository.
+// - the seeded catalog reads back whole through the repository,
+// - a version-changing re-seed re-applies every enrolled series'
+//   enrollment params over the asset JSON (the Task-15 derived start date is
+//   not clobbered), without stamping `meta.content_version` a second time,
+// - a broken enrollment repair is logged and skipped per id while the rest
+//   reconcile and the migration completes,
+// - an unchanged version skips both the seed and the repair.
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart';
@@ -36,6 +43,7 @@ import 'package:sancta_via_devotionals/database/database_migration_service.dart'
 import 'package:sancta_via_devotionals/database/devotionals_database.dart';
 import 'package:sancta_via_devotionals/repositories/program_repository.dart';
 import 'package:sancta_via_devotionals/services/content_asset_service.dart';
+import 'package:sancta_via_devotionals/services/enrollment_service.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -192,6 +200,46 @@ class _SeedCountingRepository extends SqliteProgramRepository {
 /// A fresh FFI in-memory store open factory (isolated per call).
 Future<Database> _openInMemory() =>
     openDatabase(inMemoryDatabasePath, singleInstance: false);
+
+/// Reads one committed asset pack document (the fixture-shaped JSON the
+/// bundle carries).
+ContentPack _assetPack(String name) {
+  return PackLoader.loadFromJsonString(
+    File('assets/content/packs/$name.json').readAsStringSync(),
+  );
+}
+
+/// A store that counts `setMeta` calls, pinning that the post-seed enrollment
+/// repair writes pack rows only — it must never re-stamp
+/// `meta.content_version`.
+class _MetaCountingDatabase extends DevotionalsDatabase {
+  _MetaCountingDatabase({required super.open});
+
+  int setMetaCalls = 0;
+
+  @override
+  Future<void> setMeta(String key, String value) {
+    setMetaCalls++;
+    return super.setMeta(key, value);
+  }
+}
+
+/// An [EnrollmentService] that counts derive calls, so "reconcile only on a
+/// version-changing migration" is observable.
+class _DeriveCountingEnrollmentService extends EnrollmentService {
+  _DeriveCountingEnrollmentService({required super.repository});
+
+  int deriveCalls = 0;
+
+  @override
+  Future<ContentPack> derivePack({
+    required ContentPack pack,
+    required Map<String, dynamic> params,
+  }) {
+    deriveCalls++;
+    return super.derivePack(pack: pack, params: params);
+  }
+}
 
 /// A store whose `deletePack` fails until [pruneBroken] flips — the retry pin
 /// for prune-before-stamp reconciliation (fix round 1).
@@ -565,5 +613,267 @@ void main() {
         expect(repository.seedPacksCalls, 1);
       },
     );
+
+    test(
+      'a content version change re-applies enrollment params over the seeded '
+      'asset JSON for enrolled series packs, without re-stamping the version',
+      () async {
+        final _MetaCountingDatabase database = _MetaCountingDatabase(
+          open: _openInMemory,
+        );
+        final _SeedCountingRepository repository = _SeedCountingRepository(
+          database: database,
+        );
+        final ContentAssetService service = ContentAssetService(
+          assets: _FakeAssetBundle(assets: _stagedAssets()),
+          repository: repository,
+          database: database,
+        );
+
+        await service.ensureContentLoaded();
+        expect(database.setMetaCalls, 1, reason: 'the first seed stamps once');
+
+        // Enroll through the real Task-15 service: both derived rows and
+        // their JSON params land in the store.
+        final EnrollmentService enrollment = EnrollmentService(
+          repository: repository,
+        );
+        await enrollment.enroll(
+          pack: _assetPack('novena_54_day'),
+          params: <String, dynamic>{
+            'startDate': '2026-12-01',
+            'restartPolicy': 'strict',
+          },
+        );
+        await enrollment.enroll(
+          pack: _assetPack('total_consecration'),
+          params: <String, dynamic>{'feast': '2028-03-25'},
+        );
+        final String? oldVersion = await repository.persistedPackVersion();
+
+        // A content update (the angelus title bump changes the version)
+        // re-seeds every bundled id with the ASSET JSON — the hazard this
+        // repair exists for.
+        final ContentAssetService bumpedService = ContentAssetService(
+          assets: _FakeAssetBundle(assets: _stagedAssetsWithBumpedAngelus()),
+          repository: repository,
+          database: database,
+        );
+        final List<ContentPack> catalog = await bumpedService
+            .ensureContentLoaded();
+
+        final String? newVersion = await repository.persistedPackVersion();
+        expect(newVersion, isNotNull);
+        expect(newVersion, isNot(equals(oldVersion)));
+        expect(repository.seedPacksCalls, 2);
+        expect(
+          database.setMetaCalls,
+          2,
+          reason:
+              'the repair writes pack rows only: the version stamp must stay '
+              'the seed\'s single write',
+        );
+
+        // The enrolled series carry their DERIVED start dates again.
+        final PackRow novenaRow = (await database.getPack('novena_54_day'))!;
+        final ContentPack novenaStored = PackLoader.loadFromJsonString(
+          novenaRow.json,
+        );
+        expect(
+          (novenaStored.schedule as SessionSeriesSpec).startDate,
+          DateTime(2026, 12, 1),
+        );
+        expect(
+          jsonEncode(novenaStored.reminders),
+          jsonEncode(_assetPack('novena_54_day').reminders),
+        );
+
+        final PackRow consecrationRow = (await database.getPack(
+          'total_consecration',
+        ))!;
+        final ContentPack consecrationStored = PackLoader.loadFromJsonString(
+          consecrationRow.json,
+        );
+        expect(
+          (consecrationStored.schedule as SessionSeriesSpec).startDate,
+          DateTime(2028, 2, 21),
+        );
+        expect(
+          jsonEncode(consecrationStored.reminders),
+          jsonEncode(_assetPack('total_consecration').reminders),
+        );
+
+        // The repaired rows still carry the NEW seeded version; the
+        // enrollment params themselves are untouched.
+        expect(novenaRow.packVersion, newVersion);
+        expect(consecrationRow.packVersion, newVersion);
+        expect(
+          await repository.enrollmentParamsFor('novena_54_day'),
+          <String, dynamic>{
+            'startDate': '2026-12-01',
+            'restartPolicy': 'strict',
+          },
+        );
+        expect(
+          await repository.enrollmentParamsFor('total_consecration'),
+          <String, dynamic>{
+            'feast': '2028-03-25',
+            'startDate': '2028-02-21',
+            'day34': '2028-03-25',
+          },
+        );
+
+        // An unenrolled id keeps the asset document itself (the bumped
+        // title), proving the repair is enrollment-scoped.
+        final ContentPack angelus = catalog.singleWhere(
+          (ContentPack pack) => pack.id == 'angelus',
+        );
+        expect(angelus.title, contains('(bumped)'));
+        expect(
+          PackLoader.loadFromJsonString(
+            (await database.getPack('angelus'))!.json,
+          ).title,
+          contains('(bumped)'),
+        );
+      },
+    );
+
+    test('a broken enrollment repair is logged and skipped per id while the '
+        'rest reconcile and the version advances', () async {
+      final List<String> logs = <String>[];
+      final DebugPrintCallback originalDebugPrint = debugPrint;
+      debugPrint = (String? message, {int? wrapWidth}) {
+        if (message != null) {
+          logs.add(message);
+        }
+      };
+      addTearDown(() => debugPrint = originalDebugPrint);
+
+      final (
+        DevotionalsDatabase database,
+        _SeedCountingRepository repository,
+        ContentAssetService service,
+      ) = await _openService(
+        _stagedAssets(),
+      );
+      await service.ensureContentLoaded();
+
+      // One repairable enrollment and one whose params cannot derive.
+      final EnrollmentService enrollment = EnrollmentService(
+        repository: repository,
+      );
+      await enrollment.enroll(
+        pack: _assetPack('total_consecration'),
+        params: <String, dynamic>{'feast': '2028-03-25'},
+      );
+      await repository.enroll('novena_54_day', <String, dynamic>{
+        'startDate': 'not-a-date',
+        'restartPolicy': 'strict',
+      });
+      final String? oldVersion = await repository.persistedPackVersion();
+
+      final ContentAssetService bumpedService = ContentAssetService(
+        assets: _FakeAssetBundle(assets: _stagedAssetsWithBumpedAngelus()),
+        repository: repository,
+        database: database,
+      );
+      final List<ContentPack> catalog = await bumpedService
+          .ensureContentLoaded();
+
+      // The migration completes: the version advances and the catalog is
+      // whole even though one repair failed.
+      final String? newVersion = await repository.persistedPackVersion();
+      expect(newVersion, isNotNull);
+      expect(newVersion, isNot(equals(oldVersion)));
+      expect(catalog, hasLength(_packFilenames.length));
+
+      // The valid enrollment was repaired...
+      final ContentPack consecrationStored = PackLoader.loadFromJsonString(
+        (await database.getPack('total_consecration'))!.json,
+      );
+      expect(
+        (consecrationStored.schedule as SessionSeriesSpec).startDate,
+        DateTime(2028, 2, 21),
+      );
+
+      // ...while the broken one keeps the seeded asset row, and its
+      // enrollment row is untouched as the durable source for a later
+      // repair or re-enrollment.
+      final PackRow novenaRow = (await database.getPack('novena_54_day'))!;
+      expect(
+        ((PackLoader.loadFromJsonString(novenaRow.json)).schedule
+                as SessionSeriesSpec)
+            .startDate,
+        DateTime(2026, 11, 10),
+      );
+      expect(
+        await repository.enrollmentParamsFor('novena_54_day'),
+        <String, dynamic>{'startDate': 'not-a-date', 'restartPolicy': 'strict'},
+      );
+      expect(
+        logs.any(
+          (String line) => line.contains(
+            'Failed to re-apply enrollment parameters for "novena_54_day"',
+          ),
+        ),
+        isTrue,
+        reason: 'a broken repair must be loud, never silent',
+      );
+    });
+
+    test('an unchanged content version skips both the seed and the enrollment '
+        'repair', () async {
+      final DevotionalsDatabase database = DevotionalsDatabase(
+        open: _openInMemory,
+      );
+      final _SeedCountingRepository repository = _SeedCountingRepository(
+        database: database,
+      );
+      // An enrollment that predates the first migration: the first seed
+      // repairs it, the unchanged second call must not even derive.
+      await repository.enroll('novena_54_day', <String, dynamic>{
+        'startDate': '2026-12-01',
+        'restartPolicy': 'strict',
+      });
+      final _DeriveCountingEnrollmentService enrollment =
+          _DeriveCountingEnrollmentService(repository: repository);
+      final ContentAssetService service = ContentAssetService(
+        assets: _FakeAssetBundle(assets: _stagedAssets()),
+        repository: repository,
+        database: database,
+        enrollmentService: enrollment,
+      );
+
+      await service.ensureContentLoaded();
+      expect(repository.seedPacksCalls, 1);
+      expect(enrollment.deriveCalls, 1);
+
+      final List<PackRow> before = await database.getAllPacks();
+      final List<ContentPack> second = await service.ensureContentLoaded();
+
+      expect(repository.seedPacksCalls, 1, reason: 'no re-seed');
+      expect(
+        enrollment.deriveCalls,
+        1,
+        reason:
+            'reconcile-on-reseed only: an unchanged version derives '
+            'nothing',
+      );
+      final List<PackRow> after = await database.getAllPacks();
+      expect(
+        after.map((PackRow row) => row.embeddedAt),
+        before.map((PackRow row) => row.embeddedAt),
+        reason: 'matching versions leave every row untouched',
+      );
+      expect(second, hasLength(_packFilenames.length));
+      final ContentPack novenaStored = PackLoader.loadFromJsonString(
+        (await database.getPack('novena_54_day'))!.json,
+      );
+      expect(
+        (novenaStored.schedule as SessionSeriesSpec).startDate,
+        DateTime(2026, 12, 1),
+        reason: 'the first migration\'s repaired row survives the no-op run',
+      );
+    });
   });
 }
