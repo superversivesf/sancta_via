@@ -363,6 +363,14 @@ void main() {
       final List<SessionStep> steps = pack.session.steps;
       final VerseStep placeholder = steps.first as VerseStep;
       expect(placeholder.versicle, "Today's readings");
+      // The verse step is USER-facing (step_views renders it as V./R.): the
+      // response must read as prayer guidance, never as authoring copy — no
+      // present-tense app-capability claims and no pointer at the pack's
+      // authoring note.
+      expect(
+        placeholder.response,
+        'Read today\'s readings from your Bible, slowly and attentively.',
+      );
 
       expect(steps.whereType<ReflectionStep>().length, 4);
       final PrayerStep closing = steps.last as PrayerStep;

@@ -12,8 +12,9 @@
 // ## Sections
 //
 // * [TodayAssembly.morning] — every enrolled pack's `TimeOfDaySpec` anchor in
-//   the 06:00–11:59 window (the Angelus' morning anchor and, once the routine
-//   packs ship, the Morning Offering);
+//   the 06:00–11:59 window (the Angelus' morning anchor and the Task-21
+//   routine packs' morning-side anchors — the 06:00 Morning Offering, the
+//   07:00 fixed morning set, the 09:00 Lectio, the 11:45 meal grace);
 // * [TodayAssembly.anchors] — the 12:00–16:59 anchors, the Hour of Mercy
 //   included: the pinned five-section contract keeps the 3pm anchor in
 //   Anchors, and the screen partitions it out (`anchor!.hour == 15` /

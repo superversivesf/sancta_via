@@ -24,9 +24,10 @@
 //   pack). Onboarding only ADDS anchors: a switch-off of a program the user
 //   already had enrolled is a local UI choice and the enrollment persists
 //   (Practice owns removal); only a pack this run enrolled is un-enrolled on
-//   switch-off (fix round 1). The brief's Morning Offering / Examen are not
-//   seeded packs yet, so they appear here exactly when the catalog carries
-//   them — the catalog is the authority, nothing is hard-coded;
+//   switch-off (fix round 1). Task 21 seeded the authored routine packs (the
+//   Morning Offering, Daily Examen, Lectio Divina, Meal & Night Prayers, and
+//   the fixed morning/night sets), so the toggles surface them straight from
+//   the catalog — the catalog is the authority, nothing is hard-coded;
 // * **reminders** — the morning/evening consent toggles. Enabling one is the
 //   consent that requests permission: the service's own `initialize` (Task
 //   18's seam — the plugin's permission request lives there, idempotent, so
