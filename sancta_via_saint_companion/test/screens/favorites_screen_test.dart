@@ -153,6 +153,58 @@ void main() {
   });
 
   testWidgets(
+    'a favorite slug the database no longer resolves is ignored gracefully',
+    (WidgetTester tester) async {
+      // Missing-slug ruling (favorites_screen.dart): a settings slug that
+      // prewarms to AsyncData(null) — possible only across a data-asset
+      // reset — is IGNORED instead of rendering a broken row or crashing.
+      await pumpFavoritesScreen(
+        tester,
+        prefsSeed: _prefsSeed(
+          favorites: <String>['anthony-of-padua', 'no-such-slug'],
+        ),
+        preWarmSlugs: const <String>['anthony-of-padua', 'no-such-slug'],
+      );
+
+      // The resolvable favorite renders; the unknown slug renders nothing.
+      expect(
+        find.byKey(const Key('favorite_row_anthony-of-padua')),
+        findsOneWidget,
+      );
+      expect(find.text('St. Anthony of Padua'), findsOneWidget);
+      expect(find.byKey(const Key('favorite_row_no-such-slug')), findsNothing);
+      expect(
+        find.byKey(const Key('favorite_remove_no-such-slug')),
+        findsNothing,
+      );
+      // The ignored slug misclassified into NO section state either: not
+      // empty, not error, not loading — the happy path filtered it out.
+      expect(find.byKey(_favoritesEmptyKey), findsNothing);
+      expect(find.byKey(_favoritesErrorKey), findsNothing);
+      expect(find.byKey(const Key('favorites_loading_state')), findsNothing);
+    },
+  );
+
+  testWidgets(
+    'an all-unknown favorites list renders only the empty section wrapper',
+    (WidgetTester tester) async {
+      // Zero-row edge: EVERY favorite slug resolves null, so the section
+      // wrapper renders with zero rows — deliberately NOT the empty state
+      // (the user has favorites; they are merely unresolvable).
+      await pumpFavoritesScreen(
+        tester,
+        prefsSeed: _prefsSeed(favorites: <String>['no-such-slug', 'also-gone']),
+        preWarmSlugs: const <String>['no-such-slug', 'also-gone'],
+      );
+
+      expect(find.byKey(_favoritesSectionKey), findsOneWidget);
+      expect(find.byKey(_favoritesEmptyKey), findsNothing);
+      expect(find.byKey(_favoritesErrorKey), findsNothing);
+      expect(find.byType(IconButton), findsNothing);
+    },
+  );
+
+  testWidgets(
     'tapping a row\'s remove button unfavorites it immediately and leaves the rest',
     (WidgetTester tester) async {
       final ProviderContainer container = await pumpFavoritesScreen(
