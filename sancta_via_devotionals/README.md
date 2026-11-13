@@ -145,6 +145,22 @@ addition, or removal triggers a one-shot re-seed. Enrollment-derived schedules
 (e.g. a novena's user-picked start date) are re-applied after a re-seed, so user
 state is never regressed.
 
+## Deferred content work (ledger)
+
+Two content features are deliberately NOT implemented; they are ledgered here
+rather than faked in the app:
+
+- **Lectio Divina readings.** The `lectio_divina` routine pack ships its
+  authored prayer text, but the reading-per-day feature (selecting and
+  rendering scripture for the day) is deferred content work. The
+  `bible_data` / `bible_data_riverpod` path dependencies stay in place for it;
+  no screen reads them yet.
+- **Promises and indulgence notes.** The packs carry no per-devotion promise
+  or indulgence text. Authoring that content — with the sources/licenses the
+  engine's `PrayerText` shape requires — is deferred; the app must not invent
+  or paraphrase it. (The Progress tab's indulgence explainer is generic and
+  source-attributed separately.)
+
 ## Architecture
 
 - `lib/main.dart` — application entry point (root `ProviderScope` →

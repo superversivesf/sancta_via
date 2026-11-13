@@ -48,34 +48,35 @@ String mysterySetFor(int dayIndex) {
 /// the flower follows the set: snow-white buds = joyful, blood red roses =
 /// sorrowful, full-blown roses = glorious). The widely circulated 54-day
 /// novena text's decade formulas, verbatim, virtues included.
-const Map<String, Map<String, String>> decadeFormulas = <String, Map<String, String>>{
-  'joyful': <String, String>{
-    'petition':
-        'I bind these snow-white buds with a petition for the virtue of '
-        'humility and humbly lay this bouquet at thy feet.',
-    'thanksgiving':
-        'I bind these snow-white buds with a thanksgiving for the virtue '
-        'of humility and humbly lay this bouquet at thy feet.',
-  },
-  'sorrowful': <String, String>{
-    'petition':
-        'I bind these blood red roses with a petition for the virtue of '
-        'resignation to the will of God and humbly lay this bouquet at '
-        'thy feet.',
-    'thanksgiving':
-        'I bind these blood red roses with a thanksgiving for the virtue '
-        'of resignation to the will of God and humbly lay this bouquet '
-        'at thy feet.',
-  },
-  'glorious': <String, String>{
-    'petition':
-        'I bind these full-blown roses with a petition for the virtue of '
-        'faith and humbly lay this bouquet at thy feet.',
-    'thanksgiving':
-        'I bind these full-blown roses with a thanksgiving for the virtue '
-        'of faith and humbly lay this bouquet at thy feet.',
-  },
-};
+const Map<String, Map<String, String>> decadeFormulas =
+    <String, Map<String, String>>{
+      'joyful': <String, String>{
+        'petition':
+            'I bind these snow-white buds with a petition for the virtue of '
+            'humility and humbly lay this bouquet at thy feet.',
+        'thanksgiving':
+            'I bind these snow-white buds with a thanksgiving for the virtue '
+            'of humility and humbly lay this bouquet at thy feet.',
+      },
+      'sorrowful': <String, String>{
+        'petition':
+            'I bind these blood red roses with a petition for the virtue of '
+            'resignation to the will of God and humbly lay this bouquet at '
+            'thy feet.',
+        'thanksgiving':
+            'I bind these blood red roses with a thanksgiving for the virtue '
+            'of resignation to the will of God and humbly lay this bouquet '
+            'at thy feet.',
+      },
+      'glorious': <String, String>{
+        'petition':
+            'I bind these full-blown roses with a petition for the virtue of '
+            'faith and humbly lay this bouquet at thy feet.',
+        'thanksgiving':
+            'I bind these full-blown roses with a thanksgiving for the virtue '
+            'of faith and humbly lay this bouquet at thy feet.',
+      },
+    };
 
 /// The traditional virtue caption of the day's first chosen mystery, per
 /// mystery set (identical across the two phases).
@@ -200,7 +201,9 @@ void main() {
       expect(p.variants, hasLength(57));
 
       final List<Map<String, dynamic>> dayVariants = p.variants
-          .where((Map<String, dynamic> variant) => variant.containsKey('dayIndex'))
+          .where(
+            (Map<String, dynamic> variant) => variant.containsKey('dayIndex'),
+          )
           .toList();
       expect(dayVariants, hasLength(54));
 
@@ -217,7 +220,8 @@ void main() {
 
       // The three documentation variants ride last, without a dayIndex.
       final List<String> trailingIds = <String>[
-        for (int i = 54; i < p.variants.length; i++) p.variants[i]['id']! as String,
+        for (int i = 54; i < p.variants.length; i++)
+          p.variants[i]['id']! as String,
       ];
       expect(trailingIds, <String>['strict', 'permissive', 'include-luminous']);
       for (int i = 54; i < p.variants.length; i++) {
@@ -242,35 +246,37 @@ void main() {
       expect(luminous['note'], isNotEmpty);
     });
 
-    test('phase mapping and per-day mystery cycle sweep across all 54 days',
-        () {
-      for (int day = 1; day <= 54; day++) {
-        final Map<String, dynamic> variant = dayVariant(day);
-        expect(variant['id'], 'day-$day', reason: 'day $day');
-        expect(variant['phase'], phaseFor(day), reason: 'day $day');
-        expect(variant['mysterySet'], mysterySetFor(day), reason: 'day $day');
-        // The day's traditional decade formula follows its set and phase,
-        // and its virtue caption follows its set.
-        expect(
-          variant['petition'],
-          decadeFormulas[mysterySetFor(day)]![phaseFor(day)],
-          reason: 'day $day petition formula',
-        );
-        expect(
-          variant['virtue'],
-          decadeVirtues[mysterySetFor(day)],
-          reason: 'day $day virtue caption',
-        );
-        // Variant texts stay token-free: the sanctioned {{day}} token is
-        // not needed (the day rides the dayIndex) and no other token is
-        // ever invented.
-        expect(
-          variant['petition']! as String,
-          isNot(contains('{{')),
-          reason: 'day $day petition must be token-free',
-        );
-      }
-    });
+    test(
+      'phase mapping and per-day mystery cycle sweep across all 54 days',
+      () {
+        for (int day = 1; day <= 54; day++) {
+          final Map<String, dynamic> variant = dayVariant(day);
+          expect(variant['id'], 'day-$day', reason: 'day $day');
+          expect(variant['phase'], phaseFor(day), reason: 'day $day');
+          expect(variant['mysterySet'], mysterySetFor(day), reason: 'day $day');
+          // The day's traditional decade formula follows its set and phase,
+          // and its virtue caption follows its set.
+          expect(
+            variant['petition'],
+            decadeFormulas[mysterySetFor(day)]![phaseFor(day)],
+            reason: 'day $day petition formula',
+          );
+          expect(
+            variant['virtue'],
+            decadeVirtues[mysterySetFor(day)],
+            reason: 'day $day virtue caption',
+          );
+          // Variant texts stay token-free: the sanctioned {{day}} token is
+          // not needed (the day rides the dayIndex) and no other token is
+          // ever invented.
+          expect(
+            variant['petition']! as String,
+            isNot(contains('{{')),
+            reason: 'day $day petition must be token-free',
+          );
+        }
+      },
+    );
 
     test('Review Focus 4: day 27 petition / day 28 thanksgiving boundary, '
         'day 54 series end, day 55 not due', () {
@@ -307,15 +313,13 @@ void main() {
       // Series end: day 54 is due as dayIndex 54 and day 55 is not due —
       // no index overflow.
       expect(
-        pack()
-            .schedule
+        pack().schedule
             .resolve(DateTime(2027, 1, 2), const ScheduleContext())
             .dayIndex,
         54,
       );
       expect(
-        pack()
-            .schedule
+        pack().schedule
             .resolve(DateTime(2027, 1, 3), const ScheduleContext())
             .due,
         isFalse,
@@ -514,8 +518,8 @@ void main() {
 
       // Thanksgiving opening: the same crown offered gratefully, asking
       // now to receive thanksgiving for the favor already given.
-      final String thanksgivingOpening = p
-          .content['thanksgiving-opening']!.text;
+      final String thanksgivingOpening =
+          p.content['thanksgiving-opening']!.text;
       expect(
         thanksgivingOpening,
         'Hail, Queen of the Most Holy Rosary, my Mother Mary, hail! At thy '
@@ -540,8 +544,8 @@ void main() {
         'Look with favor upon my gift, and in thy love obtain for me '
         '(specify request). Amen.',
       );
-      final String thanksgivingClosing = p
-          .content['thanksgiving-closing']!.text;
+      final String thanksgivingClosing =
+          p.content['thanksgiving-closing']!.text;
       expect(
         thanksgivingClosing,
         'Sweet Mother Mary, I offer thee this Spiritual Communion to bind '
@@ -554,37 +558,46 @@ void main() {
       // text's final closing prayer), without the folded V./R. exchange
       // (which the session's own verse pair carries).
       final String collect = p.content['novena-closing']!.text;
-      expect(collect, startsWith('Let us pray. O God, whose only-begotten '
-          'Son, by His life, death, and resurrection, has purchased for us '
-          'the rewards of eternal life'));
       expect(
         collect,
-        contains('meditating upon these mysteries of the most Holy Rosary '
-            'of the Blessed Virgin Mary, we may imitate what they contain '
-            'and obtain what they promise'),
+        startsWith(
+          'Let us pray. O God, whose only-begotten '
+          'Son, by His life, death, and resurrection, has purchased for us '
+          'the rewards of eternal life',
+        ),
+      );
+      expect(
+        collect,
+        contains(
+          'meditating upon these mysteries of the most Holy Rosary '
+          'of the Blessed Virgin Mary, we may imitate what they contain '
+          'and obtain what they promise',
+        ),
       );
       expect(collect, endsWith('through the same Christ our Lord. Amen.'));
       expect(collect, isNot(contains('Pray for us')));
     });
 
-    test('no substitution tokens beyond the sanctioned mystery placeholders',
-        () {
-      final ContentPack p = pack();
-      // The {{day}} token's place in this pack is the variant dayIndex;
-      // the token is deliberately absent everywhere, and no invented
-      // token ({{phase}}, {{virtue}}, ...) may leak into any text.
-      for (final PrayerText entry in p.content.values) {
-        expect(entry.text, isNot(contains('{{')), reason: entry.id);
-      }
-      for (final Map<String, dynamic> variant in p.variants) {
-        for (final String key in variant.keys) {
-          final Object? value = variant[key];
-          if (value is String) {
-            expect(value, isNot(contains('{{')), reason: '$key in $variant');
+    test(
+      'no substitution tokens beyond the sanctioned mystery placeholders',
+      () {
+        final ContentPack p = pack();
+        // The {{day}} token's place in this pack is the variant dayIndex;
+        // the token is deliberately absent everywhere, and no invented
+        // token ({{phase}}, {{virtue}}, ...) may leak into any text.
+        for (final PrayerText entry in p.content.values) {
+          expect(entry.text, isNot(contains('{{')), reason: entry.id);
+        }
+        for (final Map<String, dynamic> variant in p.variants) {
+          for (final String key in variant.keys) {
+            final Object? value = variant[key];
+            if (value is String) {
+              expect(value, isNot(contains('{{')), reason: '$key in $variant');
+            }
           }
         }
-      }
-    });
+      },
+    );
 
     test('restart-policy variants are live MissedDayEvaluator inputs '
         '(the engine consumes the policy)', () {
