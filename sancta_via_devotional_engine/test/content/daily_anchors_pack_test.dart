@@ -52,30 +52,70 @@ void main() {
       expect(pack.title, isNotEmpty);
     });
 
-    test(
-      'schedules the 6:00 anchor with the season-pure regina_caeli variant',
-      () {
-        final ContentPack pack = loadPack('angelus');
-        expect(pack.schedules, hasLength(1));
-        expect(pack.schedule, same(pack.schedules.first));
-        expect(pack.schedules.single, isA<TimeOfDaySpec>());
-        final TimeOfDaySpec angelus = pack.schedules.single as TimeOfDaySpec;
-        expect(angelus.hour, 6);
-        expect(angelus.minute, 0);
-        expect(angelus.baseLabel, 'angelus');
-        expect(angelus.variants.single.variantId, 'regina_caeli');
-        expect(angelus.variants.single.months, reginaCaeliMonths);
-        expect(angelus.variants.single.seasons, <String>{
+    test('schedules the 6:00, 12:00, and 18:00 anchors, each with the '
+        'season-pure regina_caeli variant', () {
+      final ContentPack pack = loadPack('angelus');
+      // The task-24 contract: the back-compat `schedules` list with the
+      // three daily Angelus anchors (noon and evening joining the 6:00).
+      expect(pack.schedules, hasLength(3));
+      expect(pack.schedule, same(pack.schedules.first));
+      final List<TimeOfDaySpec> anchors = <TimeOfDaySpec>[
+        for (final ScheduleSpec spec in pack.schedules)
+          if (spec is TimeOfDaySpec) spec,
+      ];
+      expect(
+        anchors,
+        hasLength(pack.schedules.length),
+        reason: 'every angelus schedule is a time-of-day anchor',
+      );
+      final List<int> anchorHours = <int>[
+        for (final TimeOfDaySpec anchor in anchors) anchor.hour,
+      ];
+      expect(anchorHours, <int>[6, 12, 18]);
+      for (final TimeOfDaySpec anchor in anchors) {
+        expect(anchor.minute, 0);
+        expect(anchor.baseLabel, 'angelus');
+        expect(anchor.variants.single.variantId, 'regina_caeli');
+        expect(anchor.variants.single.months, reginaCaeliMonths);
+        expect(anchor.variants.single.seasons, <String>{
           'Easter',
           'Eastertide',
           'Pentecost',
         });
-      },
-    );
+      }
+    });
 
-    test('resolves regina_caeli only across the Easter season', () {
+    test('every anchor is due on any day, labelled by its base label', () {
       final ContentPack pack = loadPack('angelus');
-      final TimeOfDaySpec angelus = pack.schedules.single as TimeOfDaySpec;
+      final List<TimeOfDaySpec> anchors = <TimeOfDaySpec>[
+        for (final ScheduleSpec spec in pack.schedules)
+          if (spec is TimeOfDaySpec) spec,
+      ];
+      expect(anchors, hasLength(3));
+
+      // 2026-01-20 (Ordinary Time): all three anchors are due, all labelled
+      // by the base label — the pack's schedule list must never leave one of
+      // the three daily anchors silently not-due.
+      final DateTime day = DateTime(2026, 1, 20);
+      expect(
+        LiturgicalCalendarService.getDayForDate(day)!.seasonKey,
+        isNot(anyOf('Easter', 'Eastertide', 'Pentecost')),
+      );
+      for (final TimeOfDaySpec anchor in anchors) {
+        final ScheduleResult result = anchor.resolve(day, contextFor(day));
+        expect(result.due, isTrue, reason: 'the ${anchor.hour}:00 anchor');
+        expect(result.labels, <String>['angelus']);
+      }
+    });
+
+    test('resolves regina_caeli only across the Easter season, at every '
+        'anchor', () {
+      final ContentPack pack = loadPack('angelus');
+      final List<TimeOfDaySpec> anchors = <TimeOfDaySpec>[
+        for (final ScheduleSpec spec in pack.schedules)
+          if (spec is TimeOfDaySpec) spec,
+      ];
+      expect(anchors, hasLength(3));
 
       // The embedded calendar data must cover every pin.
       final Map<DateTime, String> goldens = <DateTime, String>{
@@ -89,9 +129,11 @@ void main() {
           date,
         );
         expect(day, isNotNull, reason: 'calendar data must cover $date');
-        expect(angelus.resolve(date, contextFor(date)).labels, <String>[
-          expected,
-        ], reason: 'the pack must label $date as $expected');
+        for (final TimeOfDaySpec anchor in anchors) {
+          expect(anchor.resolve(date, contextFor(date)).labels, <String>[
+            expected,
+          ], reason: 'the ${anchor.hour}:00 anchor must label $date');
+        }
         // Parity with the engine authority on the same date.
         expect(angelusPrayerFor(date, day), expected, reason: '$date');
       });

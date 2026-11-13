@@ -165,7 +165,7 @@ Future<_ScreenHarness> _pumpToday(
     await container.read(todayAssemblyProvider.future);
   });
 
-  tester.view.physicalSize = const Size(600, 1800);
+  tester.view.physicalSize = const Size(600, 3000);
   tester.view.devicePixelRatio = 1.0;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
@@ -207,40 +207,53 @@ void main() {
       expect(find.text(day.celebration.rankEnum.displayName), findsOneWidget);
 
       // §7 order — Morning · Angelus times · 3pm · Evening · Commitments ·
-      // Upcoming feasts. No noon/evening anchors ship yet (Task 24), so the
-      // rendered headers start at Morning, keep the 3pm mercy group in its
-      // position (partitioned out of the anchors section by the `mercy_hour`
-      // label), and end with Commitments and the feast window.
+      // Upcoming feasts. Task 24's schedule ships the Angelus' noon and
+      // evening anchors, so all six sections render: the Angelus Times card
+      // holds the noon tile, the Evening card the 18:00 tile (both partition
+      // seams: the 3pm group stays partitioned out of the anchors section by
+      // the `mercy_hour` label).
       expect(find.text('Morning'), findsOneWidget);
-      expect(find.text('Angelus Times'), findsNothing);
+      expect(find.text('Angelus Times'), findsOneWidget);
       expect(find.text('3pm'), findsOneWidget);
-      expect(find.text('Evening'), findsNothing);
+      expect(find.text('Evening'), findsOneWidget);
       expect(find.text('Commitments'), findsOneWidget);
       expect(find.text('Upcoming Feasts'), findsOneWidget);
       final double morningY = _topY(tester, find.text('Morning'));
+      final double angelusTimesY = _topY(tester, find.text('Angelus Times'));
       final double mercyY = _topY(tester, find.text('3pm'));
+      final double eveningY = _topY(tester, find.text('Evening'));
       final double commitmentsY = _topY(tester, find.text('Commitments'));
       final double feastsY = _topY(tester, find.text('Upcoming Feasts'));
-      expect(morningY < mercyY, isTrue, reason: 'Morning precedes the 3pm');
-      expect(mercyY < commitmentsY, isTrue, reason: '3pm precedes Commitments');
+      expect(morningY < angelusTimesY, isTrue, reason: 'Morning precedes noon');
+      expect(angelusTimesY < mercyY, isTrue, reason: 'noon precedes the 3pm');
+      expect(mercyY < eveningY, isTrue, reason: '3pm precedes Evening');
+      expect(
+        eveningY < commitmentsY,
+        isTrue,
+        reason: 'Evening precedes Commitments',
+      );
       expect(commitmentsY < feastsY, isTrue, reason: 'feasts come last');
 
-      // The tiles: morning Angelus with its anchor-time chip; the Hour of
-      // Mercy under the 3pm group; the First Saturday with its ordinal
-      // badge (Task 12's frozen-day resolution: streak empty + 1).
+      // The tiles: the Angelus renders its THREE anchor tiles (6/12/18 —
+      // one walk, one link each, the Task-12 limitation the pack note
+      // carries), the Hour of Mercy under the 3pm group, and the First
+      // Saturday with its ordinal badge (Task 12's frozen-day resolution:
+      // streak empty + 1).
       expect(
         find.text('The Angelus (Regina Caeli in Eastertide)'),
-        findsOneWidget,
+        findsNWidgets(3),
       );
       expect(find.text('6:00 AM'), findsOneWidget);
+      expect(find.text('12:00 PM'), findsOneWidget);
+      expect(find.text('6:00 PM'), findsOneWidget);
       final double angelusY = _topY(
         tester,
         find.text('The Angelus (Regina Caeli in Eastertide)'),
       );
       expect(
-        angelusY > morningY && angelusY < mercyY,
+        angelusY > morningY && angelusY < angelusTimesY,
         isTrue,
-        reason: 'the Angelus tile sits inside the Morning section',
+        reason: 'the first Angelus tile sits inside the Morning section',
       );
       expect(find.text('The Hour of Mercy'), findsOneWidget);
       expect(find.text('3:00 PM'), findsOneWidget);
@@ -395,6 +408,10 @@ void main() {
       );
 
       expect(find.text('Morning'), findsNothing);
+      expect(find.text('Angelus Times'), findsNothing);
+      expect(find.text('Evening'), findsNothing);
+      expect(find.text('12:00 PM'), findsNothing);
+      expect(find.text('6:00 PM'), findsNothing);
       expect(
         find.text('The Angelus (Regina Caeli in Eastertide)'),
         findsNothing,

@@ -15,6 +15,32 @@
           "variantId": "regina_caeli"
         }
       ]
+    },
+    {
+      "type": "timeOfDay",
+      "hour": 12,
+      "minute": 0,
+      "baseLabel": "angelus",
+      "variants": [
+        {
+          "months": [],
+          "seasons": ["Easter", "Eastertide", "Pentecost"],
+          "variantId": "regina_caeli"
+        }
+      ]
+    },
+    {
+      "type": "timeOfDay",
+      "hour": 18,
+      "minute": 0,
+      "baseLabel": "angelus",
+      "variants": [
+        {
+          "months": [],
+          "seasons": ["Easter", "Eastertide", "Pentecost"],
+          "variantId": "regina_caeli"
+        }
+      ]
     }
   ],
   "session": {

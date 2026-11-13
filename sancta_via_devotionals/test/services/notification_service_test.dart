@@ -9,8 +9,9 @@
 //
 // 1. a refresh schedules the planner's items and writes the matching
 //    `notification_index` rows (status `scheduled`) — with the shipped
-//    Angelus asset's ONE 06:00 anchor (Task 24 adds the other two), the
-//    zoned `fire_at` ISO carrying the local offset and the pack's deep link;
+//    Angelus' THREE daily anchors (6/12/18 since Task 24) filling the 60-item
+//    rotation cap, the zoned `fire_at` ISO carrying the local offset and the
+//    pack's deep link;
 // 2. a SECOND refresh with unchanged inputs performs ZERO plugin writes and
 //    zero row rewrites (the idempotent diff), and initialize stays a one-shot;
 // 3. a tap yields its `deep_link` on the stream, marks the row `fired`, and
@@ -43,7 +44,7 @@ import 'package:timezone/timezone.dart' as tz;
 const String _zoneName = 'America/New_York';
 
 /// 2026-12-01 03:00 in New York (08:00Z): the plan's first day is 12-01 and
-/// the 06:00 Angelus anchor on that day is still ahead.
+/// all three of the Angelus' anchors that day (6/12/18) are still ahead.
 final DateTime _frozenNow = DateTime.utc(2026, 12, 1, 8);
 
 /// One recorded schedule call.
@@ -200,26 +201,44 @@ void main() {
       await service.refresh();
 
       final List<NotificationRow> rows = await database.getAllNotifications();
-      // The 60-day horizon from 2026-12-01, one 06:00 anchor per day (the
-      // shipped Angelus pack carries a single anchor until Task 24).
+      // The 60-item rotation cap fills with 20 days of the Angelus' now
+      // shipped THREE daily anchors (the settings' default 6/12/18 clock):
+      // every other day's anchors fall beyond the cap.
       expect(rows, hasLength(60));
       expect(
         rows.every((NotificationRow row) => row.status == 'scheduled'),
         isTrue,
       );
       expect(rows.first.id, 'angelus:anchor:2026-12-01T06:00');
-      expect(rows.last.id, 'angelus:anchor:2027-01-29T06:00');
+      expect(rows.last.id, 'angelus:anchor:2026-12-20T18:00');
       expect(rows.first.fireAt, '2026-12-01T06:00:00.000-0500');
       expect(rows.first.title, 'The Angelus (Regina Caeli in Eastertide)');
       expect(rows.first.packId, 'angelus');
       expect(rows.first.deepLink, '/session/angelus?forDate=2026-12-01');
+      // Each day contributes exactly three anchor ids: the morning, noon,
+      // and evening Angelus (the settings' own 6:00/12:00/18:00 clocks), in
+      // fire-time order within the day.
       expect(
         <String>{
           for (final NotificationRow row in rows)
-            RegExp(r'T(\d{2}):\d{2}$').firstMatch(row.id)!.group(1)!,
+            RegExp(r'T(\d{2}):(\d{2})$').firstMatch(row.id)!.group(0)!,
         },
-        <String>{'06'},
-        reason: 'the shipped pack carries ONE 06:00 anchor, never three',
+        <String>{'T06:00', 'T12:00', 'T18:00'},
+        reason: 'the shipped pack anchors the day at 6:00, 12:00, and 18:00',
+      );
+      // The noon and evening anchors are planned with their own wall-clock
+      // ids and offsets (the default settings' times, New York in December).
+      expect(
+        (await database.getNotification(
+          'angelus:anchor:2026-12-01T12:00',
+        ))!.fireAt,
+        '2026-12-01T12:00:00.000-0500',
+      );
+      expect(
+        (await database.getNotification(
+          'angelus:anchor:2026-12-01T18:00',
+        ))!.fireAt,
+        '2026-12-01T18:00:00.000-0500',
       );
 
       expect(adapter.scheduled, hasLength(60));
