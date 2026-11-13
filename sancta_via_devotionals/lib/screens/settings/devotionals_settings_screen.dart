@@ -32,7 +32,10 @@
 //   reaching the screen (a corrupt or pre-Task-2 store) is REFUSED: neither
 //   row checks, a not-recognized note renders, and picking a known value is
 //   the fix the screen offers;
-// * the Latin display and Luminous-mysteries toggles.
+// * the Latin display toggle. The Luminous-mysteries toggle is deliberately
+//   hidden (final review I3): the engine's rosary set selection has no
+//   with-luminous variant, so a switch could not change what plays — see the
+//   inline note where the row used to render.
 //
 // Everything persists through [DevotionsSettingsNotifier] (its setters
 // schedule the SharedPreferences write; nothing in this screen touches
@@ -48,8 +51,8 @@
 // logging and never awaited, the same discipline as Task 18's three wired
 // refresh points. No debounce is needed: the service serializes refreshes
 // through its own queue, and a second change event lands its own pass over
-// the then-current settings. Display/content preferences (Latin, Luminous)
-// and the missed-day policy are not plan inputs, so they do not refresh.
+// the then-current settings. The display preference (Latin) and the
+// missed-day policy are not plan inputs, so they do not refresh.
 library;
 
 import 'dart:async';
@@ -256,11 +259,14 @@ class DevotionalsSettingsScreen extends ConsumerWidget {
             _refreshAfterScheduleChange(ref);
           },
         ),
-        // The meal & night anchors: a consent, never a default.
+        // The meal & night anchors: a consent, never a default. The copy says
+        // what the flag does — it gates the night anchors' REMINDERS; Today
+        // visibility is the enrollment's, never this flag's (final review I4).
         SwitchListTile(
           key: const Key('toggle_night_items'),
           secondary: const Icon(Icons.dark_mode_outlined),
           title: const Text('Meal & night prayers'),
+          subtitle: const Text('Lets your night anchors remind you'),
           value: settings.nightItemsEnabled,
           onChanged: (bool value) {
             ref
@@ -273,8 +279,9 @@ class DevotionalsSettingsScreen extends ConsumerWidget {
           key: Key('night_items_warning'),
           padding: EdgeInsets.fromLTRB(16, 0, 16, 12),
           child: Text(
-            'This stays off by default — turning it on adds the meal and '
-            'night prayer anchors to Today and schedules their reminders.',
+            'This stays off by default — turning it on lets your night '
+            'anchor reminders fire (from 8pm). Today listing is decided by '
+            'your enrollments, not this switch.',
             style: TextStyle(fontSize: 12, color: Colors.redAccent),
           ),
         ),
@@ -294,21 +301,13 @@ class DevotionalsSettingsScreen extends ConsumerWidget {
                 .setLatinDisplayEnabled(value);
           },
         ),
-        SwitchListTile(
-          key: const Key('toggle_luminous_set'),
-          secondary: const Icon(Icons.auto_stories),
-          title: const Text('Luminous mysteries'),
-          subtitle: const Text(
-            'Include the Luminous mysteries wherever the schedules offer '
-            'them',
-          ),
-          value: settings.luminousSetEnabled,
-          onChanged: (bool value) {
-            ref
-                .read(devotionsSettingsProvider.notifier)
-                .setLuminousSetEnabled(value);
-          },
-        ),
+        // The Luminous-mysteries toggle is deliberately NOT rendered (final
+        // review I3): the engine's `rosaryMysteriesFor(DateTime,
+        // LiturgicalDayData?)` has no with-luminous selector — Thursday (and
+        // every non-season Sunday override) always resolves the luminous set
+        // — so a switch here would change a stored boolean that no consumer
+        // reads. Wire it only when the engine grows a documented alternate
+        // set; until then the honest surface is no switch.
         const Divider(),
         const SettingsSectionHeader(title: 'Missed-Day Defaults'),
         const Padding(

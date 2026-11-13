@@ -819,8 +819,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           value: nightItems,
           title: const Text('Meal & night anchors'),
           subtitle: const Text(
-            'Adds mealtime and night prayer anchors to Today, and lets '
-            'them remind you. These are off by default.',
+            'Lets your night anchors remind you. Off by default.',
           ),
           onChanged: (bool value) {
             unawaited(_toggleNightItems(value));

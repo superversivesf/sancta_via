@@ -25,6 +25,7 @@
 // 15's enrollment flow page will replace.
 library;
 
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -46,9 +47,18 @@ import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart'
         TimeOfDaySpec,
         WeeklyLoopSpec;
 import 'package:sancta_via_devotional_engine_riverpod/sancta_via_devotional_engine_riverpod.dart'
-    show ProgramDetail, programDetailProvider;
+    show
+        ProgramDetail,
+        enrolledProgramsProvider,
+        programDetailProvider,
+        todayProgramsProvider;
 
 import '../../providers/content_providers.dart';
+import '../../providers/progress_providers.dart' show progressAssemblyProvider;
+import '../../providers/today_providers.dart'
+    show notificationServiceProvider, todayAssemblyProvider;
+import '../../repositories/program_repository.dart'
+    show SqliteProgramRepository;
 import '../../utils/logger.dart';
 import '../../widgets/today/today_section_card.dart';
 
@@ -549,26 +559,115 @@ class _HeaderCard extends StatelessWidget {
 }
 
 /// The list's end: the Enroll CTA when the user is not enrolled (routing to
-/// the Task-15 stub route), the enrolled chip when the Task 5/6 ruling
-/// reports an enrollment (`enrollmentParamsFor(packId) != null`).
-class _EnrollSection extends StatelessWidget {
+/// the Task-15 stub route), the enrolled chip plus the "Leave program" action
+/// when the Task 5/6 ruling reports an enrollment
+/// (`enrollmentParamsFor(packId) != null`).
+///
+/// Leaving is destructive on purpose (final review I2): the confirmation
+/// dialog names it — the enrollment AND the saved history go — and the
+/// repository's [SqliteProgramRepository.unenroll] is the one writer. The
+/// notification plan is refreshed and every provider built on the enrolled
+/// state is invalidated, so Today stops listing the pack and the Progress row
+/// disappears.
+class _EnrollSection extends ConsumerStatefulWidget {
   const _EnrollSection({required this.packId, required this.enrolled});
 
   final String packId;
   final bool enrolled;
 
   @override
-  Widget build(BuildContext context) {
-    if (enrolled) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Chip(
-            key: Key('enrolled_chip'),
-            avatar: Icon(Icons.check_circle_outline),
-            label: Text('Enrolled'),
+  ConsumerState<_EnrollSection> createState() => _EnrollSectionState();
+}
+
+class _EnrollSectionState extends ConsumerState<_EnrollSection> {
+  /// A leave write is in flight (one write per confirmation).
+  bool _leaving = false;
+
+  /// Confirms and performs the leave, or returns without a write.
+  Future<void> _leave() async {
+    if (_leaving) {
+      return;
+    }
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Leave this program?'),
+        content: const Text(
+          'Leaving removes your enrollment and your saved history for this '
+          'program — its progress, badges, and reminders. This cannot be '
+          'undone.',
+        ),
+        actions: <Widget>[
+          TextButton(
+            key: const Key('leave_program_cancel'),
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
           ),
+          FilledButton(
+            key: const Key('leave_program_confirm'),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Leave'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) {
+      return;
+    }
+    setState(() => _leaving = true);
+    final SqliteProgramRepository repository = ref.read(
+      appProgramRepositoryProvider,
+    );
+    try {
+      await repository.unenroll(widget.packId);
+    } catch (e, stackTrace) {
+      AppLogger.error(
+        'Failed to leave "${widget.packId}"',
+        e,
+        stackTrace,
+        'PRACTICE',
+      );
+      if (mounted) {
+        setState(() => _leaving = false);
+      }
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+    // Re-read every projection of the enrolled set, then re-plan the
+    // reminders from the reduced enrollment set.
+    ref.invalidate(programEnrolledProvider(widget.packId));
+    ref.invalidate(programDetailProvider(widget.packId));
+    ref.invalidate(todayProgramsProvider);
+    ref.invalidate(enrolledProgramsProvider);
+    ref.invalidate(progressAssemblyProvider);
+    ref.invalidate(todayAssemblyProvider);
+    unawaited(ref.read(notificationServiceProvider).refresh());
+    setState(() => _leaving = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.enrolled) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Chip(
+              key: Key('enrolled_chip'),
+              avatar: Icon(Icons.check_circle_outline),
+              label: Text('Enrolled'),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              key: const Key('leave_program'),
+              onPressed: _leaving ? null : _leave,
+              icon: const Icon(Icons.logout),
+              label: const Text('Leave program'),
+            ),
+          ],
         ),
       );
     }
@@ -576,7 +675,7 @@ class _EnrollSection extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       child: FilledButton.icon(
         key: const Key('enroll_cta'),
-        onPressed: () => context.push('/program/$packId/enroll'),
+        onPressed: () => context.push('/program/${widget.packId}/enroll'),
         icon: const Icon(Icons.add_circle_outline),
         label: const Text('Enroll'),
       ),

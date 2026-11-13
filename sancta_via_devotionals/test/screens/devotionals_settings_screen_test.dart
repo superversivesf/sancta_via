@@ -253,7 +253,7 @@ void main() {
       );
 
       // The pinned section exists with its toggle values at the defaults:
-      // anchors on, night items off (explicitly), latin + luminous on.
+      // anchors on, night items off (explicitly), latin on, luminous hidden.
       expect(
         find.byKey(const Key('devotions_settings_section')),
         findsOneWidget,
@@ -264,7 +264,10 @@ void main() {
       expect(find.byKey(const Key('night_items_warning')), findsOneWidget);
       expect(find.textContaining('off by default'), findsAtLeastNWidgets(1));
       expect(find.byKey(const Key('toggle_latin_display')), findsOneWidget);
-      expect(find.byKey(const Key('toggle_luminous_set')), findsOneWidget);
+      // I3 pin: the Luminous-mysteries switch is hidden — the engine's
+      // `rosaryMysteriesFor` has no with-luminous variant, so the flag has no
+      // consumer and a switch here would change nothing that plays.
+      expect(find.byKey(const Key('toggle_luminous_set')), findsNothing);
       expect(find.byKey(const Key('policy_strict')), findsOneWidget);
       expect(find.byKey(const Key('policy_permissive')), findsOneWidget);
       expect(settings.enableAngelusAnchors, isTrue);
@@ -515,15 +518,12 @@ void main() {
         );
         expect(stored.missedDayDefaultPolicy, 'strict');
 
-        // Latin + Luminous are display/content toggles: settings change,
-        // the planner is NOT re-asked.
+        // Latin is a display toggle: the setting changes, the planner is NOT
+        // re-asked. The Luminous flag is untouched (its switch is hidden —
+        // I3) and stays at its default.
         await _tapAndDrain(
           tester,
           find.byKey(const Key('toggle_latin_display')),
-        );
-        await _tapAndDrain(
-          tester,
-          find.byKey(const Key('toggle_luminous_set')),
         );
         expect(
           harness.container.read(devotionsSettingsProvider).latinDisplayEnabled,
@@ -531,7 +531,7 @@ void main() {
         );
         expect(
           harness.container.read(devotionsSettingsProvider).luminousSetEnabled,
-          isFalse,
+          isTrue,
         );
         expect(harness.adapter.refreshes, 0);
       },

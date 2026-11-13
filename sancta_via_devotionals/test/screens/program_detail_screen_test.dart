@@ -28,6 +28,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart'
+    show BadgeRecord, ProgressState;
 import 'package:sancta_via_devotional_engine_riverpod/sancta_via_devotional_engine_riverpod.dart'
     show programDetailProvider;
 import 'package:sancta_via_devotionals/config/routes.dart';
@@ -38,6 +40,8 @@ import 'package:sancta_via_devotionals/providers/content_providers.dart'
         contentLoadedProvider,
         programEnrolledProvider,
         programRepositoryOverride;
+import 'package:sancta_via_devotionals/providers/today_providers.dart'
+    show TodayAssembly, TodayItem, todayAssemblyProvider;
 import 'package:sancta_via_devotionals/repositories/program_repository.dart'
     show SqliteProgramRepository;
 import 'package:sancta_via_devotionals/screens/practice/enroll_screen.dart';
@@ -115,6 +119,19 @@ Future<_DetailHarness> _pumpDetail(
   );
   await tester.pump(const Duration(milliseconds: 50));
   return _DetailHarness(container, router);
+}
+
+/// Flushes a tap's await chain (the Task 15 recipe): the fake-async zone's
+/// queued microtasks clear one layer per real-time window, so the rounds
+/// settle the unenroll's writes AND the post-write provider invalidations'
+/// recompute.
+Future<void> _drain(WidgetTester tester) async {
+  for (int round = 0; round < 80; round++) {
+    await tester.runAsync(() async {
+      await Future<void>.delayed(const Duration(milliseconds: 15));
+    });
+    await tester.pump(const Duration(milliseconds: 15));
+  }
 }
 
 void main() {
@@ -206,6 +223,90 @@ void main() {
     // The 54-day is not enrolled in this fixture: the Enroll CTA shows.
     expect(find.byKey(const Key('enroll_cta')), findsOneWidget);
   });
+
+  testWidgets(
+    'leaving an enrolled program removes the enrollment and its saved history '
+    'and Today stops listing it (final review I2)',
+    (WidgetTester tester) async {
+      final _DetailHarness harness = await _pumpDetail(
+        tester,
+        packId: 'nine_first_fridays',
+        today: DateTime(2026, 12, 4),
+        enroll: <String>['nine_first_fridays'],
+      );
+      final SqliteProgramRepository repository = harness.container.read(
+        appProgramRepositoryProvider,
+      );
+      await tester.runAsync(
+        () => repository.saveProgress(
+          ProgressState(
+            packId: 'nine_first_fridays',
+            fulfilledOrdinals: 2,
+            lastFulfilled: DateTime(2026, 11, 6),
+            badges: <BadgeRecord>[
+              BadgeRecord(
+                title: 'Nine First Fridays of the Sacred Heart',
+                date: DateTime(2026, 10, 2),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      // Today lists the enrolled commitment before leaving (2026-12-04 is
+      // the first Friday).
+      final TodayAssembly before = (await tester.runAsync(
+        () => harness.container.read(todayAssemblyProvider.future),
+      ))!;
+      expect(
+        before.commitments.any(
+          (TodayItem item) => item.pack?.id == 'nine_first_fridays',
+        ),
+        isTrue,
+      );
+
+      // The enrolled state carries the leave action; the dialog names what
+      // it removes (enrollment AND history).
+      expect(find.text('Enrolled'), findsOneWidget);
+      expect(find.byKey(const Key('leave_program')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('leave_program')));
+      await tester.pumpAndSettle();
+      expect(find.text('Leave this program?'), findsOneWidget);
+      expect(
+        find.textContaining('removes your enrollment and your saved history'),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.byKey(const Key('leave_program_confirm')));
+      await _drain(tester);
+
+      // Not enrolled any more: the CTA replaces the chip, and the store has
+      // neither the enrollment nor the progress row.
+      expect(find.byKey(const Key('enrolled_chip')), findsNothing);
+      expect(find.byKey(const Key('enroll_cta')), findsOneWidget);
+      expect(find.byKey(const Key('leave_program')), findsNothing);
+      final Map<String, dynamic>? params = await tester
+          .runAsync<Map<String, dynamic>?>(
+            () => repository.enrollmentParamsFor('nine_first_fridays'),
+          );
+      expect(params, isNull);
+      final ProgressState? progress = await tester.runAsync<ProgressState?>(
+        () => repository.progressFor('nine_first_fridays'),
+      );
+      expect(progress, isNull);
+
+      // Today no longer lists it.
+      final TodayAssembly after = (await tester.runAsync(
+        () => harness.container.read(todayAssemblyProvider.future),
+      ))!;
+      expect(
+        after.commitments.any(
+          (TodayItem item) => item.pack?.id == 'nine_first_fridays',
+        ),
+        isFalse,
+      );
+    },
+  );
 
   testWidgets(
     'an enrolled pack shows the enrolled state instead of the enroll CTA',

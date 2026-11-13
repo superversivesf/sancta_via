@@ -71,6 +71,11 @@ class DevotionsAppSettings {
   final bool latinDisplayEnabled;
 
   /// Whether the Luminous mysteries set is used (default on).
+  ///
+  /// Kept for store compatibility, but the settings screen no longer renders
+  /// a switch for it (final review I3): the engine's `rosaryMysteriesFor` has
+  /// no with-luminous variant — Thursday always resolves the luminous set —
+  /// so the flag has no consumer to drive. It remains true by default.
   final bool luminousSetEnabled;
 
   /// Whether the first-launch onboarding walkthrough has completed.
