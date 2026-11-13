@@ -4,8 +4,8 @@
 // (the catalog is the discovery surface; the Task 5/6 "enrolled" ruling
 // never filters it) — grouped by the engine's [PackFamily] in the enum's
 // declaration order (commitment | novena | office | routine | chaplet).
-// Families with no shipped packs (office, chaplet — Tasks 21/23) render no
-// group header at all, mirroring Today's non-empty-sections rule.
+// Families with no shipped packs (office) render no group header at all,
+// mirroring Today's non-empty-sections rule.
 //
 // Each family group reuses [TodaySectionCard] (Task 13's presentation
 // card); its tiles route to the program detail (`/program/:packId`), pushed

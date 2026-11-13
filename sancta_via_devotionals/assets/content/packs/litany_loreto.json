@@ -1,0 +1,157 @@
+{
+  "id": "litany_loreto",
+  "title": "The Litany of Loreto",
+  "family": "routine",
+  "schedule": {
+    "type": "timeOfDay",
+    "hour": 17,
+    "minute": 0,
+    "baseLabel": "litany_loreto"
+  },
+  "session": {
+    "id": "litany_loreto-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "sign-of-the-cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen.",
+        "title": "Sign of the Cross"
+      },
+      {
+        "type": "verse",
+        "id": "kyrie",
+        "versicle": "Lord, have mercy on us.",
+        "response": "Lord, have mercy on us."
+      },
+      {
+        "type": "verse",
+        "id": "christe",
+        "versicle": "Christ, hear us.",
+        "response": "Christ, graciously hear us."
+      },
+      {
+        "type": "litany",
+        "id": "loreto-trinity",
+        "invocations": [
+          "God the Father of Heaven,",
+          "God the Son, Redeemer of the world,",
+          "God the Holy Spirit,",
+          "Holy Trinity, one God,"
+        ],
+        "response": "have mercy on us.",
+        "groupedResponse": false,
+        "title": "The Godhead"
+      },
+      {
+        "type": "litany",
+        "id": "loreto-invocations",
+        "invocations": [
+          "Holy Mary,",
+          "Holy Mother of God,",
+          "Holy Virgin of virgins,",
+          "Mother of Christ,",
+          "Mother of divine grace,",
+          "Mother most pure,",
+          "Mother most chaste,",
+          "Mother inviolate,",
+          "Mother undefiled,",
+          "Mother most amiable,",
+          "Mother most admirable,",
+          "Mother of good counsel,",
+          "Mother of our Creator,",
+          "Mother of our Savior,",
+          "Virgin most prudent,",
+          "Virgin most venerable,",
+          "Virgin most renowned,",
+          "Virgin most powerful,",
+          "Virgin most merciful,",
+          "Virgin most faithful,",
+          "Mirror of justice,",
+          "Seat of wisdom,",
+          "Cause of our joy,",
+          "Spiritual vessel,",
+          "Vessel of honor,",
+          "Singular vessel of devotion,",
+          "Mystical rose,",
+          "Tower of David,",
+          "Tower of ivory,",
+          "House of gold,",
+          "Ark of the covenant,",
+          "Gate of Heaven,",
+          "Morning star,",
+          "Health of the sick,",
+          "Refuge of sinners,",
+          "Comforter of the afflicted,",
+          "Help of Christians,",
+          "Queen of angels,",
+          "Queen of patriarchs,",
+          "Queen of prophets,",
+          "Queen of apostles,",
+          "Queen of martyrs,",
+          "Queen of confessors,",
+          "Queen of virgins,",
+          "Queen of all saints,",
+          "Queen conceived without original sin,",
+          "Queen of the most holy Rosary,",
+          "Queen of peace,"
+        ],
+        "response": "pray for us.",
+        "groupedResponse": true,
+        "title": "The Invocation List (48 invocations, received list through 1916)"
+      },
+      {
+        "type": "verse",
+        "id": "loreto-agnus-1",
+        "versicle": "Lamb of God, Who takes away the sins of the world,",
+        "response": "Spare us, O Lord."
+      },
+      {
+        "type": "verse",
+        "id": "loreto-agnus-2",
+        "versicle": "Lamb of God, Who takes away the sins of the world,",
+        "response": "Graciously hear us, O Lord."
+      },
+      {
+        "type": "verse",
+        "id": "loreto-agnus-3",
+        "versicle": "Lamb of God, Who takes away the sins of the world,",
+        "response": "Have mercy on us, O Lord."
+      },
+      {
+        "type": "verse",
+        "id": "loreto-versicle",
+        "versicle": "Pray for us, O holy Mother of God,",
+        "response": "That we may be made worthy of the promises of Christ."
+      },
+      {
+        "type": "prayer",
+        "id": "loreto-collect",
+        "contentRef": "loreto_collect",
+        "title": "Let us pray"
+      }
+    ]
+  },
+  "content": {
+    "litany_loreto": {
+      "id": "litany_loreto",
+      "text": "Lord, have mercy on us.\nChrist, have mercy on us.\nLord, have mercy on us.\nChrist, hear us.\nChrist, graciously hear us.\nGod the Father of Heaven, have mercy on us.\nGod the Son, Redeemer of the world, have mercy on us.\nGod the Holy Spirit, have mercy on us.\nHoly Trinity, One God, have mercy on us.\nHoly Mary, pray for us.\nHoly Mother of God, pray for us.\nHoly Virgin of virgins, pray for us.\nMother of Christ, pray for us.\nMother of the Church, pray for us.\nMother of divine grace, pray for us.\nMother most pure, pray for us.\nMother most chaste, pray for us.\nMother inviolate, pray for us.\nMother undefiled, pray for us.\nMother most amiable, pray for us.\nMother most admirable, pray for us.\nMother of good counsel, pray for us.\nMother of our Creator, pray for us.\nMother of our Savior, pray for us.\nVirgin most prudent, pray for us.\nVirgin most venerable, pray for us.\nVirgin most renowned, pray for us.\nVirgin most powerful, pray for us.\nVirgin most merciful, pray for us.\nVirgin most faithful, pray for us.\nMirror of justice, pray for us.\nSeat of wisdom, pray for us.\nCause of our joy, pray for us.\nSpiritual vessel, pray for us.\nVessel of honor, pray for us.\nSingular vessel of devotion, pray for us.\nMystical rose, pray for us.\nTower of David, pray for us.\nTower of ivory, pray for us.\nHouse of gold, pray for us.\nArk of the covenant, pray for us.\nGate of Heaven, pray for us.\nMorning star, pray for us.\nHealth of the sick, pray for us.\nRefuge of sinners, pray for us.\nComforter of the afflicted, pray for us.\nHelp of Christians, pray for us.\nQueen of angels, pray for us.\nQueen of patriarchs, pray for us.\nQueen of prophets, pray for us.\nQueen of apostles, pray for us.\nQueen of martyrs, pray for us.\nQueen of confessors, pray for us.\nQueen of virgins, pray for us.\nQueen of all saints, pray for us.\nQueen conceived without original sin, pray for us.\nQueen assumed into Heaven, pray for us.\nQueen of the most holy Rosary, pray for us.\nQueen of families, pray for us.\nQueen of peace, pray for us.\nLamb of God, Who takes away the sins of the world, spare us, O Lord.\nLamb of God, Who takes away the sins of the world, graciously hear us, O Lord.\nLamb of God, Who takes away the sins of the world, have mercy on us, O Lord.\nPray for us, O holy Mother of God,\nThat we may be made worthy of the promises of Christ.\nLet us pray:\nGrant, we beseech You, O Lord God, that we Your servants may enjoy perpetual health of mind and body, and by the glorious intercession of Blessed Mary, ever virgin, be delivered from present sorrow and enjoy eternal happiness. Through Christ our Lord. Amen.",
+      "source": "Originating from the Shrine of the Holy House at Loreto, Italy; approved by Pope Sixtus V in 1587",
+      "license": "public-domain (ancient attribution)",
+      "latin": "Kyrie, eleison.\nChriste, eleison.\nKyrie, eleison.\nChriste, audi nos.\nChriste, exaudi nos.\nPater de caelis, Deus, miserere nobis.\nFili, Redemptor mundi, Deus, miserere nobis.\nSpiritus Sancte, Deus, miserere nobis.\nSancta Trinitas, unus Deus, miserere nobis.\nSancta Maria, ora pro nobis.\nSancta Dei Genetrix, ora pro nobis.\nSancta Virgo virginum, ora pro nobis.\nMater Christi, ora pro nobis.\nMater Ecclesiae, ora pro nobis.\nMater divinae gratiae, ora pro nobis.\nMater purissima, ora pro nobis.\nMater castissima, ora pro nobis.\nMater inviolata, ora pro nobis.\nMater intemerata, ora pro nobis.\nMater amabilis, ora pro nobis.\nMater admirabilis, ora pro nobis.\nMater boni consilii, ora pro nobis.\nMater Creatoris, ora pro nobis.\nMater Salvatoris, ora pro nobis.\nVirgo prudentissima, ora pro nobis.\nVirgo veneranda, ora pro nobis.\nVirgo praedicanda, ora pro nobis.\nVirgo potens, ora pro nobis.\nVirgo clemens, ora pro nobis.\nVirgo fidelis, ora pro nobis.\nSpeculum iustitiae, ora pro nobis.\nSedes sapientiae, ora pro nobis.\nCausa nostrae laetitiae, ora pro nobis.\nVas spirituale, ora pro nobis.\nVas honorabile, ora pro nobis.\nVas insigne devotionis, ora pro nobis.\nRosa mystica, ora pro nobis.\nTurris Davidica, ora pro nobis.\nTurris eburnea, ora pro nobis.\nDomus aurea, ora pro nobis.\nFoederis arca, ora pro nobis.\nIanua caeli, ora pro nobis.\nStella matutina, ora pro nobis.\nSalus infirmorum, ora pro nobis.\nRefugium peccatorum, ora pro nobis.\nConsolatrix afflictorum, ora pro nobis.\nAuxilium Christianorum, ora pro nobis.\nRegina Angelorum, ora pro nobis.\nRegina Patriarcharum, ora pro nobis.\nRegina Prophetarum, ora pro nobis.\nRegina Apostolorum, ora pro nobis.\nRegina Martyrum, ora pro nobis.\nRegina Confessorum, ora pro nobis.\nRegina Virginum, ora pro nobis.\nRegina Sanctorum omnium, ora pro nobis.\nRegina sine labe originali concepta, ora pro nobis.\nRegina in caelum assumpta, ora pro nobis.\nRegina Santissimi Rosarii, ora pro nobis.\nRegina familiarum, ora pro nobis.\nRegina pacis, ora pro nobis.\nAgnus Dei, qui tollis peccata mundi, parce nobis, Domine.\nAgnus Dei, qui tollis peccata mundi, exaudi nos, Domine.\nAgnus Dei, qui tollis peccata mundi, miserere nobis.\nOra pro nobis, sancta Dei Genetrix.\nUt digni efficiamur promissionibus Christi.\nOremus:\nConcede nos famulos tuos, quaesumus, Domine Deus, perpetua mentis et corporis sanitate gaudere, et gloriosa beatae Mariae semper Virginis intercessione, a praesenti liberari tristitia, et aeterna perfrui laetitia. Per Christum Dominum nostrum. Amen."
+    },
+    "loreto_collect": {
+      "id": "loreto_collect",
+      "text": "Grant, we beseech Thee, O Lord God, that we Thy servants may enjoy perpetual health of mind and body, and by the glorious intercession of the Blessed Mary, ever Virgin, be delivered from present sorrow and enjoy eternal gladness. Through Christ our Lord. Amen.",
+      "source": "The Litany of Loreto (approved by Pope Sixtus V, 1587); closing collect",
+      "license": "public-domain (traditional rendering)"
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The Litany of Loreto as a freely prayed daily devotion. Session shape: sign of the cross and Kyrie/Christe versicles; four Trinitarian invocations answered \"have mercy on us.\" (individual call and response); the 48 Marian invocations as one grouped passage answered \"pray for us.\"; the three Agnus Dei versicles; the closing versicle; and the received collect. The invocation list is the received list as redacted before 1950 (the 1916 \"Queen of peace\" is the newest invocation shipped); the later additions (\"Queen assumed into Heaven\", 1950; the 2020 additions \"Mother of the Church\" and \"Queen of families\") are outside the pre-1950 public-domain redaction and are deliberately omitted, while the committed companion import (litany_loreto) carries the full received list verbatim as the pack’s provenance entry.",
+      "invocation_source": "Litany of Loreto (Shrine of Loreto; approved by Pope Sixtus V, 1587) — received invocation list",
+      "invocation_license": "public-domain (traditional invocation list, pre-1950 redaction)"
+    }
+  }
+}

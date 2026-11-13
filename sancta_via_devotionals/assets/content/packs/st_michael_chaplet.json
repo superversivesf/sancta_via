@@ -1,0 +1,352 @@
+{
+  "id": "st_michael_chaplet",
+  "title": "The Chaplet of Saint Michael",
+  "family": "chaplet",
+  "schedule": {
+    "type": "timeOfDay",
+    "hour": 19,
+    "minute": 0,
+    "baseLabel": "st_michael"
+  },
+  "session": {
+    "id": "st_michael_chaplet-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "sign-of-the-cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen.",
+        "title": "Sign of the Cross"
+      },
+      {
+        "type": "verse",
+        "id": "invitatory",
+        "versicle": "O God, come to my assistance.",
+        "response": "O Lord, make haste to help me.",
+        "title": "The Invitatory",
+        "closingRef": "glory_be"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-1",
+        "contentRef": "st_michael_salute_1",
+        "title": "First Salutation — the Choir of Seraphim"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-1-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "salute-1-hail-marys",
+        "hailMaryCount": 3,
+        "includeFatimaPrayer": false,
+        "title": "Three Hail Marys",
+        "mysteryTitle": "In honor of the Choir of Seraphim",
+        "mysteryFruit": "Perfect charity"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-2",
+        "contentRef": "st_michael_salute_2",
+        "title": "Second Salutation — the Choir of Cherubim"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-2-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "salute-2-hail-marys",
+        "hailMaryCount": 3,
+        "includeFatimaPrayer": false,
+        "title": "Three Hail Marys",
+        "mysteryTitle": "In honor of the Choir of Cherubim",
+        "mysteryFruit": "The ways of Christian perfection"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-3",
+        "contentRef": "st_michael_salute_3",
+        "title": "Third Salutation — the Choir of Thrones"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-3-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "salute-3-hail-marys",
+        "hailMaryCount": 3,
+        "includeFatimaPrayer": false,
+        "title": "Three Hail Marys",
+        "mysteryTitle": "In honor of the Choir of Thrones",
+        "mysteryFruit": "Sincere humility"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-4",
+        "contentRef": "st_michael_salute_4",
+        "title": "Fourth Salutation — the Choir of Dominions"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-4-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "salute-4-hail-marys",
+        "hailMaryCount": 3,
+        "includeFatimaPrayer": false,
+        "title": "Three Hail Marys",
+        "mysteryTitle": "In honor of the Choir of Dominions",
+        "mysteryFruit": "Mastery over our passions"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-5",
+        "contentRef": "st_michael_salute_5",
+        "title": "Fifth Salutation — the Choir of Virtues"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-5-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "salute-5-hail-marys",
+        "hailMaryCount": 3,
+        "includeFatimaPrayer": false,
+        "title": "Three Hail Marys",
+        "mysteryTitle": "In honor of the Choir of Virtues",
+        "mysteryFruit": "Preservation from evil"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-6",
+        "contentRef": "st_michael_salute_6",
+        "title": "Sixth Salutation — the Choir of Powers"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-6-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "salute-6-hail-marys",
+        "hailMaryCount": 3,
+        "includeFatimaPrayer": false,
+        "title": "Three Hail Marys",
+        "mysteryTitle": "In honor of the Choir of Powers",
+        "mysteryFruit": "Protection from the snares of the devil"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-7",
+        "contentRef": "st_michael_salute_7",
+        "title": "Seventh Salutation — the Choir of Principalities"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-7-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "salute-7-hail-marys",
+        "hailMaryCount": 3,
+        "includeFatimaPrayer": false,
+        "title": "Three Hail Marys",
+        "mysteryTitle": "In honor of the Choir of Principalities",
+        "mysteryFruit": "True obedience"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-8",
+        "contentRef": "st_michael_salute_8",
+        "title": "Eighth Salutation — the Choir of Archangels"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-8-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "salute-8-hail-marys",
+        "hailMaryCount": 3,
+        "includeFatimaPrayer": false,
+        "title": "Three Hail Marys",
+        "mysteryTitle": "In honor of the Choir of Archangels",
+        "mysteryFruit": "Perseverance in faith and good works"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-9",
+        "contentRef": "st_michael_salute_9",
+        "title": "Ninth Salutation — the Choir of Angels"
+      },
+      {
+        "type": "prayer",
+        "id": "salute-9-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "salute-9-hail-marys",
+        "hailMaryCount": 3,
+        "includeFatimaPrayer": false,
+        "title": "Three Hail Marys",
+        "mysteryTitle": "In honor of the Choir of Angels",
+        "mysteryFruit": "Protection in this life and the next"
+      },
+      {
+        "type": "prayer",
+        "id": "honor-st-michael",
+        "contentRef": "our_father",
+        "title": "Our Father — in honor of Saint Michael"
+      },
+      {
+        "type": "prayer",
+        "id": "honor-guardian-angels",
+        "contentRef": "our_father",
+        "title": "Our Father — in honor of the Guardian Angels"
+      },
+      {
+        "type": "prayer",
+        "id": "honor-st-gabriel",
+        "contentRef": "our_father",
+        "title": "Our Father — in honor of Saint Gabriel"
+      },
+      {
+        "type": "prayer",
+        "id": "honor-st-raphael",
+        "contentRef": "our_father",
+        "title": "Our Father — in honor of Saint Raphael"
+      },
+      {
+        "type": "prayer",
+        "id": "closing-prayer",
+        "contentRef": "st_michael_chaplet_closing",
+        "title": "Prayer to Saint Michael"
+      },
+      {
+        "type": "verse",
+        "id": "closing-versicle",
+        "versicle": "Pray for us, O glorious Saint Michael, Prince of the Church of Jesus Christ.",
+        "response": "That we may be made worthy of His promises."
+      },
+      {
+        "type": "prayer",
+        "id": "closing-collect",
+        "contentRef": "st_michael_chaplet_collect",
+        "title": "Let us pray"
+      }
+    ]
+  },
+  "content": {
+    "our_father": {
+      "id": "our_father",
+      "text": "Our Father, who art in heaven,\nhallowed be thy name;\nthy kingdom come;\nthy will be done on earth as it is in heaven.\nGive us this day our daily bread;\nand forgive us our trespasses\nas we forgive those who trespass against us;\nand lead us not into temptation,\nbut deliver us from evil.\nAmen.",
+      "source": "Jesus Christ (Matthew 6:9-13)",
+      "license": "public-domain (scriptural formula)",
+      "latin": "Pater noster, qui es in caelis,\nsanctificetur nomen tuum;\nadveniat regnum tuum;\nfiat voluntas tua, sicut in caelo, et in terra.\nPanem nostrum cotidianum da nobis hodie;\net dimitte nobis debita nostra,\nsicut et nos dimittimus debitoribus nostris;\net ne nos inducas in tentationem;\nsed libera nos a malo.\nAmen."
+    },
+    "st_michael_salute_1": {
+      "id": "st_michael_salute_1",
+      "text": "By the intercession of St. Michael and the celestial Choir of Seraphim, may the Lord make us worthy to burn with the fire of perfect charity. Amen.",
+      "source": "The Chaplet of Saint Michael (approved by Pope Pius IX, 1851; traditional salutations of the Raccolta redaction)",
+      "license": "public-domain (pre-1930 Raccolta redaction)"
+    },
+    "st_michael_salute_2": {
+      "id": "st_michael_salute_2",
+      "text": "By the intercession of St. Michael and the celestial Choir of Cherubim, may the Lord grant us the grace to leave the ways of sin and run in the paths of Christian perfection. Amen.",
+      "source": "The Chaplet of Saint Michael (approved by Pope Pius IX, 1851; traditional salutations of the Raccolta redaction)",
+      "license": "public-domain (pre-1930 Raccolta redaction)"
+    },
+    "st_michael_salute_3": {
+      "id": "st_michael_salute_3",
+      "text": "By the intercession of St. Michael and the celestial Choir of Thrones, may the Lord infuse into our hearts a true and sincere spirit of humility. Amen.",
+      "source": "The Chaplet of Saint Michael (approved by Pope Pius IX, 1851; traditional salutations of the Raccolta redaction)",
+      "license": "public-domain (pre-1930 Raccolta redaction)"
+    },
+    "st_michael_salute_4": {
+      "id": "st_michael_salute_4",
+      "text": "By the intercession of St. Michael and the celestial Choir of Dominions, may the Lord give us grace to govern our senses and overcome any unruly passions. Amen.",
+      "source": "The Chaplet of Saint Michael (approved by Pope Pius IX, 1851; traditional salutations of the Raccolta redaction)",
+      "license": "public-domain (pre-1930 Raccolta redaction)"
+    },
+    "st_michael_salute_5": {
+      "id": "st_michael_salute_5",
+      "text": "By the intercession of St. Michael and the celestial Choir of Virtues, may the Lord preserve us from evil and falling into temptation. Amen.",
+      "source": "The Chaplet of Saint Michael (approved by Pope Pius IX, 1851; traditional salutations of the Raccolta redaction)",
+      "license": "public-domain (pre-1930 Raccolta redaction)"
+    },
+    "st_michael_salute_6": {
+      "id": "st_michael_salute_6",
+      "text": "By the intercession of St. Michael and the celestial Choir of Powers, may the Lord protect our souls against the snares and temptations of the devil. Amen.",
+      "source": "The Chaplet of Saint Michael (approved by Pope Pius IX, 1851; traditional salutations of the Raccolta redaction)",
+      "license": "public-domain (pre-1930 Raccolta redaction)"
+    },
+    "st_michael_salute_7": {
+      "id": "st_michael_salute_7",
+      "text": "By the intercession of St. Michael and the celestial Choir of Principalities, may God fill our souls with a true spirit of obedience. Amen.",
+      "source": "The Chaplet of Saint Michael (approved by Pope Pius IX, 1851; traditional salutations of the Raccolta redaction)",
+      "license": "public-domain (pre-1930 Raccolta redaction)"
+    },
+    "st_michael_salute_8": {
+      "id": "st_michael_salute_8",
+      "text": "By the intercession of St. Michael and the celestial Choir of Archangels, may the Lord give us perseverance in faith and in all good works in order that we may attain the glory of Heaven. Amen.",
+      "source": "The Chaplet of Saint Michael (approved by Pope Pius IX, 1851; traditional salutations of the Raccolta redaction)",
+      "license": "public-domain (pre-1930 Raccolta redaction)"
+    },
+    "st_michael_salute_9": {
+      "id": "st_michael_salute_9",
+      "text": "By the intercession of St. Michael and the celestial Choir of Angels, may the Lord grant us to be protected by them in this mortal life and conducted in the life to come to Heaven. Amen.",
+      "source": "The Chaplet of Saint Michael (approved by Pope Pius IX, 1851; traditional salutations of the Raccolta redaction)",
+      "license": "public-domain (pre-1930 Raccolta redaction)"
+    },
+    "st_michael_chaplet_closing": {
+      "id": "st_michael_chaplet_closing",
+      "text": "O glorious Prince Saint Michael, chief and commander of the heavenly hosts, guardian of souls, vanquisher of rebel spirits, servant in the house of the Divine King, and our admirable guide: thou who shinest with excellence and superhuman virtue, deliver us from all evil who turn to thee with confidence, and enable us by thy gracious protection to serve God more and more faithfully every day. Amen.",
+      "source": "The Chaplet of Saint Michael (approved by Pope Pius IX, 1851; traditional salutations of the Raccolta redaction); concluding prayer",
+      "license": "public-domain (pre-1930 Raccolta redaction)"
+    },
+    "st_michael_chaplet_collect": {
+      "id": "st_michael_chaplet_collect",
+      "text": "Almighty and everlasting God, Who, by a prodigy of goodness and a merciful desire for the salvation of all men, hast appointed the most glorious Archangel Saint Michael Prince of Thy Church: make us worthy, we beseech Thee, to be delivered from all our enemies, that none of them may harass us at the hour of death, but that we may be conducted by him into Thy presence. This we ask through the merits of Jesus Christ our Lord. Amen.",
+      "source": "The Chaplet of Saint Michael (approved by Pope Pius IX, 1851; traditional salutations of the Raccolta redaction); closing collect",
+      "license": "public-domain (pre-1930 Raccolta redaction)"
+    },
+    "glory_be": {
+      "id": "glory_be",
+      "text": "Glory be to the Father,\nand to the Son,\nand to the Holy Spirit,\nas it was in the beginning,\nis now, and ever shall be,\nworld without end.\nAmen.",
+      "source": "Traditional Doxology",
+      "license": "public-domain",
+      "latin": "Gloria Patri, et Filio,\net Spiritui Sancto,\nsicut erat in principio,\net nunc, et semper,\net in saecula saeculorum.\nAmen."
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The Chaplet of Saint Michael as received: the invitatory (\"O God, come to my assistance\") with the Glory Be; nine salutations, one for each choir of angels in descending order, each praying the salutation text, one Our Father, and three Hail Marys (nine BeadGroupStep groups of 3); then four Our Fathers in honor of Saint Michael, the Guardian Angels, Saint Gabriel, and Saint Raphael; finally the received closing prayer, versicle, and collect. The available-daily anchor is the evening hour (19:00), leaving the wall-clock free of the app’s shared Angelus/Mercy anchor hours. The brief’s \"9 salutes + 4 Our Fathers\" is honored; the salutations carry the received Raccolta texts.",
+      "structure": "sign of the cross; invitatory with Glory Be; 9 salutations (salutation + 1 Our Father + 3 Hail Marys); 4 Our Fathers for the angelic names; closing prayer, versicle, collect",
+      "invocation_source": "The Chaplet of Saint Michael (approved by Pope Pius IX, 1851; traditional salutations of the Raccolta redaction)",
+      "invocation_license": "public-domain (pre-1930 Raccolta redaction)"
+    }
+  }
+}

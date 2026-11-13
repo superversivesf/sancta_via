@@ -1,0 +1,139 @@
+{
+  "id": "st_anne_chaplet",
+  "title": "The Little Chaplet of Saint Anne",
+  "family": "chaplet",
+  "schedule": {
+    "type": "timeOfDay",
+    "hour": 9,
+    "minute": 0,
+    "baseLabel": "st_anne"
+  },
+  "session": {
+    "id": "st_anne_chaplet-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "sign-of-the-cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen.",
+        "title": "Sign of the Cross"
+      },
+      {
+        "type": "verse",
+        "id": "medal-invocation",
+        "versicle": "Jesus, Mary, and Saint Anne.",
+        "response": "Grant the favor I ask.",
+        "title": "On the medal of Saint Anne"
+      },
+      {
+        "type": "prayer",
+        "id": "part-1-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "part-1-hail-marys",
+        "hailMaryCount": 5,
+        "includeFatimaPrayer": false,
+        "title": "Five Hail Marys — after each: \"Jesus, Mary, and Saint Anne, grant the favor I ask.\"",
+        "mysteryTitle": "In honor of Jesus, the Author of Grace"
+      },
+      {
+        "type": "prayer",
+        "id": "part-1-glory-be",
+        "contentRef": "glory_be",
+        "title": "Glory Be"
+      },
+      {
+        "type": "prayer",
+        "id": "part-2-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "part-2-hail-marys",
+        "hailMaryCount": 5,
+        "includeFatimaPrayer": false,
+        "title": "Five Hail Marys — after each: \"Jesus, Mary, and Saint Anne, grant the favor I ask.\"",
+        "mysteryTitle": "In honor of Mary, the channel of all grace"
+      },
+      {
+        "type": "prayer",
+        "id": "part-2-glory-be",
+        "contentRef": "glory_be",
+        "title": "Glory Be"
+      },
+      {
+        "type": "prayer",
+        "id": "part-3-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "part-3-hail-marys",
+        "hailMaryCount": 5,
+        "includeFatimaPrayer": false,
+        "title": "Five Hail Marys — after each: \"Jesus, Mary, and Saint Anne, grant the favor I ask.\"",
+        "mysteryTitle": "In honor of Saint Anne, our advocate"
+      },
+      {
+        "type": "prayer",
+        "id": "part-3-glory-be",
+        "contentRef": "glory_be",
+        "title": "Glory Be"
+      },
+      {
+        "type": "verse",
+        "id": "closing-versicle",
+        "versicle": "Good Saint Anne, mother of her who is our life, our sweetness, and our hope:",
+        "response": "Pray to her for us, and obtain our request."
+      },
+      {
+        "type": "prayer",
+        "id": "closing-collect",
+        "contentRef": "st_anne_collect",
+        "title": "Let us pray"
+      }
+    ]
+  },
+  "content": {
+    "our_father": {
+      "id": "our_father",
+      "text": "Our Father, who art in heaven,\nhallowed be thy name;\nthy kingdom come;\nthy will be done on earth as it is in heaven.\nGive us this day our daily bread;\nand forgive us our trespasses\nas we forgive those who trespass against us;\nand lead us not into temptation,\nbut deliver us from evil.\nAmen.",
+      "source": "Jesus Christ (Matthew 6:9-13)",
+      "license": "public-domain (scriptural formula)",
+      "latin": "Pater noster, qui es in caelis,\nsanctificetur nomen tuum;\nadveniat regnum tuum;\nfiat voluntas tua, sicut in caelo, et in terra.\nPanem nostrum cotidianum da nobis hodie;\net dimitte nobis debita nostra,\nsicut et nos dimittimus debitoribus nostris;\net ne nos inducas in tentationem;\nsed libera nos a malo.\nAmen."
+    },
+    "st_anne_collect": {
+      "id": "st_anne_collect",
+      "text": "O God, Who didst vouchsafe to blessed Anne the grace to be the mother of her who was to bring forth Thine only-begotten Son: grant, in Thy mercy, that we who devoutly venerate her memory may be aided by her intercession. Through the same Lord Jesus Christ, Thy Son, Who liveth and reigneth with Thee in the unity of the Holy Spirit, one God, world without end. Amen.",
+      "source": "The traditional Roman collect of Saint Anne",
+      "license": "public-domain (traditional rendering)"
+    },
+    "hail_mary": {
+      "id": "hail_mary",
+      "text": "Hail Mary, full of grace, the Lord is with thee.\nBlessed art thou among women,\nand blessed is the fruit of thy womb, Jesus.\nHoly Mary, Mother of God,\npray for us sinners,\nnow and at the hour of our death.\nAmen.",
+      "source": "Based on Luke 1:28, 42",
+      "license": "public-domain (scriptural formula)",
+      "latin": "Ave Maria, gratia plena, Dominus tecum.\nBenedicta tu in mulieribus,\net benedictus fructus ventris tui, Iesus.\nSancta Maria, Mater Dei,\nora pro nobis peccatoribus,\nnunc et in hora mortis nostrae.\nAmen."
+    },
+    "glory_be": {
+      "id": "glory_be",
+      "text": "Glory be to the Father,\nand to the Son,\nand to the Holy Spirit,\nas it was in the beginning,\nis now, and ever shall be,\nworld without end.\nAmen.",
+      "source": "Traditional Doxology",
+      "license": "public-domain",
+      "latin": "Gloria Patri, et Filio,\net Spiritui Sancto,\nsicut erat in principio,\net nunc, et semper,\net in saecula saeculorum.\nAmen."
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The Little Chaplet of Saint Anne (from 1875): three parts — in honor of Jesus, Mary, and Saint Anne — each praying one Our Father, five Hail Marys with the after-each-Hail-Mary invocation \"Jesus, Mary, and Saint Anne: grant the favor I ask.\" (carried in each group’s title, as the counted BeadGroup step has no per-bead suffix), and one Glory Be; the received \"Good Saint Anne, mother of her who is our life…\" versicle and the traditional collect close it. The after-each invocation is the received formula of the chaplet; its per-bead rhythm is the user’s to keep while counting. Daily anchor 09:00.",
+      "structure": "sign of the cross; medal invocation; 3 parts of (1 Our Father + 5 Hail Marys with the invocation + 1 Glory Be); closing versicle and collect",
+      "invocation_source": "The Little Chaplet of Saint Anne (received form from 1875; recitations of the Sainte-Anne-de-Beaupré tradition)",
+      "invocation_license": "public-domain (received pre-1930 devotional form)"
+    }
+  }
+}

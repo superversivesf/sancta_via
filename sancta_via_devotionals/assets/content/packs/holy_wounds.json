@@ -1,0 +1,176 @@
+{
+  "id": "holy_wounds",
+  "title": "The Rosary of the Holy Wounds",
+  "family": "chaplet",
+  "schedule": {
+    "type": "timeOfDay",
+    "hour": 13,
+    "minute": 0,
+    "baseLabel": "holy_wounds"
+  },
+  "session": {
+    "id": "holy_wounds-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "sign-of-the-cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen.",
+        "title": "Sign of the Cross"
+      },
+      {
+        "type": "prayer",
+        "id": "o-jesus",
+        "contentRef": "hw_o_jesus",
+        "title": "On the crucifix"
+      },
+      {
+        "type": "prayer",
+        "id": "trisagion",
+        "contentRef": "hw_trisagion",
+        "title": "On the first three beads"
+      },
+      {
+        "type": "prayer",
+        "id": "grace-and-mercy",
+        "contentRef": "hw_grace_and_mercy"
+      },
+      {
+        "type": "prayer",
+        "id": "mercy-through-blood",
+        "contentRef": "hw_mercy_through_blood"
+      },
+      {
+        "type": "prayer",
+        "id": "wound-1-offering",
+        "contentRef": "hw_offering",
+        "title": "The Sacred Wound of the Left Foot — the Offering on the large bead"
+      },
+      {
+        "type": "repetition",
+        "id": "wound-1-small-beads",
+        "contentRef": "hw_mercy",
+        "count": 10,
+        "title": "Ten times, on the small beads"
+      },
+      {
+        "type": "prayer",
+        "id": "wound-2-offering",
+        "contentRef": "hw_offering",
+        "title": "The Sacred Wound of the Right Foot — the Offering on the large bead"
+      },
+      {
+        "type": "repetition",
+        "id": "wound-2-small-beads",
+        "contentRef": "hw_mercy",
+        "count": 10,
+        "title": "Ten times, on the small beads"
+      },
+      {
+        "type": "prayer",
+        "id": "wound-3-offering",
+        "contentRef": "hw_offering",
+        "title": "The Sacred Wound of the Left Hand — the Offering on the large bead"
+      },
+      {
+        "type": "repetition",
+        "id": "wound-3-small-beads",
+        "contentRef": "hw_mercy",
+        "count": 10,
+        "title": "Ten times, on the small beads"
+      },
+      {
+        "type": "prayer",
+        "id": "wound-4-offering",
+        "contentRef": "hw_offering",
+        "title": "The Sacred Wound of the Right Hand — the Offering on the large bead"
+      },
+      {
+        "type": "repetition",
+        "id": "wound-4-small-beads",
+        "contentRef": "hw_mercy",
+        "count": 10,
+        "title": "Ten times, on the small beads"
+      },
+      {
+        "type": "prayer",
+        "id": "wound-5-offering",
+        "contentRef": "hw_offering",
+        "title": "The Sacred Wound of the Side and Heart — the Offering on the large bead"
+      },
+      {
+        "type": "repetition",
+        "id": "wound-5-small-beads",
+        "contentRef": "hw_mercy",
+        "count": 10,
+        "title": "Ten times, on the small beads"
+      },
+      {
+        "type": "repetition",
+        "id": "closing-offering",
+        "contentRef": "hw_offering",
+        "count": 3,
+        "title": "The Offering, repeated three times"
+      },
+      {
+        "type": "prayer",
+        "id": "closing-glory-be",
+        "contentRef": "glory_be",
+        "title": "Glory Be"
+      }
+    ]
+  },
+  "content": {
+    "hw_o_jesus": {
+      "id": "hw_o_jesus",
+      "text": "O Jesus, divine Redeemer, be merciful to us and to the whole world. Amen.",
+      "source": "The Rosary of the Holy Wounds (revealed to Sister Mary-Martha Chambon of the Visitation, d. 1907; approved for the Visitation 1912 and for the faithful 1924; received pre-1930 redaction)",
+      "license": "public-domain (pre-1930 devotional redaction)"
+    },
+    "hw_trisagion": {
+      "id": "hw_trisagion",
+      "text": "Strong God, holy God, immortal God, have mercy on us and on the whole world. Amen.",
+      "source": "The Rosary of the Holy Wounds (revealed to Sister Mary-Martha Chambon of the Visitation, d. 1907; approved for the Visitation 1912 and for the faithful 1924; received pre-1930 redaction)",
+      "license": "public-domain (pre-1930 devotional redaction)"
+    },
+    "hw_grace_and_mercy": {
+      "id": "hw_grace_and_mercy",
+      "text": "Grace and mercy, O my Jesus, during present dangers; cover us with Thy precious Blood. Amen.",
+      "source": "The Rosary of the Holy Wounds (revealed to Sister Mary-Martha Chambon of the Visitation, d. 1907; approved for the Visitation 1912 and for the faithful 1924; received pre-1930 redaction)",
+      "license": "public-domain (pre-1930 devotional redaction)"
+    },
+    "hw_mercy_through_blood": {
+      "id": "hw_mercy_through_blood",
+      "text": "Eternal Father, grant us mercy through the Blood of Jesus Christ, Thy only Son; grant us mercy, we beseech Thee. Amen. Amen. Amen.",
+      "source": "The Rosary of the Holy Wounds (revealed to Sister Mary-Martha Chambon of the Visitation, d. 1907; approved for the Visitation 1912 and for the faithful 1924; received pre-1930 redaction)",
+      "license": "public-domain (pre-1930 devotional redaction)"
+    },
+    "hw_offering": {
+      "id": "hw_offering",
+      "text": "Eternal Father, I offer Thee the Wounds of Our Lord Jesus Christ, to heal those of our souls.",
+      "source": "The Rosary of the Holy Wounds (revealed to Sister Mary-Martha Chambon of the Visitation, d. 1907; approved for the Visitation 1912 and for the faithful 1924; received pre-1930 redaction)",
+      "license": "public-domain (pre-1930 devotional redaction)"
+    },
+    "hw_mercy": {
+      "id": "hw_mercy",
+      "text": "My Jesus, pardon and mercy, by the merits of Thy holy Wounds.",
+      "source": "The Rosary of the Holy Wounds (revealed to Sister Mary-Martha Chambon of the Visitation, d. 1907; approved for the Visitation 1912 and for the faithful 1924; received pre-1930 redaction)",
+      "license": "public-domain (pre-1930 devotional redaction)"
+    },
+    "glory_be": {
+      "id": "glory_be",
+      "text": "Glory be to the Father,\nand to the Son,\nand to the Holy Spirit,\nas it was in the beginning,\nis now, and ever shall be,\nworld without end.\nAmen.",
+      "source": "Traditional Doxology",
+      "license": "public-domain",
+      "latin": "Gloria Patri, et Filio,\net Spiritui Sancto,\nsicut erat in principio,\net nunc, et semper,\net in saecula saeculorum.\nAmen."
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The Rosary of the Holy Wounds (Chaplet of Mercy) of Sister Mary-Martha Chambon in the received form: \"O Jesus, divine Redeemer…\" on the crucifix; the three opening invocations on the pendant; then five groups, each the Offering (\"Eternal Father, I offer Thee the Wounds…\") for the large bead and the aspiration \"My Jesus, pardon and mercy, by the merits of Thy holy Wounds.\" ten times for the small beads, one wound per group (feet, hands, then the side — the nailing order, followed by the Lance); closing with the Offering three times and the Glory Be. The tasking’s suggested 39-group recension is not supported by any source this pack could verify, so the received 5-wound form ships and is documented here. The counted small beads carry the \"My Jesus\" aspiration, not the Hail Mary, so each group is modeled as the offering prayer plus a repetition step of ten — the engine’s counted-target step whose text is the aspiration itself. Fridays are the devotion’s traditional day; the pack is available daily at 13:00.",
+      "structure": "sign of the cross; crucifix prayer; 3 opening invocations; 5 groups of (the Offering + 10x \"My Jesus, pardon and mercy\"); the Offering 3x; Glory Be",
+      "invocation_source": "The Rosary of the Holy Wounds (revealed to Sister Mary-Martha Chambon of the Visitation, d. 1907; approved for the Visitation 1912 and for the faithful 1924; received pre-1930 redaction)",
+      "invocation_license": "public-domain (pre-1930 devotional redaction)"
+    }
+  }
+}

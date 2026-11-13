@@ -1,0 +1,126 @@
+{
+  "id": "litany_precious_blood",
+  "title": "The Litany of the Most Precious Blood",
+  "family": "routine",
+  "schedule": {
+    "type": "timeOfDay",
+    "hour": 16,
+    "minute": 30,
+    "baseLabel": "litany_precious_blood"
+  },
+  "session": {
+    "id": "litany_precious_blood-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "sign-of-the-cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen.",
+        "title": "Sign of the Cross"
+      },
+      {
+        "type": "verse",
+        "id": "kyrie",
+        "versicle": "Lord, have mercy on us.",
+        "response": "Lord, have mercy on us."
+      },
+      {
+        "type": "verse",
+        "id": "christe",
+        "versicle": "Christ, hear us.",
+        "response": "Christ, graciously hear us."
+      },
+      {
+        "type": "litany",
+        "id": "blood-trinity",
+        "invocations": [
+          "God the Father of Heaven,",
+          "God the Son, Redeemer of the world,",
+          "God the Holy Spirit,",
+          "Holy Trinity, one God,"
+        ],
+        "response": "have mercy on us.",
+        "groupedResponse": false,
+        "title": "The Godhead"
+      },
+      {
+        "type": "litany",
+        "id": "blood-invocations",
+        "invocations": [
+          "Blood of Christ, only-begotten Son of the Eternal Father,",
+          "Blood of Christ, Incarnate Word of God,",
+          "Blood of Christ, of the New and Eternal Testament,",
+          "Blood of Christ, falling upon the earth in the Agony,",
+          "Blood of Christ, shed profusely in the Scourging,",
+          "Blood of Christ, flowing forth in the Crowning with Thorns,",
+          "Blood of Christ, poured out on the Cross,",
+          "Blood of Christ, price of our salvation,",
+          "Blood of Christ, without which there is no forgiveness,",
+          "Blood of Christ, Eucharistic drink and refreshment of souls,",
+          "Blood of Christ, stream of mercy,",
+          "Blood of Christ, victor over demons,",
+          "Blood of Christ, courage of Martyrs,",
+          "Blood of Christ, strength of Confessors,",
+          "Blood of Christ, bringing forth Virgins,",
+          "Blood of Christ, help of those in peril,",
+          "Blood of Christ, relief of the burdened,",
+          "Blood of Christ, solace in sorrow,",
+          "Blood of Christ, hope of the penitent,",
+          "Blood of Christ, consolation of the dying,",
+          "Blood of Christ, peace and tenderness of hearts,",
+          "Blood of Christ, pledge of eternal life,",
+          "Blood of Christ, freeing souls from purgatory,",
+          "Blood of Christ, most worthy of all glory and honor,"
+        ],
+        "response": "save us.",
+        "groupedResponse": true,
+        "title": "The Blood of Christ (24 invocations)"
+      },
+      {
+        "type": "verse",
+        "id": "blood-agnus-1",
+        "versicle": "Lamb of God, Who takes away the sins of the world,",
+        "response": "Spare us, O Lord."
+      },
+      {
+        "type": "verse",
+        "id": "blood-agnus-2",
+        "versicle": "Lamb of God, Who takes away the sins of the world,",
+        "response": "Graciously hear us, O Lord."
+      },
+      {
+        "type": "verse",
+        "id": "blood-agnus-3",
+        "versicle": "Lamb of God, Who takes away the sins of the world,",
+        "response": "Have mercy on us, O Lord."
+      },
+      {
+        "type": "verse",
+        "id": "blood-versicle",
+        "versicle": "Thou hast redeemed us, O Lord, in Thy Blood,",
+        "response": "And hast made us, for our God, a kingdom."
+      },
+      {
+        "type": "prayer",
+        "id": "blood-collect",
+        "contentRef": "precious_blood_collect",
+        "title": "Let us pray"
+      }
+    ]
+  },
+  "content": {
+    "precious_blood_collect": {
+      "id": "precious_blood_collect",
+      "text": "Almighty and eternal God, Thou hast appointed Thine only-begotten Son the Redeemer of the world, and willedst to be appeased by His Blood. Grant, we beg of Thee, that we may worthily adore this price of our salvation, and that through its power we may be safeguarded from the evils of the present life, so that we may rejoice in its fruits forever in Heaven. Through the same Christ our Lord. Amen.",
+      "source": "Litany of the Precious Blood (redaction of the Sacred Congregation of Rites, promulgated by Pope John XXIII, February 24, 1960); closing collect",
+      "license": "public-domain (official liturgical text, 1960 promulgation)"
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The Litany of the Most Precious Blood in the official redaction of the Sacred Congregation of Rites (promulgated by Pope John XXIII, February 24, 1960) — 24 invocations of the Blood answered \"save us.\"; the official redaction is a liturgical text of 1960 whose invocations carry the traditional formulaic wording. The four Trinitarian lead-ins are answered \"have mercy on us.\"; followed by the Agnus Dei versicles, the Apocaﬁpse versicle (\"Thou hast redeemed us…\"), and the received collect. Especially fitting in July (the month of the Precious Blood) and on Fridays.",
+      "invocation_source": "Litany of the Precious Blood (Sacred Congregation of Rites, 1960)",
+      "invocation_license": "public-domain (official liturgical text, 1960 promulgation)"
+    }
+  }
+}

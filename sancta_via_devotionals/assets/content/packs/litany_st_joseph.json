@@ -1,0 +1,128 @@
+{
+  "id": "litany_st_joseph",
+  "title": "The Litany of Saint Joseph",
+  "family": "routine",
+  "schedule": {
+    "type": "timeOfDay",
+    "hour": 7,
+    "minute": 0,
+    "baseLabel": "litany_st_joseph"
+  },
+  "session": {
+    "id": "litany_st_joseph-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "sign-of-the-cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen.",
+        "title": "Sign of the Cross"
+      },
+      {
+        "type": "verse",
+        "id": "kyrie",
+        "versicle": "Lord, have mercy on us.",
+        "response": "Lord, have mercy on us."
+      },
+      {
+        "type": "verse",
+        "id": "christe",
+        "versicle": "Christ, hear us.",
+        "response": "Christ, graciously hear us."
+      },
+      {
+        "type": "litany",
+        "id": "joseph-trinity",
+        "invocations": [
+          "God the Father of Heaven,",
+          "God the Son, Redeemer of the world,",
+          "God the Holy Spirit,",
+          "Holy Trinity, one God,"
+        ],
+        "response": "have mercy on us.",
+        "groupedResponse": false,
+        "title": "The Godhead"
+      },
+      {
+        "type": "litany",
+        "id": "joseph-invocations",
+        "invocations": [
+          "Holy Mary,",
+          "Saint Joseph,",
+          "Renowned offspring of David,",
+          "Light of Patriarchs,",
+          "Spouse of the Mother of God,",
+          "Chaste guardian of the Virgin,",
+          "Foster-father of the Son of God,",
+          "Diligent protector of Christ,",
+          "Head of the Holy Family,",
+          "Joseph most just,",
+          "Joseph most chaste,",
+          "Joseph most prudent,",
+          "Joseph most strong,",
+          "Joseph most obedient,",
+          "Joseph most faithful,",
+          "Mirror of patience,",
+          "Lover of poverty,",
+          "Model of artisans,",
+          "Glory of home life,",
+          "Guardian of virgins,",
+          "Pillar of families,",
+          "Solace of the wretched,",
+          "Hope of the sick,",
+          "Patron of the dying,",
+          "Terror of demons,",
+          "Protector of Holy Church,"
+        ],
+        "response": "pray for us.",
+        "groupedResponse": true,
+        "title": "Saint Joseph and his titles (26 invocations)"
+      },
+      {
+        "type": "verse",
+        "id": "joseph-agnus-1",
+        "versicle": "Lamb of God, Who takes away the sins of the world,",
+        "response": "Spare us, O Lord."
+      },
+      {
+        "type": "verse",
+        "id": "joseph-agnus-2",
+        "versicle": "Lamb of God, Who takes away the sins of the world,",
+        "response": "Graciously hear us, O Lord."
+      },
+      {
+        "type": "verse",
+        "id": "joseph-agnus-3",
+        "versicle": "Lamb of God, Who takes away the sins of the world,",
+        "response": "Have mercy on us, O Lord."
+      },
+      {
+        "type": "verse",
+        "id": "joseph-versicle",
+        "versicle": "He made him the lord of His house:",
+        "response": "And ruler of all His substance."
+      },
+      {
+        "type": "prayer",
+        "id": "joseph-collect",
+        "contentRef": "st_joseph_litany_collect",
+        "title": "Let us pray"
+      }
+    ]
+  },
+  "content": {
+    "st_joseph_litany_collect": {
+      "id": "st_joseph_litany_collect",
+      "text": "O God, who in Thine unspeakable providence didst vouchsafe to choose blessed Joseph to be the spouse of Thine own most holy Mother: grant, we beseech Thee, that we may deserve to have him for our intercessor in heaven, whom we reverence as our defender on earth. Through Christ our Lord. Amen.",
+      "source": "The Litany of Saint Joseph (approval of Pius X, 1909); closing collect",
+      "license": "public-domain (traditional rendering)"
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The received Litany of Saint Joseph — the approved litany of 1909 (indulgenced from the 1860s), not the later 21st-century redaction with its additional invocations: the invocation list is the received 26 invocations (\"Holy Mary\" through \"Protector of Holy Church\"). The four Trinitarian invocations are answered \"have mercy on us.\"; the litany block and \"Holy Mary\" are answered \"pray for us.\"; followed by the Agnus Dei versicles, the \"lord of His house\" versicle, and the received collect. The session’s versicles are received liturgical formulas (public domain); the collect is a conservative received rendering.",
+      "invocation_source": "Litany of Saint Joseph (received approved form; public use approved by Pope Pius X, 1909)",
+      "invocation_license": "public-domain (received pre-1930 redaction)"
+    }
+  }
+}

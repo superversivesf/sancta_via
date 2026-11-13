@@ -33,8 +33,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 /// The pack ids in repository order (`packs.id ASC`): the eight
-/// engine-fixture packs, the six Task-21 routine packs, and the nine
-/// Task-22 novena packs.
+/// engine-fixture packs, the six Task-21 routine packs, the nine
+/// Task-22 novena packs, and the ten Task-23 chaplet/litany packs.
 const List<String> _packIds = <String>[
   'angelus',
   'christmas_novena',
@@ -43,8 +43,15 @@ const List<String> _packIds = <String>[
   'five_first_saturdays',
   'fixed_prayers_morning',
   'fixed_prayers_night',
+  'franciscan_crown',
   'holy_spirit_pentecost',
+  'holy_wounds',
   'lectio_divina',
+  'litany_humility',
+  'litany_loreto',
+  'litany_precious_blood',
+  'litany_sacred_heart',
+  'litany_st_joseph',
   'meal_night_prayers',
   'mercy_hour',
   'miraculous_medal',
@@ -55,8 +62,11 @@ const List<String> _packIds = <String>[
   'perpetual_help',
   'rosary',
   'sacred_heart',
+  'seven_sorrows',
+  'st_anne_chaplet',
   'st_joseph',
   'st_jude',
+  'st_michael_chaplet',
   'total_consecration',
   'undoer_of_knots',
 ];

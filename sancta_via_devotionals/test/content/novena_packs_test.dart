@@ -54,9 +54,10 @@ const List<String> _novenaPackIds = <String>[
 ];
 
 /// The whole shipped catalog: 8 engine-fixture + 6 Task-21 routine + 9
-/// novena packs, per the pin tests' manifest expectation (the routine-packs
-/// test and the asset pin carry the same count).
-const int _shippedPackCount = 23;
+/// Task-22 novena + 10 Task-23 chaplet/litany packs, per the pin tests'
+/// manifest expectation (the routine-packs test and the asset pin carry the
+/// same count).
+const int _shippedPackCount = 33;
 
 /// Days from [start] (inclusive) through [start] + [count] (exclusive),
 /// each a local midnight.
@@ -173,7 +174,9 @@ void main() {
         expect(
           files,
           hasLength(_shippedPackCount),
-          reason: '23 = 8 engine fixtures + 6 Task-21 routine + 9 novena packs',
+          reason:
+              '33 = 8 engine fixtures + 6 Task-21 routine + 9 novena + 10 '
+              'chaplet/litany packs',
         );
         for (final String id in _novenaPackIds) {
           final ContentPack pack = loadPack(id);

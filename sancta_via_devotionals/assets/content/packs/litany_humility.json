@@ -1,0 +1,90 @@
+{
+  "id": "litany_humility",
+  "title": "The Litany of Humility",
+  "family": "routine",
+  "schedule": {
+    "type": "timeOfDay",
+    "hour": 7,
+    "minute": 15,
+    "baseLabel": "litany_humility"
+  },
+  "session": {
+    "id": "litany_humility-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "sign-of-the-cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen.",
+        "title": "Sign of the Cross"
+      },
+      {
+        "type": "verse",
+        "id": "kyrie",
+        "versicle": "Lord, have mercy on us.",
+        "response": "Lord, have mercy on us."
+      },
+      {
+        "type": "verse",
+        "id": "christe",
+        "versicle": "Christ, hear us.",
+        "response": "Christ, graciously hear us."
+      },
+      {
+        "type": "verse",
+        "id": "humility-intro",
+        "versicle": "O Jesus, meek and humble of heart.",
+        "response": "Hear me."
+      },
+      {
+        "type": "litany",
+        "id": "humility-deliverances",
+        "invocations": [
+          "From the desire of being esteemed,",
+          "From the desire of being loved,",
+          "From the desire of being extolled,",
+          "From the desire of being honored,",
+          "From the desire of being praised,",
+          "From the desire of being preferred to others,",
+          "From the desire of being consulted,",
+          "From the desire of being approved,",
+          "From the fear of being humiliated,",
+          "From the fear of being despised,",
+          "From the fear of suffering rebukes,",
+          "From the fear of being calumniated,",
+          "From the fear of being forgotten,",
+          "From the fear of being ridiculed,",
+          "From the fear of being wronged,",
+          "From the fear of being suspected,"
+        ],
+        "response": "Deliver me, Jesus.",
+        "groupedResponse": false,
+        "title": "Deliverances (each answered: Deliver me, Jesus.)"
+      },
+      {
+        "type": "litany",
+        "id": "humility-graces",
+        "invocations": [
+          "That others may be loved more than I,",
+          "That others may be esteemed more than I,",
+          "That, in the opinion of the world, others may increase and I may decrease,",
+          "That others may be chosen and I set aside,",
+          "That others may be praised and I unnoticed,",
+          "That others may be preferred to me in everything,",
+          "That others may become holier than I, provided that I may become as holy as I should,"
+        ],
+        "response": "Jesus, grant me the grace to desire it.",
+        "groupedResponse": false,
+        "title": "Petitions (each answered: Jesus, grant me the grace to desire it.)"
+      }
+    ]
+  },
+  "content": {},
+  "reminders": {
+    "schedule_note": {
+      "note": "The Litany of Humility in its received devotional text, traditionally attributed to Cardinal Rafael Merry del Val (d. 1930); the prayer circulated in equivalent forms from the 1870s-1880s and the received wording is public domain. Two litany steps, both rendered as individual call and response: the sixteen deliverances answered \"Deliver me, Jesus.\" and the seven petitions answered \"Jesus, grant me the grace to desire it.\" The session’s opening versicles are received formulas; the pack needs no content entries — the litany text is the session.",
+      "invocation_source": "Litany of Humility (traditionally attributed to Cardinal Merry del Val, 1865-1930)",
+      "invocation_license": "public-domain (received devotional redaction; author d. 1930)"
+    }
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "id": "franciscan_crown",
+  "title": "The Franciscan Crown (Seven Joys)",
+  "family": "chaplet",
+  "schedule": {
+    "type": "timeOfDay",
+    "hour": 7,
+    "minute": 30,
+    "baseLabel": "franciscan_crown"
+  },
+  "session": {
+    "id": "franciscan_crown-session",
+    "steps": [
+      {
+        "type": "verse",
+        "id": "sign-of-the-cross",
+        "versicle": "In the name of the Father, and of the Son, and of the Holy Spirit.",
+        "response": "Amen.",
+        "title": "Sign of the Cross"
+      },
+      {
+        "type": "prayer",
+        "id": "creed",
+        "contentRef": "apostles_creed",
+        "title": "The Apostles’ Creed"
+      },
+      {
+        "type": "prayer",
+        "id": "initial-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "prayer",
+        "id": "joy-1-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "joy-1-hail-marys",
+        "hailMaryCount": 7,
+        "includeFatimaPrayer": false,
+        "title": "First Decade — Seven Hail Marys",
+        "mysteryTitle": "Joy 1: The Annunciation"
+      },
+      {
+        "type": "prayer",
+        "id": "joy-2-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "joy-2-hail-marys",
+        "hailMaryCount": 7,
+        "includeFatimaPrayer": false,
+        "title": "Second Decade — Seven Hail Marys",
+        "mysteryTitle": "Joy 2: The Visitation"
+      },
+      {
+        "type": "prayer",
+        "id": "joy-3-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "joy-3-hail-marys",
+        "hailMaryCount": 7,
+        "includeFatimaPrayer": false,
+        "title": "Third Decade — Seven Hail Marys",
+        "mysteryTitle": "Joy 3: The Nativity of Jesus"
+      },
+      {
+        "type": "prayer",
+        "id": "joy-4-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "joy-4-hail-marys",
+        "hailMaryCount": 7,
+        "includeFatimaPrayer": false,
+        "title": "Fourth Decade — Seven Hail Marys",
+        "mysteryTitle": "Joy 4: The Adoration of the Magi"
+      },
+      {
+        "type": "prayer",
+        "id": "joy-5-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "joy-5-hail-marys",
+        "hailMaryCount": 7,
+        "includeFatimaPrayer": false,
+        "title": "Fifth Decade — Seven Hail Marys",
+        "mysteryTitle": "Joy 5: The Finding of the Child Jesus in the Temple"
+      },
+      {
+        "type": "prayer",
+        "id": "joy-6-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "joy-6-hail-marys",
+        "hailMaryCount": 7,
+        "includeFatimaPrayer": false,
+        "title": "Sixth Decade — Seven Hail Marys",
+        "mysteryTitle": "Joy 6: The Resurrection of Our Lord"
+      },
+      {
+        "type": "prayer",
+        "id": "joy-7-our-father",
+        "contentRef": "our_father",
+        "title": "Our Father"
+      },
+      {
+        "type": "beadGroup",
+        "id": "joy-7-hail-marys",
+        "hailMaryCount": 7,
+        "includeFatimaPrayer": false,
+        "title": "Seventh Decade — Seven Hail Marys",
+        "mysteryTitle": "Joy 7: The Assumption and Coronation of the Blessed Virgin"
+      },
+      {
+        "type": "repetition",
+        "id": "two-hail-marys",
+        "contentRef": "hail_mary",
+        "count": 2,
+        "title": "Two additional Hail Marys (completing the 72 years)"
+      },
+      {
+        "type": "prayer",
+        "id": "closing-prayer",
+        "contentRef": "franciscan_crown_closing",
+        "title": "Closing Prayer"
+      }
+    ]
+  },
+  "content": {
+    "apostles_creed": {
+      "id": "apostles_creed",
+      "text": "I believe in God, the Father almighty,\nCreator of heaven and earth,\nand in Jesus Christ, his only Son, our Lord,\nwho was conceived by the Holy Spirit,\nborn of the Virgin Mary,\nsuffered under Pontius Pilate,\nwas crucified, died and was buried;\nhe descended into hell;\non the third day he rose again from the dead;\nhe ascended into heaven,\nand is seated at the right hand of God the Father almighty;\nfrom there he will come to judge the living and the dead.\nI believe in the Holy Spirit,\nthe holy catholic Church,\nthe communion of saints,\nthe forgiveness of sins,\nthe resurrection of the body,\nand life everlasting.\nAmen.",
+      "source": "Apostolic Tradition (2nd century)",
+      "license": "public-domain (ancient attribution)",
+      "latin": "Credo in Deum Patrem omnipotentem,\nCreatorem caeli et terrae,\net in Iesum Christum, Filium Eius unicum, Dominum nostrum,\nqui conceptus est de Spiritu Sancto,\nnatus ex Maria Virgine,\npassus sub Pontio Pilato,\ncrucifixus, mortuus, et sepultus,\ndescendit ad inferos,\ntertia die resurrexit a mortuis,\nascendit ad caelos,\nsedet ad dexteram Dei Patris omnipotentis,\ninde venturus est iudicare vivos et mortuos.\nCredo in Spiritum Sanctum,\nsanctam Ecclesiam catholicam,\nsanctorum communionem,\nremissionem peccatorum,\ncarnis resurrectionem,\nvitam aeternam.\nAmen."
+    },
+    "our_father": {
+      "id": "our_father",
+      "text": "Our Father, who art in heaven,\nhallowed be thy name;\nthy kingdom come;\nthy will be done on earth as it is in heaven.\nGive us this day our daily bread;\nand forgive us our trespasses\nas we forgive those who trespass against us;\nand lead us not into temptation,\nbut deliver us from evil.\nAmen.",
+      "source": "Jesus Christ (Matthew 6:9-13)",
+      "license": "public-domain (scriptural formula)",
+      "latin": "Pater noster, qui es in caelis,\nsanctificetur nomen tuum;\nadveniat regnum tuum;\nfiat voluntas tua, sicut in caelo, et in terra.\nPanem nostrum cotidianum da nobis hodie;\net dimitte nobis debita nostra,\nsicut et nos dimittimus debitoribus nostris;\net ne nos inducas in tentationem;\nsed libera nos a malo.\nAmen."
+    },
+    "franciscan_crown_closing": {
+      "id": "franciscan_crown_closing",
+      "text": "O Mary, crowned with seven joys: by thy glad intercession obtain for us the grace to taste thy joys on earth, and to share them eternally in heaven. Amen.",
+      "source": "original",
+      "license": "original (dedicated to the public domain)"
+    },
+    "hail_mary": {
+      "id": "hail_mary",
+      "text": "Hail Mary, full of grace, the Lord is with thee.\nBlessed art thou among women,\nand blessed is the fruit of thy womb, Jesus.\nHoly Mary, Mother of God,\npray for us sinners,\nnow and at the hour of our death.\nAmen.",
+      "source": "Based on Luke 1:28, 42",
+      "license": "public-domain (scriptural formula)",
+      "latin": "Ave Maria, gratia plena, Dominus tecum.\nBenedicta tu in mulieribus,\net benedictus fructus ventris tui, Iesus.\nSancta Maria, Mater Dei,\nora pro nobis peccatoribus,\nnunc et in hora mortis nostrae.\nAmen."
+    }
+  },
+  "reminders": {
+    "schedule_note": {
+      "note": "The Franciscan Crown (Seraphic Rosary) in the received form of the Franciscan manuals: the Apostles’ Creed and Our Father, then seven decades of one Our Father and seven Hail Marys (one joy per decade, introduced after \"Jesus\" of each Hail Mary), concluding with two additional Hail Marys to complete the 72 years of tradition and a short original closing. The tradition crowns the joys especially on Saturdays, and during Lent substitutes the Seven Sorrows — see the pack’s \"lent\" documentation variant; the session ships the year-round joy form. The Catholic Encyclopedia’s recension with ten Hail Marys per decade is the alternate received form; the brief’s 7-Hail-Mary shape ships here.",
+      "structure": "sign of the cross; Apostles’ Creed; Our Father; 7 decades of (1 Our Father + 7 Hail Marys); 2 additional Hail Marys; original closing",
+      "invocation_source": "The Franciscan Crown (Seraphic Rosary; received 15th-century form)",
+      "invocation_license": "public-domain (traditional form)"
+    }
+  },
+  "variants": [
+    {
+      "variantKey": "lent",
+      "note": "During Lent the tradition substitutes the Seven Sorrows of Our Lady for the Seven Joys (the crown of sorrows); the opening prayers and the two concluding Hail Marys remain. This pack ships the year-round joy form; the sorrows substitution is documented, not re-scheduled by the app."
+    }
+  ]
+}

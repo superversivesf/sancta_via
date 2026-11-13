@@ -15,6 +15,9 @@
 // * The nine Task-22 novena packs — authored in this app's assets too;
 //   `test/content/novena_packs_test.dart` pins their shape, schedules, and
 //   the single-copy rule over their embedded companion prayers.
+// * The ten Task-23 chaplet/litany packs — authored in this app's assets as
+//   well; `test/content/chaplet_litanies_packs_test.dart` pins their shape,
+//   their pinned litany invocation lists, and the same single-copy rule.
 //
 // The REAL rootBundle (not a test fake) must resolve every declared path the
 // pipeline keys off:
@@ -33,8 +36,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart';
 
 /// The committed pack assets, in filename order (the pins' order): the 8
-/// engine-fixture packs, the 6 Task-21 routine packs, and the 9 Task-22
-/// novena packs.
+/// engine-fixture packs, the 6 Task-21 routine packs, the 9 Task-22 novena
+/// packs, and the 10 Task-23 chaplet/litany packs.
 const List<String> _packFilenames = <String>[
   'angelus.json',
   'christmas_novena.json',
@@ -43,8 +46,15 @@ const List<String> _packFilenames = <String>[
   'five_first_saturdays.json',
   'fixed_prayers_morning.json',
   'fixed_prayers_night.json',
+  'franciscan_crown.json',
   'holy_spirit_pentecost.json',
+  'holy_wounds.json',
   'lectio_divina.json',
+  'litany_humility.json',
+  'litany_loreto.json',
+  'litany_precious_blood.json',
+  'litany_sacred_heart.json',
+  'litany_st_joseph.json',
   'meal_night_prayers.json',
   'mercy_hour.json',
   'miraculous_medal.json',
@@ -55,8 +65,11 @@ const List<String> _packFilenames = <String>[
   'perpetual_help.json',
   'rosary.json',
   'sacred_heart.json',
+  'seven_sorrows.json',
+  'st_anne_chaplet.json',
   'st_joseph.json',
   'st_jude.json',
+  'st_michael_chaplet.json',
   'total_consecration.json',
   'undoer_of_knots.json',
 ];

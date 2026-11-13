@@ -47,10 +47,10 @@ const List<String> _routinePackIds = <String>[
   'fixed_prayers_night',
 ];
 
-/// The engine-fixture packs plus the six Task-21 routine packs and the nine
-/// Task-22 novena packs: the whole shipped catalog, matching the pin test's
-/// manifest expectation.
-const int _shippedPackCount = 23;
+/// The engine-fixture packs plus the six Task-21 routine packs, the nine
+/// Task-22 novena packs, and the ten Task-23 chaplet/litany packs: the whole
+/// shipped catalog, matching the pin test's manifest expectation.
+const int _shippedPackCount = 33;
 
 /// The import's pinned rejected-prayer list. A companion or tool change that
 /// alters the split changes this expectation — and then this list, the
