@@ -44,6 +44,7 @@ class SessionStepActions {
     required this.onAdvance,
     required this.onRecord,
     required this.onToggleCheckpoint,
+    required this.onCheckpointDate,
     required this.onTickReflection,
   });
 
@@ -55,6 +56,10 @@ class SessionStepActions {
 
   /// Toggles the checkpoint [item] (`toggleCheckpoint`).
   final Future<void> Function(String item) onToggleCheckpoint;
+
+  /// Records the checkpoint [item] true on the chosen [date] — the
+  /// grace-window item's off-anchor completion entry (`recordCheckpointOn`).
+  final Future<void> Function(String item, DateTime date) onCheckpointDate;
 
   /// Records the running reflection's [remaining] deadline
   /// (`tickReflection`).
@@ -99,12 +104,16 @@ Widget sessionStepView({
     CheckpointStep() => _CheckpointStepCard(
       step: step,
       recorded: state.checkpoints[step.item] ?? false,
+      completedOn: state.checkpointDates[step.item],
+      windowed: state.windowedCheckpointItems.contains(step.item),
+      sessionDay: state.day,
       actions: actions,
     ),
     IntercessionStep() => _IntercessionStepCard(step: step, actions: actions),
     BeadGroupStep() => _BeadGroupStepCard(
       step: step,
       recorded: recorded,
+      fatimaPrayer: state.fatimaPrayer,
       actions: actions,
     ),
     RepetitionStep() => _RepetitionStepCard(
@@ -179,12 +188,6 @@ List<String> leakedStepTokens(SessionStep step) {
   }
   return tokens.toList()..sort();
 }
-
-/// The Fatima prayer that closes a flagged bead group: app-shipped
-/// presentation text (the engine step carries only the flag).
-const String _fatimaPrayerText =
-    'O my Jesus, forgive us our sins, lead all souls to heaven, '
-    'especially those most in need of Thy mercy.';
 
 /// The `n of m` label shared by the counted renderers.
 String _countLabel(int recorded, int target) => '$recorded of $target';
@@ -392,11 +395,17 @@ class _BeadGroupStepCard extends StatefulWidget {
   const _BeadGroupStepCard({
     required this.step,
     required this.recorded,
+    required this.fatimaPrayer,
     required this.actions,
   });
 
   final BeadGroupStep step;
   final int recorded;
+
+  /// The pack's Fatima prayer (its text and attribution), or null when the
+  /// pack ships none — the toggle then shows nothing beyond its flag.
+  final PrayerText? fatimaPrayer;
+
   final SessionStepActions actions;
 
   @override
@@ -461,11 +470,15 @@ class _BeadGroupStepCardState extends State<_BeadGroupStepCard> {
               dense: true,
               contentPadding: EdgeInsets.zero,
             ),
-          if (step.includeFatimaPrayer && _fatimaShown)
-            const Padding(
-              padding: EdgeInsets.only(bottom: 8),
-              child: Text(_fatimaPrayerText),
+          if (step.includeFatimaPrayer &&
+              _fatimaShown &&
+              widget.fatimaPrayer != null) ...<Widget>[
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Text(widget.fatimaPrayer!.text),
             ),
+            _AttributionLine(text: widget.fatimaPrayer!),
+          ],
           _continueButton(
             enabled: recorded >= step.hailMaryCount,
             onAdvance: widget.actions.onAdvance,
@@ -672,17 +685,59 @@ class _ReflectionStepCardState extends State<_ReflectionStepCard> {
 }
 
 /// The CheckpointStep card: the checkbox tile (list title = the step's
-/// title, falling back to the item) and its gating flag.
+/// title, falling back to the item), its gating flag, and — for an item the
+/// pack gives a grace window — a "When?" entry recording the day the item
+/// was actually made (final review I1).
 class _CheckpointStepCard extends StatelessWidget {
   const _CheckpointStepCard({
     required this.step,
     required this.recorded,
+    required this.completedOn,
+    required this.windowed,
+    required this.sessionDay,
     required this.actions,
   });
 
   final CheckpointStep step;
   final bool recorded;
+
+  /// The recorded completion date, when one is recorded.
+  final DateTime? completedOn;
+
+  /// Whether the pack gives this item a grace window — the condition for the
+  /// off-anchor date entry (anchor-day items are recorded at the session day).
+  final bool windowed;
+
+  /// The session's day, the date picker's default.
+  final DateTime? sessionDay;
+
   final SessionStepActions actions;
+
+  /// Opens the date picker defaulting to the recorded day (else the session
+  /// day) and records the item true on the chosen day.
+  Future<void> _pickDate(BuildContext context) async {
+    final DateTime initial = completedOn ?? sessionDay ?? DateTime.now();
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: initial,
+      firstDate: DateTime(initial.year - 1, 1, 1),
+      lastDate: DateTime(initial.year + 1, 12, 31),
+      helpText: 'When was it made?',
+    );
+    if (picked == null) {
+      return;
+    }
+    await actions.onCheckpointDate(
+      step.item,
+      DateTime(picked.year, picked.month, picked.day),
+    );
+  }
+
+  /// The `yyyy-mm-dd` rendering of the recorded day.
+  String _stamp(DateTime d) =>
+      '${d.year.toString().padLeft(4, '0')}-'
+      '${d.month.toString().padLeft(2, '0')}-'
+      '${d.day.toString().padLeft(2, '0')}';
 
   @override
   Widget build(BuildContext context) {
@@ -703,6 +758,29 @@ class _CheckpointStepCard extends StatelessWidget {
                 : const Icon(Icons.check_circle_outline),
           ),
           if (step.requiredForCompletion) const Text('Required for completion'),
+          if (windowed)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      completedOn == null
+                          ? 'Made within this anchor\'s grace window?'
+                          : 'Made on ${_stamp(completedOn!)}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                  TextButton(
+                    key: Key('session_checkpoint_when_${step.item}'),
+                    onPressed: () {
+                      _pickDate(context);
+                    },
+                    child: const Text('When?'),
+                  ),
+                ],
+              ),
+            ),
           const SizedBox(height: 8),
           _continueButton(enabled: true, onAdvance: actions.onAdvance),
         ],

@@ -588,14 +588,21 @@ void main() {
       expect(find.text('0 of 10'), findsOneWidget);
       expect(_continueEnabled(tester), isFalse);
 
-      // The Fatima toggle reveals the decade's closing prayer.
+      // The Fatima toggle reveals the decade's closing prayer — the PACK's
+      // `content.fatima-prayer` text with its attribution, never an app
+      // hardcoded copy (final review I5; the old constant omitted the
+      // "save us from the fires of hell" clause and carried no attribution).
       await _tap(
         tester,
         find.byKey(const Key('session_fatima_toggle_rosary-decade-1')),
       );
       await tester.pump(const Duration(milliseconds: 50));
       expect(
-        find.textContaining('O my Jesus, forgive us our sins'),
+        find.textContaining('save us from the fires of hell'),
+        findsOneWidget,
+      );
+      expect(
+        find.textContaining('Fatima prayer tradition (1910s) · public-domain'),
         findsOneWidget,
       );
 
@@ -653,6 +660,45 @@ void main() {
       await _drain(tester);
       expect(find.byKey(const Key('session_missing_banner')), findsOneWidget);
       expect(find.textContaining('communion'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'a grace-window checkpoint card offers the off-anchor "When?" date entry '
+    'and records the chosen day (final review I1)',
+    (WidgetTester tester) async {
+      final _PlayerHarness harness = await _pumpPlayer(
+        tester,
+        packId: 'five_first_saturdays',
+        packs: <ContentPack>[_assetPack('five_first_saturdays')],
+        startForDate: DateTime(2026, 12, 5),
+        openWithForDate: DateTime(2026, 12, 5),
+      );
+
+      // The confession item carries the pack's ±8-day grace window, so its
+      // card offers the date entry; the anchor-day communion item does not
+      // (it has no card on this step, but the windowed set is the pin).
+      expect(
+        find.byKey(const Key('session_checkpoint_when_confession')),
+        findsOneWidget,
+      );
+      expect(harness.controller.state.windowedCheckpointItems, <String>{
+        'confession',
+      });
+      expect(find.text('When?'), findsOneWidget);
+
+      // The affordance opens the picker defaulting to the session day.
+      await tester.tap(
+        find.byKey(const Key('session_checkpoint_when_confession')),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+      expect(find.byType(DatePickerDialog), findsOneWidget);
+
+      // Dismiss without recording: the item stays unrecorded.
+      await tester.tap(find.text('Cancel'));
+      await tester.pump(const Duration(milliseconds: 200));
+      expect(harness.controller.state.checkpoints['confession'], isNull);
     },
   );
 

@@ -456,6 +456,86 @@ void main() {
   );
 
   testWidgets(
+    'a lapsed strict commitment surfaces the missed-day reset from the '
+    'engine’s CommitmentState, beside the anchors the records credit',
+    (WidgetTester tester) async {
+      // C3(b): a skipped month under a strict commitment. The commitment
+      // records satisfy two first-Friday anchors (Oct 2 and Dec 4), but
+      // November's anchor was missed: the engine's strict walk restarts the
+      // series at the gap, so the persisted streak (2) overstates the
+      // current series (1). The Progress card surfaces that as a reset
+      // verdict — the same missed-day path the series uses.
+      final _ProgressHarness harness = await _pumpProgress(
+        tester,
+        today: DateTime(2026, 12, 4),
+        enrollments: const <String, Map<String, dynamic>>{
+          'nine_first_fridays': <String, dynamic>{},
+        },
+        progress: <String, ProgressState>{
+          'nine_first_fridays': ProgressState(
+            packId: 'nine_first_fridays',
+            fulfilledOrdinals: 2,
+            lastFulfilled: DateTime(2026, 12, 4),
+            completedItemsByDay: const <String, String>{
+              'communion:2026-10-02': 'done',
+              'communion:2026-12-04': 'done',
+            },
+            badges: <BadgeRecord>[
+              BadgeRecord(
+                title: 'Nine First Fridays of the Sacred Heart',
+                date: DateTime(2026, 10, 2),
+              ),
+              BadgeRecord(
+                title: 'Nine First Fridays of the Sacred Heart',
+                date: DateTime(2026, 12, 4),
+              ),
+            ],
+          ),
+        },
+      );
+
+      // The anchors the composition credits, beside the ordinal chip (the
+      // persisted claim '3 of 9').
+      expect(
+        find.byKey(const Key('anchors_credited_nine_first_fridays')),
+        findsOneWidget,
+      );
+      expect(find.text('2 anchor days credited'), findsOneWidget);
+      expect(find.text('3 of 9'), findsOneWidget);
+
+      // The engine's gap flags the strict streak: the reset card with its
+      // Apply affordance.
+      expect(
+        find.byKey(const Key('missed_day_nine_first_fridays')),
+        findsOneWidget,
+      );
+      expect(find.textContaining('clears your streak count'), findsOneWidget);
+
+      await _tapAndDrain(
+        tester,
+        find.byKey(const Key('apply_missed_day_nine_first_fridays')),
+      );
+
+      final ProgressState? stored = await tester.runAsync<ProgressState?>(
+        () => harness.repository.progressFor('nine_first_fridays'),
+      );
+      expect(stored, isNotNull);
+      expect(stored!.fulfilledOrdinals, 0);
+      expect(stored.lastFulfilled, isNull);
+      expect(stored.badges, hasLength(2), reason: 'badge history stays');
+
+      // The card leaves once the persisted claim no longer overstates the
+      // engine's series; the credited anchors remain visible.
+      expect(
+        find.byKey(const Key('missed_day_nine_first_fridays')),
+        findsNothing,
+      );
+      expect(find.text('2 anchor days credited'), findsOneWidget);
+      expect(find.text('1 of 9'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
     'a lagging series without a per-pack policy falls back to the settings '
     'default policy',
     (WidgetTester tester) async {

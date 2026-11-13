@@ -24,6 +24,7 @@ import 'package:sancta_via_devotional_engine_riverpod/sancta_via_devotional_engi
     show ProgramRepository;
 import 'package:sancta_via_devotionals/database/devotionals_database.dart';
 import 'package:sancta_via_devotionals/providers/session_player_provider.dart';
+import 'package:sancta_via_devotionals/services/progress_service.dart';
 import 'package:sancta_via_devotionals/services/substitution_service.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -505,6 +506,231 @@ void main() {
         expect(controller.state.errorMessage, contains('{{color}}'));
       },
     );
+  });
+
+  group('SessionPlayerController.recordCheckpointOn', () {
+    test(
+      'an off-anchor grace-window date is recorded and credits the anchor',
+      () async {
+        // I1 (final review): the First Saturdays confession may be made
+        // inside the ±8-day window. Recording it on the day it was actually
+        // made (not the session day) is what the anchor composition reads —
+        // otherwise the credit is lost.
+        final ContentPack saturdays = _assetPack('five_first_saturdays');
+        final _FakeProgramRepository repository = _FakeProgramRepository(
+          packs: <ContentPack>[saturdays],
+        );
+        final SessionPlayerController controller = SessionPlayerController(
+          repository: repository,
+          database: _inMemoryDatabase(),
+          clock: () => DateTime(2026, 12, 5, 8),
+        );
+        await controller.startSession(
+          'five_first_saturdays',
+          forDate: DateTime(2026, 12, 5),
+        );
+
+        // Only the windowed item offers the date entry.
+        expect(controller.state.windowedCheckpointItems, <String>{
+          'confession',
+        });
+
+        await controller.recordCheckpointOn(
+          'confession',
+          DateTime(2026, 12, 2),
+        );
+        expect(controller.state.checkpoints['confession'], isTrue);
+        expect(
+          controller.state.checkpointDates['confession'],
+          DateTime(2026, 12, 2),
+        );
+
+        // Finish the walk and record the anchor-day item at the session day.
+        await _walkToEnd(controller);
+        await controller.toggleCheckpoint('communion');
+        expect(controller.state.status, SessionPlayerStatus.finalized);
+
+        final ProgressState? written = await repository.progressFor(
+          'five_first_saturdays',
+        );
+        expect(
+          written!.completedItemsByDay.keys,
+          containsAll(<String>[
+            'confession:2026-12-02',
+            'communion:2026-12-05',
+          ]),
+        );
+
+        // The composition credits the 2026-12-05 anchor from the off-anchor
+        // confession date and the anchor-day communion record — the same
+        // count the Progress card renders.
+        final Set<DateTime> credited = ProgressService.fulfilledAnchorDates(
+          pack: saturdays,
+          spec: saturdays.schedule as ConsecutiveCommitmentSpec,
+          completedItemsByDay: written.completedItemsByDay,
+          today: DateTime(2026, 12, 5),
+        );
+        expect(credited, contains(DateTime(2026, 12, 5)));
+        expect(credited, hasLength(1));
+      },
+    );
+  });
+
+  group('SessionPlayerController completion counting', () {
+    test('re-praying a commitment on the same anchor day keeps one ordinal and '
+        'one badge; a routine pack still counts each session', () async {
+      // C3(a): a commitment's anchor date is ONE fulfillment position. The
+      // Today tile stays due until the count is reached, so a second
+      // session the same day must not earn a second ordinal or badge. A
+      // routine pack (the Angelus at three anchors) legitimately repeats
+      // daily, so its second same-day session still counts.
+      final ContentPack saturdays = _assetPack('five_first_saturdays');
+      final ContentPack angelus = _assetPack('angelus');
+      final _FakeProgramRepository repository = _FakeProgramRepository(
+        packs: <ContentPack>[saturdays, angelus],
+      );
+      final DevotionalsDatabase database = _inMemoryDatabase();
+
+      Future<void> praySaturday() async {
+        final SessionPlayerController controller = SessionPlayerController(
+          repository: repository,
+          database: database,
+          clock: () => DateTime(2026, 12, 5, 8),
+        );
+        await controller.startSession(
+          'five_first_saturdays',
+          forDate: DateTime(2026, 12, 5),
+        );
+        await _walkToEnd(controller);
+        await controller.toggleCheckpoint('communion');
+        expect(controller.state.status, SessionPlayerStatus.finalized);
+      }
+
+      await praySaturday();
+      final ProgressState? first = await repository.progressFor(
+        'five_first_saturdays',
+      );
+      expect(first!.fulfilledOrdinals, 1);
+      expect(first.badges, hasLength(1));
+
+      await praySaturday();
+      final ProgressState? second = await repository.progressFor(
+        'five_first_saturdays',
+      );
+      expect(
+        second!.fulfilledOrdinals,
+        1,
+        reason: 'the same anchor day is one fulfillment position',
+      );
+      expect(
+        second.badges,
+        hasLength(1),
+        reason: 'a same-anchor-day repeat earns no second badge',
+      );
+
+      Future<void> prayAngelus() async {
+        final SessionPlayerController controller = SessionPlayerController(
+          repository: repository,
+          database: database,
+          clock: () => DateTime(2026, 12, 5, 12),
+        );
+        await controller.startSession(
+          'angelus',
+          forDate: DateTime(2026, 12, 5),
+        );
+        await _walkToEnd(controller);
+        expect(controller.state.status, SessionPlayerStatus.finalized);
+      }
+
+      await prayAngelus();
+      await prayAngelus();
+      final ProgressState? routine = await repository.progressFor('angelus');
+      expect(
+        routine!.fulfilledOrdinals,
+        2,
+        reason: 'routine packs repeat at several anchors a day',
+      );
+      expect(routine.badges, hasLength(2));
+    });
+  });
+
+  group('SessionPlayerController schedule-label alternates', () {
+    test(
+      'an Eastertide Angelus resolves the Regina Caeli versicles and collect',
+      () async {
+        // C2 (final review): the resolved schedule label names the content.
+        // Eastertide resolves the pack's `regina_caeli` variant, and the pack
+        // ships `regina_caeli_versicles` / `regina_caeli_collect` for it —
+        // the session must play THAT text, never the Angelus while the
+        // notification says Regina Caeli.
+        final ContentPack angelus = _assetPack('angelus');
+        final _FakeProgramRepository repository = _FakeProgramRepository(
+          packs: <ContentPack>[angelus],
+        );
+        final DevotionalsDatabase database = _inMemoryDatabase();
+        final SessionPlayerController controller = SessionPlayerController(
+          repository: repository,
+          database: database,
+          clock: () => DateTime(2026, 4, 6, 6),
+        );
+
+        // 2026-04-06 is Easter Monday (seasonKey 'Easter').
+        await controller.startSession('angelus', forDate: DateTime(2026, 4, 6));
+
+        final VerseStep first =
+            controller.state.script.steps.first as VerseStep;
+        expect(first.versicle, contains('Queen of Heaven, rejoice, alleluia'));
+        expect(first.response, contains('He whom thou didst merit to bear'));
+        expect(
+          first.versicle,
+          isNot(contains('The Angel of the Lord declared unto Mary')),
+          reason: 'the Angelus versicle must not play in Eastertide',
+        );
+        final PrayerStep collect = controller.state.script.steps
+            .whereType<PrayerStep>()
+            .single;
+        expect(collect.text.text, contains('O God, who by the Resurrection'));
+        expect(
+          collect.text.text,
+          isNot(contains('Pour forth, we beseech Thee')),
+          reason: 'the Angelus collect must not play in Eastertide',
+        );
+
+        // Pause/resume re-derives the same alternate text (the label is
+        // re-resolved from the persisted day, not guessed).
+        final List<String> before = _stepTexts(controller.state.script);
+        final SessionPlayerController resumed = SessionPlayerController(
+          repository: repository,
+          database: database,
+          clock: () => DateTime(2026, 4, 6, 9),
+          resumePackId: 'angelus',
+        );
+        await resumed.ready;
+        expect(resumed.state.status, SessionPlayerStatus.active);
+        expect(_stepTexts(resumed.state.script), before);
+      },
+    );
+
+    test('an ordinary-time Angelus keeps the pack default text', () async {
+      final ContentPack angelus = _assetPack('angelus');
+      final _FakeProgramRepository repository = _FakeProgramRepository(
+        packs: <ContentPack>[angelus],
+      );
+      final SessionPlayerController controller = SessionPlayerController(
+        repository: repository,
+        database: _inMemoryDatabase(),
+        clock: () => DateTime(2026, 12, 5, 6),
+      );
+
+      await controller.startSession('angelus', forDate: DateTime(2026, 12, 5));
+
+      final VerseStep first = controller.state.script.steps.first as VerseStep;
+      expect(first.versicle, 'The Angel of the Lord declared unto Mary.');
+      final PrayerStep collect = controller.state.script.steps
+          .whereType<PrayerStep>()
+          .single;
+      expect(collect.text.text, contains('Pour forth, we beseech Thee'));
+    });
   });
 
   group('SessionPlayerController resume', () {

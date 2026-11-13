@@ -304,6 +304,31 @@ class _ProgramCard extends StatelessWidget {
               ],
             ),
           ),
+        if (entry.anchorsCredited case final int credited)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Row(
+              children: <Widget>[
+                Icon(
+                  Icons.fact_check_outlined,
+                  size: 18,
+                  color: theme.colorScheme.primary,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    credited == 1
+                        ? '1 anchor day credited'
+                        : '$credited anchor days credited',
+                    key: Key('anchors_credited_${entry.pack.id}'),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         if (entry.missedVerdict != null)
           _MissedDayCard(entry: entry, onApplyMissedDay: onApplyMissedDay),
         BadgeList(badges: entry.progress?.badges ?? const <BadgeRecord>[]),

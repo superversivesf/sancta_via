@@ -27,13 +27,20 @@
 // string reaches `ProgressService.missedVerdict` and throws its own loud
 // [ArgumentError]: bad state is surfaced, never silently defaulted.
 //
-// ## Missed-day surfacing (the Task 9 scope)
+// ## Missed-day surfacing (the Task 9 scope + the commitment extension)
 //
-// The verdict is computed ONLY for `SessionSeriesSpec` packs — the
-// evaluator's pinned cadence scope (daily series). Anchor-recurring
-// commitments are driven by `CommitmentState` through the session
-// completion writer, never by this verdict, so they render no missed-day
-// card. Within that scope the surfaced states are the ones needing the
+// For `SessionSeriesSpec` packs the verdict is computed through
+// `ProgressService.missedVerdict` — the evaluator's pinned cadence scope
+// (daily series). Anchor-recurring commitments are driven by the ENGINE's
+// `CommitmentState` instead (`ProgressService.evaluateCommitment`): the
+// completion records compose to the anchor dates they satisfy, the engine's
+// strict walk restarts at a missed anchor and labels every gap, and the card
+// surfaces `reset` when the persisted streak still claims more positions than
+// the engine's current series holds (a same-day repeat never advances it, see
+// `persistCompletion`). Applying the reset zeroes the persisted streak; the
+// engine's labels are history the records still carry, so the card's gate is
+// the persisted claim, not the labels alone — after Apply the card leaves.
+// Within the series scope the surfaced states are the ones needing the
 // user:
 //
 // * `reset` — the strict-policy gap card, with the ruled Apply affordance
@@ -82,10 +89,12 @@ library;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart'
     show
+        CommitmentState,
         ConsecutiveCommitmentSpec,
         ContentPack,
         MissedDayVerdict,
         ProgressState,
+        RestartPolicy,
         ScheduleResult,
         ScheduleSpec,
         ScheduleContext,
@@ -133,6 +142,7 @@ class ProgressEntry {
     this.seriesStartDate,
     this.seriesPhase,
     this.missedVerdict,
+    this.anchorsCredited,
   });
 
   /// The program's content pack (the enrolled, possibly derived pack).
@@ -172,6 +182,14 @@ class ProgressEntry {
   /// state, surfaced read-only). Null for every other state — resume,
   /// fresh programs, and non-series shapes (see the library docs).
   final MissedDayVerdict? missedVerdict;
+
+  /// The anchor dates the completion records credit for a commitment
+  /// (`ProgressService.fulfilledAnchorDates` — the grace-window + anchor-day
+  /// composition), or null for every other shape and for a commitment with
+  /// no persisted progress. Rendered beside the ordinal: the ordinal is the
+  /// persisted streak claim, this is how many anchor days the records
+  /// actually satisfy.
+  final int? anchorsCredited;
 
   /// Whether the program's count is fully fulfilled: a commitment at its
   /// count, or a series at its length. Complete programs render their
@@ -365,12 +383,47 @@ progressAssemblyProvider = FutureProvider<ProgressAssembly>((Ref ref) async {
       final ProgramDetail detail = await ref.watch(
         programDetailProvider(pack.id).future,
       );
+      // The engine's commitment verdict over the same composition the
+      // player's checkpoint records feed: which anchor dates the
+      // completion records satisfy, then the engine's own strict/permissive
+      // walk (gaps labelled). Only a persisted state has records to judge.
+      int? anchorsCredited;
+      MissedDayVerdict? verdict;
+      if (progress != null) {
+        final Map<String, String> records = progress.completedItemsByDay;
+        final CommitmentState evaluated = ProgressService.evaluateCommitment(
+          pack: pack,
+          spec: schedule,
+          completedItemsByDay: records,
+          today: asOf,
+        );
+        anchorsCredited = ProgressService.fulfilledAnchorDates(
+          pack: pack,
+          spec: schedule,
+          completedItemsByDay: records,
+          today: asOf,
+        ).length;
+        // The strict gap: the engine reports a missed anchor AND the
+        // persisted streak still claims more positions than the engine's
+        // current series holds. Asking the user to apply the reset is the
+        // existing missed-day path's job; a completed program is stable.
+        final bool lapsed =
+            evaluated.labels.isNotEmpty &&
+            !evaluated.isComplete &&
+            schedule.policy == RestartPolicy.strict &&
+            (progress.fulfilledOrdinals) > evaluated.fulfilledOrdinals;
+        if (lapsed) {
+          verdict = MissedDayVerdict.reset;
+        }
+      }
       entries.add(
         ProgressEntry(
           pack: pack,
           progress: progress,
           asOf: asOf,
           remainingDates: detail.remainingDates,
+          anchorsCredited: anchorsCredited,
+          missedVerdict: verdict,
         ),
       );
       continue;

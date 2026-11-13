@@ -34,7 +34,12 @@
 //   position `DueToday.schedule.ordinal` reports, which the program providers
 //   document as the persisted streak plus one. A caller's claimed progress
 //   therefore advances one position per completion even when no completion
-//   records exist (e.g. a pack claimed during onboarding).
+//   records exist (e.g. a pack claimed during onboarding). The one exception
+//   is a same-anchor-day repeat of a commitment-family pack, which is
+//   idempotent (no second ordinal, no second badge) because a commitment's
+//   anchor date is one fulfillment position; routine/novena packs legitimately
+//   repeat a session on the same day (the Angelus at 6am, noon, 6pm) and keep
+//   counting each one.
 // * **Anchor fulfillment is the item composition**, exposed as
 //   [ProgressService.fulfilledAnchorDates]: which past anchor dates the
 //   completion records actually satisfy, from the union of the two rules the
@@ -52,12 +57,15 @@
 //   An anchor is fulfilled when every checkpoint item of the pack's session is
 //   satisfied that way; packs whose session declares no checkpoint fall back
 //   to the engine's documented date rule (the anchor day completed, or a
-//   grace window admitting a completion date). This composition is what the
-//   app surfaces (the player can warn that a session completes while its
-//   anchor still asks for an item; the progress surface shows the credit); it
-//   never rewrites the stored ordinal. Corrections to a streak that fell behind
-//   its true position — a gap under a strict policy — are
-//   [ProgressService.applyMissedDay]'s job.
+//   grace window admitting a completion date). What the app does with this
+//   composition: the session player's CheckpointStep offers a "When?" date
+//   entry for a grace-window item, so a confession made off the anchor day is
+//   recorded with the date it was actually made (`completedItemsByDay`), and
+//   the Progress card counts the anchor dates the composition credits beside
+//   the persisted ordinal. The composition never rewrites the stored ordinal;
+//   corrections to a streak that fell behind its true position — a gap under
+//   a strict policy — are [ProgressService.applyMissedDay]'s job, surfaced
+//   for a lapsed commitment by [ProgressService.evaluateCommitment].
 //
 // Date discipline: local midnights only, as everywhere in the engine — dates
 // are reduced with `DateTime(year, month, day)` and rendered zero-padded, and
@@ -340,16 +348,19 @@ class ProgressService {
   /// Derivation:
   ///
   /// * `fulfilledOrdinals` — the persisted streak plus one
-  ///   (`progress.fulfilledOrdinals + 1`), for every pack shape. This is the
-  ///   pinned `DueToday.schedule.ordinal` source: the program providers
+  ///   (`progress.fulfilledOrdinals + 1`), for every pack shape EXCEPT a
+  ///   same-anchor-day repeat of a commitment-family pack (below). This is
+  ///   the pinned `DueToday.schedule.ordinal` source: the program providers
   ///   document that position as the persisted streak plus one
   ///   (`program_providers.dart`), so a finished session always advances the
   ///   streak by exactly one position — including a pack whose earlier
   ///   positions were claimed without completion records (onboarding claims).
   ///   Anchor fulfilment is NOT consulted here: it answers “which anchors the
   ///   records satisfy” ([fulfilledAnchorDates]) and never rewrites the
-  ///   ordinal. A streak that fell behind its true position is corrected by
-  ///   [applyMissedDay]’s reset, not by this writer.
+  ///   ordinal — that would discard a claimed streak with no records. A
+  ///   streak that fell behind its true position is corrected by
+  ///   [applyMissedDay]’s reset, which the Progress card surfaces for a
+  ///   lapsed strict commitment (see [evaluateCommitment]).
   /// * `lastFulfilled` — [today], never earlier than the persisted
   ///   `lastFulfilled` (a backdated completion cannot move it backwards).
   /// * `repetitionsToday` — reset to 0.
@@ -358,10 +369,22 @@ class ProgressService {
   ///   the lifetime count is the badge count (Plan 2's Task 16 contract).
   /// * `completedItemsByDay` — the layered records.
   ///
+  /// **Same-anchor-day idempotence (commitment-family only).** A commitment's
+  /// anchor date is one fulfillment position: re-praying it the same calendar
+  /// day must not earn a second ordinal or a second badge (the Today tile
+  /// stays due until the count is reached, so a repeat is otherwise counted
+  /// twice). When [pack]'s family is [PackFamily.commitment] and the
+  /// persisted `lastFulfilled` is this completion's own date, the ordinal and
+  /// the badge list are carried unchanged — the completion records still
+  /// layer, because a later-recorded grace-window item may be what credits
+  /// the anchor. Routine/novena packs deliberately KEEP the increment: their
+  /// sessions legitimately repeat on the same day (the Angelus at 6am, noon
+  /// and 6pm), so their own semantics count every finished session.
+  ///
   /// Only ONE write per finished session: the player routes completion
-  /// through [completeSession], which calls this once. Two sessions on the
-  /// same day (a routine pack anchored three times a day) append two badges
-  /// with that day's date by design.
+  /// through [completeSession], which calls this once. Two sessions of a
+  /// ROUTINE pack on the same day append two badges with that day's date by
+  /// design; a commitment pack's same-day repeat does not (see above).
   ///
   /// Completions dated after [today] are carried in the persisted records but
   /// never evaluated ([fulfilledAnchorDates] filters them out): they cannot
@@ -383,9 +406,15 @@ class ProgressService {
       ...progress.completedItemsByDay,
       ...completedItemsByDay,
     };
-    final int ordinals = progress.fulfilledOrdinals + 1;
-
     final DateTime? lastFulfilled = progress.lastFulfilled;
+    final bool sameAnchorDayRepeat =
+        pack.family == PackFamily.commitment &&
+        lastFulfilled != null &&
+        _dateOnly(lastFulfilled) == day;
+    final int ordinals = sameAnchorDayRepeat
+        ? progress.fulfilledOrdinals
+        : progress.fulfilledOrdinals + 1;
+
     final ProgressState next = ProgressState(
       packId: pack.id,
       fulfilledOrdinals: ordinals,
@@ -394,16 +423,51 @@ class ProgressService {
           : day,
       repetitionsToday: 0,
       completedItemsByDay: completions,
-      badges: <BadgeRecord>[
-        ...progress.badges,
-        BadgeRecord(title: pack.title, date: day),
-      ],
+      badges: sameAnchorDayRepeat
+          ? progress.badges
+          : <BadgeRecord>[
+              ...progress.badges,
+              BadgeRecord(title: pack.title, date: day),
+            ],
     );
     await repository.saveProgress(next);
     AppLogger.info(
-      'Persisted completion of "${pack.id}": ordinal $ordinals on '
-          '${_stamp(day)}',
+      sameAnchorDayRepeat
+          ? 'Persisted a same-anchor-day repeat of "${pack.id}": ordinal '
+                'stays $ordinals on ${_stamp(day)} (no second badge)'
+          : 'Persisted completion of "${pack.id}": ordinal $ordinals on '
+                '${_stamp(day)}',
       'PROGRESS',
+    );
+  }
+
+  /// The engine's [CommitmentState] for [pack] as of [today]: the anchor
+  /// dates the completion records satisfy ([fulfilledAnchorDates] — the
+  /// grace-window + anchor-day composition) evaluated by
+  /// `CommitmentState.evaluate`, whose strict-policy walk restarts the
+  /// series at a missed anchor and labels every gap (`'gap: yyyy-mm-dd'`).
+  ///
+  /// This is the commitment-shaped counterpart of [missedVerdict] (whose
+  /// evaluator is scoped to daily series): a consecutive commitment's missed
+  /// anchor is the ENGINE's decision, and the Progress card surfaces the
+  /// strict case as a reset verdict when the persisted streak claims more
+  /// positions than the engine's current series holds. The persisted ordinal
+  /// itself is never rewritten here (see [persistCompletion]).
+  static CommitmentState evaluateCommitment({
+    required ContentPack pack,
+    required ConsecutiveCommitmentSpec spec,
+    required Map<String, String> completedItemsByDay,
+    required DateTime today,
+  }) {
+    return CommitmentState.evaluate(
+      spec,
+      fulfilledAnchorDates(
+        pack: pack,
+        spec: spec,
+        completedItemsByDay: completedItemsByDay,
+        today: today,
+      ),
+      today,
     );
   }
 

@@ -153,6 +153,7 @@ class _SessionPlayerScreenState extends ConsumerState<SessionPlayerScreen> {
       onAdvance: controller.completeStep,
       onRecord: controller.record,
       onToggleCheckpoint: controller.toggleCheckpoint,
+      onCheckpointDate: controller.recordCheckpointOn,
       onTickReflection: controller.tickReflection,
     );
   }

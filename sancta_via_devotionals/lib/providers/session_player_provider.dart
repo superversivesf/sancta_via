@@ -23,7 +23,10 @@
 // with every text substituted once at start — the engine's `SessionState` is
 // only a cursor and carries no text), `variant` is the day-variant snapshot
 // (Task 11 may read `phase`/`virtue` for banners), and `status`/`errorMessage`
-// say whether the session is loading, active, finalized, or failed.
+// say whether the session is loading, active, finalized, or failed. The
+// checkpoint dates (`checkpointDates`) and the pack's grace-window items
+// (`windowedCheckpointItems`) are likewise additive: they let the
+// CheckpointStep card offer the off-anchor "When?" entry (final review I1).
 //
 // ## Completion contract
 //
@@ -53,6 +56,26 @@
 // [DevotionalsDatabase] helpers. Writes are serialized through one queue
 // (each write captures its snapshot at request time, so the last mutation
 // wins) and never fail the chain.
+//
+// ## Schedule-label alternates (C2)
+//
+// A time-of-day schedule may re-label its resolution by season (the Angelus
+// pack resolves `regina_caeli` throughout Eastertide). The resolved label is
+// threaded into the script resolution: the first label for which the pack
+// ships alternate content selects it —
+//
+// * `<label>_versicles` (a `PrayerText`) replaces the inline V./R. pairs of
+//   the script's verse steps, pair for pair in script order (the shipped
+//   Regina Caeli text carries exactly the three pairs the Angelus session
+//   walks; pairs beyond the available text are left at the pack default);
+// * `<label>_collect` replaces the prayer step(s) whose content id names a
+//   collect (`*_collect`).
+//
+// Without a shipped alternate the pack's default session plays unchanged
+// (ordinary-time Angelus). The label is re-resolved from the session's day
+// on resume — the liturgical calendar is deterministic, so the resumed text
+// is byte-identical — and it is never guessed: the notification body names
+// the same label from the same `ScheduleResult.labels`.
 //
 // The controller resumes a pack's unfinished session (pause/resume):
 // construction may take a resume pack id, and [startSession] checks the
@@ -99,6 +122,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart';
 import 'package:sancta_via_devotional_engine_riverpod/sancta_via_devotional_engine_riverpod.dart'
     show ProgramRepository;
+import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart'
+    show LiturgicalCalendarService;
 
 import '../database/devotionals_database.dart';
 import '../providers/content_providers.dart';
@@ -169,6 +194,23 @@ class SessionPlayerState {
   /// The checkpoint gate's map: devotion item → recorded.
   final Map<String, bool> checkpoints;
 
+  /// The recorded checkpoints' completion dates (item → local midnight), the
+  /// dates the completion records are written under. A grace-window item may
+  /// carry a date other than the session day (the Task-I1 "When?" entry).
+  final Map<String, DateTime> checkpointDates;
+
+  /// The pack's Fatima prayer (`content['fatima-prayer']`), substituted once
+  /// at start, or null when the pack ships none. The BeadGroupStep card
+  /// renders THIS text with its attribution when the Fatima flag is on —
+  /// never an app-hardcoded copy (final review I5).
+  final PrayerText? fatimaPrayer;
+
+  /// The checkpoint items the pack's commitment schedule gives a grace
+  /// window (`ConsecutiveCommitmentSpec.windows`) — the items the player
+  /// offers an off-anchor completion-date entry for. Empty for every other
+  /// pack shape.
+  final Set<String> windowedCheckpointItems;
+
   /// The wall-clock end of the running reflection, or null when none runs.
   final DateTime? reflectionEndsAt;
 
@@ -203,6 +245,9 @@ class SessionPlayerState {
     required this.session,
     required this.script,
     this.checkpoints = const <String, bool>{},
+    this.checkpointDates = const <String, DateTime>{},
+    this.windowedCheckpointItems = const <String>{},
+    this.fatimaPrayer,
     this.reflectionEndsAt,
     this.tokens = const <String, String>{},
     this.variant = const <String, dynamic>{},
@@ -261,6 +306,7 @@ class _ActiveSession {
     required this.tokens,
     required this.script,
     required this.session,
+    this.fatimaPrayer,
     Map<String, bool>? checkpoints,
     Map<String, DateTime>? checkpointDates,
     this.reflectionEndsAt,
@@ -273,6 +319,10 @@ class _ActiveSession {
   final Map<String, dynamic> variant;
   final Map<String, String> tokens;
   final SessionScript script;
+
+  /// The pack's resolved Fatima prayer, or null when it ships none.
+  final PrayerText? fatimaPrayer;
+
   SessionState session;
   final Map<String, bool> checkpoints;
   final Map<String, DateTime> checkpointDates;
@@ -636,6 +686,34 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
     }
   }
 
+  /// Records the checkpoint [item] true on [completedOn] — the off-anchor
+  /// completion-date entry (final review I1).
+  ///
+  /// A grace-window item (e.g. the First Saturdays confession, ±8 days) may
+  /// be made on a day other than the anchor; the completion record must carry
+  /// the day it was actually made, because that is the date the grace-window
+  /// composition credits. The item is recorded true and dated [completedOn]
+  /// (reduced to its local midnight), and finalization is retried when the
+  /// walk is already complete. Only the schedule's windowed items are offered
+  /// this way ([SessionPlayerState.windowedCheckpointItems]); an item outside
+  /// the windows records exactly as [toggleCheckpoint] would, dated at the
+  /// chosen day.
+  Future<void> recordCheckpointOn(String item, DateTime completedOn) async {
+    final _ActiveSession? active = _active;
+    if (item.isEmpty ||
+        active == null ||
+        state.status != SessionPlayerStatus.active) {
+      return;
+    }
+    active.checkpoints[item] = true;
+    active.checkpointDates[item] = _dateOnly(completedOn);
+    _publish(SessionPlayerStatus.active);
+    await _persistActive();
+    if (active.session.isComplete) {
+      await _finalize();
+    }
+  }
+
   /// Records the running reflection's [remaining] time, so the countdown
   /// survives a pause/resume. A non-positive [remaining] clears the deadline
   /// (the countdown finished).
@@ -753,7 +831,13 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
         : VariantService.dayVariant(pack, dayIndex) ??
               const <String, dynamic>{};
     final Map<String, String> tokens = _tokensFor(pack, day, dayIndex, variant);
-    final SessionScript script = _resolveScript(pack, day, tokens, variant);
+    final SessionScript script = _resolveScript(
+      pack,
+      day,
+      tokens,
+      variant,
+      labels: resolution.labels,
+    );
     return _ActiveSession(
       pack: pack,
       day: day,
@@ -761,19 +845,22 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
       variant: variant,
       tokens: tokens,
       script: script,
+      fatimaPrayer: _fatimaPrayer(pack, tokens),
       session: SessionRunner.forState(script),
     );
   }
 
   /// The resumed session of [pack] from [saved]: the persisted cursor,
   /// checkpoints, countdown, and token/variant snapshot, with the script
-  /// re-derived from that snapshot (the substitution gate runs again).
+  /// re-derived from that snapshot (the substitution gate runs again, and
+  /// the day's schedule label is re-resolved for the same day).
   _ActiveSession _activeFromSaved(ContentPack pack, _SavedSession saved) {
     final SessionScript script = _resolveScript(
       pack,
       saved.day,
       saved.tokens,
       saved.variant,
+      labels: _resolveDay(pack, _dateOnly(saved.day)).labels,
     );
     return _ActiveSession(
       pack: pack,
@@ -782,6 +869,7 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
       variant: saved.variant,
       tokens: saved.tokens,
       script: script,
+      fatimaPrayer: _fatimaPrayer(pack, saved.tokens),
       session: saved.session,
       checkpoints: <String, bool>{...saved.checkpoints},
       checkpointDates: <String, DateTime>{...saved.checkpointDates},
@@ -813,14 +901,17 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
 
   /// The pack's script with every text substituted ONCE (the Review Focus 4
   /// leakage gate): a bead group gets its own decade's mystery tokens, every
-  /// other step the day's tokens. Any leftover `{{…}}` throws — the caller
+  /// other step the day's tokens, and — when the resolved schedule label
+  /// ships alternates — the label's versicles/collect replace the defaults
+  /// (see the library docs). Any leftover `{{…}}` throws — the caller
   /// surfaces it as the player's error state instead of rendering it.
   SessionScript _resolveScript(
     ContentPack pack,
     DateTime day,
     Map<String, String> tokens,
-    Map<String, dynamic> variant,
-  ) {
+    Map<String, dynamic> variant, {
+    List<String> labels = const <String>[],
+  }) {
     final Object? set = variant['mysterySet'];
     final String? setOverride = set is String ? set : null;
     final String? fruitFallback = tokens['virtue'];
@@ -853,7 +944,95 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
       }
       steps.add(_resolveStep(step, tokens));
     }
+    _applyLabelAlternates(pack, labels, tokens, steps);
     return SessionScript(id: pack.session.id, steps: steps);
+  }
+
+  /// The first resolved schedule [labels] entry (in resolution order) the
+  /// pack ships alternate content for (`<label>_versicles` or
+  /// `<label>_collect`), or null when none does.
+  String? _alternateLabel(ContentPack pack, List<String> labels) {
+    for (final String label in labels) {
+      if (label.isEmpty) {
+        continue;
+      }
+      if (pack.content.containsKey('${label}_versicles') ||
+          pack.content.containsKey('${label}_collect')) {
+        return label;
+      }
+    }
+    return null;
+  }
+
+  /// Replaces [steps]' defaults with the resolved [labels]' alternates, in
+  /// place (see the library docs for the mapping rule).
+  void _applyLabelAlternates(
+    ContentPack pack,
+    List<String> labels,
+    Map<String, String> tokens,
+    List<SessionStep> steps,
+  ) {
+    final String? label = _alternateLabel(pack, labels);
+    if (label == null) {
+      return;
+    }
+    final PrayerText? versicles = pack.content['${label}_versicles'];
+    if (versicles != null) {
+      final List<(String versicle, String response)> pairs = _versePairs(
+        versicles.text,
+      );
+      int verseIndex = 0;
+      for (int i = 0; i < steps.length; i++) {
+        final SessionStep step = steps[i];
+        if (step is! VerseStep) {
+          continue;
+        }
+        if (verseIndex >= pairs.length) {
+          break;
+        }
+        final (String versicle, String response) pair = pairs[verseIndex++];
+        steps[i] = VerseStep(
+          id: step.id,
+          title: step.title,
+          versicle: _substitute(pair.$1, tokens),
+          response: _substitute(pair.$2, tokens),
+          closing: step.closing,
+        );
+      }
+    }
+    final PrayerText? collect = pack.content['${label}_collect'];
+    if (collect != null) {
+      for (int i = 0; i < steps.length; i++) {
+        final SessionStep step = steps[i];
+        if (step is PrayerStep && step.text.id.endsWith('_collect')) {
+          steps[i] = PrayerStep(
+            id: step.id,
+            title: step.title,
+            text: _resolveText(collect, tokens),
+          );
+        }
+      }
+    }
+  }
+
+  /// The V./R. pairs of an alternate-versicles text, in authored order: each
+  /// `V.` line opens a pair and the next `R.` line closes it. A trailing
+  /// unterminated pair is ignored (there is no response to render).
+  List<(String, String)> _versePairs(String text) {
+    final List<(String, String)> pairs = <(String, String)>[];
+    String? pendingVersicle;
+    for (final String rawLine in text.split('\n')) {
+      final String line = rawLine.trim();
+      if (line.startsWith('V.')) {
+        pendingVersicle = line.substring(2).trim();
+        continue;
+      }
+      if (line.startsWith('R.') && pendingVersicle != null) {
+        pairs.add((pendingVersicle, line.substring(2).trim()));
+        pendingVersicle = null;
+      }
+    }
+    return pairs;
   }
 
   /// One non-bead step with its texts substituted.
@@ -933,10 +1112,15 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
     return value == null ? null : _substitute(value, tokens);
   }
 
-  /// The pack's resolution for [day]: the first schedule that is due, else
-  /// the first schedule's (not-due) answer.
+  /// The pack's resolution for [day], under the day's liturgical season so
+  /// season-keyed label variants (the Angelus' Regina Caeli) resolve exactly
+  /// as the Today tile and the notification planner resolved them.
   ScheduleResult _resolveDay(ContentPack pack, DateTime day) {
-    const ScheduleContext context = ScheduleContext();
+    final ScheduleContext context = ScheduleContext(
+      seasonKeyValue: LiturgicalCalendarService.getDayForDate(
+        _dateOnly(day),
+      )?.seasonKey,
+    );
     for (final ScheduleSpec spec in pack.schedules) {
       final ScheduleResult result = spec.resolve(day, context);
       if (result.due) {
@@ -966,6 +1150,11 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
       session: active.session,
       script: active.script,
       checkpoints: Map<String, bool>.unmodifiable(active.checkpoints),
+      checkpointDates: Map<String, DateTime>.unmodifiable(
+        active.checkpointDates,
+      ),
+      windowedCheckpointItems: _windowedItems(active.pack),
+      fatimaPrayer: active.fatimaPrayer,
       reflectionEndsAt: active.reflectionEndsAt,
       tokens: active.tokens,
       variant: active.variant,
@@ -976,6 +1165,28 @@ class SessionPlayerController extends StateNotifier<SessionPlayerState> {
         active.checkpoints,
       ),
     );
+  }
+
+  /// The pack's Fatima prayer with its tokens substituted (the same
+  /// substitution gate as every other text), or null when the pack ships no
+  /// `content['fatima-prayer']` entry.
+  PrayerText? _fatimaPrayer(ContentPack pack, Map<String, String> tokens) {
+    final PrayerText? prayer = pack.content['fatima-prayer'];
+    return prayer == null ? null : _resolveText(prayer, tokens);
+  }
+
+  /// The checkpoint items of [pack]'s commitment schedule that carry a grace
+  /// window — the items whose completion date the player may pick.
+  static Set<String> _windowedItems(ContentPack pack) {
+    final Set<String> items = <String>{};
+    for (final ScheduleSpec spec in pack.schedules) {
+      if (spec is ConsecutiveCommitmentSpec) {
+        for (final GraceWindow window in spec.windows) {
+          items.add(window.item);
+        }
+      }
+    }
+    return Set<String>.unmodifiable(items);
   }
 
   /// Enqueues a write of the current snapshot; the snapshot is captured NOW
