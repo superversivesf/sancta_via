@@ -52,14 +52,16 @@
 //    this service reads each enrolled pack's persisted progress and excludes a
 //    pack whose commitment is complete (`fulfilledOrdinals >= count`), the
 //    same exclusion the wrapper's `todayProgramsProvider` applies.
-// 2. **The calendar seam is the FEAST-ONLY list** —
-//    `LiturgicalCalendarService.getUpcomingFeasts(daysAhead: 60)` (prioritized
-//    / solemnity / feast / memorial days), not a per-day feed. Bodies stay
-//    unpolluted and anchors still pick up a season variant on the days the
-//    list carries. The per-day upgrade path (every horizon day from
-//    `getDayForDate`, which the planner's ferial guard already keeps from
-//    garnishing weekday bodies — at the cost of a Sunday/commemoration's
-//    rank-parse gap) is deliberately deferred until a task owns that feed.
+// 2. **The calendar seam is a PER-DAY feed** —
+//    `LiturgicalCalendarService.getDayForDate` for every day of the 60-day
+//    horizon. Every day therefore carries its season key, so a season-keyed
+//    anchor label resolves on every day the pack re-labels — including rank-
+//    SUNDAY days, which the feast-only `getUpcomingFeasts` list omits (its
+//    filter keeps prioritized/solemnity/feast/memorial days only), so an
+//    Eastertide Sunday's body now reads `Regina Caeli` exactly as the session
+//    plays it. The planner's ferial guard keeps a FERIA day's name out of a
+//    session body; a non-ferial celebration (memorial and above) still appends
+//    its name, the Task 17 behavior.
 // 3. Every Angelus anchor: the shipped pack carries THREE daily
 //    [TimeOfDaySpec] entries (06:00, 12:00, 18:00 since Task 24), and the
 //    planner maps each authored spec to its own reminder — nothing here
@@ -336,9 +338,10 @@ class NotificationService {
   /// [repository] (packs, enrollments, progress) and [settings] (a getter —
   /// the CURRENT settings are read at each [refresh] call).
   ///
-  /// [upcomingFeasts] is the calendar seam: it defaults to the feast-only
-  /// `LiturgicalCalendarService.getUpcomingFeasts` over the 60-day horizon.
-  /// [adapter] defaults to the real plugin adapter; tests inject a fake.
+  /// [calendarDays] is the calendar seam: it defaults to a per-day feed of
+  /// `LiturgicalCalendarService.getDayForDate` across the 60-day horizon (see
+  /// binding note 2). [adapter] defaults to the real plugin adapter; tests
+  /// inject a fake.
   NotificationService({
     required DevotionalsDatabase database,
     required SqliteProgramRepository repository,
@@ -346,14 +349,14 @@ class NotificationService {
     NotificationPluginAdapter? adapter,
     NotificationPlanner planner = const NotificationPlanner(),
     DateTime Function()? clock,
-    List<LiturgicalDayData> Function(DateTime from)? upcomingFeasts,
+    List<LiturgicalDayData> Function(DateTime from)? calendarDays,
   }) : _database = database,
        _repository = repository,
        _settings = settings,
        _adapter = adapter ?? FlutterNotificationPluginAdapter(),
        _planner = planner,
        _clock = clock ?? DateTime.now,
-       _upcomingFeasts = upcomingFeasts ?? _defaultUpcomingFeasts;
+       _calendarDays = calendarDays ?? _defaultCalendarDays;
 
   /// The store the planner's rows are persisted in and diffed against.
   final DevotionalsDatabase _database;
@@ -367,7 +370,7 @@ class NotificationService {
   final NotificationPluginAdapter _adapter;
   final NotificationPlanner _planner;
   final DateTime Function() _clock;
-  final List<LiturgicalDayData> Function(DateTime from) _upcomingFeasts;
+  final List<LiturgicalDayData> Function(DateTime from) _calendarDays;
 
   /// The tap stream: one `deep_link` per tapped notification (`/session/…`).
   final StreamController<String> _taps = StreamController<String>.broadcast();
@@ -556,8 +559,8 @@ class NotificationService {
             timeZoneName: zoneName,
             packs: plannedPacks,
             enrollments: enrollments,
-            // Binding note 2: the FEAST-ONLY seam (see the library docs).
-            upcomingFeasts: _upcomingFeasts(now),
+            // Binding note 2: the per-day calendar feed (see the docs).
+            calendarDays: _calendarDays(now),
             settings: settings,
             alreadyPending: alreadyPending,
           )
@@ -795,12 +798,21 @@ class NotificationService {
     return _Payload(link: payload.startsWith('/') ? payload : null);
   }
 
-  /// The default calendar seam: the feast-only upcoming list over the 60-day
-  /// horizon (binding note 2).
-  static List<LiturgicalDayData> _defaultUpcomingFeasts(DateTime from) {
-    return LiturgicalCalendarService.getUpcomingFeasts(
-      daysAhead: notificationHorizonDays,
-      fromDate: from,
-    );
+  /// The default calendar feed: every day of the horizon from the liturgical
+  /// calendar (binding note 2). The feast-only `getUpcomingFeasts` list omits
+  /// rank-SUNDAY days, which left the planner's season context null on
+  /// Eastertide Sundays; a per-day feed carries the season key every day.
+  static List<LiturgicalDayData> _defaultCalendarDays(DateTime from) {
+    final DateTime first = DateTime(from.year, from.month, from.day);
+    final List<LiturgicalDayData> days = <LiturgicalDayData>[];
+    for (int offset = 0; offset < notificationHorizonDays; offset++) {
+      final LiturgicalDayData? day = LiturgicalCalendarService.getDayForDate(
+        DateTime(first.year, first.month, first.day + offset),
+      );
+      if (day != null) {
+        days.add(day);
+      }
+    }
+    return days;
   }
 }

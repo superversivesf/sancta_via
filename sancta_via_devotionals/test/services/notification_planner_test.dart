@@ -194,7 +194,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[_angelusPack()],
         enrollments: _enroll(<ContentPack>[_angelusPack()]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -240,7 +240,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[_angelusPack()],
         enrollments: _enroll(<ContentPack>[_angelusPack()]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: settings,
         alreadyPending: const <PlannedNotification>[],
       );
@@ -264,7 +264,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[_angelusPack()],
         enrollments: _enroll(<ContentPack>[_angelusPack()]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults().copyWith(
           enableAngelusAnchors: false,
         ),
@@ -281,7 +281,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[mercy],
         enrollments: _enroll(<ContentPack>[mercy]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -307,7 +307,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[mercy],
         enrollments: _enroll(<ContentPack>[mercy]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults().copyWith(
           enableMercyHourAnchor: false,
         ),
@@ -333,7 +333,7 @@ void main() {
             timeZoneName: _zoneName,
             packs: <ContentPack>[night],
             enrollments: _enroll(<ContentPack>[night]),
-            upcomingFeasts: const <LiturgicalDayData>[],
+            calendarDays: const <LiturgicalDayData>[],
             settings: DevotionsAppSettings.defaults(),
             alreadyPending: const <PlannedNotification>[],
           );
@@ -345,7 +345,7 @@ void main() {
             timeZoneName: _zoneName,
             packs: <ContentPack>[night],
             enrollments: _enroll(<ContentPack>[night]),
-            upcomingFeasts: const <LiturgicalDayData>[],
+            calendarDays: const <LiturgicalDayData>[],
             settings: DevotionsAppSettings.defaults().copyWith(
               nightItemsEnabled: true,
             ),
@@ -373,7 +373,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[morningOffering],
         enrollments: _enroll(<ContentPack>[morningOffering]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -384,7 +384,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[morningOffering],
         enrollments: _enroll(<ContentPack>[morningOffering]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults().copyWith(
           morningReminderEnabled: true,
         ),
@@ -417,7 +417,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[examen],
         enrollments: _enroll(<ContentPack>[examen]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -428,7 +428,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[examen],
         enrollments: _enroll(<ContentPack>[examen]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults().copyWith(
           eveningReminderEnabled: true,
         ),
@@ -462,7 +462,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[midday],
         enrollments: _enroll(<ContentPack>[midday]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -478,7 +478,7 @@ void main() {
             timeZoneName: _zoneName,
             packs: <ContentPack>[midday],
             enrollments: _enroll(<ContentPack>[midday]),
-            upcomingFeasts: const <LiturgicalDayData>[],
+            calendarDays: const <LiturgicalDayData>[],
             settings: on,
             alreadyPending: const <PlannedNotification>[],
           );
@@ -499,7 +499,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[_angelusPack()],
         enrollments: const <String, Map<String, dynamic>>{},
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -524,7 +524,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[novena],
         enrollments: _enroll(<ContentPack>[novena]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -553,7 +553,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[pack],
         enrollments: _enroll(<ContentPack>[pack]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -594,7 +594,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[series],
         enrollments: _enroll(<ContentPack>[series]),
-        upcomingFeasts: feasts,
+        calendarDays: feasts,
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -630,7 +630,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[series],
         enrollments: _enroll(<ContentPack>[series]),
-        upcomingFeasts: everyDay,
+        calendarDays: everyDay,
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -664,7 +664,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: packs,
         enrollments: enrollments,
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -673,7 +673,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: packs,
         enrollments: enrollments,
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: first,
       );
@@ -692,7 +692,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[pack],
         enrollments: _enroll(<ContentPack>[pack]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -731,7 +731,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: packs,
         enrollments: _enroll(packs),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );
@@ -788,7 +788,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: packs,
         enrollments: _enroll(packs),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: alreadyPending,
       );
@@ -848,7 +848,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[pack],
         enrollments: _enroll(<ContentPack>[pack]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: settings,
         alreadyPending: const <PlannedNotification>[],
       );
@@ -902,7 +902,7 @@ void main() {
         timeZoneName: _zoneName,
         packs: <ContentPack>[series],
         enrollments: _enroll(<ContentPack>[series]),
-        upcomingFeasts: const <LiturgicalDayData>[],
+        calendarDays: const <LiturgicalDayData>[],
         settings: DevotionsAppSettings.defaults(),
         alreadyPending: const <PlannedNotification>[],
       );

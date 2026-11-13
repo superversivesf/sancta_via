@@ -86,10 +86,13 @@
 //   [ConsecutiveCommitmentSpec.resolve] is progress-free): the planner cannot
 //   see the completion, so the caller must filter completed commitments out
 //   of [packs] before calling [plan] — a Task 18 wiring requirement.
-// * Per-day seasons: [upcomingFeasts] is the calendar seam, and only the days
-//   it carries have a season key; on those days a season variant label
-//   (`regina_caeli` in Eastertide) shapes the anchor body. A full per-day
-//   season feed is a wiring decision (Task 18/24), not part of this signature.
+// * Per-day seasons: [calendarDays] is the calendar seam — every day of the
+//   horizon, as the service feeds it from `getDayForDate`. Every day therefore
+//   carries its season key, so a season variant label (`regina_caeli` in
+//   Eastertide) shapes the anchor body on EVERY Eastertide day, Sundays
+//   included. A day's celebration is appended to a session body only when the
+//   day is non-ferial ([LiturgicalDayData.isWeekday] false), so a ferial
+//   weekday's name never garnishes a body.
 library;
 
 import 'package:sancta_via_devotional_engine/sancta_via_devotional_engine.dart';
@@ -191,10 +194,11 @@ class NotificationPlanner {
   /// * [enrollments] — pack id → stored enrollment params. The params are not
   ///   read: a derived pack already carries its patched schedule (the Task 15
   ///   convention), so enrollment presence is the whole signal.
-  /// * [upcomingFeasts] — the calendar seam: the days within the horizon whose
-  ///   non-ferial celebration names belong in a body (a weekday-rank day in
-  ///   the list never appends its name) and whose season key resolves
-  ///   season-aware anchor labels on that day.
+  /// * [calendarDays] — the calendar seam: the liturgical days within the
+  ///   horizon (the service feeds every day from `getDayForDate`). Each day's
+  ///   season key resolves season-aware anchor labels; a day's non-ferial
+  ///   celebration name belongs in a session body (a ferial day never appends
+  ///   its name).
   /// * [settings] — the anchor times and the consent toggles (see the library
   ///   docs on gating).
   /// * [alreadyPending] — the ids currently scheduled on the device; ids that
@@ -208,7 +212,7 @@ class NotificationPlanner {
     required String timeZoneName,
     required List<ContentPack> packs,
     required Map<String, Map<String, dynamic>> enrollments,
-    required List<LiturgicalDayData> upcomingFeasts,
+    required List<LiturgicalDayData> calendarDays,
     required DevotionsAppSettings settings,
     required List<PlannedNotification> alreadyPending,
   }) {
@@ -226,9 +230,9 @@ class NotificationPlanner {
     // The calendar seam, keyed by the local `yyyy-MM-dd` day it describes
     // (a DateTime would compare instants, and the seam's dates are
     // calendar dates).
-    final Map<String, LiturgicalDayData> feastsByDay =
+    final Map<String, LiturgicalDayData> calendarDaysByDay =
         <String, LiturgicalDayData>{
-          for (final LiturgicalDayData day in upcomingFeasts)
+          for (final LiturgicalDayData day in calendarDays)
             _stamp(_dateOnly(day.dateTime)): day,
         };
 
@@ -247,9 +251,9 @@ class NotificationPlanner {
           firstDay.month,
           firstDay.day + offset,
         );
-        final LiturgicalDayData? feast = feastsByDay[_stamp(day)];
+        final LiturgicalDayData? calendarDay = calendarDaysByDay[_stamp(day)];
         final ScheduleContext context = ScheduleContext(
-          seasonKeyValue: feast?.seasonKey,
+          seasonKeyValue: calendarDay?.seasonKey,
         );
 
         if (!isAnchorPack) {
@@ -278,7 +282,7 @@ class NotificationPlanner {
                   body: _sessionBody(
                     spec: spec,
                     resolution: resolution,
-                    feast: feast,
+                    calendarDay: calendarDay,
                   ),
                   deepLink: _sessionLink(pack.id, day),
                   packId: pack.id,
@@ -441,7 +445,8 @@ class NotificationPlanner {
   }
 
   /// The anchor body: the day's resolved label (season-aware when the calendar
-  /// seam supplies the day), humanized — `'Regina Caeli'`, `'Mercy Hour'` —
+  /// seam supplies the day — every horizon day now does), humanized —
+  /// `'Regina Caeli'`, `'Mercy Hour'` —
   /// else the pack's title (the label is the pack's own authored vocabulary,
   /// never invented copy).
   static String _anchorBody(ContentPack pack, ScheduleResult resolution) {
@@ -457,7 +462,7 @@ class NotificationPlanner {
   static String _sessionBody({
     required ScheduleSpec spec,
     required ScheduleResult resolution,
-    required LiturgicalDayData? feast,
+    required LiturgicalDayData? calendarDay,
   }) {
     final String main = _positionLabel(spec, resolution) ?? 'Due today';
     final List<String> notes = <String>[];
@@ -466,8 +471,8 @@ class NotificationPlanner {
         notes.add(_windowNote(window));
       }
     }
-    if (feast != null && !feast.isWeekday) {
-      notes.add(feast.displayName);
+    if (calendarDay != null && !calendarDay.isWeekday) {
+      notes.add(calendarDay.displayName);
     }
     if (notes.isEmpty) {
       return main;

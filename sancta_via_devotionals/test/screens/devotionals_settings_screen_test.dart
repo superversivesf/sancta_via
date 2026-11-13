@@ -179,7 +179,7 @@ Future<_SettingsHarness> _pumpSettings(
     settings: () => container.read(devotionsSettingsProvider),
     adapter: adapter,
     clock: () => _frozenToday,
-    upcomingFeasts: (DateTime _) => const <LiturgicalDayData>[],
+    calendarDays: (DateTime _) => const <LiturgicalDayData>[],
   );
   container = ProviderContainer(
     overrides: <Override>[

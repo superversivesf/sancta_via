@@ -232,7 +232,7 @@ Future<_OnboardingHarness> _pumpOnboarding(
     settings: () => container.read(devotionsSettingsProvider),
     adapter: adapter,
     clock: () => today,
-    upcomingFeasts: (DateTime _) => const <LiturgicalDayData>[],
+    calendarDays: (DateTime _) => const <LiturgicalDayData>[],
   );
   final ProviderContainer built = ProviderContainer(
     overrides: <Override>[

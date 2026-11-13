@@ -192,3 +192,49 @@ content change; it was formatted to satisfy the format gate.
 3. The commitment missed-day card's copy is the series copy ("A due day was
    missed…"); it is accurate for a lapsed strict commitment but does not name
    the specific skipped anchor date the engine labels.
+
+## Residual fix — 2026-11-14 (Eastertide-Sunday label parity)
+
+Residual: the planner built its season context from the feast seam
+(`getUpcomingFeasts`, prioritized days only). Rank-SUNDAY days are not
+prioritized, so `seasonKeyValue` was null on every non-prioritized Eastertide
+Sunday and the reminder body read "Angelus" while the session (fixed in C2)
+played Regina Caeli.
+
+Remedy applied: the service's calendar seam is now a PER-DAY feed —
+`LiturgicalCalendarService.getDayForDate` for each of the 60 horizon days
+(`NotificationService._defaultCalendarDays`), passed to the planner as
+`calendarDays` (renamed from `upcomingFeasts` across the planner, the service
+and every test injection). The planner's ferial guard
+(`!LiturgicalDayData.isWeekday`) still decides whether a day's celebration
+name joins a session body, so ferial weekdays stay clean; Sundays (rank
+SUNDAY → weekday fallback) add their season key but no name.
+
+### Red → green
+
+Red first (default feed, 2026-04-19 = 3rd Sunday of Easter, rank SUNDAY):
+
+```
+  Expected: 'Regina Caeli'
+    Actual: 'Angelus'
+     Which: is different.
+```
+
+Green after the feed change:
+
+```
+00:00 +2: All tests passed!   (group 'calendar feed')
+```
+
+Second pin (the guard must hold with every day present): 2026-10-27 (Tuesday
+of the 30th week of Ordinary Time, FERIA) — the rosary's session body is
+exactly `Due today`, with no celebration note. Passes.
+
+### Gates
+
+```
+sancta_via_devotionals: flutter test  → 305 passed (303 + 2)
+                        flutter analyze → No issues found!
+                        dart format --set-exit-if-changed → clean
+git status → clean (after the residual commit)
+```

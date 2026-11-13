@@ -182,7 +182,7 @@ void main() {
       clock: () => _frozenNow,
       // The calendar seam is injected as data: the wiring under test is the
       // plan/diff/write pass, not the calendar package's own contents.
-      upcomingFeasts: (DateTime _) => const <LiturgicalDayData>[],
+      calendarDays: (DateTime _) => const <LiturgicalDayData>[],
     );
   });
 
@@ -438,7 +438,7 @@ void main() {
           settings: () => settings,
           adapter: launching,
           clock: () => _frozenNow,
-          upcomingFeasts: (DateTime _) => const <LiturgicalDayData>[],
+          calendarDays: (DateTime _) => const <LiturgicalDayData>[],
         );
         addTearDown(launchingService.dispose);
 
@@ -514,5 +514,81 @@ void main() {
       expect(adapter.cancelled, contains(4242));
       expect(adapter.pending.containsKey(4242), isFalse);
     });
+  });
+
+  group('calendar feed', () {
+    /// A service over the REAL default calendar seam (no injected feed), frozen
+    /// at [now].
+    NotificationService defaultFeedService(DateTime now) {
+      return NotificationService(
+        database: database,
+        repository: repository,
+        settings: () => settings,
+        adapter: adapter,
+        clock: () => now,
+      );
+    }
+
+    test(
+      'an Eastertide SUNDAY body names the resolved label (Regina Caeli)',
+      () async {
+        // Residual fix: the feast-only feed omits rank-SUNDAY days, so the
+        // planner's season context was null on every non-prioritized
+        // Eastertide Sunday and the 12:00 body read 'Angelus' while the
+        // session played Regina Caeli. The per-day feed closes the gap.
+        await repository.seedPacks(<ContentPack>[
+          _assetPack('angelus'),
+        ], packVersion: 'test-1');
+        await repository.enroll('angelus', <String, dynamic>{});
+
+        // 2026-04-19 is the 3rd Sunday of Easter (rank SUNDAY, not a
+        // prioritized celebration); 04:00Z is midnight EDT.
+        final NotificationService sundayService = defaultFeedService(
+          DateTime.utc(2026, 4, 19, 4),
+        );
+        await sundayService.refresh();
+
+        final List<NotificationRow> rows = await database.getAllNotifications();
+        final NotificationRow noon = rows.firstWhere(
+          (NotificationRow row) => row.id == 'angelus:anchor:2026-04-19T12:00',
+        );
+        expect(
+          noon.body,
+          'Regina Caeli',
+          reason: 'the reminder body must match the session the label selects',
+        );
+        final NotificationRow morning = rows.firstWhere(
+          (NotificationRow row) => row.id == 'angelus:anchor:2026-04-19T06:00',
+        );
+        expect(morning.body, 'Regina Caeli');
+        await sundayService.dispose();
+      },
+    );
+
+    test(
+      'a ferial weekday in Ordinary Time gets no celebration note',
+      () async {
+        // The per-day feed now carries every day; the planner's ferial guard
+        // must keep a FERIA day's name out of the body (2026-10-27 is the
+        // Tuesday of the 30th week of Ordinary Time).
+        await repository.seedPacks(<ContentPack>[
+          _assetPack('rosary'),
+        ], packVersion: 'test-1');
+        await repository.enroll('rosary', <String, dynamic>{});
+
+        final NotificationService weekdayService = defaultFeedService(
+          DateTime.utc(2026, 10, 27, 4),
+        );
+        await weekdayService.refresh();
+
+        final List<NotificationRow> rows = await database.getAllNotifications();
+        final NotificationRow row = rows.firstWhere(
+          (NotificationRow candidate) => candidate.id.contains('2026-10-27'),
+        );
+        expect(row.body, 'Due today');
+        expect(row.body, isNot(contains('Ordinary Time')));
+        await weekdayService.dispose();
+      },
+    );
   });
 }
