@@ -453,6 +453,50 @@ void main() {
     );
 
     testWidgets(
+      'a duplicate Angelus anchor time is refused — settings unchanged, no '
+      'refresh, explicit reason (the planner id collision guard)',
+      (WidgetTester tester) async {
+        final _SettingsHarness harness = await _pumpSettings(tester);
+
+        // The noon row starts at 12:00 PM; entering 06:00 keeps the PM
+        // period, i.e. 18:00 — the evening row's time. Both would plan the
+        // same `angelus:anchor:<date>T18:00` id, so the duplicate must be
+        // refused before it persists.
+        await _tapAndDrain(
+          tester,
+          find.byKey(const Key('anchor_time_angelus_noon')),
+        );
+        expect(find.byType(TimePickerDialog), findsOneWidget);
+        await tester.tap(find.byIcon(Icons.keyboard_outlined));
+        await tester.pump(const Duration(milliseconds: 50));
+        await tester.enterText(find.byType(TextField).first, '06');
+        await tester.testTextInput.receiveAction(TextInputAction.next);
+        await tester.pump(const Duration(milliseconds: 50));
+        await tester.enterText(find.byType(TextField).last, '00');
+        await tester.testTextInput.receiveAction(TextInputAction.done);
+        await tester.pump(const Duration(milliseconds: 50));
+        await tester.tap(find.text('OK'));
+        await _drain(tester);
+
+        expect(
+          harness.container.read(devotionsSettingsProvider).angelusNoon,
+          const TimeOfDay(hour: 12, minute: 0),
+          reason: 'a colliding Angelus time is never persisted',
+        );
+        expect(
+          harness.adapter.refreshes,
+          0,
+          reason: 'a refused pick is not a change event',
+        );
+        expect(
+          find.byKey(const Key('anchor_time_duplicate')),
+          findsOneWidget,
+          reason: 'the user sees why the pick was refused',
+        );
+      },
+    );
+
+    testWidgets(
       'the missed-day policy persists and a non-schedule change never '
       'triggers a refresh',
       (WidgetTester tester) async {

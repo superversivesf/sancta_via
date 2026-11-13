@@ -23,14 +23,23 @@ help:
 	@echo "Available targets:"
 	@echo "  $(YELLOW)info$(NC)            - Show app information"
 	@echo "  $(YELLOW)deps$(NC)            - Install dependencies"
+	@echo "  $(YELLOW)run$(NC)             - Run on a connected device"
+	@echo "  $(YELLOW)run-web$(NC)         - Run in Chrome"
 	@echo "  $(YELLOW)build-android$(NC)   - Build Android APK"
 	@echo "  $(YELLOW)build-ios$(NC)       - Build iOS (macOS only)"
 	@echo "  $(YELLOW)build-web$(NC)       - Build for Web"
 	@echo "  $(YELLOW)build-all$(NC)       - Build for all platforms"
+	@echo "  $(YELLOW)package$(NC)         - Build all + zip the release"
+	@echo "  $(YELLOW)ci$(NC)              - clean + analyze + test + build-all"
 	@echo "  $(YELLOW)clean$(NC)           - Clean build artifacts"
 	@echo "  $(YELLOW)test$(NC)            - Run tests"
 	@echo "  $(YELLOW)analyze$(NC)         - Run static analysis"
 	@echo "  $(YELLOW)format$(NC)          - Format code"
+	@echo "  $(YELLOW)doctor$(NC)          - Check the Flutter environment"
+	@echo "  $(YELLOW)version$(NC)         - Print the app version"
+	@echo "  $(YELLOW)import-prayers$(NC)  - Regenerate assets/content/prayers/"
+	@echo "  $(YELLOW)sync-engine-packs$(NC) - Copy the 8 engine-fixture packs"
+	@echo "  $(YELLOW)embed-packs$(NC)     - Regenerate the wrapper's embedded packs"
 	@echo ""
 	@echo "Build outputs go to: $(RELEASES_DIR)"
 
@@ -76,6 +85,32 @@ format:
 	@echo "$(BLUE)[FORMAT]$(NC) Formatting code..."
 	@dart format .
 	@echo "$(GREEN)[SUCCESS]$(NC) Code formatted"
+
+# ── Content regeneration (see README: sources, regeneration, pipeline) ──
+
+# The engine fixtures are the single source of truth for these eight packs.
+ENGINE_FIXTURES := ../sancta_via_devotional_engine/test/fixtures/packs
+
+.PHONY: import-prayers
+import-prayers: deps
+	@echo "$(BLUE)[CONTENT]$(NC) Importing companion prayers..."
+	@dart run tool/import_prayers.dart
+	@echo "$(GREEN)[SUCCESS]$(NC) assets/content/prayers/ regenerated"
+
+.PHONY: sync-engine-packs
+sync-engine-packs:
+	@echo "$(BLUE)[CONTENT]$(NC) Copying the eight engine-fixture packs..."
+	@for name in angelus divine_mercy_novena five_first_saturdays mercy_hour \
+		nine_first_fridays novena_54_day rosary total_consecration; do \
+		cp "$(ENGINE_FIXTURES)/$$name.json" "assets/content/packs/$$name.json"; \
+	done
+	@echo "$(GREEN)[SUCCESS]$(NC) assets/content/packs/ copies refreshed"
+
+.PHONY: embed-packs
+embed-packs:
+	@echo "$(BLUE)[CONTENT]$(NC) Regenerating the wrapper's embedded packs..."
+	@cd ../sancta_via_devotional_engine_riverpod && dart tool/embed_packs.dart
+	@echo "$(GREEN)[SUCCESS]$(NC) embedded_packs.dart regenerated"
 
 .PHONY: build-android
 build-android: deps

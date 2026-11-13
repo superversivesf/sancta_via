@@ -1,3 +1,31 @@
+// Application entry point and root widget (Plan 2; init-order audit in
+// Task 25).
+//
+// ## Startup order (verified, with the one deliberate inversion)
+//
+// The required dependency order is
+//
+//   db → content → notifications → router
+//
+// and the live chain honours it: the notification app-open hook
+// (`notificationRefreshProvider`) awaits `contentLoadedProvider`, which runs
+// the first-launch migration — opening the SQLite database and seeding the
+// shipped pack catalog — BEFORE the planner reads packs, enrollments, and
+// progress, and the notification service initializes before its first plan.
+// The router is the one step that is constructed EARLY (`main` builds it
+// before `runApp`, because `MaterialApp.router` cannot be built without it),
+// and that is safe by construction: the router consumes no database,
+// content, notification, or repository state — it is a pure config object
+// over route builders, and its only input is the persisted onboarding flag.
+//
+// The app-open notification initialize deliberately stays in the root
+// widget's `initState` rather than moving ahead of `runApp`: the tap stream
+// listener must attach BEFORE `NotificationService.initialize()` emits the
+// cold-start launch payload (the service buffers nothing, Task 18's pinned
+// contract), and the widget is the first place a listener can exist. Moving
+// initialization earlier would trade a harmless ordering inversion for a
+// dropped cold-start tap — a real regression, so it is not done.
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';

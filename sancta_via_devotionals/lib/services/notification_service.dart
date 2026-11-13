@@ -60,9 +60,12 @@
 //    `getDayForDate`, which the planner's ferial guard already keeps from
 //    garnishing weekday bodies — at the cost of a Sunday/commemoration's
 //    rank-parse gap) is deliberately deferred until a task owns that feed.
-// 3. One Angelus anchor: the shipped pack carries a single 06:00
-//    [TimeOfDaySpec] until Task 24's three-anchor pack, and the planner maps
-//    each authored spec — nothing here invents the missing hours.
+// 3. Every Angelus anchor: the shipped pack carries THREE daily
+//    [TimeOfDaySpec] entries (06:00, 12:00, 18:00 since Task 24), and the
+//    planner maps each authored spec to its own reminder — nothing here
+//    invents, collapses, or drops an hour. (The settings screen refuses
+//    duplicate configured Angelus clocks, so the picker cannot create a
+//    `<packId>:anchor:<date>T<HH:mm>` id collision.)
 //
 // ## Test seam: [NotificationPluginAdapter]
 //

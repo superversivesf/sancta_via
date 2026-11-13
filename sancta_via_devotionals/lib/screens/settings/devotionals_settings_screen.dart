@@ -17,7 +17,10 @@
 // (amended in fix round 1 to add the two routine reminder consents):
 //
 // * the four anchor reminder times (time pickers over
-//   `anchorTimesProvider`, written through the notifier setters);
+//   `anchorTimesProvider`, written through the notifier setters) — a pick
+//   matching another Angelus row is refused with an explicit message (Task
+//   25: the planner's `<packId>:anchor:<date>T<HH:mm>` id would otherwise
+//   collide and silently drop one reminder);
 // * the Angelus and Divine-Mercy-Hour anchor toggles;
 // * the morning and evening reminder consent toggles (plan inputs the
 //   planner gates the non-anchor routine anchors on; onboarding takes the
@@ -139,11 +142,19 @@ class DevotionalsSettingsScreen extends ConsumerWidget {
       children: <Widget>[
         const SettingsSectionHeader(title: 'Daily Anchors'),
         // ── Anchor reminder times ──
+        // Each Angelus row refuses a time already used by another Angelus
+        // anchor (Task 25, T24 carry-forward): the planner's anchor id is
+        // `<packId>:anchor:<date>T<HH:mm>`, so two Angelus anchors at the
+        // same clock would collide and silently drop one reminder.
         _AnchorTimeTile(
           rowKey: 'anchor_time_angelus_morning',
           icon: Icons.wb_twilight,
           title: 'Angelus — Morning',
           time: times.angelusMorning,
+          otherAngelusTimes: <TimeOfDay>[
+            times.angelusNoon,
+            times.angelusEvening,
+          ],
           onPick: (TimeOfDay time) => ref
               .read(devotionsSettingsProvider.notifier)
               .setAngelusMorning(time),
@@ -153,6 +164,10 @@ class DevotionalsSettingsScreen extends ConsumerWidget {
           icon: Icons.light_mode_outlined,
           title: 'Angelus — Noon',
           time: times.angelusNoon,
+          otherAngelusTimes: <TimeOfDay>[
+            times.angelusMorning,
+            times.angelusEvening,
+          ],
           onPick: (TimeOfDay time) =>
               ref.read(devotionsSettingsProvider.notifier).setAngelusNoon(time),
         ),
@@ -169,6 +184,10 @@ class DevotionalsSettingsScreen extends ConsumerWidget {
           icon: Icons.brightness_3_outlined,
           title: 'Angelus — Evening',
           time: times.angelusEvening,
+          otherAngelusTimes: <TimeOfDay>[
+            times.angelusMorning,
+            times.angelusNoon,
+          ],
           onPick: (TimeOfDay time) => ref
               .read(devotionsSettingsProvider.notifier)
               .setAngelusEvening(time),
@@ -399,6 +418,15 @@ Future<void> _runRefresh(NotificationService service) async {
 /// One anchor-reminder-time row: the formatted time, opening the platform
 /// time picker. The pick writes through the settings notifier (persisted)
 /// and fires the notification refresh — anchor times are plan inputs.
+///
+/// [otherAngelusTimes] is the duplicate guard (Task 25, T24 carry-forward):
+/// the planner's anchor id is `<packId>:anchor:<date>T<HH:mm>`, so two
+/// Angelus anchors configured at the same clock would collide and one
+/// reminder would be silently dropped. A pick matching another Angelus row
+/// is REFUSED here with an explicit message (never persisted, never
+/// refreshed), which keeps the id scheme — the pinned Task 17 contract —
+/// unchanged. The Mercy hour is a different pack id, so it cannot collide
+/// and is not checked.
 class _AnchorTimeTile extends ConsumerWidget {
   /// Creates one anchor-time row. [rowKey] is the widget test's stable key.
   const _AnchorTimeTile({
@@ -407,12 +435,16 @@ class _AnchorTimeTile extends ConsumerWidget {
     required this.title,
     required this.time,
     required this.onPick,
+    this.otherAngelusTimes = const <TimeOfDay>[],
   }) : _rowKey = rowKey;
 
   final String _rowKey;
   final IconData icon;
   final String title;
   final TimeOfDay time;
+
+  /// The other Angelus anchor rows' times this pick may not duplicate.
+  final List<TimeOfDay> otherAngelusTimes;
 
   /// Persists the picked time through the settings notifier (one of its
   /// pinned anchor setters).
@@ -450,6 +482,21 @@ class _AnchorTimeTile extends ConsumerWidget {
     }
     if (picked == time) {
       // The same time is not a change event.
+      return;
+    }
+    if (otherAngelusTimes.contains(picked)) {
+      // Task 25 duplicate guard: a colliding Angelus clock would make the
+      // planner's anchor ids collide and silently drop one reminder. Refuse
+      // the pick with an explicit, user-visible reason.
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          key: Key('anchor_time_duplicate'),
+          content: Text(
+            'That time is already used by another Angelus anchor — pick a '
+            'different time so both reminders are kept.',
+          ),
+        ),
+      );
       return;
     }
     await onPick(picked);

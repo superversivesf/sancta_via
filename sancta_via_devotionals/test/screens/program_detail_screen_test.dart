@@ -255,10 +255,18 @@ void main() {
       );
 
       expect(find.byKey(const Key('schedule_preview')), findsOneWidget);
-      // The engine's zero-padded HH:mm label for the Angelus anchor.
-      expect(find.textContaining('Every day at 06:00'), findsOneWidget);
+      // Task 25 (T24 carry-forward): the anchor row names EVERY authored
+      // daily clock — all three of the Angelus' anchors — not just the first
+      // schedule's 06:00 half-truth. The About paragraph tells the same
+      // complete story.
+      expect(find.text('Every day at 06:00, 12:00, 18:00'), findsOneWidget);
+      expect(
+        find.text('Prayed every day at 06:00, 12:00, 18:00.'),
+        findsOneWidget,
+      );
       // The pack's season variant surfaces by its variantId, with its
-      // season match condition spelled out beside it.
+      // season match condition spelled out beside it — DEDUPED to one row
+      // even though all three schedule entries carry the same variant.
       expect(find.text('regina_caeli'), findsOneWidget);
       expect(
         find.textContaining('Easter, Eastertide, Pentecost'),

@@ -24,8 +24,10 @@
 // * [TodayAssembly.commitments] — the programs due today, as the wrapper
 //   resolves them, with a consecutive commitment's [`TodayItem.ordinalLabel`]
 //   ("ordinal N") and a novena's `resolution.dayIndex`. A pack whose schedules
-//   are time-of-day anchors is an anchor, not a due session, so it never
-//   appears twice (the shipped anchor packs carry only time-of-day schedules).
+//   are time-of-day anchors is an anchor, never a due session: its specs each
+//   contribute one item to their anchor section (the Angelus appears three
+//   times since Task 24), and it never also joins the due list (the shipped
+//   anchor packs carry only time-of-day schedules).
 //   The wrapper reports one due resolution per pack — its first due schedule —
 //   so a pack with several non-anchor schedules contributes its first;
 // * [TodayAssembly.feastsComing] — the liturgical calendar's celebrations in

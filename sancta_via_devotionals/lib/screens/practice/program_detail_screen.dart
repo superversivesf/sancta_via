@@ -11,8 +11,9 @@
 // * the schedule preview: a commitment's projected anchor dates come from
 //   the wrapper's `programDetailProvider` (the engine's
 //   `Projection.remainingDates`, progress-aware), a weekly loop renders its
-//   weekday table, a time-of-day anchor its daily time plus season-variant
-//   explainers, and a series/Easter window their authored rule;
+//   weekday table, a time-of-day anchor row names EVERY authored daily time
+//   (the Angelus: 06:00, 12:00, 18:00) plus the pack's deduped season-variant
+//   explainers, and a series/Easter window renders their authored rule;
 // * the phase explainer rows, grouped from the pack's `variants` entries
 //   that carry a `phase` (e.g. the 54-day's petition 1–27 / thanksgiving
 //   28–54);
@@ -236,8 +237,12 @@ class _DetailBody extends StatelessWidget {
         buffer.write('A bounded prayer window anchored to Easter Sunday.');
       case WeeklyLoopSpec(:final Set<int> weekdays):
         buffer.write('Prayed every week on ${_weekdayList(weekdays)}.');
-      case TimeOfDaySpec(:final int hour, :final int minute):
-        buffer.write('Prayed every day at ${_clock(hour, minute)}.');
+      case TimeOfDaySpec():
+        final String clocks = pack.schedules
+            .whereType<TimeOfDaySpec>()
+            .map((TimeOfDaySpec spec) => _clock(spec.hour, spec.minute))
+            .join(', ');
+        buffer.write('Prayed every day at $clocks.');
       case FixedDateSpec(:final int month, :final int day):
         buffer.write('Observed every ${_monthNames[month - 1]} $day.');
       case NthWeekdayOfMonthSpec(:final int weekday, :final int nth):
@@ -285,8 +290,9 @@ class _DetailBody extends StatelessWidget {
   /// The row shape follows the schedule class: a commitment projects its
   /// remaining anchor dates (progress-aware, through the wrapper's
   /// provider) and names its restart policy; a weekly loop renders its
-  /// weekday table; a time-of-day anchor renders its daily time and its
-  /// season variants; a series or Easter window renders its authored rule.
+  /// weekday table; a time-of-day pack renders one row naming every
+  /// authored daily clock and its deduped season variants; a series or
+  /// Easter window renders its authored rule.
   List<Widget> _scheduleRows(ProgramDetail detail) {
     final ScheduleSpec schedule = detail.pack.schedule;
     return switch (schedule) {
@@ -368,27 +374,9 @@ class _DetailBody extends StatelessWidget {
               ),
             ),
         ],
-      TimeOfDaySpec(
-        :final int hour,
-        :final int minute,
-        :final List<SeasonVariant> variants,
-      ) =>
-        <Widget>[
-          ListTile(
-            key: const Key('schedule_anchor_row'),
-            dense: true,
-            leading: const Icon(Icons.schedule),
-            title: Text('Every day at ${_clock(hour, minute)}'),
-          ),
-          for (final SeasonVariant variant in variants)
-            ListTile(
-              key: ValueKey<String>('schedule_variant_${variant.variantId}'),
-              dense: true,
-              leading: const Icon(Icons.label_outline),
-              title: Text(variant.variantId),
-              subtitle: Text(_variantCondition(variant)),
-            ),
-        ],
+      TimeOfDaySpec() => _anchorRows(
+        detail.pack.schedules.whereType<TimeOfDaySpec>().toList(),
+      ),
       FixedDateSpec(:final int month, :final int day) => <Widget>[
         ListTile(
           dense: true,
@@ -408,6 +396,41 @@ class _DetailBody extends StatelessWidget {
         ),
       ],
     };
+  }
+
+  /// The anchor rows of a time-of-day pack: ONE clock row naming every
+  /// authored daily time (Task 24's Angelus carries 6:00, 12:00 and 18:00,
+  /// so the row reads "Every day at 06:00, 12:00, 18:00" — never the
+  /// first-schedule half-truth), then the season-variant explainers DEDUPED
+  /// by `variantId`: each of the Angelus' three specs carries the same
+  /// `regina_caeli` entry, and a per-spec expansion would emit duplicate
+  /// `ValueKey`s (the T24 ledgered seam).
+  List<Widget> _anchorRows(List<TimeOfDaySpec> specs) {
+    final String clocks = specs
+        .map((TimeOfDaySpec spec) => _clock(spec.hour, spec.minute))
+        .join(', ');
+    final Set<String> seenVariants = <String>{};
+    final List<SeasonVariant> variants = <SeasonVariant>[
+      for (final TimeOfDaySpec spec in specs)
+        for (final SeasonVariant variant in spec.variants)
+          if (seenVariants.add(variant.variantId)) variant,
+    ];
+    return <Widget>[
+      ListTile(
+        key: const Key('schedule_anchor_row'),
+        dense: true,
+        leading: const Icon(Icons.schedule),
+        title: Text('Every day at $clocks'),
+      ),
+      for (final SeasonVariant variant in variants)
+        ListTile(
+          key: ValueKey<String>('schedule_variant_${variant.variantId}'),
+          dense: true,
+          leading: const Icon(Icons.label_outline),
+          title: Text(variant.variantId),
+          subtitle: Text(_variantCondition(variant)),
+        ),
+    ];
   }
 
   /// The restart-policy explainer sentence (the row subtitle beside the
