@@ -72,6 +72,10 @@ class _SessionPlayerScreenState extends ConsumerState<SessionPlayerScreen> {
   /// until loaded (the AppBar falls back to the generic "Session").
   String? _packTitle;
 
+  /// The resolved pack (the attribution sheet's litany-provenance pass:
+  /// a litany step's invocation text is licensed at the pack level).
+  ContentPack? _pack;
+
   @override
   void initState() {
     super.initState();
@@ -109,7 +113,8 @@ class _SessionPlayerScreenState extends ConsumerState<SessionPlayerScreen> {
   }
 
   /// Resolves the pack title through the controller's repository (the real
-  /// catalog the player renders from).
+  /// catalog the player renders from), keeping the pack itself for the
+  /// attribution sheet's pack-level pass.
   Future<void> _loadPackTitle() async {
     final SessionPlayerController controller = _controller;
     try {
@@ -117,12 +122,15 @@ class _SessionPlayerScreenState extends ConsumerState<SessionPlayerScreen> {
       if (!mounted) {
         return;
       }
-      setState(() {
-        for (final ContentPack pack in packs) {
-          if (pack.id == widget.packId) {
-            _packTitle = pack.title;
-          }
+      ContentPack? resolved;
+      for (final ContentPack pack in packs) {
+        if (pack.id == widget.packId) {
+          resolved = pack;
         }
+      }
+      setState(() {
+        _pack = resolved;
+        _packTitle = resolved?.title;
       });
     } catch (e, stackTrace) {
       AppLogger.error(
@@ -192,7 +200,7 @@ class _SessionPlayerScreenState extends ConsumerState<SessionPlayerScreen> {
                   : state.session.stepIndex;
               showAttributionSheet(
                 context,
-                attributionEntriesFor(state.script, through),
+                attributionEntriesFor(state.script, through, pack: _pack),
               );
             },
           ),

@@ -790,6 +790,38 @@ void main() {
       );
     });
 
+    test('the litany steps carry pure titles: no counts, no notes', () {
+      const Map<String, List<String>> titlePins = <String, List<String>>{
+        'litany_loreto': <String>['The Godhead', 'The Invocation List'],
+        'litany_st_joseph': <String>['The Godhead', 'Saint Joseph'],
+        'litany_humility': <String>['Deliverances', 'Petitions'],
+        'litany_sacred_heart': <String>['The Godhead', 'The Heart of Jesus'],
+        'litany_precious_blood': <String>['The Godhead', 'The Blood of Christ'],
+      };
+      titlePins.forEach((String id, List<String> pins) {
+        final ContentPack pack = loadPack(id);
+        expect(
+          <String>[
+            for (final LitanyStep step in litanySteps(pack)) ?step.title,
+          ],
+          pins,
+          reason: '$id: the pinned litany step titles',
+        );
+        for (final LitanyStep step in litanySteps(pack)) {
+          final String? title = step.title;
+          expect(
+            title == null ||
+                (title.contains('(') == false &&
+                    title.contains(RegExp(r'\d')) == false),
+            true,
+            reason:
+                '$id/${step.id}: a litany step title carries no editorial '
+                'parenthetical or count ("$title")',
+          );
+        }
+      });
+    });
+
     test('no chaplet bead group flags the rosary Fatima slot', () {
       for (final String id in _chapletPackIds) {
         for (final BeadGroupStep group in beadGroups(loadPack(id))) {

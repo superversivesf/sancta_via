@@ -48,6 +48,7 @@ import 'package:sancta_via_devotionals/providers/content_providers.dart'
     show intentionsProvider;
 import 'package:sancta_via_devotionals/providers/session_player_provider.dart';
 import 'package:sancta_via_devotionals/screens/session/session_player_screen.dart';
+import 'package:sancta_via_devotionals/widgets/session/attribution_sheet.dart';
 import 'package:sancta_via_devotionals/screens/home/today_screen.dart';
 import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart'
     show currentDateProvider;
@@ -410,6 +411,125 @@ void main() {
       expect(find.text('public-domain'), findsOneWidget);
     },
   );
+
+  testWidgets(
+    'a litany session\'s attribution sheet shows the litany text\'s pack-level source and license',
+    (WidgetTester tester) async {
+      final ContentPack pack = _assetPack('litany_loreto');
+      final Map<String, dynamic> note =
+          pack.reminders['schedule_note']! as Map<String, dynamic>;
+      await _pumpPlayer(
+        tester,
+        packId: 'litany_loreto',
+        packs: <ContentPack>[pack],
+        startForDate: DateTime(2026, 12, 5),
+        openWithForDate: DateTime(2026, 12, 5),
+      );
+
+      // Nothing attributed yet: the opening versicles carry no attribution.
+      Finder packEntry() => find.text(pack.id);
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.ensureVisible(
+        find.byKey(const Key('session_step_sign-of-the-cross')),
+      );
+      await _tap(tester, find.byKey(const Key('session_attribution_action')));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.text('litany_loreto'), findsNothing);
+      await _tap(tester, find.byKey(const Key('session_attribution_close')));
+      await tester.pump(const Duration(milliseconds: 300));
+
+      // Walk onto the first LitanyStep (the Godhead block) through the
+      // verses: the viewed set now includes a litany step, so the sheet
+      // carries ONE pack-level provenance row (id, source, license).
+      await _tap(
+        tester,
+        find.byKey(const Key('session_step_sign-of-the-cross')),
+      );
+      await _tap(tester, find.byKey(const Key('session_step_kyrie')));
+      await _tap(tester, find.byKey(const Key('session_step_christe')));
+      // The litany card itself carries no session_step key; the attribution
+      // action lives in the app bar and needs no card visibility.
+      await _tap(tester, find.byKey(const Key('session_attribution_action')));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(packEntry(), findsOneWidget);
+      expect(find.text(note['invocation_source']! as String), findsOneWidget);
+      expect(find.text(note['invocation_license']! as String), findsOneWidget);
+      expect(
+        note['invocation_source']! as String,
+        contains('Sixtus V'),
+        reason: 'the pack-level litany provenance names the tradition',
+      );
+      await _tap(tester, find.byKey(const Key('session_attribution_close')));
+      await tester.pump(const Duration(milliseconds: 300));
+
+      // Onto the second litany step — the same pack-level row, still once
+      // (de-duplicated across litany steps of the walk).
+      await _tap(tester, find.text('Continue'));
+      await _tap(tester, find.byKey(const Key('session_attribution_action')));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(packEntry(), findsOneWidget);
+      expect(find.text(note['invocation_source']! as String), findsOneWidget);
+      await _tap(tester, find.byKey(const Key('session_attribution_close')));
+      await tester.pump(const Duration(milliseconds: 300));
+    },
+  );
+
+  test('attributionEntriesFor: the pack-level litany row is litany-only '
+      'and de-duplicated', () {
+    final ContentPack litanyPack = _assetPack('litany_loreto');
+    final SessionScript litanyScript = litanyPack.session;
+    // Before any litany step: verses only — no entry, even with the pack.
+    expect(attributionEntriesFor(litanyScript, 0, pack: litanyPack), isEmpty);
+    // From the first litany step on: exactly one entry, keyed to the pack.
+    final List<AttributionEntry> atTrinity = attributionEntriesFor(
+      litanyScript,
+      3,
+      pack: litanyPack,
+    );
+    expect(atTrinity, hasLength(1));
+    expect(atTrinity.single.prayerId, litanyPack.id);
+    expect(atTrinity.single.source, isNotEmpty);
+    expect(atTrinity.single.license, startsWith('public-domain'));
+    // AttributionEntry carries no == (rows are distinct per call), so the
+    // dedupe pins compare the rows' fields: a second litany step adds no
+    // row, and the whole walk (an out-of-bounds through index) stays one.
+    List<String> rowOf(List<AttributionEntry> entries) => <String>[
+      for (final AttributionEntry e in entries) e.prayerId,
+    ];
+    expect(
+      rowOf(attributionEntriesFor(litanyScript, 4, pack: litanyPack)),
+      rowOf(atTrinity),
+    );
+    // The completed walk also views the collect prayer: the litany row
+    // keeps its first-appearance position, the collect follows.
+    expect(
+      rowOf(attributionEntriesFor(litanyScript, 99, pack: litanyPack)),
+      <String>[litanyPack.id, 'loreto_collect'],
+    );
+    // A non-litany pack (the Angelus) gains nothing from the pack pass.
+    // (Entry lists hold distinct-by-construction rows, so compare ids.)
+    final ContentPack angelus = _assetPack('angelus');
+    final List<String> ids = <String>[
+      for (final AttributionEntry entry in attributionEntriesFor(
+        angelus.session,
+        99,
+        pack: angelus,
+      ))
+        entry.prayerId,
+    ];
+    final List<String> packlessIds = <String>[
+      for (final AttributionEntry entry in attributionEntriesFor(
+        angelus.session,
+        99,
+      ))
+        entry.prayerId,
+    ];
+    expect(ids, packlessIds);
+    expect(ids.every((String id) => id != angelus.id), true);
+    // And the old two-argument spelling still works (the player's
+    // pack-less degradation).
+    expect(attributionEntriesFor(litanyScript, 3), isEmpty);
+  });
 
   testWidgets(
     'the repetition ring blocks continue until its count is recorded, and the next beads render',

@@ -98,7 +98,7 @@
         ],
         "response": "pray for us.",
         "groupedResponse": true,
-        "title": "The Invocation List (48 invocations, received list through 1916)"
+        "title": "The Invocation List"
       },
       {
         "type": "verse",
@@ -149,7 +149,7 @@
   },
   "reminders": {
     "schedule_note": {
-      "note": "The Litany of Loreto as a freely prayed daily devotion. Session shape: sign of the cross and Kyrie/Christe versicles; four Trinitarian invocations answered \"have mercy on us.\" (individual call and response); the 48 Marian invocations as one grouped passage answered \"pray for us.\"; the three Agnus Dei versicles; the closing versicle; and the received collect. The invocation list is the received list as redacted before 1950 (the 1916 \"Queen of peace\" is the newest invocation shipped); the later additions (\"Queen assumed into Heaven\", 1950; the 2020 additions \"Mother of the Church\" and \"Queen of families\") are outside the pre-1950 public-domain redaction and are deliberately omitted, while the committed companion import (litany_loreto) carries the full received list verbatim as the pack’s provenance entry.",
+      "note": "The Litany of Loreto as a freely prayed daily devotion. Session shape: sign of the cross and Kyrie/Christe versicles; four Trinitarian invocations answered \"have mercy on us.\" (individual call and response); the 48 Marian invocations as one grouped passage answered \"pray for us.\"; the three Agnus Dei versicles; the closing versicle; and the received collect. The invocation list is the received list as redacted before 1950 (the 1917 \"Queen of peace\" is the newest invocation shipped); the later additions (\"Queen assumed into Heaven\", 1950; the 2020 additions \"Mother of the Church\" and \"Queen of families\") are outside the pre-1950 public-domain redaction and are deliberately omitted, while the committed companion import (litany_loreto) carries the full received list verbatim as the pack’s provenance entry.",
       "invocation_source": "Litany of Loreto (Shrine of Loreto; approved by Pope Sixtus V, 1587) — received invocation list",
       "invocation_license": "public-domain (traditional invocation list, pre-1950 redaction)"
     }

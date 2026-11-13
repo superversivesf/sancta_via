@@ -59,7 +59,7 @@
         ],
         "response": "Deliver me, Jesus.",
         "groupedResponse": false,
-        "title": "Deliverances (each answered: Deliver me, Jesus.)"
+        "title": "Deliverances"
       },
       {
         "type": "litany",
@@ -75,7 +75,7 @@
         ],
         "response": "Jesus, grant me the grace to desire it.",
         "groupedResponse": false,
-        "title": "Petitions (each answered: Jesus, grant me the grace to desire it.)"
+        "title": "Petitions"
       }
     ]
   },

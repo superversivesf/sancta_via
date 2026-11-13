@@ -8,6 +8,13 @@
 // carries; [attributionEntriesFor] is the pure collector the screen hands
 // it (and the seam a later review round pins if new step types appear —
 // the sealed switch there stays exhaustive).
+//
+// Task-23 fix round 1: a LitanyStep's invocation list has no per-line
+// license slot in the engine, so a litany pack records its text's source
+// and license at the pack level (reminders.schedule_note). With the pack
+// passed, the collector adds ONE pack-level provenance row, keyed to the
+// pack id, whenever the viewed set contains a litany step, so the sheet
+// renders the litany text's attribution too.
 library;
 
 import 'package:flutter/material.dart';
@@ -37,11 +44,21 @@ class AttributionEntry {
 ///
 /// A `throughStepIndex` outside the script's bounds yields every step's
 /// entries (the completed walk's case).
+///
+/// With [pack] supplied, a viewed `LitanyStep` adds the pack's OWN litany
+/// attribution: one [AttributionEntry] keyed to the pack id, sourced from
+/// `reminders.schedule_note` (`invocation_source` / `invocation_license`).
+/// That pack-level record carries the invocation text, which the engine's
+/// step fields cannot license per line. Packs without such a note (and the
+/// pack-less caller) contribute no row: the collector never invents
+/// attribution data.
 List<AttributionEntry> attributionEntriesFor(
   SessionScript script,
-  int throughStepIndex,
-) {
+  int throughStepIndex, {
+  ContentPack? pack,
+}) {
   final Map<String, AttributionEntry> entries = <String, AttributionEntry>{};
+  final AttributionEntry? litanyEntry = _litanyAttribution(pack);
   for (int i = 0; i < script.steps.length; i++) {
     if (i > throughStepIndex) {
       break;
@@ -56,8 +73,38 @@ List<AttributionEntry> attributionEntriesFor(
         ),
       );
     }
+    if (script.steps[i] is LitanyStep && litanyEntry != null) {
+      entries.putIfAbsent(litanyEntry.prayerId, () => litanyEntry);
+    }
   }
   return entries.values.toList();
+}
+
+/// The pack-level attribution of [pack]'s litany text, or null when the
+/// pack ships none: the record lives in `reminders.schedule_note` under
+/// `invocation_source` / `invocation_license`, and a missing or empty
+/// field means the collector renders nothing rather than guessing.
+AttributionEntry? _litanyAttribution(ContentPack? pack) {
+  if (pack == null) {
+    return null;
+  }
+  final Object? note = pack.reminders['schedule_note'];
+  if (note is! Map<String, dynamic>) {
+    return null;
+  }
+  final Object? sourceText = note['invocation_source'];
+  final Object? licenseText = note['invocation_license'];
+  if (sourceText is! String ||
+      sourceText.isEmpty ||
+      licenseText is! String ||
+      licenseText.isEmpty) {
+    return null;
+  }
+  return AttributionEntry(
+    prayerId: pack.id,
+    source: sourceText,
+    license: licenseText,
+  );
 }
 
 /// The prayer texts [step] displays, in render order.
