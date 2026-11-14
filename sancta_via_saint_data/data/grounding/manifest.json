@@ -1,0 +1,3362 @@
+{
+  "generatedAt": "2026-11-14T07:49:01.381240Z",
+  "articles": [
+    {
+      "slug": "anthony-of-padua",
+      "ceCode": "01556a",
+      "url": "https://www.newadvent.org/cathen/01556a.htm",
+      "file": "01556a.txt",
+      "chars": 16207,
+      "sha256": "0ac6dfa4822cef1ff0ac7360262e070b9c97d0722ffe5485835f8e763aa76b05",
+      "fetchedAt": "2026-11-14T07:31:46.172407Z"
+    },
+    {
+      "slug": "dymphna",
+      "ceCode": "05221b",
+      "url": "https://www.newadvent.org/cathen/05221b.htm",
+      "file": "05221b.txt",
+      "chars": 3350,
+      "sha256": "aa21eca4624dab04e08f08e0b14c07a45e8ef7c6918b14f718676d7cd2890f2a",
+      "fetchedAt": "2026-11-14T07:31:48.927582Z"
+    },
+    {
+      "slug": "francis-of-assisi",
+      "ceCode": "06221a",
+      "url": "https://www.newadvent.org/cathen/06221a.htm",
+      "file": "06221a.txt",
+      "chars": 59364,
+      "sha256": "b1e2fdf9d5836272025e88cb99ff93fe08c89e5b208375087a4ca11b26927064",
+      "fetchedAt": "2026-11-14T07:31:51.832082Z"
+    },
+    {
+      "slug": "michael-the-archangel",
+      "ceCode": "10275b",
+      "url": "https://www.newadvent.org/cathen/10275b.htm",
+      "file": "10275b.txt",
+      "chars": 10012,
+      "sha256": "70a5fbfa09c2cb459a01c7ef7e65887addfbf7ae6358c7f3247c0d7c3304cb3d",
+      "fetchedAt": "2026-11-14T07:31:54.555593Z"
+    },
+    {
+      "slug": "fabiola",
+      "ceCode": "05743a",
+      "url": "https://www.newadvent.org/cathen/05743a.htm",
+      "file": "05743a.txt",
+      "chars": 2834,
+      "sha256": "1d35caf66fc7d40101da8883ce422558ff4fa4bd59aa1585047fe43874862840",
+      "fetchedAt": "2026-11-14T07:31:57.282304Z"
+    },
+    {
+      "slug": "john-chrysostom",
+      "ceCode": "08452b",
+      "url": "https://www.newadvent.org/cathen/08452b.htm",
+      "file": "08452b.txt",
+      "chars": 37024,
+      "sha256": "4b1fd83474e1b570b3fff57276c5647497238b67ebbb63dd602baed762ece0c8",
+      "fetchedAt": "2026-11-14T07:32:00.168956Z"
+    },
+    {
+      "slug": "kilian",
+      "ceCode": "08639a",
+      "url": "https://www.newadvent.org/cathen/08639a.htm",
+      "file": "08639a.txt",
+      "chars": 7096,
+      "sha256": "4a6d717c5cca3b214b792de568d51c8b059a8df22c500193d8c1e932bb79a05e",
+      "fetchedAt": "2026-11-14T07:32:02.912967Z"
+    },
+    {
+      "slug": "melania-the-younger",
+      "ceCode": "10154a",
+      "url": "https://www.newadvent.org/cathen/10154a.htm",
+      "file": "10154a.txt",
+      "chars": 3537,
+      "sha256": "e58aa36dee34853a1e95e99c666bfc05a6aa265e040f51a35e6621897165f736",
+      "fetchedAt": "2026-11-14T07:32:05.622729Z"
+    },
+    {
+      "slug": "pelagia",
+      "ceCode": "11601d",
+      "url": "https://www.newadvent.org/cathen/11601d.htm",
+      "file": "11601d.txt",
+      "chars": 3255,
+      "sha256": "f7f01e9cf080cda6c4e04e458911c36504599ea990fd1f1bbb7273e02857c3eb",
+      "fetchedAt": "2026-11-14T07:32:08.346892Z"
+    },
+    {
+      "slug": "sidonius-apollinaris",
+      "ceCode": "13778a",
+      "url": "https://www.newadvent.org/cathen/13778a.htm",
+      "file": "13778a.txt",
+      "chars": 4024,
+      "sha256": "c64b7712c5391a9c7ab72ead6e92a588722da31b5dfedaafe1e2a2c604287036",
+      "fetchedAt": "2026-11-14T07:32:11.094627Z"
+    },
+    {
+      "slug": "crispin-and-crispinian",
+      "ceCode": "04491a",
+      "url": "https://www.newadvent.org/cathen/04491a.htm",
+      "file": "04491a.txt",
+      "chars": 3029,
+      "sha256": "98b6139d99cf77c996dc634090eed85f162d9e6ae8237ba1e40568c1bdd6d571",
+      "fetchedAt": "2026-11-14T07:32:13.834418Z"
+    },
+    {
+      "slug": "pope-evaristus",
+      "ceCode": "05646a",
+      "url": "https://www.newadvent.org/cathen/05646a.htm",
+      "file": "05646a.txt",
+      "chars": 1388,
+      "sha256": "7c1685256c6b6ebc9e8c3e24b66c1606454bd6696bbc09abe2eb945a26d1671d",
+      "fetchedAt": "2026-11-14T07:32:16.546592Z"
+    },
+    {
+      "slug": "anastasius-sinaita",
+      "ceCode": "01455d",
+      "url": "https://www.newadvent.org/cathen/01455d.htm",
+      "file": "01455d.txt",
+      "chars": 1052,
+      "sha256": "8413a9e34dc66d94c646e7bf5538e4ef969f412bf167fffdc8ee64dcbdef1e76",
+      "fetchedAt": "2026-11-14T07:32:19.281297Z"
+    },
+    {
+      "slug": "arialdo",
+      "ceCode": "01707b",
+      "url": "https://www.newadvent.org/cathen/01707b.htm",
+      "file": "01707b.txt",
+      "chars": 1061,
+      "sha256": "7e9f2915dfa84372575b244066ec9a1d270e5a57c74c559ab88f47a8e95d4b20",
+      "fetchedAt": "2026-11-14T07:32:22.003698Z"
+    },
+    {
+      "slug": "bernard-of-menthon",
+      "ceCode": "02503b",
+      "url": "https://www.newadvent.org/cathen/02503b.htm",
+      "file": "02503b.txt",
+      "chars": 3171,
+      "sha256": "c5c1628a5beb10305882795c620561817c7708aa10499085b2f7e3e19dfbc232",
+      "fetchedAt": "2026-11-14T07:32:24.726899Z"
+    },
+    {
+      "slug": "clement-of-alexandria",
+      "ceCode": "04045a",
+      "url": "https://www.newadvent.org/cathen/04045a.htm",
+      "file": "04045a.txt",
+      "chars": 18689,
+      "sha256": "944231dc47773bb2561a716ca485c715dec245ead4f313355a5ddea5972fd60c",
+      "fetchedAt": "2026-11-14T07:32:27.593357Z"
+    },
+    {
+      "slug": "corbinian",
+      "ceCode": "04356a",
+      "url": "https://www.newadvent.org/cathen/04356a.htm",
+      "file": "04356a.txt",
+      "chars": 1597,
+      "sha256": "63fbf46495ea76a6ed5ebba1a367c2a04e20b08e968506403a2c9c3a58121ed0",
+      "fetchedAt": "2026-11-14T07:32:30.313030Z"
+    },
+    {
+      "slug": "diodorus-of-tarsus",
+      "ceCode": "05008a",
+      "url": "https://www.newadvent.org/cathen/05008a.htm",
+      "file": "05008a.txt",
+      "chars": 6197,
+      "sha256": "273ffbac9e952b25462b18871bfaacde2736a9285f2a4c56a5c5ac2e15d0383b",
+      "fetchedAt": "2026-11-14T07:32:33.028335Z"
+    },
+    {
+      "slug": "edmund-the-martyr",
+      "ceCode": "05295a",
+      "url": "https://www.newadvent.org/cathen/05295a.htm",
+      "file": "05295a.txt",
+      "chars": 2367,
+      "sha256": "1cd2a51d55ef6b55c0231557fed702050c492871e7fd5db68c98de049975b8f1",
+      "fetchedAt": "2026-11-14T07:32:35.764476Z"
+    },
+    {
+      "slug": "epiphanius-of-salamis",
+      "ceCode": "13393b",
+      "url": "https://www.newadvent.org/cathen/13393b.htm",
+      "file": "13393b.txt",
+      "chars": 10029,
+      "sha256": "497f417b00307247bacc169a0d46c04f6e454b1018cd2507a861b192af4577d5",
+      "fetchedAt": "2026-11-14T07:32:38.478907Z"
+    },
+    {
+      "slug": "eulogius-of-c-rdoba",
+      "ceCode": "05604a",
+      "url": "https://www.newadvent.org/cathen/05604a.htm",
+      "file": "05604a.txt",
+      "chars": 5039,
+      "sha256": "c0f3c50e6bf9e394c9f646f1a303da7fd18ccfdc9ed1bf3d20154e9ccc9209d5",
+      "fetchedAt": "2026-11-14T07:32:41.208927Z"
+    },
+    {
+      "slug": "eusebius",
+      "ceCode": "05617b",
+      "url": "https://www.newadvent.org/cathen/05617b.htm",
+      "file": "05617b.txt",
+      "chars": 34874,
+      "sha256": "0a1b3e089014d869a99fe0fca111a8d099e7d36179f46d6543ffeaeedf098370",
+      "fetchedAt": "2026-11-14T07:32:44.099342Z"
+    },
+    {
+      "slug": "gottschalk-obotrite-prince",
+      "ceCode": "06681a",
+      "url": "https://www.newadvent.org/cathen/06681a.htm",
+      "file": "06681a.txt",
+      "chars": 2530,
+      "sha256": "7ed6bf2260d6dcfed24b5498895d346a0f8f7e47e67afc3b958c52b8a58457f5",
+      "fetchedAt": "2026-11-14T07:32:46.827934Z"
+    },
+    {
+      "slug": "justus",
+      "ceCode": "08586a",
+      "url": "https://www.newadvent.org/cathen/08586a.htm",
+      "file": "08586a.txt",
+      "chars": 2607,
+      "sha256": "fa57c8e07f386815a55f7363bbc17db2510c95353d8cd9dcadadd6495ff770ea",
+      "fetchedAt": "2026-11-14T07:32:49.558315Z"
+    },
+    {
+      "slug": "macrina-the-younger",
+      "ceCode": "09508c",
+      "url": "https://www.newadvent.org/cathen/09508c.htm",
+      "file": "09508c.txt",
+      "chars": 2370,
+      "sha256": "8dd675aede710412c28b506ce6bea657b33a3c2de0749f4988bd2b27b1ee9076",
+      "fetchedAt": "2026-11-14T07:32:52.289462Z"
+    },
+    {
+      "slug": "mamertus",
+      "ceCode": "09580a",
+      "url": "https://www.newadvent.org/cathen/09580a.htm",
+      "file": "09580a.txt",
+      "chars": 4152,
+      "sha256": "4886ded30ea8282d5efe5849bf17b80fd3247be6a63b2eff3301f2ae7ec38cc5",
+      "fetchedAt": "2026-11-14T07:32:55.006678Z"
+    },
+    {
+      "slug": "marcus-eremita",
+      "ceCode": "09650d",
+      "url": "https://www.newadvent.org/cathen/09650d.htm",
+      "file": "09650d.txt",
+      "chars": 2795,
+      "sha256": "18abc2d8e86718532b0e6831ed3eb6bacfa1694157e12093f378493d0bcc3233",
+      "fetchedAt": "2026-11-14T07:32:57.711628Z"
+    },
+    {
+      "slug": "martin-of-braga",
+      "ceCode": "09731b",
+      "url": "https://www.newadvent.org/cathen/09731b.htm",
+      "file": "09731b.txt",
+      "chars": 4679,
+      "sha256": "b0ff91eba58d1adcfc920a67079b71936200ef9b43bf93ddebdddfe2ab79acc4",
+      "fetchedAt": "2026-11-14T07:33:00.426460Z"
+    },
+    {
+      "slug": "maurus",
+      "ceCode": "10072a",
+      "url": "https://www.newadvent.org/cathen/10072a.htm",
+      "file": "10072a.txt",
+      "chars": 1219,
+      "sha256": "408bca99f154c091ec1a4eb8801fa8c287d3d099341b4b47e3f39e7c4cddf423",
+      "fetchedAt": "2026-11-14T07:33:03.141023Z"
+    },
+    {
+      "slug": "pope-miltiades",
+      "ceCode": "10318a",
+      "url": "https://www.newadvent.org/cathen/10318a.htm",
+      "file": "10318a.txt",
+      "chars": 5505,
+      "sha256": "8be1f044315a40dffd5a07c6c45b9a1b21a87be96f3773ae1abf9bbf2d03cd87",
+      "fetchedAt": "2026-11-14T07:33:05.855994Z"
+    },
+    {
+      "slug": "moses-bishop-of-the-arabs",
+      "ceCode": "10596a",
+      "url": "https://www.newadvent.org/cathen/10596a.htm",
+      "file": "10596a.txt",
+      "chars": 11490,
+      "sha256": "72c17866c8c959363bc14d807eb9097e58e8eb011a6d6f5b33fc0f4d60ea9bc7",
+      "fetchedAt": "2026-11-14T07:33:08.582035Z"
+    },
+    {
+      "slug": "paul-the-simple",
+      "ceCode": "11591a",
+      "url": "https://www.newadvent.org/cathen/11591a.htm",
+      "file": "11591a.txt",
+      "chars": 2680,
+      "sha256": "e55906014aefa4345fdd8a166cf0f5c308d3978898ca86e7bfbaab34bb6ce106",
+      "fetchedAt": "2026-11-14T07:33:11.288039Z"
+    },
+    {
+      "slug": "peter-igneus",
+      "ceCode": "11768c",
+      "url": "https://www.newadvent.org/cathen/11768c.htm",
+      "file": "11768c.txt",
+      "chars": 1493,
+      "sha256": "3c3549552d589f61d51dc3fc6624084aebc0a063df4fb68bb1f8d735e2681fa9",
+      "fetchedAt": "2026-11-14T07:33:14.004937Z"
+    },
+    {
+      "slug": "peter-of-sebaste",
+      "ceCode": "11773c",
+      "url": "https://www.newadvent.org/cathen/11773c.htm",
+      "file": "11773c.txt",
+      "chars": 2338,
+      "sha256": "b9fa05ae1c64a20e181ab7345b4fb45b764d3a73d4803c92906d83a289390117",
+      "fetchedAt": "2026-11-14T07:33:16.708007Z"
+    },
+    {
+      "slug": "pierius",
+      "ceCode": "12079c",
+      "url": "https://www.newadvent.org/cathen/12079c.htm",
+      "file": "12079c.txt",
+      "chars": 1836,
+      "sha256": "9e3706027413cc9ddc86d207fd92b12dfc7586723684ddf7cdaa5bc039145316",
+      "fetchedAt": "2026-11-14T07:33:19.401168Z"
+    },
+    {
+      "slug": "stephen-harding",
+      "ceCode": "14290d",
+      "url": "https://www.newadvent.org/cathen/14290d.htm",
+      "file": "14290d.txt",
+      "chars": 2658,
+      "sha256": "3e675604770f9c6f5e32d6c4b88edb909afab74aa8c78c37f54a9c1f95b26819",
+      "fetchedAt": "2026-11-14T07:33:22.106621Z"
+    },
+    {
+      "slug": "thomas-becket",
+      "ceCode": "14676a",
+      "url": "https://www.newadvent.org/cathen/14676a.htm",
+      "file": "14676a.txt",
+      "chars": 16094,
+      "sha256": "d0909c85509088f3ae444f0af30ceaa6cbf800609ce8599dd0d557de4cabd01d",
+      "fetchedAt": "2026-11-14T07:33:24.813284Z"
+    },
+    {
+      "slug": "vladimir-the-great",
+      "ceCode": "15497a",
+      "url": "https://www.newadvent.org/cathen/15497a.htm",
+      "file": "15497a.txt",
+      "chars": 7592,
+      "sha256": "5d97d3966c3b7e6335ef2688f96dd653bd66acb204c74a7ffb6d0d98f8db4a22",
+      "fetchedAt": "2026-11-14T07:33:27.518164Z"
+    },
+    {
+      "slug": "pope-gelasius-i",
+      "ceCode": "06406a",
+      "url": "https://www.newadvent.org/cathen/06406a.htm",
+      "file": "06406a.txt",
+      "chars": 7782,
+      "sha256": "511cb4625fb4c23a1565497557344bcb0514e5ec80418864c1de54796e394432",
+      "fetchedAt": "2026-11-14T07:33:30.243055Z"
+    },
+    {
+      "slug": "pope-caius",
+      "ceCode": "03144a",
+      "url": "https://www.newadvent.org/cathen/03144a.htm",
+      "file": "03144a.txt",
+      "chars": 2336,
+      "sha256": "e5fe04901610fb4be80e61805c2f4634859ef276a450c6d9a861d1a52f917068",
+      "fetchedAt": "2026-11-14T07:33:32.952464Z"
+    },
+    {
+      "slug": "abdon-and-sennen",
+      "ceCode": "01032a",
+      "url": "https://www.newadvent.org/cathen/01032a.htm",
+      "file": "01032a.txt",
+      "chars": 1077,
+      "sha256": "06e277a690031c9de2165b165c1a8c7789b75a50099973328092c1f8a3164e19",
+      "fetchedAt": "2026-11-14T07:33:35.665110Z"
+    },
+    {
+      "slug": "pope-adeodatus-ii",
+      "ceCode": "01142a",
+      "url": "https://www.newadvent.org/cathen/01142a.htm",
+      "file": "01142a.txt",
+      "chars": 554,
+      "sha256": "89d0ccc7f1c6dc156a2cb15687d6554fa959fb11be7a8ea8256606bf90da6c1d",
+      "fetchedAt": "2026-11-14T07:33:38.399934Z"
+    },
+    {
+      "slug": "pope-adrian-iii",
+      "ceCode": "01156b",
+      "url": "https://www.newadvent.org/cathen/01156b.htm",
+      "file": "01156b.txt",
+      "chars": 469,
+      "sha256": "32c83b834abdaecac5899b601a2be923e54125153f301597e8efbd015f9aeb01",
+      "fetchedAt": "2026-11-14T07:33:41.114159Z"
+    },
+    {
+      "slug": "adrian-of-canterbury",
+      "ceCode": "01160a",
+      "url": "https://www.newadvent.org/cathen/01160a.htm",
+      "file": "01160a.txt",
+      "chars": 1880,
+      "sha256": "46465e01e90046c3c575a2dd75e73e6fa0b447029d17fb8296ee8296fc85834b",
+      "fetchedAt": "2026-11-14T07:33:43.858621Z"
+    },
+    {
+      "slug": "aelia-flaccilla",
+      "ceCode": "06089b",
+      "url": "https://www.newadvent.org/cathen/06089b.htm",
+      "file": "06089b.txt",
+      "chars": 2843,
+      "sha256": "97932115b620e686462451e3752540798c2be4a6a6d047a60433ba171bcd05d5",
+      "fetchedAt": "2026-11-14T07:33:46.586422Z"
+    },
+    {
+      "slug": "afra",
+      "ceCode": "01180b",
+      "url": "https://www.newadvent.org/cathen/01180b.htm",
+      "file": "01180b.txt",
+      "chars": 3906,
+      "sha256": "08b9aa274d01c1fbf4c57f630323461282f507639b20b896eab8c07f4f0f3c1a",
+      "fetchedAt": "2026-11-14T07:33:49.299700Z"
+    },
+    {
+      "slug": "aidan-of-lindisfarne",
+      "ceCode": "01233d",
+      "url": "https://www.newadvent.org/cathen/01233d.htm",
+      "file": "01233d.txt",
+      "chars": 937,
+      "sha256": "aa8a0ae9003919fe465761a1fa71f663c5abb9a75be1c210cd022d83901e0633",
+      "fetchedAt": "2026-11-14T07:33:52.045525Z"
+    },
+    {
+      "slug": "aldhelm",
+      "ceCode": "01280b",
+      "url": "https://www.newadvent.org/cathen/01280b.htm",
+      "file": "01280b.txt",
+      "chars": 6544,
+      "sha256": "a00623781804939b1152f046c40c24b04fbca71b294934c02524707ca169014c",
+      "fetchedAt": "2026-11-14T07:33:54.767102Z"
+    },
+    {
+      "slug": "amphilochius-of-iconium",
+      "ceCode": "01438a",
+      "url": "https://www.newadvent.org/cathen/01438a.htm",
+      "file": "01438a.txt",
+      "chars": 3146,
+      "sha256": "c6009aa529a99e9b9b0c99473d06d0ab46581ccb14fb3f969dd00e5b3b2c861d",
+      "fetchedAt": "2026-11-14T07:33:57.481357Z"
+    },
+    {
+      "slug": "andrew-the-scot",
+      "ceCode": "01474c",
+      "url": "https://www.newadvent.org/cathen/01474c.htm",
+      "file": "01474c.txt",
+      "chars": 1195,
+      "sha256": "13c5796de0dc6324e1b78fe177e8477c0f91431e68b685a95e6d607dd344b01b",
+      "fetchedAt": "2026-11-14T07:34:00.201527Z"
+    },
+    {
+      "slug": "assicus",
+      "ceCode": "01800a",
+      "url": "https://www.newadvent.org/cathen/01800a.htm",
+      "file": "01800a.txt",
+      "chars": 1659,
+      "sha256": "8b66f045c8d2a70a6a2adab7aa1d6f6a762ab5ae94ae3d68530ba5942cc4c20d",
+      "fetchedAt": "2026-11-14T07:34:02.927159Z"
+    },
+    {
+      "slug": "atto-of-pistoia",
+      "ceCode": "02062b",
+      "url": "https://www.newadvent.org/cathen/02062b.htm",
+      "file": "02062b.txt",
+      "chars": 387,
+      "sha256": "e2a667d568f90e8695a0ab25fcfdfab4aede27fecfaff1d0e8fc89ba10af1a29",
+      "fetchedAt": "2026-11-14T07:34:05.739400Z"
+    },
+    {
+      "slug": "auxentius-of-mopsuestia",
+      "ceCode": "02144d",
+      "url": "https://www.newadvent.org/cathen/02144d.htm",
+      "file": "02144d.txt",
+      "chars": 540,
+      "sha256": "bfdacbf18918aa5a7cf9a6a1ef25eeebc105c499c69f95486d5bc954abfb94cc",
+      "fetchedAt": "2026-11-14T07:34:08.451353Z"
+    },
+    {
+      "slug": "benignus-bishop-of-milan",
+      "ceCode": "02479b",
+      "url": "https://www.newadvent.org/cathen/02479b.htm",
+      "file": "02479b.txt",
+      "chars": 2423,
+      "sha256": "dd3dbf697b698d36141c138c2eaddf4cd1be398bd30b419cd185009dc47a8334",
+      "fetchedAt": "2026-11-14T07:34:11.172139Z"
+    },
+    {
+      "slug": "burchard-of-w-rzburg",
+      "ceCode": "03064b",
+      "url": "https://www.newadvent.org/cathen/03064b.htm",
+      "file": "03064b.txt",
+      "chars": 2248,
+      "sha256": "7ff4dabfb582e659171e3df164ae3378f2e056c5d5a4f824eb199f29e16a81dd",
+      "fetchedAt": "2026-11-14T07:34:13.934596Z"
+    },
+    {
+      "slug": "caesarius-of-arles",
+      "ceCode": "03135b",
+      "url": "https://www.newadvent.org/cathen/03135b.htm",
+      "file": "03135b.txt",
+      "chars": 16039,
+      "sha256": "7aed2e432896882ff4e4baa65d994ef3d51c5eccd27e0f40374c3c6690c4c916",
+      "fetchedAt": "2026-11-14T07:34:16.828633Z"
+    },
+    {
+      "slug": "pope-celestine-i",
+      "ceCode": "03477c",
+      "url": "https://www.newadvent.org/cathen/03477c.htm",
+      "file": "03477c.txt",
+      "chars": 8485,
+      "sha256": "938ae149ec10460588f09bb4ec41376dba51c194448801a2a733a5223ed3fc0d",
+      "fetchedAt": "2026-11-14T07:34:19.571412Z"
+    },
+    {
+      "slug": "chromatius",
+      "ceCode": "03730a",
+      "url": "https://www.newadvent.org/cathen/03730a.htm",
+      "file": "03730a.txt",
+      "chars": 1799,
+      "sha256": "11f429391f3c7a99446bd5115e89e20e09ce441e42bef09ee53113db33e9b1e2",
+      "fetchedAt": "2026-11-14T07:34:22.326443Z"
+    },
+    {
+      "slug": "columba-of-sens",
+      "ceCode": "04135b",
+      "url": "https://www.newadvent.org/cathen/04135b.htm",
+      "file": "04135b.txt",
+      "chars": 624,
+      "sha256": "a04f6a50b0a0bdec66bb36d64daf9d4a9ebf910e14f478ede00cd538e3499634",
+      "fetchedAt": "2026-11-14T07:34:25.092540Z"
+    },
+    {
+      "slug": "columbanus",
+      "ceCode": "04137a",
+      "url": "https://www.newadvent.org/cathen/04137a.htm",
+      "file": "04137a.txt",
+      "chars": 21835,
+      "sha256": "7e74d3fa5d232b044c594325ea040bac4fe8565b12f4249a1e604f7a5ee7807b",
+      "fetchedAt": "2026-11-14T07:34:27.953752Z"
+    },
+    {
+      "slug": "constantine-the-great",
+      "ceCode": "04295c",
+      "url": "https://www.newadvent.org/cathen/04295c.htm",
+      "file": "04295c.txt",
+      "chars": 41200,
+      "sha256": "07db8971b8c07b069d722547bbc2bc2c8e214b9092e535a63a73c62a54192ceb",
+      "fetchedAt": "2026-11-14T07:34:30.837152Z"
+    },
+    {
+      "slug": "cyril-of-jerusalem",
+      "ceCode": "04595b",
+      "url": "https://www.newadvent.org/cathen/04595b.htm",
+      "file": "04595b.txt",
+      "chars": 12056,
+      "sha256": "78e10b971290662d33ef4eeb973a6c7a76ee1dea5e8a78969c25243873701451",
+      "fetchedAt": "2026-11-14T07:34:33.560690Z"
+    },
+    {
+      "slug": "pope-damasus-i",
+      "ceCode": "04613a",
+      "url": "https://www.newadvent.org/cathen/04613a.htm",
+      "file": "04613a.txt",
+      "chars": 7216,
+      "sha256": "1828375d4bf5a1a62626ccae6e22a2e20aabff6ce64c400faf9c060c82d0229c",
+      "fetchedAt": "2026-11-14T07:34:36.298107Z"
+    },
+    {
+      "slug": "didymus-the-blind",
+      "ceCode": "04784a",
+      "url": "https://www.newadvent.org/cathen/04784a.htm",
+      "file": "04784a.txt",
+      "chars": 8708,
+      "sha256": "9cc6c81c3983ac843e7d0aad339b6e2d65c7542d279d5dcc88a1335e14137400",
+      "fetchedAt": "2026-11-14T07:34:39.051082Z"
+    },
+    {
+      "slug": "dionysius-of-alexandria",
+      "ceCode": "05011a",
+      "url": "https://www.newadvent.org/cathen/05011a.htm",
+      "file": "05011a.txt",
+      "chars": 19524,
+      "sha256": "c83bc406b427fb5b4e67c5f7f881b880a54a7582b3eb35976dbda76719771d18",
+      "fetchedAt": "2026-11-14T07:34:41.921069Z"
+    },
+    {
+      "slug": "donatus-of-fiesole",
+      "ceCode": "05129a",
+      "url": "https://www.newadvent.org/cathen/05129a.htm",
+      "file": "05129a.txt",
+      "chars": 1310,
+      "sha256": "c8a2f653f3485fb0f25c2778c627c17946d0ee36c84dce75ee18482b93f749ce",
+      "fetchedAt": "2026-11-14T07:34:44.657594Z"
+    },
+    {
+      "slug": "edward-the-confessor",
+      "ceCode": "05322a",
+      "url": "https://www.newadvent.org/cathen/05322a.htm",
+      "file": "05322a.txt",
+      "chars": 3216,
+      "sha256": "b5ae5fabf1e820b23a22d364dc63b130f0b1c68507bd1fa1f8ec4f6d4e2d4e5a",
+      "fetchedAt": "2026-11-14T07:34:47.379842Z"
+    },
+    {
+      "slug": "edward-the-martyr",
+      "ceCode": "05323a",
+      "url": "https://www.newadvent.org/cathen/05323a.htm",
+      "file": "05323a.txt",
+      "chars": 2329,
+      "sha256": "e1d56dfa960a008a8cbdf7b328a0ca00d16625db9ed77bd3cec6fb8a121d33e0",
+      "fetchedAt": "2026-11-14T07:34:50.114851Z"
+    },
+    {
+      "slug": "eimhin",
+      "ceCode": "05366a",
+      "url": "https://www.newadvent.org/cathen/05366a.htm",
+      "file": "05366a.txt",
+      "chars": 1984,
+      "sha256": "00c9798b3acf489e2a5d237000d746f4a81a0a0ff848ad2ac477792343129923",
+      "fetchedAt": "2026-11-14T07:34:52.876659Z"
+    },
+    {
+      "slug": "elias-i-of-jerusalem",
+      "ceCode": "05385a",
+      "url": "https://www.newadvent.org/cathen/05385a.htm",
+      "file": "05385a.txt",
+      "chars": 4519,
+      "sha256": "e5d22308c0b558de7bb445e6e8fbff5565566fb030f2778046172d2cc22e6db4",
+      "fetchedAt": "2026-11-14T07:34:55.606173Z"
+    },
+    {
+      "slug": "emerentiana",
+      "ceCode": "05401b",
+      "url": "https://www.newadvent.org/cathen/05401b.htm",
+      "file": "05401b.txt",
+      "chars": 1114,
+      "sha256": "83cb728fecc7f74a5d2fdaf412b8366fe91431abb5b955957ba8badabea552be",
+      "fetchedAt": "2026-11-14T07:34:58.329789Z"
+    },
+    {
+      "slug": "eucharius",
+      "ceCode": "05594a",
+      "url": "https://www.newadvent.org/cathen/05594a.htm",
+      "file": "05594a.txt",
+      "chars": 4232,
+      "sha256": "ca7200d4c8cc29df4962a6234f6349e52b2a03e72352acc43bdf2054214330c6",
+      "fetchedAt": "2026-11-14T07:35:01.090038Z"
+    },
+    {
+      "slug": "eugenius-of-carthage",
+      "ceCode": "05602c",
+      "url": "https://www.newadvent.org/cathen/05602c.htm",
+      "file": "05602c.txt",
+      "chars": 2412,
+      "sha256": "b315156914887a7d77cba2bf4189b458aea56a731d5cbec09d4be325e1399108",
+      "fetchedAt": "2026-11-14T07:35:03.826302Z"
+    },
+    {
+      "slug": "florentina",
+      "ceCode": "06114b",
+      "url": "https://www.newadvent.org/cathen/06114b.htm",
+      "file": "06114b.txt",
+      "chars": 2486,
+      "sha256": "8a23a4e7364bba04d1cb5da55138a35ed1c9da6aa9766ccebe319cd7e19f49ef",
+      "fetchedAt": "2026-11-14T07:35:06.544856Z"
+    },
+    {
+      "slug": "fructuosus-of-braga",
+      "ceCode": "06311a",
+      "url": "https://www.newadvent.org/cathen/06311a.htm",
+      "file": "06311a.txt",
+      "chars": 1342,
+      "sha256": "da33864f9930bc7451ab8c57eae6e258bc335b496393d597c441e616fff48f83",
+      "fetchedAt": "2026-11-14T07:35:09.269246Z"
+    },
+    {
+      "slug": "fulbert-of-chartres",
+      "ceCode": "06312a",
+      "url": "https://www.newadvent.org/cathen/06312a.htm",
+      "file": "06312a.txt",
+      "chars": 3367,
+      "sha256": "08139e87df057ea508d65c17202e48d6f499bd7d9c5d61c6e62bc402571f8cdb",
+      "fetchedAt": "2026-11-14T07:35:12.060318Z"
+    },
+    {
+      "slug": "gaudentius-of-brescia",
+      "ceCode": "06394a",
+      "url": "https://www.newadvent.org/cathen/06394a.htm",
+      "file": "06394a.txt",
+      "chars": 1384,
+      "sha256": "0b33c49f9d146873ebf6f6a724e075d83378ba88e21176bcc161e44378ef9d5a",
+      "fetchedAt": "2026-11-14T07:35:14.775094Z"
+    },
+    {
+      "slug": "gilbert-of-sempringham",
+      "ceCode": "06557b",
+      "url": "https://www.newadvent.org/cathen/06557b.htm",
+      "file": "06557b.txt",
+      "chars": 3522,
+      "sha256": "94992201c61b8ee518b26e4ea4c89c1545e41a0b637dfb833283ad99547e8951",
+      "fetchedAt": "2026-11-14T07:35:17.532545Z"
+    },
+    {
+      "slug": "gildas",
+      "ceCode": "06557c",
+      "url": "https://www.newadvent.org/cathen/06557c.htm",
+      "file": "06557c.txt",
+      "chars": 3746,
+      "sha256": "ba3c53e11aa9fb5bfaa21abd81ae7c2a9047e936a60f7c9922bbc24b04c01422",
+      "fetchedAt": "2026-11-14T07:35:20.255863Z"
+    },
+    {
+      "slug": "pope-gregory-i",
+      "ceCode": "06780a",
+      "url": "https://www.newadvent.org/cathen/06780a.htm",
+      "file": "06780a.txt",
+      "chars": 56489,
+      "sha256": "eb400d4fbcc1e67a291a28f3f2a2d84c21b65077abb811bc1846208bffd9a788",
+      "fetchedAt": "2026-11-14T07:35:23.277391Z"
+    },
+    {
+      "slug": "pope-gregory-ii",
+      "ceCode": "06787a",
+      "url": "https://www.newadvent.org/cathen/06787a.htm",
+      "file": "06787a.txt",
+      "chars": 8433,
+      "sha256": "665f5cd4b002a9272a91e4f883911b877e16c7d1f449985661d73c5879cd5db1",
+      "fetchedAt": "2026-11-14T07:35:26.013524Z"
+    },
+    {
+      "slug": "pope-gregory-iii",
+      "ceCode": "06789a",
+      "url": "https://www.newadvent.org/cathen/06789a.htm",
+      "file": "06789a.txt",
+      "chars": 4176,
+      "sha256": "1babfab999b18c91322c1bc7085298da43d4d44d2e4d29c0f34aa54acc796d00",
+      "fetchedAt": "2026-11-14T07:35:28.728010Z"
+    },
+    {
+      "slug": "gregory-of-nazianzus",
+      "ceCode": "07010b",
+      "url": "https://www.newadvent.org/cathen/07010b.htm",
+      "file": "07010b.txt",
+      "chars": 31244,
+      "sha256": "f86f27e37dc04419e4607d99812b2d3c526a12b4450322758853c49357e65021",
+      "fetchedAt": "2026-11-14T07:35:31.609462Z"
+    },
+    {
+      "slug": "gregory-of-nyssa",
+      "ceCode": "07016a",
+      "url": "https://www.newadvent.org/cathen/07016a.htm",
+      "file": "07016a.txt",
+      "chars": 13355,
+      "sha256": "0a09de75f49376d1e24d1a88e23f11db614427ef2ba62f0e97f279f3a829094a",
+      "fetchedAt": "2026-11-14T07:35:34.354221Z"
+    },
+    {
+      "slug": "hegesippus-chronicler",
+      "ceCode": "07194a",
+      "url": "https://www.newadvent.org/cathen/07194a.htm",
+      "file": "07194a.txt",
+      "chars": 6621,
+      "sha256": "74451a70740f01c66b0bd5331f86ab7866ddc5b3f69ccb22140e321a7bbb52a4",
+      "fetchedAt": "2026-11-14T07:35:37.056436Z"
+    },
+    {
+      "slug": "hesychius-of-sinai",
+      "ceCode": "07304a",
+      "url": "https://www.newadvent.org/cathen/07304a.htm",
+      "file": "07304a.txt",
+      "chars": 2719,
+      "sha256": "fad3d69c53152b4fc86aae50fd1119e2c7ca671f7b0f4474b3f60dbc0a7c3371",
+      "fetchedAt": "2026-11-14T07:35:39.789978Z"
+    },
+    {
+      "slug": "hilary-of-arles",
+      "ceCode": "07349a",
+      "url": "https://www.newadvent.org/cathen/07349a.htm",
+      "file": "07349a.txt",
+      "chars": 3264,
+      "sha256": "23d651daa9b93be79eee7bda4f8a7b056d924eb4f3a1181f3d6877180170b9f9",
+      "fetchedAt": "2026-11-14T07:35:42.508212Z"
+    },
+    {
+      "slug": "hilary-of-poitiers",
+      "ceCode": "07349b",
+      "url": "https://www.newadvent.org/cathen/07349b.htm",
+      "file": "07349b.txt",
+      "chars": 6535,
+      "sha256": "32d5a6c1f14b9a2b5dc559dc624c4cc3ba31ec34b222adf5d6c5fe8b44d85dcd",
+      "fetchedAt": "2026-11-14T07:35:45.260738Z"
+    },
+    {
+      "slug": "honoratus",
+      "ceCode": "07451a",
+      "url": "https://www.newadvent.org/cathen/07451a.htm",
+      "file": "07451a.txt",
+      "chars": 2236,
+      "sha256": "3b14fba93382ea73ac2aa72ae54ebf5a6fd35361db134777a74c3bc05220834c",
+      "fetchedAt": "2026-11-14T07:35:47.984580Z"
+    },
+    {
+      "slug": "irenaeus",
+      "ceCode": "08130b",
+      "url": "https://www.newadvent.org/cathen/08130b.htm",
+      "file": "08130b.txt",
+      "chars": 5557,
+      "sha256": "b642f92f7cc23130932fb6f2e05d2f558505dc1f6028c59d23ad64266fc2c3d1",
+      "fetchedAt": "2026-11-14T07:35:50.709338Z"
+    },
+    {
+      "slug": "isaac-of-armenia",
+      "ceCode": "08175b",
+      "url": "https://www.newadvent.org/cathen/08175b.htm",
+      "file": "08175b.txt",
+      "chars": 3899,
+      "sha256": "ef69f5d65247ba4a21f333983712c2b23727121a775327bbcd73a1d54c5cae2f",
+      "fetchedAt": "2026-11-14T07:35:53.439594Z"
+    },
+    {
+      "slug": "isidore-of-pelusium",
+      "ceCode": "08185c",
+      "url": "https://www.newadvent.org/cathen/08185c.htm",
+      "file": "08185c.txt",
+      "chars": 7205,
+      "sha256": "4d3544e8ca1a10c034381353b5130b114dcfa827df608871902e727f2d3e3e59",
+      "fetchedAt": "2026-11-14T07:35:56.177534Z"
+    },
+    {
+      "slug": "john-cassian",
+      "ceCode": "03404a",
+      "url": "https://www.newadvent.org/cathen/03404a.htm",
+      "file": "03404a.txt",
+      "chars": 9024,
+      "sha256": "a947cee395673e6e2550ad4249adc996e285e05d9df31a88ce75db098173ec99",
+      "fetchedAt": "2026-11-14T07:35:59.087480Z"
+    },
+    {
+      "slug": "john-climacus",
+      "ceCode": "08457a",
+      "url": "https://www.newadvent.org/cathen/08457a.htm",
+      "file": "08457a.txt",
+      "chars": 3868,
+      "sha256": "b6e11d12b4ee371546469445e0ab48736c0f6fb9e28d17a1f56eaef439d19b8d",
+      "fetchedAt": "2026-11-14T07:36:01.811338Z"
+    },
+    {
+      "slug": "john-of-beverley",
+      "ceCode": "08469b",
+      "url": "https://www.newadvent.org/cathen/08469b.htm",
+      "file": "08469b.txt",
+      "chars": 2775,
+      "sha256": "2d8ef88fdbe1a7962044e5eec29a148b0790b2af6db69f779f658cb079901844",
+      "fetchedAt": "2026-11-14T07:36:04.533825Z"
+    },
+    {
+      "slug": "john-the-silent",
+      "ceCode": "08495a",
+      "url": "https://www.newadvent.org/cathen/08495a.htm",
+      "file": "08495a.txt",
+      "chars": 2127,
+      "sha256": "abc76d1c539b8c23600668f1d1ac14052d362d88eb7cc0358bd9ff119838962d",
+      "fetchedAt": "2026-11-14T07:36:07.289932Z"
+    },
+    {
+      "slug": "jonas-of-bobbio",
+      "ceCode": "08498a",
+      "url": "https://www.newadvent.org/cathen/08498a.htm",
+      "file": "08498a.txt",
+      "chars": 2830,
+      "sha256": "b557efa9d6af59186d995b1f2cf16b17a60051c2dae89b3101c48ceb0e747bea",
+      "fetchedAt": "2026-11-14T07:36:10.009665Z"
+    },
+    {
+      "slug": "pope-julius-i",
+      "ceCode": "08561a",
+      "url": "https://www.newadvent.org/cathen/08561a.htm",
+      "file": "08561a.txt",
+      "chars": 7081,
+      "sha256": "a61b625aaf900b8ed1669d6daf6cc95f6cd03d230764e9da74481bc40fba0281",
+      "fetchedAt": "2026-11-14T07:36:12.752754Z"
+    },
+    {
+      "slug": "laura",
+      "ceCode": "09039a",
+      "url": "https://www.newadvent.org/cathen/09039a.htm",
+      "file": "09039a.txt",
+      "chars": 2062,
+      "sha256": "3b6a3fc0c0e956c0acbaff52d4a874e243293a53bb1a6fdaa9936ee6cdfd0530",
+      "fetchedAt": "2026-11-14T07:36:15.461730Z"
+    },
+    {
+      "slug": "pope-leo-ii",
+      "ceCode": "09157a",
+      "url": "https://www.newadvent.org/cathen/09157a.htm",
+      "file": "09157a.txt",
+      "chars": 3776,
+      "sha256": "623fe890209c3c51ff1617b593707cebe6a50fe1aba9b8138b09af77e14769e6",
+      "fetchedAt": "2026-11-14T07:36:18.177685Z"
+    },
+    {
+      "slug": "pope-leo-iv",
+      "ceCode": "09159a",
+      "url": "https://www.newadvent.org/cathen/09159a.htm",
+      "file": "09159a.txt",
+      "chars": 5745,
+      "sha256": "454c403b25abd8370775852c67051c94ff0ba241975fc56c477bd37e77cefdbf",
+      "fetchedAt": "2026-11-14T07:36:20.888745Z"
+    },
+    {
+      "slug": "pope-leo-ix",
+      "ceCode": "09160c",
+      "url": "https://www.newadvent.org/cathen/09160c.htm",
+      "file": "09160c.txt",
+      "chars": 14145,
+      "sha256": "21088073db6d19f830901f7d310259decbcb6b1ea9c3ddaa94fbfe3accc52dc5",
+      "fetchedAt": "2026-11-14T07:36:23.633821Z"
+    },
+    {
+      "slug": "macrina-the-elder",
+      "ceCode": "09508b",
+      "url": "https://www.newadvent.org/cathen/09508b.htm",
+      "file": "09508b.txt",
+      "chars": 1431,
+      "sha256": "8f87c89798c53e9e8af95ceb01521b274073263acdac91f283da7d882b5051f8",
+      "fetchedAt": "2026-11-14T07:36:26.349120Z"
+    },
+    {
+      "slug": "magnus-felix-ennodius",
+      "ceCode": "05478a",
+      "url": "https://www.newadvent.org/cathen/05478a.htm",
+      "file": "05478a.txt",
+      "chars": 4409,
+      "sha256": "2c2a9042a231587fb885a3f47f5f3ee7ac07b485c25b644733d8b3455f59a4cb",
+      "fetchedAt": "2026-11-14T07:36:29.099815Z"
+    },
+    {
+      "slug": "manahen",
+      "ceCode": "09583b",
+      "url": "https://www.newadvent.org/cathen/09583b.htm",
+      "file": "09583b.txt",
+      "chars": 1446,
+      "sha256": "ce175d298fac2e554ed8be9e515e038ca32187796c76083487f17fa9f080b79f",
+      "fetchedAt": "2026-11-14T07:36:31.815100Z"
+    },
+    {
+      "slug": "marcellina",
+      "ceCode": "09637c",
+      "url": "https://www.newadvent.org/cathen/09637c.htm",
+      "file": "09637c.txt",
+      "chars": 1735,
+      "sha256": "98d5b5099b0fee1d8b93d3f9eab7857dd44fabb0146760a9754b0ec7bda9af6a",
+      "fetchedAt": "2026-11-14T07:36:34.630748Z"
+    },
+    {
+      "slug": "pope-marcellus-i",
+      "ceCode": "09640b",
+      "url": "https://www.newadvent.org/cathen/09640b.htm",
+      "file": "09640b.txt",
+      "chars": 6257,
+      "sha256": "af6702ddfb5edba039bd66522952f1cd775d861b7185a663fb7b122784a78761",
+      "fetchedAt": "2026-11-14T07:36:37.358995Z"
+    },
+    {
+      "slug": "martial",
+      "ceCode": "09721c",
+      "url": "https://www.newadvent.org/cathen/09721c.htm",
+      "file": "09721c.txt",
+      "chars": 3829,
+      "sha256": "d361204a7e9f5b50b1faa8dde22d4a6b225502d2f0bace7ad2548d31aa97ef41",
+      "fetchedAt": "2026-11-14T07:36:40.092620Z"
+    },
+    {
+      "slug": "maximus-of-turin",
+      "ceCode": "10081a",
+      "url": "https://www.newadvent.org/cathen/10081a.htm",
+      "file": "10081a.txt",
+      "chars": 4161,
+      "sha256": "48c2c00a1ad8a2674fcd6c7031cf23b3a1ae32868ade928e3cb774bb7769bb0d",
+      "fetchedAt": "2026-11-14T07:36:42.823754Z"
+    },
+    {
+      "slug": "meletius-of-antioch",
+      "ceCode": "10161b",
+      "url": "https://www.newadvent.org/cathen/10161b.htm",
+      "file": "10161b.txt",
+      "chars": 19027,
+      "sha256": "7314c4b7b3181f33e57cebd229666c12bf804622552cd62f3d6863a47d4df516",
+      "fetchedAt": "2026-11-14T07:36:45.695290Z"
+    },
+    {
+      "slug": "mellitus",
+      "ceCode": "10168b",
+      "url": "https://www.newadvent.org/cathen/10168b.htm",
+      "file": "10168b.txt",
+      "chars": 4004,
+      "sha256": "0a14a0de2cd3d1938082a46ee0aba143a146e6abbb44c7fbfaacb534023f1fe2",
+      "fetchedAt": "2026-11-14T07:36:48.458870Z"
+    },
+    {
+      "slug": "pope-nicholas-i",
+      "ceCode": "11054a",
+      "url": "https://www.newadvent.org/cathen/11054a.htm",
+      "file": "11054a.txt",
+      "chars": 8382,
+      "sha256": "2cc07e62156983af326b1abd0595501b8dbb2742bb5f6a1fb086421646f8b0d0",
+      "fetchedAt": "2026-11-14T07:36:51.184978Z"
+    },
+    {
+      "slug": "nilus-the-younger",
+      "ceCode": "11080a",
+      "url": "https://www.newadvent.org/cathen/11080a.htm",
+      "file": "11080a.txt",
+      "chars": 1131,
+      "sha256": "bc4c751b0ffdb76c636d6ddd8ea3590e5548b76d723febb92a3786a35cf62988",
+      "fetchedAt": "2026-11-14T07:36:53.912910Z"
+    },
+    {
+      "slug": "olaf-haraldsson",
+      "ceCode": "11234a",
+      "url": "https://www.newadvent.org/cathen/11234a.htm",
+      "file": "11234a.txt",
+      "chars": 3174,
+      "sha256": "df9a7bf4fdf40dda3b127c2601eece4e51bb9f4c1a5dc5fd78db7637a29dbe8a",
+      "fetchedAt": "2026-11-14T07:36:56.651335Z"
+    },
+    {
+      "slug": "optatus",
+      "ceCode": "11262b",
+      "url": "https://www.newadvent.org/cathen/11262b.htm",
+      "file": "11262b.txt",
+      "chars": 7687,
+      "sha256": "af4e7ff44333d7dcb51db72086ac47697d8ed882a5d2d5eda5949c1cbd8503cc",
+      "fetchedAt": "2026-11-14T07:36:59.362520Z"
+    },
+    {
+      "slug": "osmund",
+      "ceCode": "11340a",
+      "url": "https://www.newadvent.org/cathen/11340a.htm",
+      "file": "11340a.txt",
+      "chars": 7196,
+      "sha256": "a72cb66e24db7deea452d1ff928d135d713c78786013d19ed4bef648de0945aa",
+      "fetchedAt": "2026-11-14T07:37:02.182655Z"
+    },
+    {
+      "slug": "pammachius",
+      "ceCode": "11436a",
+      "url": "https://www.newadvent.org/cathen/11436a.htm",
+      "file": "11436a.txt",
+      "chars": 2045,
+      "sha256": "e5aa88753e8dbac97f675c968fe9962134f273af1234df8a67035bb375bf1812",
+      "fetchedAt": "2026-11-14T07:37:04.904882Z"
+    },
+    {
+      "slug": "pantaenus",
+      "ceCode": "11446b",
+      "url": "https://www.newadvent.org/cathen/11446b.htm",
+      "file": "11446b.txt",
+      "chars": 4444,
+      "sha256": "e442678553e97d25d9555f98cead1d4d211c3e743b65d52e16a181c81def56d2",
+      "fetchedAt": "2026-11-14T07:37:07.619539Z"
+    },
+    {
+      "slug": "pope-paschal-i",
+      "ceCode": "11514a",
+      "url": "https://www.newadvent.org/cathen/11514a.htm",
+      "file": "11514a.txt",
+      "chars": 4572,
+      "sha256": "6059533f21fb748749dba5fa1e4c43feb756adec75715c674dc840408f93a830",
+      "fetchedAt": "2026-11-14T07:37:10.341837Z"
+    },
+    {
+      "slug": "perpetuus",
+      "ceCode": "11700a",
+      "url": "https://www.newadvent.org/cathen/11700a.htm",
+      "file": "11700a.txt",
+      "chars": 1883,
+      "sha256": "864c9d25730acea90ae0ee089a3121bf87dbf2bd792b6a45c39b3e361080da9e",
+      "fetchedAt": "2026-11-14T07:37:13.057579Z"
+    },
+    {
+      "slug": "peter-chrysologus",
+      "ceCode": "11762c",
+      "url": "https://www.newadvent.org/cathen/11762c.htm",
+      "file": "11762c.txt",
+      "chars": 2026,
+      "sha256": "87e6a740e233d11146171f13ec4561337e56a9d2342c1e1bff826051411f3584",
+      "fetchedAt": "2026-11-14T07:37:15.780920Z"
+    },
+    {
+      "slug": "philastrius",
+      "ceCode": "11797a",
+      "url": "https://www.newadvent.org/cathen/11797a.htm",
+      "file": "11797a.txt",
+      "chars": 2783,
+      "sha256": "b71247ba662720091a051b7a99f5d973392e5e05d6ed3abbc6fe778833c35e02",
+      "fetchedAt": "2026-11-14T07:37:18.561895Z"
+    },
+    {
+      "slug": "plegmund",
+      "ceCode": "12164a",
+      "url": "https://www.newadvent.org/cathen/12164a.htm",
+      "file": "12164a.txt",
+      "chars": 942,
+      "sha256": "677abc48d0a16a5f59ec049d77a8738ecb689020594f84c48d25a998548a989d",
+      "fetchedAt": "2026-11-14T07:37:21.281161Z"
+    },
+    {
+      "slug": "porphyrius",
+      "ceCode": "12282c",
+      "url": "https://www.newadvent.org/cathen/12282c.htm",
+      "file": "12282c.txt",
+      "chars": 1613,
+      "sha256": "4b7a5091d6c48407512a518f5817c253f7aa97887cf2583179de4f19d4f4f42f",
+      "fetchedAt": "2026-11-14T07:37:23.990215Z"
+    },
+    {
+      "slug": "possidius",
+      "ceCode": "12318a",
+      "url": "https://www.newadvent.org/cathen/12318a.htm",
+      "file": "12318a.txt",
+      "chars": 2759,
+      "sha256": "62b0fb1cdaf77193ba4d76e52cd2f862016ffd830d3509210bab1795edebb3b6",
+      "fetchedAt": "2026-11-14T07:37:26.710647Z"
+    },
+    {
+      "slug": "pulcheria",
+      "ceCode": "12561c",
+      "url": "https://www.newadvent.org/cathen/12561c.htm",
+      "file": "12561c.txt",
+      "chars": 6117,
+      "sha256": "7877da69a50d16de0af6f88af83d8ba52d39a1ca1003b23c0a55d355652a50f7",
+      "fetchedAt": "2026-11-14T07:37:29.429364Z"
+    },
+    {
+      "slug": "rimbert",
+      "ceCode": "13057a",
+      "url": "https://www.newadvent.org/cathen/13057a.htm",
+      "file": "13057a.txt",
+      "chars": 1372,
+      "sha256": "8113e8aa48a54c7fea1b4b6f86f0d3a5ae4eaeef5f909a19f4d1c4bbe115e607",
+      "fetchedAt": "2026-11-14T07:37:32.179868Z"
+    },
+    {
+      "slug": "sabina",
+      "ceCode": "13290a",
+      "url": "https://www.newadvent.org/cathen/13290a.htm",
+      "file": "13290a.txt",
+      "chars": 585,
+      "sha256": "8db8fcb63127294ab0a3817e7b784c60b70d7204071cc055c30216e9748f9bb1",
+      "fetchedAt": "2026-11-14T07:37:34.913119Z"
+    },
+    {
+      "slug": "simeon-gospel-of-luke",
+      "ceCode": "13794b",
+      "url": "https://www.newadvent.org/cathen/13794b.htm",
+      "file": "13794b.txt",
+      "chars": 2571,
+      "sha256": "3c0ed9c9e6431a0418335e8251b17bf854d2ab7ca775adb10e785adba196d022",
+      "fetchedAt": "2026-11-14T07:37:37.632371Z"
+    },
+    {
+      "slug": "pope-stephen-i",
+      "ceCode": "14288a",
+      "url": "https://www.newadvent.org/cathen/14288a.htm",
+      "file": "14288a.txt",
+      "chars": 4031,
+      "sha256": "cf1ecb544f93a9a24ec36f0ff7d398c587c76a54a32aed761d157e549d025d81",
+      "fetchedAt": "2026-11-14T07:37:40.346658Z"
+    },
+    {
+      "slug": "theodorus-and-theophanes",
+      "ceCode": "14577a",
+      "url": "https://www.newadvent.org/cathen/14577a.htm",
+      "file": "14577a.txt",
+      "chars": 2178,
+      "sha256": "f05cc3536c36ceb3e341ba282112f697b24dc601f4cae439f9f2512b5320bcde",
+      "fetchedAt": "2026-11-14T07:37:43.068852Z"
+    },
+    {
+      "slug": "trudpert",
+      "ceCode": "15069c",
+      "url": "https://www.newadvent.org/cathen/15069c.htm",
+      "file": "15069c.txt",
+      "chars": 1536,
+      "sha256": "e017fcfbbaeda0d14a4f49164a053d139d5803b8e9d4b7d47bcc2d2614386d29",
+      "fetchedAt": "2026-11-14T07:37:45.800881Z"
+    },
+    {
+      "slug": "ultan-of-ardbraccan",
+      "ceCode": "15124d",
+      "url": "https://www.newadvent.org/cathen/15124d.htm",
+      "file": "15124d.txt",
+      "chars": 1273,
+      "sha256": "6f20b00cdce0715089b50a30555aa6ed34e705465ff9406c5a9272022e054a8b",
+      "fetchedAt": "2026-11-14T07:37:48.516146Z"
+    },
+    {
+      "slug": "wilfrid",
+      "ceCode": "15621c",
+      "url": "https://www.newadvent.org/cathen/15621c.htm",
+      "file": "15621c.txt",
+      "chars": 7547,
+      "sha256": "0e839571cf6aedba9b9d6f7d26c7109d7ffb85274439ec8f3ad99ab913303c80",
+      "fetchedAt": "2026-11-14T07:37:51.332534Z"
+    },
+    {
+      "slug": "willehad",
+      "ceCode": "15628a",
+      "url": "https://www.newadvent.org/cathen/15628a.htm",
+      "file": "15628a.txt",
+      "chars": 2549,
+      "sha256": "4e80a76cd3e9a3c0b2fed02ba91d5e1b90b6ac1119db6a4f7164b19de2837625",
+      "fetchedAt": "2026-11-14T07:37:54.100010Z"
+    },
+    {
+      "slug": "william-of-gellone",
+      "ceCode": "15633a",
+      "url": "https://www.newadvent.org/cathen/15633a.htm",
+      "file": "15633a.txt",
+      "chars": 1390,
+      "sha256": "4726826d408957ed82ab7b5eb52b09f35b6bc531963cb5f206901ee0993256e9",
+      "fetchedAt": "2026-11-14T07:37:56.794297Z"
+    },
+    {
+      "slug": "winnoc",
+      "ceCode": "15658a",
+      "url": "https://www.newadvent.org/cathen/15658a.htm",
+      "file": "15658a.txt",
+      "chars": 1660,
+      "sha256": "a90502dc413a944e09dfbb301029b3c7840b1981a53dcd1ca69ba910c8f9cced",
+      "fetchedAt": "2026-11-14T07:37:59.519450Z"
+    },
+    {
+      "slug": "pope-zachary",
+      "ceCode": "15743b",
+      "url": "https://www.newadvent.org/cathen/15743b.htm",
+      "file": "15743b.txt",
+      "chars": 9663,
+      "sha256": "b7395a16e73b1db0d0b964510647b5f64d28a121faf61344014f2c4027b6b3bd",
+      "fetchedAt": "2026-11-14T07:38:02.247944Z"
+    },
+    {
+      "slug": "pope-zephyrinus",
+      "ceCode": "15756c",
+      "url": "https://www.newadvent.org/cathen/15756c.htm",
+      "file": "15756c.txt",
+      "chars": 6399,
+      "sha256": "2317ad16a01ebdc2b10930ceb44568a1ba26ff893326997e7b3b9adb1a44651b",
+      "fetchedAt": "2026-11-14T07:38:04.974332Z"
+    },
+    {
+      "slug": "chrysanthus-and-daria",
+      "ceCode": "03742a",
+      "url": "https://www.newadvent.org/cathen/03742a.htm",
+      "file": "03742a.txt",
+      "chars": 4349,
+      "sha256": "e8b48c3ebc190cc7c4b50075d864977154702811a074714e5e7e29b37dab7dfc",
+      "fetchedAt": "2026-11-14T07:38:07.701297Z"
+    },
+    {
+      "slug": "pope-hormisdas",
+      "ceCode": "07470a",
+      "url": "https://www.newadvent.org/cathen/07470a.htm",
+      "file": "07470a.txt",
+      "chars": 12090,
+      "sha256": "e86695eac50ac74814ec52fb8ede41aa8b41436557699464e39093a1528a063d",
+      "fetchedAt": "2026-11-14T07:38:10.486943Z"
+    },
+    {
+      "slug": "pope-pontian",
+      "ceCode": "12229b",
+      "url": "https://www.newadvent.org/cathen/12229b.htm",
+      "file": "12229b.txt",
+      "chars": 2706,
+      "sha256": "f211f8040b4d0b03f4565be592c2b59743c16cc046d898cc35ad493e70e862d8",
+      "fetchedAt": "2026-11-14T07:38:13.188286Z"
+    },
+    {
+      "slug": "pope-siricius",
+      "ceCode": "14026a",
+      "url": "https://www.newadvent.org/cathen/14026a.htm",
+      "file": "14026a.txt",
+      "chars": 8403,
+      "sha256": "efcdc2408d15467426136dcf4fd2bd307f52b05fb16850fdb5dd9e20146ba5b2",
+      "fetchedAt": "2026-11-14T07:38:15.901941Z"
+    },
+    {
+      "slug": "abdias-of-babylon",
+      "ceCode": "01030c",
+      "url": "https://www.newadvent.org/cathen/01030c.htm",
+      "file": "01030c.txt",
+      "chars": 1854,
+      "sha256": "aff5a85dedf0d74074b3e5226732c58d6736da9bbf23cec61e9b256971a1e575",
+      "fetchedAt": "2026-11-14T07:38:18.629323Z"
+    },
+    {
+      "slug": "pope-adeodatus-i",
+      "ceCode": "04760a",
+      "url": "https://www.newadvent.org/cathen/04760a.htm",
+      "file": "04760a.txt",
+      "chars": 837,
+      "sha256": "8890395020b4971079bc3fe5a0e3147ec50ef3b18aab9d4319e54ab4f4b2daec",
+      "fetchedAt": "2026-11-14T07:38:21.351157Z"
+    },
+    {
+      "slug": "pope-agapetus-i",
+      "ceCode": "01202c",
+      "url": "https://www.newadvent.org/cathen/01202c.htm",
+      "file": "01202c.txt",
+      "chars": 4155,
+      "sha256": "b9c8707ae83cd5402358782aecc64134d5475222c7c4afcda399578290c28244",
+      "fetchedAt": "2026-11-14T07:38:24.107605Z"
+    },
+    {
+      "slug": "pope-agatho",
+      "ceCode": "01204c",
+      "url": "https://www.newadvent.org/cathen/01204c.htm",
+      "file": "01204c.txt",
+      "chars": 1497,
+      "sha256": "38d4f6e64230df62303ea4b5978cfab332be1f38787583b729383a3a995c432d",
+      "fetchedAt": "2026-11-14T07:38:26.831721Z"
+    },
+    {
+      "slug": "alphonsus-liguori",
+      "ceCode": "01334a",
+      "url": "https://www.newadvent.org/cathen/01334a.htm",
+      "file": "01334a.txt",
+      "chars": 49933,
+      "sha256": "68c0f1c28acffa4058a5e9f9ac5ec7fed8d11b001c7f0a7161bc3d2239d48a6a",
+      "fetchedAt": "2026-11-14T07:38:29.718242Z"
+    },
+    {
+      "slug": "pope-anacletus",
+      "ceCode": "01446a",
+      "url": "https://www.newadvent.org/cathen/01446a.htm",
+      "file": "01446a.txt",
+      "chars": 1901,
+      "sha256": "ef2deb9c03f76d4c927811025c89f821546e9f414b53b17d4d361a9b81325c30",
+      "fetchedAt": "2026-11-14T07:38:32.445578Z"
+    },
+    {
+      "slug": "pope-anastasius-i",
+      "ceCode": "01454c",
+      "url": "https://www.newadvent.org/cathen/01454c.htm",
+      "file": "01454c.txt",
+      "chars": 423,
+      "sha256": "11fe5f0533cff08fa8aa67e805ba6404c36022d023e31828126add4675882735",
+      "fetchedAt": "2026-11-14T07:38:35.178964Z"
+    },
+    {
+      "slug": "pope-anicetus",
+      "ceCode": "01514a",
+      "url": "https://www.newadvent.org/cathen/01514a.htm",
+      "file": "01514a.txt",
+      "chars": 1648,
+      "sha256": "05ddb0b8e03d046a0e5bfad4c71b544a716ffacbdb63dbaec0216c76d6ecdf9e",
+      "fetchedAt": "2026-11-14T07:38:37.895856Z"
+    },
+    {
+      "slug": "pope-anterus",
+      "ceCode": "01553a",
+      "url": "https://www.newadvent.org/cathen/01553a.htm",
+      "file": "01553a.txt",
+      "chars": 1388,
+      "sha256": "9ccc31bb830ff98865f63cf01ae13a7157969792fcda3945db5304687f56ac36",
+      "fetchedAt": "2026-11-14T07:38:40.685876Z"
+    },
+    {
+      "slug": "apollinaris-claudius",
+      "ceCode": "01617b",
+      "url": "https://www.newadvent.org/cathen/01617b.htm",
+      "file": "01617b.txt",
+      "chars": 827,
+      "sha256": "894349c68fd3e43ec7c70a6f465c0ca607bf7b547e2e1a39239b3236d569b76f",
+      "fetchedAt": "2026-11-14T07:38:43.407593Z"
+    },
+    {
+      "slug": "augustine-of-canterbury",
+      "ceCode": "02081a",
+      "url": "https://www.newadvent.org/cathen/02081a.htm",
+      "file": "02081a.txt",
+      "chars": 22540,
+      "sha256": "cd1513ecfa0396b6045d7969dc99a4599dd8cb118f8aba5aef7213bdc4c8b975",
+      "fetchedAt": "2026-11-14T07:38:46.279450Z"
+    },
+    {
+      "slug": "ava",
+      "ceCode": "02147b",
+      "url": "https://www.newadvent.org/cathen/02147b.htm",
+      "file": "02147b.txt",
+      "chars": 1295,
+      "sha256": "2e187ab534750d039fe771c2d208712ccd094b3ab023a6a511d4a2944eeda719",
+      "fetchedAt": "2026-11-14T07:38:48.996681Z"
+    },
+    {
+      "slug": "benedict-biscop",
+      "ceCode": "02441b",
+      "url": "https://www.newadvent.org/cathen/02441b.htm",
+      "file": "02441b.txt",
+      "chars": 1554,
+      "sha256": "fcf953ee0efaa41b53d083011864c931d6db027d7423c3d38dd0277fa6ed0b77",
+      "fetchedAt": "2026-11-14T07:38:51.745506Z"
+    },
+    {
+      "slug": "pope-benedict-ii",
+      "ceCode": "02427d",
+      "url": "https://www.newadvent.org/cathen/02427d.htm",
+      "file": "02427d.txt",
+      "chars": 2192,
+      "sha256": "90a1b2594f7901d729d38c33746b32259233505f248ec900e49bd86d0ce46d45",
+      "fetchedAt": "2026-11-14T07:38:54.466013Z"
+    },
+    {
+      "slug": "berach",
+      "ceCode": "02485a",
+      "url": "https://www.newadvent.org/cathen/02485a.htm",
+      "file": "02485a.txt",
+      "chars": 2144,
+      "sha256": "c06f335cd3961f5d435537501b74060a22e021f480960ab2929fc8a97bdca949",
+      "fetchedAt": "2026-11-14T07:38:57.184614Z"
+    },
+    {
+      "slug": "bernard-of-clairvaux",
+      "ceCode": "02498d",
+      "url": "https://www.newadvent.org/cathen/02498d.htm",
+      "file": "02498d.txt",
+      "chars": 20928,
+      "sha256": "17c0eae1d00675033842f5944b027c1dda8398360b8f09a59bf8fad253a874ac",
+      "fetchedAt": "2026-11-14T07:39:00.056289Z"
+    },
+    {
+      "slug": "beuno",
+      "ceCode": "02540a",
+      "url": "https://www.newadvent.org/cathen/02540a.htm",
+      "file": "02540a.txt",
+      "chars": 1273,
+      "sha256": "9a770fd2b0a0c19f9fdd38bec797f4ea268623f31a5a299b4b0c548bfc18cb48",
+      "fetchedAt": "2026-11-14T07:39:02.793440Z"
+    },
+    {
+      "slug": "boisil",
+      "ceCode": "02625a",
+      "url": "https://www.newadvent.org/cathen/02625a.htm",
+      "file": "02625a.txt",
+      "chars": 1695,
+      "sha256": "856d46bd06ad2fc74d75261dfd4e11ab6da6e299bd1054417499d81a5690d16c",
+      "fetchedAt": "2026-11-14T07:39:05.506205Z"
+    },
+    {
+      "slug": "pope-boniface-i",
+      "ceCode": "02658a",
+      "url": "https://www.newadvent.org/cathen/02658a.htm",
+      "file": "02658a.txt",
+      "chars": 8583,
+      "sha256": "81d6558e65a2b637e3d7defb07a363ea53e9db91f306685727e9f8316f67dda8",
+      "fetchedAt": "2026-11-14T07:39:08.238358Z"
+    },
+    {
+      "slug": "pope-boniface-iv",
+      "ceCode": "02660c",
+      "url": "https://www.newadvent.org/cathen/02660c.htm",
+      "file": "02660c.txt",
+      "chars": 3789,
+      "sha256": "298be2790cf0a89a7ec68a5cf2b5557e7542a651e2e2e791f9b448b9e8824404",
+      "fetchedAt": "2026-11-14T07:39:10.961337Z"
+    },
+    {
+      "slug": "bridget-of-sweden",
+      "ceCode": "02782a",
+      "url": "https://www.newadvent.org/cathen/02782a.htm",
+      "file": "02782a.txt",
+      "chars": 3364,
+      "sha256": "cfd56087fe8776db64544b917e8db8fc982501a5b3e92fd751f0e8aebb8c4c54",
+      "fetchedAt": "2026-11-14T07:39:13.692430Z"
+    },
+    {
+      "slug": "bruno-of-querfurt",
+      "ceCode": "03018a",
+      "url": "https://www.newadvent.org/cathen/03018a.htm",
+      "file": "03018a.txt",
+      "chars": 5245,
+      "sha256": "e4532b98f9e67b00b0402e3f8713534dddbb335a4e9436556688e60db99786d6",
+      "fetchedAt": "2026-11-14T07:39:16.417463Z"
+    },
+    {
+      "slug": "caesarius-of-nazianzus",
+      "ceCode": "03138a",
+      "url": "https://www.newadvent.org/cathen/03138a.htm",
+      "file": "03138a.txt",
+      "chars": 2658,
+      "sha256": "af73c3e7a0a8227a05f56c966407a877d0fd58094c279eb8a7e2ce7993ec2e2e",
+      "fetchedAt": "2026-11-14T07:39:19.136923Z"
+    },
+    {
+      "slug": "cedd",
+      "ceCode": "03475a",
+      "url": "https://www.newadvent.org/cathen/03475a.htm",
+      "file": "03475a.txt",
+      "chars": 1392,
+      "sha256": "9a921975bd461e1f095bf20ed13c939be861972a237eb9813b274fc5554542c5",
+      "fetchedAt": "2026-11-14T07:39:21.855439Z"
+    },
+    {
+      "slug": "chrysogonus",
+      "ceCode": "03742b",
+      "url": "https://www.newadvent.org/cathen/03742b.htm",
+      "file": "03742b.txt",
+      "chars": 2460,
+      "sha256": "c1ce44152a11db89b2b04f3cb9c5ef2d2d4e3af5097206b7c3bb54c14f64e71f",
+      "fetchedAt": "2026-11-14T07:39:24.615439Z"
+    },
+    {
+      "slug": "colman-martyr",
+      "ceCode": "04115g",
+      "url": "https://www.newadvent.org/cathen/04115g.htm",
+      "file": "04115g.txt",
+      "chars": 567,
+      "sha256": "6e806292b872f981127b97f0a23b9cfb23ff17f3be36a604123555e7b5a72c3d",
+      "fetchedAt": "2026-11-14T07:39:27.341487Z"
+    },
+    {
+      "slug": "columba-of-terryglass",
+      "ceCode": "04135a",
+      "url": "https://www.newadvent.org/cathen/04135a.htm",
+      "file": "04135a.txt",
+      "chars": 625,
+      "sha256": "cc12130663c777cd45b4eadf1b652bbf378da2e0c0e500ac02abc11b8619be62",
+      "fetchedAt": "2026-11-14T07:39:30.096968Z"
+    },
+    {
+      "slug": "conan",
+      "ceCode": "04189c",
+      "url": "https://www.newadvent.org/cathen/04189c.htm",
+      "file": "04189c.txt",
+      "chars": 973,
+      "sha256": "e76a63550b34d8f48bc6c1d363006beae7e03c5bd299753b6c7d38d769204122",
+      "fetchedAt": "2026-11-14T07:39:32.807748Z"
+    },
+    {
+      "slug": "crescens",
+      "ceCode": "04484b",
+      "url": "https://www.newadvent.org/cathen/04484b.htm",
+      "file": "04484b.txt",
+      "chars": 2475,
+      "sha256": "6d8fe8b7110e6b797ea9bda4e71090fb77fc6b7560a85e04667a0438c5b59a00",
+      "fetchedAt": "2026-11-14T07:39:35.529345Z"
+    },
+    {
+      "slug": "cyprian-and-justina",
+      "ceCode": "04583a",
+      "url": "https://www.newadvent.org/cathen/04583a.htm",
+      "file": "04583a.txt",
+      "chars": 2446,
+      "sha256": "35634a06a67abdb7722ccb17b3916e30fb23de24567a6df24c1175ee86942eda",
+      "fetchedAt": "2026-11-14T07:39:38.253761Z"
+    },
+    {
+      "slug": "cyril-of-alexandria",
+      "ceCode": "04592b",
+      "url": "https://www.newadvent.org/cathen/04592b.htm",
+      "file": "04592b.txt",
+      "chars": 19608,
+      "sha256": "81befae61bf94dd63647f524ad659d3c228b2963543eb4a40dfde13a89a9ab06",
+      "fetchedAt": "2026-11-14T07:39:41.121788Z"
+    },
+    {
+      "slug": "drostan",
+      "ceCode": "05161a",
+      "url": "https://www.newadvent.org/cathen/05161a.htm",
+      "file": "05161a.txt",
+      "chars": 1521,
+      "sha256": "1fa87844e5c05a24bbf922ba9f8a6e247272d4848ee488d887ae5f636aacc7d7",
+      "fetchedAt": "2026-11-14T07:39:43.829826Z"
+    },
+    {
+      "slug": "d-chu",
+      "ceCode": "04778b",
+      "url": "https://www.newadvent.org/cathen/04778b.htm",
+      "file": "04778b.txt",
+      "chars": 1678,
+      "sha256": "9679a216f729e91b5ea925ec9285664d25053e80c33588d0080a650967c6204a",
+      "fetchedAt": "2026-11-14T07:39:46.551679Z"
+    },
+    {
+      "slug": "earconwald",
+      "ceCode": "05517a",
+      "url": "https://www.newadvent.org/cathen/05517a.htm",
+      "file": "05517a.txt",
+      "chars": 2123,
+      "sha256": "abdd948acd46d557a0855fa4eee80db3b0ffc7d35646f6762f902d242826b93f",
+      "fetchedAt": "2026-11-14T07:39:49.279654Z"
+    },
+    {
+      "slug": "edmund-campion",
+      "ceCode": "05293c",
+      "url": "https://www.newadvent.org/cathen/05293c.htm",
+      "file": "05293c.txt",
+      "chars": 8977,
+      "sha256": "308f8d2a6915e546a530f584cd81f05c013c09ba2a4c7d07dea0479bed728dee",
+      "fetchedAt": "2026-11-14T07:39:52.024111Z"
+    },
+    {
+      "slug": "ephraim-of-antioch",
+      "ceCode": "05500a",
+      "url": "https://www.newadvent.org/cathen/05500a.htm",
+      "file": "05500a.txt",
+      "chars": 1739,
+      "sha256": "f9b6b0eef769608a30f69f34b4275e01d1d266c2cb4158316ec01bfc3e351777",
+      "fetchedAt": "2026-11-14T07:39:54.824844Z"
+    },
+    {
+      "slug": "eugendus",
+      "ceCode": "05597c",
+      "url": "https://www.newadvent.org/cathen/05597c.htm",
+      "file": "05597c.txt",
+      "chars": 2664,
+      "sha256": "1f21bfc4c0e7d15562d225ec1bd72e334ca516b6e40e140093f3cc32db6d17f2",
+      "fetchedAt": "2026-11-14T07:39:57.594042Z"
+    },
+    {
+      "slug": "evodius",
+      "ceCode": "05653a",
+      "url": "https://www.newadvent.org/cathen/05653a.htm",
+      "file": "05653a.txt",
+      "chars": 3879,
+      "sha256": "9b0d5f6d2d05be1044c9c6c0a704450c3f9c56ce84d3eed11522f656a4418ef6",
+      "fetchedAt": "2026-11-14T07:40:00.355654Z"
+    },
+    {
+      "slug": "exuperius",
+      "ceCode": "05731a",
+      "url": "https://www.newadvent.org/cathen/05731a.htm",
+      "file": "05731a.txt",
+      "chars": 2865,
+      "sha256": "24b883a26dcdc9e0e887bf518f7252a2f51de54bab9f961fdd13016287aa41b6",
+      "fetchedAt": "2026-11-14T07:40:03.083481Z"
+    },
+    {
+      "slug": "faustus-of-riez",
+      "ceCode": "06019b",
+      "url": "https://www.newadvent.org/cathen/06019b.htm",
+      "file": "06019b.txt",
+      "chars": 3621,
+      "sha256": "821fa63c893d9397517ba4efaa60dff157057a092cf4f621fad3ac380b4cca7b",
+      "fetchedAt": "2026-11-14T07:40:05.883518Z"
+    },
+    {
+      "slug": "fergus",
+      "ceCode": "06042c",
+      "url": "https://www.newadvent.org/cathen/06042c.htm",
+      "file": "06042c.txt",
+      "chars": 2031,
+      "sha256": "37a873c483707852d2302c3a11617cdbbc193f4e91a4765e104abe7845cde66a",
+      "fetchedAt": "2026-11-14T07:40:08.649231Z"
+    },
+    {
+      "slug": "fiacc",
+      "ceCode": "06066b",
+      "url": "https://www.newadvent.org/cathen/06066b.htm",
+      "file": "06066b.txt",
+      "chars": 2724,
+      "sha256": "fa66c1a3dfcc0a85962d1543591a78fef710ed6fe0c41df14d0e50be7145c472",
+      "fetchedAt": "2026-11-14T07:40:11.515546Z"
+    },
+    {
+      "slug": "finnian-of-movilla",
+      "ceCode": "06077a",
+      "url": "https://www.newadvent.org/cathen/06077a.htm",
+      "file": "06077a.txt",
+      "chars": 1414,
+      "sha256": "82be545dafac1b39c62363dec24636d0348a2e380c2aca3c0db445f418dd6d74",
+      "fetchedAt": "2026-11-14T07:40:14.236498Z"
+    },
+    {
+      "slug": "firmilian",
+      "ceCode": "06080b",
+      "url": "https://www.newadvent.org/cathen/06080b.htm",
+      "file": "06080b.txt",
+      "chars": 9198,
+      "sha256": "9ec424eda1417d644a73bffa534c7829a6b57f558b06d09b593f45c232a775e5",
+      "fetchedAt": "2026-11-14T07:40:16.972450Z"
+    },
+    {
+      "slug": "flavia-domitilla-wife-of-clemens",
+      "ceCode": "06098b",
+      "url": "https://www.newadvent.org/cathen/06098b.htm",
+      "file": "06098b.txt",
+      "chars": 3268,
+      "sha256": "1a197a3d093b8ff02c86d3f43be5eb4d1032c15351ca25a33f28824ca0406182",
+      "fetchedAt": "2026-11-14T07:40:19.709569Z"
+    },
+    {
+      "slug": "francis-xavier",
+      "ceCode": "06233b",
+      "url": "https://www.newadvent.org/cathen/06233b.htm",
+      "file": "06233b.txt",
+      "chars": 8789,
+      "sha256": "24e352cd8fa19a52651216e9c59d88bc76e31c5fe0ee61712861d891820a1c69",
+      "fetchedAt": "2026-11-14T07:40:22.443601Z"
+    },
+    {
+      "slug": "gabriel-the-archangel",
+      "ceCode": "06330a",
+      "url": "https://www.newadvent.org/cathen/06330a.htm",
+      "file": "06330a.txt",
+      "chars": 3399,
+      "sha256": "92cf33fa1f87bd3d1272c9087e5d7b854e01d0bf0c2aefbf78f43730cd19dbe1",
+      "fetchedAt": "2026-11-14T07:40:25.239116Z"
+    },
+    {
+      "slug": "gertrude-the-great",
+      "ceCode": "06534a",
+      "url": "https://www.newadvent.org/cathen/06534a.htm",
+      "file": "06534a.txt",
+      "chars": 8603,
+      "sha256": "8a5d16d89a75f115c07e02fd56c15d43f0bd71ca7de27ed1d9496f51a13bbf53",
+      "fetchedAt": "2026-11-14T07:40:27.979874Z"
+    },
+    {
+      "slug": "ghislain",
+      "ceCode": "06547a",
+      "url": "https://www.newadvent.org/cathen/06547a.htm",
+      "file": "06547a.txt",
+      "chars": 2831,
+      "sha256": "49a6e68811caf803c677621c49a9334152d9869280d31a8f296acafd5ce7b924",
+      "fetchedAt": "2026-11-14T07:40:30.708602Z"
+    },
+    {
+      "slug": "pope-gregory-vii",
+      "ceCode": "06791c",
+      "url": "https://www.newadvent.org/cathen/06791c.htm",
+      "file": "06791c.txt",
+      "chars": 29216,
+      "sha256": "0b00d9f0fa457cb5ad71d0c5b4aafda6e6fc9985f3067d9b48c81802a362644b",
+      "fetchedAt": "2026-11-14T07:40:33.590131Z"
+    },
+    {
+      "slug": "gregory-the-illuminator",
+      "ceCode": "07023a",
+      "url": "https://www.newadvent.org/cathen/07023a.htm",
+      "file": "07023a.txt",
+      "chars": 10856,
+      "sha256": "d299ce76369a66cbdbd2be27753f22188b51cff50eee7ae6f9b9849926c00c4c",
+      "fetchedAt": "2026-11-14T07:40:36.326702Z"
+    },
+    {
+      "slug": "helena",
+      "ceCode": "07202b",
+      "url": "https://www.newadvent.org/cathen/07202b.htm",
+      "file": "07202b.txt",
+      "chars": 5834,
+      "sha256": "8f6ed0bea097c9cc55cdc1259d002a97b445e6e8ec5aeb94a2ba46b68d842a4b",
+      "fetchedAt": "2026-11-14T07:40:39.045003Z"
+    },
+    {
+      "slug": "herbert-of-derwentwater",
+      "ceCode": "07250b",
+      "url": "https://www.newadvent.org/cathen/07250b.htm",
+      "file": "07250b.txt",
+      "chars": 1989,
+      "sha256": "aa949094f0557acf4ca2105154731d81086b0b65d2bd0130d2cda9730b456955",
+      "fetchedAt": "2026-11-14T07:40:41.761431Z"
+    },
+    {
+      "slug": "hereswith",
+      "ceCode": "07256a",
+      "url": "https://www.newadvent.org/cathen/07256a.htm",
+      "file": "07256a.txt",
+      "chars": 1218,
+      "sha256": "33a4f04c3af113b94f3f7723e97793c8ce95fdd3360335b67d7234b0d7e58db3",
+      "fetchedAt": "2026-11-14T07:40:44.475779Z"
+    },
+    {
+      "slug": "hermenegild",
+      "ceCode": "07276a",
+      "url": "https://www.newadvent.org/cathen/07276a.htm",
+      "file": "07276a.txt",
+      "chars": 2575,
+      "sha256": "95504c18c4b17747e58c66403d1ee8a337884183a2f583bc92d0f763dbfeed15",
+      "fetchedAt": "2026-11-14T07:40:47.196608Z"
+    },
+    {
+      "slug": "hilarion",
+      "ceCode": "07347a",
+      "url": "https://www.newadvent.org/cathen/07347a.htm",
+      "file": "07347a.txt",
+      "chars": 4556,
+      "sha256": "1253aa6bba8bc691de886925aeb83e04d1de20e4bc5c07db33aa6341c9aae8c6",
+      "fetchedAt": "2026-11-14T07:40:49.917871Z"
+    },
+    {
+      "slug": "pope-hilarius",
+      "ceCode": "07348b",
+      "url": "https://www.newadvent.org/cathen/07348b.htm",
+      "file": "07348b.txt",
+      "chars": 7358,
+      "sha256": "90ce5657176c56372f819b96484430c4f6ef7b838c64cddd80f1890e56ae7d9c",
+      "fetchedAt": "2026-11-14T07:40:52.646854Z"
+    },
+    {
+      "slug": "hugh-of-lincoln",
+      "ceCode": "07519c",
+      "url": "https://www.newadvent.org/cathen/07519c.htm",
+      "file": "07519c.txt",
+      "chars": 10262,
+      "sha256": "7a829378812f72a8304a8ad4225f26766fdb46666f7f4859b256f2a45df19806",
+      "fetchedAt": "2026-11-14T07:40:55.380887Z"
+    },
+    {
+      "slug": "pope-hyginus",
+      "ceCode": "07593a",
+      "url": "https://www.newadvent.org/cathen/07593a.htm",
+      "file": "07593a.txt",
+      "chars": 1879,
+      "sha256": "48042c9aa4a7162e542eb5b28689ddc616d7f8fe882aa4c8d1afa757b4a2a0f3",
+      "fetchedAt": "2026-11-14T07:40:58.087823Z"
+    },
+    {
+      "slug": "ignatios-of-constantinople",
+      "ceCode": "07647a",
+      "url": "https://www.newadvent.org/cathen/07647a.htm",
+      "file": "07647a.txt",
+      "chars": 7653,
+      "sha256": "44d8b36d2e38152711cd734ff3f8afe9650a335aa824a3b28a87b103fc55ab39",
+      "fetchedAt": "2026-11-14T07:41:00.823624Z"
+    },
+    {
+      "slug": "pope-innocent-i",
+      "ceCode": "08011a",
+      "url": "https://www.newadvent.org/cathen/08011a.htm",
+      "file": "08011a.txt",
+      "chars": 11194,
+      "sha256": "17b8a94f633744ba9006aac353c4e4f60bfa1b9af4ecbb245108cbd5bdbb8cf8",
+      "fetchedAt": "2026-11-14T07:41:03.552424Z"
+    },
+    {
+      "slug": "jacob-baradaeus",
+      "ceCode": "02282a",
+      "url": "https://www.newadvent.org/cathen/02282a.htm",
+      "file": "02282a.txt",
+      "chars": 1856,
+      "sha256": "cf29f541c5ce8712c66c2682fd2fd31bbc929be4675646afb8715aee7780feec",
+      "fetchedAt": "2026-11-14T07:41:06.263600Z"
+    },
+    {
+      "slug": "jane-frances-de-chantal",
+      "ceCode": "08282c",
+      "url": "https://www.newadvent.org/cathen/08282c.htm",
+      "file": "08282c.txt",
+      "chars": 6111,
+      "sha256": "6b48a668af3e7f5be3bc04b668eef1946cd5bc95e88a1ec47830127cd918dd0b",
+      "fetchedAt": "2026-11-14T07:41:09.012724Z"
+    },
+    {
+      "slug": "joachim",
+      "ceCode": "08406b",
+      "url": "https://www.newadvent.org/cathen/08406b.htm",
+      "file": "08406b.txt",
+      "chars": 3405,
+      "sha256": "7bb030cea1daf3177942ea14fdc5c39d9645c0d3333dc125b7446d5c0208860f",
+      "fetchedAt": "2026-11-14T07:41:11.720569Z"
+    },
+    {
+      "slug": "john-berchmans",
+      "ceCode": "08450a",
+      "url": "https://www.newadvent.org/cathen/08450a.htm",
+      "file": "08450a.txt",
+      "chars": 5018,
+      "sha256": "bddbd57575db1fcc263557a479e08321d57f228841b1c6e1ca4ab3f15744dff5",
+      "fetchedAt": "2026-11-14T07:41:14.453492Z"
+    },
+    {
+      "slug": "pope-john-i",
+      "ceCode": "08421a",
+      "url": "https://www.newadvent.org/cathen/08421a.htm",
+      "file": "08421a.txt",
+      "chars": 4541,
+      "sha256": "b2b631667e6ba08641c385e58da9f18678ba4e78c54988fdab51a0dcad69def2",
+      "fetchedAt": "2026-11-14T07:41:17.179296Z"
+    },
+    {
+      "slug": "john-iv-bishop-of-naples",
+      "ceCode": "08422b",
+      "url": "https://www.newadvent.org/cathen/08422b.htm",
+      "file": "08422b.txt",
+      "chars": 2093,
+      "sha256": "23fc4777297a0f150cb7a2c38415ca98847f2db6b70b1aec0d1ee3132dececd7",
+      "fetchedAt": "2026-11-14T07:41:19.892434Z"
+    },
+    {
+      "slug": "john-scholasticus",
+      "ceCode": "08484b",
+      "url": "https://www.newadvent.org/cathen/08484b.htm",
+      "file": "08484b.txt",
+      "chars": 2792,
+      "sha256": "a7861d56d21c1786b0c3c3fc3aa5659d212bd0259927a9687707754bf09f4ec6",
+      "fetchedAt": "2026-11-14T07:41:22.612372Z"
+    },
+    {
+      "slug": "john-xxiii",
+      "ceCode": "08434a",
+      "url": "https://www.newadvent.org/cathen/08434a.htm",
+      "file": "08434a.txt",
+      "chars": 10357,
+      "sha256": "9f727b398de9cca42be40bde59295164d8a3ff15f6ba8ed6dc1fdb030e4f971e",
+      "fetchedAt": "2026-11-14T07:41:25.367055Z"
+    },
+    {
+      "slug": "julian-and-basilissa",
+      "ceCode": "08556b",
+      "url": "https://www.newadvent.org/cathen/08556b.htm",
+      "file": "08556b.txt",
+      "chars": 2538,
+      "sha256": "14b13ae3e2469fe04af6750de5e26c7684ac5973394843c14824de44c5bb0cea",
+      "fetchedAt": "2026-11-14T07:41:28.078382Z"
+    },
+    {
+      "slug": "justinian-i",
+      "ceCode": "08578b",
+      "url": "https://www.newadvent.org/cathen/08578b.htm",
+      "file": "08578b.txt",
+      "chars": 11856,
+      "sha256": "3f11c6473cc6cba8b6f9a66b837d0a86b421587a699f57c397c4981dc9e8e8da",
+      "fetchedAt": "2026-11-14T07:41:30.827575Z"
+    },
+    {
+      "slug": "kateri-tekakwitha",
+      "ceCode": "14471a",
+      "url": "https://www.newadvent.org/cathen/14471a.htm",
+      "file": "14471a.txt",
+      "chars": 2858,
+      "sha256": "e83977fe7c85afe171a0eb5c188e6e5067b98d475274fef8866a6f463ba30172",
+      "fetchedAt": "2026-11-14T07:41:33.559139Z"
+    },
+    {
+      "slug": "leander-of-seville",
+      "ceCode": "09102a",
+      "url": "https://www.newadvent.org/cathen/09102a.htm",
+      "file": "09102a.txt",
+      "chars": 3715,
+      "sha256": "9b9e89f03ffe43c2e7eea7525e69de41a2903f17083fade851ec4c5ed6a3eb02",
+      "fetchedAt": "2026-11-14T07:41:36.279512Z"
+    },
+    {
+      "slug": "pope-leo-iii",
+      "ceCode": "09157b",
+      "url": "https://www.newadvent.org/cathen/09157b.htm",
+      "file": "09157b.txt",
+      "chars": 10128,
+      "sha256": "0600140e2c66dd22356db465bb1958a4d9c589c16052637731fc5903a42a7797",
+      "fetchedAt": "2026-11-14T07:41:39.009207Z"
+    },
+    {
+      "slug": "pope-linus",
+      "ceCode": "09272b",
+      "url": "https://www.newadvent.org/cathen/09272b.htm",
+      "file": "09272b.txt",
+      "chars": 5691,
+      "sha256": "9da4ecab2d4b64883f23e8fd30049890c58c3bf574d7bea8f5d8a005431bb389",
+      "fetchedAt": "2026-11-14T07:41:41.745429Z"
+    },
+    {
+      "slug": "lucifer-of-cagliari",
+      "ceCode": "09410b",
+      "url": "https://www.newadvent.org/cathen/09410b.htm",
+      "file": "09410b.txt",
+      "chars": 3529,
+      "sha256": "abc88603186f160427f24c1a5b1dd9b7129287d48f970e41967f798c519c0c32",
+      "fetchedAt": "2026-11-14T07:41:44.465388Z"
+    },
+    {
+      "slug": "pope-lucius-i",
+      "ceCode": "09411a",
+      "url": "https://www.newadvent.org/cathen/09411a.htm",
+      "file": "09411a.txt",
+      "chars": 6874,
+      "sha256": "9c665290aa60fac4e4d1afe4c0ee7a905f767961f2ed3f349abcee0b496ebec8",
+      "fetchedAt": "2026-11-14T07:41:47.178682Z"
+    },
+    {
+      "slug": "pope-marcellinus",
+      "ceCode": "09637d",
+      "url": "https://www.newadvent.org/cathen/09637d.htm",
+      "file": "09637d.txt",
+      "chars": 11639,
+      "sha256": "785acddf1ce3876841eaf27a8b03dba79f84588f519aa02951e5b6d658ec1522",
+      "fetchedAt": "2026-11-14T07:41:49.912340Z"
+    },
+    {
+      "slug": "margaret-clitherow",
+      "ceCode": "04059b",
+      "url": "https://www.newadvent.org/cathen/04059b.htm",
+      "file": "04059b.txt",
+      "chars": 3294,
+      "sha256": "5a1a7ef988b1beae74ca07d3abb2e0ad76318b6c9313e361d97afb32800d426d",
+      "fetchedAt": "2026-11-14T07:41:52.639247Z"
+    },
+    {
+      "slug": "pope-mark",
+      "ceCode": "09672c",
+      "url": "https://www.newadvent.org/cathen/09672c.htm",
+      "file": "09672c.txt",
+      "chars": 11328,
+      "sha256": "fe7a6421275b5f0a4eedeac7f0df0a1f05d279c57bfffe1bdbfc06a729889dd0",
+      "fetchedAt": "2026-11-14T07:41:55.366388Z"
+    },
+    {
+      "slug": "pope-martin-i",
+      "ceCode": "09723c",
+      "url": "https://www.newadvent.org/cathen/09723c.htm",
+      "file": "09723c.txt",
+      "chars": 6430,
+      "sha256": "8c767991945f944a00d731cd0e8b7332f40902583d3393b959725f6a9d65863a",
+      "fetchedAt": "2026-11-14T07:41:58.102313Z"
+    },
+    {
+      "slug": "mitre",
+      "ceCode": "10404a",
+      "url": "https://www.newadvent.org/cathen/10404a.htm",
+      "file": "10404a.txt",
+      "chars": 11435,
+      "sha256": "3510a41308015c98f89d340da0cad1e8ff113b6df61183eaea54fc2c5d281319",
+      "fetchedAt": "2026-11-14T07:42:00.891924Z"
+    },
+    {
+      "slug": "nicholas-of-myra",
+      "ceCode": "11063b",
+      "url": "https://www.newadvent.org/cathen/11063b.htm",
+      "file": "11063b.txt",
+      "chars": 2687,
+      "sha256": "4bf25a7297ff65ca84cf381db9b217e19e768ee04c252a0326e7e58481f10998",
+      "fetchedAt": "2026-11-14T07:42:03.622363Z"
+    },
+    {
+      "slug": "ninian",
+      "ceCode": "11084a",
+      "url": "https://www.newadvent.org/cathen/11084a.htm",
+      "file": "11084a.txt",
+      "chars": 2083,
+      "sha256": "9090f61ae26aaf41ed8bd2f05afd54a5838ffcd106c3a61dc5f4a31bf523dff3",
+      "fetchedAt": "2026-11-14T07:42:06.410635Z"
+    },
+    {
+      "slug": "norbert",
+      "ceCode": "11100b",
+      "url": "https://www.newadvent.org/cathen/11100b.htm",
+      "file": "11100b.txt",
+      "chars": 10110,
+      "sha256": "5d50d20e601dba6903a1b2b5d927e47b63f4a4776e32257318eadbf382f6fa91",
+      "fetchedAt": "2026-11-14T07:42:09.178373Z"
+    },
+    {
+      "slug": "novatus",
+      "ceCode": "11141a",
+      "url": "https://www.newadvent.org/cathen/11141a.htm",
+      "file": "11141a.txt",
+      "chars": 549,
+      "sha256": "4e3369b34ce4445a63268559a492248871a2cdfaf2da7725170d82569571c9ae",
+      "fetchedAt": "2026-11-14T07:42:11.938307Z"
+    },
+    {
+      "slug": "othmar",
+      "ceCode": "11351a",
+      "url": "https://www.newadvent.org/cathen/11351a.htm",
+      "file": "11351a.txt",
+      "chars": 2197,
+      "sha256": "af1170de5fbab2f95f957660eee8d7d346011cb9fe252c00881deb2e2da159b6",
+      "fetchedAt": "2026-11-14T07:42:14.678385Z"
+    },
+    {
+      "slug": "pope-paul-i",
+      "ceCode": "11577a",
+      "url": "https://www.newadvent.org/cathen/11577a.htm",
+      "file": "11577a.txt",
+      "chars": 8328,
+      "sha256": "3838816f0f5e615db330cce545c032b43ce96c6c840a083bcced8d1606ced12c",
+      "fetchedAt": "2026-11-14T07:42:17.466468Z"
+    },
+    {
+      "slug": "paul-of-the-cross",
+      "ceCode": "11590a",
+      "url": "https://www.newadvent.org/cathen/11590a.htm",
+      "file": "11590a.txt",
+      "chars": 4179,
+      "sha256": "4bc5a8724875eb80dc1589a38fb2302af200cbdefe9c54bf07e0e1b6b93165fb",
+      "fetchedAt": "2026-11-14T07:42:20.170851Z"
+    },
+    {
+      "slug": "peter-canisius",
+      "ceCode": "11756c",
+      "url": "https://www.newadvent.org/cathen/11756c.htm",
+      "file": "11756c.txt",
+      "chars": 39418,
+      "sha256": "e41a4aef871d64de6ee0d07b9ab5478bc641f1ea23e5ae243f98977e9f26fa51",
+      "fetchedAt": "2026-11-14T07:42:23.048350Z"
+    },
+    {
+      "slug": "peter-damian",
+      "ceCode": "11764a",
+      "url": "https://www.newadvent.org/cathen/11764a.htm",
+      "file": "11764a.txt",
+      "chars": 11471,
+      "sha256": "d4136efbb2168fd8240c8b6a5879e73d68073f284e0c930b269b60c21ac89c5c",
+      "fetchedAt": "2026-11-14T07:42:25.872677Z"
+    },
+    {
+      "slug": "martyrdom-of-pionius",
+      "ceCode": "12105a",
+      "url": "https://www.newadvent.org/cathen/12105a.htm",
+      "file": "12105a.txt",
+      "chars": 2855,
+      "sha256": "88a901527b060688f582f785c27e9e4231616a9dcfa678754d75b2cec6365431",
+      "fetchedAt": "2026-11-14T07:42:28.580781Z"
+    },
+    {
+      "slug": "pius-x",
+      "ceCode": "12137a",
+      "url": "https://www.newadvent.org/cathen/12137a.htm",
+      "file": "12137a.txt",
+      "chars": 18700,
+      "sha256": "b577cc3a49f160638fe7ebc95fc713922fd9e2c056bc82eff05d833ff41c22f2",
+      "fetchedAt": "2026-11-14T07:42:31.449278Z"
+    },
+    {
+      "slug": "placidus-abbot",
+      "ceCode": "12142b",
+      "url": "https://www.newadvent.org/cathen/12142b.htm",
+      "file": "12142b.txt",
+      "chars": 2367,
+      "sha256": "80f9948b2fb584b154847996cf9462db785802653b847ec5c65f88592643f0b0",
+      "fetchedAt": "2026-11-14T07:42:34.264117Z"
+    },
+    {
+      "slug": "pontius-pilate",
+      "ceCode": "12083c",
+      "url": "https://www.newadvent.org/cathen/12083c.htm",
+      "file": "12083c.txt",
+      "chars": 5453,
+      "sha256": "6dcfc638a5efd4921f35f36524342c97f8b718f1044e8cced80f7a896a04a45a",
+      "fetchedAt": "2026-11-14T07:42:37.032787Z"
+    },
+    {
+      "slug": "prisca",
+      "ceCode": "12428c",
+      "url": "https://www.newadvent.org/cathen/12428c.htm",
+      "file": "12428c.txt",
+      "chars": 3483,
+      "sha256": "7edd9e262a767ae9cf7c1986f5db5ddb0f8e78fd12141b5b9d50339b4cdd6349",
+      "fetchedAt": "2026-11-14T07:42:39.766598Z"
+    },
+    {
+      "slug": "raymond-nonnatus",
+      "ceCode": "12671b",
+      "url": "https://www.newadvent.org/cathen/12671b.htm",
+      "file": "12671b.txt",
+      "chars": 1962,
+      "sha256": "6ba4840c6706bb01e73fcd67e1159b3442e1448da3f9d3402416ef21b89222b1",
+      "fetchedAt": "2026-11-14T07:42:42.467172Z"
+    },
+    {
+      "slug": "rita-of-cascia",
+      "ceCode": "13064a",
+      "url": "https://www.newadvent.org/cathen/13064a.htm",
+      "file": "13064a.txt",
+      "chars": 1565,
+      "sha256": "5d81d0f779c7cc64c1275f1a72350665b9bbb17d5e213f1b584aa3ca9d9bcb8f",
+      "fetchedAt": "2026-11-14T07:42:45.181435Z"
+    },
+    {
+      "slug": "robert-bellarmine",
+      "ceCode": "02411d",
+      "url": "https://www.newadvent.org/cathen/02411d.htm",
+      "file": "02411d.txt",
+      "chars": 16391,
+      "sha256": "a17856996ddc4514fb2598ce625dc95df89be7d3a57bfc88024fb065d31e3067",
+      "fetchedAt": "2026-11-14T07:42:48.047614Z"
+    },
+    {
+      "slug": "romuald",
+      "ceCode": "13179b",
+      "url": "https://www.newadvent.org/cathen/13179b.htm",
+      "file": "13179b.txt",
+      "chars": 4159,
+      "sha256": "c55bf2b0d9189cecb0e247a16ad25bf059b67cee3e87b7326a13a9586d608a05",
+      "fetchedAt": "2026-11-14T07:42:50.749139Z"
+    },
+    {
+      "slug": "sebastian",
+      "ceCode": "13668a",
+      "url": "https://www.newadvent.org/cathen/13668a.htm",
+      "file": "13668a.txt",
+      "chars": 1614,
+      "sha256": "e9d4416701baea466f4ec20866624aad1234dd20f9687c02994fdfe8429e0e01",
+      "fetchedAt": "2026-11-14T07:42:53.512240Z"
+    },
+    {
+      "slug": "pope-sergius-i",
+      "ceCode": "13728b",
+      "url": "https://www.newadvent.org/cathen/13728b.htm",
+      "file": "13728b.txt",
+      "chars": 2161,
+      "sha256": "a930131950b0b1f4ac86b19ed61375454c389e6629aa96f930692ff26bdc6505",
+      "fetchedAt": "2026-11-14T07:42:56.215500Z"
+    },
+    {
+      "slug": "silvia",
+      "ceCode": "13794a",
+      "url": "https://www.newadvent.org/cathen/13794a.htm",
+      "file": "13794a.txt",
+      "chars": 1306,
+      "sha256": "af9781139b06f6faeb491fb6bf170ccb3928921743b57a34493a69f32bc123a4",
+      "fetchedAt": "2026-11-14T07:42:58.942192Z"
+    },
+    {
+      "slug": "simeon-stylites-the-younger",
+      "ceCode": "13795b",
+      "url": "https://www.newadvent.org/cathen/13795b.htm",
+      "file": "13795b.txt",
+      "chars": 3594,
+      "sha256": "c5deb7d5f04b2f92153bf8227ab4415238c7c5c73eda3a1db411c4cd8c0321c6",
+      "fetchedAt": "2026-11-14T07:43:01.665240Z"
+    },
+    {
+      "slug": "pope-simplicius",
+      "ceCode": "14002a",
+      "url": "https://www.newadvent.org/cathen/14002a.htm",
+      "file": "14002a.txt",
+      "chars": 10161,
+      "sha256": "0cc7a6735e3fd6062acc68ea7aa2d6d5e64c465a16c7cc0de55610dabdfa45e2",
+      "fetchedAt": "2026-11-14T07:43:04.570075Z"
+    },
+    {
+      "slug": "pope-sixtus-iii",
+      "ceCode": "14032a",
+      "url": "https://www.newadvent.org/cathen/14032a.htm",
+      "file": "14032a.txt",
+      "chars": 1525,
+      "sha256": "9adbb9b3297b06a90153a39e820ca81a24200895714ce9b4e5d44fc142a2674e",
+      "fetchedAt": "2026-11-14T07:43:07.335452Z"
+    },
+    {
+      "slug": "stephen-of-muret",
+      "ceCode": "14291b",
+      "url": "https://www.newadvent.org/cathen/14291b.htm",
+      "file": "14291b.txt",
+      "chars": 2103,
+      "sha256": "6310dbc9b61dd97068ebd381657464d52e103697890a4515609aa44b22ab954b",
+      "fetchedAt": "2026-11-14T07:43:10.082140Z"
+    },
+    {
+      "slug": "swithin",
+      "ceCode": "14357c",
+      "url": "https://www.newadvent.org/cathen/14357c.htm",
+      "file": "14357c.txt",
+      "chars": 2378,
+      "sha256": "529fe7d8caeee78ff96fc91c639c9ce535acb2c9ecea266e7d7d7f39feb545ed",
+      "fetchedAt": "2026-11-14T07:43:12.864469Z"
+    },
+    {
+      "slug": "pope-sylvester-i",
+      "ceCode": "14370a",
+      "url": "https://www.newadvent.org/cathen/14370a.htm",
+      "file": "14370a.txt",
+      "chars": 3863,
+      "sha256": "a1a58469c700c9dfe46ed3c931eea25b1ae6e01a2395655d14801550cc5071da",
+      "fetchedAt": "2026-11-14T07:43:15.635823Z"
+    },
+    {
+      "slug": "pope-symmachus",
+      "ceCode": "14377a",
+      "url": "https://www.newadvent.org/cathen/14377a.htm",
+      "file": "14377a.txt",
+      "chars": 13609,
+      "sha256": "99d50c21ef3aaf3d8bc62ad6cdf0dff5a7217d1bc0ff9f0c5e871fb257d4e58d",
+      "fetchedAt": "2026-11-14T07:43:18.482818Z"
+    },
+    {
+      "slug": "pope-telesphorus",
+      "ceCode": "14477b",
+      "url": "https://www.newadvent.org/cathen/14477b.htm",
+      "file": "14477b.txt",
+      "chars": 1250,
+      "sha256": "c642907afbe63a899a64cc8c0b41c958736a71c159d28c8b4cd2e2821cf342be",
+      "fetchedAt": "2026-11-14T07:43:21.192972Z"
+    },
+    {
+      "slug": "ternan",
+      "ceCode": "14518b",
+      "url": "https://www.newadvent.org/cathen/14518b.htm",
+      "file": "14518b.txt",
+      "chars": 879,
+      "sha256": "7bdff00e4f0f954f399ec9738c34f2d2d960649d2ba2c3944021f298c62d937e",
+      "fetchedAt": "2026-11-14T07:43:23.923361Z"
+    },
+    {
+      "slug": "tewdrig",
+      "ceCode": "14542a",
+      "url": "https://www.newadvent.org/cathen/14542a.htm",
+      "file": "14542a.txt",
+      "chars": 893,
+      "sha256": "a3e0203215322cdf546af5251df3582b9f0d94ce55826be86af65dcbf04c32c0",
+      "fetchedAt": "2026-11-14T07:43:26.691950Z"
+    },
+    {
+      "slug": "tha-s-saint",
+      "ceCode": "14553d",
+      "url": "https://www.newadvent.org/cathen/14553d.htm",
+      "file": "14553d.txt",
+      "chars": 1265,
+      "sha256": "e9062167df1450738e633b08b40b9f6571362ba109b47c3be55d65cc54a8def9",
+      "fetchedAt": "2026-11-14T07:43:29.457191Z"
+    },
+    {
+      "slug": "theodard",
+      "ceCode": "14568b",
+      "url": "https://www.newadvent.org/cathen/14568b.htm",
+      "file": "14568b.txt",
+      "chars": 1550,
+      "sha256": "a4a66e868924a07d225d026771a3c7392216e6e84ca7c09487349cfe19d62f2f",
+      "fetchedAt": "2026-11-14T07:43:32.158041Z"
+    },
+    {
+      "slug": "thomas-aquinas",
+      "ceCode": "14663b",
+      "url": "https://www.newadvent.org/cathen/14663b.htm",
+      "file": "14663b.txt",
+      "chars": 73448,
+      "sha256": "ea298c18f5d62e581cc949a2ac27005530bf739158081396ad75f0154048fba3",
+      "fetchedAt": "2026-11-14T07:43:35.090779Z"
+    },
+    {
+      "slug": "pope-urban-i",
+      "ceCode": "15209a",
+      "url": "https://www.newadvent.org/cathen/15209a.htm",
+      "file": "15209a.txt",
+      "chars": 6702,
+      "sha256": "e99db53856b12de15c6ab532b771478e1823ef4411d8df61a9f2da6026674df5",
+      "fetchedAt": "2026-11-14T07:43:37.824481Z"
+    },
+    {
+      "slug": "pope-victor-i",
+      "ceCode": "15408a",
+      "url": "https://www.newadvent.org/cathen/15408a.htm",
+      "file": "15408a.txt",
+      "chars": 9560,
+      "sha256": "2aa46d229f28e228d3fe7f3496d04e8296072599c734e3a7a4938fd548382c53",
+      "fetchedAt": "2026-11-14T07:43:40.624800Z"
+    },
+    {
+      "slug": "vincent-ferrer",
+      "ceCode": "15437a",
+      "url": "https://www.newadvent.org/cathen/15437a.htm",
+      "file": "15437a.txt",
+      "chars": 9364,
+      "sha256": "4eab092519d7f54b113c8067b5f304425536c2e553456e03e3d055c54dafaf20",
+      "fetchedAt": "2026-11-14T07:43:43.342040Z"
+    },
+    {
+      "slug": "vincent-of-l-rins",
+      "ceCode": "15439b",
+      "url": "https://www.newadvent.org/cathen/15439b.htm",
+      "file": "15439b.txt",
+      "chars": 7371,
+      "sha256": "b2cf4a13a03c6d0dd2956f28d1d0890133cb2494da211892cfeee1819dcc2aa9",
+      "fetchedAt": "2026-11-14T07:43:46.087988Z"
+    },
+    {
+      "slug": "pope-vitalian",
+      "ceCode": "15484b",
+      "url": "https://www.newadvent.org/cathen/15484b.htm",
+      "file": "15484b.txt",
+      "chars": 6675,
+      "sha256": "0db650ed149d9dc1c9ce048379df4d47622df84620e89bf3d84f451bb28bccc3",
+      "fetchedAt": "2026-11-14T07:43:48.821411Z"
+    },
+    {
+      "slug": "wendelin-of-trier",
+      "ceCode": "15587c",
+      "url": "https://www.newadvent.org/cathen/15587c.htm",
+      "file": "15587c.txt",
+      "chars": 2026,
+      "sha256": "96c32695ab385b37e91b15c3a216f5190ac0b1b695750529cfa64216f446990f",
+      "fetchedAt": "2026-11-14T07:43:51.529743Z"
+    },
+    {
+      "slug": "werburgh",
+      "ceCode": "15588b",
+      "url": "https://www.newadvent.org/cathen/15588b.htm",
+      "file": "15588b.txt",
+      "chars": 7019,
+      "sha256": "b2f1b29af3df44b32d70fc422fad9d746f9a43bfabfafc78b827f2eadc7c1d08",
+      "fetchedAt": "2026-11-14T07:43:54.337495Z"
+    },
+    {
+      "slug": "willigis",
+      "ceCode": "15645b",
+      "url": "https://www.newadvent.org/cathen/15645b.htm",
+      "file": "15645b.txt",
+      "chars": 3291,
+      "sha256": "8b0c27c7198cb1958cf70deb3b5286d43bf65d9409dc36b1a5c6fc712c1b2019",
+      "fetchedAt": "2026-11-14T07:43:57.107416Z"
+    },
+    {
+      "slug": "cyril-and-methodius",
+      "ceCode": "04592a",
+      "url": "https://www.newadvent.org/cathen/04592a.htm",
+      "file": "04592a.txt",
+      "chars": 3678,
+      "sha256": "5bb3b13fd76e558aeeff4ad6efb55175627719dfe581f5a926dd0beff1d0f091",
+      "fetchedAt": "2026-11-14T07:43:59.873892Z"
+    },
+    {
+      "slug": "saints-faith-hope-and-charity",
+      "ceCode": "05766a",
+      "url": "https://www.newadvent.org/cathen/05766a.htm",
+      "file": "05766a.txt",
+      "chars": 2951,
+      "sha256": "12614e2eb8d44b85bca39bf4e1c6c8e61be0caa1b8afe559b265ae8e67bcffbb",
+      "fetchedAt": "2026-11-14T07:44:02.635817Z"
+    },
+    {
+      "slug": "abundius",
+      "ceCode": "01075b",
+      "url": "https://www.newadvent.org/cathen/01075b.htm",
+      "file": "01075b.txt",
+      "chars": 553,
+      "sha256": "8097baed3d79b2035ce598119ae503960306edf7d0ec01cb22238e3064161ff7",
+      "fetchedAt": "2026-11-14T07:44:05.365442Z"
+    },
+    {
+      "slug": "agatha",
+      "ceCode": "01203c",
+      "url": "https://www.newadvent.org/cathen/01203c.htm",
+      "file": "01203c.txt",
+      "chars": 4728,
+      "sha256": "ecc093c160e77f1f0b104cfa566b731947565ea79dd597352048544ec16ae338",
+      "fetchedAt": "2026-11-14T07:44:08.107757Z"
+    },
+    {
+      "slug": "ailer-n",
+      "ceCode": "01234c",
+      "url": "https://www.newadvent.org/cathen/01234c.htm",
+      "file": "01234c.txt",
+      "chars": 3192,
+      "sha256": "d7d1bb45c69af07d76784e99caae16541716ddfa45fab7454264179684aba69b",
+      "fetchedAt": "2026-11-14T07:44:10.822868Z"
+    },
+    {
+      "slug": "albert-the-great",
+      "ceCode": "01264a",
+      "url": "https://www.newadvent.org/cathen/01264a.htm",
+      "file": "01264a.txt",
+      "chars": 21521,
+      "sha256": "e667a644ecf4fbd34c25e504a06ca8142083e7c2e95de723a74169cf65b6a056",
+      "fetchedAt": "2026-11-14T07:44:13.664254Z"
+    },
+    {
+      "slug": "aloysius-gonzaga",
+      "ceCode": "01331c",
+      "url": "https://www.newadvent.org/cathen/01331c.htm",
+      "file": "01331c.txt",
+      "chars": 1908,
+      "sha256": "0ff5212dfa498501879b0b36334c1992588cf24c195c279ed619a51f005ec818",
+      "fetchedAt": "2026-11-14T07:44:16.455562Z"
+    },
+    {
+      "slug": "ambrose",
+      "ceCode": "01383c",
+      "url": "https://www.newadvent.org/cathen/01383c.htm",
+      "file": "01383c.txt",
+      "chars": 33860,
+      "sha256": "46605d27e1829b19eb590a753900a5a70c786c0f0af3372a0dd38e5e94a2d8e2",
+      "fetchedAt": "2026-11-14T07:44:19.304617Z"
+    },
+    {
+      "slug": "angela-merici",
+      "ceCode": "01481a",
+      "url": "https://www.newadvent.org/cathen/01481a.htm",
+      "file": "01481a.txt",
+      "chars": 3193,
+      "sha256": "7a0684a22b831ac9c91f6ffc28c4e81fe9e2daf1e65215cdb6549a7c6af1afb3",
+      "fetchedAt": "2026-11-14T07:44:22.088363Z"
+    },
+    {
+      "slug": "anne",
+      "ceCode": "01538a",
+      "url": "https://www.newadvent.org/cathen/01538a.htm",
+      "file": "01538a.txt",
+      "chars": 6319,
+      "sha256": "919b2ad99ad1b8f19d6dc0e331489621ce850689fd1b951fd5ceb4ef1e0d78aa",
+      "fetchedAt": "2026-11-14T07:44:24.848617Z"
+    },
+    {
+      "slug": "apollonia",
+      "ceCode": "01617c",
+      "url": "https://www.newadvent.org/cathen/01617c.htm",
+      "file": "01617c.txt",
+      "chars": 4058,
+      "sha256": "24cfc23485ebe84974f0fbcd9f27655eeb575e4384da1a14cb8cb2653ff9c198",
+      "fetchedAt": "2026-11-14T07:44:27.542791Z"
+    },
+    {
+      "slug": "asaph",
+      "ceCode": "01766a",
+      "url": "https://www.newadvent.org/cathen/01766a.htm",
+      "file": "01766a.txt",
+      "chars": 2209,
+      "sha256": "52a4244eedbf5fff4f960099ace11f8161dcb7935208c138bd02e6430578e6d6",
+      "fetchedAt": "2026-11-14T07:44:30.283388Z"
+    },
+    {
+      "slug": "augustine-of-hippo",
+      "ceCode": "02084a",
+      "url": "https://www.newadvent.org/cathen/02084a.htm",
+      "file": "02084a.txt",
+      "chars": 35114,
+      "sha256": "3f767caa0bab706daf9778b22dc717b4105c53fd2eb8bfc1f4d04601d7e6f02b",
+      "fetchedAt": "2026-11-14T07:44:33.158575Z"
+    },
+    {
+      "slug": "barbara",
+      "ceCode": "02284d",
+      "url": "https://www.newadvent.org/cathen/02284d.htm",
+      "file": "02284d.txt",
+      "chars": 5255,
+      "sha256": "85bf2990249faebac2884b6bb068520c2e2d40a6cd5f8ae301962dd0840ceaf0",
+      "fetchedAt": "2026-11-14T07:44:35.912413Z"
+    },
+    {
+      "slug": "basil-of-amasea",
+      "ceCode": "02329d",
+      "url": "https://www.newadvent.org/cathen/02329d.htm",
+      "file": "02329d.txt",
+      "chars": 1919,
+      "sha256": "32390f84bb880c65a6352b66e9f9e67d24485c732194b842d3b07a291b4e0fd9",
+      "fetchedAt": "2026-11-14T07:44:38.615267Z"
+    },
+    {
+      "slug": "benedict-of-nursia",
+      "ceCode": "02467b",
+      "url": "https://www.newadvent.org/cathen/02467b.htm",
+      "file": "02467b.txt",
+      "chars": 34315,
+      "sha256": "4935c362e75dc47b912183bc8c12d550b0b877b572d03d4ec737b678660051a9",
+      "fetchedAt": "2026-11-14T07:44:41.478279Z"
+    },
+    {
+      "slug": "bernardino-of-siena",
+      "ceCode": "02505b",
+      "url": "https://www.newadvent.org/cathen/02505b.htm",
+      "file": "02505b.txt",
+      "chars": 15863,
+      "sha256": "bd4210d841220aeb297ef51173e128227319043cdfdd0ca68565a0a7438cd339",
+      "fetchedAt": "2026-11-14T07:44:44.218899Z"
+    },
+    {
+      "slug": "blaise",
+      "ceCode": "02592a",
+      "url": "https://www.newadvent.org/cathen/02592a.htm",
+      "file": "02592a.txt",
+      "chars": 3575,
+      "sha256": "de32d4361173bd1b13d265e182f452a7d3f5a1eb69dadef9175a274aede8a502",
+      "fetchedAt": "2026-11-14T07:44:46.971376Z"
+    },
+    {
+      "slug": "blane",
+      "ceCode": "02594b",
+      "url": "https://www.newadvent.org/cathen/02594b.htm",
+      "file": "02594b.txt",
+      "chars": 1546,
+      "sha256": "4af75ebd38c1cdc73df4ea2165bbcb1ee6d397019ef5ca4c8f1d2b434ddf212b",
+      "fetchedAt": "2026-11-14T07:44:49.689872Z"
+    },
+    {
+      "slug": "blathmac",
+      "ceCode": "02596b",
+      "url": "https://www.newadvent.org/cathen/02596b.htm",
+      "file": "02596b.txt",
+      "chars": 1736,
+      "sha256": "949fa7d82e6500ad88782996906d87c758cc3a54f6222307208c8e8d99fdeb5a",
+      "fetchedAt": "2026-11-14T07:44:52.387049Z"
+    },
+    {
+      "slug": "bonaventure",
+      "ceCode": "02648c",
+      "url": "https://www.newadvent.org/cathen/02648c.htm",
+      "file": "02648c.txt",
+      "chars": 40293,
+      "sha256": "a1f7d60310b068ed7623ab247045b5c90cd8b7f2966f08c8db27541a3464d162",
+      "fetchedAt": "2026-11-14T07:44:55.244635Z"
+    },
+    {
+      "slug": "brendan",
+      "ceCode": "02758c",
+      "url": "https://www.newadvent.org/cathen/02758c.htm",
+      "file": "02758c.txt",
+      "chars": 7902,
+      "sha256": "5a633899e773ef44f4cbbcee141c05db69a36934edab6cbcd91c5cad9b861c20",
+      "fetchedAt": "2026-11-14T07:44:58.032122Z"
+    },
+    {
+      "slug": "camillus-de-lellis",
+      "ceCode": "03217b",
+      "url": "https://www.newadvent.org/cathen/03217b.htm",
+      "file": "03217b.txt",
+      "chars": 4110,
+      "sha256": "c271e8e90d3b09787bbb2c3356c0eb46e8f4fc7dd9bdc59018f2680090ee87e6",
+      "fetchedAt": "2026-11-14T07:45:00.796393Z"
+    },
+    {
+      "slug": "casimir",
+      "ceCode": "03402a",
+      "url": "https://www.newadvent.org/cathen/03402a.htm",
+      "file": "03402a.txt",
+      "chars": 5515,
+      "sha256": "e88193c29798e453f56b29904d231cd3ee6ced872a516431d0c7ac2a7bb06bdb",
+      "fetchedAt": "2026-11-14T07:45:03.566450Z"
+    },
+    {
+      "slug": "catherine-of-alexandria",
+      "ceCode": "03445a",
+      "url": "https://www.newadvent.org/cathen/03445a.htm",
+      "file": "03445a.txt",
+      "chars": 6355,
+      "sha256": "7f7e7a420c9e23fa97cb2d9e27a9ffac63bfe4e687e8b577590bd718d05dec73",
+      "fetchedAt": "2026-11-14T07:45:06.275925Z"
+    },
+    {
+      "slug": "catherine-of-bologna",
+      "ceCode": "03446a",
+      "url": "https://www.newadvent.org/cathen/03446a.htm",
+      "file": "03446a.txt",
+      "chars": 2131,
+      "sha256": "3200f106235099f46aaf33c3d3f4b00138b013c562f39ace21e6e3b50ba2dfea",
+      "fetchedAt": "2026-11-14T07:45:08.987734Z"
+    },
+    {
+      "slug": "catherine-of-siena",
+      "ceCode": "03447a",
+      "url": "https://www.newadvent.org/cathen/03447a.htm",
+      "file": "03447a.txt",
+      "chars": 9400,
+      "sha256": "50f1d4aa6e879133eb63736f4b909149065e941dc0b99232b572661605d4d8e5",
+      "fetchedAt": "2026-11-14T07:45:11.681886Z"
+    },
+    {
+      "slug": "cecilia",
+      "ceCode": "03471b",
+      "url": "https://www.newadvent.org/cathen/03471b.htm",
+      "file": "03471b.txt",
+      "chars": 14325,
+      "sha256": "1b004a4644339a81b5ff728d1c4d92693b98b392d97d05080ca8333fa3290f4b",
+      "fetchedAt": "2026-11-14T07:45:14.388256Z"
+    },
+    {
+      "slug": "charles-borromeo",
+      "ceCode": "03619a",
+      "url": "https://www.newadvent.org/cathen/03619a.htm",
+      "file": "03619a.txt",
+      "chars": 42880,
+      "sha256": "cec58cad205b4c574d3953935caaa1f317238e32e769bb33bb0c79594192ec62",
+      "fetchedAt": "2026-11-14T07:45:17.262514Z"
+    },
+    {
+      "slug": "clare-of-assisi",
+      "ceCode": "04004a",
+      "url": "https://www.newadvent.org/cathen/04004a.htm",
+      "file": "04004a.txt",
+      "chars": 18217,
+      "sha256": "6e7cb2a79ae337c7ae2c6da6fa50f966309774d1cf1dacd7a74a68eabc2363bb",
+      "fetchedAt": "2026-11-14T07:45:20.117830Z"
+    },
+    {
+      "slug": "clare-of-montefalco",
+      "ceCode": "04006a",
+      "url": "https://www.newadvent.org/cathen/04006a.htm",
+      "file": "04006a.txt",
+      "chars": 2278,
+      "sha256": "a5b4ef7f5fa4817f9da687f6e199c6110ce39bf58670e894827df177d5601977",
+      "fetchedAt": "2026-11-14T07:45:22.914336Z"
+    },
+    {
+      "slug": "colman-of-templeshambo",
+      "ceCode": "04115a",
+      "url": "https://www.newadvent.org/cathen/04115a.htm",
+      "file": "04115a.txt",
+      "chars": 835,
+      "sha256": "eec07286828a2c412b14f213b6bb54c957e810e51a19040c84b0c77827943f2e",
+      "fetchedAt": "2026-11-14T07:45:25.627740Z"
+    },
+    {
+      "slug": "colm-n-elo",
+      "ceCode": "04115e",
+      "url": "https://www.newadvent.org/cathen/04115e.htm",
+      "file": "04115e.txt",
+      "chars": 610,
+      "sha256": "973c0ee6af856c9254c5ebe7c5fbef462e45519823e9dff5d92561445981bb9e",
+      "fetchedAt": "2026-11-14T07:45:28.357506Z"
+    },
+    {
+      "slug": "conal",
+      "ceCode": "04189b",
+      "url": "https://www.newadvent.org/cathen/04189b.htm",
+      "file": "04189b.txt",
+      "chars": 1368,
+      "sha256": "85233fe864446fe619b3ab22742583ffb6749b954b7146040bb81dea0a6a6b31",
+      "fetchedAt": "2026-11-14T07:45:31.111669Z"
+    },
+    {
+      "slug": "cyprian-of-toulon",
+      "ceCode": "04582b",
+      "url": "https://www.newadvent.org/cathen/04582b.htm",
+      "file": "04582b.txt",
+      "chars": 1689,
+      "sha256": "ca420322350a7654bb40cd8b05fb2b54bd902c290111d041b14e203688a4f95c",
+      "fetchedAt": "2026-11-14T07:45:33.875180Z"
+    },
+    {
+      "slug": "david",
+      "ceCode": "04640b",
+      "url": "https://www.newadvent.org/cathen/04640b.htm",
+      "file": "04640b.txt",
+      "chars": 6562,
+      "sha256": "a3aa1427acb2b39e50af8de1491ec664e4e640fb906d5b51bd901364344935e2",
+      "fetchedAt": "2026-11-14T07:45:36.617268Z"
+    },
+    {
+      "slug": "dominic",
+      "ceCode": "05106a",
+      "url": "https://www.newadvent.org/cathen/05106a.htm",
+      "file": "05106a.txt",
+      "chars": 24135,
+      "sha256": "304f648ed1f9edd2ea1bdda079e0a587df3fa1e9e7315c99a5078c57f716cc11",
+      "fetchedAt": "2026-11-14T07:45:39.500946Z"
+    },
+    {
+      "slug": "dunstan",
+      "ceCode": "05199a",
+      "url": "https://www.newadvent.org/cathen/05199a.htm",
+      "file": "05199a.txt",
+      "chars": 18755,
+      "sha256": "11f38a1050ca8d42b4edc1ccabf2041665455de85d5cc70b0b1160ead5877c7f",
+      "fetchedAt": "2026-11-14T07:45:42.372078Z"
+    },
+    {
+      "slug": "eligius",
+      "ceCode": "05386a",
+      "url": "https://www.newadvent.org/cathen/05386a.htm",
+      "file": "05386a.txt",
+      "chars": 5331,
+      "sha256": "1e73183813b1c37e2c594ee86a0ae10fedd8e8bc09871cc6378cfc557669815f",
+      "fetchedAt": "2026-11-14T07:45:45.137698Z"
+    },
+    {
+      "slug": "elizabeth-ann-seton",
+      "ceCode": "13739a",
+      "url": "https://www.newadvent.org/cathen/13739a.htm",
+      "file": "13739a.txt",
+      "chars": 11970,
+      "sha256": "b7045518353a80f1718b21367a0a8603e59e55bd0856cbe68330e911dab33b24",
+      "fetchedAt": "2026-11-14T07:45:47.910018Z"
+    },
+    {
+      "slug": "elizabeth-of-hungary",
+      "ceCode": "05389a",
+      "url": "https://www.newadvent.org/cathen/05389a.htm",
+      "file": "05389a.txt",
+      "chars": 13451,
+      "sha256": "432640c5163819d9fe460746980dc49f5261e631d3ffe3d7455dce2cbd0aa4b4",
+      "fetchedAt": "2026-11-14T07:45:50.631970Z"
+    },
+    {
+      "slug": "elizabeth-of-portugal",
+      "ceCode": "05391a",
+      "url": "https://www.newadvent.org/cathen/05391a.htm",
+      "file": "05391a.txt",
+      "chars": 3016,
+      "sha256": "5814019d872c218c209f57eee003f5c8fca1c4247ccb39cdd6a219d5a149b304",
+      "fetchedAt": "2026-11-14T07:45:53.370008Z"
+    },
+    {
+      "slug": "elphin",
+      "ceCode": "05394b",
+      "url": "https://www.newadvent.org/cathen/05394b.htm",
+      "file": "05394b.txt",
+      "chars": 7777,
+      "sha256": "aacb357650b4e2a8f5c696d1fe16259457f89ff2a8a51aa40bdc5cfc3e2752de",
+      "fetchedAt": "2026-11-14T07:45:56.083782Z"
+    },
+    {
+      "slug": "eosterwine",
+      "ceCode": "05240a",
+      "url": "https://www.newadvent.org/cathen/05240a.htm",
+      "file": "05240a.txt",
+      "chars": 1365,
+      "sha256": "bbae31fd9fa0e9aceabcdccc5dc50a2e64ff81151b5637d5d553e9633e54bab0",
+      "fetchedAt": "2026-11-14T07:45:58.804285Z"
+    },
+    {
+      "slug": "eskil",
+      "ceCode": "05538b",
+      "url": "https://www.newadvent.org/cathen/05538b.htm",
+      "file": "05538b.txt",
+      "chars": 6459,
+      "sha256": "a131b61ec39cbb04125e45cbdf225fe45d212a1447327784c87033a0b520e4fd",
+      "fetchedAt": "2026-11-14T07:46:01.529273Z"
+    },
+    {
+      "slug": "pope-eugene-i",
+      "ceCode": "05598a",
+      "url": "https://www.newadvent.org/cathen/05598a.htm",
+      "file": "05598a.txt",
+      "chars": 3775,
+      "sha256": "c9fd28f37138f06bbc23c47d254b89057f2c0c7e0d6651bd4cb4944c1f4981a5",
+      "fetchedAt": "2026-11-14T07:46:04.268620Z"
+    },
+    {
+      "slug": "eulogius-of-alexandria",
+      "ceCode": "05603c",
+      "url": "https://www.newadvent.org/cathen/05603c.htm",
+      "file": "05603c.txt",
+      "chars": 1407,
+      "sha256": "d2b1354953b7b5f20078525210734fd082799c9df2a875a843367b29ee29b85d",
+      "fetchedAt": "2026-11-14T07:46:06.989192Z"
+    },
+    {
+      "slug": "eustace",
+      "ceCode": "05626a",
+      "url": "https://www.newadvent.org/cathen/05626a.htm",
+      "file": "05626a.txt",
+      "chars": 1709,
+      "sha256": "41780cf6d333e6b05a148122356bd986a2b40ab0ee4d0ea9cb0d3b3a31b3a602",
+      "fetchedAt": "2026-11-14T07:46:09.706239Z"
+    },
+    {
+      "slug": "fiacre",
+      "ceCode": "06067a",
+      "url": "https://www.newadvent.org/cathen/06067a.htm",
+      "file": "06067a.txt",
+      "chars": 3042,
+      "sha256": "30e5c645301a2aca64f37b6b6a63c9320579b2cb66685a8ddb495e0241e8e399",
+      "fetchedAt": "2026-11-14T07:46:12.414132Z"
+    },
+    {
+      "slug": "frances-of-rome",
+      "ceCode": "06205c",
+      "url": "https://www.newadvent.org/cathen/06205c.htm",
+      "file": "06205c.txt",
+      "chars": 2154,
+      "sha256": "c1530e9b08165a0d87b56f34c12396c4fc1911ded71a24058e56622f77d3857f",
+      "fetchedAt": "2026-11-14T07:46:15.131655Z"
+    },
+    {
+      "slug": "francis-de-sales",
+      "ceCode": "06220a",
+      "url": "https://www.newadvent.org/cathen/06220a.htm",
+      "file": "06220a.txt",
+      "chars": 14593,
+      "sha256": "84843f31785bcc70fcd69d1a8966619cca1741a68a4f4eb4de3d6e7542fd0085",
+      "fetchedAt": "2026-11-14T07:46:17.877386Z"
+    },
+    {
+      "slug": "francis-of-paola",
+      "ceCode": "06231a",
+      "url": "https://www.newadvent.org/cathen/06231a.htm",
+      "file": "06231a.txt",
+      "chars": 5270,
+      "sha256": "11a786977cff5a6461adb6fc0df4d53c9149eac7d34f48b5eb95febef2a71867",
+      "fetchedAt": "2026-11-14T07:46:20.595278Z"
+    },
+    {
+      "slug": "fulcran",
+      "ceCode": "06313a",
+      "url": "https://www.newadvent.org/cathen/06313a.htm",
+      "file": "06313a.txt",
+      "chars": 1853,
+      "sha256": "9791b662e9a595c1677d4100e6d278b49eab5b40567c2e945a35fdbdef924d36",
+      "fetchedAt": "2026-11-14T07:46:23.315151Z"
+    },
+    {
+      "slug": "gabriel-possenti",
+      "ceCode": "06330c",
+      "url": "https://www.newadvent.org/cathen/06330c.htm",
+      "file": "06330c.txt",
+      "chars": 2808,
+      "sha256": "b434476d1a084b6d896425f11b8b36c6b8022e6d9e6f3ae65065ab54d762ebc9",
+      "fetchedAt": "2026-11-14T07:46:26.049786Z"
+    },
+    {
+      "slug": "george",
+      "ceCode": "06453a",
+      "url": "https://www.newadvent.org/cathen/06453a.htm",
+      "file": "06453a.txt",
+      "chars": 13850,
+      "sha256": "d0897cfa375176f834cf61e749a1af540f7687af75cfaa2cfa5cd6fecd56c7ed",
+      "fetchedAt": "2026-11-14T07:46:28.785604Z"
+    },
+    {
+      "slug": "gerard-majella",
+      "ceCode": "06467c",
+      "url": "https://www.newadvent.org/cathen/06467c.htm",
+      "file": "06467c.txt",
+      "chars": 2123,
+      "sha256": "43ac857d244f489cb2effa339eb7e3972127eafc2a605dd2d0e57180f0830192",
+      "fetchedAt": "2026-11-14T07:46:31.527248Z"
+    },
+    {
+      "slug": "giles",
+      "ceCode": "06559a",
+      "url": "https://www.newadvent.org/cathen/06559a.htm",
+      "file": "06559a.txt",
+      "chars": 2836,
+      "sha256": "8c4e9441710716818789273b78970c434cae260eb4593935e5c560e7777c09d2",
+      "fetchedAt": "2026-11-14T07:46:34.293168Z"
+    },
+    {
+      "slug": "hedwig",
+      "ceCode": "07189a",
+      "url": "https://www.newadvent.org/cathen/07189a.htm",
+      "file": "07189a.txt",
+      "chars": 7749,
+      "sha256": "2cc363befaec82fc3a5e46b47b8fb2e8017fef14871aafa4806269c4044b8bc0",
+      "fetchedAt": "2026-11-14T07:46:36.995186Z"
+    },
+    {
+      "slug": "hubert",
+      "ceCode": "07507a",
+      "url": "https://www.newadvent.org/cathen/07507a.htm",
+      "file": "07507a.txt",
+      "chars": 4861,
+      "sha256": "a0a1a738c77bb79973e9af3d5816676ff0370f6e968897a912e90627e40535a1",
+      "fetchedAt": "2026-11-14T07:46:39.699024Z"
+    },
+    {
+      "slug": "ignatius-of-loyola",
+      "ceCode": "07639c",
+      "url": "https://www.newadvent.org/cathen/07639c.htm",
+      "file": "07639c.txt",
+      "chars": 29970,
+      "sha256": "0b5b3ea2fab217f10e1c14828cf3e1ea1bf67c8e90cd90b787e2b62b078e601b",
+      "fetchedAt": "2026-11-14T07:46:42.566330Z"
+    },
+    {
+      "slug": "isidore-of-seville",
+      "ceCode": "08186a",
+      "url": "https://www.newadvent.org/cathen/08186a.htm",
+      "file": "08186a.txt",
+      "chars": 16649,
+      "sha256": "9e3d40aa0a127a14fcb5ae55bc974315bbb4a330af350f3cef3461bf78e9ac65",
+      "fetchedAt": "2026-11-14T07:46:45.303357Z"
+    },
+    {
+      "slug": "jerome",
+      "ceCode": "08341a",
+      "url": "https://www.newadvent.org/cathen/08341a.htm",
+      "file": "08341a.txt",
+      "chars": 18874,
+      "sha256": "a14a9004bef3498a214f9439e1ff732c7e0c7cbffe530789e65891c1ec29a97a",
+      "fetchedAt": "2026-11-14T07:46:48.151451Z"
+    },
+    {
+      "slug": "joan-of-arc",
+      "ceCode": "08409c",
+      "url": "https://www.newadvent.org/cathen/08409c.htm",
+      "file": "08409c.txt",
+      "chars": 23909,
+      "sha256": "3719cd556fe992fd1c5851f7560c926e137533b793d893104f57a775e683a289",
+      "fetchedAt": "2026-11-14T07:46:51.006329Z"
+    },
+    {
+      "slug": "john-cantius",
+      "ceCode": "08451b",
+      "url": "https://www.newadvent.org/cathen/08451b.htm",
+      "file": "08451b.txt",
+      "chars": 2014,
+      "sha256": "aa86d9e2fab78732ccb048cc2b9cb775ceee9bc0fa05e7627f3f32a1c95cc397",
+      "fetchedAt": "2026-11-14T07:46:53.703914Z"
+    },
+    {
+      "slug": "john-of-avila",
+      "ceCode": "08469a",
+      "url": "https://www.newadvent.org/cathen/08469a.htm",
+      "file": "08469a.txt",
+      "chars": 3246,
+      "sha256": "cf8b853fb98276d9224e25553d2fbbc52fc4eafc760a4732bacc53db3fd85e67",
+      "fetchedAt": "2026-11-14T07:46:56.423008Z"
+    },
+    {
+      "slug": "john-of-capistrano",
+      "ceCode": "08452a",
+      "url": "https://www.newadvent.org/cathen/08452a.htm",
+      "file": "08452a.txt",
+      "chars": 5082,
+      "sha256": "23ea78d58ba42335037b5bf1323cdd66b76de082df40b095920e18f95e84285c",
+      "fetchedAt": "2026-11-14T07:46:59.162043Z"
+    },
+    {
+      "slug": "john-of-god",
+      "ceCode": "08472c",
+      "url": "https://www.newadvent.org/cathen/08472c.htm",
+      "file": "08472c.txt",
+      "chars": 5228,
+      "sha256": "6162d95408380acb678e75cd9d10b6a80a40b5e24c2c9b869d8f436212bd91d8",
+      "fetchedAt": "2026-11-14T07:47:01.910682Z"
+    },
+    {
+      "slug": "john-of-the-cross",
+      "ceCode": "08480a",
+      "url": "https://www.newadvent.org/cathen/08480a.htm",
+      "file": "08480a.txt",
+      "chars": 11964,
+      "sha256": "8361b42f4f2d80f925bae6a134b23294a31f4b02d493f3ebc65ac7f3836d32d7",
+      "fetchedAt": "2026-11-14T07:47:04.654248Z"
+    },
+    {
+      "slug": "john-the-baptist",
+      "ceCode": "08486b",
+      "url": "https://www.newadvent.org/cathen/08486b.htm",
+      "file": "08486b.txt",
+      "chars": 34353,
+      "sha256": "2989a1fdb3cbc7f217b3eb0574418f007304f1a2a3548a4356bd9cd333e32141",
+      "fetchedAt": "2026-11-14T07:47:07.518615Z"
+    },
+    {
+      "slug": "joseph-of-cupertino",
+      "ceCode": "08520b",
+      "url": "https://www.newadvent.org/cathen/08520b.htm",
+      "file": "08520b.txt",
+      "chars": 3811,
+      "sha256": "ecd526c1f9cf23b5c0cd407613df9fd5b532911ccc9b80a3cb3e01c9382a83cb",
+      "fetchedAt": "2026-11-14T07:47:10.218080Z"
+    },
+    {
+      "slug": "juliana-falconieri",
+      "ceCode": "08556a",
+      "url": "https://www.newadvent.org/cathen/08556a.htm",
+      "file": "08556a.txt",
+      "chars": 2657,
+      "sha256": "765b01aa20e2e90a4a4f5500a113dcd575ef11922cc3eefc4211633c65a9edce",
+      "fetchedAt": "2026-11-14T07:47:12.909838Z"
+    },
+    {
+      "slug": "lawrence-of-brindisi",
+      "ceCode": "09359a",
+      "url": "https://www.newadvent.org/cathen/09359a.htm",
+      "file": "09359a.txt",
+      "chars": 9619,
+      "sha256": "3ac61f49fe0db20489a9eead2a3440c745a975909e19a8a873806b7523a8023b",
+      "fetchedAt": "2026-11-14T07:47:15.619719Z"
+    },
+    {
+      "slug": "lidwina",
+      "ceCode": "09233a",
+      "url": "https://www.newadvent.org/cathen/09233a.htm",
+      "file": "09233a.txt",
+      "chars": 2694,
+      "sha256": "5c581a70304232b78e2b052acf499fa2aeefa3cd7e763325d9c6f37c9d31697a",
+      "fetchedAt": "2026-11-14T07:47:18.321932Z"
+    },
+    {
+      "slug": "lucy",
+      "ceCode": "09414a",
+      "url": "https://www.newadvent.org/cathen/09414a.htm",
+      "file": "09414a.txt",
+      "chars": 4813,
+      "sha256": "5addbd7004251502418f79d1b39602e686bccff73546ac0aabd13f1b09630225",
+      "fetchedAt": "2026-11-14T07:47:21.036542Z"
+    },
+    {
+      "slug": "magnus-bishop-of-milan",
+      "ceCode": "09536a",
+      "url": "https://www.newadvent.org/cathen/09536a.htm",
+      "file": "09536a.txt",
+      "chars": 4478,
+      "sha256": "32953d746e150cdce01c498fdc5809a554062f6c8d8dc586101d0746ac8f0830",
+      "fetchedAt": "2026-11-14T07:47:23.752896Z"
+    },
+    {
+      "slug": "margaret-of-scotland",
+      "ceCode": "09655c",
+      "url": "https://www.newadvent.org/cathen/09655c.htm",
+      "file": "09655c.txt",
+      "chars": 3613,
+      "sha256": "ff0bf064c3ef9bb285a33fd4364af166371a5ae3caf3598805ed8c4f2fb4f2f6",
+      "fetchedAt": "2026-11-14T07:47:26.461156Z"
+    },
+    {
+      "slug": "martha",
+      "ceCode": "09721b",
+      "url": "https://www.newadvent.org/cathen/09721b.htm",
+      "file": "09721b.txt",
+      "chars": 2570,
+      "sha256": "db4f27d13cdbb0b77a1ab148f576bba52d8fd97041c85eb6732a43c5ea353f99",
+      "fetchedAt": "2026-11-14T07:47:29.279594Z"
+    },
+    {
+      "slug": "martin-of-tours",
+      "ceCode": "09732b",
+      "url": "https://www.newadvent.org/cathen/09732b.htm",
+      "file": "09732b.txt",
+      "chars": 8146,
+      "sha256": "7454dbd2368497f92dc8cf35b9f39d43aa81419e4c09cf3eaba95744b61e453f",
+      "fetchedAt": "2026-11-14T07:47:32.007960Z"
+    },
+    {
+      "slug": "matthew",
+      "ceCode": "10056b",
+      "url": "https://www.newadvent.org/cathen/10056b.htm",
+      "file": "10056b.txt",
+      "chars": 4747,
+      "sha256": "80d8062b3086ddcea64e2bf6300dca4a3ed005373121c393cd90879ea6a954e6",
+      "fetchedAt": "2026-11-14T07:47:34.808745Z"
+    },
+    {
+      "slug": "monica",
+      "ceCode": "10482a",
+      "url": "https://www.newadvent.org/cathen/10482a.htm",
+      "file": "10482a.txt",
+      "chars": 4929,
+      "sha256": "e0e925a4b67663b125beb004c6c117389aaee732bfb2f831a43061ece5a44768",
+      "fetchedAt": "2026-11-14T07:47:37.572438Z"
+    },
+    {
+      "slug": "nicetius",
+      "ceCode": "11053a",
+      "url": "https://www.newadvent.org/cathen/11053a.htm",
+      "file": "11053a.txt",
+      "chars": 5228,
+      "sha256": "e24762002016c2fdfb85002a51ecd8963f7d5063b26c6c335135d65570a9b6a4",
+      "fetchedAt": "2026-11-14T07:47:40.341469Z"
+    },
+    {
+      "slug": "nicholas-of-tolentino",
+      "ceCode": "11065a",
+      "url": "https://www.newadvent.org/cathen/11065a.htm",
+      "file": "11065a.txt",
+      "chars": 1922,
+      "sha256": "84075f02e02496236e8683b7da31acdaa5ba3e19ca043e7df5663b33a6e0f525",
+      "fetchedAt": "2026-11-14T07:47:43.103945Z"
+    },
+    {
+      "slug": "odilia",
+      "ceCode": "11207b",
+      "url": "https://www.newadvent.org/cathen/11207b.htm",
+      "file": "11207b.txt",
+      "chars": 1817,
+      "sha256": "67e06f256532906341ea055b0f88780742e01b2c961e92ba5f695e80dc789999",
+      "fetchedAt": "2026-11-14T07:47:45.811860Z"
+    },
+    {
+      "slug": "pantaleon",
+      "ceCode": "11447a",
+      "url": "https://www.newadvent.org/cathen/11447a.htm",
+      "file": "11447a.txt",
+      "chars": 2685,
+      "sha256": "340d9d83607e3cf8b0ce38e28bf9ca1e4226a479e75265ca7306ec13625993d8",
+      "fetchedAt": "2026-11-14T07:47:48.531224Z"
+    },
+    {
+      "slug": "paris",
+      "ceCode": "11480c",
+      "url": "https://www.newadvent.org/cathen/11480c.htm",
+      "file": "11480c.txt",
+      "chars": 101752,
+      "sha256": "a785e9ba45dd2ec08dccf330ecabe7265617faa79b7906262f10f9563fbcabd9",
+      "fetchedAt": "2026-11-14T07:47:51.748762Z"
+    },
+    {
+      "slug": "patrick",
+      "ceCode": "11554a",
+      "url": "https://www.newadvent.org/cathen/11554a.htm",
+      "file": "11554a.txt",
+      "chars": 40243,
+      "sha256": "e029fac702e3585223f3b903c57f40fba7338b7b6f16c8277112120151055c1e",
+      "fetchedAt": "2026-11-14T07:47:54.668132Z"
+    },
+    {
+      "slug": "paul",
+      "ceCode": "11567b",
+      "url": "https://www.newadvent.org/cathen/11567b.htm",
+      "file": "11567b.txt",
+      "chars": 79924,
+      "sha256": "3a6e9531686d5d0ff8c0dabeac0ecc8de7580a71a48f0c272aaa813bade8103d",
+      "fetchedAt": "2026-11-14T07:47:57.712998Z"
+    },
+    {
+      "slug": "peter",
+      "ceCode": "11744a",
+      "url": "https://www.newadvent.org/cathen/11744a.htm",
+      "file": "11744a.txt",
+      "chars": 55335,
+      "sha256": "50af9b3bccde0063602fb193b930ac3a60791ec8941feebb0aa6ed9341d0d855",
+      "fetchedAt": "2026-11-14T07:48:00.667802Z"
+    },
+    {
+      "slug": "peter-claver",
+      "ceCode": "11763a",
+      "url": "https://www.newadvent.org/cathen/11763a.htm",
+      "file": "11763a.txt",
+      "chars": 4243,
+      "sha256": "7d84f06e131e2479bf35314373c602fa433f7aa051a8620bc01759241c200487",
+      "fetchedAt": "2026-11-14T07:48:03.483589Z"
+    },
+    {
+      "slug": "peter-faber",
+      "ceCode": "11767a",
+      "url": "https://www.newadvent.org/cathen/11767a.htm",
+      "file": "11767a.txt",
+      "chars": 4917,
+      "sha256": "481223e067a02e64d3ce623cb5b7b8a6e53cbc5267740817b99d207067694d7d",
+      "fetchedAt": "2026-11-14T07:48:06.196857Z"
+    },
+    {
+      "slug": "philomena",
+      "ceCode": "12025b",
+      "url": "https://www.newadvent.org/cathen/12025b.htm",
+      "file": "12025b.txt",
+      "chars": 3075,
+      "sha256": "3533017fa1e83d60f8ce7afee20fe14c3ae5e3a46a073b05afeb19c83967bb7d",
+      "fetchedAt": "2026-11-14T07:48:09.011874Z"
+    },
+    {
+      "slug": "raymond-of-penyafort",
+      "ceCode": "12671c",
+      "url": "https://www.newadvent.org/cathen/12671c.htm",
+      "file": "12671c.txt",
+      "chars": 3016,
+      "sha256": "8ca3a5ea58c56ef6665e3fa412eec3d938cd1bb278155c415a6c531d58bc9f7a",
+      "fetchedAt": "2026-11-14T07:48:11.779549Z"
+    },
+    {
+      "slug": "roch",
+      "ceCode": "13100c",
+      "url": "https://www.newadvent.org/cathen/13100c.htm",
+      "file": "13100c.txt",
+      "chars": 3351,
+      "sha256": "d8f67f3f8b2529b14d96866657dc0b89088ffea08d396b145236ba3425f572e6",
+      "fetchedAt": "2026-11-14T07:48:14.542253Z"
+    },
+    {
+      "slug": "rosalia",
+      "ceCode": "13184a",
+      "url": "https://www.newadvent.org/cathen/13184a.htm",
+      "file": "13184a.txt",
+      "chars": 1141,
+      "sha256": "03e5b669845a0990ad2e7d5e7a4e7d26564fa2c12a105ce5699730614023e241",
+      "fetchedAt": "2026-11-14T07:48:17.305201Z"
+    },
+    {
+      "slug": "rose-of-lima",
+      "ceCode": "13192c",
+      "url": "https://www.newadvent.org/cathen/13192c.htm",
+      "file": "13192c.txt",
+      "chars": 3884,
+      "sha256": "86ea7640fc237fa90e1466b3b5329a24ae1e9822c46070dcac337f8aef3071a3",
+      "fetchedAt": "2026-11-14T07:48:20.086773Z"
+    },
+    {
+      "slug": "rusticus-of-narbonne",
+      "ceCode": "13275a",
+      "url": "https://www.newadvent.org/cathen/13275a.htm",
+      "file": "13275a.txt",
+      "chars": 1621,
+      "sha256": "bdc9486953bbd7cb696a7563405b731e433b8afa956d407a3c7671693d4761b1",
+      "fetchedAt": "2026-11-14T07:48:22.835533Z"
+    },
+    {
+      "slug": "pope-silverius",
+      "ceCode": "13793a",
+      "url": "https://www.newadvent.org/cathen/13793a.htm",
+      "file": "13793a.txt",
+      "chars": 5683,
+      "sha256": "dfa43e8dfd34dd9b0e01622c42d6e9ea38899248e0301f4e6bd482e5d2658be9",
+      "fetchedAt": "2026-11-14T07:48:25.602347Z"
+    },
+    {
+      "slug": "pope-sixtus-i",
+      "ceCode": "14031b",
+      "url": "https://www.newadvent.org/cathen/14031b.htm",
+      "file": "14031b.txt",
+      "chars": 2189,
+      "sha256": "5174c30810e0eb791df077d39a5065022a3381a50b87d2ebdada18415d868177",
+      "fetchedAt": "2026-11-14T07:48:28.365405Z"
+    },
+    {
+      "slug": "stanislaus-kostka",
+      "ceCode": "14245b",
+      "url": "https://www.newadvent.org/cathen/14245b.htm",
+      "file": "14245b.txt",
+      "chars": 7761,
+      "sha256": "f5f53917ffc47f1c4fe413b5cab08ec7894678902b5ac1b41fd6ca4e5b0c0e17",
+      "fetchedAt": "2026-11-14T07:48:31.074859Z"
+    },
+    {
+      "slug": "teresa-of-avila",
+      "ceCode": "14515b",
+      "url": "https://www.newadvent.org/cathen/14515b.htm",
+      "file": "14515b.txt",
+      "chars": 7700,
+      "sha256": "4f1194813af5bc03ec5eaadeaafc449f277a2ea2005a3fcec8a346a13cb5b1cf",
+      "fetchedAt": "2026-11-14T07:48:33.790312Z"
+    },
+    {
+      "slug": "theodoret-martyr",
+      "ceCode": "14574b",
+      "url": "https://www.newadvent.org/cathen/14574b.htm",
+      "file": "14574b.txt",
+      "chars": 11210,
+      "sha256": "056dcedcd18bcbabb40585e1aff4baf19d92ab135ca48c9c9f39e5a31a352d93",
+      "fetchedAt": "2026-11-14T07:48:36.556793Z"
+    },
+    {
+      "slug": "thomas-more",
+      "ceCode": "14689c",
+      "url": "https://www.newadvent.org/cathen/14689c.htm",
+      "file": "14689c.txt",
+      "chars": 25905,
+      "sha256": "268e74b30c2608b1aff4c0b906063856ab71d4b2a0b936fa37be847a732e27bc",
+      "fetchedAt": "2026-11-14T07:48:39.413224Z"
+    },
+    {
+      "slug": "vincent-de-paul",
+      "ceCode": "15434c",
+      "url": "https://www.newadvent.org/cathen/15434c.htm",
+      "file": "15434c.txt",
+      "chars": 20428,
+      "sha256": "f5ac208f232fd935ce8f1e2fcc3ed7ee68f66ad3f3d8d62568e6448583f5fb46",
+      "fetchedAt": "2026-11-14T07:48:42.292849Z"
+    },
+    {
+      "slug": "wenceslaus",
+      "ceCode": "15587b",
+      "url": "https://www.newadvent.org/cathen/15587b.htm",
+      "file": "15587b.txt",
+      "chars": 1217,
+      "sha256": "20bf3656f51c8a825b9ae32760374584fa4e403679b2a7830657649fdbcbbe55",
+      "fetchedAt": "2026-11-14T07:48:45.053542Z"
+    },
+    {
+      "slug": "zita",
+      "ceCode": "15762a",
+      "url": "https://www.newadvent.org/cathen/15762a.htm",
+      "file": "15762a.txt",
+      "chars": 2806,
+      "sha256": "157c4763881371b26db2d81902a9326e86676a7cae4f82f07df2dde4f3c8fa27",
+      "fetchedAt": "2026-11-14T07:48:47.818798Z"
+    },
+    {
+      "slug": "cosmas-and-damian",
+      "ceCode": "04403e",
+      "url": "https://www.newadvent.org/cathen/04403e.htm",
+      "file": "04403e.txt",
+      "chars": 2020,
+      "sha256": "c01ad83ede654333365d8395c4a33705a29b1438f4571ea500c8e47a914254d5",
+      "fetchedAt": "2026-11-14T07:48:50.595259Z"
+    }
+  ]
+}

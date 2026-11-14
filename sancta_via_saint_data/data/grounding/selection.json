@@ -8,7 +8,8 @@
       "ceTitle": "Anthony of Padua, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01556a.htm",
       "patronageCount": 2,
-      "featured": true
+      "featured": true,
+      "grounded": true
     },
     {
       "slug": "dymphna",
@@ -17,7 +18,8 @@
       "ceTitle": "Dymphna, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05221b.htm",
       "patronageCount": 2,
-      "featured": true
+      "featured": true,
+      "grounded": true
     },
     {
       "slug": "francis-of-assisi",
@@ -26,7 +28,8 @@
       "ceTitle": "Francis of Assisi, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06221a.htm",
       "patronageCount": 2,
-      "featured": true
+      "featured": true,
+      "grounded": true
     },
     {
       "slug": "michael-the-archangel",
@@ -35,7 +38,8 @@
       "ceTitle": "Michael the Archangel, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/10275b.htm",
       "patronageCount": 2,
-      "featured": true
+      "featured": true,
+      "grounded": true
     },
     {
       "slug": "fabiola",
@@ -44,7 +48,8 @@
       "ceTitle": "Fabiola, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05743a.htm",
       "patronageCount": 6,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-chrysostom",
@@ -53,7 +58,8 @@
       "ceTitle": "Chrysostom, Saint John",
       "ceUrl": "https://www.newadvent.org/cathen/08452b.htm",
       "patronageCount": 5,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "kilian",
@@ -62,7 +68,8 @@
       "ceTitle": "Kilian, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08639a.htm",
       "patronageCount": 5,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "melania-the-younger",
@@ -71,7 +78,8 @@
       "ceTitle": "Melania (the Younger), Saint",
       "ceUrl": "https://www.newadvent.org/cathen/10154a.htm",
       "patronageCount": 5,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pelagia",
@@ -80,7 +88,8 @@
       "ceTitle": "Pelagia",
       "ceUrl": "https://www.newadvent.org/cathen/11601d.htm",
       "patronageCount": 5,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "sidonius-apollinaris",
@@ -89,7 +98,8 @@
       "ceTitle": "Sidonius Apollinaris",
       "ceUrl": "https://www.newadvent.org/cathen/13778a.htm",
       "patronageCount": 5,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "crispin-and-crispinian",
@@ -98,7 +108,8 @@
       "ceTitle": "Crispin and Crispinian, Saints",
       "ceUrl": "https://www.newadvent.org/cathen/04491a.htm",
       "patronageCount": 5,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-evaristus",
@@ -107,7 +118,8 @@
       "ceTitle": "Evaristus, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05646a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "anastasius-sinaita",
@@ -116,7 +128,8 @@
       "ceTitle": "Anastasius Sinaita, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01455d.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "arialdo",
@@ -125,7 +138,8 @@
       "ceTitle": "Arialdo, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01707b.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "bernard-of-menthon",
@@ -134,7 +148,8 @@
       "ceTitle": "Bernard of Menthon, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02503b.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "clement-of-alexandria",
@@ -143,7 +158,8 @@
       "ceTitle": "Clement of Alexandria",
       "ceUrl": "https://www.newadvent.org/cathen/04045a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "corbinian",
@@ -152,7 +168,8 @@
       "ceTitle": "Corbinian",
       "ceUrl": "https://www.newadvent.org/cathen/04356a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "diodorus-of-tarsus",
@@ -161,7 +178,8 @@
       "ceTitle": "Diodorus of Tarsus",
       "ceUrl": "https://www.newadvent.org/cathen/05008a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "edmund-the-martyr",
@@ -170,7 +188,8 @@
       "ceTitle": "Edmund the Martyr, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05295a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "epiphanius-of-salamis",
@@ -179,25 +198,28 @@
       "ceTitle": "Epiphanius of Salamis",
       "ceUrl": "https://www.newadvent.org/cathen/13393b.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "eulogius-of-c-rdoba",
-      "name": "St. Eulogius of C\u00f3rdoba",
+      "name": "St. Eulogius of Córdoba",
       "ceCode": "05604a",
       "ceTitle": "Eulogius of Cordova, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05604a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "eusebius",
       "name": "St. Eusebius of Caesarea",
       "ceCode": "05617b",
-      "ceTitle": "Eusebius of C\u00e6sarea",
+      "ceTitle": "Eusebius of Cæsarea",
       "ceUrl": "https://www.newadvent.org/cathen/05617b.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "gottschalk-obotrite-prince",
@@ -206,7 +228,8 @@
       "ceTitle": "Gottschalk, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06681a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "justus",
@@ -215,7 +238,8 @@
       "ceTitle": "Justus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08586a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "macrina-the-younger",
@@ -224,7 +248,8 @@
       "ceTitle": "Macrina the Younger, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09508c.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "mamertus",
@@ -233,7 +258,8 @@
       "ceTitle": "Mamertus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09580a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "marcus-eremita",
@@ -242,7 +268,8 @@
       "ceTitle": "Marcus Eremita",
       "ceUrl": "https://www.newadvent.org/cathen/09650d.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "martin-of-braga",
@@ -251,7 +278,8 @@
       "ceTitle": "Martin of Braga",
       "ceUrl": "https://www.newadvent.org/cathen/09731b.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "maurus",
@@ -260,7 +288,8 @@
       "ceTitle": "Maurus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/10072a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-miltiades",
@@ -269,7 +298,8 @@
       "ceTitle": "Miltiades, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/10318a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "moses-bishop-of-the-arabs",
@@ -278,7 +308,8 @@
       "ceTitle": "Moses",
       "ceUrl": "https://www.newadvent.org/cathen/10596a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "paul-the-simple",
@@ -287,7 +318,8 @@
       "ceTitle": "Paul the Simple, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11591a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "peter-igneus",
@@ -296,7 +328,8 @@
       "ceTitle": "Igneus, Blessed Peter",
       "ceUrl": "https://www.newadvent.org/cathen/11768c.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "peter-of-sebaste",
@@ -305,7 +338,8 @@
       "ceTitle": "Peter of Sebaste, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11773c.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pierius",
@@ -314,7 +348,8 @@
       "ceTitle": "Pierius",
       "ceUrl": "https://www.newadvent.org/cathen/12079c.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "stephen-harding",
@@ -323,7 +358,8 @@
       "ceTitle": "Harding, St. Stephen",
       "ceUrl": "https://www.newadvent.org/cathen/14290d.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "thomas-becket",
@@ -332,7 +368,8 @@
       "ceTitle": "Becket, Saint Thomas",
       "ceUrl": "https://www.newadvent.org/cathen/14676a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "vladimir-the-great",
@@ -341,7 +378,8 @@
       "ceTitle": "Vladimir the Great, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15497a.htm",
       "patronageCount": 4,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-gelasius-i",
@@ -350,7 +388,8 @@
       "ceTitle": "Gelasius I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06406a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-caius",
@@ -359,7 +398,8 @@
       "ceTitle": "Caius",
       "ceUrl": "https://www.newadvent.org/cathen/03144a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "abdon-and-sennen",
@@ -368,7 +408,8 @@
       "ceTitle": "Abdon and Sennen, Saints",
       "ceUrl": "https://www.newadvent.org/cathen/01032a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-adeodatus-ii",
@@ -377,7 +418,8 @@
       "ceTitle": "Adeodatus (II), Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01142a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-adrian-iii",
@@ -386,7 +428,8 @@
       "ceTitle": "Adrian III, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01156b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "adrian-of-canterbury",
@@ -395,16 +438,18 @@
       "ceTitle": "Adrian of Canterbury, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01160a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "aelia-flaccilla",
       "name": "St. Aelia Flaccilla",
       "ceCode": "06089b",
-      "ceTitle": "Flaccilla, \u00c6lia",
+      "ceTitle": "Flaccilla, Ælia",
       "ceUrl": "https://www.newadvent.org/cathen/06089b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "afra",
@@ -413,7 +458,8 @@
       "ceTitle": "Afra, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01180b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "aidan-of-lindisfarne",
@@ -422,7 +468,8 @@
       "ceTitle": "Aidan of Lindisfarne, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01233d.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "aldhelm",
@@ -431,7 +478,8 @@
       "ceTitle": "Aldhelm, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01280b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "amphilochius-of-iconium",
@@ -440,7 +488,8 @@
       "ceTitle": "Amphilochius of Iconium",
       "ceUrl": "https://www.newadvent.org/cathen/01438a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "andrew-the-scot",
@@ -449,7 +498,8 @@
       "ceTitle": "Andrew the Scot, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01474c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "assicus",
@@ -458,7 +508,8 @@
       "ceTitle": "Assicus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01800a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "atto-of-pistoia",
@@ -467,7 +518,8 @@
       "ceTitle": "Atto of Pistoia",
       "ceUrl": "https://www.newadvent.org/cathen/02062b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "auxentius-of-mopsuestia",
@@ -476,7 +528,8 @@
       "ceTitle": "Auxentius of Mopsuestia",
       "ceUrl": "https://www.newadvent.org/cathen/02144d.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "benignus-bishop-of-milan",
@@ -485,25 +538,28 @@
       "ceTitle": "Benignus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02479b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "burchard-of-w-rzburg",
-      "name": "St. Burchard of W\u00fcrzburg",
+      "name": "St. Burchard of Würzburg",
       "ceCode": "03064b",
-      "ceTitle": "Burchard of W\u00fcrzurg, Saint",
+      "ceTitle": "Burchard of Würzurg, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03064b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "caesarius-of-arles",
       "name": "St. Caesarius of Arles",
       "ceCode": "03135b",
-      "ceTitle": "C\u00e6sarius of Arles, Saint",
+      "ceTitle": "Cæsarius of Arles, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03135b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-celestine-i",
@@ -512,7 +568,8 @@
       "ceTitle": "Celestine I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03477c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "chromatius",
@@ -521,7 +578,8 @@
       "ceTitle": "Chromatius, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03730a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "columba-of-sens",
@@ -530,7 +588,8 @@
       "ceTitle": "Columba of Sens, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04135b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "columbanus",
@@ -539,7 +598,8 @@
       "ceTitle": "Columbanus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04137a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "constantine-the-great",
@@ -548,7 +608,8 @@
       "ceTitle": "Constantine the Great",
       "ceUrl": "https://www.newadvent.org/cathen/04295c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "cyril-of-jerusalem",
@@ -557,7 +618,8 @@
       "ceTitle": "Cyril of Jerusalem, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04595b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-damasus-i",
@@ -566,7 +628,8 @@
       "ceTitle": "Damasus I, Saint, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/04613a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "didymus-the-blind",
@@ -575,7 +638,8 @@
       "ceTitle": "Didymus the Blind",
       "ceUrl": "https://www.newadvent.org/cathen/04784a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "dionysius-of-alexandria",
@@ -584,7 +648,8 @@
       "ceTitle": "Dionysius of Alexandria",
       "ceUrl": "https://www.newadvent.org/cathen/05011a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "donatus-of-fiesole",
@@ -593,7 +658,8 @@
       "ceTitle": "Donatus of Fiesole",
       "ceUrl": "https://www.newadvent.org/cathen/05129a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "edward-the-confessor",
@@ -602,7 +668,8 @@
       "ceTitle": "Edward the Confessor, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05322a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "edward-the-martyr",
@@ -611,7 +678,8 @@
       "ceTitle": "Edward the Martyr, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05323a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "eimhin",
@@ -620,7 +688,8 @@
       "ceTitle": "Eimhin, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05366a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "elias-i-of-jerusalem",
@@ -629,7 +698,8 @@
       "ceTitle": "Elias of Jerusalem",
       "ceUrl": "https://www.newadvent.org/cathen/05385a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "emerentiana",
@@ -638,7 +708,8 @@
       "ceTitle": "Emerentiana, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05401b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "eucharius",
@@ -647,7 +718,8 @@
       "ceTitle": "Eucharius, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05594a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "eugenius-of-carthage",
@@ -656,7 +728,8 @@
       "ceTitle": "Eugenius of Carthage, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05602c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "florentina",
@@ -665,7 +738,8 @@
       "ceTitle": "Florentina, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06114b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "fructuosus-of-braga",
@@ -674,7 +748,8 @@
       "ceTitle": "Fructuosus of Braga, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06311a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "fulbert-of-chartres",
@@ -683,7 +758,8 @@
       "ceTitle": "Fulbert of Chartres",
       "ceUrl": "https://www.newadvent.org/cathen/06312a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "gaudentius-of-brescia",
@@ -692,7 +768,8 @@
       "ceTitle": "Gaudentius of Brescia",
       "ceUrl": "https://www.newadvent.org/cathen/06394a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "gilbert-of-sempringham",
@@ -701,7 +778,8 @@
       "ceTitle": "Gilbert of Sempringham, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06557b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "gildas",
@@ -710,7 +788,8 @@
       "ceTitle": "Gildas, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06557c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-gregory-i",
@@ -719,7 +798,8 @@
       "ceTitle": "Gregory I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06780a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-gregory-ii",
@@ -728,7 +808,8 @@
       "ceTitle": "Gregory II, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06787a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-gregory-iii",
@@ -737,7 +818,8 @@
       "ceTitle": "Gregory III, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06789a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "gregory-of-nazianzus",
@@ -746,7 +828,8 @@
       "ceTitle": "Gregory of Nazianzus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07010b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "gregory-of-nyssa",
@@ -755,7 +838,8 @@
       "ceTitle": "Gregory of Nyssa, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07016a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "hegesippus-chronicler",
@@ -764,7 +848,8 @@
       "ceTitle": "Hegesippus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07194a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "hesychius-of-sinai",
@@ -773,7 +858,8 @@
       "ceTitle": "Hesychius of Sinai",
       "ceUrl": "https://www.newadvent.org/cathen/07304a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "hilary-of-arles",
@@ -782,7 +868,8 @@
       "ceTitle": "Hilary of Arles, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07349a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "hilary-of-poitiers",
@@ -791,7 +878,8 @@
       "ceTitle": "Hilary of Poitiers, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07349b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "honoratus",
@@ -800,7 +888,8 @@
       "ceTitle": "Honoratus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07451a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "irenaeus",
@@ -809,7 +898,8 @@
       "ceTitle": "Irenaeus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08130b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "isaac-of-armenia",
@@ -818,7 +908,8 @@
       "ceTitle": "Isaac of Armenia",
       "ceUrl": "https://www.newadvent.org/cathen/08175b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "isidore-of-pelusium",
@@ -827,7 +918,8 @@
       "ceTitle": "Isidore of Pelusium, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08185c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-cassian",
@@ -836,7 +928,8 @@
       "ceTitle": "Cassian, John",
       "ceUrl": "https://www.newadvent.org/cathen/03404a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-climacus",
@@ -845,7 +938,8 @@
       "ceTitle": "John Climacus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08457a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-of-beverley",
@@ -854,7 +948,8 @@
       "ceTitle": "John of Beverley, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08469b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-the-silent",
@@ -863,7 +958,8 @@
       "ceTitle": "John the Silent, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08495a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "jonas-of-bobbio",
@@ -872,7 +968,8 @@
       "ceTitle": "Jonas of Bobbio",
       "ceUrl": "https://www.newadvent.org/cathen/08498a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-julius-i",
@@ -881,7 +978,8 @@
       "ceTitle": "Julius I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08561a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "laura",
@@ -890,7 +988,8 @@
       "ceTitle": "Laura",
       "ceUrl": "https://www.newadvent.org/cathen/09039a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-leo-ii",
@@ -899,7 +998,8 @@
       "ceTitle": "Leo II, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09157a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-leo-iv",
@@ -908,7 +1008,8 @@
       "ceTitle": "Leo IV, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/09159a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-leo-ix",
@@ -917,7 +1018,8 @@
       "ceTitle": "Leo IX, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/09160c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "macrina-the-elder",
@@ -926,7 +1028,8 @@
       "ceTitle": "Macrina the Elder, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09508b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "magnus-felix-ennodius",
@@ -935,7 +1038,8 @@
       "ceTitle": "Ennodius, Magnus Felix",
       "ceUrl": "https://www.newadvent.org/cathen/05478a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "manahen",
@@ -944,7 +1048,8 @@
       "ceTitle": "Manahen, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09583b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "marcellina",
@@ -953,7 +1058,8 @@
       "ceTitle": "Marcellina, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09637c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-marcellus-i",
@@ -962,7 +1068,8 @@
       "ceTitle": "Marcellus I, Saint, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/09640b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "martial",
@@ -971,7 +1078,8 @@
       "ceTitle": "Martial, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09721c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "maximus-of-turin",
@@ -980,7 +1088,8 @@
       "ceTitle": "Maximus of Turin, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/10081a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "meletius-of-antioch",
@@ -989,7 +1098,8 @@
       "ceTitle": "Meletius of Antioch",
       "ceUrl": "https://www.newadvent.org/cathen/10161b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "mellitus",
@@ -998,7 +1108,8 @@
       "ceTitle": "Mellitus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/10168b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-nicholas-i",
@@ -1007,7 +1118,8 @@
       "ceTitle": "Nicholas I, Saint, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/11054a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "nilus-the-younger",
@@ -1016,7 +1128,8 @@
       "ceTitle": "Nilus the Younger",
       "ceUrl": "https://www.newadvent.org/cathen/11080a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "olaf-haraldsson",
@@ -1025,7 +1138,8 @@
       "ceTitle": "Haraldson, Saint Olaf",
       "ceUrl": "https://www.newadvent.org/cathen/11234a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "optatus",
@@ -1034,7 +1148,8 @@
       "ceTitle": "Optatus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11262b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "osmund",
@@ -1043,7 +1158,8 @@
       "ceTitle": "Osmund, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11340a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pammachius",
@@ -1052,16 +1168,18 @@
       "ceTitle": "Pammachius, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11436a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pantaenus",
       "name": "St. Pantaenus",
       "ceCode": "11446b",
-      "ceTitle": "Pant\u00e6nus",
+      "ceTitle": "Pantænus",
       "ceUrl": "https://www.newadvent.org/cathen/11446b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-paschal-i",
@@ -1070,7 +1188,8 @@
       "ceTitle": "Paschal I, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/11514a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "perpetuus",
@@ -1079,7 +1198,8 @@
       "ceTitle": "Perpetuus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11700a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "peter-chrysologus",
@@ -1088,7 +1208,8 @@
       "ceTitle": "Peter Chrysologus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11762c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "philastrius",
@@ -1097,7 +1218,8 @@
       "ceTitle": "Philastrius, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11797a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "plegmund",
@@ -1106,7 +1228,8 @@
       "ceTitle": "Plegmund",
       "ceUrl": "https://www.newadvent.org/cathen/12164a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "porphyrius",
@@ -1115,7 +1238,8 @@
       "ceTitle": "Porphyrius, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/12282c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "possidius",
@@ -1124,7 +1248,8 @@
       "ceTitle": "Possidius, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/12318a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pulcheria",
@@ -1133,7 +1258,8 @@
       "ceTitle": "Pulcheria, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/12561c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "rimbert",
@@ -1142,7 +1268,8 @@
       "ceTitle": "Rimbert, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13057a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "sabina",
@@ -1151,7 +1278,8 @@
       "ceTitle": "Sabina, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13290a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "simeon-gospel-of-luke",
@@ -1160,7 +1288,8 @@
       "ceTitle": "Simeon",
       "ceUrl": "https://www.newadvent.org/cathen/13794b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-stephen-i",
@@ -1169,7 +1298,8 @@
       "ceTitle": "Stephen I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14288a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "theodorus-and-theophanes",
@@ -1178,7 +1308,8 @@
       "ceTitle": "Theodorus and Theophanes, Saints",
       "ceUrl": "https://www.newadvent.org/cathen/14577a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "trudpert",
@@ -1187,7 +1318,8 @@
       "ceTitle": "Trudpert, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15069c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "ultan-of-ardbraccan",
@@ -1196,7 +1328,8 @@
       "ceTitle": "Ultan of Ardbracca",
       "ceUrl": "https://www.newadvent.org/cathen/15124d.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "wilfrid",
@@ -1205,7 +1338,8 @@
       "ceTitle": "Wilfrid, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15621c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "willehad",
@@ -1214,7 +1348,8 @@
       "ceTitle": "Willehad, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15628a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "william-of-gellone",
@@ -1223,7 +1358,8 @@
       "ceTitle": "William of Gellone, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15633a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "winnoc",
@@ -1232,7 +1368,8 @@
       "ceTitle": "Winnoc, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15658a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-zachary",
@@ -1241,7 +1378,8 @@
       "ceTitle": "Zachary, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15743b.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-zephyrinus",
@@ -1250,7 +1388,8 @@
       "ceTitle": "Zephyrinus, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15756c.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "chrysanthus-and-daria",
@@ -1259,7 +1398,8 @@
       "ceTitle": "Chrysanthus and Daria, Saints",
       "ceUrl": "https://www.newadvent.org/cathen/03742a.htm",
       "patronageCount": 3,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-hormisdas",
@@ -1268,7 +1408,8 @@
       "ceTitle": "Hormisdas, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07470a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-pontian",
@@ -1277,7 +1418,8 @@
       "ceTitle": "Pontian, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/12229b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-siricius",
@@ -1286,7 +1428,8 @@
       "ceTitle": "Siricius, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14026a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "abdias-of-babylon",
@@ -1295,7 +1438,8 @@
       "ceTitle": "Abdias of Babylon",
       "ceUrl": "https://www.newadvent.org/cathen/01030c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-adeodatus-i",
@@ -1304,7 +1448,8 @@
       "ceTitle": "Adeodatus I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04760a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-agapetus-i",
@@ -1313,7 +1458,8 @@
       "ceTitle": "Agapetus I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01202c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-agatho",
@@ -1322,7 +1468,8 @@
       "ceTitle": "Agatho, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01204c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "alphonsus-liguori",
@@ -1331,7 +1478,8 @@
       "ceTitle": "Alphonsus Liguori, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01334a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-anacletus",
@@ -1340,7 +1488,8 @@
       "ceTitle": "Anacletus, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01446a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-anastasius-i",
@@ -1349,7 +1498,8 @@
       "ceTitle": "Anastasius I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01454c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-anicetus",
@@ -1358,7 +1508,8 @@
       "ceTitle": "Anicetus, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01514a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-anterus",
@@ -1367,7 +1518,8 @@
       "ceTitle": "Anterus, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01553a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "apollinaris-claudius",
@@ -1376,7 +1528,8 @@
       "ceTitle": "Apollinaris Claudius, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01617b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "augustine-of-canterbury",
@@ -1385,7 +1538,8 @@
       "ceTitle": "Augustine of Canterbury, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02081a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "ava",
@@ -1394,7 +1548,8 @@
       "ceTitle": "Ava",
       "ceUrl": "https://www.newadvent.org/cathen/02147b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "benedict-biscop",
@@ -1403,7 +1558,8 @@
       "ceTitle": "Benedict Biscop, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02441b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-benedict-ii",
@@ -1412,7 +1568,8 @@
       "ceTitle": "Benedict II, Saint, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/02427d.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "berach",
@@ -1421,7 +1578,8 @@
       "ceTitle": "Berach, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02485a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "bernard-of-clairvaux",
@@ -1430,7 +1588,8 @@
       "ceTitle": "Bernard of Clairvaux, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02498d.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "beuno",
@@ -1439,7 +1598,8 @@
       "ceTitle": "Beuno, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02540a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "boisil",
@@ -1448,7 +1608,8 @@
       "ceTitle": "Boisil, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02625a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-boniface-i",
@@ -1457,7 +1618,8 @@
       "ceTitle": "Boniface I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02658a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-boniface-iv",
@@ -1466,7 +1628,8 @@
       "ceTitle": "Boniface IV, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02660c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "bridget-of-sweden",
@@ -1475,7 +1638,8 @@
       "ceTitle": "Bridget of Sweden, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02782a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "bruno-of-querfurt",
@@ -1484,16 +1648,18 @@
       "ceTitle": "Bruno of Querfurt, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03018a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "caesarius-of-nazianzus",
       "name": "St. Caesarius of Nazianzus",
       "ceCode": "03138a",
-      "ceTitle": "C\u00e6sarius of Nazianzus",
+      "ceTitle": "Cæsarius of Nazianzus",
       "ceUrl": "https://www.newadvent.org/cathen/03138a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "cedd",
@@ -1502,7 +1668,8 @@
       "ceTitle": "Cedd, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03475a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "chrysogonus",
@@ -1511,7 +1678,8 @@
       "ceTitle": "Chrysogonus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03742b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "colman-martyr",
@@ -1520,7 +1688,8 @@
       "ceTitle": "Colman, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04115g.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "columba-of-terryglass",
@@ -1529,7 +1698,8 @@
       "ceTitle": "Columba of Terryglass, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04135a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "conan",
@@ -1538,7 +1708,8 @@
       "ceTitle": "Conan, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04189c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "crescens",
@@ -1547,7 +1718,8 @@
       "ceTitle": "Crescens",
       "ceUrl": "https://www.newadvent.org/cathen/04484b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "cyprian-and-justina",
@@ -1556,7 +1728,8 @@
       "ceTitle": "Cyprian and Justina, Saints",
       "ceUrl": "https://www.newadvent.org/cathen/04583a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "cyril-of-alexandria",
@@ -1565,7 +1738,8 @@
       "ceTitle": "Cyril of Alexandria, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04592b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "drostan",
@@ -1574,16 +1748,18 @@
       "ceTitle": "Drostan, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05161a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "d-chu",
-      "name": "St. D\u00edchu",
+      "name": "St. Díchu",
       "ceCode": "04778b",
       "ceTitle": "Dichu, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04778b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "earconwald",
@@ -1592,7 +1768,8 @@
       "ceTitle": "Erconwald, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05517a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "edmund-campion",
@@ -1601,7 +1778,8 @@
       "ceTitle": "Campion, Saint Edmund",
       "ceUrl": "https://www.newadvent.org/cathen/05293c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "ephraim-of-antioch",
@@ -1610,7 +1788,8 @@
       "ceTitle": "Ephraim of Antioch",
       "ceUrl": "https://www.newadvent.org/cathen/05500a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "eugendus",
@@ -1619,7 +1798,8 @@
       "ceTitle": "Eugendus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05597c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "evodius",
@@ -1628,7 +1808,8 @@
       "ceTitle": "Evodius",
       "ceUrl": "https://www.newadvent.org/cathen/05653a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "exuperius",
@@ -1637,7 +1818,8 @@
       "ceTitle": "Exuperius, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05731a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "faustus-of-riez",
@@ -1646,7 +1828,8 @@
       "ceTitle": "Faustus of Riez",
       "ceUrl": "https://www.newadvent.org/cathen/06019b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "fergus",
@@ -1655,7 +1838,8 @@
       "ceTitle": "Fergus, Saints",
       "ceUrl": "https://www.newadvent.org/cathen/06042c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "fiacc",
@@ -1664,7 +1848,8 @@
       "ceTitle": "Fiacc, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06066b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "finnian-of-movilla",
@@ -1673,7 +1858,8 @@
       "ceTitle": "Finnian of Movilla, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06077a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "firmilian",
@@ -1682,7 +1868,8 @@
       "ceTitle": "Firmilian",
       "ceUrl": "https://www.newadvent.org/cathen/06080b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "flavia-domitilla-wife-of-clemens",
@@ -1691,7 +1878,8 @@
       "ceTitle": "Flavia Domitilla",
       "ceUrl": "https://www.newadvent.org/cathen/06098b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "francis-xavier",
@@ -1700,7 +1888,8 @@
       "ceTitle": "Francis Xavier, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06233b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "gabriel-the-archangel",
@@ -1709,7 +1898,8 @@
       "ceTitle": "Gabriel the Archangel, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06330a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "gertrude-the-great",
@@ -1718,7 +1908,8 @@
       "ceTitle": "Gertrude the Great, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06534a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "ghislain",
@@ -1727,7 +1918,8 @@
       "ceTitle": "Ghislain, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06547a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-gregory-vii",
@@ -1736,7 +1928,8 @@
       "ceTitle": "Gregory VII, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06791c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "gregory-the-illuminator",
@@ -1745,7 +1938,8 @@
       "ceTitle": "Gregory the Illuminator",
       "ceUrl": "https://www.newadvent.org/cathen/07023a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "helena",
@@ -1754,7 +1948,8 @@
       "ceTitle": "Helena, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07202b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "herbert-of-derwentwater",
@@ -1763,7 +1958,8 @@
       "ceTitle": "Herbert of Derwentwater, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07250b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "hereswith",
@@ -1772,7 +1968,8 @@
       "ceTitle": "Hereswitha, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07256a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "hermenegild",
@@ -1781,7 +1978,8 @@
       "ceTitle": "Hermengild, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07276a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "hilarion",
@@ -1790,7 +1988,8 @@
       "ceTitle": "Hilarion, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07347a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-hilarius",
@@ -1799,7 +1998,8 @@
       "ceTitle": "Hilarius, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07348b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "hugh-of-lincoln",
@@ -1808,7 +2008,8 @@
       "ceTitle": "Hugh of Lincoln, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07519c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-hyginus",
@@ -1817,7 +2018,8 @@
       "ceTitle": "Hyginus, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07593a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "ignatios-of-constantinople",
@@ -1826,7 +2028,8 @@
       "ceTitle": "Ignatius of Constantinople, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07647a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-innocent-i",
@@ -1835,16 +2038,18 @@
       "ceTitle": "Innocent I, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/08011a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "jacob-baradaeus",
       "name": "St. Jacob Baradaeus",
       "ceCode": "02282a",
-      "ceTitle": "Barad\u00e6us, Jacob",
+      "ceTitle": "Baradæus, Jacob",
       "ceUrl": "https://www.newadvent.org/cathen/02282a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "jane-frances-de-chantal",
@@ -1853,7 +2058,8 @@
       "ceTitle": "Chantal, Saint Jane Frances de",
       "ceUrl": "https://www.newadvent.org/cathen/08282c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "joachim",
@@ -1862,7 +2068,8 @@
       "ceTitle": "Joachim, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08406b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-berchmans",
@@ -1871,7 +2078,8 @@
       "ceTitle": "Berchmans, Saint John",
       "ceUrl": "https://www.newadvent.org/cathen/08450a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-john-i",
@@ -1880,7 +2088,8 @@
       "ceTitle": "John I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08421a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-iv-bishop-of-naples",
@@ -1889,7 +2098,8 @@
       "ceTitle": "John IV, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/08422b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-scholasticus",
@@ -1898,7 +2108,8 @@
       "ceTitle": "John Scholasticus",
       "ceUrl": "https://www.newadvent.org/cathen/08484b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-xxiii",
@@ -1907,7 +2118,8 @@
       "ceTitle": "John XXIII",
       "ceUrl": "https://www.newadvent.org/cathen/08434a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "julian-and-basilissa",
@@ -1916,7 +2128,8 @@
       "ceTitle": "Julian and Basilissa, Saints",
       "ceUrl": "https://www.newadvent.org/cathen/08556b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "justinian-i",
@@ -1925,7 +2138,8 @@
       "ceTitle": "Justinian I",
       "ceUrl": "https://www.newadvent.org/cathen/08578b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "kateri-tekakwitha",
@@ -1934,7 +2148,8 @@
       "ceTitle": "Kateri Tekakwitha, Blessed",
       "ceUrl": "https://www.newadvent.org/cathen/14471a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "leander-of-seville",
@@ -1943,7 +2158,8 @@
       "ceTitle": "Leander of Seville, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09102a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-leo-iii",
@@ -1952,7 +2168,8 @@
       "ceTitle": "Leo III, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09157b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-linus",
@@ -1961,7 +2178,8 @@
       "ceTitle": "Linus, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09272b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "lucifer-of-cagliari",
@@ -1970,7 +2188,8 @@
       "ceTitle": "Lucifer of Cagliari",
       "ceUrl": "https://www.newadvent.org/cathen/09410b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-lucius-i",
@@ -1979,7 +2198,8 @@
       "ceTitle": "Lucius I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09411a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-marcellinus",
@@ -1988,7 +2208,8 @@
       "ceTitle": "Marcellinus, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/09637d.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "margaret-clitherow",
@@ -1997,7 +2218,8 @@
       "ceTitle": "Clitherow, Saint Margaret",
       "ceUrl": "https://www.newadvent.org/cathen/04059b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-mark",
@@ -2006,7 +2228,8 @@
       "ceTitle": "Mark, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09672c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-martin-i",
@@ -2015,7 +2238,8 @@
       "ceTitle": "Martin I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09723c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "mitre",
@@ -2024,7 +2248,8 @@
       "ceTitle": "Mitre",
       "ceUrl": "https://www.newadvent.org/cathen/10404a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "nicholas-of-myra",
@@ -2033,7 +2258,8 @@
       "ceTitle": "Nicholas of Myra, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11063b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "ninian",
@@ -2042,7 +2268,8 @@
       "ceTitle": "Ninian, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11084a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "norbert",
@@ -2051,7 +2278,8 @@
       "ceTitle": "Norbert, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11100b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "novatus",
@@ -2060,7 +2288,8 @@
       "ceTitle": "Novatus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11141a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "othmar",
@@ -2069,7 +2298,8 @@
       "ceTitle": "Othmar, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11351a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-paul-i",
@@ -2078,7 +2308,8 @@
       "ceTitle": "Paul I, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/11577a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "paul-of-the-cross",
@@ -2087,7 +2318,8 @@
       "ceTitle": "Paul of the Cross, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11590a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "peter-canisius",
@@ -2096,7 +2328,8 @@
       "ceTitle": "Canisius, Peter, Blessed",
       "ceUrl": "https://www.newadvent.org/cathen/11756c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "peter-damian",
@@ -2105,7 +2338,8 @@
       "ceTitle": "Peter Damian, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11764a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "martyrdom-of-pionius",
@@ -2114,7 +2348,8 @@
       "ceTitle": "Pionius, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/12105a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pius-x",
@@ -2123,7 +2358,8 @@
       "ceTitle": "Pius X, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/12137a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "placidus-abbot",
@@ -2132,7 +2368,8 @@
       "ceTitle": "Placidus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/12142b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pontius-pilate",
@@ -2141,7 +2378,8 @@
       "ceTitle": "Pilate, Pontius",
       "ceUrl": "https://www.newadvent.org/cathen/12083c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "prisca",
@@ -2150,7 +2388,8 @@
       "ceTitle": "Prisca, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/12428c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "raymond-nonnatus",
@@ -2159,7 +2398,8 @@
       "ceTitle": "Raymond Nonnatus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/12671b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "rita-of-cascia",
@@ -2168,7 +2408,8 @@
       "ceTitle": "Rita of Cascia, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13064a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "robert-bellarmine",
@@ -2177,7 +2418,8 @@
       "ceTitle": "Bellarmine, St. Robert",
       "ceUrl": "https://www.newadvent.org/cathen/02411d.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "romuald",
@@ -2186,7 +2428,8 @@
       "ceTitle": "Romuald, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13179b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "sebastian",
@@ -2195,7 +2438,8 @@
       "ceTitle": "Sebastian, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13668a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-sergius-i",
@@ -2204,7 +2448,8 @@
       "ceTitle": "Sergius I, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/13728b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "silvia",
@@ -2213,7 +2458,8 @@
       "ceTitle": "Silvia, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13794a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "simeon-stylites-the-younger",
@@ -2222,7 +2468,8 @@
       "ceTitle": "Simeon Stylites the Younger, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13795b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-simplicius",
@@ -2231,7 +2478,8 @@
       "ceTitle": "Simplicius, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14002a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-sixtus-iii",
@@ -2240,7 +2488,8 @@
       "ceTitle": "Sixtus III, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14032a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "stephen-of-muret",
@@ -2249,7 +2498,8 @@
       "ceTitle": "Stephen of Muret, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14291b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "swithin",
@@ -2258,7 +2508,8 @@
       "ceTitle": "Swithin, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14357c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-sylvester-i",
@@ -2267,7 +2518,8 @@
       "ceTitle": "Sylvester I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14370a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-symmachus",
@@ -2276,7 +2528,8 @@
       "ceTitle": "Symmachus, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14377a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-telesphorus",
@@ -2285,7 +2538,8 @@
       "ceTitle": "Telesphorus, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14477b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "ternan",
@@ -2294,7 +2548,8 @@
       "ceTitle": "Ternan, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14518b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "tewdrig",
@@ -2303,16 +2558,18 @@
       "ceTitle": "Tewdrig",
       "ceUrl": "https://www.newadvent.org/cathen/14542a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "tha-s-saint",
-      "name": "St. Tha\u00efs",
+      "name": "St. Thaïs",
       "ceCode": "14553d",
       "ceTitle": "Thais, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14553d.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "theodard",
@@ -2321,7 +2578,8 @@
       "ceTitle": "Theodard, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14568b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "thomas-aquinas",
@@ -2330,7 +2588,8 @@
       "ceTitle": "Aquinas, St. Thomas",
       "ceUrl": "https://www.newadvent.org/cathen/14663b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-urban-i",
@@ -2339,7 +2598,8 @@
       "ceTitle": "Urban I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15209a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-victor-i",
@@ -2348,7 +2608,8 @@
       "ceTitle": "Victor I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15408a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "vincent-ferrer",
@@ -2357,16 +2618,18 @@
       "ceTitle": "Ferrer, Saint Vincent",
       "ceUrl": "https://www.newadvent.org/cathen/15437a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "vincent-of-l-rins",
-      "name": "St. Vincent of L\u00e9rins",
+      "name": "St. Vincent of Lérins",
       "ceCode": "15439b",
-      "ceTitle": "Vincent of L\u00e9rins, Saint",
+      "ceTitle": "Vincent of Lérins, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15439b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-vitalian",
@@ -2375,7 +2638,8 @@
       "ceTitle": "Vitalian, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15484b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "wendelin-of-trier",
@@ -2384,7 +2648,8 @@
       "ceTitle": "Wendelin of Trier, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15587c.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "werburgh",
@@ -2393,7 +2658,8 @@
       "ceTitle": "Werburgh, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15588b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "willigis",
@@ -2402,7 +2668,8 @@
       "ceTitle": "Willigis, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15645b.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "cyril-and-methodius",
@@ -2411,7 +2678,8 @@
       "ceTitle": "Cyril and Methodius, Saints",
       "ceUrl": "https://www.newadvent.org/cathen/04592a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "saints-faith-hope-and-charity",
@@ -2420,7 +2688,8 @@
       "ceTitle": "Faith, Hope, and Charity (Saints)",
       "ceUrl": "https://www.newadvent.org/cathen/05766a.htm",
       "patronageCount": 2,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "abundius",
@@ -2429,7 +2698,8 @@
       "ceTitle": "Abundius",
       "ceUrl": "https://www.newadvent.org/cathen/01075b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "agatha",
@@ -2438,16 +2708,18 @@
       "ceTitle": "Agatha, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01203c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "ailer-n",
-      "name": "St. Ailer\u00e1n",
+      "name": "St. Ailerán",
       "ceCode": "01234c",
       "ceTitle": "Aileran, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01234c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "albert-the-great",
@@ -2456,7 +2728,8 @@
       "ceTitle": "Albert the Great, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01264a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "aloysius-gonzaga",
@@ -2465,7 +2738,8 @@
       "ceTitle": "Aloysius Gonzaga, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01331c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "ambrose",
@@ -2474,7 +2748,8 @@
       "ceTitle": "Ambrose, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01383c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "angela-merici",
@@ -2483,7 +2758,8 @@
       "ceTitle": "Angela Merici, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01481a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "anne",
@@ -2492,7 +2768,8 @@
       "ceTitle": "Anne, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01538a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "apollonia",
@@ -2501,7 +2778,8 @@
       "ceTitle": "Apollonia, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01617c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "asaph",
@@ -2510,7 +2788,8 @@
       "ceTitle": "Asaph, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01766a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "augustine-of-hippo",
@@ -2519,7 +2798,8 @@
       "ceTitle": "Augustine of Hippo, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02084a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "barbara",
@@ -2528,7 +2808,8 @@
       "ceTitle": "Barbara, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02284d.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "basil-of-amasea",
@@ -2537,7 +2818,8 @@
       "ceTitle": "Basil of Amasea",
       "ceUrl": "https://www.newadvent.org/cathen/02329d.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "benedict-of-nursia",
@@ -2546,7 +2828,8 @@
       "ceTitle": "Benedict of Nursia, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02467b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "bernardino-of-siena",
@@ -2555,7 +2838,8 @@
       "ceTitle": "Bernardine of Siena, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02505b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "blaise",
@@ -2564,7 +2848,8 @@
       "ceTitle": "Blaise, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02592a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "blane",
@@ -2573,7 +2858,8 @@
       "ceTitle": "Blane, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02594b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "blathmac",
@@ -2582,7 +2868,8 @@
       "ceTitle": "Blathmac, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02596b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "bonaventure",
@@ -2591,7 +2878,8 @@
       "ceTitle": "Bonaventure, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02648c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "brendan",
@@ -2600,7 +2888,8 @@
       "ceTitle": "Brendan, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/02758c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "camillus-de-lellis",
@@ -2609,7 +2898,8 @@
       "ceTitle": "Camillus de Lellis, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03217b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "casimir",
@@ -2618,7 +2908,8 @@
       "ceTitle": "Casimir, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03402a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "catherine-of-alexandria",
@@ -2627,7 +2918,8 @@
       "ceTitle": "Catherine of Alexandria, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03445a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "catherine-of-bologna",
@@ -2636,7 +2928,8 @@
       "ceTitle": "Catherine of Bologna, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03446a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "catherine-of-siena",
@@ -2645,7 +2938,8 @@
       "ceTitle": "Catherine of Siena, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03447a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "cecilia",
@@ -2654,7 +2948,8 @@
       "ceTitle": "Cecilia, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03471b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "charles-borromeo",
@@ -2663,7 +2958,8 @@
       "ceTitle": "Borromeo, Saint Charles",
       "ceUrl": "https://www.newadvent.org/cathen/03619a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "clare-of-assisi",
@@ -2672,7 +2968,8 @@
       "ceTitle": "Clare of Assisi, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04004a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "clare-of-montefalco",
@@ -2681,7 +2978,8 @@
       "ceTitle": "Clare of Montefalco, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04006a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "colman-of-templeshambo",
@@ -2690,16 +2988,18 @@
       "ceTitle": "Colman, Saint, of Templeshambo",
       "ceUrl": "https://www.newadvent.org/cathen/04115a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "colm-n-elo",
-      "name": "St. Colm\u00e1n Elo",
+      "name": "St. Colmán Elo",
       "ceCode": "04115e",
       "ceTitle": "Colman, Saint Elo",
       "ceUrl": "https://www.newadvent.org/cathen/04115e.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "conal",
@@ -2708,7 +3008,8 @@
       "ceTitle": "Conal, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04189b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "cyprian-of-toulon",
@@ -2717,7 +3018,8 @@
       "ceTitle": "Cyprian of Toulon, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04582b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "david",
@@ -2726,7 +3028,8 @@
       "ceTitle": "David, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04640b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "dominic",
@@ -2735,7 +3038,8 @@
       "ceTitle": "Dominic, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05106a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "dunstan",
@@ -2744,7 +3048,8 @@
       "ceTitle": "Dunstan, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05199a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "eligius",
@@ -2753,7 +3058,8 @@
       "ceTitle": "Eligius, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05386a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "elizabeth-ann-seton",
@@ -2762,7 +3068,8 @@
       "ceTitle": "Elizabeth Ann Seton, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13739a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "elizabeth-of-hungary",
@@ -2771,7 +3078,8 @@
       "ceTitle": "Elizabeth of Hungary, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05389a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "elizabeth-of-portugal",
@@ -2780,7 +3088,8 @@
       "ceTitle": "Elizabeth of Portugal, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05391a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "elphin",
@@ -2789,7 +3098,8 @@
       "ceTitle": "Elphin",
       "ceUrl": "https://www.newadvent.org/cathen/05394b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "eosterwine",
@@ -2798,7 +3108,8 @@
       "ceTitle": "Easterwine",
       "ceUrl": "https://www.newadvent.org/cathen/05240a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "eskil",
@@ -2807,7 +3118,8 @@
       "ceTitle": "Eskil",
       "ceUrl": "https://www.newadvent.org/cathen/05538b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-eugene-i",
@@ -2816,7 +3128,8 @@
       "ceTitle": "Eugene I, Saint, Pope",
       "ceUrl": "https://www.newadvent.org/cathen/05598a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "eulogius-of-alexandria",
@@ -2825,7 +3138,8 @@
       "ceTitle": "Eulogius of Alexandria, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05603c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "eustace",
@@ -2834,7 +3148,8 @@
       "ceTitle": "Eustace, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05626a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "fiacre",
@@ -2843,7 +3158,8 @@
       "ceTitle": "Fiacre, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06067a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "frances-of-rome",
@@ -2852,7 +3168,8 @@
       "ceTitle": "Frances of Rome, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06205c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "francis-de-sales",
@@ -2861,7 +3178,8 @@
       "ceTitle": "Francis de Sales, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06220a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "francis-of-paola",
@@ -2870,7 +3188,8 @@
       "ceTitle": "Francis of Paula, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06231a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "fulcran",
@@ -2879,7 +3198,8 @@
       "ceTitle": "Fulcran, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06313a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "gabriel-possenti",
@@ -2888,7 +3208,8 @@
       "ceTitle": "Gabriel Possenti, Blessed",
       "ceUrl": "https://www.newadvent.org/cathen/06330c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "george",
@@ -2897,7 +3218,8 @@
       "ceTitle": "George, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06453a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "gerard-majella",
@@ -2906,7 +3228,8 @@
       "ceTitle": "Gerard Majella, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06467c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "giles",
@@ -2915,7 +3238,8 @@
       "ceTitle": "Giles, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06559a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "hedwig",
@@ -2924,7 +3248,8 @@
       "ceTitle": "Hedwig, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07189a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "hubert",
@@ -2933,7 +3258,8 @@
       "ceTitle": "Hubert, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07507a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "ignatius-of-loyola",
@@ -2942,7 +3268,8 @@
       "ceTitle": "Ignatius Loyola, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/07639c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "isidore-of-seville",
@@ -2951,7 +3278,8 @@
       "ceTitle": "Isidore of Seville, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08186a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "jerome",
@@ -2960,7 +3288,8 @@
       "ceTitle": "Jerome, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08341a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "joan-of-arc",
@@ -2969,7 +3298,8 @@
       "ceTitle": "Joan of Arc, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08409c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-cantius",
@@ -2978,7 +3308,8 @@
       "ceTitle": "Cantius, Saint John",
       "ceUrl": "https://www.newadvent.org/cathen/08451b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-of-avila",
@@ -2987,7 +3318,8 @@
       "ceTitle": "John of Avila, Blessed",
       "ceUrl": "https://www.newadvent.org/cathen/08469a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-of-capistrano",
@@ -2996,7 +3328,8 @@
       "ceTitle": "John Capistran, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08452a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-of-god",
@@ -3005,7 +3338,8 @@
       "ceTitle": "John of God, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08472c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-of-the-cross",
@@ -3014,7 +3348,8 @@
       "ceTitle": "John of the Cross, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08480a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "john-the-baptist",
@@ -3023,7 +3358,8 @@
       "ceTitle": "John the Baptist, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08486b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "joseph-of-cupertino",
@@ -3032,7 +3368,8 @@
       "ceTitle": "Joseph of Cupertino, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08520b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "juliana-falconieri",
@@ -3041,7 +3378,8 @@
       "ceTitle": "Juliana Falconieri, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/08556a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "lawrence-of-brindisi",
@@ -3050,7 +3388,8 @@
       "ceTitle": "Lawrence of Brindisi, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09359a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "lidwina",
@@ -3059,7 +3398,8 @@
       "ceTitle": "Lidwina, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09233a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "lucy",
@@ -3068,7 +3408,8 @@
       "ceTitle": "Lucy, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09414a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "magnus-bishop-of-milan",
@@ -3077,7 +3418,8 @@
       "ceTitle": "Magnus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09536a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "margaret-of-scotland",
@@ -3086,7 +3428,8 @@
       "ceTitle": "Margaret of Scotland, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09655c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "martha",
@@ -3095,7 +3438,8 @@
       "ceTitle": "Martha, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09721b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "martin-of-tours",
@@ -3104,7 +3448,8 @@
       "ceTitle": "Martin of Tours, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09732b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "matthew",
@@ -3113,7 +3458,8 @@
       "ceTitle": "Matthew, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/10056b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "monica",
@@ -3122,7 +3468,8 @@
       "ceTitle": "Monica, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/10482a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "nicetius",
@@ -3131,7 +3478,8 @@
       "ceTitle": "Nicetius, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11053a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "nicholas-of-tolentino",
@@ -3140,7 +3488,8 @@
       "ceTitle": "Nicholas of Tolentino, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11065a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "odilia",
@@ -3149,7 +3498,8 @@
       "ceTitle": "Odilia, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11207b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pantaleon",
@@ -3158,7 +3508,8 @@
       "ceTitle": "Pantaleon, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11447a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "paris",
@@ -3167,7 +3518,8 @@
       "ceTitle": "Paris",
       "ceUrl": "https://www.newadvent.org/cathen/11480c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "patrick",
@@ -3176,7 +3528,8 @@
       "ceTitle": "Patrick, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11554a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "paul",
@@ -3185,7 +3538,8 @@
       "ceTitle": "Paul, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11567b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "peter",
@@ -3194,7 +3548,8 @@
       "ceTitle": "Peter, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11744a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "peter-claver",
@@ -3203,7 +3558,8 @@
       "ceTitle": "Claver, Saint Peter",
       "ceUrl": "https://www.newadvent.org/cathen/11763a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "peter-faber",
@@ -3212,7 +3568,8 @@
       "ceTitle": "Faber, Peter, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11767a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "philomena",
@@ -3221,16 +3578,18 @@
       "ceTitle": "Philomena, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/12025b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "raymond-of-penyafort",
       "name": "St. Raymond of Penyafort",
       "ceCode": "12671c",
-      "ceTitle": "Raymond of Pe\u00f1afort, Saint",
+      "ceTitle": "Raymond of Peñafort, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/12671c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "roch",
@@ -3239,7 +3598,8 @@
       "ceTitle": "Roch, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13100c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "rosalia",
@@ -3248,7 +3608,8 @@
       "ceTitle": "Rosalia, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13184a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "rose-of-lima",
@@ -3257,7 +3618,8 @@
       "ceTitle": "Rose of Lima, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13192c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "rusticus-of-narbonne",
@@ -3266,7 +3628,8 @@
       "ceTitle": "Rusticus of Narbonne, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13275a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-silverius",
@@ -3275,7 +3638,8 @@
       "ceTitle": "Silverius, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13793a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "pope-sixtus-i",
@@ -3284,7 +3648,8 @@
       "ceTitle": "Sixtus I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14031b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "stanislaus-kostka",
@@ -3293,7 +3658,8 @@
       "ceTitle": "Kostka, Saint Stanislas",
       "ceUrl": "https://www.newadvent.org/cathen/14245b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "teresa-of-avila",
@@ -3302,7 +3668,8 @@
       "ceTitle": "Teresa of Avila, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14515b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "theodoret-martyr",
@@ -3311,7 +3678,8 @@
       "ceTitle": "Theodoret",
       "ceUrl": "https://www.newadvent.org/cathen/14574b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "thomas-more",
@@ -3320,7 +3688,8 @@
       "ceTitle": "More, Thomas, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14689c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "vincent-de-paul",
@@ -3329,7 +3698,8 @@
       "ceTitle": "Vincent de Paul, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15434c.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "wenceslaus",
@@ -3338,7 +3708,8 @@
       "ceTitle": "Wenceslaus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15587b.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "zita",
@@ -3347,7 +3718,8 @@
       "ceTitle": "Zita, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15762a.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     },
     {
       "slug": "cosmas-and-damian",
@@ -3356,7 +3728,8 @@
       "ceTitle": "Cosmas and Damian, Saints",
       "ceUrl": "https://www.newadvent.org/cathen/04403e.htm",
       "patronageCount": 1,
-      "featured": false
+      "featured": false,
+      "grounded": true
     }
   ],
   "drops": [
@@ -3561,7 +3934,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Adalbero of W\u00fcrzburg",
+      "name": "St. Adalbero of Würzburg",
       "reason": "no-ce-match"
     },
     {
@@ -3581,7 +3954,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Adalgis of Thi\u00e9rache",
+      "name": "St. Adalgis of Thiérache",
       "reason": "no-ce-match"
     },
     {
@@ -3589,7 +3962,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Adalhelm of S\u00e9ez",
+      "name": "St. Adalhelm of Séez",
       "reason": "no-ce-match"
     },
     {
@@ -3641,7 +4014,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Adomn\u00e1n",
+      "name": "St. Adomnán",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -3745,7 +4118,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Al\u00e8the de Montbard",
+      "name": "St. Alèthe de Montbard",
       "reason": "no-ce-match"
     },
     {
@@ -3753,7 +4126,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Alberic of C\u00eeteaux",
+      "name": "St. Alberic of Cîteaux",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -3837,7 +4210,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Alto of Altom\u00fcnster",
+      "name": "St. Alto of Altomünster",
       "reason": "no-ce-match"
     },
     {
@@ -3893,7 +4266,7 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Amunia of San Mill\u00e1n",
+      "name": "St. Amunia of San Millán",
       "reason": "no-ce-match"
     },
     {
@@ -4197,7 +4570,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Athenogenes of Pedachto\u00eb",
+      "name": "St. Athenogenes of Pedachtoë",
       "reason": "no-ce-match"
     },
     {
@@ -4221,7 +4594,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Aurea of C\u00f3rdoba",
+      "name": "St. Aurea of Córdoba",
       "reason": "no-ce-match"
     },
     {
@@ -4305,7 +4678,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. B\u00e9n\u00e9zet",
+      "name": "St. Bénézet",
       "reason": "no-ce-match"
     },
     {
@@ -4317,7 +4690,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Baith\u00e9ne mac Br\u00e9naind",
+      "name": "St. Baithéne mac Brénaind",
       "reason": "no-ce-match"
     },
     {
@@ -4429,15 +4802,15 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6bbe of Coldingham",
+      "name": "St. Æbbe of Coldingham",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6bbe the Younger",
+      "name": "St. Æbbe the Younger",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Beatus of Li\u00e9bana",
+      "name": "St. Beatus of Liébana",
       "reason": "no-ce-match"
     },
     {
@@ -4585,7 +4958,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Bienheur\u00e9",
+      "name": "St. Bienheuré",
       "reason": "no-ce-match"
     },
     {
@@ -4593,7 +4966,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Bilihildis of Altm\u00fcnster",
+      "name": "St. Bilihildis of Altmünster",
       "reason": "no-ce-match"
     },
     {
@@ -4685,7 +5058,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Br\u00edga",
+      "name": "St. Bríga",
       "reason": "no-ce-match"
     },
     {
@@ -4749,7 +5122,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Brocc\u00e1n Cl\u00f3en",
+      "name": "St. Broccán Clóen",
       "reason": "no-ce-match"
     },
     {
@@ -4761,7 +5134,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Bruno, Bishop of W\u00fcrzburg",
+      "name": "St. Bruno, Bishop of Würzburg",
       "reason": "no-ce-match"
     },
     {
@@ -4801,11 +5174,11 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Bystr\u00edk",
+      "name": "St. Bystrík",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. C\u00e9line of Laon",
+      "name": "St. Céline of Laon",
       "reason": "no-ce-match"
     },
     {
@@ -4813,7 +5186,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Caill\u00edn",
+      "name": "St. Caillín",
       "reason": "no-ce-match"
     },
     {
@@ -4873,7 +5246,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Caprasius of L\u00e9rins",
+      "name": "St. Caprasius of Lérins",
       "reason": "no-ce-match"
     },
     {
@@ -4929,11 +5302,11 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Catherine Labour\u00e9",
+      "name": "St. Catherine Labouré",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Cathr\u00f3e of Metz",
+      "name": "St. Cathróe of Metz",
       "reason": "no-ce-match"
     },
     {
@@ -4945,7 +5318,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Cenn F\u00e1elad mac Ailella",
+      "name": "St. Cenn Fáelad mac Ailella",
       "reason": "no-ce-match"
     },
     {
@@ -5029,15 +5402,15 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Cian\u00e1n",
+      "name": "St. Cianán",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ciar\u00e1n of Clonmacnoise",
+      "name": "St. Ciarán of Clonmacnoise",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ciar\u00e1n of Saigir",
+      "name": "St. Ciarán of Saigir",
       "reason": "no-ce-match"
     },
     {
@@ -5077,31 +5450,31 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colm\u00e1n mac Com\u00e1n",
+      "name": "St. Colmán mac Comán",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colm\u00e1n of Ardboe",
+      "name": "St. Colmán of Ardboe",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colm\u00e1n of Cloyne",
+      "name": "St. Colmán of Cloyne",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colm\u00e1n of Dromore",
+      "name": "St. Colmán of Dromore",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colm\u00e1n of Kilroot",
+      "name": "St. Colmán of Kilroot",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colm\u00e1n of Lann",
+      "name": "St. Colmán of Lann",
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Colm\u00e1n of Lindisfarne",
+      "name": "St. Colmán of Lindisfarne",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -5189,7 +5562,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Cormac mac Cuilenn\u00e1in",
+      "name": "St. Cormac mac Cuilennáin",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -5209,7 +5582,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Cr\u00f3n\u00e1n of Roscrea",
+      "name": "St. Crónán of Roscrea",
       "reason": "no-ce-match"
     },
     {
@@ -5225,7 +5598,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. C\u00faan",
+      "name": "St. Cúan",
       "reason": "no-ce-match"
     },
     {
@@ -5233,7 +5606,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Curet\u00e1n",
+      "name": "St. Curetán",
       "reason": "no-ce-match"
     },
     {
@@ -5301,7 +5674,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Da\u00efa",
+      "name": "St. Daïa",
       "reason": "no-ce-match"
     },
     {
@@ -5317,7 +5690,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Dall\u00e1n Forgaill",
+      "name": "St. Dallán Forgaill",
       "reason": "no-ce-match"
     },
     {
@@ -5385,7 +5758,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Decl\u00e1n of Ardmore",
+      "name": "St. Declán of Ardmore",
       "reason": "no-ce-match"
     },
     {
@@ -5605,7 +5978,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Eanfl\u00e6d",
+      "name": "St. Eanflæd",
       "reason": "no-ce-match"
     },
     {
@@ -5637,7 +6010,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c1ed Dub mac Colm\u00e1in",
+      "name": "St. Áed Dub mac Colmáin",
       "reason": "no-ce-match"
     },
     {
@@ -5785,7 +6158,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00d3engus of Tallaght",
+      "name": "St. Óengus of Tallaght",
       "reason": "no-ce-match"
     },
     {
@@ -5973,7 +6346,7 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Eusebius of M\u00e2con",
+      "name": "St. Eusebius of Mâcon",
       "reason": "no-ce-match"
     },
     {
@@ -6033,7 +6406,7 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Euverte d'Orl\u00e9ans",
+      "name": "St. Euverte d'Orléans",
       "reason": "no-ce-match"
     },
     {
@@ -6057,7 +6430,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. F\u00e9ch\u00edn of Fore",
+      "name": "St. Féchín of Fore",
       "reason": "no-ce-match"
     },
     {
@@ -6209,7 +6582,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Flann\u00e1n",
+      "name": "St. Flannán",
       "reason": "no-ce-match"
     },
     {
@@ -6225,7 +6598,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Flora of C\u00f3rdoba",
+      "name": "St. Flora of Córdoba",
       "reason": "no-ce-match"
     },
     {
@@ -6249,11 +6622,11 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Florinus of Rem\u00fcs",
+      "name": "St. Florinus of Remüs",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Florus of Lod\u00e8ve",
+      "name": "St. Florus of Lodève",
       "reason": "no-ce-match"
     },
     {
@@ -6325,11 +6698,11 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. G\u00e9r\u00e9tran of Bayeux",
+      "name": "St. Gérétran of Bayeux",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. G\u00e9rard of Brogne",
+      "name": "St. Gérard of Brogne",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -6373,7 +6746,7 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Gaud d'\u00c9vreux",
+      "name": "St. Gaud d'Évreux",
       "reason": "no-ce-match"
     },
     {
@@ -6493,7 +6866,7 @@
       "reason": "collision-quarantined"
     },
     {
-      "name": "St. Gerard of Csan\u00e1d",
+      "name": "St. Gerard of Csanád",
       "reason": "no-ce-match"
     },
     {
@@ -6645,7 +7018,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Goulven of L\u00e9on",
+      "name": "St. Goulven of Léon",
       "reason": "no-ce-match"
     },
     {
@@ -6789,7 +7162,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. H\u00e6dde",
+      "name": "St. Hædde",
       "reason": "no-ce-match"
     },
     {
@@ -6797,7 +7170,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Hallvard Vebj\u00f8rnsson",
+      "name": "St. Hallvard Vebjørnsson",
       "reason": "no-ce-match"
     },
     {
@@ -6825,7 +7198,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Helena of Sk\u00f6vde",
+      "name": "St. Helena of Skövde",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -6881,7 +7254,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Herv\u00e9",
+      "name": "St. Hervé",
       "reason": "no-ce-match"
     },
     {
@@ -6941,7 +7314,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Honor\u00e9",
+      "name": "St. Honoré",
       "reason": "no-ce-match"
     },
     {
@@ -6957,7 +7330,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Hugh of Ch\u00e2teauneuf",
+      "name": "St. Hugh of Châteauneuf",
       "reason": "no-ce-match"
     },
     {
@@ -6977,7 +7350,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Hunfrid of Pr\u00fcm",
+      "name": "St. Hunfrid of Prüm",
       "reason": "no-ce-match"
     },
     {
@@ -7049,7 +7422,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00cd\u00f1igo of O\u00f1a",
+      "name": "St. Íñigo of Oña",
       "reason": "no-ce-match"
     },
     {
@@ -7145,7 +7518,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. J\u00e6nberht",
+      "name": "St. Jænberht",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -7313,7 +7686,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Josemar\u00eda Escriv\u00e1",
+      "name": "St. Josemaría Escrivá",
       "reason": "no-ce-match"
     },
     {
@@ -7497,7 +7870,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Landry of S\u00e9es",
+      "name": "St. Landry of Sées",
       "reason": "no-ce-match"
     },
     {
@@ -7581,7 +7954,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Leontius of Fr\u00e9jus",
+      "name": "St. Leontius of Fréjus",
       "reason": "no-ce-match"
     },
     {
@@ -7593,35 +7966,35 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. \u00c6lffl\u00e6d of Whitby",
+      "name": "St. Ælfflæd of Whitby",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6lfheah of Canterbury",
+      "name": "St. Ælfheah of Canterbury",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6lfheah the Bald",
+      "name": "St. Ælfheah the Bald",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6lfnoth of Stowe",
+      "name": "St. Ælfnoth of Stowe",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6lfric of Abingdon",
+      "name": "St. Ælfric of Abingdon",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6lfthryth of Crowland",
+      "name": "St. Ælfthryth of Crowland",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6lfwald I of Northumbria",
+      "name": "St. Ælfwald I of Northumbria",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6lfwold II",
+      "name": "St. Ælfwold II",
       "reason": "no-ce-match"
     },
     {
@@ -7665,7 +8038,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Lomm\u00e1n of Trim",
+      "name": "St. Lommán of Trim",
       "reason": "no-ce-match"
     },
     {
@@ -7741,23 +8114,23 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. M\u00e1ed\u00f3c of Ferns",
+      "name": "St. Máedóc of Ferns",
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. M\u00e1el Ruba",
+      "name": "St. Máel Ruba",
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. M\u00e9l of Ardagh",
+      "name": "St. Mél of Ardagh",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. M\u00e6rwynn",
+      "name": "St. Mærwynn",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ma\u00ebl",
+      "name": "St. Maël",
       "reason": "no-ce-match"
     },
     {
@@ -7821,7 +8194,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Mainch\u00edn of Limerick",
+      "name": "St. Mainchín of Limerick",
       "reason": "no-ce-match"
     },
     {
@@ -7845,11 +8218,11 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Manch\u00e1n of Lemanaghan",
+      "name": "St. Manchán of Lemanaghan",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Manch\u00e1n of Mohill",
+      "name": "St. Manchán of Mohill",
       "reason": "no-ce-match"
     },
     {
@@ -8045,7 +8418,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Maurus of P\u00e9cs",
+      "name": "St. Maurus of Pécs",
       "reason": "no-ce-match"
     },
     {
@@ -8153,7 +8526,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Mercurialis of Forl\u00ec",
+      "name": "St. Mercurialis of Forlì",
       "reason": "no-ce-match"
     },
     {
@@ -8245,7 +8618,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Mobh\u00ed Cl\u00e1rainech",
+      "name": "St. Mobhí Clárainech",
       "reason": "no-ce-match"
     },
     {
@@ -8529,11 +8902,11 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c9ogan of Ardstraw",
+      "name": "St. Éogan of Ardstraw",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Olc\u00e1n",
+      "name": "St. Olcán",
       "reason": "no-ce-match"
     },
     {
@@ -8773,7 +9146,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Pelagius of C\u00f3rdoba",
+      "name": "St. Pelagius of Córdoba",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -9141,7 +9514,7 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Procopius of S\u00e1zava",
+      "name": "St. Procopius of Sázava",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -9301,7 +9674,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Roman of \u0110unis",
+      "name": "St. Roman of Đunis",
       "reason": "no-ce-match"
     },
     {
@@ -9325,7 +9698,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ruadh\u00e1n of Lorrha",
+      "name": "St. Ruadhán of Lorrha",
       "reason": "no-ce-match"
     },
     {
@@ -9361,11 +9734,11 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. S\u00e6bbi of Essex",
+      "name": "St. Sæbbi of Essex",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. S\u00e6thryth",
+      "name": "St. Sæthryth",
       "reason": "no-ce-match"
     },
     {
@@ -9473,7 +9846,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Sen\u00e1n mac Geirrcinn",
+      "name": "St. Senán mac Geirrcinn",
       "reason": "no-ce-match"
     },
     {
@@ -9681,7 +10054,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Stanislaus of Szczepan\u00f3w",
+      "name": "St. Stanislaus of Szczepanów",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -9833,7 +10206,7 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. \u00cdte of Killeedy",
+      "name": "St. Íte of Killeedy",
       "reason": "no-ce-match"
     },
     {
@@ -9881,59 +10254,59 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6thelberht II of East Anglia",
+      "name": "St. Æthelberht II of East Anglia",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6thelburh of Barking",
+      "name": "St. Æthelburh of Barking",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6thelburh of Faremoutiers",
+      "name": "St. Æthelburh of Faremoutiers",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6thelburh of Kent",
+      "name": "St. Æthelburh of Kent",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6thelnoth",
+      "name": "St. Æthelnoth",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6thelred and \u00c6thelberht",
+      "name": "St. Æthelred and Æthelberht",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6thelstan",
+      "name": "St. Æthelstan",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6thelthryth",
+      "name": "St. Æthelthryth",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6thelwine of Athelney",
+      "name": "St. Æthelwine of Athelney",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6thelwine of Lindsey",
+      "name": "St. Æthelwine of Lindsey",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6thelwine of Sceldeforde",
+      "name": "St. Æthelwine of Sceldeforde",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c6thelwold",
+      "name": "St. Æthelwold",
       "reason": "collision-quarantined"
     },
     {
-      "name": "St. \u00c6thelwold",
+      "name": "St. Æthelwold",
       "reason": "collision-quarantined"
     },
     {
-      "name": "St. \u00c6thelwold of Winchester",
+      "name": "St. Æthelwold of Winchester",
       "reason": "no-ce-match"
     },
     {
@@ -10089,7 +10462,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Th\u00e9r\u00e8se of Lisieux",
+      "name": "St. Thérèse of Lisieux",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -10153,7 +10526,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Tr\u00e9sain",
+      "name": "St. Trésain",
       "reason": "no-ce-match"
     },
     {
@@ -10269,7 +10642,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. \u00c1urea of San Mill\u00e1n",
+      "name": "St. Áurea of San Millán",
       "reason": "no-ce-match"
     },
     {
@@ -10329,7 +10702,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Valerius of Tr\u00e8ves",
+      "name": "St. Valerius of Trèves",
       "reason": "no-ce-match"
     },
     {
@@ -10537,7 +10910,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Witta of B\u00fcraburg",
+      "name": "St. Witta of Büraburg",
       "reason": "no-ce-match"
     },
     {
@@ -10605,7 +10978,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Z\u00e9lie Martin",
+      "name": "St. Zélie Martin",
       "reason": "no-ce-match"
     },
     {
