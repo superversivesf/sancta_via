@@ -39,3 +39,8 @@
 
 # App-specific rules
 -keep class net.superversive.confession_companion.** { *; }
+
+# Flutter's embedding references Play Core's deferred-components API, which this
+# app does not depend on. The io.flutter.** keeps above keep the referencing
+# classes alive, so R8 reports them as fatal missing classes.
+-dontwarn com.google.android.play.core.**
