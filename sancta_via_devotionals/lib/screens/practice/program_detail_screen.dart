@@ -187,7 +187,7 @@ class _DetailBody extends StatelessWidget {
         _HeaderCard(pack: pack),
         TodaySectionCard(
           title: 'About',
-          icon: Icons.info_outline,
+          icon: const Icon(Icons.info_outline),
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
@@ -199,19 +199,19 @@ class _DetailBody extends StatelessWidget {
           TodaySectionCard(
             key: const Key('schedule_preview'),
             title: 'Schedule',
-            icon: Icons.event,
+            icon: const Icon(Icons.event),
             children: scheduleRows,
           ),
         if (phaseRows.isNotEmpty)
           TodaySectionCard(
             title: 'Phases',
-            icon: Icons.auto_stories,
+            icon: const Icon(Icons.auto_stories),
             children: phaseRows,
           ),
         if (policyRows.isNotEmpty)
           TodaySectionCard(
             title: 'Missed-day policy',
-            icon: Icons.rule,
+            icon: const Icon(Icons.rule),
             children: policyRows,
           ),
         _EnrollSection(packId: pack.id, enrolled: enrolled),
