@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../devotions/kneeling_prayer_glyph.dart';
 
 /// The Today screen's empty state: shown when nothing resolves due today —
 /// which is NOT the same as "nothing enrolled" (fix round 1): an enrolled
@@ -41,11 +42,7 @@ class EmptyToday extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(
-              Icons.self_improvement,
-              size: 48,
-              color: theme.colorScheme.primary,
-            ),
+            KneelingPrayerGlyph(size: 48, color: theme.colorScheme.primary),
             const SizedBox(height: 16),
             Text(
               'Nothing scheduled right now',

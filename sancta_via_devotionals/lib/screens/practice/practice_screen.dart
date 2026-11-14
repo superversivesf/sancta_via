@@ -89,7 +89,7 @@ class _CatalogList extends StatelessWidget {
         if (packs.any((ContentPack pack) => pack.family == family))
           TodaySectionCard(
             title: _familyTitle(family),
-            icon: _familyIcon(family),
+            icon: Icon(_familyIcon(family)),
             children: <Widget>[
               for (final ContentPack pack in packs)
                 if (pack.family == family) _CatalogTile(pack: pack),

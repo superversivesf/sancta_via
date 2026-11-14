@@ -80,6 +80,7 @@ import '../../services/enrollment_service.dart';
 import '../../services/notification_service.dart';
 import '../../utils/logger.dart';
 import '../../widgets/today/today_section_card.dart';
+import '../../widgets/devotions/kneeling_prayer_glyph.dart';
 
 /// The walkthrough's steps, in order.
 enum _OnboardingStep { welcome, claim, routine, reminders, done }
@@ -644,10 +645,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     return ListView(
       key: const Key('onboarding_welcome'),
       padding: const EdgeInsets.all(16),
-      children: const <Widget>[
+      children: <Widget>[
         TodaySectionCard(
           title: 'Pray the day with the Church',
-          icon: Icons.self_improvement,
+          icon: const KneelingPrayerGlyph(),
           children: <Widget>[
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4),
@@ -663,7 +664,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         ),
         TodaySectionCard(
           title: 'Free, and yours to keep',
-          icon: Icons.cloud_off_outlined,
+          icon: const Icon(Icons.cloud_off_outlined),
           children: <Widget>[
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4),
@@ -688,7 +689,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       children: <Widget>[
         const TodaySectionCard(
           title: 'Already further along?',
-          icon: Icons.flag_outlined,
+          icon: const Icon(Icons.flag_outlined),
           children: <Widget>[
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4),
@@ -783,7 +784,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       children: <Widget>[
         const TodaySectionCard(
           title: 'Your daily anchors',
-          icon: Icons.schedule,
+          icon: const Icon(Icons.schedule),
           children: <Widget>[
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4),
@@ -837,7 +838,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       children: <Widget>[
         const TodaySectionCard(
           title: 'A gentle reminder',
-          icon: Icons.notifications_none,
+          icon: const Icon(Icons.notifications_none),
           children: <Widget>[
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4),
@@ -887,7 +888,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       children: const <Widget>[
         TodaySectionCard(
           title: 'You’re set.',
-          icon: Icons.check_circle_outline,
+          icon: const Icon(Icons.check_circle_outline),
           children: <Widget>[
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4),

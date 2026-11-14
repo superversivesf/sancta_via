@@ -150,7 +150,7 @@ class _TodayList extends StatelessWidget {
         if (items.isNotEmpty)
           TodaySectionCard(
             title: title,
-            icon: icon,
+            icon: Icon(icon),
             children: <Widget>[
               for (final TodayItem item in items) TodayItemTile(item: item),
             ],
@@ -177,7 +177,7 @@ class _TodayList extends StatelessWidget {
         if (day.feastsComing.isNotEmpty)
           TodaySectionCard(
             title: 'Upcoming Feasts',
-            icon: Icons.church,
+            icon: const Icon(Icons.church),
             children: <Widget>[
               for (final TodayItem feast in day.feastsComing)
                 TodayItemTile(item: feast),

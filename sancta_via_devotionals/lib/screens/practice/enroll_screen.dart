@@ -53,6 +53,7 @@ import '../../providers/content_providers.dart'
 import '../../services/enrollment_service.dart';
 import '../../utils/logger.dart';
 import '../../widgets/today/today_section_card.dart';
+import '../../widgets/devotions/kneeling_prayer_glyph.dart';
 
 /// The zero-padded `yyyy-MM-dd` rendering of a local date — the engine's
 /// date-discipline shape.
@@ -368,7 +369,7 @@ class _EnrollFlowState extends ConsumerState<_EnrollFlow> {
         TodaySectionCard(
           key: const Key('enroll_success'),
           title: 'Enrolled',
-          icon: Icons.check_circle_outline,
+          icon: const Icon(Icons.check_circle_outline),
           children: <Widget>[
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 4),
@@ -428,7 +429,7 @@ class _EnrollFlowState extends ConsumerState<_EnrollFlow> {
     }
     return TodaySectionCard(
       title: 'Enrollment',
-      icon: Icons.self_improvement,
+      icon: const KneelingPrayerGlyph(),
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
@@ -457,7 +458,7 @@ class _EnrollFlowState extends ConsumerState<_EnrollFlow> {
     return TodaySectionCard(
       key: const Key('feast_picker'),
       title: 'Consecration day',
-      icon: Icons.church_outlined,
+      icon: const Icon(Icons.church_outlined),
       children: <Widget>[
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 4),
@@ -538,7 +539,7 @@ class _EnrollFlowState extends ConsumerState<_EnrollFlow> {
   Widget _startDateCard() {
     return TodaySectionCard(
       title: 'Day 1',
-      icon: Icons.event,
+      icon: const Icon(Icons.event),
       children: <Widget>[
         ListTile(
           key: const Key('start_date_field'),
@@ -565,7 +566,7 @@ class _EnrollFlowState extends ConsumerState<_EnrollFlow> {
               '$length consecutive days.';
     return TodaySectionCard(
       title: length == 54 ? 'How the 54 days unfold' : 'How it unfolds',
-      icon: Icons.auto_stories,
+      icon: const Icon(Icons.auto_stories),
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
@@ -623,7 +624,7 @@ class _EnrollFlowState extends ConsumerState<_EnrollFlow> {
     return TodaySectionCard(
       key: const Key('policy_options'),
       title: 'If a day is missed',
-      icon: Icons.rule,
+      icon: const Icon(Icons.rule),
       children: <Widget>[
         RadioGroup<String>(
           key: const Key('policy_radio_group'),
@@ -656,7 +657,7 @@ class _EnrollFlowState extends ConsumerState<_EnrollFlow> {
   Widget _commitmentCard() {
     return const TodaySectionCard(
       title: 'Starting fresh',
-      icon: Icons.playlist_add_check,
+      icon: const Icon(Icons.playlist_add_check),
       children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(vertical: 4),

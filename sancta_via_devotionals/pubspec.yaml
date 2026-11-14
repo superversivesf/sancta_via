@@ -3,7 +3,7 @@ description: 'Offline Catholic devotionals: Today pipeline, guided prayer sessio
 publish_to: 'none'
 
 # Version: major.minor.patch+build
-version: 1.0.0+1
+version: 1.0.7
 
 environment:
   sdk: ^3.9.2
@@ -19,6 +19,7 @@ dependencies:
     sdk: flutter
   flutter_local_notifications: ^17.2.3
   flutter_riverpod: ^2.6.1
+  flutter_svg: ^2.4.0
   flutter_timezone: ^3.0.1
   go_router: ^15.1.2
   package_info_plus: ^8.3.0
@@ -66,5 +67,6 @@ flutter:
     # files are never parsed as packs); the pin test pins the manifest keys
     # and the import mapping.
     - assets/content/prayers/
+    - assets/icons/
   # Include the Material Icons font.
   uses-material-design: true

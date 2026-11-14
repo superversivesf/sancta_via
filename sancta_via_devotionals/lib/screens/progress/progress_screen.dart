@@ -251,7 +251,7 @@ class _ProgramCard extends StatelessWidget {
     return TodaySectionCard(
       key: Key('program_card_${entry.pack.id}'),
       title: entry.pack.title,
-      icon: _familyIcon(entry.pack.family),
+      icon: Icon(_familyIcon(entry.pack.family)),
       children: <Widget>[
         if (chip != null)
           Padding(
@@ -488,7 +488,7 @@ class _IntentionsSectionState extends ConsumerState<_IntentionsSection> {
     return TodaySectionCard(
       key: const Key('intentions_section'),
       title: 'Intentions',
-      icon: Icons.volunteer_activism_outlined,
+      icon: const Icon(Icons.volunteer_activism_outlined),
       children: <Widget>[
         intentions.when(
           loading: () => const Padding(

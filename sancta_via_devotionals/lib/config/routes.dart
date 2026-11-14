@@ -10,6 +10,7 @@ import '../screens/progress/progress_screen.dart';
 import '../screens/session/session_player_screen.dart';
 import '../screens/settings/devotionals_settings_screen.dart'
     show DevotionalsSettingsScreen;
+import '../widgets/devotions/kneeling_prayer_glyph.dart';
 
 /// Whether the first-launch onboarding walkthrough has completed, read LIVE
 /// at every redirect evaluation.
@@ -242,8 +243,8 @@ class _AppShell extends StatelessWidget {
             label: 'Today',
           ),
           NavigationDestination(
-            icon: Icon(Icons.self_improvement_outlined),
-            selectedIcon: Icon(Icons.self_improvement),
+            icon: KneelingPrayerGlyph(),
+            selectedIcon: KneelingPrayerGlyph(),
             label: 'Practice',
           ),
           NavigationDestination(

@@ -17,8 +17,10 @@ class TodaySectionCard extends StatelessWidget {
   /// The section's display title (the §7 group name).
   final String title;
 
-  /// The section's leading icon.
-  final IconData icon;
+  /// The section's leading icon. Widened to [Widget] so the
+  /// kneeling-prayer glyph (or any custom icon widget) can lead a section
+  /// alongside Material `Icon`s.
+  final Widget icon;
 
   /// The section's item tiles, already built by the screen.
   final List<Widget> children;
@@ -35,7 +37,13 @@ class TodaySectionCard extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Icon(icon, size: 20, color: theme.colorScheme.primary),
+                IconTheme.merge(
+                  data: IconThemeData(
+                    size: 20,
+                    color: theme.colorScheme.primary,
+                  ),
+                  child: icon,
+                ),
                 const SizedBox(width: 8),
                 // Bounded so long titles wrap instead of overflowing the
                 // card (the Progress tab passes whole pack titles).
