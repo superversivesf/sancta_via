@@ -12,7 +12,10 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 /// shape the Task 7–12 screen test seeders share, now single-sourced). The
 /// detail-page columns default to unset, matching the original copy's
 /// behavior; set [prayerText]/[thumbAsset]/[imageAttribution] to exercise
-/// the prayer card, a declared thumbnail, and the attribution line.
+/// the prayer card, a declared thumbnail, and the attribution line. Set
+/// [history]/[historySource] to exercise the Task-6 History section (schema
+/// v2 columns) and [sources] to seed the `sources` table back-ordered by
+/// list position.
 Future<void> seedSaint(
   Database db, {
   required String slug,
@@ -26,6 +29,9 @@ Future<void> seedSaint(
   String? thumbAsset,
   String? imageAttribution,
   String? imageAlt,
+  String? history,
+  String? historySource,
+  List<String> sources = const <String>[],
   List<({String need, SaintCategory category})> patronages =
       const <({String need, SaintCategory category})>[],
 }) async {
@@ -41,7 +47,16 @@ Future<void> seedSaint(
     'thumb_asset': thumbAsset,
     'image_attribution': imageAttribution,
     'image_alt': imageAlt,
+    'history': history,
+    'history_source': historySource,
   });
+  for (final (int position, String url) in sources.indexed) {
+    await db.insert('sources', <String, Object?>{
+      'slug': slug,
+      'url': url,
+      'position': position,
+    });
+  }
   for (final ({String need, SaintCategory category}) patronage in patronages) {
     await db.insert('patronages', <String, Object?>{
       'slug': slug,

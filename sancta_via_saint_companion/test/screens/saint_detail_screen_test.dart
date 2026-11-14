@@ -4,7 +4,9 @@
 // extracted from the Task 12 categories seeder) with ONE detail-only saint
 // appended per database (bernard-of-clairvaux: attribution, canonized line,
 // prayer, and a deliberately-missing thumb asset mirroring the Task 6
-// carry-forward saints). The repository-backed provider is resolved for
+// carry-forward saints) and one Task-6 history-backed saint
+// (francis-of-assisi: schema-v2 history + history_source columns and a
+// two-row `sources` table). The repository-backed provider is resolved for
 // real inside `tester.runAsync` before pumping (Task 11/12 harness) so the
 // widget phase renders `AsyncData` synchronously and `pumpAndSettle` is
 // safe. The load-failure test uses the REAL production first-load path
@@ -29,6 +31,25 @@ import '../helpers/saint_fixture_db.dart';
 
 const Key _placeholderKey = Key('saint_image_placeholder');
 
+/// The Task-6 history-backed saint's seeded content, referenced verbatim by
+/// the tests below.
+const String _francisHistory =
+    'Born in Assisi in 1181, he renounced his family wealth and founded the '
+    'Friars Minor, serving the poor and preaching peace until his death in '
+    '1226.';
+
+const String _francisHistorySource =
+    'catholic-encyclopedia-1907 https://www.newadvent.org/cathen/06221a.htm';
+
+const String _historyAttribution =
+    'Adapted from the Catholic Encyclopedia (1907–12)';
+
+/// The seeded `sources` rows for the history-backed saint, `position` order.
+const List<String> _francisSources = <String>[
+  _francisHistorySource,
+  'https://en.wikisource.org/wiki/St._Francis_of_Assisi',
+];
+
 /// The shared screen fixture plus one detail-only saint exercising every
 /// optional detail-page column: canonized line, prayer, attribution line,
 /// and a deliberately-missing thumb whose asset load falls back to the
@@ -50,6 +71,17 @@ Future<Database> _createDetailSeededDatabase() async {
     // the screen level (Task 11 missing-asset ruling).
     thumbAsset: 'assets/thumbs/definitely-missing-detail-thumb.jpg',
     imageAttribution: 'Photo by Test Author (CC BY-SA 4.0)',
+  );
+  await seedSaint(
+    db,
+    slug: 'francis-of-assisi',
+    name: 'St. Francis of Assisi',
+    feastDay: '10-04',
+    bio: 'He renounced a life of wealth to preach poverty and peace.',
+    prayerText: 'O blessed Francis, pray for us.',
+    history: _francisHistory,
+    historySource: _francisHistorySource,
+    sources: _francisSources,
   );
   return db;
 }
@@ -211,6 +243,120 @@ void main() {
         ),
         findsNothing,
       );
+    },
+  );
+
+  testWidgets(
+    'history-present saint renders a History section with the CE attribution between bio and prayer',
+    (WidgetTester tester) async {
+      await pumpSaintDetail(tester, slug: 'francis-of-assisi');
+
+      // The 'History' header, the seeded schema-v2 body, and the pinned
+      // provenance line — exactly worded "Adapted from ..." (the text is a
+      // grounded summary, never presented as the Encyclopedia's own prose).
+      expect(find.text('History'), findsOneWidget);
+      expect(find.text(_francisHistory), findsOneWidget);
+      expect(find.text(_historyAttribution), findsOneWidget);
+      expect(find.byKey(const Key('history_attribution')), findsOneWidget);
+
+      // Scrollable with the page (no inner viewport): the section renders
+      // inside the existing SingleChildScrollView between the bio paragraph
+      // and the prayer card.
+      final List<String> texts = _detailTextsInPaintOrder(tester);
+      final int bioIndex = texts.indexOf(
+        'He renounced a life of wealth to preach poverty and peace.',
+      );
+      final int headerIndex = texts.indexOf('History');
+      final int historyIndex = texts.indexOf(_francisHistory);
+      final int attributionIndex = texts.indexOf(_historyAttribution);
+      final int prayerIndex = texts.indexOf('O blessed Francis, pray for us.');
+      expect(bioIndex, isNonNegative, reason: 'the bio renders');
+      expect(
+        headerIndex,
+        greaterThan(bioIndex),
+        reason: 'the History header follows the bio paragraph',
+      );
+      expect(
+        historyIndex,
+        greaterThan(headerIndex),
+        reason: 'the history body follows its header',
+      );
+      expect(
+        attributionIndex,
+        greaterThan(historyIndex),
+        reason: 'the attribution line sits directly under the history body',
+      );
+      expect(
+        prayerIndex,
+        greaterThan(attributionIndex),
+        reason: 'the prayer card follows the History section',
+      );
+    },
+  );
+
+  testWidgets(
+    'Source rows render as plain launch-less text in position order',
+    (WidgetTester tester) async {
+      await pumpSaintDetail(tester, slug: 'francis-of-assisi');
+
+      // The previously-dormant Sources section goes live: a header and one
+      // plain-text URL per `sources` row.
+      expect(find.text('Sources'), findsOneWidget);
+      expect(find.text(_francisSources[0]), findsOneWidget);
+      expect(find.text(_francisSources[1]), findsOneWidget);
+
+      // `position` order: row 0 paints before row 1.
+      final List<String> texts = _detailTextsInPaintOrder(tester);
+      expect(
+        texts.indexOf(_francisSources[0]),
+        lessThan(texts.indexOf(_francisSources[1])),
+        reason: 'sources rows render in their stored position order',
+      );
+
+      // Launch-less (Task-13 ruling: this app carries no url_launcher
+      // dependency): each row's InkWell carries no tap handler — the URL
+      // text never launches — and no action icon suggests it opens anywhere.
+      for (final String url in _francisSources) {
+        final Iterable<InkWell> rowInk = tester.widgetList<InkWell>(
+          find.ancestor(of: find.text(url), matching: find.byType(InkWell)),
+        );
+        expect(rowInk, isNotEmpty, reason: '$url renders in a tile row');
+        expect(
+          rowInk.every((InkWell ink) => ink.onTap == null),
+          isTrue,
+          reason: '$url renders launch-less: no tap handler on its row',
+        );
+        expect(
+          find.ancestor(
+            of: find.text(url),
+            matching: find.byIcon(Icons.open_in_new),
+          ),
+          findsNothing,
+        );
+      }
+    },
+  );
+
+  testWidgets(
+    'a saint without history renders exactly as today (no History header, attribution, or Sources)',
+    (WidgetTester tester) async {
+      await pumpSaintDetail(tester, slug: 'anthony-of-padua');
+
+      // Today's layout: bio + the seeded patronage chips (no prayer seeded →
+      // no prayer card).
+      expect(
+        find.text('A Franciscan preacher who helps find lost things.'),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('prayer_card')), findsNothing);
+
+      // The Task-6 sections stay fully dormant for a record with no history
+      // and no source rows (the fallback honesty pin).
+      expect(find.text('History'), findsNothing);
+      expect(find.text(_historyAttribution), findsNothing);
+      expect(find.byKey(const Key('history_attribution')), findsNothing);
+      expect(find.text('Sources'), findsNothing);
+      expect(find.textContaining('newadvent'), findsNothing);
     },
   );
 
@@ -438,6 +584,22 @@ void main() {
       expect(find.byKey(const Key('prayer_card')), findsNothing);
     },
   );
+}
+
+/// Plain text of every [Text] inside the detail screen's scroll view, in
+/// paint order — a stable proxy for the Column's child order, used to pin
+/// the Task-6 section ordering (bio → History → attribution → prayer) and
+/// the `sources` rows' `position` order.
+List<String> _detailTextsInPaintOrder(WidgetTester tester) {
+  return tester
+      .widgetList<Text>(
+        find.descendant(
+          of: find.byType(SingleChildScrollView),
+          matching: find.byType(Text),
+        ),
+      )
+      .map((Text text) => text.data ?? '')
+      .toList();
 }
 
 /// Awaits [future], returning its result or — when it completes with an

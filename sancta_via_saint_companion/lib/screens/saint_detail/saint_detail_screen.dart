@@ -41,8 +41,10 @@ String? _formatFeastDay(String feastDay) {
 
 /// The saint detail screen (Task 13): header thumb (with attribution line
 /// when shipped), feast day, canonization status, patronage chips (each
-/// pushing `/search` seeded with its need), bio, a copyable prayer card,
-/// and the record's source URLs as launch-less tiles.
+/// pushing `/search` seeded with its need), bio, the schema-v2 History
+/// section (Task 6: rendered with its CE attribution only when the record
+/// ships a grounded history), a copyable prayer card, and the record's
+/// source URLs as launch-less tiles.
 ///
 /// An unknown slug renders the Task-12 `category_not_found` fallback style:
 /// a message keyed `Key('saint_not_found')` with a back-home affordance.
@@ -206,6 +208,31 @@ class _SaintDetailScreenState extends ConsumerState<SaintDetailScreen> {
           ],
           const SizedBox(height: 16),
           Text(saint.bio, style: Theme.of(context).textTheme.bodyMedium),
+          // The schema-v2 grounded history renders only when the record
+          // ships one; saints without history keep today's layout
+          // untouched so the bio + prayer fallback is honest (Task 6).
+          if (saint.history != null) ...<Widget>[
+            const SizedBox(height: 16),
+            Text(
+              'History',
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(saint.history!, style: Theme.of(context).textTheme.bodyMedium),
+            const SizedBox(height: 4),
+            // Provenance honesty: the body is a grounded summary of the
+            // Encyclopedia article, so the line says "Adapted from" —
+            // never presented as the Encyclopedia's own prose.
+            Text(
+              'Adapted from the Catholic Encyclopedia (1907–12)',
+              key: const Key('history_attribution'),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
           _buildPrayerCard(context, saint),
           _buildSources(context, saint),
         ],
@@ -260,10 +287,10 @@ class _SaintDetailScreenState extends ConsumerState<SaintDetailScreen> {
   }
 
   /// The record's source URLs as PLAIN launch-less tiles (spec §8: URL text
-  /// only — this app carries no url_launcher dependency). `getBySlug` never
-  /// populates `sources` today (the committed schema stores no sources
-  /// table), so this section is dormant until a sources table ships; kept
-  /// so the model field is honored when it does.
+  /// only — this app carries no url_launcher dependency). `getBySlug`
+  /// hydrates them from the schema-v2 `sources` table in `position` order
+  /// (Task 5), so the section goes live for records carrying source rows;
+  /// records with none render no section.
   Widget _buildSources(BuildContext context, Saint saint) {
     if (saint.sources.isEmpty) {
       return const SizedBox.shrink();
