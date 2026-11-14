@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-11-14T08:34:56.977305Z",
+  "authorModel": "ollama/glm-5.3-flash:cloud",
+  "crossCheckModels": [
+    "ollama/deepseek-v4.1-flash:cloud",
+    "ollama/minimax-m3.1-flash:cloud"
+  ],
+  "counts": {
+    "selected": 1,
+    "accepted": 1,
+    "dropped": 0,
+    "skipped": 0,
+    "error": 0
+  },
+  "entries": [
+    {
+      "slug": "francis-of-assisi",
+      "ceCode": "06221a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3625,
+      "issues": []
+    }
+  ]
+}
