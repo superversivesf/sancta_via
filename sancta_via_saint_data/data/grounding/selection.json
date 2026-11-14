@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T06:40:23.881242Z",
+  "generatedAt": "2026-11-14T07:08:30.122874Z",
   "matches": [
     {
       "slug": "anthony-of-padua",
@@ -70,15 +70,6 @@
       "ceCode": "10154a",
       "ceTitle": "Melania (the Younger), Saint",
       "ceUrl": "https://www.newadvent.org/cathen/10154a.htm",
-      "patronageCount": 5,
-      "featured": false
-    },
-    {
-      "slug": "pelagia",
-      "name": "St. Pelagia",
-      "ceCode": "11601d",
-      "ceTitle": "Pelagia",
-      "ceUrl": "https://www.newadvent.org/cathen/11601d.htm",
       "patronageCount": 5,
       "featured": false
     },
@@ -263,15 +254,6 @@
       "featured": false
     },
     {
-      "slug": "moses-bishop-of-the-arabs",
-      "name": "St. Moses",
-      "ceCode": "10596a",
-      "ceTitle": "Moses",
-      "ceUrl": "https://www.newadvent.org/cathen/10596a.htm",
-      "patronageCount": 4,
-      "featured": false
-    },
-    {
       "slug": "paul-the-simple",
       "name": "St. Paul the Simple",
       "ceCode": "11591a",
@@ -344,15 +326,6 @@
       "featured": false
     },
     {
-      "slug": "pope-caius",
-      "name": "Pope St. Caius",
-      "ceCode": "03144a",
-      "ceTitle": "Caius",
-      "ceUrl": "https://www.newadvent.org/cathen/03144a.htm",
-      "patronageCount": 3,
-      "featured": false
-    },
-    {
       "slug": "pope-adeodatus-ii",
       "name": "St. Adeodatus II",
       "ceCode": "01142a",
@@ -383,7 +356,7 @@
       "slug": "aelia-flaccilla",
       "name": "St. Aelia Flaccilla",
       "ceCode": "06089b",
-      "ceTitle": "Flaccilla, &AElig;lia",
+      "ceTitle": "Flaccilla, Ælia",
       "ceUrl": "https://www.newadvent.org/cathen/06089b.htm",
       "patronageCount": 3,
       "featured": false
@@ -544,18 +517,9 @@
     {
       "slug": "pope-damasus-i",
       "name": "St. Damasus I",
-      "ceCode": "04614a",
-      "ceTitle": "Damasus II, Pope",
-      "ceUrl": "https://www.newadvent.org/cathen/04614a.htm",
-      "patronageCount": 3,
-      "featured": false
-    },
-    {
-      "slug": "deogratias-bishop",
-      "name": "St. Deogratias",
-      "ceCode": "04737a",
-      "ceTitle": "Deo Gratias",
-      "ceUrl": "https://www.newadvent.org/cathen/04737a.htm",
+      "ceCode": "04613a",
+      "ceTitle": "Damasus I, Saint, Pope",
+      "ceUrl": "https://www.newadvent.org/cathen/04613a.htm",
       "patronageCount": 3,
       "featured": false
     },
@@ -875,15 +839,6 @@
       "featured": false
     },
     {
-      "slug": "laura",
-      "name": "St. Laura",
-      "ceCode": "09039a",
-      "ceTitle": "Laura",
-      "ceUrl": "https://www.newadvent.org/cathen/09039a.htm",
-      "patronageCount": 3,
-      "featured": false
-    },
-    {
       "slug": "pope-leo-ii",
       "name": "St. Leo II",
       "ceCode": "09157a",
@@ -949,9 +904,9 @@
     {
       "slug": "pope-marcellus-i",
       "name": "St. Marcellus I",
-      "ceCode": "09641a",
-      "ceTitle": "Marcellus II, Pope",
-      "ceUrl": "https://www.newadvent.org/cathen/09641a.htm",
+      "ceCode": "09640b",
+      "ceTitle": "Marcellus I, Saint, Pope",
+      "ceUrl": "https://www.newadvent.org/cathen/09640b.htm",
       "patronageCount": 3,
       "featured": false
     },
@@ -988,6 +943,15 @@
       "ceCode": "10168b",
       "ceTitle": "Mellitus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/10168b.htm",
+      "patronageCount": 3,
+      "featured": false
+    },
+    {
+      "slug": "pope-nicholas-i",
+      "name": "St. Nicholas I",
+      "ceCode": "11054a",
+      "ceTitle": "Nicholas I, Saint, Pope",
+      "ceUrl": "https://www.newadvent.org/cathen/11054a.htm",
       "patronageCount": 3,
       "featured": false
     },
@@ -1132,15 +1096,6 @@
       "ceCode": "13290a",
       "ceTitle": "Sabina, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13290a.htm",
-      "patronageCount": 3,
-      "featured": false
-    },
-    {
-      "slug": "simeon-gospel-of-luke",
-      "name": "St. Simeon",
-      "ceCode": "13794b",
-      "ceTitle": "Simeon",
-      "ceUrl": "https://www.newadvent.org/cathen/13794b.htm",
       "patronageCount": 3,
       "featured": false
     },
@@ -1370,6 +1325,15 @@
       "featured": false
     },
     {
+      "slug": "pope-benedict-ii",
+      "name": "St. Benedict II",
+      "ceCode": "02427d",
+      "ceTitle": "Benedict II, Saint, Pope",
+      "ceUrl": "https://www.newadvent.org/cathen/02427d.htm",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
       "slug": "berach",
       "name": "St. Berach",
       "ceCode": "02485a",
@@ -1492,15 +1456,6 @@
       "ceCode": "04189c",
       "ceTitle": "Conan, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04189c.htm",
-      "patronageCount": 2,
-      "featured": false
-    },
-    {
-      "slug": "contentius",
-      "name": "St. Contentius",
-      "ceCode": "04284a",
-      "ceTitle": "Consentius",
-      "ceUrl": "https://www.newadvent.org/cathen/04284a.htm",
       "patronageCount": 2,
       "featured": false
     },
@@ -1955,15 +1910,6 @@
       "featured": false
     },
     {
-      "slug": "mitre",
-      "name": "St. Mitre",
-      "ceCode": "10404a",
-      "ceTitle": "Mitre",
-      "ceUrl": "https://www.newadvent.org/cathen/10404a.htm",
-      "patronageCount": 2,
-      "featured": false
-    },
-    {
       "slug": "nicholas-of-myra",
       "name": "St. Nicholas of Myra",
       "ceCode": "11063b",
@@ -2000,15 +1946,6 @@
       "featured": false
     },
     {
-      "slug": "oda-of-canterbury",
-      "name": "St. Oda of Canterbury",
-      "ceCode": "11211b",
-      "ceTitle": "Odo of Canterbury",
-      "ceUrl": "https://www.newadvent.org/cathen/11211b.htm",
-      "patronageCount": 2,
-      "featured": false
-    },
-    {
       "slug": "othmar",
       "name": "St. Othmar",
       "ceCode": "11351a",
@@ -2032,6 +1969,15 @@
       "ceCode": "11590a",
       "ceTitle": "Paul of the Cross, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11590a.htm",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
+      "slug": "peter-canisius",
+      "name": "St. Peter Canisius",
+      "ceCode": "11756c",
+      "ceTitle": "Canisius, Peter, Blessed",
+      "ceUrl": "https://www.newadvent.org/cathen/11756c.htm",
       "patronageCount": 2,
       "featured": false
     },
@@ -2261,15 +2207,6 @@
       "featured": false
     },
     {
-      "slug": "theodosius-ii",
-      "name": "St. Theodosius II",
-      "ceCode": "14577d",
-      "ceTitle": "Theodosius I",
-      "ceUrl": "https://www.newadvent.org/cathen/14577d.htm",
-      "patronageCount": 2,
-      "featured": false
-    },
-    {
       "slug": "thomas-aquinas",
       "name": "St. Thomas Aquinas",
       "ceCode": "14663b",
@@ -2347,6 +2284,15 @@
       "ceCode": "15645b",
       "ceTitle": "Willigis, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15645b.htm",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
+      "slug": "saints-faith-hope-and-charity",
+      "name": "Sts. Faith, Hope and Charity",
+      "ceCode": "05766a",
+      "ceTitle": "Faith, Hope, and Charity (Saints)",
+      "ceUrl": "https://www.newadvent.org/cathen/05766a.htm",
       "patronageCount": 2,
       "featured": false
     },
@@ -2612,6 +2558,24 @@
       "featured": false
     },
     {
+      "slug": "colm-n-elo",
+      "name": "St. Colmán Elo",
+      "ceCode": "04115e",
+      "ceTitle": "Colman, Saint Elo",
+      "ceUrl": "https://www.newadvent.org/cathen/04115e.htm",
+      "patronageCount": 1,
+      "featured": false
+    },
+    {
+      "slug": "colman-of-templeshambo",
+      "name": "St. Colman of Templeshambo",
+      "ceCode": "04115a",
+      "ceTitle": "Colman, Saint, of Templeshambo",
+      "ceUrl": "https://www.newadvent.org/cathen/04115a.htm",
+      "patronageCount": 1,
+      "featured": false
+    },
+    {
       "slug": "conal",
       "name": "St. Conal",
       "ceCode": "04189b",
@@ -2716,6 +2680,15 @@
       "ceCode": "05538b",
       "ceTitle": "Eskil",
       "ceUrl": "https://www.newadvent.org/cathen/05538b.htm",
+      "patronageCount": 1,
+      "featured": false
+    },
+    {
+      "slug": "pope-eugene-i",
+      "name": "St. Eugene I",
+      "ceCode": "05598a",
+      "ceTitle": "Eugene I, Saint, Pope",
+      "ceUrl": "https://www.newadvent.org/cathen/05598a.htm",
       "patronageCount": 1,
       "featured": false
     },
@@ -3062,15 +3035,6 @@
       "featured": false
     },
     {
-      "slug": "paris",
-      "name": "St. Paris",
-      "ceCode": "11480c",
-      "ceTitle": "Paris",
-      "ceUrl": "https://www.newadvent.org/cathen/11480c.htm",
-      "patronageCount": 1,
-      "featured": false
-    },
-    {
       "slug": "patrick",
       "name": "St. Patrick",
       "ceCode": "11554a",
@@ -3103,6 +3067,15 @@
       "ceCode": "11763a",
       "ceTitle": "Claver, Saint Peter",
       "ceUrl": "https://www.newadvent.org/cathen/11763a.htm",
+      "patronageCount": 1,
+      "featured": false
+    },
+    {
+      "slug": "peter-faber",
+      "name": "St. Peter Faber",
+      "ceCode": "11767a",
+      "ceTitle": "Faber, Peter, Saint",
+      "ceUrl": "https://www.newadvent.org/cathen/11767a.htm",
       "patronageCount": 1,
       "featured": false
     },
@@ -3197,20 +3170,11 @@
       "featured": false
     },
     {
-      "slug": "theodoret-martyr",
-      "name": "St. Theodoret",
-      "ceCode": "14574b",
-      "ceTitle": "Theodoret",
-      "ceUrl": "https://www.newadvent.org/cathen/14574b.htm",
-      "patronageCount": 1,
-      "featured": false
-    },
-    {
       "slug": "thomas-more",
       "name": "St. Thomas More",
-      "ceCode": "10553b",
-      "ceTitle": "Moore, Thomas",
-      "ceUrl": "https://www.newadvent.org/cathen/10553b.htm",
+      "ceCode": "14689c",
+      "ceTitle": "More, Thomas, Saint",
+      "ceUrl": "https://www.newadvent.org/cathen/14689c.htm",
       "patronageCount": 1,
       "featured": false
     },
@@ -3377,7 +3341,7 @@
     },
     {
       "name": "St. Abraham of Rostov",
-      "reason": "no-ce-match"
+      "reason": "fuzzy-quarantined"
     },
     {
       "name": "St. Abraham of the High Mountain",
@@ -4905,7 +4869,7 @@
     },
     {
       "name": "Sts. Chrysanthus and Daria",
-      "reason": "fuzzy-quarantined"
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Chuniald",
@@ -4960,10 +4924,6 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colmán Elo",
-      "reason": "no-ce-match"
-    },
-    {
       "name": "St. Colmán mac Comán",
       "reason": "no-ce-match"
     },
@@ -4994,10 +4954,6 @@
     {
       "name": "St. Colman mac Duagh",
       "reason": "no-ce-match"
-    },
-    {
-      "name": "St. Colman of Templeshambo",
-      "reason": "fuzzy-quarantined"
     },
     {
       "name": "St. Coloman of Stockerau",
@@ -5060,6 +5016,10 @@
       "reason": "no-ce-match"
     },
     {
+      "name": "St. Contentius",
+      "reason": "conflicted-quarantined"
+    },
+    {
       "name": "St. Conus",
       "reason": "no-ce-match"
     },
@@ -5085,7 +5045,7 @@
     },
     {
       "name": "Sts. Cosmas and Damian",
-      "reason": "fuzzy-quarantined"
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Cosmas of Aphrodisia",
@@ -5105,7 +5065,7 @@
     },
     {
       "name": "Sts. Crispin and Crispinian",
-      "reason": "fuzzy-quarantined"
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Cronan of Tuamgraney",
@@ -5177,7 +5137,7 @@
     },
     {
       "name": "Sts. Cyril and Methodius",
-      "reason": "fuzzy-quarantined"
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Cyrillus of Trier",
@@ -5298,6 +5258,10 @@
     {
       "name": "St. Denise, Dativa, Leontia, Tertius, Emilianus, Boniface, Majoricus, and Servus",
       "reason": "no-ce-match"
+    },
+    {
+      "name": "St. Deogratias",
+      "reason": "conflicted-quarantined"
     },
     {
       "name": "St. Derchairthinn",
@@ -7392,6 +7356,10 @@
       "reason": "no-ce-match"
     },
     {
+      "name": "St. Laura",
+      "reason": "collision-quarantined"
+    },
+    {
       "name": "St. Laurence of Canterbury",
       "reason": "no-ce-match"
     },
@@ -8104,6 +8072,10 @@
       "reason": "fuzzy-quarantined"
     },
     {
+      "name": "St. Mitre",
+      "reason": "collision-quarantined"
+    },
+    {
       "name": "St. Mo Chua of Balla",
       "reason": "no-ce-match"
     },
@@ -8174,6 +8146,10 @@
     {
       "name": "St. Monulph",
       "reason": "no-ce-match"
+    },
+    {
+      "name": "St. Moses",
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Moses the Black",
@@ -8376,6 +8352,10 @@
       "reason": "no-ce-match"
     },
     {
+      "name": "St. Oda of Canterbury",
+      "reason": "conflicted-quarantined"
+    },
+    {
       "name": "St. Odilia of Cologne",
       "reason": "no-ce-match"
     },
@@ -8524,6 +8504,10 @@
       "reason": "fuzzy-quarantined"
     },
     {
+      "name": "St. Paris",
+      "reason": "collision-quarantined"
+    },
+    {
       "name": "St. Parrobus of Pottole",
       "reason": "no-ce-match"
     },
@@ -8628,6 +8612,10 @@
       "reason": "no-ce-match"
     },
     {
+      "name": "St. Pelagia",
+      "reason": "collision-quarantined"
+    },
+    {
       "name": "St. Pelagia the Virgin",
       "reason": "no-ce-match"
     },
@@ -8658,14 +8646,6 @@
     {
       "name": "St. Perpetua and Felicity",
       "reason": "no-ce-match"
-    },
-    {
-      "name": "St. Peter Canisius",
-      "reason": "no-ce-match"
-    },
-    {
-      "name": "St. Peter Faber",
-      "reason": "fuzzy-quarantined"
     },
     {
       "name": "St. Peter I of Bulgaria",
@@ -8837,7 +8817,7 @@
     },
     {
       "name": "St. Alexander I of Alexandria",
-      "reason": "no-ce-match"
+      "reason": "fuzzy-quarantined"
     },
     {
       "name": "St. Anastasius of Alexandria",
@@ -8860,12 +8840,12 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Benedict II",
-      "reason": "fuzzy-ambiguous"
-    },
-    {
       "name": "St. Benjamin I of Alexandria",
       "reason": "no-ce-match"
+    },
+    {
+      "name": "Pope St. Caius",
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Celadion of Alexandria",
@@ -8898,10 +8878,6 @@
     {
       "name": "Pope Eleutherius",
       "reason": "collision-quarantined"
-    },
-    {
-      "name": "St. Eugene I",
-      "reason": "fuzzy-quarantined"
     },
     {
       "name": "Pope Eumenes of Alexandria",
@@ -8970,10 +8946,6 @@
     {
       "name": "St. Mina I of Alexandria",
       "reason": "no-ce-match"
-    },
-    {
-      "name": "St. Nicholas I",
-      "reason": "fuzzy-ambiguous"
     },
     {
       "name": "St. Primus of Alexandria",
@@ -9256,10 +9228,6 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "Sts. Faith, Hope and Charity",
-      "reason": "no-ce-match"
-    },
-    {
       "name": "St. Saizana",
       "reason": "no-ce-match"
     },
@@ -9470,6 +9438,10 @@
     {
       "name": "St. Silvanus of Gaza",
       "reason": "no-ce-match"
+    },
+    {
+      "name": "St. Simeon",
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Simeon of Mantua",
@@ -9876,6 +9848,10 @@
       "reason": "fuzzy-quarantined"
     },
     {
+      "name": "St. Theodoret",
+      "reason": "collision-quarantined"
+    },
+    {
       "name": "St. Theodorus and Theophanes",
       "reason": "collision-quarantined"
     },
@@ -9894,6 +9870,10 @@
     {
       "name": "St. Theodosia of Constantinople",
       "reason": "no-ce-match"
+    },
+    {
+      "name": "St. Theodosius II",
+      "reason": "conflicted-quarantined"
     },
     {
       "name": "St. Theodosius of Kiev",
@@ -10502,7 +10482,7 @@
   ],
   "counts": {
     "seeds": 2174,
-    "matched": 360,
-    "dropped": 1814
+    "matched": 356,
+    "dropped": 1818
   }
 }

@@ -7,15 +7,22 @@
 // slug<->article discipline, and writes the three grounding outputs:
 //   data/grounding/selection.json         machine selection (pinned shape)
 //   data/grounding/selection_review.json  partner-readable summary
-//   data/grounding/manual_review.json     quarantined collisions / fuzzy
+//   data/grounding/manual_review.json     quarantined collisions / conflicted
+//                                         accepts / weak fuzzy candidates
 //
 // Match discipline (Global Constraints): 1:1 slug<->article ONLY. Exact
 // normalized matches are accepted when uniquely paired; fuzzy candidates
-// scoring >= 0.9 are accepted 1:1; collisions and fuzzy candidates below
-// 0.9 quarantine to manual_review.json and are recorded as drops — never
-// auto-shared. A qualified seed (e.g. `St. Adalbert of Egmond`) can never
-// resolve to a bare-name CE article (e.g. `Adalbert, Saint`): whole-string
-// similarity keeps short articles far below the accept floor.
+// scoring >= 0.9 are accepted 1:1 BUT only after identity guards (trailing
+// Roman-numeral conflict, inverted-surname mismatch, non-person and
+// multi-person articles, and seed-bio <-> CE-note grounding) clear;
+// collisions and fuzzy candidates below 0.9 quarantine to manual_review.json
+// (buckets: `collisions` — article claimed by another slug or unclaimable
+// group/non-person/bare-name article, `conflicted` — refused at the accept
+// gate with ratio >= 0.9, `fuzzy` — best candidate too weak) and are
+// recorded as drops — never auto-shared. A qualified seed (e.g. `St. Adalbert
+// of Egmond`) can never resolve to a bare-name CE article (e.g. `Adalbert,
+// Saint`): whole-string similarity keeps short articles far below the accept
+// floor.
 //
 // Polite scraping: >= 2.2 s between requests, resumable via a disk cache
 // under data/grounding/ce_index/, robots rules honored.
@@ -51,6 +58,11 @@ const String _reasonNoMatch = 'no-ce-match';
 const String _reasonCollision = 'collision-quarantined';
 const String _reasonFuzzy = 'fuzzy-quarantined';
 const String _reasonFuzzyAmbiguous = 'fuzzy-ambiguous';
+const String _reasonConflicted = 'conflicted-quarantined';
+
+/// Causes recorded on manual_review.json conflicted rows.
+const String _causeClaimed = 'claimed';
+const String _causeAmbiguous = 'ambiguous';
 
 /// The 26 full letter indexes of the Catholic Encyclopedia.
 const List<String> _letters = <String>[
@@ -139,6 +151,32 @@ class FuzzyRow {
     required this.name,
     required this.ceHead,
     required this.ratio,
+  });
+}
+
+/// A slug whose best candidate cleared the accept floor (ratio >= 0.9) but
+/// was refused: the article was claimed by an exact matchant (`claimed`),
+/// rivals tied at the floor (`ambiguous`), or an identity guard rejected it
+/// (`ordinal-conflict`, `surname-mismatch`, `non-person-article`,
+/// `multi-person-article`, `no-grounding`). Recorded apart from the
+/// below-floor `fuzzy` bucket so the partner read distinguishes "match too
+/// weak" from "refused at the accept gate".
+class ConflictedRow {
+  final String slug;
+  final String name;
+  final String ceHead;
+  final String ceCode;
+  final double ratio;
+  final String cause;
+
+  /// Creates a row.
+  const ConflictedRow({
+    required this.slug,
+    required this.name,
+    required this.ceHead,
+    required this.ceCode,
+    required this.ratio,
+    required this.cause,
   });
 }
 
@@ -234,6 +272,7 @@ class Selection {
   final List<SelectionDrop> drops;
   final List<CollisionRow> collisions;
   final List<FuzzyRow> fuzzy;
+  final List<ConflictedRow> conflicted;
   final Map<String, int> counts;
 
   /// Creates a selection result.
@@ -243,6 +282,7 @@ class Selection {
     required this.drops,
     required this.collisions,
     required this.fuzzy,
+    required this.conflicted,
     required this.counts,
   });
 }
@@ -281,13 +321,22 @@ const Map<String, String> _namedEntities = <String, String>{
   'mdash': '—',
   'ndash': '–',
   'aelig': 'æ',
+  'aElig': 'æ',
+  'AElig': 'Æ',
+  'oelig': 'œ',
+  'oElig': 'œ',
+  'OElig': 'Œ',
   'oslash': 'ø',
+  'Oslash': 'Ø',
   'aring': 'å',
+  'Aring': 'Å',
   'auml': 'ä',
   'euml': 'ë',
   'iuml': 'ï',
   'ouml': 'ö',
   'uuml': 'ü',
+  'yuml': 'ÿ',
+  'Yuml': 'Ÿ',
   'Auml': 'Ä',
   'Euml': 'Ë',
   'Iuml': 'Ï',
@@ -298,21 +347,46 @@ const Map<String, String> _namedEntities = <String, String>{
   'agrave': 'à',
   'acirc': 'â',
   'atilde': 'ã',
+  'Aacute': 'Á',
+  'Agrave': 'À',
+  'Acirc': 'Â',
+  'Atilde': 'Ã',
   'eacute': 'é',
   'egrave': 'è',
   'ecirc': 'ê',
+  'Eacute': 'É',
+  'Egrave': 'È',
+  'Ecirc': 'Ê',
   'iacute': 'í',
   'igrave': 'ì',
   'icirc': 'î',
+  'Iacute': 'Í',
+  'Igrave': 'Ì',
+  'Icirc': 'Î',
   'oacute': 'ó',
   'ograve': 'ò',
   'ocirc': 'ô',
   'otilde': 'õ',
+  'Oacute': 'Ó',
+  'Ograve': 'Ò',
+  'Ocirc': 'Ô',
+  'Otilde': 'Õ',
   'uacute': 'ú',
   'ugrave': 'ù',
   'ucirc': 'û',
+  'Uacute': 'Ú',
+  'Ugrave': 'Ù',
+  'Ucirc': 'Û',
   'ntilde': 'ñ',
+  'Ntilde': 'Ñ',
   'ccedil': 'ç',
+  'Ccedil': 'Ç',
+  'yacute': 'ý',
+  'Yacute': 'Ý',
+  'eth': 'ð',
+  'ETH': 'Ð',
+  'thorn': 'þ',
+  'THORN': 'Þ',
 };
 
 /// Legacy Windows-1252 control range: codepoints 0x80-0x9F referenced by
@@ -429,6 +503,42 @@ String _collapseWhitespace(String input) {
   return input.replaceAll(RegExp(r'\s+'), ' ').trim();
 }
 
+/// Honorific tokens that may occupy a comma part of a CE title on their own
+/// (`Francis of Assisi, Saint` / `Leo II, Pope Saint`) or open one
+/// (`Haraldson, Saint Olaf`). Multi-part titles such as `Damasus I, Saint,
+/// Pope` and `More, Thomas, Saint` hide the identity behind these parts.
+const Set<String> _honorificTokens = <String>{
+  'saint',
+  'saints',
+  'st',
+  'sts',
+  'popes',
+  'pope',
+  'blessed',
+  'bl',
+  'ven',
+  'venerable',
+};
+
+/// Strips honorific tokens from the edges of one comma part (after a leading
+/// `the`), e.g. `saint elo` -> `elo`, `the venerable` -> ``, `pope saint` ->
+/// ``. Interior tokens (`Mac Lenine` in `Colman Mac Lenine`) are untouched.
+String _stripPartHonorifics(String part) {
+  final List<String> tokens = _collapseWhitespace(
+    part,
+  ).split(' ').where((String token) => token.isNotEmpty).toList();
+  if (tokens.length > 1 && tokens.first == 'the') {
+    tokens.removeAt(0);
+  }
+  while (tokens.isNotEmpty && _honorificTokens.contains(tokens.first)) {
+    tokens.removeAt(0);
+  }
+  while (tokens.isNotEmpty && _honorificTokens.contains(tokens.last)) {
+    tokens.removeLast();
+  }
+  return _collapseWhitespace(tokens.join(' '));
+}
+
 /// Parses one letter-index page into its article entries.
 List<CeEntry> parseCeIndex(String html) {
   final List<CeEntry> entries = <CeEntry>[];
@@ -460,11 +570,13 @@ String _normalizeBase(String raw) {
 }
 
 /// Builds every match key for a seed name or CE title: honorific strips on
-/// both sides (`St. X` / `X, Saint`), surname-reorder for comma titles, a
-/// comma-free key, an article-free variant with standalone `of` removed,
-/// and a leading-article variant (`The X`). Matching is set equality across
-/// variants, so `St. Francis of Assisi`, `Francis of Assisi, Saint`, and
-/// `Loyola, Ignatius`/`Ignatius Loyola` all pair correctly.
+/// both sides (`St. X` / `X, Saint`), honorific-part stripping on multi-part
+/// comma titles (`Damasus I, Saint, Pope` -> `damasus i`, `More, Thomas,
+/// Saint` -> `thomas more`), surname-reorder for (residual) two-part comma
+/// titles, a comma-free key, an article-free variant with standalone `of`
+/// removed, and a leading-article variant (`The X`). Matching is set
+/// equality across variants, so `St. Francis of Assisi`, `Francis of Assisi,
+/// Saint`, and `Loyola, Ignatius`/`Ignatius Loyola` all pair correctly.
 Set<String> nameVariants(String raw) {
   final String base = _normalizeBase(raw);
   final Set<String> out = <String>{};
@@ -477,13 +589,34 @@ Set<String> nameVariants(String raw) {
     out.add(cleaned.replaceAll(RegExp(r'\s*,\s*'), ' ').trim());
   }
 
-  final Set<String> reorderForms = <String>{base};
   final List<String> commaParts =
       base.split(',').map((String part) => part.trim()).toList()
         ..removeWhere((String part) => part.isEmpty);
-  if (commaParts.length == 2) {
-    reorderForms.add('${commaParts[1]} ${commaParts[0]}');
+  // Honorific-stripped parts: `More, Thomas, Saint` -> [more, thomas] (the
+  // multi-honorific forms that hid correct matches); `Colman, Saint Elo` ->
+  // [colman, elo].
+  final List<String> strippedParts = <String>[
+    for (final String part in commaParts) _stripPartHonorifics(part),
+  ]..removeWhere((String part) => part.isEmpty);
+  if (strippedParts.isEmpty) {
+    strippedParts.addAll(commaParts);
   }
+  final Set<String> reorderForms = <String>{};
+  if (base.trim().isNotEmpty) {
+    reorderForms.add(base);
+    final String unstrippedJoin = _collapseWhitespace(commaParts.join(' '));
+    if (unstrippedJoin.isNotEmpty) {
+      reorderForms.add(unstrippedJoin);
+    }
+    if (commaParts.length == 2) {
+      reorderForms.add('${commaParts[1]} ${commaParts[0]}');
+    }
+  }
+  reorderForms.add(strippedParts.join(','));
+  if (strippedParts.length == 2) {
+    reorderForms.add('${strippedParts[1]} ${strippedParts[0]}');
+  }
+  reorderForms.removeWhere((String form) => form.trim().isEmpty);
 
   final RegExp leadHonorific = RegExp(
     r'^(saints?|st|blessed|bl|ven|venerable|pope)\s+',
@@ -577,7 +710,10 @@ double similarity(String a, String b) {
 }
 
 /// Group (multi-saint) article detection: plural `, Saints` titles, or an
-/// index note advertising several saints under one article.
+/// index note advertising several saints of one name under a single article
+/// (`Discuss(es) (four|several…) saints of this name`, `several saints
+/// named …`, `other saints of this name`), or a shared family-name article
+/// (`The name of a fifth-century … family, three of whose representatives…`).
 bool isGroupArticle(CeEntry entry) {
   final String title = foldText(entry.title);
   if (RegExp(r',\s*saints$').hasMatch(title) || title.endsWith(' saints')) {
@@ -585,8 +721,203 @@ bool isGroupArticle(CeEntry entry) {
   }
   final String note = foldText(entry.note);
   return RegExp(
-    r'several saints (of|named)|other saints of this name',
+    r'several saints (of|named)|saints of this name|other saints of this name'
+    r'|^the name of [a-z\- ]{0,32}family\b',
   ).hasMatch(note);
+}
+
+/// Non-person article detection: the index line describes a term, object,
+/// or place rather than a biographical subject. `St. Deogratias` must never
+/// claim `Deo Gratias — An old liturgical formula…`.
+bool isNonPersonArticle(CeEntry entry) {
+  final String note = foldText(entry.note);
+  return RegExp(
+    r'liturgical formula'
+    r'|\ba (?:kind|type) of\b'
+    r'|^the (?:greek|latin|english) word '
+    r'|^archdiocese and (?:city|diocese)\b',
+  ).hasMatch(note);
+}
+
+/// Strips leading honorific tokens from a seed display name and returns its
+/// identity tokens (`Pope St. Caius` -> {caius}).
+Set<String> seedNameTokens(String name) {
+  final List<String> tokens = _collapseWhitespace(
+    foldText(name.toLowerCase()).replaceAll(RegExp(r'[^a-z0-9\s]'), ' '),
+  ).split(' ');
+  while (tokens.isNotEmpty && _honorificTokens.contains(tokens.first)) {
+    tokens.removeAt(0);
+  }
+  while (tokens.isNotEmpty && _honorificTokens.contains(tokens.last)) {
+    tokens.removeLast();
+  }
+  return <String>{
+    for (final String token in tokens)
+      if (token.isNotEmpty) token,
+  };
+}
+
+/// Slug tokens that qualify the seed's identity beyond its display name
+/// (`moses-bishop-of-the-arabs` -> {bishop, of, the, arabs}). Pure
+/// honorific prefixes (`saint-…`) are display echoes, not qualifiers; a
+/// `pope-` prefix IS a qualifier (popes must find a Pope-marked article).
+Set<String> slugQualifierTokens(String slug, String name) {
+  final Set<String> nameTokens = seedNameTokens(name);
+  final Set<String> slugTokens = foldText(
+    slug.toLowerCase(),
+  ).split('-').where((String token) => token.isNotEmpty).toSet();
+  slugTokens.removeAll(nameTokens);
+  slugTokens.removeAll(const <String>{'saint', 'saints', 'st', 'sts'});
+  return slugTokens;
+}
+
+/// True when the seed's display name is a bare single token, its slug carries
+/// identity qualifiers beyond the name, and the CE article title carries no
+/// canonization marker of its own — a bare-name collision such as
+/// `St. Moses` (slug `moses-bishop-of-the-arabs`) matching CE's `Moses` (the
+/// Hebrew liberator/prophet). The qualified seed cannot claim the bare
+/// identity of just any same-named article.
+bool isBareNameCollision({
+  required String slug,
+  required String name,
+  required CeEntry entry,
+}) {
+  final Set<String> nameTokens = seedNameTokens(name);
+  if (nameTokens.isEmpty || nameTokens.length != 1) {
+    return false;
+  }
+  if (slugQualifierTokens(slug, name).isEmpty) {
+    return false;
+  }
+  return !RegExp(
+    r'(saints?|popes?|blessed|venerable|st)\b',
+    caseSensitive: false,
+  ).hasMatch(foldText(entry.title));
+}
+
+/// Value of a valid roman-numeral token (`ii` -> 2), or null when the token
+/// is not a plausible trailing ordinal.
+int? romanNumeralValue(String token) {
+  if (token.length > 7 || !RegExp(r'^[ivxlcdm]+$').hasMatch(token)) {
+    return null;
+  }
+  const Map<String, int> values = <String, int>{
+    'i': 1,
+    'v': 5,
+    'x': 10,
+    'l': 50,
+    'c': 100,
+    'd': 500,
+    'm': 1000,
+  };
+  final RegExp forms = RegExp(
+    r'^m*(?:cm|cd|d?c{0,3})(?:xc|xl|l?x{0,3})(?:ix|iv|v?i{0,3})$',
+  );
+  if (!forms.hasMatch(token)) {
+    return null;
+  }
+  int total = 0;
+  for (int i = 0; i < token.length; i++) {
+    total += values[token[i]] ?? 0;
+  }
+  return total;
+}
+
+/// Ordinal guard: a fuzzy match whose names carry trailing Roman numerals
+/// (`Damasus I` vs `Damasus II`) may never auto-accept when the articles are
+/// different claimants of the name — the ordinals must agree.
+bool ordinalsConflict(String seedVariant, String entryVariant) {
+  final List<String> seedTokens = seedVariant.split(' ');
+  final List<String> entryTokens = entryVariant.split(' ');
+  if (seedTokens.isEmpty || entryTokens.isEmpty) {
+    return false;
+  }
+  final int? seedOrdinal = romanNumeralValue(seedTokens.last);
+  if (seedOrdinal == null) {
+    return false;
+  }
+  final int? entryOrdinal = romanNumeralValue(entryTokens.last);
+  if (entryOrdinal == null) {
+    return false;
+  }
+  return seedOrdinal != entryOrdinal;
+}
+
+/// Rare-term token set for grounding: letters only, folded/lowercased, at
+/// least five characters, common connective and ecclesiastical boilerplate
+/// removed. The overlap between a seed's biography and the CE index note is
+/// the identity evidence a fuzzy candidate must clear.
+const Set<String> _groundingStopwords = <String>{
+  'about',
+  'after',
+  'among',
+  'also',
+  'their',
+  'there',
+  'these',
+  'those',
+  'under',
+  'until',
+  'which',
+  'while',
+  'where',
+  'whose',
+  'christ',
+  'christian',
+  'church',
+  'churches',
+  'greek',
+  'latin',
+  'roman',
+  'rome',
+  'great',
+  'saints',
+  'popes',
+  'venerable',
+  'blessed',
+  'called',
+  'known',
+  'lived',
+  'century',
+  'other',
+  'first',
+  'second',
+  'third',
+  'writings',
+};
+
+Set<String> groundingTokens(String text) {
+  return <String>{
+    for (final Match match in RegExp(
+      r'[a-z]{5,}',
+    ).allMatches(foldText(text.toLowerCase())))
+      if (!_groundingStopwords.contains(match.group(0)!)) match.group(0)!,
+  };
+}
+
+/// Number of rare terms shared between the seed biography and the CE index
+/// note (identity grounding for fuzzy matches).
+int groundingCount(String? bio, String ceNote) {
+  if (bio == null || bio.isEmpty) {
+    return 0;
+  }
+  return groundingTokens(bio).intersection(groundingTokens(ceNote)).length;
+}
+
+/// The pre-comma surname token of an inverted CE title (`Moore, Thomas` ->
+/// `moore`; `Kostka, Saint Stanislas` -> `kostka`), or null for forward
+/// titles and multi-token pre-comma parts (`Damasus II, Pope`).
+String? invertedSurnameToken(String ceTitle) {
+  final int comma = ceTitle.indexOf(',');
+  if (comma < 1) {
+    return null;
+  }
+  final String part = _stripPartHonorifics(ceTitle.substring(0, comma));
+  final List<String> tokens = part.split(' ');
+  if (tokens.length != 1 || tokens.single.length < 3) {
+    return null;
+  }
+  return foldText(tokens.single.toLowerCase());
 }
 
 // ---------------------------------------------------------------------------
@@ -672,6 +1003,8 @@ Selection buildSelection({
       title: '',
       ratio: 0.0,
       equalBest: 0,
+      seedVariant: '',
+      entryVariant: '',
     );
     for (final String code in sortedCodes) {
       final CeEntry entry = entryByCode[code]!;
@@ -692,6 +1025,8 @@ Selection buildSelection({
         continue;
       }
       double localRatio = 0.0;
+      String localSeedVariant = '';
+      String localEntryVariant = '';
       for (final String seedVariant in seedVariants) {
         for (final String entryVariant in entryVariants) {
           final int maxLen = entryVariant.length > seedVariant.length
@@ -705,8 +1040,10 @@ Selection buildSelection({
             continue;
           }
           final double ratio = similarity(seedVariant, entryVariant);
-          if (ratio > localRatio) {
+          if (ratio > localRatio + 1e-12) {
             localRatio = ratio;
+            localSeedVariant = seedVariant;
+            localEntryVariant = entryVariant;
           }
         }
       }
@@ -719,6 +1056,8 @@ Selection buildSelection({
           title: entry.title,
           ratio: localRatio,
           equalBest: 1,
+          seedVariant: localSeedVariant,
+          entryVariant: localEntryVariant,
         );
       } else if (localRatio >= _fuzzyAccept &&
           (localRatio - best.ratio).abs() <= 1e-12) {
@@ -727,6 +1066,8 @@ Selection buildSelection({
           title: best.title,
           ratio: best.ratio,
           equalBest: best.equalBest + 1,
+          seedVariant: best.seedVariant,
+          entryVariant: best.entryVariant,
         );
       }
     }
@@ -764,11 +1105,37 @@ Selection buildSelection({
     }
   });
 
-  // Stage 5: assembly.
+  // Stage 5: assembly. Non-person articles (a liturgical formula, a word,
+  // an object) share the unclaimable-article discipline with group articles.
+  final Set<String> nonPersonCodes = <String>{
+    for (final String code in sortedCodes)
+      if (isNonPersonArticle(entryByCode[code]!)) code,
+  };
   final List<CeMatch> matches = <CeMatch>[];
   final List<SelectionDrop> drops = <SelectionDrop>[];
   final List<CollisionRow> collisions = <CollisionRow>[];
   final List<FuzzyRow> fuzzyRows = <FuzzyRow>[];
+  final List<ConflictedRow> conflictedRows = <ConflictedRow>[];
+
+  void quarantineArticle(
+    Map<String, dynamic> saint,
+    Iterable<String> codes,
+    String reason,
+  ) {
+    final String slug = saint['slug'] as String;
+    final String name = saint['name'] as String;
+    drops.add(SelectionDrop(slug: slug, name: name, reason: reason));
+    for (final String code in codes) {
+      collisions.add(
+        CollisionRow(
+          slug: slug,
+          name: name,
+          ceHead: entryByCode[code]!.title,
+          ceCode: code,
+        ),
+      );
+    }
+  }
 
   for (final String slug in slugs) {
     final Map<String, dynamic> saint = saintBySlug[slug]!;
@@ -782,7 +1149,9 @@ Selection buildSelection({
     final List<String> codes = exactCandidates[slug]!;
     final bool articleCollision = collidedSlugs.contains(slug);
     final bool groupOnly =
-        codes.length == 1 && groupCodes.contains(codes.single);
+        codes.length == 1 &&
+        (groupCodes.contains(codes.single) ||
+            nonPersonCodes.contains(codes.single));
     final _FuzzyCandidate? fuzzy = fuzzyBest[slug];
 
     if (codes.length > 1 ||
@@ -792,11 +1161,12 @@ Selection buildSelection({
         SelectionDrop(slug: slug, name: name, reason: _reasonCollision),
       );
       for (final String code in codes) {
+        final CeEntry entry = entryByCode[code]!;
         collisions.add(
           CollisionRow(
             slug: slug,
             name: name,
-            ceHead: entryByCode[code]!.title,
+            ceHead: entry.title,
             ceCode: code,
           ),
         );
@@ -805,13 +1175,21 @@ Selection buildSelection({
     }
     if (codes.length == 1) {
       final String code = codes.single;
+      final CeEntry entry = entryByCode[code]!;
+      // Bare-name guard: a qualified slug claiming the bare identity of a
+      // marker-less CE title (`moses-bishop-of-the-arabs` -> `Moses`, the
+      // Egyptian/prophet article) is a wrong-person match.
+      if (isBareNameCollision(slug: slug, name: name, entry: entry)) {
+        quarantineArticle(saint, <String>[code], _reasonCollision);
+        continue;
+      }
       matches.add(
         CeMatch(
           slug: slug,
           name: name,
           ceCode: code,
-          ceTitle: entryByCode[code]!.title,
-          ceNote: entryByCode[code]!.note,
+          ceTitle: entry.title,
+          ceNote: entry.note,
           patronageCount: patronageCount,
           featured: featured,
           matchType: 'exact',
@@ -821,14 +1199,28 @@ Selection buildSelection({
       continue;
     }
     if (fuzzy != null) {
-      if (fuzzy.isAccept && !fuzzyConflictedSlugs.contains(slug)) {
+      final CeEntry fuzzyEntry = entryByCode[fuzzy.code]!;
+      // Guards only gate a candidate that would otherwise be accepted;
+      // a below-floor candidate quarantines on weakness alone.
+      final bool claimed =
+          fuzzy.isAccept && fuzzyConflictedSlugs.contains(slug);
+      final bool ambiguous = fuzzy.equalBest > 1;
+      final String? guardCause = fuzzy.isAccept && !claimed && !ambiguous
+          ? fuzzyGuardRefusal(
+              saint: saint,
+              entry: fuzzyEntry,
+              seedVariant: fuzzy.seedVariant,
+              entryVariant: fuzzy.entryVariant,
+            )
+          : null;
+      if (fuzzy.isAccept && !claimed && !ambiguous && guardCause == null) {
         matches.add(
           CeMatch(
             slug: slug,
             name: name,
             ceCode: fuzzy.code,
             ceTitle: fuzzy.title,
-            ceNote: entryByCode[fuzzy.code]!.note,
+            ceNote: fuzzyEntry.note,
             patronageCount: patronageCount,
             featured: featured,
             matchType: 'fuzzy',
@@ -837,26 +1229,47 @@ Selection buildSelection({
         );
         continue;
       }
-      // Losing fuzzy accepts (article taken by an exact claimant), review-
-      // band candidates, and ambiguous multi-candidates all quarantine, in
-      // that priority order for the recorded reason.
-      final String reason;
-      if (fuzzy.isAccept && fuzzyConflictedSlugs.contains(slug)) {
+      // Losing fuzzy accepts (article taken by an exact claimant), guard-
+      // refused accepts, ambiguous multi-candidates, and review-band
+      // candidates quarantine; the review band (< 0.9) stays in the `fuzzy`
+      // bucket, every >= 0.9 refusal lands in `conflicted`.
+      String cause;
+      String reason;
+      if (claimed) {
+        cause = _causeClaimed;
         reason = _reasonCollision;
-      } else if (fuzzy.equalBest > 1) {
+      } else if (ambiguous) {
+        cause = _causeAmbiguous;
         reason = _reasonFuzzyAmbiguous;
+      } else if (guardCause != null) {
+        cause = guardCause;
+        reason = _reasonConflicted;
       } else {
+        cause = 'review-band';
         reason = _reasonFuzzy;
       }
       drops.add(SelectionDrop(slug: slug, name: name, reason: reason));
-      fuzzyRows.add(
-        FuzzyRow(
-          slug: slug,
-          name: name,
-          ceHead: fuzzy.title,
-          ratio: fuzzy.ratio,
-        ),
-      );
+      if (reason == _reasonFuzzy) {
+        fuzzyRows.add(
+          FuzzyRow(
+            slug: slug,
+            name: name,
+            ceHead: fuzzy.title,
+            ratio: fuzzy.ratio,
+          ),
+        );
+      } else {
+        conflictedRows.add(
+          ConflictedRow(
+            slug: slug,
+            name: name,
+            ceHead: fuzzy.title,
+            ceCode: fuzzy.code,
+            ratio: fuzzy.ratio,
+            cause: cause,
+          ),
+        );
+      }
       continue;
     }
     drops.add(SelectionDrop(slug: slug, name: name, reason: _reasonNoMatch));
@@ -887,6 +1300,7 @@ Selection buildSelection({
     drops: drops,
     collisions: collisions,
     fuzzy: fuzzyRows,
+    conflicted: conflictedRows,
     counts: <String, int>{
       'seeds': slugs.length,
       'matched': matched,
@@ -905,16 +1319,72 @@ class _FuzzyCandidate {
   /// best ratio clears the accept floor).
   final int equalBest;
 
+  /// The variant pair achieving the best ratio — identity guards read this
+  /// pair (ordinal tokens, inverted surnames).
+  final String seedVariant;
+  final String entryVariant;
+
   /// Creates a candidate.
   const _FuzzyCandidate({
     required this.code,
     required this.title,
     required this.ratio,
     required this.equalBest,
+    required this.seedVariant,
+    required this.entryVariant,
   });
 
-  /// Whether this ratio clears the auto-accept floor.
+  /// Whether this ratio clears the auto-accept floor (guards may still
+  /// refuse the accept; see [_fuzzyGuardRefusal]).
   bool get isAccept => ratio >= _fuzzyAccept && equalBest == 1;
+}
+
+/// Refusal cause for a would-be fuzzy accept, or null when every identity
+/// guard clears. Guards, in order:
+///   * trailing Roman-numeral conflict (`Damasus I` vs `Damasus II`),
+///   * inverted-surname mismatch on comma-repaired CE titles (`Moore, Thomas`
+///     vs `St. Thomas More`) unless 2+ grounding terms rescue it,
+///   * non-person and multi-person (group/family) articles,
+///   * grounding: the seed biography and the CE note must share at least one
+///     rare term (skipped when the seed carries no biography).
+String? fuzzyGuardRefusal({
+  required Map<String, dynamic> saint,
+  required CeEntry entry,
+  required String seedVariant,
+  required String entryVariant,
+}) {
+  if (ordinalsConflict(seedVariant, entryVariant)) {
+    return 'ordinal-conflict';
+  }
+  final String? surname = invertedSurnameToken(entry.title);
+  final Object? bio = saint['bio'];
+  if (surname != null) {
+    final bool surnameInSeed = seedNameTokens(
+      saint['name'] as String,
+    ).contains(surname);
+    if (!surnameInSeed) {
+      final bool bioRescue =
+          bio is String &&
+          bio.isNotEmpty &&
+          groundingCount(bio, entry.note) >= 2;
+      if (!bioRescue) {
+        return 'surname-mismatch';
+      }
+    }
+  }
+  if (isNonPersonArticle(entry)) {
+    return 'non-person-article';
+  }
+  if (isGroupArticle(entry)) {
+    return 'multi-person-article';
+  }
+  if (bio is! String || bio.isEmpty) {
+    return null;
+  }
+  if (groundingCount(bio, entry.note) < 1) {
+    return 'no-grounding';
+  }
+  return null;
 }
 
 // ---------------------------------------------------------------------------
@@ -950,6 +1420,17 @@ Map<String, dynamic> toManualReviewJson(Selection selection) {
           'name': row.name,
           'ceHead': row.ceHead,
           'ceCode': row.ceCode,
+        },
+    ],
+    'conflicted': <Map<String, dynamic>>[
+      for (final ConflictedRow row in selection.conflicted)
+        <String, dynamic>{
+          'slug': row.slug,
+          'name': row.name,
+          'ceHead': row.ceHead,
+          'ceCode': row.ceCode,
+          'ratio': (row.ratio * 10000).roundToDouble() / 10000,
+          'cause': row.cause,
         },
     ],
     'fuzzy': <Map<String, dynamic>>[
@@ -1147,6 +1628,7 @@ Future<Selection?> run({bool refresh = false}) async {
   stdout.writeln('unique articles: ${entryCount(entries)}');
   stdout.writeln('counts: ${selection.counts}');
   stdout.writeln('collisions quarantined: ${selection.collisions.length}');
+  stdout.writeln('conflicted quarantined: ${selection.conflicted.length}');
   stdout.writeln('fuzzy quarantined: ${selection.fuzzy.length}');
   final Map<String, int> dropReasons = <String, int>{};
   for (final SelectionDrop drop in selection.drops) {

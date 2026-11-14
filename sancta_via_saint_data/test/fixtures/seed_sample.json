@@ -4,7 +4,7 @@
       "slug": "francis-of-assisi",
       "name": "St. Francis of Assisi",
       "feastDay": "10-04",
-      "bio": "Fixture bio for the honorific-strip test.",
+      "bio": "Founder of the Franciscan Order, devoted to poverty and peace.",
       "patronages": [
         {"need": "animals", "category": "nature"},
         {"need": "ecology", "category": "nature"},

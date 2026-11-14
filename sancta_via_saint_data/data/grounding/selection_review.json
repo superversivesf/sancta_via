@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-14T06:40:23.881242Z",
+  "generatedAt": "2026-11-14T07:08:30.122874Z",
   "counts": {
     "seeds": 2174,
-    "matched": 360,
-    "dropped": 1814
+    "matched": 356,
+    "dropped": 1818
   },
   "drops": [
     {
@@ -140,7 +140,7 @@
     },
     {
       "name": "St. Abraham of Rostov",
-      "reason": "no-ce-match"
+      "reason": "fuzzy-quarantined"
     },
     {
       "name": "St. Abraham of the High Mountain",
@@ -1668,7 +1668,7 @@
     },
     {
       "name": "Sts. Chrysanthus and Daria",
-      "reason": "fuzzy-quarantined"
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Chuniald",
@@ -1723,10 +1723,6 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colmán Elo",
-      "reason": "no-ce-match"
-    },
-    {
       "name": "St. Colmán mac Comán",
       "reason": "no-ce-match"
     },
@@ -1757,10 +1753,6 @@
     {
       "name": "St. Colman mac Duagh",
       "reason": "no-ce-match"
-    },
-    {
-      "name": "St. Colman of Templeshambo",
-      "reason": "fuzzy-quarantined"
     },
     {
       "name": "St. Coloman of Stockerau",
@@ -1823,6 +1815,10 @@
       "reason": "no-ce-match"
     },
     {
+      "name": "St. Contentius",
+      "reason": "conflicted-quarantined"
+    },
+    {
       "name": "St. Conus",
       "reason": "no-ce-match"
     },
@@ -1848,7 +1844,7 @@
     },
     {
       "name": "Sts. Cosmas and Damian",
-      "reason": "fuzzy-quarantined"
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Cosmas of Aphrodisia",
@@ -1868,7 +1864,7 @@
     },
     {
       "name": "Sts. Crispin and Crispinian",
-      "reason": "fuzzy-quarantined"
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Cronan of Tuamgraney",
@@ -1940,7 +1936,7 @@
     },
     {
       "name": "Sts. Cyril and Methodius",
-      "reason": "fuzzy-quarantined"
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Cyrillus of Trier",
@@ -2061,6 +2057,10 @@
     {
       "name": "St. Denise, Dativa, Leontia, Tertius, Emilianus, Boniface, Majoricus, and Servus",
       "reason": "no-ce-match"
+    },
+    {
+      "name": "St. Deogratias",
+      "reason": "conflicted-quarantined"
     },
     {
       "name": "St. Derchairthinn",
@@ -4155,6 +4155,10 @@
       "reason": "no-ce-match"
     },
     {
+      "name": "St. Laura",
+      "reason": "collision-quarantined"
+    },
+    {
       "name": "St. Laurence of Canterbury",
       "reason": "no-ce-match"
     },
@@ -4867,6 +4871,10 @@
       "reason": "fuzzy-quarantined"
     },
     {
+      "name": "St. Mitre",
+      "reason": "collision-quarantined"
+    },
+    {
       "name": "St. Mo Chua of Balla",
       "reason": "no-ce-match"
     },
@@ -4937,6 +4945,10 @@
     {
       "name": "St. Monulph",
       "reason": "no-ce-match"
+    },
+    {
+      "name": "St. Moses",
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Moses the Black",
@@ -5139,6 +5151,10 @@
       "reason": "no-ce-match"
     },
     {
+      "name": "St. Oda of Canterbury",
+      "reason": "conflicted-quarantined"
+    },
+    {
       "name": "St. Odilia of Cologne",
       "reason": "no-ce-match"
     },
@@ -5287,6 +5303,10 @@
       "reason": "fuzzy-quarantined"
     },
     {
+      "name": "St. Paris",
+      "reason": "collision-quarantined"
+    },
+    {
       "name": "St. Parrobus of Pottole",
       "reason": "no-ce-match"
     },
@@ -5391,6 +5411,10 @@
       "reason": "no-ce-match"
     },
     {
+      "name": "St. Pelagia",
+      "reason": "collision-quarantined"
+    },
+    {
       "name": "St. Pelagia the Virgin",
       "reason": "no-ce-match"
     },
@@ -5421,14 +5445,6 @@
     {
       "name": "St. Perpetua and Felicity",
       "reason": "no-ce-match"
-    },
-    {
-      "name": "St. Peter Canisius",
-      "reason": "no-ce-match"
-    },
-    {
-      "name": "St. Peter Faber",
-      "reason": "fuzzy-quarantined"
     },
     {
       "name": "St. Peter I of Bulgaria",
@@ -5600,7 +5616,7 @@
     },
     {
       "name": "St. Alexander I of Alexandria",
-      "reason": "no-ce-match"
+      "reason": "fuzzy-quarantined"
     },
     {
       "name": "St. Anastasius of Alexandria",
@@ -5623,12 +5639,12 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Benedict II",
-      "reason": "fuzzy-ambiguous"
-    },
-    {
       "name": "St. Benjamin I of Alexandria",
       "reason": "no-ce-match"
+    },
+    {
+      "name": "Pope St. Caius",
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Celadion of Alexandria",
@@ -5661,10 +5677,6 @@
     {
       "name": "Pope Eleutherius",
       "reason": "collision-quarantined"
-    },
-    {
-      "name": "St. Eugene I",
-      "reason": "fuzzy-quarantined"
     },
     {
       "name": "Pope Eumenes of Alexandria",
@@ -5733,10 +5745,6 @@
     {
       "name": "St. Mina I of Alexandria",
       "reason": "no-ce-match"
-    },
-    {
-      "name": "St. Nicholas I",
-      "reason": "fuzzy-ambiguous"
     },
     {
       "name": "St. Primus of Alexandria",
@@ -6019,10 +6027,6 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "Sts. Faith, Hope and Charity",
-      "reason": "no-ce-match"
-    },
-    {
       "name": "St. Saizana",
       "reason": "no-ce-match"
     },
@@ -6233,6 +6237,10 @@
     {
       "name": "St. Silvanus of Gaza",
       "reason": "no-ce-match"
+    },
+    {
+      "name": "St. Simeon",
+      "reason": "collision-quarantined"
     },
     {
       "name": "St. Simeon of Mantua",
@@ -6639,6 +6647,10 @@
       "reason": "fuzzy-quarantined"
     },
     {
+      "name": "St. Theodoret",
+      "reason": "collision-quarantined"
+    },
+    {
       "name": "St. Theodorus and Theophanes",
       "reason": "collision-quarantined"
     },
@@ -6657,6 +6669,10 @@
     {
       "name": "St. Theodosia of Constantinople",
       "reason": "no-ce-match"
+    },
+    {
+      "name": "St. Theodosius II",
+      "reason": "conflicted-quarantined"
     },
     {
       "name": "St. Theodosius of Kiev",
@@ -7345,16 +7361,6 @@
       "featured": false
     },
     {
-      "slug": "pelagia",
-      "name": "St. Pelagia",
-      "matchType": "exact",
-      "ceTitle": "Pelagia",
-      "ceUrl": "https://www.newadvent.org/cathen/11601d.htm",
-      "ceNote": "Discusses four saints of this name",
-      "patronageCount": 5,
-      "featured": false
-    },
-    {
       "slug": "sidonius-apollinaris",
       "name": "St. Sidonius Apollinaris",
       "matchType": "exact",
@@ -7555,16 +7561,6 @@
       "featured": false
     },
     {
-      "slug": "moses-bishop-of-the-arabs",
-      "name": "St. Moses",
-      "matchType": "exact",
-      "ceTitle": "Moses",
-      "ceUrl": "https://www.newadvent.org/cathen/10596a.htm",
-      "ceNote": "Hebrew liberator, leader, lawgiver, prophet, and historian, lived in the thirteenth and early part of the twelfth century, B. C",
-      "patronageCount": 4,
-      "featured": false
-    },
-    {
       "slug": "paul-the-simple",
       "name": "St. Paul the Simple",
       "matchType": "exact",
@@ -7645,16 +7641,6 @@
       "featured": false
     },
     {
-      "slug": "pope-caius",
-      "name": "Pope St. Caius",
-      "matchType": "exact",
-      "ceTitle": "Caius",
-      "ceUrl": "https://www.newadvent.org/cathen/03144a.htm",
-      "ceNote": "Third-century Christian author",
-      "patronageCount": 3,
-      "featured": false
-    },
-    {
       "slug": "pope-adeodatus-ii",
       "name": "St. Adeodatus II",
       "matchType": "exact",
@@ -7688,7 +7674,7 @@
       "slug": "aelia-flaccilla",
       "name": "St. Aelia Flaccilla",
       "matchType": "exact",
-      "ceTitle": "Flaccilla, &AElig;lia",
+      "ceTitle": "Flaccilla, Ælia",
       "ceUrl": "https://www.newadvent.org/cathen/06089b.htm",
       "ceNote": "Empress, wife of Theodosius the Great, died c. A.D. 385 or 386",
       "patronageCount": 3,
@@ -7867,20 +7853,10 @@
     {
       "slug": "pope-damasus-i",
       "name": "St. Damasus I",
-      "matchType": "fuzzy",
-      "ceTitle": "Damasus II, Pope",
-      "ceUrl": "https://www.newadvent.org/cathen/04614a.htm",
-      "ceNote": "A native of Bavaria and the third German to be elevated to the See of Peter",
-      "patronageCount": 3,
-      "featured": false
-    },
-    {
-      "slug": "deogratias-bishop",
-      "name": "St. Deogratias",
-      "matchType": "fuzzy",
-      "ceTitle": "Deo Gratias",
-      "ceUrl": "https://www.newadvent.org/cathen/04737a.htm",
-      "ceNote": "An old liturgical formula of the Latin Church to give thanks to God for graces received",
+      "matchType": "exact",
+      "ceTitle": "Damasus I, Saint, Pope",
+      "ceUrl": "https://www.newadvent.org/cathen/04613a.htm",
+      "ceNote": "Damasus, who had to contend with an antipope, condemned Apollinarianism, and persuaded St. Jerome to undertake the revision of the Latin Bible, died in 384",
       "patronageCount": 3,
       "featured": false
     },
@@ -8235,16 +8211,6 @@
       "featured": false
     },
     {
-      "slug": "laura",
-      "name": "St. Laura",
-      "matchType": "exact",
-      "ceTitle": "Laura",
-      "ceUrl": "https://www.newadvent.org/cathen/09039a.htm",
-      "ceNote": "The Greek word laura is employed by writers from the end of the fifth century to distinguish the monasteries of Palestine of the semi-eremitical type. The word signifies a narrow way or passage, and in later times the quarter of a town",
-      "patronageCount": 3,
-      "featured": false
-    },
-    {
       "slug": "pope-leo-ii",
       "name": "St. Leo II",
       "matchType": "exact",
@@ -8317,10 +8283,10 @@
     {
       "slug": "pope-marcellus-i",
       "name": "St. Marcellus I",
-      "matchType": "fuzzy",
-      "ceTitle": "Marcellus II, Pope",
-      "ceUrl": "https://www.newadvent.org/cathen/09641a.htm",
-      "ceNote": "Born 6 May, 1501, at Montepulciano in Tuscany; died 6 May, 1555, at Rome. His father, Ricardo Cervini, was Apostolic treasurer in the March of Ancona",
+      "matchType": "exact",
+      "ceTitle": "Marcellus I, Saint, Pope",
+      "ceUrl": "https://www.newadvent.org/cathen/09640b.htm",
+      "ceNote": "After a vacancy in office following the death of Pope St. Marcellinus, was elected to the papacy in 308. Fairly lengthy biographical article",
       "patronageCount": 3,
       "featured": false
     },
@@ -8361,6 +8327,16 @@
       "ceTitle": "Mellitus, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/10168b.htm",
       "ceNote": "Archbishop of Canterbury, died in 624. Abbot sent to Canterbury by St. Gregory the Great, and the recipient of a letter from Gregory regarding pagan temples, idols, and festivals",
+      "patronageCount": 3,
+      "featured": false
+    },
+    {
+      "slug": "pope-nicholas-i",
+      "name": "St. Nicholas I",
+      "matchType": "exact",
+      "ceTitle": "Nicholas I, Saint, Pope",
+      "ceUrl": "https://www.newadvent.org/cathen/11054a.htm",
+      "ceNote": "Biography of this pope, d. 867, who upheld the authority of the papacy and the inviolability of marriage",
       "patronageCount": 3,
       "featured": false
     },
@@ -8521,16 +8497,6 @@
       "ceTitle": "Sabina, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/13290a.htm",
       "ceNote": "Martyr in 126 or 127, at Rome",
-      "patronageCount": 3,
-      "featured": false
-    },
-    {
-      "slug": "simeon-gospel-of-luke",
-      "name": "St. Simeon",
-      "matchType": "exact",
-      "ceTitle": "Simeon",
-      "ceUrl": "https://www.newadvent.org/cathen/13794b.htm",
-      "ceNote": "The second son of Jacob by Lia and patronymic ancestor of the Jewish tribe bearing that name",
       "patronageCount": 3,
       "featured": false
     },
@@ -8785,6 +8751,16 @@
       "featured": false
     },
     {
+      "slug": "pope-benedict-ii",
+      "name": "St. Benedict II",
+      "matchType": "exact",
+      "ceTitle": "Benedict II, Saint, Pope",
+      "ceUrl": "https://www.newadvent.org/cathen/02427d.htm",
+      "ceNote": "A Roman, he was pope for a little less than eleven months, and died in 685. Account of his pontificate",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
       "slug": "berach",
       "name": "St. Berach",
       "matchType": "exact",
@@ -8921,16 +8897,6 @@
       "ceTitle": "Conan, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/04189c.htm",
       "ceNote": "Also known as Mochonna. Irish missionary and Bishop of the Isle of Man, d. 684",
-      "patronageCount": 2,
-      "featured": false
-    },
-    {
-      "slug": "contentius",
-      "name": "St. Contentius",
-      "matchType": "fuzzy",
-      "ceTitle": "Consentius",
-      "ceUrl": "https://www.newadvent.org/cathen/04284a.htm",
-      "ceNote": "The name of a fifth-century Gallo-Roman family, three of whose representatives are known in history",
       "patronageCount": 2,
       "featured": false
     },
@@ -9435,16 +9401,6 @@
       "featured": false
     },
     {
-      "slug": "mitre",
-      "name": "St. Mitre",
-      "matchType": "exact",
-      "ceTitle": "Mitre",
-      "ceUrl": "https://www.newadvent.org/cathen/10404a.htm",
-      "ceNote": "A kind of folding-cap consisting of two like parts, each stiffened by a lining and rising to a peak; these are sewn together on the sides, but are united above by a piece of material that can fold together",
-      "patronageCount": 2,
-      "featured": false
-    },
-    {
       "slug": "nicholas-of-myra",
       "name": "St. Nicholas of Myra",
       "matchType": "exact",
@@ -9485,16 +9441,6 @@
       "featured": false
     },
     {
-      "slug": "oda-of-canterbury",
-      "name": "St. Oda of Canterbury",
-      "matchType": "fuzzy",
-      "ceTitle": "Odo of Canterbury",
-      "ceUrl": "https://www.newadvent.org/cathen/11211b.htm",
-      "ceNote": "Abbot of Battle (d. 1200)",
-      "patronageCount": 2,
-      "featured": false
-    },
-    {
       "slug": "othmar",
       "name": "St. Othmar",
       "matchType": "exact",
@@ -9521,6 +9467,16 @@
       "ceTitle": "Paul of the Cross, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/11590a.htm",
       "ceNote": "Biographical essay on the Italian-born founder of the Passionists. He died in 1775",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
+      "slug": "peter-canisius",
+      "name": "St. Peter Canisius",
+      "matchType": "exact",
+      "ceTitle": "Canisius, Peter, Blessed",
+      "ceUrl": "https://www.newadvent.org/cathen/11756c.htm",
+      "ceNote": "Long essay on the Dutch Jesuit priest, who died in 1597",
       "patronageCount": 2,
       "featured": false
     },
@@ -9775,16 +9731,6 @@
       "featured": false
     },
     {
-      "slug": "theodosius-ii",
-      "name": "St. Theodosius II",
-      "matchType": "fuzzy",
-      "ceTitle": "Theodosius I",
-      "ceUrl": "https://www.newadvent.org/cathen/14577d.htm",
-      "ceNote": "Roman Emperor (also known as Flavius Theodosius), born in Spain, about 346; died at Milan, 17 January, 395",
-      "patronageCount": 2,
-      "featured": false
-    },
-    {
       "slug": "thomas-aquinas",
       "name": "St. Thomas Aquinas",
       "matchType": "exact",
@@ -9871,6 +9817,16 @@
       "ceTitle": "Willigis, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15645b.htm",
       "ceNote": "Archbishop of Mainz, d. 1011",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
+      "slug": "saints-faith-hope-and-charity",
+      "name": "Sts. Faith, Hope and Charity",
+      "matchType": "exact",
+      "ceTitle": "Faith, Hope, and Charity (Saints)",
+      "ceUrl": "https://www.newadvent.org/cathen/05766a.htm",
+      "ceNote": "Two groups of martyrs. The first were martyred along with their mother Sophia during the reign of Hadrian, and buried on the Aurelian Way. The second band, also along with someone named Sophia, were martyred at a later date, and buried along the Appian Way",
       "patronageCount": 2,
       "featured": false
     },
@@ -10165,6 +10121,26 @@
       "featured": false
     },
     {
+      "slug": "colm-n-elo",
+      "name": "St. Colmán Elo",
+      "matchType": "exact",
+      "ceTitle": "Colman, Saint Elo",
+      "ceUrl": "https://www.newadvent.org/cathen/04115e.htm",
+      "ceNote": "Nephew of St. Columba. This St. Colman was the first abbot of Muckamore. He died at Lynally (Lann Elo) in 611",
+      "patronageCount": 1,
+      "featured": false
+    },
+    {
+      "slug": "colman-of-templeshambo",
+      "name": "St. Colman of Templeshambo",
+      "matchType": "exact",
+      "ceTitle": "Colman, Saint, of Templeshambo",
+      "ceUrl": "https://www.newadvent.org/cathen/04115a.htm",
+      "ceNote": "Abbot, d. about 595. This St. Colman was a contemporary of St. Aidan, and is sometimes confused with a later saint of the same name, Colman of Kilmacduagh",
+      "patronageCount": 1,
+      "featured": false
+    },
+    {
       "slug": "conal",
       "name": "St. Conal",
       "matchType": "exact",
@@ -10281,6 +10257,16 @@
       "ceTitle": "Eskil",
       "ceUrl": "https://www.newadvent.org/cathen/05538b.htm",
       "ceNote": "Archbishop of Lund, Skåne, Sweden; b. about 1100; d. at Clairvaux, 6 (7?) Sept., 1181",
+      "patronageCount": 1,
+      "featured": false
+    },
+    {
+      "slug": "pope-eugene-i",
+      "name": "St. Eugene I",
+      "matchType": "exact",
+      "ceTitle": "Eugene I, Saint, Pope",
+      "ceUrl": "https://www.newadvent.org/cathen/05598a.htm",
+      "ceNote": "Made bishop of Rome after Pope St. Martin I had been in exile for 14 months. Eugene died in 657",
       "patronageCount": 1,
       "featured": false
     },
@@ -10665,16 +10651,6 @@
       "featured": false
     },
     {
-      "slug": "paris",
-      "name": "St. Paris",
-      "matchType": "exact",
-      "ceTitle": "Paris",
-      "ceUrl": "https://www.newadvent.org/cathen/11480c.htm",
-      "ceNote": "Archdiocese and city in France",
-      "patronageCount": 1,
-      "featured": false
-    },
-    {
       "slug": "patrick",
       "name": "St. Patrick",
       "matchType": "exact",
@@ -10711,6 +10687,16 @@
       "ceTitle": "Claver, Saint Peter",
       "ceUrl": "https://www.newadvent.org/cathen/11763a.htm",
       "ceNote": "Biography of the Spanish Jesuit priest who for 33 years ministered to African slaves in the New World, and tried to stop the slave trade. Died in 1654",
+      "patronageCount": 1,
+      "featured": false
+    },
+    {
+      "slug": "peter-faber",
+      "name": "St. Peter Faber",
+      "matchType": "exact",
+      "ceTitle": "Faber, Peter, Saint",
+      "ceUrl": "https://www.newadvent.org/cathen/11767a.htm",
+      "ceNote": "French priest, one of the first Jesuits, d. 1546",
       "patronageCount": 1,
       "featured": false
     },
@@ -10815,22 +10801,12 @@
       "featured": false
     },
     {
-      "slug": "theodoret-martyr",
-      "name": "St. Theodoret",
-      "matchType": "exact",
-      "ceTitle": "Theodoret",
-      "ceUrl": "https://www.newadvent.org/cathen/14574b.htm",
-      "ceNote": "Bishop of Cyrus and theologian, born at Antioch in Syria about 393; died about 457",
-      "patronageCount": 1,
-      "featured": false
-    },
-    {
       "slug": "thomas-more",
       "name": "St. Thomas More",
-      "matchType": "fuzzy",
-      "ceTitle": "Moore, Thomas",
-      "ceUrl": "https://www.newadvent.org/cathen/10553b.htm",
-      "ceNote": "Poet and biographer, b. 28 May, 1779, at Dublin, Ireland; d. 26 February, 1852, at Devizes, England",
+      "matchType": "exact",
+      "ceTitle": "More, Thomas, Saint",
+      "ceUrl": "https://www.newadvent.org/cathen/14689c.htm",
+      "ceNote": "Biographical article on the Lord Chancellor of England, and martyr. Beheaded 1535",
       "patronageCount": 1,
       "featured": false
     },

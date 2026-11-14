@@ -67,6 +67,12 @@
       "ceCode": "03729a"
     },
     {
+      "slug": "chrysanthus-and-daria",
+      "name": "Sts. Chrysanthus and Daria",
+      "ceHead": "Chrysanthus and Daria, Saints",
+      "ceCode": "03742a"
+    },
+    {
       "slug": "columba",
       "name": "St. Columba",
       "ceHead": "Columba, Saint",
@@ -77,6 +83,18 @@
       "name": "St. Columba",
       "ceHead": "Columba, Saint",
       "ceCode": "04136a"
+    },
+    {
+      "slug": "cosmas-and-damian",
+      "name": "Sts. Cosmas and Damian",
+      "ceHead": "Cosmas and Damian, Saints",
+      "ceCode": "04403e"
+    },
+    {
+      "slug": "crispin-and-crispinian",
+      "name": "Sts. Crispin and Crispinian",
+      "ceHead": "Crispin and Crispinian, Saints",
+      "ceCode": "04491a"
     },
     {
       "slug": "cuthbert",
@@ -101,6 +119,12 @@
       "name": "St. Cyprian and Justina",
       "ceHead": "Cyprian and Justina, Saints",
       "ceCode": "04583a"
+    },
+    {
+      "slug": "cyril-and-methodius",
+      "name": "Sts. Cyril and Methodius",
+      "ceHead": "Cyril and Methodius, Saints",
+      "ceCode": "04592a"
     },
     {
       "slug": "dionysius-bishop-of-milan",
@@ -131,6 +155,12 @@
       "name": "St. Eusebius",
       "ceHead": "Eusebius, Saint",
       "ceCode": "05615a"
+    },
+    {
+      "slug": "eusebius-bishop-of-milan",
+      "name": "St. Eusebius",
+      "ceHead": "Eusebius, Saint, Pope",
+      "ceCode": "05615b"
     },
     {
       "slug": "fergus",
@@ -181,6 +211,12 @@
       "ceCode": "08556b"
     },
     {
+      "slug": "laura",
+      "name": "St. Laura",
+      "ceHead": "Laura",
+      "ceCode": "09039a"
+    },
+    {
       "slug": "lawrence",
       "name": "St. Lawrence",
       "ceHead": "Lawrence, Saint",
@@ -217,6 +253,18 @@
       "ceCode": "10069a"
     },
     {
+      "slug": "mitre",
+      "name": "St. Mitre",
+      "ceHead": "Mitre",
+      "ceCode": "10404a"
+    },
+    {
+      "slug": "moses-bishop-of-the-arabs",
+      "name": "St. Moses",
+      "ceHead": "Moses",
+      "ceCode": "10596a"
+    },
+    {
       "slug": "palladius-bishop-of-ireland",
       "name": "St. Palladius",
       "ceHead": "Palladius, Saint",
@@ -227,6 +275,24 @@
       "name": "St. Palladius",
       "ceHead": "Palladius",
       "ceCode": "11425a"
+    },
+    {
+      "slug": "paris",
+      "name": "St. Paris",
+      "ceHead": "Paris",
+      "ceCode": "11480c"
+    },
+    {
+      "slug": "pelagia",
+      "name": "St. Pelagia",
+      "ceHead": "Pelagia",
+      "ceCode": "11601d"
+    },
+    {
+      "slug": "pope-caius",
+      "name": "Pope St. Caius",
+      "ceHead": "Caius",
+      "ceCode": "03144a"
     },
     {
       "slug": "pope-cornelius",
@@ -283,6 +349,12 @@
       "ceCode": "05615a"
     },
     {
+      "slug": "pope-eusebius",
+      "name": "Pope Eusebius",
+      "ceHead": "Eusebius, Saint, Pope",
+      "ceCode": "05615b"
+    },
+    {
       "slug": "pope-zosimus",
       "name": "St. Zosimus",
       "ceHead": "Zosimus, Pope Saint",
@@ -293,6 +365,18 @@
       "name": "St. Zosimus",
       "ceHead": "Zosimus",
       "ceCode": "15765a"
+    },
+    {
+      "slug": "simeon-gospel-of-luke",
+      "name": "St. Simeon",
+      "ceHead": "Simeon",
+      "ceCode": "13794b"
+    },
+    {
+      "slug": "theodoret-martyr",
+      "name": "St. Theodoret",
+      "ceHead": "Theodoret",
+      "ceCode": "14574b"
     },
     {
       "slug": "theodorus-and-theophanes",
@@ -325,6 +409,80 @@
       "ceCode": "15254b"
     }
   ],
+  "conflicted": [
+    {
+      "slug": "constantina",
+      "name": "St. Constantina",
+      "ceHead": "Constantia",
+      "ceCode": "04294a",
+      "ratio": 0.9091,
+      "cause": "ambiguous"
+    },
+    {
+      "slug": "contentius",
+      "name": "St. Contentius",
+      "ceHead": "Consentius",
+      "ceCode": "04284a",
+      "ratio": 0.9,
+      "cause": "multi-person-article"
+    },
+    {
+      "slug": "deogratias-bishop",
+      "name": "St. Deogratias",
+      "ceHead": "Deo Gratias",
+      "ceCode": "04737a",
+      "ratio": 0.9091,
+      "cause": "non-person-article"
+    },
+    {
+      "slug": "finan-of-lindisfarne",
+      "name": "St. Finan of Lindisfarne",
+      "ceHead": "Aidan of Lindisfarne, Saint",
+      "ceCode": "01233d",
+      "ratio": 0.9,
+      "cause": "claimed"
+    },
+    {
+      "slug": "gerard-of-clairvaux-died-1138",
+      "name": "St. Gerard of Clairvaux",
+      "ceHead": "Bernard of Clairvaux, Saint",
+      "ceCode": "02498d",
+      "ratio": 0.9,
+      "cause": "claimed"
+    },
+    {
+      "slug": "oda-of-canterbury",
+      "name": "St. Oda of Canterbury",
+      "ceHead": "Odo of Canterbury",
+      "ceCode": "11211b",
+      "ratio": 0.9412,
+      "cause": "no-grounding"
+    },
+    {
+      "slug": "thelwold-bishop-of-lindisfarne",
+      "name": "St. Æthelwold",
+      "ceHead": "Ethelwold, Saint",
+      "ceCode": "05555b",
+      "ratio": 0.9,
+      "cause": "claimed"
+    },
+    {
+      "slug": "thelwold-hermit",
+      "name": "St. Æthelwold",
+      "ceHead": "Ethelwold, Saint",
+      "ceCode": "05555b",
+      "ratio": 0.9,
+      "cause": "claimed"
+    },
+    {
+      "slug": "theodosius-ii",
+      "name": "St. Theodosius II",
+      "ceHead": "Theodosius I",
+      "ceCode": "14577d",
+      "ratio": 0.9231,
+      "cause": "ordinal-conflict"
+    }
+  ],
   "fuzzy": [
     {
       "slug": "abbo-of-fleury",
@@ -343,6 +501,12 @@
       "name": "St. Abibon",
       "ceHead": "Abbon, Saint",
       "ratio": 0.8333
+    },
+    {
+      "slug": "abraham-of-rostov",
+      "name": "St. Abraham of Rostov",
+      "ceHead": "Abraham, The Bosom of",
+      "ratio": 0.7857
     },
     {
       "slug": "abraham-the-poor",
@@ -425,8 +589,8 @@
     {
       "slug": "alexander-of-comana",
       "name": "St. Alexander of Comana",
-      "ceHead": "Alexander Briant, Blessed",
-      "ratio": 0.75
+      "ceHead": "Alexander, Saint (Bishop of Comana)",
+      "ratio": 0.7826
     },
     {
       "slug": "alferius",
@@ -675,12 +839,6 @@
       "ratio": 0.7619
     },
     {
-      "slug": "chrysanthus-and-daria",
-      "name": "Sts. Chrysanthus and Daria",
-      "ceHead": "Chrysanthus and Daria, Saints",
-      "ratio": 0.8929
-    },
-    {
       "slug": "cinnia",
       "name": "St. Cinnia",
       "ceHead": "Cinna",
@@ -689,20 +847,14 @@
     {
       "slug": "colm-n-of-lann",
       "name": "St. Colmán of Lann",
-      "ceHead": "Colman, Saint",
-      "ratio": 0.75
+      "ceHead": "Colman, Saint, of Mayo",
+      "ratio": 0.7857
     },
     {
       "slug": "colm-n-of-lindisfarne",
       "name": "St. Colmán of Lindisfarne",
       "ceHead": "Aidan of Lindisfarne, Saint",
       "ratio": 0.8095
-    },
-    {
-      "slug": "colman-of-templeshambo",
-      "name": "St. Colman of Templeshambo",
-      "ceHead": "Colman, Saint, of Templeshambo",
-      "ratio": 0.7857
     },
     {
       "slug": "columba-of-spain",
@@ -715,12 +867,6 @@
       "name": "St. Conrad of Constance",
       "ceHead": "Constance, Council of",
       "ratio": 0.8
-    },
-    {
-      "slug": "constantina",
-      "name": "St. Constantina",
-      "ceHead": "Constantia",
-      "ratio": 0.9091
     },
     {
       "slug": "constantine-iv",
@@ -753,34 +899,16 @@
       "ratio": 0.8571
     },
     {
-      "slug": "cosmas-and-damian",
-      "name": "Sts. Cosmas and Damian",
-      "ceHead": "Cosmas and Damian, Saints",
-      "ratio": 0.875
-    },
-    {
       "slug": "crispin",
       "name": "St. Crispin",
       "ceHead": "Crispina, Saint",
       "ratio": 0.875
     },
     {
-      "slug": "crispin-and-crispinian",
-      "name": "Sts. Crispin and Crispinian",
-      "ceHead": "Crispin and Crispinian, Saints",
-      "ratio": 0.8966
-    },
-    {
       "slug": "cuthburh",
       "name": "St. Cuthburh",
       "ceHead": "Cuthbert, Saint",
       "ratio": 0.75
-    },
-    {
-      "slug": "cyril-and-methodius",
-      "name": "Sts. Cyril and Methodius",
-      "ceHead": "Cyril and Methodius, Saints",
-      "ratio": 0.8846
     },
     {
       "slug": "dacius-bishop-of-milan",
@@ -939,12 +1067,6 @@
       "ratio": 0.8571
     },
     {
-      "slug": "finan-of-lindisfarne",
-      "name": "St. Finan of Lindisfarne",
-      "ceHead": "Aidan of Lindisfarne, Saint",
-      "ratio": 0.9
-    },
-    {
       "slug": "florentius-african-saint",
       "name": "St. Florentius",
       "ceHead": "Florentina, Saint",
@@ -997,12 +1119,6 @@
       "name": "St. Gebhard of Constance",
       "ceHead": "Gebhard (III) of Constance",
       "ratio": 0.8571
-    },
-    {
-      "slug": "gerard-of-clairvaux-died-1138",
-      "name": "St. Gerard of Clairvaux",
-      "ceHead": "Bernard of Clairvaux, Saint",
-      "ratio": 0.9
     },
     {
       "slug": "germanus-of-man",
@@ -1397,7 +1513,7 @@
     {
       "slug": "nicholas",
       "name": "St. Nicholas",
-      "ceHead": "Nicholas V, Pope",
+      "ceHead": "Nicholas I, Saint, Pope",
       "ratio": 0.8
     },
     {
@@ -1485,12 +1601,6 @@
       "ratio": 0.8
     },
     {
-      "slug": "peter-faber",
-      "name": "St. Peter Faber",
-      "ceHead": "Claver, Saint Peter",
-      "ratio": 0.75
-    },
-    {
       "slug": "peter-ii-of-alexandria",
       "name": "St. Peter II of Alexandria",
       "ceHead": "Peter of Alexandria, Saint",
@@ -1515,6 +1625,12 @@
       "ratio": 0.75
     },
     {
+      "slug": "pope-alexander-i-of-alexandria",
+      "name": "St. Alexander I of Alexandria",
+      "ceHead": "Alexander, Saint (Patriarch of Alexandria)",
+      "ratio": 0.7576
+    },
+    {
       "slug": "pope-andronicus-of-alexandria",
       "name": "St. Andronicus of Alexandria",
       "ceHead": "Eulogius of Alexandria, Saint",
@@ -1527,22 +1643,10 @@
       "ratio": 0.7727
     },
     {
-      "slug": "pope-benedict-ii",
-      "name": "St. Benedict II",
-      "ceHead": "Benedict III, Pope",
-      "ratio": 0.9167
-    },
-    {
       "slug": "pope-dioscorus-i-of-alexandria",
       "name": "St. Dioscorus I of Alexandria",
       "ceHead": "Alexandria, The Diocese of",
       "ratio": 0.76
-    },
-    {
-      "slug": "pope-eugene-i",
-      "name": "St. Eugene I",
-      "ceHead": "Eugene II, Pope",
-      "ratio": 0.8889
     },
     {
       "slug": "pope-eumenes-of-alexandria",
@@ -1553,8 +1657,8 @@
     {
       "slug": "pope-eutychian",
       "name": "Pope St. Eutychian",
-      "ceHead": "Eutychius",
-      "ratio": 0.7778
+      "ceHead": "Eutychianus, Saint, Pope",
+      "ratio": 0.8182
     },
     {
       "slug": "pope-felix-iii",
@@ -1597,12 +1701,6 @@
       "name": "St. Leo I",
       "ceHead": "Leo II, Pope Saint",
       "ratio": 0.8333
-    },
-    {
-      "slug": "pope-nicholas-i",
-      "name": "St. Nicholas I",
-      "ceHead": "Nicholas II, Pope",
-      "ratio": 0.9091
     },
     {
       "slug": "pope-primus-of-alexandria",
@@ -1771,18 +1869,6 @@
       "name": "St. Taurinus",
       "ceHead": "Paulinus, Saint",
       "ratio": 0.75
-    },
-    {
-      "slug": "thelwold-bishop-of-lindisfarne",
-      "name": "St. Æthelwold",
-      "ceHead": "Ethelwold, Saint",
-      "ratio": 0.9
-    },
-    {
-      "slug": "thelwold-hermit",
-      "name": "St. Æthelwold",
-      "ceHead": "Ethelwold, Saint",
-      "ratio": 0.9
     },
     {
       "slug": "theodora-of-alexandria",
