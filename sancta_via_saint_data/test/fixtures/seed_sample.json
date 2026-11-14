@@ -1,0 +1,69 @@
+{
+  "saints": [
+    {
+      "slug": "francis-of-assisi",
+      "name": "St. Francis of Assisi",
+      "feastDay": "10-04",
+      "bio": "Fixture bio for the honorific-strip test.",
+      "patronages": [
+        {"need": "animals", "category": "nature"},
+        {"need": "ecology", "category": "nature"},
+        {"need": "merchants", "category": "everyday"},
+        {"need": "peacemakers", "category": "special"}
+      ],
+      "featured": false
+    },
+    {
+      "slug": "ignatius-loyola",
+      "name": "St. Ignatius Loyola",
+      "feastDay": "07-31",
+      "bio": "Fixture bio for the surname-reorder test.",
+      "patronages": [
+        {"need": "retreats", "category": "spiritual"},
+        {"need": "soldiers", "category": "military"},
+        {"need": "educators", "category": "jobs"},
+        {"need": "doubt", "category": "spiritual"}
+      ],
+      "featured": false
+    },
+    {
+      "slug": "bobl",
+      "name": "St. Böbl",
+      "feastDay": "01-01",
+      "bio": "Fixture bio with a diacritic name for the entity-decode and fold test.",
+      "patronages": [
+        {"need": "archivists", "category": "jobs"}
+      ],
+      "featured": true
+    },
+    {
+      "slug": "francis-xavier",
+      "name": "Francis Xavier",
+      "feastDay": "12-03",
+      "bio": "Fixture bio for the collision test (first collision party).",
+      "patronages": [],
+      "featured": false
+    },
+    {
+      "slug": "saint-francis-xavier",
+      "name": "St. Francis Xavier",
+      "feastDay": "12-03",
+      "bio": "Fixture bio for the collision test (second collision party).",
+      "patronages": [
+        {"need": "missionaries", "category": "spiritual"},
+        {"need": "goa", "category": "special"}
+      ],
+      "featured": false
+    },
+    {
+      "slug": "adalbert-egmond",
+      "name": "St. Adalbert of Egmond",
+      "feastDay": "06-25",
+      "bio": "Fixture bio pinning that a qualified saint never matches a bare-name CE article.",
+      "patronages": [
+        {"need": "Egmond", "category": "special"}
+      ],
+      "featured": false
+    }
+  ]
+}
