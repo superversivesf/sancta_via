@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T07:49:01.381240Z",
+  "generatedAt": "2026-11-14T23:29:56.366567Z",
   "articles": [
     {
       "slug": "anthony-of-padua",
@@ -3357,6 +3357,15 @@
       "chars": 2020,
       "sha256": "c01ad83ede654333365d8395c4a33705a29b1438f4571ea500c8e47a914254d5",
       "fetchedAt": "2026-11-14T07:48:50.595259Z"
+    },
+    {
+      "slug": "therese-of-lisieux",
+      "ceCode": "17721a",
+      "url": "https://www.newadvent.org/cathen/17721a.htm",
+      "file": "17721a.txt",
+      "chars": 2180,
+      "sha256": "c6847607e180d15e0a06b8baae21d2fab9ed3ce6e9e3324d72493c4bd6bdf13f",
+      "fetchedAt": "2026-11-14T23:29:56.366066Z"
     }
   ]
 }

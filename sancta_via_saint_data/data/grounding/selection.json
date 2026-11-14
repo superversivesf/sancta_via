@@ -3730,6 +3730,16 @@
       "patronageCount": 1,
       "featured": false,
       "grounded": true
+    },
+    {
+      "slug": "therese-of-lisieux",
+      "name": "St. Thérèse of Lisieux",
+      "ceCode": "17721a",
+      "ceTitle": "Teresa of Lisieux, Saint",
+      "ceUrl": "https://www.newadvent.org/cathen/17721a.htm",
+      "patronageCount": 1,
+      "featured": false,
+      "grounded": true
     }
   ],
   "drops": [
