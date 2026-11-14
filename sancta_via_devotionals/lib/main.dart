@@ -31,6 +31,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.dart'
+    show LiturgicalColor;
+import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart'
+    show currentLiturgicalColorProvider;
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart' hide AppLogger;
 
 import 'config/routes.dart';
@@ -176,14 +180,39 @@ class _SanctaViaDevotionalsAppState
         .watch(baseSettingsProvider)
         .defaultLanguage;
     final ThemeMode themeMode = ref.watch(themeModeProvider);
+    // Liturgical dynamic theming — the house-wide contract: the app's WHOLE
+    // color scheme is seeded from the season's liturgical color and the
+    // user's intensity preference, exactly as the prayer/liturgical/bible
+    // sibling apps wire it. (This was the one app that never passed the
+    // day's color — it permanently rendered the default purple scheme.)
+    final liturgicalColorString = ref.watch(currentLiturgicalColorProvider);
+    final LiturgicalColor? liturgicalColor = liturgicalColorString != null
+        ? LiturgicalColor.fromString(liturgicalColorString)
+        : null;
+    final ColorIntensity colorIntensity = ref.watch(colorIntensityProvider);
+    final double textScale = ref.watch(effectiveTextScaleProvider);
     return MaterialApp.router(
       title: 'Sancta Via Devotionals',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme(),
-      darkTheme: AppTheme.darkTheme(),
+      theme: AppTheme.lightTheme(liturgicalColor, colorIntensity),
+      darkTheme: AppTheme.darkTheme(liturgicalColor, colorIntensity),
       themeMode: themeMode,
       locale: Locale(language.code),
       routerConfig: widget.router ?? appRouter,
+      // Apply the user's font-size setting to all text throughout the app
+      // (identical composition to the sibling apps).
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery.withClampedTextScaling(
+          minScaleFactor: 0.8,
+          maxScaleFactor: 2.0,
+          child: MediaQuery(
+            data: MediaQuery.of(
+              context,
+            ).copyWith(textScaler: TextScaler.linear(textScale)),
+            child: child!,
+          ),
+        );
+      },
     );
   }
 }
