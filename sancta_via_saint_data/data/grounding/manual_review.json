@@ -1,12 +1,6 @@
 {
   "collisions": [
     {
-      "slug": "abdon-and-sennen",
-      "name": "St. Abdon and Sennen",
-      "ceHead": "Abdon and Sennen, Saints",
-      "ceCode": "01032a"
-    },
-    {
       "slug": "bartholomew",
       "name": "St. Bartholomew",
       "ceHead": "Bartholomew, Saint",
@@ -67,12 +61,6 @@
       "ceCode": "03729a"
     },
     {
-      "slug": "chrysanthus-and-daria",
-      "name": "Sts. Chrysanthus and Daria",
-      "ceHead": "Chrysanthus and Daria, Saints",
-      "ceCode": "03742a"
-    },
-    {
       "slug": "columba",
       "name": "St. Columba",
       "ceHead": "Columba, Saint",
@@ -83,18 +71,6 @@
       "name": "St. Columba",
       "ceHead": "Columba, Saint",
       "ceCode": "04136a"
-    },
-    {
-      "slug": "cosmas-and-damian",
-      "name": "Sts. Cosmas and Damian",
-      "ceHead": "Cosmas and Damian, Saints",
-      "ceCode": "04403e"
-    },
-    {
-      "slug": "crispin-and-crispinian",
-      "name": "Sts. Crispin and Crispinian",
-      "ceHead": "Crispin and Crispinian, Saints",
-      "ceCode": "04491a"
     },
     {
       "slug": "cuthbert",
@@ -113,18 +89,6 @@
       "name": "St. Cuthbert",
       "ceHead": "Cuthbert",
       "ceCode": "04580a"
-    },
-    {
-      "slug": "cyprian-and-justina",
-      "name": "St. Cyprian and Justina",
-      "ceHead": "Cyprian and Justina, Saints",
-      "ceCode": "04583a"
-    },
-    {
-      "slug": "cyril-and-methodius",
-      "name": "Sts. Cyril and Methodius",
-      "ceHead": "Cyril and Methodius, Saints",
-      "ceCode": "04592a"
     },
     {
       "slug": "dionysius-bishop-of-milan",
@@ -163,12 +127,6 @@
       "ceCode": "05615b"
     },
     {
-      "slug": "fergus",
-      "name": "St. Fergus",
-      "ceHead": "Fergus, Saints",
-      "ceCode": "06042c"
-    },
-    {
       "slug": "genesius",
       "name": "St. Genesius",
       "ceHead": "Genesius",
@@ -203,18 +161,6 @@
       "name": "St. Joseph",
       "ceHead": "Joseph",
       "ceCode": "08506a"
-    },
-    {
-      "slug": "julian-and-basilissa",
-      "name": "St. Julian and Basilissa",
-      "ceHead": "Julian and Basilissa, Saints",
-      "ceCode": "08556b"
-    },
-    {
-      "slug": "laura",
-      "name": "St. Laura",
-      "ceHead": "Laura",
-      "ceCode": "09039a"
     },
     {
       "slug": "lawrence",
@@ -253,18 +199,6 @@
       "ceCode": "10069a"
     },
     {
-      "slug": "mitre",
-      "name": "St. Mitre",
-      "ceHead": "Mitre",
-      "ceCode": "10404a"
-    },
-    {
-      "slug": "moses-bishop-of-the-arabs",
-      "name": "St. Moses",
-      "ceHead": "Moses",
-      "ceCode": "10596a"
-    },
-    {
       "slug": "palladius-bishop-of-ireland",
       "name": "St. Palladius",
       "ceHead": "Palladius, Saint",
@@ -275,24 +209,6 @@
       "name": "St. Palladius",
       "ceHead": "Palladius",
       "ceCode": "11425a"
-    },
-    {
-      "slug": "paris",
-      "name": "St. Paris",
-      "ceHead": "Paris",
-      "ceCode": "11480c"
-    },
-    {
-      "slug": "pelagia",
-      "name": "St. Pelagia",
-      "ceHead": "Pelagia",
-      "ceCode": "11601d"
-    },
-    {
-      "slug": "pope-caius",
-      "name": "Pope St. Caius",
-      "ceHead": "Caius",
-      "ceCode": "03144a"
     },
     {
       "slug": "pope-cornelius",
@@ -365,24 +281,6 @@
       "name": "St. Zosimus",
       "ceHead": "Zosimus",
       "ceCode": "15765a"
-    },
-    {
-      "slug": "simeon-gospel-of-luke",
-      "name": "St. Simeon",
-      "ceHead": "Simeon",
-      "ceCode": "13794b"
-    },
-    {
-      "slug": "theodoret-martyr",
-      "name": "St. Theodoret",
-      "ceHead": "Theodoret",
-      "ceCode": "14574b"
-    },
-    {
-      "slug": "theodorus-and-theophanes",
-      "name": "St. Theodorus and Theophanes",
-      "ceHead": "Theodorus and Theophanes, Saints",
-      "ceCode": "14577a"
     },
     {
       "slug": "ulrich-of-zell",
@@ -460,7 +358,7 @@
     },
     {
       "slug": "thelwold-bishop-of-lindisfarne",
-      "name": "St. Æthelwold",
+      "name": "St. \u00c6thelwold",
       "ceHead": "Ethelwold, Saint",
       "ceCode": "05555b",
       "ratio": 0.9,
@@ -468,7 +366,7 @@
     },
     {
       "slug": "thelwold-hermit",
-      "name": "St. Æthelwold",
+      "name": "St. \u00c6thelwold",
       "ceHead": "Ethelwold, Saint",
       "ceCode": "05555b",
       "ratio": 0.9,
@@ -516,7 +414,7 @@
     },
     {
       "slug": "adomn-n",
-      "name": "St. Adomnán",
+      "name": "St. Adomn\u00e1n",
       "ceHead": "Adamnan, Saint",
       "ratio": 0.8571
     },
@@ -558,8 +456,8 @@
     },
     {
       "slug": "alberic-of-c-teaux",
-      "name": "St. Alberic of Cîteaux",
-      "ceHead": "Cîteaux, Abbey of",
+      "name": "St. Alberic of C\u00eeteaux",
+      "ceHead": "C\u00eeteaux, Abbey of",
       "ratio": 0.7778
     },
     {
@@ -846,13 +744,13 @@
     },
     {
       "slug": "colm-n-of-lann",
-      "name": "St. Colmán of Lann",
+      "name": "St. Colm\u00e1n of Lann",
       "ceHead": "Colman, Saint, of Mayo",
       "ratio": 0.7857
     },
     {
       "slug": "colm-n-of-lindisfarne",
-      "name": "St. Colmán of Lindisfarne",
+      "name": "St. Colm\u00e1n of Lindisfarne",
       "ceHead": "Aidan of Lindisfarne, Saint",
       "ratio": 0.8095
     },
@@ -894,7 +792,7 @@
     },
     {
       "slug": "cormac-mac-cuilenn-in",
-      "name": "St. Cormac mac Cuilennáin",
+      "name": "St. Cormac mac Cuilenn\u00e1in",
       "ceHead": "Cormac MacCuilenan",
       "ratio": 0.8571
     },
@@ -985,7 +883,7 @@
     {
       "slug": "emmelia-of-caesarea",
       "name": "St. Emmelia of Caesarea",
-      "ceHead": "Eusebius of Cæsarea",
+      "ceHead": "Eusebius of C\u00e6sarea",
       "ratio": 0.75
     },
     {
@@ -1015,7 +913,7 @@
     {
       "slug": "eusebius-of-cremona",
       "name": "St. Eusebius of Cremona",
-      "ceHead": "Eusebius of Cæsarea",
+      "ceHead": "Eusebius of C\u00e6sarea",
       "ratio": 0.75
     },
     {
@@ -1086,8 +984,8 @@
     },
     {
       "slug": "g-rard-of-brogne",
-      "name": "St. Gérard of Brogne",
-      "ceHead": "Gérard, Abbot of Brogne, Saint",
+      "name": "St. G\u00e9rard of Brogne",
+      "ceHead": "G\u00e9rard, Abbot of Brogne, Saint",
       "ratio": 0.7895
     },
     {
@@ -1146,8 +1044,8 @@
     },
     {
       "slug": "helena-of-sk-vde",
-      "name": "St. Helena of Skövde",
-      "ceHead": "Helen of Sköfde, Saint",
+      "name": "St. Helena of Sk\u00f6vde",
+      "ceHead": "Helen of Sk\u00f6fde, Saint",
       "ratio": 0.875
     },
     {
@@ -1218,7 +1116,7 @@
     },
     {
       "slug": "j-nberht",
-      "name": "St. Jænberht",
+      "name": "St. J\u00e6nberht",
       "ceHead": "Jaenbert",
       "ratio": 0.8889
     },
@@ -1315,7 +1213,7 @@
     {
       "slug": "julian-of-vienne",
       "name": "St. Julian of Vienne",
-      "ceHead": "Juliana of Liège, Saint",
+      "ceHead": "Juliana of Li\u00e8ge, Saint",
       "ratio": 0.75
     },
     {
@@ -1350,13 +1248,13 @@
     },
     {
       "slug": "m-ed-c-of-ferns",
-      "name": "St. Máedóc of Ferns",
+      "name": "St. M\u00e1ed\u00f3c of Ferns",
       "ceHead": "Aedan of Ferns, Saint",
       "ratio": 0.8
     },
     {
       "slug": "m-el-ruba",
-      "name": "St. Máel Ruba",
+      "name": "St. M\u00e1el Ruba",
       "ceHead": "Maelrubha, Saint",
       "ratio": 0.7778
     },
@@ -1584,7 +1482,7 @@
     },
     {
       "slug": "pelagius-of-c-rdoba",
-      "name": "St. Pelagius of Córdoba",
+      "name": "St. Pelagius of C\u00f3rdoba",
       "ceHead": "Eulogius of Cordova, Saint",
       "ratio": 0.7895
     },
@@ -1722,7 +1620,7 @@
     },
     {
       "slug": "procopius-of-s-zava",
-      "name": "St. Procopius of Sázava",
+      "name": "St. Procopius of S\u00e1zava",
       "ceHead": "Procopius of Caesarea",
       "ratio": 0.7619
     },
@@ -1830,7 +1728,7 @@
     },
     {
       "slug": "stanislaus-of-szczepan-w",
-      "name": "St. Stanislaus of Szczepanów",
+      "name": "St. Stanislaus of Szczepan\u00f3w",
       "ceHead": "Stanislaus of Cracow, Saint",
       "ratio": 0.75
     },
@@ -1920,7 +1818,7 @@
     },
     {
       "slug": "therese-of-lisieux",
-      "name": "St. Thérèse of Lisieux",
+      "name": "St. Th\u00e9r\u00e8se of Lisieux",
       "ceHead": "Teresa of Lisieux, Saint",
       "ratio": 0.8889
     },

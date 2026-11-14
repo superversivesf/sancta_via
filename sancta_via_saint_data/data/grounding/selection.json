@@ -74,11 +74,29 @@
       "featured": false
     },
     {
+      "slug": "pelagia",
+      "name": "St. Pelagia",
+      "ceCode": "11601d",
+      "ceTitle": "Pelagia",
+      "ceUrl": "https://www.newadvent.org/cathen/11601d.htm",
+      "patronageCount": 5,
+      "featured": false
+    },
+    {
       "slug": "sidonius-apollinaris",
       "name": "St. Sidonius Apollinaris",
       "ceCode": "13778a",
       "ceTitle": "Sidonius Apollinaris",
       "ceUrl": "https://www.newadvent.org/cathen/13778a.htm",
+      "patronageCount": 5,
+      "featured": false
+    },
+    {
+      "slug": "crispin-and-crispinian",
+      "name": "Sts. Crispin and Crispinian",
+      "ceCode": "04491a",
+      "ceTitle": "Crispin and Crispinian, Saints",
+      "ceUrl": "https://www.newadvent.org/cathen/04491a.htm",
       "patronageCount": 5,
       "featured": false
     },
@@ -165,7 +183,7 @@
     },
     {
       "slug": "eulogius-of-c-rdoba",
-      "name": "St. Eulogius of Córdoba",
+      "name": "St. Eulogius of C\u00f3rdoba",
       "ceCode": "05604a",
       "ceTitle": "Eulogius of Cordova, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05604a.htm",
@@ -176,7 +194,7 @@
       "slug": "eusebius",
       "name": "St. Eusebius of Caesarea",
       "ceCode": "05617b",
-      "ceTitle": "Eusebius of Cæsarea",
+      "ceTitle": "Eusebius of C\u00e6sarea",
       "ceUrl": "https://www.newadvent.org/cathen/05617b.htm",
       "patronageCount": 4,
       "featured": false
@@ -254,6 +272,15 @@
       "featured": false
     },
     {
+      "slug": "moses-bishop-of-the-arabs",
+      "name": "St. Moses",
+      "ceCode": "10596a",
+      "ceTitle": "Moses",
+      "ceUrl": "https://www.newadvent.org/cathen/10596a.htm",
+      "patronageCount": 4,
+      "featured": false
+    },
+    {
       "slug": "paul-the-simple",
       "name": "St. Paul the Simple",
       "ceCode": "11591a",
@@ -326,6 +353,24 @@
       "featured": false
     },
     {
+      "slug": "pope-caius",
+      "name": "Pope St. Caius",
+      "ceCode": "03144a",
+      "ceTitle": "Caius",
+      "ceUrl": "https://www.newadvent.org/cathen/03144a.htm",
+      "patronageCount": 3,
+      "featured": false
+    },
+    {
+      "slug": "abdon-and-sennen",
+      "name": "St. Abdon and Sennen",
+      "ceCode": "01032a",
+      "ceTitle": "Abdon and Sennen, Saints",
+      "ceUrl": "https://www.newadvent.org/cathen/01032a.htm",
+      "patronageCount": 3,
+      "featured": false
+    },
+    {
       "slug": "pope-adeodatus-ii",
       "name": "St. Adeodatus II",
       "ceCode": "01142a",
@@ -356,7 +401,7 @@
       "slug": "aelia-flaccilla",
       "name": "St. Aelia Flaccilla",
       "ceCode": "06089b",
-      "ceTitle": "Flaccilla, Ælia",
+      "ceTitle": "Flaccilla, \u00c6lia",
       "ceUrl": "https://www.newadvent.org/cathen/06089b.htm",
       "patronageCount": 3,
       "featured": false
@@ -444,9 +489,9 @@
     },
     {
       "slug": "burchard-of-w-rzburg",
-      "name": "St. Burchard of Würzburg",
+      "name": "St. Burchard of W\u00fcrzburg",
       "ceCode": "03064b",
-      "ceTitle": "Burchard of Würzurg, Saint",
+      "ceTitle": "Burchard of W\u00fcrzurg, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03064b.htm",
       "patronageCount": 3,
       "featured": false
@@ -455,7 +500,7 @@
       "slug": "caesarius-of-arles",
       "name": "St. Caesarius of Arles",
       "ceCode": "03135b",
-      "ceTitle": "Cæsarius of Arles, Saint",
+      "ceTitle": "C\u00e6sarius of Arles, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/03135b.htm",
       "patronageCount": 3,
       "featured": false
@@ -839,6 +884,15 @@
       "featured": false
     },
     {
+      "slug": "laura",
+      "name": "St. Laura",
+      "ceCode": "09039a",
+      "ceTitle": "Laura",
+      "ceUrl": "https://www.newadvent.org/cathen/09039a.htm",
+      "patronageCount": 3,
+      "featured": false
+    },
+    {
       "slug": "pope-leo-ii",
       "name": "St. Leo II",
       "ceCode": "09157a",
@@ -1004,7 +1058,7 @@
       "slug": "pantaenus",
       "name": "St. Pantaenus",
       "ceCode": "11446b",
-      "ceTitle": "Pantænus",
+      "ceTitle": "Pant\u00e6nus",
       "ceUrl": "https://www.newadvent.org/cathen/11446b.htm",
       "patronageCount": 3,
       "featured": false
@@ -1100,11 +1154,29 @@
       "featured": false
     },
     {
+      "slug": "simeon-gospel-of-luke",
+      "name": "St. Simeon",
+      "ceCode": "13794b",
+      "ceTitle": "Simeon",
+      "ceUrl": "https://www.newadvent.org/cathen/13794b.htm",
+      "patronageCount": 3,
+      "featured": false
+    },
+    {
       "slug": "pope-stephen-i",
       "name": "St. Stephen I",
       "ceCode": "14288a",
       "ceTitle": "Stephen I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14288a.htm",
+      "patronageCount": 3,
+      "featured": false
+    },
+    {
+      "slug": "theodorus-and-theophanes",
+      "name": "St. Theodorus and Theophanes",
+      "ceCode": "14577a",
+      "ceTitle": "Theodorus and Theophanes, Saints",
+      "ceUrl": "https://www.newadvent.org/cathen/14577a.htm",
       "patronageCount": 3,
       "featured": false
     },
@@ -1177,6 +1249,15 @@
       "ceCode": "15756c",
       "ceTitle": "Zephyrinus, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15756c.htm",
+      "patronageCount": 3,
+      "featured": false
+    },
+    {
+      "slug": "chrysanthus-and-daria",
+      "name": "Sts. Chrysanthus and Daria",
+      "ceCode": "03742a",
+      "ceTitle": "Chrysanthus and Daria, Saints",
+      "ceUrl": "https://www.newadvent.org/cathen/03742a.htm",
       "patronageCount": 3,
       "featured": false
     },
@@ -1409,7 +1490,7 @@
       "slug": "caesarius-of-nazianzus",
       "name": "St. Caesarius of Nazianzus",
       "ceCode": "03138a",
-      "ceTitle": "Cæsarius of Nazianzus",
+      "ceTitle": "C\u00e6sarius of Nazianzus",
       "ceUrl": "https://www.newadvent.org/cathen/03138a.htm",
       "patronageCount": 2,
       "featured": false
@@ -1469,6 +1550,15 @@
       "featured": false
     },
     {
+      "slug": "cyprian-and-justina",
+      "name": "St. Cyprian and Justina",
+      "ceCode": "04583a",
+      "ceTitle": "Cyprian and Justina, Saints",
+      "ceUrl": "https://www.newadvent.org/cathen/04583a.htm",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
       "slug": "cyril-of-alexandria",
       "name": "St. Cyril of Alexandria",
       "ceCode": "04592b",
@@ -1478,20 +1568,20 @@
       "featured": false
     },
     {
-      "slug": "d-chu",
-      "name": "St. Díchu",
-      "ceCode": "04778b",
-      "ceTitle": "Dichu, Saint",
-      "ceUrl": "https://www.newadvent.org/cathen/04778b.htm",
-      "patronageCount": 2,
-      "featured": false
-    },
-    {
       "slug": "drostan",
       "name": "St. Drostan",
       "ceCode": "05161a",
       "ceTitle": "Drostan, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/05161a.htm",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
+      "slug": "d-chu",
+      "name": "St. D\u00edchu",
+      "ceCode": "04778b",
+      "ceTitle": "Dichu, Saint",
+      "ceUrl": "https://www.newadvent.org/cathen/04778b.htm",
       "patronageCount": 2,
       "featured": false
     },
@@ -1555,6 +1645,15 @@
       "ceCode": "06019b",
       "ceTitle": "Faustus of Riez",
       "ceUrl": "https://www.newadvent.org/cathen/06019b.htm",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
+      "slug": "fergus",
+      "name": "St. Fergus",
+      "ceCode": "06042c",
+      "ceTitle": "Fergus, Saints",
+      "ceUrl": "https://www.newadvent.org/cathen/06042c.htm",
       "patronageCount": 2,
       "featured": false
     },
@@ -1631,20 +1730,20 @@
       "featured": false
     },
     {
-      "slug": "gregory-the-illuminator",
-      "name": "St. Gregory the Illuminator",
-      "ceCode": "07023a",
-      "ceTitle": "Gregory the Illuminator",
-      "ceUrl": "https://www.newadvent.org/cathen/07023a.htm",
-      "patronageCount": 2,
-      "featured": false
-    },
-    {
       "slug": "pope-gregory-vii",
       "name": "St. Gregory VII",
       "ceCode": "06791c",
       "ceTitle": "Gregory VII, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/06791c.htm",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
+      "slug": "gregory-the-illuminator",
+      "name": "St. Gregory the Illuminator",
+      "ceCode": "07023a",
+      "ceTitle": "Gregory the Illuminator",
+      "ceUrl": "https://www.newadvent.org/cathen/07023a.htm",
       "patronageCount": 2,
       "featured": false
     },
@@ -1742,7 +1841,7 @@
       "slug": "jacob-baradaeus",
       "name": "St. Jacob Baradaeus",
       "ceCode": "02282a",
-      "ceTitle": "Baradæus, Jacob",
+      "ceTitle": "Barad\u00e6us, Jacob",
       "ceUrl": "https://www.newadvent.org/cathen/02282a.htm",
       "patronageCount": 2,
       "featured": false
@@ -1807,6 +1906,15 @@
       "ceCode": "08434a",
       "ceTitle": "John XXIII",
       "ceUrl": "https://www.newadvent.org/cathen/08434a.htm",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
+      "slug": "julian-and-basilissa",
+      "name": "St. Julian and Basilissa",
+      "ceCode": "08556b",
+      "ceTitle": "Julian and Basilissa, Saints",
+      "ceUrl": "https://www.newadvent.org/cathen/08556b.htm",
       "patronageCount": 2,
       "featured": false
     },
@@ -1906,6 +2014,15 @@
       "ceCode": "09723c",
       "ceTitle": "Martin I, Pope Saint",
       "ceUrl": "https://www.newadvent.org/cathen/09723c.htm",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
+      "slug": "mitre",
+      "name": "St. Mitre",
+      "ceCode": "10404a",
+      "ceTitle": "Mitre",
+      "ceUrl": "https://www.newadvent.org/cathen/10404a.htm",
       "patronageCount": 2,
       "featured": false
     },
@@ -2190,7 +2307,7 @@
     },
     {
       "slug": "tha-s-saint",
-      "name": "St. Thaïs",
+      "name": "St. Tha\u00efs",
       "ceCode": "14553d",
       "ceTitle": "Thais, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/14553d.htm",
@@ -2244,9 +2361,9 @@
     },
     {
       "slug": "vincent-of-l-rins",
-      "name": "St. Vincent of Lérins",
+      "name": "St. Vincent of L\u00e9rins",
       "ceCode": "15439b",
-      "ceTitle": "Vincent of Lérins, Saint",
+      "ceTitle": "Vincent of L\u00e9rins, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15439b.htm",
       "patronageCount": 2,
       "featured": false
@@ -2288,6 +2405,15 @@
       "featured": false
     },
     {
+      "slug": "cyril-and-methodius",
+      "name": "Sts. Cyril and Methodius",
+      "ceCode": "04592a",
+      "ceTitle": "Cyril and Methodius, Saints",
+      "ceUrl": "https://www.newadvent.org/cathen/04592a.htm",
+      "patronageCount": 2,
+      "featured": false
+    },
+    {
       "slug": "saints-faith-hope-and-charity",
       "name": "Sts. Faith, Hope and Charity",
       "ceCode": "05766a",
@@ -2316,7 +2442,7 @@
     },
     {
       "slug": "ailer-n",
-      "name": "St. Ailerán",
+      "name": "St. Ailer\u00e1n",
       "ceCode": "01234c",
       "ceTitle": "Aileran, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/01234c.htm",
@@ -2558,20 +2684,20 @@
       "featured": false
     },
     {
-      "slug": "colm-n-elo",
-      "name": "St. Colmán Elo",
-      "ceCode": "04115e",
-      "ceTitle": "Colman, Saint Elo",
-      "ceUrl": "https://www.newadvent.org/cathen/04115e.htm",
-      "patronageCount": 1,
-      "featured": false
-    },
-    {
       "slug": "colman-of-templeshambo",
       "name": "St. Colman of Templeshambo",
       "ceCode": "04115a",
       "ceTitle": "Colman, Saint, of Templeshambo",
       "ceUrl": "https://www.newadvent.org/cathen/04115a.htm",
+      "patronageCount": 1,
+      "featured": false
+    },
+    {
+      "slug": "colm-n-elo",
+      "name": "St. Colm\u00e1n Elo",
+      "ceCode": "04115e",
+      "ceTitle": "Colman, Saint Elo",
+      "ceUrl": "https://www.newadvent.org/cathen/04115e.htm",
       "patronageCount": 1,
       "featured": false
     },
@@ -3035,6 +3161,15 @@
       "featured": false
     },
     {
+      "slug": "paris",
+      "name": "St. Paris",
+      "ceCode": "11480c",
+      "ceTitle": "Paris",
+      "ceUrl": "https://www.newadvent.org/cathen/11480c.htm",
+      "patronageCount": 1,
+      "featured": false
+    },
+    {
       "slug": "patrick",
       "name": "St. Patrick",
       "ceCode": "11554a",
@@ -3092,7 +3227,7 @@
       "slug": "raymond-of-penyafort",
       "name": "St. Raymond of Penyafort",
       "ceCode": "12671c",
-      "ceTitle": "Raymond of Peñafort, Saint",
+      "ceTitle": "Raymond of Pe\u00f1afort, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/12671c.htm",
       "patronageCount": 1,
       "featured": false
@@ -3170,6 +3305,15 @@
       "featured": false
     },
     {
+      "slug": "theodoret-martyr",
+      "name": "St. Theodoret",
+      "ceCode": "14574b",
+      "ceTitle": "Theodoret",
+      "ceUrl": "https://www.newadvent.org/cathen/14574b.htm",
+      "patronageCount": 1,
+      "featured": false
+    },
+    {
       "slug": "thomas-more",
       "name": "St. Thomas More",
       "ceCode": "14689c",
@@ -3202,6 +3346,15 @@
       "ceCode": "15762a",
       "ceTitle": "Zita, Saint",
       "ceUrl": "https://www.newadvent.org/cathen/15762a.htm",
+      "patronageCount": 1,
+      "featured": false
+    },
+    {
+      "slug": "cosmas-and-damian",
+      "name": "Sts. Cosmas and Damian",
+      "ceCode": "04403e",
+      "ceTitle": "Cosmas and Damian, Saints",
+      "ceUrl": "https://www.newadvent.org/cathen/04403e.htm",
       "patronageCount": 1,
       "featured": false
     }
@@ -3408,7 +3561,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Adalbero of Würzburg",
+      "name": "St. Adalbero of W\u00fcrzburg",
       "reason": "no-ce-match"
     },
     {
@@ -3428,7 +3581,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Adalgis of Thiérache",
+      "name": "St. Adalgis of Thi\u00e9rache",
       "reason": "no-ce-match"
     },
     {
@@ -3436,7 +3589,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Adalhelm of Séez",
+      "name": "St. Adalhelm of S\u00e9ez",
       "reason": "no-ce-match"
     },
     {
@@ -3488,7 +3641,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Adomnán",
+      "name": "St. Adomn\u00e1n",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -3592,7 +3745,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Alèthe de Montbard",
+      "name": "St. Al\u00e8the de Montbard",
       "reason": "no-ce-match"
     },
     {
@@ -3600,7 +3753,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Alberic of Cîteaux",
+      "name": "St. Alberic of C\u00eeteaux",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -3684,7 +3837,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Alto of Altomünster",
+      "name": "St. Alto of Altom\u00fcnster",
       "reason": "no-ce-match"
     },
     {
@@ -3740,7 +3893,7 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Amunia of San Millán",
+      "name": "St. Amunia of San Mill\u00e1n",
       "reason": "no-ce-match"
     },
     {
@@ -4044,7 +4197,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Athenogenes of Pedachtoë",
+      "name": "St. Athenogenes of Pedachto\u00eb",
       "reason": "no-ce-match"
     },
     {
@@ -4068,7 +4221,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Aurea of Córdoba",
+      "name": "St. Aurea of C\u00f3rdoba",
       "reason": "no-ce-match"
     },
     {
@@ -4152,7 +4305,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Bénézet",
+      "name": "St. B\u00e9n\u00e9zet",
       "reason": "no-ce-match"
     },
     {
@@ -4164,7 +4317,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Baithéne mac Brénaind",
+      "name": "St. Baith\u00e9ne mac Br\u00e9naind",
       "reason": "no-ce-match"
     },
     {
@@ -4276,15 +4429,15 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æbbe of Coldingham",
+      "name": "St. \u00c6bbe of Coldingham",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æbbe the Younger",
+      "name": "St. \u00c6bbe the Younger",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Beatus of Liébana",
+      "name": "St. Beatus of Li\u00e9bana",
       "reason": "no-ce-match"
     },
     {
@@ -4432,7 +4585,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Bienheuré",
+      "name": "St. Bienheur\u00e9",
       "reason": "no-ce-match"
     },
     {
@@ -4440,7 +4593,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Bilihildis of Altmünster",
+      "name": "St. Bilihildis of Altm\u00fcnster",
       "reason": "no-ce-match"
     },
     {
@@ -4532,7 +4685,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Bríga",
+      "name": "St. Br\u00edga",
       "reason": "no-ce-match"
     },
     {
@@ -4596,7 +4749,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Broccán Clóen",
+      "name": "St. Brocc\u00e1n Cl\u00f3en",
       "reason": "no-ce-match"
     },
     {
@@ -4608,7 +4761,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Bruno, Bishop of Würzburg",
+      "name": "St. Bruno, Bishop of W\u00fcrzburg",
       "reason": "no-ce-match"
     },
     {
@@ -4648,11 +4801,11 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Bystrík",
+      "name": "St. Bystr\u00edk",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Céline of Laon",
+      "name": "St. C\u00e9line of Laon",
       "reason": "no-ce-match"
     },
     {
@@ -4660,7 +4813,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Caillín",
+      "name": "St. Caill\u00edn",
       "reason": "no-ce-match"
     },
     {
@@ -4720,7 +4873,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Caprasius of Lérins",
+      "name": "St. Caprasius of L\u00e9rins",
       "reason": "no-ce-match"
     },
     {
@@ -4776,11 +4929,11 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Catherine Labouré",
+      "name": "St. Catherine Labour\u00e9",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Cathróe of Metz",
+      "name": "St. Cathr\u00f3e of Metz",
       "reason": "no-ce-match"
     },
     {
@@ -4792,7 +4945,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Cenn Fáelad mac Ailella",
+      "name": "St. Cenn F\u00e1elad mac Ailella",
       "reason": "no-ce-match"
     },
     {
@@ -4876,15 +5029,15 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Cianán",
+      "name": "St. Cian\u00e1n",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ciarán of Clonmacnoise",
+      "name": "St. Ciar\u00e1n of Clonmacnoise",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ciarán of Saigir",
+      "name": "St. Ciar\u00e1n of Saigir",
       "reason": "no-ce-match"
     },
     {
@@ -4924,31 +5077,31 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colmán mac Comán",
+      "name": "St. Colm\u00e1n mac Com\u00e1n",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colmán of Ardboe",
+      "name": "St. Colm\u00e1n of Ardboe",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colmán of Cloyne",
+      "name": "St. Colm\u00e1n of Cloyne",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colmán of Dromore",
+      "name": "St. Colm\u00e1n of Dromore",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colmán of Kilroot",
+      "name": "St. Colm\u00e1n of Kilroot",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Colmán of Lann",
+      "name": "St. Colm\u00e1n of Lann",
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Colmán of Lindisfarne",
+      "name": "St. Colm\u00e1n of Lindisfarne",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -5036,7 +5189,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Cormac mac Cuilennáin",
+      "name": "St. Cormac mac Cuilenn\u00e1in",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -5056,7 +5209,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Crónán of Roscrea",
+      "name": "St. Cr\u00f3n\u00e1n of Roscrea",
       "reason": "no-ce-match"
     },
     {
@@ -5072,7 +5225,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Cúan",
+      "name": "St. C\u00faan",
       "reason": "no-ce-match"
     },
     {
@@ -5080,7 +5233,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Curetán",
+      "name": "St. Curet\u00e1n",
       "reason": "no-ce-match"
     },
     {
@@ -5148,7 +5301,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Daïa",
+      "name": "St. Da\u00efa",
       "reason": "no-ce-match"
     },
     {
@@ -5164,7 +5317,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Dallán Forgaill",
+      "name": "St. Dall\u00e1n Forgaill",
       "reason": "no-ce-match"
     },
     {
@@ -5232,7 +5385,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Declán of Ardmore",
+      "name": "St. Decl\u00e1n of Ardmore",
       "reason": "no-ce-match"
     },
     {
@@ -5452,7 +5605,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Eanflæd",
+      "name": "St. Eanfl\u00e6d",
       "reason": "no-ce-match"
     },
     {
@@ -5484,7 +5637,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Áed Dub mac Colmáin",
+      "name": "St. \u00c1ed Dub mac Colm\u00e1in",
       "reason": "no-ce-match"
     },
     {
@@ -5632,7 +5785,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Óengus of Tallaght",
+      "name": "St. \u00d3engus of Tallaght",
       "reason": "no-ce-match"
     },
     {
@@ -5820,7 +5973,7 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Eusebius of Mâcon",
+      "name": "St. Eusebius of M\u00e2con",
       "reason": "no-ce-match"
     },
     {
@@ -5880,7 +6033,7 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Euverte d'Orléans",
+      "name": "St. Euverte d'Orl\u00e9ans",
       "reason": "no-ce-match"
     },
     {
@@ -5904,7 +6057,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Féchín of Fore",
+      "name": "St. F\u00e9ch\u00edn of Fore",
       "reason": "no-ce-match"
     },
     {
@@ -6056,7 +6209,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Flannán",
+      "name": "St. Flann\u00e1n",
       "reason": "no-ce-match"
     },
     {
@@ -6072,7 +6225,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Flora of Córdoba",
+      "name": "St. Flora of C\u00f3rdoba",
       "reason": "no-ce-match"
     },
     {
@@ -6096,11 +6249,11 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Florinus of Remüs",
+      "name": "St. Florinus of Rem\u00fcs",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Florus of Lodève",
+      "name": "St. Florus of Lod\u00e8ve",
       "reason": "no-ce-match"
     },
     {
@@ -6172,11 +6325,11 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Gérétran of Bayeux",
+      "name": "St. G\u00e9r\u00e9tran of Bayeux",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Gérard of Brogne",
+      "name": "St. G\u00e9rard of Brogne",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -6220,7 +6373,7 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Gaud d'Évreux",
+      "name": "St. Gaud d'\u00c9vreux",
       "reason": "no-ce-match"
     },
     {
@@ -6340,7 +6493,7 @@
       "reason": "collision-quarantined"
     },
     {
-      "name": "St. Gerard of Csanád",
+      "name": "St. Gerard of Csan\u00e1d",
       "reason": "no-ce-match"
     },
     {
@@ -6492,7 +6645,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Goulven of Léon",
+      "name": "St. Goulven of L\u00e9on",
       "reason": "no-ce-match"
     },
     {
@@ -6636,7 +6789,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Hædde",
+      "name": "St. H\u00e6dde",
       "reason": "no-ce-match"
     },
     {
@@ -6644,7 +6797,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Hallvard Vebjørnsson",
+      "name": "St. Hallvard Vebj\u00f8rnsson",
       "reason": "no-ce-match"
     },
     {
@@ -6672,7 +6825,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Helena of Skövde",
+      "name": "St. Helena of Sk\u00f6vde",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -6728,7 +6881,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Hervé",
+      "name": "St. Herv\u00e9",
       "reason": "no-ce-match"
     },
     {
@@ -6788,7 +6941,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Honoré",
+      "name": "St. Honor\u00e9",
       "reason": "no-ce-match"
     },
     {
@@ -6804,7 +6957,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Hugh of Châteauneuf",
+      "name": "St. Hugh of Ch\u00e2teauneuf",
       "reason": "no-ce-match"
     },
     {
@@ -6824,7 +6977,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Hunfrid of Prüm",
+      "name": "St. Hunfrid of Pr\u00fcm",
       "reason": "no-ce-match"
     },
     {
@@ -6896,7 +7049,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Íñigo of Oña",
+      "name": "St. \u00cd\u00f1igo of O\u00f1a",
       "reason": "no-ce-match"
     },
     {
@@ -6992,7 +7145,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Jænberht",
+      "name": "St. J\u00e6nberht",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -7160,7 +7313,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Josemaría Escrivá",
+      "name": "St. Josemar\u00eda Escriv\u00e1",
       "reason": "no-ce-match"
     },
     {
@@ -7344,7 +7497,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Landry of Sées",
+      "name": "St. Landry of S\u00e9es",
       "reason": "no-ce-match"
     },
     {
@@ -7428,7 +7581,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Leontius of Fréjus",
+      "name": "St. Leontius of Fr\u00e9jus",
       "reason": "no-ce-match"
     },
     {
@@ -7440,35 +7593,35 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Ælfflæd of Whitby",
+      "name": "St. \u00c6lffl\u00e6d of Whitby",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ælfheah of Canterbury",
+      "name": "St. \u00c6lfheah of Canterbury",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ælfheah the Bald",
+      "name": "St. \u00c6lfheah the Bald",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ælfnoth of Stowe",
+      "name": "St. \u00c6lfnoth of Stowe",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ælfric of Abingdon",
+      "name": "St. \u00c6lfric of Abingdon",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ælfthryth of Crowland",
+      "name": "St. \u00c6lfthryth of Crowland",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ælfwald I of Northumbria",
+      "name": "St. \u00c6lfwald I of Northumbria",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ælfwold II",
+      "name": "St. \u00c6lfwold II",
       "reason": "no-ce-match"
     },
     {
@@ -7512,7 +7665,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Lommán of Trim",
+      "name": "St. Lomm\u00e1n of Trim",
       "reason": "no-ce-match"
     },
     {
@@ -7588,23 +7741,23 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Máedóc of Ferns",
+      "name": "St. M\u00e1ed\u00f3c of Ferns",
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Máel Ruba",
+      "name": "St. M\u00e1el Ruba",
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Mél of Ardagh",
+      "name": "St. M\u00e9l of Ardagh",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Mærwynn",
+      "name": "St. M\u00e6rwynn",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Maël",
+      "name": "St. Ma\u00ebl",
       "reason": "no-ce-match"
     },
     {
@@ -7668,7 +7821,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Mainchín of Limerick",
+      "name": "St. Mainch\u00edn of Limerick",
       "reason": "no-ce-match"
     },
     {
@@ -7692,11 +7845,11 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Manchán of Lemanaghan",
+      "name": "St. Manch\u00e1n of Lemanaghan",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Manchán of Mohill",
+      "name": "St. Manch\u00e1n of Mohill",
       "reason": "no-ce-match"
     },
     {
@@ -7892,7 +8045,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Maurus of Pécs",
+      "name": "St. Maurus of P\u00e9cs",
       "reason": "no-ce-match"
     },
     {
@@ -8000,7 +8153,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Mercurialis of Forlì",
+      "name": "St. Mercurialis of Forl\u00ec",
       "reason": "no-ce-match"
     },
     {
@@ -8092,7 +8245,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Mobhí Clárainech",
+      "name": "St. Mobh\u00ed Cl\u00e1rainech",
       "reason": "no-ce-match"
     },
     {
@@ -8376,11 +8529,11 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Éogan of Ardstraw",
+      "name": "St. \u00c9ogan of Ardstraw",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Olcán",
+      "name": "St. Olc\u00e1n",
       "reason": "no-ce-match"
     },
     {
@@ -8620,7 +8773,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Pelagius of Córdoba",
+      "name": "St. Pelagius of C\u00f3rdoba",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -8988,7 +9141,7 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Procopius of Sázava",
+      "name": "St. Procopius of S\u00e1zava",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -9148,7 +9301,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Roman of Đunis",
+      "name": "St. Roman of \u0110unis",
       "reason": "no-ce-match"
     },
     {
@@ -9172,7 +9325,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Ruadhán of Lorrha",
+      "name": "St. Ruadh\u00e1n of Lorrha",
       "reason": "no-ce-match"
     },
     {
@@ -9208,11 +9361,11 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Sæbbi of Essex",
+      "name": "St. S\u00e6bbi of Essex",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Sæthryth",
+      "name": "St. S\u00e6thryth",
       "reason": "no-ce-match"
     },
     {
@@ -9320,7 +9473,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Senán mac Geirrcinn",
+      "name": "St. Sen\u00e1n mac Geirrcinn",
       "reason": "no-ce-match"
     },
     {
@@ -9528,7 +9681,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Stanislaus of Szczepanów",
+      "name": "St. Stanislaus of Szczepan\u00f3w",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -9680,7 +9833,7 @@
       "reason": "fuzzy-quarantined"
     },
     {
-      "name": "St. Íte of Killeedy",
+      "name": "St. \u00cdte of Killeedy",
       "reason": "no-ce-match"
     },
     {
@@ -9728,59 +9881,59 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æthelberht II of East Anglia",
+      "name": "St. \u00c6thelberht II of East Anglia",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æthelburh of Barking",
+      "name": "St. \u00c6thelburh of Barking",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æthelburh of Faremoutiers",
+      "name": "St. \u00c6thelburh of Faremoutiers",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æthelburh of Kent",
+      "name": "St. \u00c6thelburh of Kent",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æthelnoth",
+      "name": "St. \u00c6thelnoth",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æthelred and Æthelberht",
+      "name": "St. \u00c6thelred and \u00c6thelberht",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æthelstan",
+      "name": "St. \u00c6thelstan",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æthelthryth",
+      "name": "St. \u00c6thelthryth",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æthelwine of Athelney",
+      "name": "St. \u00c6thelwine of Athelney",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æthelwine of Lindsey",
+      "name": "St. \u00c6thelwine of Lindsey",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æthelwine of Sceldeforde",
+      "name": "St. \u00c6thelwine of Sceldeforde",
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Æthelwold",
+      "name": "St. \u00c6thelwold",
       "reason": "collision-quarantined"
     },
     {
-      "name": "St. Æthelwold",
+      "name": "St. \u00c6thelwold",
       "reason": "collision-quarantined"
     },
     {
-      "name": "St. Æthelwold of Winchester",
+      "name": "St. \u00c6thelwold of Winchester",
       "reason": "no-ce-match"
     },
     {
@@ -9936,7 +10089,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Thérèse of Lisieux",
+      "name": "St. Th\u00e9r\u00e8se of Lisieux",
       "reason": "fuzzy-quarantined"
     },
     {
@@ -10000,7 +10153,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Trésain",
+      "name": "St. Tr\u00e9sain",
       "reason": "no-ce-match"
     },
     {
@@ -10116,7 +10269,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Áurea of San Millán",
+      "name": "St. \u00c1urea of San Mill\u00e1n",
       "reason": "no-ce-match"
     },
     {
@@ -10176,7 +10329,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Valerius of Trèves",
+      "name": "St. Valerius of Tr\u00e8ves",
       "reason": "no-ce-match"
     },
     {
@@ -10384,7 +10537,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Witta of Büraburg",
+      "name": "St. Witta of B\u00fcraburg",
       "reason": "no-ce-match"
     },
     {
@@ -10452,7 +10605,7 @@
       "reason": "no-ce-match"
     },
     {
-      "name": "St. Zélie Martin",
+      "name": "St. Z\u00e9lie Martin",
       "reason": "no-ce-match"
     },
     {
@@ -10482,7 +10635,10 @@
   ],
   "counts": {
     "seeds": 2174,
-    "matched": 356,
-    "dropped": 1818
+    "matched": 373,
+    "dropped": 1801
+  },
+  "recovered": {
+    "from_collisions": 17
   }
 }
