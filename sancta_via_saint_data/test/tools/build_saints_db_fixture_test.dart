@@ -252,6 +252,68 @@ void main() {
       timeout: const Timeout(Duration(minutes: 3)),
     );
 
+    test('merges a wikipedia-class history_source with its seed sources', () async {
+      writeHistories(<String, Object>{
+        'fixture-saint-a': <String, Object>{
+          'slug': 'fixture-saint-a',
+          'history': _fixtureHistory,
+          'historySource': _wikipediaSource,
+          'ceCode': '06221a',
+          'authoredAt': '2026-11-14T00:00:00.000Z',
+          'checkedBy': 'fixture-checker',
+          'roundsUsed': 1,
+        },
+      });
+
+      final ProcessResult result = await Process.run(
+        _dartExecutable(),
+        <String>['run', 'tools/build_saints_db.dart'],
+        workingDirectory: fixture.path,
+      );
+      expect(
+        result.exitCode,
+        0,
+        reason: 'wikipedia-class histories must build; stderr: ${result.stderr}',
+      );
+
+      databaseFactory = databaseFactoryFfi;
+      final Database db = await databaseFactory.openDatabase(
+        '${fixture.path}/assets/saints.db',
+        options: OpenDatabaseOptions(readOnly: true, singleInstance: false),
+      );
+      final List<Map<String, Object?>> rows = await db.rawQuery(
+        "SELECT history_source FROM saints WHERE slug = 'fixture-saint-a'",
+      );
+      expect(rows.single['history_source'], _wikipediaSource);
+      await db.close();
+    }, timeout: const Timeout(Duration(minutes: 3)));
+
+    test('exits 1 when a historySource uses an unknown source class', () async {
+      writeHistories(<String, Object>{
+        'fixture-saint-a': <String, Object>{
+          'slug': 'fixture-saint-a',
+          'history': _fixtureHistory,
+          'historySource': 'random-site https://www.example.com/saint',
+          'ceCode': '06221a',
+          'authoredAt': '2026-11-14T00:00:00.000Z',
+          'checkedBy': 'fixture-checker',
+          'roundsUsed': 1,
+        },
+      });
+
+      final ProcessResult result = await Process.run(
+        _dartExecutable(),
+        <String>['run', 'tools/build_saints_db.dart'],
+        workingDirectory: fixture.path,
+      );
+      expect(
+        result.exitCode,
+        1,
+        reason: 'unknown source class must abort the build',
+      );
+      expect(result.stderr, contains('random-site'));
+    }, timeout: const Timeout(Duration(minutes: 3)));
+
     test('exits 1 when a history is shorter than 400 chars', () async {
       final String shortHistory = 'x' * 399;
       writeHistories(<String, Object>{
@@ -398,3 +460,8 @@ const String _fixtureHistory =
     'Fixture grounded history sentence for the merge test. '
     'Fixture grounded history sentence for the merge test. '
     'Fixture grounded history sentence for the merge test. ';
+
+/// A wikipedia-class (modern-saint-histories) historySource that must merge.
+const String _wikipediaSource =
+    'wikipedia https://en.wikipedia.org/wiki/Francis_of_Assisi';
+

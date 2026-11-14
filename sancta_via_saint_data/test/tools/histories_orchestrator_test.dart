@@ -558,4 +558,46 @@ void main() {
       );
     });
   });
+
+  group('source classes (modern-saint-histories Task 1)', () {
+    test('wikipedia class builds wikipedia provenance from the manifest URL',
+        () async {
+      final GroundingText wikipediaGrounding = GroundingText(
+        slug: 'francis-of-assisi',
+        ceCode: '06221a',
+        url: 'https://en.wikipedia.org/wiki/Francis_of_Assisi',
+        text: kFrancisGrounding,
+      );
+      final AuthoringJob job = AuthoringJob(
+        seed: kFrancisSeed,
+        grounding: wikipediaGrounding,
+      );
+      final String history = validFrancisHistory();
+      final ScriptedRunner scripted = ScriptedRunner(<String>[
+        authorEnvelope(history),
+        verdictEnvelope('pass'),
+      ]);
+      final List<EntryOutcome> outcomes = await orchestratorFor(
+        scripted.runner,
+      ).runJobs(<AuthoringJob>[job], sourceClass: 'wikipedia');
+
+      expect(outcomes.single.status, EntryStatus.accepted);
+      expect(
+        outcomes.single.entry!.historySource,
+        'wikipedia https://en.wikipedia.org/wiki/Francis_of_Assisi',
+      );
+    });
+
+    test('unknown source class is rejected loudly before any model call',
+        () async {
+      final HistoryOrchestrator orchestrator = orchestratorFor(
+        ScriptedRunner(<String>[]).runner,
+      );
+      await expectLater(
+        orchestrator.runJobs(francisJobs(), sourceClass: 'random-site'),
+        throwsArgumentError,
+      );
+    });
+  });
 }
+

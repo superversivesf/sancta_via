@@ -37,6 +37,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:saint_data/src/utils/history_source.dart';
+
 // ---------------------------------------------------------------------------
 // Pinned models / limits
 // ---------------------------------------------------------------------------
@@ -90,9 +92,11 @@ const int _groundingTailChars = 2000;
 /// (`^catholic-encyclopedia-1907 https?://www\.newadvent\.org/cathen/\S+$`).
 const String _historySourcePrefix = 'catholic-encyclopedia-1907';
 
-/// Regex pinning `historySource` (also used by the build merge in Task 5).
-final RegExp historySourcePattern = RegExp(
-  r'^catholic-encyclopedia-1907 https?://www\.newadvent\.org/cathen/\S+$',
+/// Regex pinning `historySource` across every contract source class
+/// (`catholic-encyclopedia-1907`, `wikipedia`) — see
+/// `lib/src/utils/history_source.dart`.
+final RegExp historySourcePattern = historySourcePatternFor(
+  sourceClasses.keys,
 );
 
 // ---------------------------------------------------------------------------
@@ -366,6 +370,28 @@ String _preview(String text, {int maxChars = 200}) {
 /// The pinned provenance string for a CE article code.
 String historySourceFor(String ceCode) {
   return '$_historySourcePrefix https://www.newadvent.org/cathen/$ceCode.htm';
+}
+
+/// The class-aware provenance string for a grounding record: CE keeps the
+/// article-code URL shape, wikipedia carries the manifest's article URL.
+String historySourceForClass(String sourceClass, GroundingText grounding) {
+  if (!sourceClasses.containsKey(sourceClass)) {
+    throw ArgumentError.value(
+      sourceClass,
+      'sourceClass',
+      'unknown source class; expected one of ${sourceClasses.keys.toList()}',
+    );
+  }
+  if (sourceClass == _historySourcePrefix) {
+    return historySourceFor(grounding.ceCode);
+  }
+  if (grounding.url.isEmpty) {
+    throw OrchestratorException(
+      'wikipedia grounding for ${grounding.slug} has no manifest URL; '
+      'its historySource cannot be built',
+    );
+  }
+  return '$sourceClass ${grounding.url}';
 }
 
 // ---------------------------------------------------------------------------
@@ -1058,7 +1084,15 @@ class HistoryOrchestrator {
   Future<List<EntryOutcome>> runJobs(
     List<AuthoringJob> jobs, {
     Set<String> existingSlugs = const <String>{},
+    String sourceClass = 'catholic-encyclopedia-1907',
   }) async {
+    if (!sourceClasses.containsKey(sourceClass)) {
+      throw ArgumentError.value(
+        sourceClass,
+        'sourceClass',
+        'unknown source class; expected one of ${sourceClasses.keys.toList()}',
+      );
+    }
     final List<EntryOutcome?> results = List<EntryOutcome?>.filled(
       jobs.length,
       null,
@@ -1083,7 +1117,7 @@ class HistoryOrchestrator {
           log('[$slug] skipped (already authored)');
           continue;
         }
-        results[index] = await _authorOne(index, job);
+        results[index] = await _authorOne(index, job, sourceClass: sourceClass);
       }
     }
 
@@ -1107,7 +1141,11 @@ class HistoryOrchestrator {
     return crossCheckModels[batch % crossCheckModels.length];
   }
 
-  Future<EntryOutcome> _authorOne(int index, AuthoringJob job) async {
+  Future<EntryOutcome> _authorOne(
+    int index,
+    AuthoringJob job, {
+    String sourceClass = 'catholic-encyclopedia-1907',
+  }) async {
     final String slug = job.seed.slug;
     final String ceCode = job.grounding.ceCode;
     final String checker = crossCheckModelFor(index);
@@ -1215,7 +1253,7 @@ class HistoryOrchestrator {
         final HistoryEntry entry = HistoryEntry(
           slug: slug,
           history: candidate,
-          historySource: historySourceFor(ceCode),
+          historySource: historySourceForClass(sourceClass, job.grounding),
           ceCode: ceCode,
           authoredAt: authoredAt,
           checkedBy: checker,
@@ -1446,8 +1484,17 @@ Future<OrchestratorRun> run({
   List<String> crossCheckModels = defaultCrossCheckModels,
   ModelRunner? runModel,
   void Function(String message) log = _stdoutLog,
+  String sourceClass = 'catholic-encyclopedia-1907',
 }) async {
-  final String groundingDir = '$packageRoot/data/grounding';
+  if (!sourceClasses.containsKey(sourceClass)) {
+    throw ArgumentError.value(
+      sourceClass,
+      'sourceClass',
+      'unknown source class; expected one of ${sourceClasses.keys.toList()}',
+    );
+  }
+  final String groundingDir =
+      '$packageRoot/${groundingDirFor(sourceClass)}';
   final String seedsPath = '$packageRoot/data/saints_source.json';
   final String historiesPath = '$packageRoot/data/histories.json';
   final String reportPath = '$packageRoot/data/histories_run_report.json';
@@ -1483,6 +1530,7 @@ Future<OrchestratorRun> run({
   final List<EntryOutcome> outcomes = await orchestrator.runJobs(
     jobs,
     existingSlugs: corpus.keys.toSet(),
+    sourceClass: sourceClass,
   );
 
   for (final EntryOutcome outcome in outcomes) {
@@ -1531,6 +1579,9 @@ Options:
   --limit <n>          Author at most n new entries this run.
   --concurrency <n>    Entries in flight (default 4; plan range 4-6).
   --batch-size <n>     Entries per cross-check-model batch (default 10).
+  --source-class <c>   Source class: catholic-encyclopedia-1907 (default) or
+                       wikipedia; selects the grounding directory and the
+                       historySource prefix.
   --help               Show this help.
 
 Outputs: data/histories.json, data/histories_run_report.json''';
@@ -1544,6 +1595,7 @@ Future<void> main(List<String> args) async {
   int? limit;
   int concurrency = 4;
   int batchSize = 10;
+  String sourceClass = 'catholic-encyclopedia-1907';
   for (int i = 0; i < args.length; i++) {
     final String arg = args[i];
     String? value() => i + 1 < args.length ? args[++i] : null;
@@ -1594,6 +1646,18 @@ Future<void> main(List<String> args) async {
           }
           batchSize = parsed;
         }
+      case '--source-class':
+        {
+          final String? cls = value();
+          if (cls == null) {
+            stderr.writeln(
+              'histories_orchestrator: --source-class needs a value',
+            );
+            exitCode = 1;
+            return;
+          }
+          sourceClass = cls;
+        }
       default:
         stderr.writeln('histories_orchestrator: unknown argument "$arg"');
         exitCode = 1;
@@ -1607,6 +1671,7 @@ Future<void> main(List<String> args) async {
       limit: limit,
       concurrency: concurrency,
       crossCheckBatchSize: batchSize,
+      sourceClass: sourceClass,
     );
     final bool hasErrors = orchestratorRun.outcomes.any(
       (EntryOutcome outcome) => outcome.status == EntryStatus.error,

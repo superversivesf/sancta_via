@@ -26,16 +26,17 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:saint_data/src/db/saints_schema.dart';
 import 'package:saint_data/src/models/saint.dart';
+import 'package:saint_data/src/utils/history_source.dart';
 import 'package:saint_data/src/utils/normalization.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 /// Slug rule: kebab-case, 1-100 chars (`a-z`, `0-9`, single `-` separators).
 final RegExp _kebabPattern = RegExp(r'^[a-z0-9]+(-[a-z0-9]+)*$');
 
-/// Pinned provenance pattern for every authored history
-/// (`catholic-encyclopedia-1907` + the CE article URL).
-final RegExp _historySourcePattern = RegExp(
-  r'^catholic-encyclopedia-1907 https?://www\.newadvent\.org/cathen/\S+$',
+/// Pinned provenance pattern for every authored history across the contract
+/// source classes (`catholic-encyclopedia-1907`, `wikipedia`).
+final RegExp _historySourcePattern = historySourcePatternFor(
+  sourceClasses.keys,
 );
 
 /// Feast-day rule: `MM-DD` with a real calendar date, or `unknown`.
