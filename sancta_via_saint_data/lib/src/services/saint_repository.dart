@@ -227,8 +227,8 @@ class SaintRepository {
     }, const <Saint>[]);
   }
 
-  /// One saint by slug, with patronages hydrated (plus an empty source
-  /// list — the committed schema stores no per-saint sources table).
+  /// One saint by slug, with patronages hydrated and its `sources` table
+  /// rows (schema v2) returned in `position` order.
   Future<Saint?> getBySlug(String slug) {
     return _withDatabase<Saint?>((Database db) async {
       final List<Map<String, Object?>> rows = await db.query(
@@ -544,8 +544,8 @@ class SaintRepository {
     return expansion;
   }
 
-  /// Hydrates [slugs] into `slug -> Saint` (patronages attached; sources
-  /// are not stored in the committed schema, so they stay empty).
+  /// Hydrates [slugs] into `slug -> Saint` (patronages and sources
+  /// attached).
   Future<Map<String, Saint>> _saintsBySlug(
     Database db,
     Set<String> slugs,
@@ -570,7 +570,8 @@ class SaintRepository {
     return bySlug;
   }
 
-  /// Builds saints from `saints` rows with their patronages hydrated.
+  /// Builds saints from `saints` rows with their patronages and `sources`
+  /// rows hydrated (schema v2).
   Future<List<Saint>> _loadSaints(
     Database db,
     List<Map<String, Object?>> rows,
@@ -578,20 +579,48 @@ class SaintRepository {
     if (rows.isEmpty) {
       return const <Saint>[];
     }
+    final Set<String> slugs = <String>{
+      for (final Map<String, Object?> row in rows) row['slug']! as String,
+    };
     final Map<String, List<SaintPatronage>> patronages =
-        await _patronagesBySlug(db, <String>{
-          for (final Map<String, Object?> row in rows) row['slug']! as String,
-        });
+        await _patronagesBySlug(db, slugs);
+    final Map<String, List<String>> sources = await _sourcesBySlug(db, slugs);
     return <Saint>[
       for (final Map<String, Object?> row in rows)
         Saint.fromDbRow(
           row,
           patronages:
               patronages[row['slug']! as String] ?? const <SaintPatronage>[],
-          // The committed schema carries no sources table; DB-loaded
-          // saints keep the (empty) default so the model field survives.
+          sources: sources[row['slug']! as String] ?? const <String>[],
         ),
     ];
+  }
+
+  /// Grouped source URLs for the given slugs (schema v2 `sources` table),
+  /// ordered by position within each slug, chunked to stay under any
+  /// SQLite host-variable limit.
+  Future<Map<String, List<String>>> _sourcesBySlug(
+    Database db,
+    Set<String> slugs,
+  ) async {
+    final Map<String, List<String>> sources = <String, List<String>>{};
+    for (final List<String> chunk in _chunks(
+      slugs.toList(),
+      _inClauseChunkSize,
+    )) {
+      final List<Map<String, Object?>> rows = await db.rawQuery(
+        'SELECT slug, url, position FROM sources '
+        'WHERE slug IN (${List<String>.filled(chunk.length, '?').join(', ')}) '
+        'ORDER BY slug, position',
+        chunk,
+      );
+      for (final Map<String, Object?> row in rows) {
+        sources
+            .putIfAbsent(row['slug']! as String, () => <String>[])
+            .add(row['url']! as String);
+      }
+    }
+    return sources;
   }
 
   /// Grouped patronages for the given slugs, chunked to stay under any

@@ -27,7 +27,8 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 /// Patronage (need, category) tuple shape used by the seeder.
 typedef _Patronage = ({String need, SaintCategory category});
 
-/// Seeds one saint row + its patronages + its pre-normalized FTS row.
+/// Seeds one saint row + its patronages + its sources rows + its
+/// pre-normalized FTS row.
 Future<void> _seedSaint(
   Database db, {
   required String slug,
@@ -38,8 +39,10 @@ Future<void> _seedSaint(
   String prayerSource = 'traditional',
   bool featured = false,
   String? thumbAsset,
+  String? history,
   List<({String need, SaintCategory category})> patronages =
       const <({String need, SaintCategory category})>[],
+  List<String> sources = const <String>[],
 }) async {
   await db.insert('saints', <String, Object?>{
     'slug': slug,
@@ -52,12 +55,23 @@ Future<void> _seedSaint(
     'thumb_asset': thumbAsset,
     'image_attribution': thumbAsset == null ? null : 'Fixture attribution',
     'image_alt': thumbAsset == null ? null : '$name thumbnail',
+    'history': history,
+    'history_source': history == null
+        ? null
+        : 'catholic-encyclopedia-1907 https://www.newadvent.org/cathen/06221a.htm',
   });
   for (final ({String need, SaintCategory category}) patronage in patronages) {
     await db.insert('patronages', <String, Object?>{
       'slug': slug,
       'need': patronage.need,
       'category': patronage.category.name,
+    });
+  }
+  for (int i = 0; i < sources.length; i++) {
+    await db.insert('sources', <String, Object?>{
+      'slug': slug,
+      'url': sources[i],
+      'position': i,
     });
   }
   await db.insert('saint_fts', <String, Object?>{
@@ -89,8 +103,17 @@ Future<Database> _createSeededDatabase() async {
     bio: 'A Franciscan preacher who helps find lost things.',
     prayerText: 'O gentle helper, restore what is lost to me.',
     featured: true,
+    history:
+        'Anthony of Padua preached to the crowds of Padua and tradition '
+        'holds that fish raised their heads from the water to hear him, '
+        'a claim hedged exactly as the grounding text allows so this '
+        'fixture text stays honest about what the source supports. ',
     patronages: <_Patronage>[
       (need: 'lost items', category: SaintCategory.everyday),
+    ],
+    sources: const <String>[
+      'https://en.wikipedia.org/wiki/Anthony_of_Padua',
+      'https://www.newadvent.org/cathen/01553d.htm',
     ],
   );
   await _seedSaint(
@@ -211,10 +234,39 @@ void main() {
       expect(anthony.patronages.length, 1);
       expect(anthony.patronages.single.need, 'lost items');
       expect(anthony.patronages.single.category, SaintCategory.everyday);
-      // The committed schema stores no per-saint sources table (spec
-      // section 6), so DB-loaded saints carry no source rows.
-      expect(anthony.sources, isEmpty);
     });
+
+    test(
+      'returns the sources table rows in position order (schema v2)',
+      () async {
+        final Saint? anthony = await repository.getBySlug('anthony-of-padua');
+        expect(anthony, isNotNull);
+        expect(anthony!.sources, <String>[
+          'https://en.wikipedia.org/wiki/Anthony_of_Padua',
+          'https://www.newadvent.org/cathen/01553d.htm',
+        ]);
+        // A saint with no sources rows keeps an empty list.
+        final Saint? therese = await repository.getBySlug('therese-of-lisieux');
+        expect(therese!.sources, isEmpty);
+      },
+    );
+
+    test(
+      'returns the history columns through the model chain (schema v2)',
+      () async {
+        final Saint? anthony = await repository.getBySlug('anthony-of-padua');
+        expect(anthony!.history, contains('preached to the crowds of Padua'));
+        expect(
+          anthony.historySource,
+          'catholic-encyclopedia-1907 '
+          'https://www.newadvent.org/cathen/06221a.htm',
+        );
+        // A saint with no history stays null (fallback honesty).
+        final Saint? therese = await repository.getBySlug('therese-of-lisieux');
+        expect(therese!.history, isNull);
+        expect(therese.historySource, isNull);
+      },
+    );
 
     test('returns null for an unknown slug', () async {
       expect(await repository.getBySlug('no-such-saint'), isNull);
@@ -652,6 +704,21 @@ void main() {
         ], contains('anthony-of-padua'));
       },
     );
+
+    test('getBySlug returns the committed sources in position order', () async {
+      final SaintRepository committedRepository = SaintRepository.forDatabase(
+        committedDb,
+      );
+      // Data-linked: the seed record's sources list must come back ordered
+      // through the repository's sources join (schema v2).
+      final Saint? francis = await committedRepository.getBySlug(
+        'francis-of-assisi',
+      );
+      expect(francis, isNotNull);
+      expect(francis!.sources, <String>[
+        'https://en.wikipedia.org/wiki/Francis_of_Assisi',
+      ]);
+    });
 
     test('shipped synonym and raw-key needs resolve (fix round 1)', () async {
       final SaintRepository committedRepository = SaintRepository.forDatabase(

@@ -9,6 +9,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:saint_data/src/db/saints_schema.dart';
 import 'package:saint_data/src/services/saints_db_loader.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -276,7 +277,10 @@ void main() {
         final List<Map<String, Object?>> version = await db.rawQuery(
           'PRAGMA user_version',
         );
-        expect(version.single['user_version'], 1);
+        // The committed asset must ship the CURRENT schema (v2, saint
+        // histories) so the loader's belt layer never needs to heal it.
+        expect(version.single['user_version'], saintsSchemaVersion);
+        expect(saintsSchemaVersion, 2);
         final List<Map<String, Object?>> counts = await db.rawQuery(
           'SELECT COUNT(*) AS n FROM saints',
         );

@@ -120,6 +120,8 @@ class Saint {
     this.thumbAsset,
     this.imageAttribution,
     this.imageAlt,
+    this.history,
+    this.historySource,
     this.sources = const <String>[],
   });
 
@@ -155,6 +157,14 @@ class Saint {
 
   /// Image alt text for accessibility.
   final String? imageAlt;
+
+  /// The saint's grounded history body (schema v2), when one was accepted
+  /// for the saint; absent for every other saint (they render their bio).
+  final String? history;
+
+  /// The history's pinned provenance id + URL, e.g.
+  /// `catholic-encyclopedia-1907 https://www.newadvent.org/cathen/<code>.htm`.
+  final String? historySource;
 
   /// Source URLs backing the record.
   final List<String> sources;
@@ -199,6 +209,8 @@ class Saint {
           ? null
           : sourceImage['attribution'] as String?,
       imageAlt: sourceImage == null ? null : sourceImage['altText'] as String?,
+      history: json['history'] as String?,
+      historySource: json['historySource'] as String?,
       sources: sources,
     );
   }
@@ -207,12 +219,16 @@ class Saint {
   ///
   /// The row uses the DB column names (`slug`, `name`, `feast_day`,
   /// `canonized`, `bio`, `prayer_text`, `prayer_source`, `featured`,
-  /// `thumb_asset`, `image_attribution`, `image_alt`); patronages and
-  /// sources are read separately from the `patronages` table and passed in.
+  /// `thumb_asset`, `image_attribution`, `image_alt`, and — schema v2 —
+  /// `history`, `history_source`); patronages and sources are read
+  /// separately from the `patronages` and `sources` tables and passed in
+  /// explicitly for tests (parameters default null/empty).
   factory Saint.fromDbRow(
     Map<String, dynamic> row, {
     List<SaintPatronage> patronages = const <SaintPatronage>[],
     List<String> sources = const <String>[],
+    String? history,
+    String? historySource,
   }) {
     final Object? prayerText = row['prayer_text'];
     final Object? prayerSource = row['prayer_source'];
@@ -240,6 +256,8 @@ class Saint {
       thumbAsset: row['thumb_asset'] as String?,
       imageAttribution: row['image_attribution'] as String?,
       imageAlt: row['image_alt'] as String?,
+      history: history ?? row['history'] as String?,
+      historySource: historySource ?? row['history_source'] as String?,
       sources: sources,
     );
   }
@@ -256,6 +274,8 @@ class Saint {
       'feastDay': feastDay,
       if (canonized != null) 'canonized': canonized,
       'bio': bio,
+      if (history != null) 'history': history,
+      if (historySource != null) 'historySource': historySource,
       if (prayer != null) 'prayer': prayer!.toJson(),
       'patronages': <Map<String, dynamic>>[
         for (final SaintPatronage patronage in patronages) patronage.toJson(),
@@ -296,6 +316,8 @@ class Saint {
         other.thumbAsset == thumbAsset &&
         other.imageAttribution == imageAttribution &&
         other.imageAlt == imageAlt &&
+        other.history == history &&
+        other.historySource == historySource &&
         _listEquals(other.sources, sources);
   }
 
@@ -312,6 +334,8 @@ class Saint {
     thumbAsset,
     imageAttribution,
     imageAlt,
+    history,
+    historySource,
     Object.hashAll(sources),
   );
 

@@ -1,26 +1,3570 @@
 {
-  "generatedAt": "2026-11-14T08:34:56.977305Z",
+  "generatedAt": "2026-11-14T13:51:13.446658Z",
   "authorModel": "ollama/glm-5.3-flash:cloud",
   "crossCheckModels": [
     "ollama/deepseek-v4.1-flash:cloud",
     "ollama/minimax-m3.1-flash:cloud"
   ],
   "counts": {
-    "selected": 1,
-    "accepted": 1,
-    "dropped": 0,
-    "skipped": 0,
+    "selected": 373,
+    "accepted": 311,
+    "dropped": 61,
+    "skipped": 1,
     "error": 0
   },
   "entries": [
     {
-      "slug": "francis-of-assisi",
-      "ceCode": "06221a",
+      "slug": "anthony-of-padua",
+      "ceCode": "01556a",
       "status": "accepted",
       "roundsUsed": 1,
       "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
-      "chars": 3625,
+      "chars": 3875,
       "issues": []
+    },
+    {
+      "slug": "dymphna",
+      "ceCode": "05221b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3362,
+      "issues": []
+    },
+    {
+      "slug": "francis-of-assisi",
+      "ceCode": "06221a",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "michael-the-archangel",
+      "ceCode": "10275b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 8/5 but the seed record pins 09-29 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "fabiola",
+      "ceCode": "05743a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3049,
+      "issues": []
+    },
+    {
+      "slug": "john-chrysostom",
+      "ceCode": "08452b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3975,
+      "issues": []
+    },
+    {
+      "slug": "kilian",
+      "ceCode": "08639a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3535,
+      "issues": []
+    },
+    {
+      "slug": "melania-the-younger",
+      "ceCode": "10154a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3580,
+      "issues": []
+    },
+    {
+      "slug": "pelagia",
+      "ceCode": "11601d",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "Unsupported hagiographic detail not in the article: \"her body was wasted by these austerities, that her sex was discovered only at her death, that the holy fathers who had known her as the monk Pelagius sought to keep the matter secret, and that her relics drew pilgrims from as far away as Jericho and the Jordan valley.\" The article says only that she \"led a life of self-mortification in a grotto on the Mount of Olives\" and says nothing about emaciation, post-mortem discovery of her sex, concealment by the fathers, or pilgrims from Jericho/the Jordan. Either delete these or attribute them explicitly to later hagiographic tradition outside the article.",
+        "Adds baptism and \"hearing a sermon,\" which the article does not state: \"was converted by hearing a sermon of the bishop Nonnus, after which she sought baptism.\" The article says only that she was \"converted by a bishop named Nonnus\"; no sermon is mentioned in connection with her conversion and baptism is not mentioned at all. Trim to what the legend as reported actually says.",
+        "Patronage claim presented as fact without article support: \"invoked as a patroness of converts and of conversion, of hermits, of actresses, and of all who seek forgiveness.\" The article contains no statement of patronages. It matches the SAINT RECORD, so it is not a contradiction, but as an encyclopedia summary it should be marked as devotional/traditional attribution rather than asserted from the source text."
+      ]
+    },
+    {
+      "slug": "sidonius-apollinaris",
+      "ceCode": "13778a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3832,
+      "issues": []
+    },
+    {
+      "slug": "crispin-and-crispinian",
+      "ceCode": "04491a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2968,
+      "issues": []
+    },
+    {
+      "slug": "pope-evaristus",
+      "ceCode": "05646a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2062,
+      "issues": []
+    },
+    {
+      "slug": "anastasius-sinaita",
+      "ceCode": "01455d",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1631,
+      "issues": []
+    },
+    {
+      "slug": "arialdo",
+      "ceCode": "01707b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1567,
+      "issues": []
+    },
+    {
+      "slug": "bernard-of-menthon",
+      "ceCode": "02503b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3504,
+      "issues": []
+    },
+    {
+      "slug": "clement-of-alexandria",
+      "ceCode": "04045a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3869,
+      "issues": []
+    },
+    {
+      "slug": "corbinian",
+      "ceCode": "04356a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2291,
+      "issues": []
+    },
+    {
+      "slug": "diodorus-of-tarsus",
+      "ceCode": "05008a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3977,
+      "issues": []
+    },
+    {
+      "slug": "edmund-the-martyr",
+      "ceCode": "05295a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2974,
+      "issues": []
+    },
+    {
+      "slug": "epiphanius-of-salamis",
+      "ceCode": "13393b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3886,
+      "issues": []
+    },
+    {
+      "slug": "eulogius-of-c-rdoba",
+      "ceCode": "05604a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3553,
+      "issues": []
+    },
+    {
+      "slug": "eusebius",
+      "ceCode": "05617b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3343,
+      "issues": []
+    },
+    {
+      "slug": "gottschalk-obotrite-prince",
+      "ceCode": "06681a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The closing sentence — 'he is invoked as a patron of linguists, translators, and the nobility' — is not supported by the article text, which says nothing about patronages or invocation; it should be omitted or clearly marked as later devotional tradition rather than stated as fact."
+      ]
+    },
+    {
+      "slug": "justus",
+      "ceCode": "08586a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3148,
+      "issues": []
+    },
+    {
+      "slug": "macrina-the-younger",
+      "ceCode": "09508c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3302,
+      "issues": []
+    },
+    {
+      "slug": "mamertus",
+      "ceCode": "09580a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3666,
+      "issues": []
+    },
+    {
+      "slug": "marcus-eremita",
+      "ceCode": "09650d",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2995,
+      "issues": []
+    },
+    {
+      "slug": "martin-of-braga",
+      "ceCode": "09731b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2953,
+      "issues": []
+    },
+    {
+      "slug": "maurus",
+      "ceCode": "10072a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2066,
+      "issues": []
+    },
+    {
+      "slug": "pope-miltiades",
+      "ceCode": "10318a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3583,
+      "issues": []
+    },
+    {
+      "slug": "moses-bishop-of-the-arabs",
+      "ceCode": "10596a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "Article/saint mismatch: the supplied ARTICLE TEXT is entirely about the biblical Moses (Exodus, the burning bush, the plagues, Mount Nebo, the Transfiguration) and contains nothing about the fourth-century Arab hermit-bishop; every claim in the HISTORY about Moses of the Saracens is therefore unsupported by the article text, and the article text is not an article about this saint.",
+        "Unsupported source attribution: the HISTORY names 'the church historian Socrates of Constantinople' as the witness for Moses being a Saracen by birth, a desert monk, and eminent for piety and reputed miracles. No such statement appears in the article text, and the naming of a specific author as the record of these details is confabulated detail presented as fact.",
+        "Unsupported detail presented as fact: 'Rome acquiesced; tradition associates this consent with the emperor Valens' — the article text names no emperor and no consent; the Valens attribution is asserted as established fact rather than flagged as uncertain tradition.",
+        "Unsupported detail presented as fact: 'bishops then living in exile' and 'Roman troops carried off the reluctant ascetic by force to receive ordination' are stated as the ancient accounts' report, with no support in the article text; the ordination-by-exiled-bishops and the forcible seizure are given as narrative fact rather than as report/tradition.",
+        "Unsupported military narrative: the details that Mavia's forces came 'from southern Syria', defeated imperial armies repeatedly, and marched through Palestine and Phoenicia to the frontier of Egypt appear nowhere in the article text; they are asserted as settled tradition without qualification.",
+        "Unsupported claim: 'he took no fixed see, joining his nomadic flock in its journeys and laboring for the conversion of many among them, while keeping peace between the tribes and the Roman authorities' — neither the itinerant episcopate, the scale of conversions, nor the peacemaking role as bishop is stated in the article text; this is presented as plain fact rather than as tradition.",
+        "Unsupported claim: the note that 'He is sometimes confused with Moses the Black, another desert saint of the fourth century' has no basis in the article text, which makes no reference to any other desert saint.",
+        "The feast-day statement ('the Church keeps on February 7') is consistent with the SAINT RECORD (02-07) and the patronages (hermits, bishops, peace, converts) match the record, but neither can be traced to the supplied article text, which is about a different person entirely; this should be flagged to the editor rather than presented as article-supported."
+      ]
+    },
+    {
+      "slug": "paul-the-simple",
+      "ceCode": "11591a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3574,
+      "issues": []
+    },
+    {
+      "slug": "peter-igneus",
+      "ceCode": "11768c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2129,
+      "issues": []
+    },
+    {
+      "slug": "peter-of-sebaste",
+      "ceCode": "11773c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3317,
+      "issues": []
+    },
+    {
+      "slug": "pierius",
+      "ceCode": "12079c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2621,
+      "issues": []
+    },
+    {
+      "slug": "stephen-harding",
+      "ceCode": "14290d",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 17/4 but the seed record pins 01-26 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "thomas-becket",
+      "ceCode": "14676a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3841,
+      "issues": []
+    },
+    {
+      "slug": "vladimir-the-great",
+      "ceCode": "15497a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3928,
+      "issues": []
+    },
+    {
+      "slug": "pope-gelasius-i",
+      "ceCode": "06406a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3916,
+      "issues": []
+    },
+    {
+      "slug": "pope-caius",
+      "ceCode": "03144a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3571,
+      "issues": []
+    },
+    {
+      "slug": "abdon-and-sennen",
+      "ceCode": "01032a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1669,
+      "issues": []
+    },
+    {
+      "slug": "pope-adeodatus-ii",
+      "ceCode": "01142a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1438,
+      "issues": []
+    },
+    {
+      "slug": "pope-adrian-iii",
+      "ceCode": "01156b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The claims that 'famine and war pressed upon the people of Italy' and that Adrian 'labored to relieve the suffering of the poor' appear nowhere in the article text, which mentions no famine, war, or poor relief; these are confabulated detail presented as fact.",
+        "The statement 'His feast day is kept on July 8' is not supported by the article text, which mentions only the September 7 Mass and office granted by Leo XIII; the July 8 date (though it matches the saint record) should not be presented as if drawn from this source.",
+        "The rhetorical flourish 'falling in the very act of serving the Church' is not in the article, which states plainly only that he died near Modena while on his way to the diet.",
+        "The closing sentence's patronages ('patron of the poor, of travelers, and of peace') are not attested in the article text and read as devotional embellishment tacked onto a source that says nothing about patronages.",
+        "Exact dates 'May 17, 884' and 'July 8, 885' are not in the article, which says only 'the beginning of the year 884' and 'the summer of the following year'; if retained they should be attributed to later sources rather than implied by the article."
+      ]
+    },
+    {
+      "slug": "adrian-of-canterbury",
+      "ceCode": "01160a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2570,
+      "issues": []
+    },
+    {
+      "slug": "aelia-flaccilla",
+      "ceCode": "06089b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2699,
+      "issues": []
+    },
+    {
+      "slug": "afra",
+      "ceCode": "01180b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3359,
+      "issues": []
+    },
+    {
+      "slug": "aidan-of-lindisfarne",
+      "ceCode": "01233d",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1303,
+      "issues": []
+    },
+    {
+      "slug": "aldhelm",
+      "ceCode": "01280b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3995,
+      "issues": []
+    },
+    {
+      "slug": "amphilochius-of-iconium",
+      "ceCode": "01438a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3458,
+      "issues": []
+    },
+    {
+      "slug": "andrew-the-scot",
+      "ceCode": "01474c",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1506,
+      "issues": []
+    },
+    {
+      "slug": "assicus",
+      "ceCode": "01800a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2581,
+      "issues": []
+    },
+    {
+      "slug": "atto-of-pistoia",
+      "ceCode": "02062b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 22/5 but the seed record pins 05-20 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "auxentius-of-mopsuestia",
+      "ceCode": "02144d",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1350,
+      "issues": []
+    },
+    {
+      "slug": "benignus-bishop-of-milan",
+      "ceCode": "02479b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3241,
+      "issues": []
+    },
+    {
+      "slug": "burchard-of-w-rzburg",
+      "ceCode": "03064b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3258,
+      "issues": []
+    },
+    {
+      "slug": "caesarius-of-arles",
+      "ceCode": "03135b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3997,
+      "issues": []
+    },
+    {
+      "slug": "pope-celestine-i",
+      "ceCode": "03477c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The canonical admonitions are wrongly bundled: the article states that the 'populus docendus non sequendus' and the ban on advancing laity to the episcopate over the clergy were addressed to the Bishops of Apulia and Calabria, that the refusal of penance to the dying and the resistance to the See of Arles were addressed to the Bishops of Vienne and Narbonne, and that the Illyrian letter concerned observance of the canons and allegiance to the Bishop of Thessalonica. The history's single sentence 'he admonished the bishops of Illyria, Gaul, Apulia, and Calabria that the people are to be taught rather than followed, that no layman be raised... that the dying be never refused penance, and that the pretensions of the see of Arles be resisted' implies all four groups received all four admonitions; it should be attributed group by group.",
+        "Uncertainty qualifiers from the article are dropped and stated as settled fact: the article says only that 'a strong friendship seems to have existed between Celestine and Augustine', whereas the history asserts 'A strong friendship bound him to St. Augustine'.",
+        "The article states 'The precise date of his death is uncertain' (and gives the election date as 10 Sept. 422 'according to Tillemont, though the Bollandists say 3 Nov.'), yet the history presents flatly 'He died on 26 July 432' and 'succeeded Boniface I in September 422' with no note of the disputed dates."
+      ]
+    },
+    {
+      "slug": "chromatius",
+      "ceCode": "03730a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2475,
+      "issues": []
+    },
+    {
+      "slug": "columba-of-sens",
+      "ceCode": "04135b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1419,
+      "issues": []
+    },
+    {
+      "slug": "columbanus",
+      "ceCode": "04137a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3979,
+      "issues": []
+    },
+    {
+      "slug": "constantine-the-great",
+      "ceCode": "04295c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3902,
+      "issues": []
+    },
+    {
+      "slug": "cyril-of-jerusalem",
+      "ceCode": "04595b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3945,
+      "issues": []
+    },
+    {
+      "slug": "pope-damasus-i",
+      "ceCode": "04613a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3913,
+      "issues": []
+    },
+    {
+      "slug": "didymus-the-blind",
+      "ceCode": "04784a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3980,
+      "issues": []
+    },
+    {
+      "slug": "dionysius-of-alexandria",
+      "ceCode": "05011a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3972,
+      "issues": []
+    },
+    {
+      "slug": "donatus-of-fiesole",
+      "ceCode": "05129a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1596,
+      "issues": []
+    },
+    {
+      "slug": "edward-the-confessor",
+      "ceCode": "05322a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 13/10 but the seed record pins 01-05 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "edward-the-martyr",
+      "ceCode": "05323a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3347,
+      "issues": []
+    },
+    {
+      "slug": "eimhin",
+      "ceCode": "05366a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2101,
+      "issues": []
+    },
+    {
+      "slug": "elias-i-of-jerusalem",
+      "ceCode": "05385a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3550,
+      "issues": []
+    },
+    {
+      "slug": "emerentiana",
+      "ceCode": "05401b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1700,
+      "issues": []
+    },
+    {
+      "slug": "eucharius",
+      "ceCode": "05594a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3522,
+      "issues": []
+    },
+    {
+      "slug": "eugenius-of-carthage",
+      "ceCode": "05602c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3051,
+      "issues": []
+    },
+    {
+      "slug": "florentina",
+      "ceCode": "06114b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2480,
+      "issues": []
+    },
+    {
+      "slug": "fructuosus-of-braga",
+      "ceCode": "06311a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1866,
+      "issues": []
+    },
+    {
+      "slug": "fulbert-of-chartres",
+      "ceCode": "06312a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3635,
+      "issues": []
+    },
+    {
+      "slug": "gaudentius-of-brescia",
+      "ceCode": "06394a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The ARTICLE TEXT is about an entirely different person: 'Gaudentius Brixiensis or Bontemps,' a Capuchin theologian (b. Brescia 1612, d. Oriano 25 March 1672). It contains nothing about St. Gaudentius of Brescia, the fourth-century bishop. Consequently the bulk of the HISTORY (episcopate of Brescia 387-410, succession to St. Philastrius, letters and sermons circulating in late antique Italy, the lost and surviving corpus, veneration from antiquity) is not supported by the cited source at all. The closing paragraph concedes the source covers only the Capuchin, but the preceding paragraphs still present these unsourced claims as established fact.",
+        "Conflation risk with the namesake: the article's only evidence of theology and preaching ('Palladium Theologicum ...', the Lenten sermons preached at Oriano) belongs to the 1612-1672 Capuchin, not to the bishop. Presenting 'a theologian of considerable learning and a prolific author' and 'sermons' as attributes drawn from this article mixes the two men; the article offers zero evidence that the bishop was a theologian or author.",
+        "The patronage claim ('He is regarded as a patron of bishops, theologians, and writers') is not supported by the article at all; it is consistent with the saint record but must be flagged as coming from the record rather than the cited source.",
+        "Devotional/promotional phrasing unbecoming of an encyclopedia summary and unearned by the article: 'stands as a witness to the erudition and pastoral zeal of the early Italian episcopate', 'labored to hand on the faith intact in uncertain times', and 'Venerated from antiquity as a saint' - none of this appears in, or is verifiable from, the source text."
+      ]
+    },
+    {
+      "slug": "gilbert-of-sempringham",
+      "ceCode": "06557b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3687,
+      "issues": []
+    },
+    {
+      "slug": "gildas",
+      "ceCode": "06557c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3767,
+      "issues": []
+    },
+    {
+      "slug": "pope-gregory-i",
+      "ceCode": "06780a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3484,
+      "issues": []
+    },
+    {
+      "slug": "pope-gregory-ii",
+      "ceCode": "06787a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3942,
+      "issues": []
+    },
+    {
+      "slug": "pope-gregory-iii",
+      "ceCode": "06789a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 28/11 but the seed record pins 12-10 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "gregory-of-nazianzus",
+      "ceCode": "07010b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3598,
+      "issues": []
+    },
+    {
+      "slug": "gregory-of-nyssa",
+      "ceCode": "07016a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history is 4012 characters; the maximum is 4000"
+      ]
+    },
+    {
+      "slug": "hegesippus-chronicler",
+      "ceCode": "07194a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3757,
+      "issues": []
+    },
+    {
+      "slug": "hesychius-of-sinai",
+      "ceCode": "07304a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3368,
+      "issues": []
+    },
+    {
+      "slug": "hilary-of-arles",
+      "ceCode": "07349a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2991,
+      "issues": []
+    },
+    {
+      "slug": "hilary-of-poitiers",
+      "ceCode": "07349b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 14/1 but the seed record pins 01-13 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "honoratus",
+      "ceCode": "07451a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2568,
+      "issues": []
+    },
+    {
+      "slug": "irenaeus",
+      "ceCode": "08130b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3895,
+      "issues": []
+    },
+    {
+      "slug": "isaac-of-armenia",
+      "ceCode": "08175b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3689,
+      "issues": []
+    },
+    {
+      "slug": "isidore-of-pelusium",
+      "ceCode": "08185c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3636,
+      "issues": []
+    },
+    {
+      "slug": "john-cassian",
+      "ceCode": "03404a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3979,
+      "issues": []
+    },
+    {
+      "slug": "john-climacus",
+      "ceCode": "08457a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3295,
+      "issues": []
+    },
+    {
+      "slug": "john-of-beverley",
+      "ceCode": "08469b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3212,
+      "issues": []
+    },
+    {
+      "slug": "john-the-silent",
+      "ceCode": "08495a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3048,
+      "issues": []
+    },
+    {
+      "slug": "jonas-of-bobbio",
+      "ceCode": "08498a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3241,
+      "issues": []
+    },
+    {
+      "slug": "pope-julius-i",
+      "ceCode": "08561a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3783,
+      "issues": []
+    },
+    {
+      "slug": "laura",
+      "ceCode": "09039a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The ARTICLE TEXT is not about this saint at all: it is an etymological and historical treatment of the monastic institution 'laura' (its Greek sense of a narrow way, the Palestinian lauras founded by St. Chariton and Sabas, Mar Saba, Cedron), with no mention of a woman, of Córdoba, of Eulogius, or of any martyrdom. Every biographical sentence in the HISTORY is therefore unsupported by the cited source.",
+        "The claim that she is commemorated on 19 October is not stated anywhere in the ARTICLE TEXT, which gives no feasts or calendars; it is imported from the SAINT RECORD.",
+        "The claim that she is honored as patron saint of martyrs, nuns, and widows is likewise absent from the ARTICLE TEXT, which contains no patronage or intercession material.",
+        "The narrative of her birth in Córdoba, widowhood, entry as a nun into the convent of Cuteclara, rise to abbess, and seizure by Muslim authorities is not in the ARTICLE TEXT; the same is true of the assertion that 'few other details of her life are recorded.' These details are taken from the saint record and are presented as if the encyclopedia article attested them.",
+        "The account of her death by being plunged into a vat of boiling pitch and her peaceful meditation on the Passion of Christ is attributed to St. Eulogius of Córdoba, but the ARTICLE TEXT contains no reference to Eulogius, to the Martyrs of Córdoba, or to any martyrdom, so the attribution cannot be verified from the given source.",
+        "The closing generalization that she is 'counted among the Martyrs of Córdoba, the Christians of that city and century who lived under Islamic rule and accepted death rather than conceal their faith or blaspheme the name of Christ' has no basis in the ARTICLE TEXT, which discusses only Palestinian monasticism and never mentions Islamic rule or martyrdom in Spain."
+      ]
+    },
+    {
+      "slug": "pope-leo-ii",
+      "ceCode": "09157a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3371,
+      "issues": []
+    },
+    {
+      "slug": "pope-leo-iv",
+      "ceCode": "09159a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3992,
+      "issues": []
+    },
+    {
+      "slug": "pope-leo-ix",
+      "ceCode": "09160c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3955,
+      "issues": []
+    },
+    {
+      "slug": "macrina-the-elder",
+      "ceCode": "09508b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2118,
+      "issues": []
+    },
+    {
+      "slug": "magnus-felix-ennodius",
+      "ceCode": "05478a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3472,
+      "issues": []
+    },
+    {
+      "slug": "manahen",
+      "ceCode": "09583b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 24/5 but the seed record pins 05-23 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "marcellina",
+      "ceCode": "09637c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The sentence claiming that in the fourth century the formal dedication of a daughter of a leading Christian family 'was still a rare and demanding course' and that Marcellina's consecration 'helped shape the early Church's understanding of the consecrated life for women' is not in the article at all, and is confabulated historical commentary presented as fact.",
+        "The claim that 'Ambrose often sought her guidance' is not supported by the article, which says only that he summoned her to Milan, found her a zealous assistant, and dedicated his work on virginity to her.",
+        "'She served the maidens who had dedicated themselves to virginity as an exemplar and guide, an elder in the vocation she had herself received' embellishes the article's plain statement that she was 'a zealous assistant in fostering and extending the ascetic life among the maidens of Milan.'",
+        "'Remembered as a pioneer of the vowed life of virginity within the Church' is a devotional characterization not found in the article and should be presented as later tradition/devotion rather than as the article's testimony."
+      ]
+    },
+    {
+      "slug": "pope-marcellus-i",
+      "ceCode": "09640b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The closing claim that \"his relics were later returned and honored beneath the altar of San Marcello al Corso in Rome\" is not in the article and conflicts with it: the article states Marcellus was buried in the catacomb of St. Priscilla, where his grave is recorded in the basilica of St. Silvester, and mentions the Via Lata church only as still bearing his name. A later translation of relics to San Marcello al Corso should not be asserted (even as \"tradition\") without support in the article text; remove it or attribute it explicitly to later tradition outside the article."
+      ]
+    },
+    {
+      "slug": "martial",
+      "ceCode": "09721c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3436,
+      "issues": []
+    },
+    {
+      "slug": "maximus-of-turin",
+      "ceCode": "10081a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3895,
+      "issues": []
+    },
+    {
+      "slug": "meletius-of-antioch",
+      "ceCode": "10161b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3807,
+      "issues": []
+    },
+    {
+      "slug": "mellitus",
+      "ceCode": "10168b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3225,
+      "issues": []
+    },
+    {
+      "slug": "pope-nicholas-i",
+      "ceCode": "11054a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3986,
+      "issues": []
+    },
+    {
+      "slug": "nilus-the-younger",
+      "ceCode": "11080a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1680,
+      "issues": []
+    },
+    {
+      "slug": "olaf-haraldsson",
+      "ceCode": "11234a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3066,
+      "issues": []
+    },
+    {
+      "slug": "optatus",
+      "ceCode": "11262b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3993,
+      "issues": []
+    },
+    {
+      "slug": "osmund",
+      "ceCode": "11340a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3715,
+      "issues": []
+    },
+    {
+      "slug": "pammachius",
+      "ceCode": "11436a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2736,
+      "issues": []
+    },
+    {
+      "slug": "pantaenus",
+      "ceCode": "11446b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3451,
+      "issues": []
+    },
+    {
+      "slug": "pope-paschal-i",
+      "ceCode": "11514a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The claim 'his feast is kept on 11 February' is not supported by the ARTICLE TEXT, which states plainly that Paschal 'was interred in the church of St. Praxedis, and is honoured as a saint on 14 May.' The article gives no 11 February date, and no such date appears anywhere in it.",
+        "The phrase 'although some older sources give 14 May' invents a source attribution the article does not make: the 1907 Catholic Encyclopedia states 14 May as the actual date of his veneration, not as one variant among 'older sources.' Presenting the article's own date as a secondary or outdated alternative misrepresents the source."
+      ]
+    },
+    {
+      "slug": "perpetuus",
+      "ceCode": "11700a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2741,
+      "issues": []
+    },
+    {
+      "slug": "peter-chrysologus",
+      "ceCode": "11762c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2568,
+      "issues": []
+    },
+    {
+      "slug": "philastrius",
+      "ceCode": "11797a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3112,
+      "issues": []
+    },
+    {
+      "slug": "plegmund",
+      "ceCode": "12164a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1084,
+      "issues": []
+    },
+    {
+      "slug": "porphyrius",
+      "ceCode": "12282c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2301,
+      "issues": []
+    },
+    {
+      "slug": "possidius",
+      "ceCode": "12318a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3069,
+      "issues": []
+    },
+    {
+      "slug": "pulcheria",
+      "ceCode": "12561c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 10/9 but the seed record pins 11-10 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "rimbert",
+      "ceCode": "13057a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1667,
+      "issues": []
+    },
+    {
+      "slug": "sabina",
+      "ceCode": "13290a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1314,
+      "issues": []
+    },
+    {
+      "slug": "simeon-gospel-of-luke",
+      "ceCode": "13794b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The ARTICLE TEXT is not about this saint at all: it is the Catholic Encyclopedia entry on Simeon, second son of Jacob (Genesis 29-49), and never mentions St. Simeon of the Temple, the Presentation, the Nunc Dimittis, or Anna. The HISTORY grafts the saint's Gospel narrative onto an article about a different Simeon.",
+        "The entire opening Gospel section (the Spirit's promise that he would not see death, being led into the Temple, receiving the infant Jesus, the Nunc Dimittis quote, and the prophecy that a sword would pierce Mary's soul) has no support in the ARTICLE TEXT, which contains none of it.",
+        "The Nunc Dimittis quotation 'Lord, now lettest thou thy servant depart in peace, for mine eyes have seen thy salvation' is presented as from the article's material but is absent from the ARTICLE TEXT.",
+        "'Simeon's patient faith has made him a patron of those who wait upon the Lord' is a devotional inference not found in the ARTICLE TEXT; if kept, it should be framed as later tradition rather than as a fact of the entry.",
+        "The transitional phrase 'An earlier Simeon appears in Genesis' implies the article treats the Genesis patriarch as background to the saint; the ARTICLE TEXT makes no such connection and is concerned only with the tribal patriarch.",
+        "Claims about feast day (February 3, with Anna) and pre-Congregation canonization have no basis in the ARTICLE TEXT; they align with the SAINT RECORD but are asserted as if the article supported them.",
+        "Roughly three-quarters of the HISTORY simply reproduces the Genesis material (Dina, Hemor, the Sichemite massacre, the hostage episode in Egypt), which concerns a different figure and does not belong in a summary of St. Simeon."
+      ]
+    },
+    {
+      "slug": "pope-stephen-i",
+      "ceCode": "14288a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3399,
+      "issues": []
+    },
+    {
+      "slug": "theodorus-and-theophanes",
+      "ceCode": "14577a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2557,
+      "issues": []
+    },
+    {
+      "slug": "trudpert",
+      "ceCode": "15069c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2284,
+      "issues": []
+    },
+    {
+      "slug": "ultan-of-ardbraccan",
+      "ceCode": "15124d",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1805,
+      "issues": []
+    },
+    {
+      "slug": "wilfrid",
+      "ceCode": "15621c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3945,
+      "issues": []
+    },
+    {
+      "slug": "willehad",
+      "ceCode": "15628a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2939,
+      "issues": []
+    },
+    {
+      "slug": "william-of-gellone",
+      "ceCode": "15633a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2097,
+      "issues": []
+    },
+    {
+      "slug": "winnoc",
+      "ceCode": "15658a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 18/9 but the seed record pins 02-20 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "pope-zachary",
+      "ceCode": "15743b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3888,
+      "issues": []
+    },
+    {
+      "slug": "pope-zephyrinus",
+      "ceCode": "15756c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3917,
+      "issues": []
+    },
+    {
+      "slug": "chrysanthus-and-daria",
+      "ceCode": "03742a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3734,
+      "issues": []
+    },
+    {
+      "slug": "pope-hormisdas",
+      "ceCode": "07470a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3896,
+      "issues": []
+    },
+    {
+      "slug": "pope-pontian",
+      "ceCode": "12229b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 19/11 but the seed record pins 08-13 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "pope-siricius",
+      "ceCode": "14026a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3869,
+      "issues": []
+    },
+    {
+      "slug": "abdias-of-babylon",
+      "ceCode": "01030c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2689,
+      "issues": []
+    },
+    {
+      "slug": "pope-adeodatus-i",
+      "ceCode": "04760a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1041,
+      "issues": []
+    },
+    {
+      "slug": "pope-agapetus-i",
+      "ceCode": "01202c",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3615,
+      "issues": []
+    },
+    {
+      "slug": "pope-agatho",
+      "ceCode": "01204c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2053,
+      "issues": []
+    },
+    {
+      "slug": "alphonsus-liguori",
+      "ceCode": "01334a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2537,
+      "issues": []
+    },
+    {
+      "slug": "pope-anacletus",
+      "ceCode": "01446a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2762,
+      "issues": []
+    },
+    {
+      "slug": "pope-anastasius-i",
+      "ceCode": "01454c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "'close ties with the fathers of the Church in the East' misrepresents the article, which says only that Augustine, Jerome, and Paulinus were among his friends (Augustine and Paulinus were Western bishops). Remove the claim about Eastern ties.",
+        "'when the Church, newly free from persecution, had to turn its energies inward to the defense of the faith it had received' is a historical framing found nowhere in the article, and 'newly free from persecution' is anachronistic for 399 (persecution had ended roughly a century earlier). Delete or rephrase without the claim.",
+        "'His firm but pastoral discipline' is asserted as fact but is not in the article text; it comes from the saint record's summary, not the source. Hedge or drop it.",
+        "'Tradition holds that he also took care that such controversial writings should not undermine ordinary believers' adds detail beyond the article (which mentions only the condemnation of Origenism). The 'tradition holds' hedge helps, but the specific pastoral measure is unattested in the source and should be cut or clearly framed as later summary.",
+        "'honored as a vigilant pastor who watched over the household of faith' is devotional phrasing rather than encyclopedia summary; trim to a neutral statement.",
+        "'buried in the Catacombs of Pontian' and the December 19, 401 death date are not in the article text (the article even cites 27 September and says he died 'within a little less than four years'); they are consistent with the saint record, so acceptable, but note the article does not support them."
+      ]
+    },
+    {
+      "slug": "pope-anicetus",
+      "ceCode": "01514a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2530,
+      "issues": []
+    },
+    {
+      "slug": "pope-anterus",
+      "ceCode": "01553a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1773,
+      "issues": []
+    },
+    {
+      "slug": "apollinaris-claudius",
+      "ceCode": "01617b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1394,
+      "issues": []
+    },
+    {
+      "slug": "augustine-of-canterbury",
+      "ceCode": "02081a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3939,
+      "issues": []
+    },
+    {
+      "slug": "ava",
+      "ceCode": "02147b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1806,
+      "issues": []
+    },
+    {
+      "slug": "benedict-biscop",
+      "ceCode": "02441b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2243,
+      "issues": []
+    },
+    {
+      "slug": "pope-benedict-ii",
+      "ceCode": "02427d",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2960,
+      "issues": []
+    },
+    {
+      "slug": "berach",
+      "ceCode": "02485a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2910,
+      "issues": []
+    },
+    {
+      "slug": "bernard-of-clairvaux",
+      "ceCode": "02498d",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3998,
+      "issues": []
+    },
+    {
+      "slug": "beuno",
+      "ceCode": "02540a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1558,
+      "issues": []
+    },
+    {
+      "slug": "boisil",
+      "ceCode": "02625a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2445,
+      "issues": []
+    },
+    {
+      "slug": "pope-boniface-i",
+      "ceCode": "02658a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3996,
+      "issues": []
+    },
+    {
+      "slug": "pope-boniface-iv",
+      "ceCode": "02660c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "author reply JSON has no \"history\" string: {\"type\":\"step_start\",\"timestamp\":1794660689230,\"sessionID\":\"ses_e25e31f38ffeonsDR2hXqAm06n\",\"part\":{\"id\":\"prt_1da1ce54e001xGvoq9eGr2hbMX\",\"sessionID\":\"ses_e25e31f38ffeonsDR2hXqAm06n\",\"messageID\":\"msg_…"
+      ]
+    },
+    {
+      "slug": "bridget-of-sweden",
+      "ceCode": "02782a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3194,
+      "issues": []
+    },
+    {
+      "slug": "bruno-of-querfurt",
+      "ceCode": "03018a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3916,
+      "issues": []
+    },
+    {
+      "slug": "caesarius-of-nazianzus",
+      "ceCode": "03138a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3619,
+      "issues": []
+    },
+    {
+      "slug": "cedd",
+      "ceCode": "03475a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1858,
+      "issues": []
+    },
+    {
+      "slug": "chrysogonus",
+      "ceCode": "03742b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The final paragraph's 'later tradition' material — Chrysogonus as a knight/officer in the Roman army at Aquileia, Diocletian's offer of the prefecture of a province, and the translation of his body to Zadar with a basilica and civic patronage — appears nowhere in the article text. The article's only developed legend makes him a functionary of the vicarius Urbis, so the knight/officer detail also sits awkwardly against the article's own account; it should not be attributed to a tradition the cited article does not contain.",
+        "The claim that 'his name is invoked among the saints of the Roman Canon of the Mass' is stated as fact but is absent from the article text, which mentions only the Titulus Chrysogoni, the martyrologies, and the Latin/Greek feast dates.",
+        "'A patron of soldiers and of martyrs' and 'soldier-saint' are asserted as fact with no basis in the article, which says nothing about patronages; they rest only on later devotional attribution and should be marked as such or dropped.",
+        "'The feast of 24 November ... became his principal observance in the West' goes beyond the text: the article notes the 24 November commemoration in the Roman martyrology and the Greek 16 April, but does not characterize 24 November as a principal Western observance."
+      ]
+    },
+    {
+      "slug": "colman-martyr",
+      "ceCode": "04115g",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 13/10 but the seed record pins 07-08 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "columba-of-terryglass",
+      "ceCode": "04135a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 791,
+      "issues": []
+    },
+    {
+      "slug": "conan",
+      "ceCode": "04189c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1465,
+      "issues": []
+    },
+    {
+      "slug": "crescens",
+      "ceCode": "04484b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3151,
+      "issues": []
+    },
+    {
+      "slug": "cyprian-and-justina",
+      "ceCode": "04583a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3367,
+      "issues": []
+    },
+    {
+      "slug": "cyril-of-alexandria",
+      "ceCode": "04592b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3822,
+      "issues": []
+    },
+    {
+      "slug": "drostan",
+      "ceCode": "05161a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2145,
+      "issues": []
+    },
+    {
+      "slug": "d-chu",
+      "ceCode": "04778b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2362,
+      "issues": []
+    },
+    {
+      "slug": "earconwald",
+      "ceCode": "05517a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2866,
+      "issues": []
+    },
+    {
+      "slug": "edmund-campion",
+      "ceCode": "05293c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3967,
+      "issues": []
+    },
+    {
+      "slug": "ephraim-of-antioch",
+      "ceCode": "05500a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2351,
+      "issues": []
+    },
+    {
+      "slug": "eugendus",
+      "ceCode": "05597c",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3268,
+      "issues": []
+    },
+    {
+      "slug": "evodius",
+      "ceCode": "05653a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3504,
+      "issues": []
+    },
+    {
+      "slug": "exuperius",
+      "ceCode": "05731a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3032,
+      "issues": []
+    },
+    {
+      "slug": "faustus-of-riez",
+      "ceCode": "06019b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3168,
+      "issues": []
+    },
+    {
+      "slug": "fergus",
+      "ceCode": "06042c",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2912,
+      "issues": []
+    },
+    {
+      "slug": "fiacc",
+      "ceCode": "06066b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2895,
+      "issues": []
+    },
+    {
+      "slug": "finnian-of-movilla",
+      "ceCode": "06077a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1843,
+      "issues": []
+    },
+    {
+      "slug": "firmilian",
+      "ceCode": "06080b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3760,
+      "issues": []
+    },
+    {
+      "slug": "flavia-domitilla-wife-of-clemens",
+      "ceCode": "06098b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3833,
+      "issues": []
+    },
+    {
+      "slug": "francis-xavier",
+      "ceCode": "06233b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3979,
+      "issues": []
+    },
+    {
+      "slug": "gabriel-the-archangel",
+      "ceCode": "06330a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3705,
+      "issues": []
+    },
+    {
+      "slug": "gertrude-the-great",
+      "ceCode": "06534a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3775,
+      "issues": []
+    },
+    {
+      "slug": "ghislain",
+      "ceCode": "06547a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3463,
+      "issues": []
+    },
+    {
+      "slug": "pope-gregory-vii",
+      "ceCode": "06791c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3759,
+      "issues": []
+    },
+    {
+      "slug": "gregory-the-illuminator",
+      "ceCode": "07023a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3996,
+      "issues": []
+    },
+    {
+      "slug": "helena",
+      "ceCode": "07202b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3917,
+      "issues": []
+    },
+    {
+      "slug": "herbert-of-derwentwater",
+      "ceCode": "07250b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2884,
+      "issues": []
+    },
+    {
+      "slug": "hereswith",
+      "ceCode": "07256a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1828,
+      "issues": []
+    },
+    {
+      "slug": "hermenegild",
+      "ceCode": "07276a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3533,
+      "issues": []
+    },
+    {
+      "slug": "hilarion",
+      "ceCode": "07347a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3744,
+      "issues": []
+    },
+    {
+      "slug": "pope-hilarius",
+      "ceCode": "07348b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The 465 Roman synod is credited with decisions the article assigns to Hilarus's later letter: the text says the synod 'decided that the church laws must not be tampered with,' and 'In addition to this Hilarus sent a letter to the bishops of Tarragona, declaring that no consecration was valid without the sanction of the Metropolitan Ascanius; and no bishop was permitted to be transferred from one diocese to another.' The history should attribute the no-consecration-without-Ascanius and no-transfer rules to the pope's letter, not to the synod's rulings.",
+        "The Barcelona matter is compressed inaccurately: the article states that Nundinarius' request for Irenaeus 'was granted, a Synod of Tarragona confirming the nomination of Irenaeus, after which the bishops sought the pope's approval,' and only then did Hilarus's letter exclude Irenaeus ('some one else must be chosen for Barcelona in place of Irenaeus'). Calling this the synod 'barring the dying Nundinarius' wish' omits the prior local grant and the Tarragona confirmation, and 'dying' is an inference — the article says only 'Before his death Nundinarius... expressed a wish.'"
+      ]
+    },
+    {
+      "slug": "hugh-of-lincoln",
+      "ceCode": "07519c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3553,
+      "issues": []
+    },
+    {
+      "slug": "pope-hyginus",
+      "ceCode": "07593a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The closing sentence — 'He is honored as a patron of priests and seminarians' — has no basis in the article text. It matches the saint record's patronage list, but the Catholic Encyclopedia article says nothing about patronages, so it should be presented as tradition/modern designation or dropped.",
+        "Minor misattribution: the article says the Liber Pontificalis claim about organizing the clergy 'has no historical value, and according to Duchesne, the writer probably referred to the lower orders of the clergy' — i.e., the 'no historical value' judgment is the article's own. The history recasts it as 'according to Duchesne it has no historical value,' shifting the attribution.",
+        "'the events of the reign are transmitted only in fragmentary form' is an added characterization not stated in the article; the article only says the early Roman chronology cannot be determined exactly and that it is unknown how many of the Gnostic episodes fell in Hyginus's own time."
+      ]
+    },
+    {
+      "slug": "ignatios-of-constantinople",
+      "ceCode": "07647a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3600,
+      "issues": []
+    },
+    {
+      "slug": "pope-innocent-i",
+      "ceCode": "08011a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3977,
+      "issues": []
+    },
+    {
+      "slug": "jacob-baradaeus",
+      "ceCode": "02282a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2488,
+      "issues": []
+    },
+    {
+      "slug": "jane-frances-de-chantal",
+      "ceCode": "08282c",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3787,
+      "issues": []
+    },
+    {
+      "slug": "joachim",
+      "ceCode": "08406b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 16/9 but the seed record pins 07-26 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "john-berchmans",
+      "ceCode": "08450a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3850,
+      "issues": []
+    },
+    {
+      "slug": "pope-john-i",
+      "ceCode": "08421a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 27/5 but the seed record pins 05-18 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "john-iv-bishop-of-naples",
+      "ceCode": "08422b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1863,
+      "issues": []
+    },
+    {
+      "slug": "john-scholasticus",
+      "ceCode": "08484b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3644,
+      "issues": []
+    },
+    {
+      "slug": "john-xxiii",
+      "ceCode": "08434a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The ARTICLE TEXT is not about this saint: it is the 1907-12 Catholic Encyclopedia entry for the Pisan antipope John XXIII (Baldassare Cossa, b. c. 1370, d. 22 November 1419, Cardinal-Deacon of St. Eustachius, elected at Bologna 17 May 1410, later deposed at Constance), not Angelo Giuseppe Roncalli (b. 1881, pope 1958-1963). The shared name 'John XXIII' is a pure name collision, so the article cannot serve as the source for this history.",
+        "Consequently no claim in the HISTORY is supported by the ARTICLE TEXT: the 1881 birth in Sotto il Monte as the fourth of thirteen children of farming parents, the 1904 ordination, service as a First World War military chaplain, diplomatic posts in Bulgaria, Turkey and France, the 1958 election at age seventy-six, the 1959 calling of the Second Vatican Council, the encyclical Pacem in Terris, the 1963 death, and the 2014 canonization by Pope Francis alongside St. John Paul II all appear only in the SAINT RECORD, not in the supplied article. A source that actually covers St. John XXIII (Roncalli) must be supplied before this history can be verified.",
+        "Because the two men share the name 'John XXIII' but differ in every biographical particular (Roncalli 1881-1963 vs. Cossa c. 1370-1419; papal legitimacy, councils, and canonization status), pairing this history with the antipope's article creates a material risk of confabulated detail; the article should be replaced or the name disambiguated explicitly."
+      ]
+    },
+    {
+      "slug": "julian-and-basilissa",
+      "ceCode": "08556b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3530,
+      "issues": []
+    },
+    {
+      "slug": "justinian-i",
+      "ceCode": "08578b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3664,
+      "issues": []
+    },
+    {
+      "slug": "kateri-tekakwitha",
+      "ceCode": "14471a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3257,
+      "issues": []
+    },
+    {
+      "slug": "leander-of-seville",
+      "ceCode": "09102a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3353,
+      "issues": []
+    },
+    {
+      "slug": "pope-leo-iii",
+      "ceCode": "09157b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3714,
+      "issues": []
+    },
+    {
+      "slug": "pope-linus",
+      "ceCode": "09272b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3855,
+      "issues": []
+    },
+    {
+      "slug": "lucifer-of-cagliari",
+      "ceCode": "09410b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3600,
+      "issues": []
+    },
+    {
+      "slug": "pope-lucius-i",
+      "ceCode": "09411a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history is 4082 characters; the maximum is 4000",
+        "history states a feast day of 4/3 but the seed record pins 03-05 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "pope-marcellinus",
+      "ceCode": "09637d",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3901,
+      "issues": []
+    },
+    {
+      "slug": "margaret-clitherow",
+      "ceCode": "04059b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3058,
+      "issues": []
+    },
+    {
+      "slug": "pope-mark",
+      "ceCode": "09672c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 25/4 but the seed record pins 10-07 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "pope-martin-i",
+      "ceCode": "09723c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3971,
+      "issues": []
+    },
+    {
+      "slug": "mitre",
+      "ceCode": "10404a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The ARTICLE TEXT is not about this saint at all: it is the Catholic Encyclopedia entry on the liturgical vestment called the mitre (its form, materials, history, and use by bishops, cardinals, and abbots). Nothing in it mentions a person named Mitre, a saint, Thessaloniki, Aix-en-Provence, or the fifth century, so no biographical claim in the HISTORY is supported.",
+        "The entire biography (born at Thessaloniki, died at Aix-en-Provence in 466, venerated in Provence, a confessor of the early Gallic church) is unverifiable from the source and is presented as plain fact rather than as tradition; with this article as the only source it reads as confabulated detail.",
+        "The claim linking him to 'Maximus of Turin and Menelphalus' as figures of the same flowering of Gallic Christianity is unsupported and internally confused: Maximus was bishop of Turin in Italy, not a saint of Aix, and no such connection appears in the text.",
+        "The assertion that he 'has been invoked as a patron of confessors and of migrants' is not supported by the article text; it is also not corroborated by the SAINT RECORD beyond a bare patronage listing, and the article offers no basis for it.",
+        "The closing sentences ('reflects the unity of the early Church across the Mediterranean world', 'labored in the first centuries of the Gospel in Gaul') are devotional/generalizing filler with no textual support."
+      ]
+    },
+    {
+      "slug": "nicholas-of-myra",
+      "ceCode": "11063b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3126,
+      "issues": []
+    },
+    {
+      "slug": "ninian",
+      "ceCode": "11084a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3093,
+      "issues": []
+    },
+    {
+      "slug": "norbert",
+      "ceCode": "11100b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3760,
+      "issues": []
+    },
+    {
+      "slug": "novatus",
+      "ceCode": "11141a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1304,
+      "issues": []
+    },
+    {
+      "slug": "othmar",
+      "ceCode": "11351a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2461,
+      "issues": []
+    },
+    {
+      "slug": "pope-paul-i",
+      "ceCode": "11577a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3992,
+      "issues": []
+    },
+    {
+      "slug": "paul-of-the-cross",
+      "ceCode": "11590a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 1/10 but the seed record pins 10-19 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "peter-canisius",
+      "ceCode": "11756c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3751,
+      "issues": []
+    },
+    {
+      "slug": "peter-damian",
+      "ceCode": "11764a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 23/2 but the seed record pins 02-21 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "martyrdom-of-pionius",
+      "ceCode": "12105a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3498,
+      "issues": []
+    },
+    {
+      "slug": "pius-x",
+      "ceCode": "12137a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3386,
+      "issues": []
+    },
+    {
+      "slug": "placidus-abbot",
+      "ceCode": "12142b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3377,
+      "issues": []
+    },
+    {
+      "slug": "pontius-pilate",
+      "ceCode": "12083c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3899,
+      "issues": []
+    },
+    {
+      "slug": "prisca",
+      "ceCode": "12428c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3125,
+      "issues": []
+    },
+    {
+      "slug": "raymond-nonnatus",
+      "ceCode": "12671b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2575,
+      "issues": []
+    },
+    {
+      "slug": "rita-of-cascia",
+      "ceCode": "13064a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1955,
+      "issues": []
+    },
+    {
+      "slug": "robert-bellarmine",
+      "ceCode": "02411d",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3941,
+      "issues": []
+    },
+    {
+      "slug": "romuald",
+      "ceCode": "13179b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3529,
+      "issues": []
+    },
+    {
+      "slug": "sebastian",
+      "ceCode": "13668a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1824,
+      "issues": []
+    },
+    {
+      "slug": "pope-sergius-i",
+      "ceCode": "13728b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2545,
+      "issues": []
+    },
+    {
+      "slug": "silvia",
+      "ceCode": "13794a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "Not supported by the article: 'She is venerated as a saint by both the Catholic and the Eastern Orthodox Churches.' The article mentions only early veneration, a ninth-century oratory, and insertion into the Roman Martyrology by Clement VIII; it says nothing about Eastern Orthodox veneration."
+      ]
+    },
+    {
+      "slug": "simeon-stylites-the-younger",
+      "ceCode": "13795b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2763,
+      "issues": []
+    },
+    {
+      "slug": "pope-simplicius",
+      "ceCode": "14002a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3856,
+      "issues": []
+    },
+    {
+      "slug": "pope-sixtus-iii",
+      "ceCode": "14032a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1588,
+      "issues": []
+    },
+    {
+      "slug": "stephen-of-muret",
+      "ceCode": "14291b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2622,
+      "issues": []
+    },
+    {
+      "slug": "swithin",
+      "ceCode": "14357c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 8/6 but the seed record pins 07-15 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "pope-sylvester-i",
+      "ceCode": "14370a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3872,
+      "issues": []
+    },
+    {
+      "slug": "pope-symmachus",
+      "ceCode": "14377a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3996,
+      "issues": []
+    },
+    {
+      "slug": "pope-telesphorus",
+      "ceCode": "14477b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1819,
+      "issues": []
+    },
+    {
+      "slug": "ternan",
+      "ceCode": "14518b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1465,
+      "issues": []
+    },
+    {
+      "slug": "tewdrig",
+      "ceCode": "14542a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1254,
+      "issues": []
+    },
+    {
+      "slug": "tha-s-saint",
+      "ceCode": "14553d",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1789,
+      "issues": []
+    },
+    {
+      "slug": "theodard",
+      "ceCode": "14568b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2182,
+      "issues": []
+    },
+    {
+      "slug": "thomas-aquinas",
+      "ceCode": "14663b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3853,
+      "issues": []
+    },
+    {
+      "slug": "pope-urban-i",
+      "ceCode": "15209a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3893,
+      "issues": []
+    },
+    {
+      "slug": "pope-victor-i",
+      "ceCode": "15408a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3783,
+      "issues": []
+    },
+    {
+      "slug": "vincent-ferrer",
+      "ceCode": "15437a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3937,
+      "issues": []
+    },
+    {
+      "slug": "vincent-of-l-rins",
+      "ceCode": "15439b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3955,
+      "issues": []
+    },
+    {
+      "slug": "pope-vitalian",
+      "ceCode": "15484b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3891,
+      "issues": []
+    },
+    {
+      "slug": "wendelin-of-trier",
+      "ceCode": "15587c",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2798,
+      "issues": []
+    },
+    {
+      "slug": "werburgh",
+      "ceCode": "15588b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3895,
+      "issues": []
+    },
+    {
+      "slug": "willigis",
+      "ceCode": "15645b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3411,
+      "issues": []
+    },
+    {
+      "slug": "cyril-and-methodius",
+      "ceCode": "04592a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3632,
+      "issues": []
+    },
+    {
+      "slug": "saints-faith-hope-and-charity",
+      "ceCode": "05766a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "'Among the most beloved of the early Roman martyrs' is a devotional/promotional characterization nowhere in the article, which instead stresses how slight the sound historical data are; soften or drop it.",
+        "'The four are honored together as a witness that the theological virtues were embodied even in childhood' is a devotional/theological gloss added to an encyclopedia summary rather than something the article states; it should be removed or attributed as later reflection."
+      ]
+    },
+    {
+      "slug": "abundius",
+      "ceCode": "01075b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1315,
+      "issues": []
+    },
+    {
+      "slug": "agatha",
+      "ceCode": "01203c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3477,
+      "issues": []
+    },
+    {
+      "slug": "ailer-n",
+      "ceCode": "01234c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 16/1 but the seed record pins 12-29 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "albert-the-great",
+      "ceCode": "01264a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3783,
+      "issues": []
+    },
+    {
+      "slug": "aloysius-gonzaga",
+      "ceCode": "01331c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2458,
+      "issues": []
+    },
+    {
+      "slug": "ambrose",
+      "ceCode": "01383c",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3728,
+      "issues": []
+    },
+    {
+      "slug": "angela-merici",
+      "ceCode": "01481a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2788,
+      "issues": []
+    },
+    {
+      "slug": "anne",
+      "ceCode": "01538a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3817,
+      "issues": []
+    },
+    {
+      "slug": "apollonia",
+      "ceCode": "01617c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3125,
+      "issues": []
+    },
+    {
+      "slug": "asaph",
+      "ceCode": "01766a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3237,
+      "issues": []
+    },
+    {
+      "slug": "augustine-of-hippo",
+      "ceCode": "02084a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3434,
+      "issues": []
+    },
+    {
+      "slug": "barbara",
+      "ceCode": "02284d",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3887,
+      "issues": []
+    },
+    {
+      "slug": "basil-of-amasea",
+      "ceCode": "02329d",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2797,
+      "issues": []
+    },
+    {
+      "slug": "benedict-of-nursia",
+      "ceCode": "02467b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3443,
+      "issues": []
+    },
+    {
+      "slug": "bernardino-of-siena",
+      "ceCode": "02505b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3812,
+      "issues": []
+    },
+    {
+      "slug": "blaise",
+      "ceCode": "02592a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The article says only that Blaise retired to a cave where the governor's hunters found him, and that he is depicted 'in a cave surrounded by wild beasts.' The claim that 'a later legend ... adds that he lived there among the wild animals and blessed and healed them' — including the healing/blessing of animals — is not in the article text.",
+        "The causal claim 'From this miracle he came to be invoked against diseases of the throat' is not supported: the article attributes the unusual veneration to his repute as a physician and the wonderful cures ascribed to him, not to the fishbone miracle. Reword to avoid asserting a causal link the source does not make."
+      ]
+    },
+    {
+      "slug": "blane",
+      "ceCode": "02594b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1990,
+      "issues": []
+    },
+    {
+      "slug": "blathmac",
+      "ceCode": "02596b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1689,
+      "issues": []
+    },
+    {
+      "slug": "bonaventure",
+      "ceCode": "02648c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3804,
+      "issues": []
+    },
+    {
+      "slug": "brendan",
+      "ceCode": "02758c",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3395,
+      "issues": []
+    },
+    {
+      "slug": "camillus-de-lellis",
+      "ceCode": "03217b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3820,
+      "issues": []
+    },
+    {
+      "slug": "casimir",
+      "ceCode": "03402a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3434,
+      "issues": []
+    },
+    {
+      "slug": "catherine-of-alexandria",
+      "ceCode": "03445a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3983,
+      "issues": []
+    },
+    {
+      "slug": "catherine-of-bologna",
+      "ceCode": "03446a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3143,
+      "issues": []
+    },
+    {
+      "slug": "catherine-of-siena",
+      "ceCode": "03447a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3850,
+      "issues": []
+    },
+    {
+      "slug": "cecilia",
+      "ceCode": "03471b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3958,
+      "issues": []
+    },
+    {
+      "slug": "charles-borromeo",
+      "ceCode": "03619a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 1/11 but the seed record pins 11-04 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "clare-of-assisi",
+      "ceCode": "04004a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3689,
+      "issues": []
+    },
+    {
+      "slug": "clare-of-montefalco",
+      "ceCode": "04006a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3101,
+      "issues": []
+    },
+    {
+      "slug": "colman-of-templeshambo",
+      "ceCode": "04115a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1370,
+      "issues": []
+    },
+    {
+      "slug": "colm-n-elo",
+      "ceCode": "04115e",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1540,
+      "issues": []
+    },
+    {
+      "slug": "conal",
+      "ceCode": "04189b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 18/3 but the seed record pins 05-22 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "cyprian-of-toulon",
+      "ceCode": "04582b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2679,
+      "issues": []
+    },
+    {
+      "slug": "david",
+      "ceCode": "04640b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The closing claim that \"His shrine at St. Davids became one of the holiest sites of medieval Britain\" is not supported by the article text, which mentions only that Menevia/St. David's was \"the chief point of departure for Ireland\" and that his body was said to be translated to Glastonbury in 966; the shrine's later prominence is imported from outside the source and should be removed or attributed."
+      ]
+    },
+    {
+      "slug": "dominic",
+      "ceCode": "05106a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3661,
+      "issues": []
+    },
+    {
+      "slug": "dunstan",
+      "ceCode": "05199a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3962,
+      "issues": []
+    },
+    {
+      "slug": "eligius",
+      "ceCode": "05386a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3668,
+      "issues": []
+    },
+    {
+      "slug": "elizabeth-ann-seton",
+      "ceCode": "13739a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3407,
+      "issues": []
+    },
+    {
+      "slug": "elizabeth-of-hungary",
+      "ceCode": "05389a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3252,
+      "issues": []
+    },
+    {
+      "slug": "elizabeth-of-portugal",
+      "ceCode": "05391a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3080,
+      "issues": []
+    },
+    {
+      "slug": "elphin",
+      "ceCode": "05394b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The article text is about the Diocese of Elphin (Elphinium) in Ireland, a see founded by St. Patrick—not about St. Elphin of Warrington. The history itself concedes this, yet most of its content is Irish diocesan history unrelated to the saint, so it fails as a biography of him.",
+        "The opening claims that St. Elphin was a seventh-century saint of the North West of England, labored in the Mersey region among mixed Saxon, British, and Irish peoples, and is patron of Warrington in Cheshire are not supported by the article text; they derive only from the saint record.",
+        "The statement that the name Elphin 'is attested in the early sources as the name of a place rather than as that of a saint' goes beyond the article, which simply discusses the place and never denies the existence of a saint of that name."
+      ]
+    },
+    {
+      "slug": "eosterwine",
+      "ceCode": "05240a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 1820,
+      "issues": []
+    },
+    {
+      "slug": "eskil",
+      "ceCode": "05538b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3180,
+      "issues": []
+    },
+    {
+      "slug": "pope-eugene-i",
+      "ceCode": "05598a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3616,
+      "issues": []
+    },
+    {
+      "slug": "eulogius-of-alexandria",
+      "ceCode": "05603c",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2077,
+      "issues": []
+    },
+    {
+      "slug": "eustace",
+      "ceCode": "05626a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "Saint/article mismatch: the supplied ARTICLE TEXT is entirely about St. Eustace of Luxeuil (second abbot of Luxeuil, d. 29 March 625, companion of St. Columbanus), not the St. Eustace in the SAINT RECORD (Roman general, martyr, patron of hunters, feast 20 Sept.). The HISTORY matches the record but is unsupported by the article, which contains none of its subject matter.",
+        "\"Placidus\" as his pre-conversion name: not mentioned anywhere in the article; the article's Eustace is a monk/abbot, not a Roman general.",
+        "Service as a Roman general under Trajan: absent from the article, which presents Eustace as an abbot in Gaul.",
+        "The stag with a crucifix between its antlers, the speaking voice, and the conversion together with wife and sons: entirely absent from the article; this hagiographic material is presented as the article's content without attribution.",
+        "Loss of wealth, separation from family, reunion with wife and sons, and restoration to favor: no narrative of trials or family separation exists in the article.",
+        "Refusal to sacrifice to pagan gods and Hadrian's condemnation are stated as flat fact, though the article contains no imperial-persecution account; this detail should at minimum be explicitly framed as legend/tradition, and even the framing (\"tradition continues\") is unsupported here.",
+        "Martyrdom of Eustace, his wife, and their sons by roasting inside a bronze bull c. 118: wholly absent from the article and presented as history rather than as the later legendary account it is.",
+        "Membership in the Fourteen Holy Helpers: not stated in the article.",
+        "Patronage of hunters: not stated in the article.",
+        "\"His feast is kept on September 20\" is not supported by the article, which states 29 March; it agrees with the SAINT RECORD only because the article describes a different saint, so the mismatch must be resolved at the source-selection level.",
+        "The article's actual content is omitted: birth unknown, d. 625, appointment in 613, royal commission by Clothaire II to recall Columbanus to Luxeuil, Luxeuil–Bobbio correspondence, and missionary preaching in unevangelized Gaul and Bavaria.",
+        "Promotional/devotional framing unsuitable for an encyclopedia summary: \"His constancy was put to a final test\", \"moved by this vision, he embraced Christianity\", \"His feast is kept\" — replace with plain, attributed statements."
+      ]
+    },
+    {
+      "slug": "fiacre",
+      "ceCode": "06067a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3230,
+      "issues": []
+    },
+    {
+      "slug": "frances-of-rome",
+      "ceCode": "06205c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 9/5 but the seed record pins 03-09 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "francis-de-sales",
+      "ceCode": "06220a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3961,
+      "issues": []
+    },
+    {
+      "slug": "francis-of-paola",
+      "ceCode": "06231a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3995,
+      "issues": []
+    },
+    {
+      "slug": "fulcran",
+      "ceCode": "06313a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2556,
+      "issues": []
+    },
+    {
+      "slug": "gabriel-possenti",
+      "ceCode": "06330c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 31/5 but the seed record pins 02-27 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "george",
+      "ceCode": "06453a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3843,
+      "issues": []
+    },
+    {
+      "slug": "gerard-majella",
+      "ceCode": "06467c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 29/1 but the seed record pins 10-16 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "giles",
+      "ceCode": "06559a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3149,
+      "issues": []
+    },
+    {
+      "slug": "hedwig",
+      "ceCode": "07189a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The claim that Hedwig \"walked barefoot even in winter\" is not in the ARTICLE TEXT; it appears only as an inserted pious-legend detail (the article describes her mortifications generally). Keep it only if clearly attributed to later legend, or drop it."
+      ]
+    },
+    {
+      "slug": "hubert",
+      "ceCode": "07507a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3710,
+      "issues": []
+    },
+    {
+      "slug": "ignatius-of-loyola",
+      "ceCode": "07639c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3932,
+      "issues": []
+    },
+    {
+      "slug": "isidore-of-seville",
+      "ceCode": "08186a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3954,
+      "issues": []
+    },
+    {
+      "slug": "jerome",
+      "ceCode": "08341a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3377,
+      "issues": []
+    },
+    {
+      "slug": "joan-of-arc",
+      "ceCode": "08409c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3884,
+      "issues": []
+    },
+    {
+      "slug": "john-cantius",
+      "ceCode": "08451b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "Feast day contradicts the ARTICLE TEXT: the article states 'his feast is on 20 October,' while the history asserts 'His feast is kept on 23 December.' (This matches the SAINT RECORD's 12-23, but it is an unflagged change from the source article; either keep the article's 20 October or explicitly note the transfer rather than silently substituting a different date.)"
+      ]
+    },
+    {
+      "slug": "john-of-avila",
+      "ceCode": "08469a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3439,
+      "issues": []
+    },
+    {
+      "slug": "john-of-capistrano",
+      "ceCode": "08452a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "Canonization year conflict with the SAINT RECORD: the summary states the article's 'beatified in 1694 and canonized in 1724', while the saint record gives canonized: 1690. The summary discloses the conflict but leaves it unresolved, so it effectively presents 1724 as the canonization date; reconcile it with the record (or correct the record) rather than leaving both figures standing. (Feast day 23 October and patronage of military chaplains both match the record.)"
+      ]
+    },
+    {
+      "slug": "john-of-god",
+      "ceCode": "08472c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3648,
+      "issues": []
+    },
+    {
+      "slug": "john-of-the-cross",
+      "ceCode": "08480a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3789,
+      "issues": []
+    },
+    {
+      "slug": "john-the-baptist",
+      "ceCode": "08486b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3578,
+      "issues": []
+    },
+    {
+      "slug": "joseph-of-cupertino",
+      "ceCode": "08520b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3351,
+      "issues": []
+    },
+    {
+      "slug": "juliana-falconieri",
+      "ceCode": "08556a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3564,
+      "issues": []
+    },
+    {
+      "slug": "lawrence-of-brindisi",
+      "ceCode": "09359a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3995,
+      "issues": []
+    },
+    {
+      "slug": "lidwina",
+      "ceCode": "09233a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3304,
+      "issues": []
+    },
+    {
+      "slug": "lucy",
+      "ceCode": "09414a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3965,
+      "issues": []
+    },
+    {
+      "slug": "magnus-bishop-of-milan",
+      "ceCode": "09536a",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "Wrong saint: the HISTORY describes St. Magnus of the Algäu (Magnoaldus/Maginaldus, popularly St. Mang of Füssen, d. c. 750), not the St. Magnus in the SAINT RECORD, who was Archbishop of Milan (d. c. 530). The entire biography is about a different person.",
+        "Feast day contradiction: the article states 'His feast is celebrated on 6 Sept.', while the SAINT RECORD gives 11-01 (November 1).",
+        "The SAINT RECORD's content is unsupported/contradicted: no mention of the see of Milan, succession to Eustorgius II, the Gothic wars, Arian/Catholic tensions, or the patronage of bishops. As written, the history cannot stand as a summary of the recorded saint.",
+        "Unsupported editorial claim: 'Memory of St. Magnus has been kept above all at Füssen' is not stated in the article text and reads as devotional embellishment rather than sourced fact.",
+        "The history omits that the article's initial report credits the 851 rewriting to Ermenrich, a monk of Ellwangen (later scholars doubt the name); presenting it only as 'a monk of Ellwangen' slightly flattens the article's account, though it matches the article's concluding view."
+      ]
+    },
+    {
+      "slug": "margaret-of-scotland",
+      "ceCode": "09655c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 10/6 but the seed record pins 11-16 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "martha",
+      "ceCode": "09721b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3486,
+      "issues": []
+    },
+    {
+      "slug": "martin-of-tours",
+      "ceCode": "09732b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3960,
+      "issues": []
+    },
+    {
+      "slug": "matthew",
+      "ceCode": "10056b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3383,
+      "issues": []
+    },
+    {
+      "slug": "monica",
+      "ceCode": "10482a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3421,
+      "issues": []
+    },
+    {
+      "slug": "nicetius",
+      "ceCode": "11053a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3594,
+      "issues": []
+    },
+    {
+      "slug": "nicholas-of-tolentino",
+      "ceCode": "11065a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2352,
+      "issues": []
+    },
+    {
+      "slug": "odilia",
+      "ceCode": "11207b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 9/3 but the seed record pins 12-13 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "pantaleon",
+      "ceCode": "11447a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3641,
+      "issues": []
+    },
+    {
+      "slug": "paris",
+      "ceCode": "11480c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2005,
+      "issues": []
+    },
+    {
+      "slug": "patrick",
+      "ceCode": "11554a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3483,
+      "issues": []
+    },
+    {
+      "slug": "paul",
+      "ceCode": "11567b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3242,
+      "issues": []
+    },
+    {
+      "slug": "peter",
+      "ceCode": "11744a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3663,
+      "issues": []
+    },
+    {
+      "slug": "peter-claver",
+      "ceCode": "11763a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3411,
+      "issues": []
+    },
+    {
+      "slug": "peter-faber",
+      "ceCode": "11767a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3807,
+      "issues": []
+    },
+    {
+      "slug": "philomena",
+      "ceCode": "12025b",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3558,
+      "issues": []
+    },
+    {
+      "slug": "raymond-of-penyafort",
+      "ceCode": "12671c",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 23/1 but the seed record pins 01-07 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "roch",
+      "ceCode": "13100c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 2624,
+      "issues": []
+    },
+    {
+      "slug": "rosalia",
+      "ceCode": "13184a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 1385,
+      "issues": []
+    },
+    {
+      "slug": "rose-of-lima",
+      "ceCode": "13192c",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3561,
+      "issues": []
+    },
+    {
+      "slug": "rusticus-of-narbonne",
+      "ceCode": "13275a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2442,
+      "issues": []
+    },
+    {
+      "slug": "pope-silverius",
+      "ceCode": "13793a",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3409,
+      "issues": []
+    },
+    {
+      "slug": "pope-sixtus-i",
+      "ceCode": "14031b",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 2292,
+      "issues": []
+    },
+    {
+      "slug": "stanislaus-kostka",
+      "ceCode": "14245b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The journey length is misstated: the article says 'The distance was five hundred leagues,' but the history says 'a journey of more than four hundred miles,' a figure the article text does not support.",
+        "The history says the Vienna superiors 'hesitated to receive so young a candidate, fearing the tempest his father would probably raise'; the article attributes the hesitation only to fear of the father's reaction, with no mention of his youth as the reason."
+      ]
+    },
+    {
+      "slug": "teresa-of-avila",
+      "ceCode": "14515b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The claim that 'around 1554 a profound conversion before an image of the wounded Christ set her on fire with love of God' does not appear in the article text; the article attributes her turn to fidelity in prayer to the influence of Dominican and Jesuit confessors, not to a datable conversion experience before a specific image. It is hedged as 'Tradition holds', but the date and image are still an addition beyond the source.",
+        "'she also wrote the Way of Perfection' is not mentioned in the article, which names only the Life, the Relations, the Interior Castle, and the Book of Foundations; the work is genuine but is an unsourced insertion relative to the article text."
+      ]
+    },
+    {
+      "slug": "theodoret-martyr",
+      "ceCode": "14574b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "The summary's subject does not match the SAINT RECORD: the body describes Theodoret of Cyrus, the fifth-century bishop and theologian (d. c. 457), while the record's St. Theodoret is a priest of Antioch martyred under Julian whose relics were translated to Uzes. The ARTICLE TEXT supports only the bishop, so the entry as a whole is about a different figure than the one recorded, even though the closing paragraph acknowledges the split.",
+        "'In the liturgical calendar his feast is kept on 22 October' is not supported by the ARTICLE TEXT and misassigns the feast: in the SAINT RECORD 22 October belongs to the martyr priest of Antioch, not to the Bishop of Cyrus. The sentence contradicts the very next sentence, which places the persecution patronage and Uzes relics in that separate martyr tradition.",
+        "The claim of a feast for the Bishop of Cyrus, and the framing 'Two details of his veneration require a distinction', are editorial assertions about cult and calendar found nowhere in the 1907 article, which gives no liturgical commemoration for Theodoret of Cyrus."
+      ]
+    },
+    {
+      "slug": "thomas-more",
+      "ceCode": "14689c",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3419,
+      "issues": []
+    },
+    {
+      "slug": "vincent-de-paul",
+      "ceCode": "15434c",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3896,
+      "issues": []
+    },
+    {
+      "slug": "wenceslaus",
+      "ceCode": "15587b",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 4/3 but the seed record pins 09-28 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "zita",
+      "ceCode": "15762a",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3041,
+      "issues": []
+    },
+    {
+      "slug": "cosmas-and-damian",
+      "ceCode": "04403e",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "Feast day discrepancy: the HISTORY states 'In the West, the feast of Cosmas and Damian is celebrated on 26 September,' but the ARTICLE states flatly that their 'feast is celebrated on 27 September' (with the Greek Church feasts given as 1 July, 17 October, and 1 November). The 26 September Western observance appears nowhere in the article text, so this date is not supported by the source being summarized (it also drops the article's 27 September execution date). Reconcile by either attributing 26 September to the Roman calendar as an explicit external qualification or aligning with the article's 27 September."
+      ]
     }
   ]
 }

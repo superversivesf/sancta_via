@@ -8,6 +8,14 @@
 // `normalizeSearchText` output so build-side and query-side share one
 // normalization function.
 //
+// Schema v2 (grounded saint histories): the accepted `data/histories.json`
+// entries (slug-keyed; NOT part of the byte-pinned saints_source.json) are
+// validated — body 400-4000 chars, `historySource` matching the pinned
+// provenance pattern, slug present among the inserted seeds — and merged
+// into the `saints.history` / `saints.history_source` columns only here,
+// at build time. Every seed record's `sources` list becomes `sources`
+// table rows (`slug`, `url`, `position`) for ALL saints.
+//
 // Dev-only: tools/ is never imported by runtime code.
 //
 // Usage (from the package root):
@@ -23,6 +31,12 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 /// Slug rule: kebab-case, 1-100 chars (`a-z`, `0-9`, single `-` separators).
 final RegExp _kebabPattern = RegExp(r'^[a-z0-9]+(-[a-z0-9]+)*$');
+
+/// Pinned provenance pattern for every authored history
+/// (`catholic-encyclopedia-1907` + the CE article URL).
+final RegExp _historySourcePattern = RegExp(
+  r'^catholic-encyclopedia-1907 https?://www\.newadvent\.org/cathen/\S+$',
+);
 
 /// Feast-day rule: `MM-DD` with a real calendar date, or `unknown`.
 ///
@@ -152,6 +166,48 @@ Future<void> _run() async {
     );
   }
 
+  // Schema v2: load the accepted authored histories (slug-keyed map — the
+  // byte-pinned saints_source.json never carries them) and validate every
+  // entry before anything is parsed or inserted.
+  final File historiesFile = File(p.join(dataDir.path, 'histories.json'));
+  if (!historiesFile.existsSync()) {
+    throw BuildSaintsDbException(
+      '${historiesFile.path} is missing; run '
+      'tools/histories_orchestrator.dart first',
+    );
+  }
+  final Map<String, Object?> histories =
+      _readJson(historiesFile) as Map<String, Object?>;
+  final Set<String> insertedSlugs = <String>{
+    for (final Map<String, Object?> record in recordsToInsert)
+      record['slug']! as String,
+  };
+  final List<String> historiesViolations = _validateHistories(
+    histories,
+    insertedSlugs,
+  );
+  if (historiesViolations.isNotEmpty) {
+    for (final String violation in historiesViolations) {
+      stderr.writeln(violation);
+    }
+    throw BuildSaintsDbException(
+      'histories validation failed: ${historiesViolations.length} violations',
+    );
+  }
+
+  // Merge the accepted entries into the (in-memory) record maps so
+  // [Saint.fromSourceJson] carries `history` / `historySource` through the
+  // model chain. The byte-pinned data/saints_source.json on disk is never
+  // written.
+  for (final Map<String, Object?> record in recordsToInsert) {
+    final Object? entry = histories[record['slug']! as String];
+    if (entry is! Map) {
+      continue;
+    }
+    record['history'] = entry['history'];
+    record['historySource'] = entry['historySource'];
+  }
+
   // Parse once with the Task 2 model: downstream inserts and counts all use
   // the same runtime shapes.
   final List<Saint> saints = <Saint>[
@@ -204,6 +260,12 @@ Future<void> _run() async {
   if (dbFile.existsSync()) {
     dbFile.deleteSync();
   }
+  // One `sources` row per seed `sources` entry, summed up front for the
+  // summary.
+  final int sourcesRows = saints.fold<int>(
+    0,
+    (int sum, Saint saint) => sum + saint.sources.length,
+  );
   final Directory assetsDir = Directory(p.join(packageRoot, 'assets'));
   if (!assetsDir.existsSync()) {
     assetsDir.createSync(recursive: true);
@@ -227,12 +289,23 @@ Future<void> _run() async {
           'thumb_asset': saint.thumbAsset,
           'image_attribution': saint.imageAttribution,
           'image_alt': saint.imageAlt,
+          'history': saint.history,
+          'history_source': saint.historySource,
         });
         for (final SaintPatronage patronage in saint.patronages) {
           batch.insert('patronages', <String, Object?>{
             'slug': saint.slug,
             'need': patronage.need,
             'category': patronage.category.name,
+          });
+        }
+        // Per-saint source URLs: one `sources` row per seed `sources` entry,
+        // position ordered, for ALL saints (not just those with histories).
+        for (int i = 0; i < saint.sources.length; i++) {
+          batch.insert('sources', <String, Object?>{
+            'slug': saint.slug,
+            'url': saint.sources[i],
+            'position': i,
           });
         }
         // FTS rows carry pre-normalized text only: build-side and query-side
@@ -306,6 +379,15 @@ Future<void> _run() async {
     );
     print('  need_synonyms: ${synonyms.length} entries -> $synonymRows rows');
     print('  saint_fts rows: ${saints.length}');
+    print(
+      '  histories (schema v2): ${histories.length} entries merged -> '
+      '${saints.where((Saint saint) => saint.history != null).length} '
+      'saints with history',
+    );
+    print(
+      '  sources (schema v2): $sourcesRows rows for '
+      '${saints.where((Saint saint) => saint.sources.isNotEmpty).length} saints',
+    );
     print('  featured: $featured (expected 6)');
     print(
       '  schema statements: ${saintsSchemaStatements.length}; '
@@ -333,6 +415,49 @@ Object? _readJson(File file) {
   } on FormatException catch (error) {
     throw BuildSaintsDbException('${file.path} is not valid JSON: $error');
   }
+}
+
+/// Validates the slug-keyed accepted-histories map (schema v2).
+///
+/// Each entry merges into the built database only when the keyed slug is
+/// among the inserted seeds, the body is a string of 400-4000 chars, and
+/// `historySource` matches the pinned provenance pattern. Returns one
+/// violation line per failed check, each prefixed with the entry's key.
+List<String> _validateHistories(
+  Map<String, Object?> histories,
+  Set<String> insertedSlugs,
+) {
+  final List<String> violations = <String>[];
+  for (final MapEntry<String, Object?> entry in histories.entries) {
+    final String key = entry.key;
+    void add(String detail) => violations.add('  histories "$key": $detail');
+
+    final Object? rawEntry = entry.value;
+    if (rawEntry is! Map) {
+      add('entry is not a JSON object');
+      continue;
+    }
+    final Object? rawSlug = rawEntry['slug'];
+    if (rawSlug is String && rawSlug != key) {
+      add('entry slug "$rawSlug" does not match its key "$key"');
+    }
+    if (!insertedSlugs.contains(key)) {
+      add('slug is not in the seed data');
+    }
+    final Object? rawHistory = rawEntry['history'];
+    if (rawHistory is! String) {
+      add('history is not a string: $rawHistory');
+    } else if (rawHistory.length < 400 || rawHistory.length > 4000) {
+      add('history length ${rawHistory.length} outside 400..4000');
+    }
+    final Object? rawSource = rawEntry['historySource'];
+    if (rawSource is! String) {
+      add('historySource is not a string: $rawSource');
+    } else if (!_historySourcePattern.hasMatch(rawSource)) {
+      add('historySource does not match the pinned pattern: $rawSource');
+    }
+  }
+  return violations;
 }
 
 /// Runs the Task 2 record checks against one raw record.

@@ -77,13 +77,111 @@ void main() {
   });
 
   group('committed assets/saints.db', () {
-    test('stamps PRAGMA user_version = 1', () async {
+    test('stamps PRAGMA user_version = 2', () async {
       final Database db = await _openDb;
       final List<Map<String, Object?>> version = await db.rawQuery(
         'PRAGMA user_version',
       );
       expect(version.single['user_version'], saintsSchemaVersion);
-      expect(saintsSchemaVersion, 1);
+      // Downgrade-loud: the committed asset pins schema v2 (saint histories);
+      // a constant knocked back to 1 fails here immediately.
+      expect(saintsSchemaVersion, 2);
+    });
+
+    test(
+      'carries the v2 history columns and a populated sources table',
+      () async {
+        final Database db = await _openDb;
+        final List<Map<String, Object?>> columns = await db.rawQuery(
+          'PRAGMA table_info(saints)',
+        );
+        expect(<String>[
+          for (final Map<String, Object?> c in columns) c['name'] as String,
+        ], containsAll(<String>['history', 'history_source']));
+        final List<Map<String, Object?>> sourcesTables = await db.rawQuery(
+          "SELECT COUNT(*) AS n FROM sqlite_master WHERE name = 'sources'",
+        );
+        expect(sourcesTables.single['n'], 1);
+      },
+    );
+
+    test('holds one history per accepted histories entry', () async {
+      final Database db = await _openDb;
+      final Map<String, Object?> histories =
+          jsonDecode(
+                File(
+                  '${Directory.current.path}/data/histories.json',
+                ).readAsStringSync(),
+              )
+              as Map<String, Object?>;
+      expect(histories, isNotEmpty);
+
+      final List<Map<String, Object?>> counts = await db.rawQuery(
+        'SELECT COUNT(*) AS n FROM saints WHERE history IS NOT NULL',
+      );
+      expect(
+        counts.single['n'] as int,
+        histories.length,
+        reason:
+            'every accepted histories entry merges into the committed db '
+            '(Task 4 accepted ${histories.length} entries)',
+      );
+      final List<Map<String, Object?>> francis = await db.rawQuery(
+        "SELECT history, history_source FROM saints WHERE slug = 'francis-of-assisi'",
+      );
+      expect(francis.single['history'], isNotNull);
+      expect(
+        RegExp(
+          r'^catholic-encyclopedia-1907 '
+          r'https?://www\.newadvent\.org/cathen/\S+$',
+        ).hasMatch(francis.single['history_source']! as String),
+        isTrue,
+      );
+    });
+
+    test('holds one sources row per seed source, in position order', () async {
+      final Database db = await _openDb;
+      final Map<String, Object?> payload =
+          jsonDecode(
+                File(
+                  '${Directory.current.path}/data/saints_source.json',
+                ).readAsStringSync(),
+              )
+              as Map<String, Object?>;
+      final Map<String, List<String>> expected = <String, List<String>>{};
+      for (final Object? item in payload['saints']! as List<Object?>) {
+        final Map<String, Object?> record = item! as Map<String, Object?>;
+        expected[record['slug']! as String] = <String>[
+          for (final Object? url
+              in record['sources'] as List<Object?>? ?? const <Object?>[])
+            url! as String,
+        ];
+      }
+
+      final List<Map<String, Object?>> rows = await db.rawQuery(
+        'SELECT slug, url, position FROM sources ORDER BY slug, position',
+      );
+      // Recompute per-slug ordered lists from the db rows.
+      final Map<String, List<String>> actual = <String, List<String>>{};
+      int? lastPosition;
+      String lastSlug = '';
+      for (final Map<String, Object?> row in rows) {
+        final String slug = row['slug']! as String;
+        final int position = row['position']! as int;
+        if (slug == lastSlug) {
+          expect(
+            position,
+            lastPosition! + 1,
+            reason: 'positions are dense per slug',
+          );
+        } else {
+          expect(position, 0, reason: 'each slug restarts at position 0');
+        }
+        lastSlug = slug;
+        lastPosition = position;
+        actual.putIfAbsent(slug, () => <String>[]).add(row['url']! as String);
+      }
+      expect(actual, expected);
     });
 
     test('has one saints row per committed manifest saintCount', () async {

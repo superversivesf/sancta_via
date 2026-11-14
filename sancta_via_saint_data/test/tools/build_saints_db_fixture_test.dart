@@ -1,4 +1,5 @@
-// Fixture-run test for `tools/build_saints_db.dart` draft-exclusion semantics.
+// Fixture-run test for `tools/build_saints_db.dart` draft-exclusion semantics
+// and the schema v2 histories merge.
 //
 // The build tool resolves its inputs from `Directory.current`, so this test
 // stages a tiny synthetic snapshot under `.dart_tool/` (inside the package,
@@ -7,13 +8,26 @@
 // `draft: true` record and a manifest describing only the non-draft records:
 // the draft must be skipped without failing the saintCount cross-check
 // (the design's documented exclusion mechanism).
+//
+// Schema v2 (saint histories) extensions: an empty `data/histories.json` is
+// the default; tests override it to assert (a) history + history_source
+// merging into the built db plus `sources` rows for seeded source lists, and
+// (b) a bad `historySource` regex, an out-of-range length, or an unknown
+// slug makes the build exit 1.
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
   late Directory fixture;
+
+  /// Overwrites the fixture's `data/histories.json` (the default setUp wrote
+  /// an empty map).
+  void writeHistories(Map<String, Object> histories) {
+    _writeJson('${fixture.path}/data/histories.json', histories);
+  }
 
   setUp(() {
     // Under `.dart_tool/` so ancestor package-config discovery still hits the
@@ -60,6 +74,8 @@ void main() {
         _saintC, // the draft: must be skipped, never counted
       ],
     });
+    // Default: no accepted histories. Individual tests override the file.
+    _writeJson('${fixture.path}/data/histories.json', <String, Object>{});
     // The manifest describes the inserted set only: 2 saints and the
     // patronage categories of A (2 entries) + B (1 entry).
     _writeJson('${fixture.path}/data/manifest.json', <String, Object>{
@@ -112,6 +128,187 @@ void main() {
     },
     timeout: const Timeout(Duration(minutes: 3)),
   );
+
+  group('schema v2 histories merge', () {
+    test(
+      'merges history + history_source and inserts ordered sources rows',
+      () async {
+        writeHistories(<String, Object>{
+          'fixture-saint-a': <String, Object>{
+            'slug': 'fixture-saint-a',
+            'history': _fixtureHistory,
+            'historySource':
+                'catholic-encyclopedia-1907 '
+                'https://www.newadvent.org/cathen/06221a.htm',
+            'ceCode': '06221a',
+            'authoredAt': '2026-11-14T00:00:00.000Z',
+            'checkedBy': 'fixture-checker',
+            'roundsUsed': 1,
+          },
+        });
+
+        final ProcessResult result = await Process.run(
+          _dartExecutable(),
+          <String>['run', 'tools/build_saints_db.dart'],
+          workingDirectory: fixture.path,
+        );
+        expect(
+          result.exitCode,
+          0,
+          reason: 'valid histories must build; stderr: ${result.stderr}',
+        );
+
+        // Open the built db and pin the merged shape.
+        databaseFactory = databaseFactoryFfi;
+        final Database db = await databaseFactory.openDatabase(
+          '${fixture.path}/assets/saints.db',
+          options: OpenDatabaseOptions(readOnly: true, singleInstance: false),
+        );
+        final List<Map<String, Object?>> version = await db.rawQuery(
+          'PRAGMA user_version',
+        );
+        expect(version.single['user_version'], 2);
+        final List<Map<String, Object?>> saints = await db.rawQuery(
+          "SELECT slug, history, history_source FROM saints "
+          'ORDER BY slug',
+        );
+        final Map<String, Map<String, Object?>> bySlug =
+            <String, Map<String, Object?>>{
+              for (final Map<String, Object?> row in saints)
+                row['slug']! as String: row,
+            };
+        expect(
+          bySlug['fixture-saint-a']!['history'],
+          _fixtureHistory,
+          reason: 'the accepted history text must land in the history column',
+        );
+        expect(
+          bySlug['fixture-saint-a']!['history_source'],
+          'catholic-encyclopedia-1907 '
+          'https://www.newadvent.org/cathen/06221a.htm',
+        );
+        expect(
+          bySlug['fixture-saint-b']!['history'],
+          isNull,
+          reason: 'a saint without a history entry keeps NULL history',
+        );
+        final List<Map<String, Object?>> sources = await db.rawQuery(
+          'SELECT slug, url, position FROM sources '
+          'ORDER BY slug, position',
+        );
+        expect(sources, <Matcher>[
+          equals(<String, Object?>{
+            'slug': 'fixture-saint-a',
+            'url': 'https://en.wikipedia.org/wiki/Fixture_A',
+            'position': 0,
+          }),
+          equals(<String, Object?>{
+            'slug': 'fixture-saint-a',
+            'url': 'https://www.newadvent.org/cathen/06221a.htm',
+            'position': 1,
+          }),
+        ], reason: 'source rows come from every seed source list, in order');
+        expect(
+          sources.where(
+            (Map<String, Object?> row) =>
+                row['slug'] == 'fixture-saint-b' ||
+                row['slug'] == 'fixture-saint-c',
+          ),
+          isEmpty,
+          reason: 'no sources rows for saints with empty source lists',
+        );
+        await db.close();
+      },
+      timeout: const Timeout(Duration(minutes: 3)),
+    );
+
+    test(
+      'exits 1 when a historySource does not match the pinned pattern',
+      () async {
+        writeHistories(<String, Object>{
+          'fixture-saint-a': <String, Object>{
+            'slug': 'fixture-saint-a',
+            'history': _fixtureHistory,
+            'historySource': 'https://example.com/not-the-encyclopedia',
+            'ceCode': '06221a',
+            'authoredAt': '2026-11-14T00:00:00.000Z',
+            'checkedBy': 'fixture-checker',
+            'roundsUsed': 1,
+          },
+        });
+
+        final ProcessResult result = await Process.run(
+          _dartExecutable(),
+          <String>['run', 'tools/build_saints_db.dart'],
+          workingDirectory: fixture.path,
+        );
+        expect(
+          result.exitCode,
+          1,
+          reason: 'bad historySource regex must abort the build',
+        );
+        expect(result.stderr, contains('historySource'));
+      },
+      timeout: const Timeout(Duration(minutes: 3)),
+    );
+
+    test('exits 1 when a history is shorter than 400 chars', () async {
+      final String shortHistory = 'x' * 399;
+      writeHistories(<String, Object>{
+        'fixture-saint-a': <String, Object>{
+          'slug': 'fixture-saint-a',
+          'history': shortHistory,
+          'historySource':
+              'catholic-encyclopedia-1907 '
+              'https://www.newadvent.org/cathen/06221a.htm',
+          'ceCode': '06221a',
+          'authoredAt': '2026-11-14T00:00:00.000Z',
+          'checkedBy': 'fixture-checker',
+          'roundsUsed': 1,
+        },
+      });
+
+      final ProcessResult result = await Process.run(
+        _dartExecutable(),
+        <String>['run', 'tools/build_saints_db.dart'],
+        workingDirectory: fixture.path,
+      );
+      expect(
+        result.exitCode,
+        1,
+        reason: 'history length 399 < 400 must abort the build',
+      );
+      expect(result.stderr, contains('400..4000'));
+    }, timeout: const Timeout(Duration(minutes: 3)));
+
+    test('exits 1 when a histories slug is missing from the seeds', () async {
+      writeHistories(<String, Object>{
+        'fixture-saint-z': <String, Object>{
+          'slug': 'fixture-saint-z',
+          'history': _fixtureHistory,
+          'historySource':
+              'catholic-encyclopedia-1907 '
+              'https://www.newadvent.org/cathen/06221a.htm',
+          'ceCode': '06221a',
+          'authoredAt': '2026-11-14T00:00:00.000Z',
+          'checkedBy': 'fixture-checker',
+          'roundsUsed': 1,
+        },
+      });
+
+      final ProcessResult result = await Process.run(
+        _dartExecutable(),
+        <String>['run', 'tools/build_saints_db.dart'],
+        workingDirectory: fixture.path,
+      );
+      expect(
+        result.exitCode,
+        1,
+        reason: 'a history for a slug outside the seeds must abort the build',
+      );
+      expect(result.stderr, contains('fixture-saint-z'));
+    }, timeout: const Timeout(Duration(minutes: 3)));
+  });
 }
 
 /// The `dart` CLI to spawn `dart run` with: tests execute inside the
@@ -134,7 +331,7 @@ String _dartExecutable() {
   return 'dart';
 }
 
-/// A live fixture record with two patronages.
+/// A live fixture record with two patronages and two source URLs.
 const Map<String, Object> _saintA = <String, Object>{
   'slug': 'fixture-saint-a',
   'name': 'St. Fixture A',
@@ -148,7 +345,10 @@ const Map<String, Object> _saintA = <String, Object>{
     'text': 'Pray for us, fixture saint A.',
     'source': 'original',
   },
-  'sources': <String>[],
+  'sources': <String>[
+    'https://en.wikipedia.org/wiki/Fixture_A',
+    'https://www.newadvent.org/cathen/06221a.htm',
+  ],
   'featured': true,
   'draft': false,
 };
@@ -185,3 +385,16 @@ void _writeJson(String path, Object data) {
     path,
   ).writeAsStringSync('${const JsonEncoder.withIndent('  ').convert(data)}\n');
 }
+
+/// A 540-char (in 400..4000) valid fixture history body.
+const String _fixtureHistory =
+    'Fixture grounded history sentence for the merge test. '
+    'Fixture grounded history sentence for the merge test. '
+    'Fixture grounded history sentence for the merge test. '
+    'Fixture grounded history sentence for the merge test. '
+    'Fixture grounded history sentence for the merge test. '
+    'Fixture grounded history sentence for the merge test. '
+    'Fixture grounded history sentence for the merge test. '
+    'Fixture grounded history sentence for the merge test. '
+    'Fixture grounded history sentence for the merge test. '
+    'Fixture grounded history sentence for the merge test. ';

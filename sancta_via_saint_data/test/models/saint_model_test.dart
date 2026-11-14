@@ -183,6 +183,73 @@ void main() {
     });
   });
 
+  group('Saint history fields (schema v2)', () {
+    test('default to null when the record carries no history entry', () {
+      final Saint saint = Saint.fromSourceJson(garimaJson);
+
+      expect(saint.history, isNull);
+      expect(saint.historySource, isNull);
+    });
+
+    test('parse history and historySource from a merged record', () {
+      final String historyText =
+          'A grounded 400-plus character history body drawn from the '
+              'Catholic Encyclopedia entry and cross-checked against the seed '
+              'facts before it is merged into the build-time database copy, '
+              'carrying only claims the grounding text or tradition supports. ' *
+          2;
+      final Map<String, dynamic> mergedJson = <String, dynamic>{
+        ...garimaJson,
+        'history': historyText,
+        'historySource':
+            'catholic-encyclopedia-1907 '
+            'https://www.newadvent.org/cathen/06221a.htm',
+      };
+
+      final Saint saint = Saint.fromSourceJson(mergedJson);
+
+      expect(saint.history, historyText);
+      expect(
+        saint.historySource,
+        'catholic-encyclopedia-1907 '
+        'https://www.newadvent.org/cathen/06221a.htm',
+      );
+    });
+
+    test('round-trips history fields through toSourceJson', () {
+      final Map<String, dynamic> mergedJson = <String, dynamic>{
+        ...garimaJson,
+        'history':
+            'The Nine Saints of Ethiopia brought monasticism to Tigray, '
+            'and tradition holds that Abba Garima copied a Gospel book in '
+            'a single day, a claim hedged here exactly as the grounding '
+            'text allows so the shipped history invents nothing. ',
+      };
+      final Saint original = Saint.fromSourceJson(mergedJson);
+      final Saint roundTripped = Saint.fromSourceJson(original.toSourceJson());
+
+      expect(roundTripped.history, original.history);
+      expect(roundTripped.historySource, original.historySource);
+      expect(roundTripped, original);
+    });
+
+    test('saints differing only in history are not equal', () {
+      final Map<String, dynamic> mergedJson = <String, dynamic>{
+        ...garimaJson,
+        'history':
+            'The Nine Saints of Ethiopia brought monasticism to Tigray, '
+            'and tradition holds that Abba Garima copied a Gospel book in '
+            'a single day, a claim hedged here exactly as the grounding '
+            'text allows so the shipped history invents nothing. ',
+      };
+
+      expect(
+        Saint.fromSourceJson(mergedJson),
+        isNot(Saint.fromSourceJson(garimaJson)),
+      );
+    });
+  });
+
   group('Saint field defaults', () {
     test('absent booleans, feastDay, and image fall back', () {
       final Saint saint = Saint.fromSourceJson(minimalJson);
@@ -309,6 +376,58 @@ void main() {
       expect(saint.thumbAsset, isNull);
       expect(saint.imageAttribution, isNull);
       expect(saint.imageAlt, isNull);
+    });
+
+    test('absent history columns yield null history fields', () {
+      final Saint saint = Saint.fromDbRow(thereseRow);
+
+      expect(saint.history, isNull);
+      expect(saint.historySource, isNull);
+    });
+
+    test('reads history and history_source from the row columns', () {
+      final Saint saint = Saint.fromDbRow(<String, dynamic>{
+        ...thereseRow,
+        'history':
+            'The little flower taught the little way of spiritual '
+            'childhood, hedged here to stay within the grounding text. '
+            'Tradition holds her confidence in God never wavered. '
+            'Tradition holds her confidence in God never wavered. '
+            'Tradition holds her confidence in God never wavered. '
+            'Tradition holds her confidence in God never wavered. ',
+        'history_source':
+            'catholic-encyclopedia-1907 '
+            'https://www.newadvent.org/cathen/14570b.htm',
+      });
+
+      expect(saint.history, contains('little way'));
+      expect(
+        saint.historySource,
+        'catholic-encyclopedia-1907 '
+        'https://www.newadvent.org/cathen/14570b.htm',
+      );
+    });
+
+    test('explicit optional params override the row columns', () {
+      final String rowHistory =
+          'Row-column history body long enough to satisfy the validator '
+          'range and to be distinguishable from the explicit parameter '
+          'value in this assertion, with enough padding to reach the '
+          'minimum length bound. ';
+
+      final Saint overriden = Saint.fromDbRow(
+        <String, dynamic>{...thereseRow, 'history': rowHistory},
+        history: 'param history',
+        historySource: 'param-history-source',
+      );
+      expect(overriden.history, 'param history');
+      expect(overriden.historySource, 'param-history-source');
+
+      final Saint fromColumns = Saint.fromDbRow(<String, dynamic>{
+        ...thereseRow,
+        'history': rowHistory,
+      });
+      expect(fromColumns.history, rowHistory);
     });
   });
 

@@ -1,9 +1,10 @@
-// Schema tests for the saints.db SQLite store (spec section 6).
+// Schema tests for the saints.db SQLite store (spec section 6 + schema v2).
 //
 // These run `createSaintsDatabase` against an in-memory FFIsqflite database
-// and pin the spec DDL: user_version, the 3 tables + 5 indexes, the FTS4
-// virtual table with the unicode61 tokenizer, usable inserts, the slug
-// primary key, and prefix-phrase MATCH over pre-normalized text.
+// and pin the spec DDL: user_version, the 3 tables + 5 indexes plus the v2
+// `saints.history`/`saints.history_source` columns and the `sources` table,
+// the FTS4 virtual table with the unicode61 tokenizer, usable inserts, the
+// slug primary key, and prefix-phrase MATCH over pre-normalized text.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:saint_data/src/db/saints_schema.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -52,6 +53,7 @@ void main() {
           'saints',
           'patronages',
           'need_synonyms',
+          'sources',
           'idx_saints_feast',
           'idx_saints_featured',
           'idx_patronages_category',
@@ -64,7 +66,7 @@ void main() {
       await db.close();
     });
 
-    test('creates the saints table with exactly the 11 spec columns', () async {
+    test('creates the saints table with exactly the 13 v2 columns', () async {
       final Database db = await _openInMemory();
       await createSaintsDatabase(db);
 
@@ -87,13 +89,16 @@ void main() {
           'thumb_asset',
           'image_attribution',
           'image_alt',
+          // Schema v2 (grounded histories).
+          'history',
+          'history_source',
         ],
       );
 
       await db.close();
     });
 
-    test('sets PRAGMA user_version to saintsSchemaVersion (1)', () async {
+    test('sets PRAGMA user_version to saintsSchemaVersion (2)', () async {
       final Database db = await _openInMemory();
       await createSaintsDatabase(db);
 
@@ -101,7 +106,7 @@ void main() {
         'PRAGMA user_version',
       );
       const int expected = saintsSchemaVersion;
-      expect(expected, 1);
+      expect(expected, 2);
       expect(version.single['user_version'], expected);
 
       await db.close();
@@ -166,6 +171,73 @@ void main() {
 
       await db.close();
     });
+  });
+
+  group('sources table (schema v2)', () {
+    test('round-trips source rows ordered by position', () async {
+      final Database db = await _openInMemory();
+      await createSaintsDatabase(db);
+
+      await db.insert('saints', _garimaRow);
+      await db.insert('sources', <String, Object?>{
+        'slug': 'abba-garima',
+        'url': 'https://en.wikipedia.org/wiki/Abba_Garima',
+        'position': 0,
+      });
+      await db.insert('sources', <String, Object?>{
+        'slug': 'abba-garima',
+        'url': 'https://www.newadvent.org/cathen/06221a.htm',
+        'position': 1,
+      });
+
+      final List<Map<String, Object?>> rows = await db.rawQuery(
+        'SELECT url, position FROM sources '
+        "WHERE slug = 'abba-garima' ORDER BY position",
+      );
+      expect(
+        <String>[
+          for (final Map<String, Object?> row in rows) row['url']! as String,
+        ],
+        <String>[
+          'https://en.wikipedia.org/wiki/Abba_Garima',
+          'https://www.newadvent.org/cathen/06221a.htm',
+        ],
+        reason: 'sources must come back in position order for getBySlug',
+      );
+
+      await db.close();
+    });
+
+    test(
+      'rejects a duplicate (slug, position) with a uniqueness error',
+      () async {
+        final Database db = await _openInMemory();
+        await createSaintsDatabase(db);
+
+        await db.insert('saints', _garimaRow);
+        await db.insert('sources', <String, Object?>{
+          'slug': 'abba-garima',
+          'url': 'https://en.wikipedia.org/wiki/Abba_Garima',
+          'position': 0,
+        });
+
+        await expectLater(
+          db.insert('sources', <String, Object?>{
+            'slug': 'abba-garima',
+            'url': 'https://en.wikipedia.org/wiki/Abba_Garima',
+            'position': 0,
+          }),
+          throwsA(
+            predicate<Exception>((Exception e) {
+              return e.toString().contains('UNIQUE constraint');
+            }),
+          ),
+          reason: '(slug, position) is the sources primary key',
+        );
+
+        await db.close();
+      },
+    );
   });
 
   group('saint_fts (fts4 + unicode61)', () {

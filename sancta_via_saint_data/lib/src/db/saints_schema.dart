@@ -3,15 +3,20 @@ import 'package:sqflite_common/sqflite.dart';
 /// Schema version stamped into `assets/saints.db` as `PRAGMA user_version`.
 ///
 /// The repository bumps this whenever the schema changes; older on-device
-/// copies of the database are re-copied from the bundled asset.
-const int saintsSchemaVersion = 1;
+/// copies of the database are re-copied from the bundled asset (version 2
+/// adds the grounded saint histories: `saints.history`, `saints.history_source`,
+/// and the per-saint `sources` table).
+const int saintsSchemaVersion = 2;
 
-/// The exact `assets/saints.db` DDL, verbatim from spec section 6.
+/// The `assets/saints.db` DDL: the spec section 6 tables plus the schema v2
+/// statements (grounded saint histories).
 ///
-/// Executed in order by [createSaintsDatabase]. Search text (FTS `name`,
-/// `patronages`, `bio`, `prayer`) is written **pre-normalized** by the build
-/// tool via `normalizeSearchText`, so the query side shares one
-/// normalization pass with the indexed side.
+/// Executed in order by [createSaintsDatabase] (the v2 statements ride as
+/// straight `ALTER`/`CREATE` lines because the build tool always creates the
+/// database from scratch). Search text (FTS `name`, `patronages`, `bio`,
+/// `prayer`) is written **pre-normalized** by the build tool via
+/// `normalizeSearchText`, so the query side shares one normalization pass
+/// with the indexed side.
 const List<String> saintsSchemaStatements = <String>[
   'CREATE TABLE saints (\n'
       '  slug TEXT PRIMARY KEY,\n'
@@ -43,6 +48,17 @@ const List<String> saintsSchemaStatements = <String>[
   "CREATE VIRTUAL TABLE saint_fts USING fts4(\n"
       '  slug, name, patronages, bio, prayer,\n'
       "  tokenize = 'unicode61'\n"
+      ')',
+  // Schema v2 (saint histories): accepted 400-4000-char grounded history
+  // bodies merged at build time from data/histories.json, and the per-saint
+  // source URLs (ordered by `position`) backing every record.
+  'ALTER TABLE saints ADD COLUMN history TEXT',
+  'ALTER TABLE saints ADD COLUMN history_source TEXT',
+  'CREATE TABLE sources (\n'
+      '  slug TEXT NOT NULL,\n'
+      '  url TEXT NOT NULL,\n'
+      '  position INTEGER NOT NULL,\n'
+      '  PRIMARY KEY (slug, position)\n'
       ')',
 ];
 
