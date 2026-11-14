@@ -123,7 +123,7 @@ void main() {
       // asset's PRAGMA user_version), rendered as text.
       expect(
         tester.widget<Text>(find.byKey(_dataVersionKey)).data,
-        'Data version 1',
+        'Data version 2',
       );
     },
   );
