@@ -1,6 +1,7 @@
 {
   "id": "nine_first_fridays",
   "title": "Nine First Fridays of the Sacred Heart",
+  "description": "Nine consecutive First Fridays honoring the Sacred Heart · monthly",
   "family": "commitment",
   "schedule": {
     "type": "consecutiveCommitments",

@@ -1,6 +1,7 @@
 {
   "id": "lectio_divina",
   "title": "Lectio Divina",
+  "description": "Pray with Scripture — read, meditate, respond, rest · ~10 min",
   "family": "routine",
   "schedules": [
     {

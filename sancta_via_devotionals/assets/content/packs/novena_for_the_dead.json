@@ -1,6 +1,7 @@
 {
   "id": "novena_for_the_dead",
   "title": "The Novena for the Dead",
+  "description": "Nine days of prayer for the faithful departed · ~5 min/day",
   "family": "novena",
   "schedule": {
     "type": "fixedDate",

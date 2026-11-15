@@ -1,6 +1,7 @@
 {
   "id": "st_joseph",
   "title": "The Novena to St. Joseph",
+  "description": "Novena to St. Joseph, patron of workers and families · 9 days, ~5 min/day",
   "family": "novena",
   "schedule": {
     "type": "fixedDate",

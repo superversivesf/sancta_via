@@ -1,6 +1,7 @@
 {
   "id": "holy_spirit_pentecost",
   "title": "The Novena to the Holy Spirit",
+  "description": "Novena to the Holy Spirit for Pentecost · 9 days, ~5 min/day",
   "family": "novena",
   "schedule": {
     "type": "easterOffset",

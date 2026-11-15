@@ -1,10 +1,13 @@
 {
   "id": "perpetual_help",
   "title": "The Novena to Our Mother of Perpetual Help",
+  "description": "Novena to Our Lady of Perpetual Help · 9 days, ~5 min/day",
   "family": "novena",
   "schedule": {
     "type": "weeklyLoop",
-    "weekdays": [2]
+    "weekdays": [
+      2
+    ]
   },
   "session": {
     "id": "perpetual-help-novena-session",

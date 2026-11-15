@@ -1,6 +1,7 @@
 {
   "id": "divine_mercy_novena",
   "title": "The Divine Mercy Novena",
+  "description": "Nine days of Mercy leading to Divine Mercy Sunday · ~5 min/day",
   "family": "novena",
   "schedule": {
     "type": "easterOffset",

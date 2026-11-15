@@ -1,6 +1,7 @@
 {
   "id": "undoer_of_knots",
   "title": "The Novena to Mary, Undoer of Knots",
+  "description": "Novena to Mary, Undoer of Knots · 9 days, ~5 min/day",
   "family": "novena",
   "schedule": {
     "type": "fixedDate",

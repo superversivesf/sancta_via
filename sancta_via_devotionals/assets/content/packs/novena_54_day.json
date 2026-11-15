@@ -1,6 +1,7 @@
 {
   "id": "novena_54_day",
   "title": "The 54-Day Rosary Novena",
+  "description": "54-day Rosary novena — 27 days petition, 27 days thanksgiving · ~15 min/day",
   "family": "novena",
   "schedule": {
     "type": "sessionSeries",

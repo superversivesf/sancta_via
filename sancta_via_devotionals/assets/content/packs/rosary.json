@@ -1,10 +1,19 @@
 {
   "id": "rosary",
   "title": "The Holy Rosary",
+  "description": "Five decades with daily mysteries, beads and Scripture · ~15 min",
   "family": "routine",
   "schedule": {
     "type": "weeklyLoop",
-    "weekdays": [1, 2, 3, 4, 5, 6, 7]
+    "weekdays": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
   },
   "session": {
     "id": "rosary-session",

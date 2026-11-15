@@ -1,6 +1,7 @@
 {
   "id": "holy_wounds",
   "title": "The Rosary of the Holy Wounds",
+  "description": "Chaplet of the Holy Wounds for reparation and mercy · ~10 min",
   "family": "chaplet",
   "schedule": {
     "type": "timeOfDay",

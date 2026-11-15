@@ -1,6 +1,7 @@
 {
   "id": "litany_st_joseph",
   "title": "The Litany of Saint Joseph",
+  "description": "Litany of St. Joseph, guardian of the Church · ~5 min",
   "family": "routine",
   "schedule": {
     "type": "timeOfDay",

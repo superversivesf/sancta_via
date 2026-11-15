@@ -1,6 +1,7 @@
 {
   "id": "st_michael_chaplet",
   "title": "The Chaplet of Saint Michael",
+  "description": "Chaplet to St. Michael and the nine choirs of angels · ~10 min",
   "family": "chaplet",
   "schedule": {
     "type": "timeOfDay",

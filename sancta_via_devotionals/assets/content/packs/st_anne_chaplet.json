@@ -1,6 +1,7 @@
 {
   "id": "st_anne_chaplet",
   "title": "The Little Chaplet of Saint Anne",
+  "description": "Chaplet of St. Anne for family and perseverance · ~10 min",
   "family": "chaplet",
   "schedule": {
     "type": "timeOfDay",

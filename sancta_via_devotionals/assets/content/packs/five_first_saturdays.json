@@ -1,6 +1,7 @@
 {
   "id": "five_first_saturdays",
   "title": "Five First Saturdays of Our Lady",
+  "description": "Five consecutive First Saturdays for the Immaculate Heart · monthly",
   "family": "commitment",
   "schedule": {
     "type": "consecutiveCommitments",

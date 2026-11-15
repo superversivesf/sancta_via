@@ -1,6 +1,7 @@
 {
   "id": "litany_loreto",
   "title": "The Litany of Loreto",
+  "description": "Litany of Loreto — titles of the Blessed Virgin · ~5 min",
   "family": "routine",
   "schedule": {
     "type": "timeOfDay",

@@ -1,10 +1,13 @@
 {
   "id": "st_jude",
   "title": "The Novena to St. Jude",
+  "description": "Novena to St. Jude, patron of difficult causes · 9 days, ~5 min/day",
   "family": "novena",
   "schedule": {
     "type": "weeklyLoop",
-    "weekdays": [3]
+    "weekdays": [
+      3
+    ]
   },
   "session": {
     "id": "st-jude-novena-session",

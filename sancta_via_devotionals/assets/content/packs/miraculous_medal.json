@@ -1,6 +1,7 @@
 {
   "id": "miraculous_medal",
   "title": "The Novena to Our Lady of the Miraculous Medal",
+  "description": "Novena to Our Lady of the Miraculous Medal · 9 days, ~5 min/day",
   "family": "novena",
   "schedule": {
     "type": "fixedDate",

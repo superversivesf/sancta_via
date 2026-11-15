@@ -1,6 +1,7 @@
 {
   "id": "christmas_novena",
   "title": "The Christmas Novena",
+  "description": "Nine days preparing for the Nativity — Dec 16–24 · ~5 min/day",
   "family": "novena",
   "schedule": {
     "type": "fixedDate",

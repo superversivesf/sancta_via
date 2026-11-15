@@ -1,6 +1,7 @@
 {
   "id": "litany_sacred_heart",
   "title": "The Litany of the Sacred Heart of Jesus",
+  "description": "Litany of the Sacred Heart of Jesus · ~5 min",
   "family": "routine",
   "schedule": {
     "type": "timeOfDay",
