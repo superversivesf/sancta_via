@@ -333,7 +333,8 @@ String _historyAttribution(String? historySource) {
   }
 }
 
-class _FavoriteToggle extends ConsumerWidget {  const _FavoriteToggle({required this.saint});
+class _FavoriteToggle extends ConsumerWidget {
+  const _FavoriteToggle({required this.saint});
 
   final Saint saint;
 

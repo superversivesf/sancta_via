@@ -39,7 +39,11 @@ const String _kApiBase = 'https://en.wikipedia.org/w/api.php';
 /// One seed record to scrape: the slug, the display name (for the
 /// disambiguation guard), and the seed's source URLs.
 class SaintSeedRow {
-  const SaintSeedRow({required this.slug, required this.name, required this.sources});
+  const SaintSeedRow({
+    required this.slug,
+    required this.name,
+    required this.sources,
+  });
   final String slug;
   final String name;
   final List<String> sources;
@@ -62,27 +66,62 @@ class ScrapeOutcome {
 /// The accent-folded, de-prefixed comparable form of a saint display name
 /// ("St. Thérèse of Lisieux" -> "therese of lisieux").
 String comparableName(String name) {
-  return foldAccentsLite(name.toLowerCase())
-      .replaceAll(RegExp(r'^st\.?\s+'), '')
-      .replaceAll(RegExp(r'\s+'), ' ')
-      .trim();
+  return foldAccentsLite(
+    name.toLowerCase(),
+  ).replaceAll(RegExp(r'^st\.?\s+'), '').replaceAll(RegExp(r'\s+'), ' ').trim();
 }
 
 /// Accent folding without pulling the whole Task 1 normalizer in.
 String foldAccentsLite(String input) {
   const Map<String, String> table = <String, String>{
-    'á': 'a', 'à': 'a', 'â': 'a', 'ä': 'a', 'ã': 'a', 'ā': 'a', 'å': 'a',
-    'æ': 'ae', 'ç': 'c', 'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e', 'ē': 'e',
-    'í': 'i', 'ì': 'i', 'î': 'i', 'ï': 'i', 'ī': 'i', 'ñ': 'n', 'ó': 'o',
-    'ò': 'o', 'ô': 'o', 'ö': 'o', 'õ': 'o', 'ø': 'o', 'ō': 'o', 'œ': 'oe',
-    'ß': 'ss', 'ú': 'u', 'ù': 'u', 'û': 'u', 'ü': 'u', 'ū': 'u', 'ý': 'y',
-    'ÿ': 'y', 'ž': 'z', 'š': 's', 'ć': 'c', 'č': 'c', 'ł': 'l', 'ź': 'z',
-    'ż': 'z', 'ń': 'n', 'ę': 'e', 'ą': 'a',
+    'á': 'a',
+    'à': 'a',
+    'â': 'a',
+    'ä': 'a',
+    'ã': 'a',
+    'ā': 'a',
+    'å': 'a',
+    'æ': 'ae',
+    'ç': 'c',
+    'é': 'e',
+    'è': 'e',
+    'ê': 'e',
+    'ë': 'e',
+    'ē': 'e',
+    'í': 'i',
+    'ì': 'i',
+    'î': 'i',
+    'ï': 'i',
+    'ī': 'i',
+    'ñ': 'n',
+    'ó': 'o',
+    'ò': 'o',
+    'ô': 'o',
+    'ö': 'o',
+    'õ': 'o',
+    'ø': 'o',
+    'ō': 'o',
+    'œ': 'oe',
+    'ß': 'ss',
+    'ú': 'u',
+    'ù': 'u',
+    'û': 'u',
+    'ü': 'u',
+    'ū': 'u',
+    'ý': 'y',
+    'ÿ': 'y',
+    'ž': 'z',
+    'š': 's',
+    'ć': 'c',
+    'č': 'c',
+    'ł': 'l',
+    'ź': 'z',
+    'ż': 'z',
+    'ń': 'n',
+    'ę': 'e',
+    'ą': 'a',
   };
-  return input
-      .split('')
-      .map((String c) => table[c] ?? c)
-      .join();
+  return input.split('').map((String c) => table[c] ?? c).join();
 }
 
 /// The article title from a wikipedia URL ("Pope_John_Paul_II" ->
@@ -101,7 +140,8 @@ String extractPlainText(String responseBody) {
       : <String, dynamic>{};
   final Map<String, dynamic> query =
       (envelope['query'] as Map<String, dynamic>?) ?? <String, dynamic>{};
-  final List<dynamic> pages = (query['pages'] as List<dynamic>?) ?? const <dynamic>[];
+  final List<dynamic> pages =
+      (query['pages'] as List<dynamic>?) ?? const <dynamic>[];
   if (pages.isEmpty) {
     throw StateError('extracts response has no page');
   }
@@ -163,7 +203,14 @@ bool headlineMatches(String text, String seedName, String articleTitle) {
 /// Name tokens long enough and distinctive enough to identify a person
 /// (honorifics and glue words dropped).
 Set<String> distinctiveTokens(String comparableNameInput) {
-  const Set<String> stopwords = <String>{'st', 'saint', 'the', 'of', 'ii', 'iii'};
+  const Set<String> stopwords = <String>{
+    'st',
+    'saint',
+    'the',
+    'of',
+    'ii',
+    'iii',
+  };
   return comparableNameInput
       .split(RegExp(r'[^a-z0-9]+'))
       .where((String t) => t.length >= 4 && !stopwords.contains(t))
@@ -195,8 +242,7 @@ Future<ScrapeOutcome> runScrape({
   List<String> onlySlugs = const <String>[],
   Map<String, String> titleOverrides = const <String, String>{},
 }) async {
-  final String outDir =
-      '${packageRootForTest}/${groundingDirFor('wikipedia')}';
+  final String outDir = '${packageRootForTest}/${groundingDirFor('wikipedia')}';
   Directory(outDir).createSync(recursive: true);
   final File manifestFile = File('$outDir/manifest.json');
   final Map<String, dynamic> manifest = manifestFile.existsSync()
@@ -208,23 +254,32 @@ Future<ScrapeOutcome> runScrape({
   final List<ScrapeFailure> failures = <ScrapeFailure>[];
   final List<String> written = <String>[];
   final http.Client client = clientFactory();
-
   // The production body extraction (used via fetchText's default).
   String Function(String) extract = extractPlainText;
 
+  // Pre-request pacing for EVERY slug after the first — success, failure,
+  // and resume all take the polite path (final-review #13).
+  bool paced = false;
+
   for (final SaintSeedRow seed in seeds) {
+    if (paced) {
+      await Future<void>.delayed(const Duration(milliseconds: 1100));
+    }
+    paced = true;
     if (onlySlugs.isNotEmpty && !onlySlugs.contains(seed.slug)) {
       continue;
     }
     final String? url = titleOverrides.containsKey(seed.slug)
         ? 'https://en.wikipedia.org/wiki/'
-            '${Uri.encodeComponent(titleOverrides[seed.slug]!.replaceAll(' ', '_'))}'
+              '${Uri.encodeComponent(titleOverrides[seed.slug]!.replaceAll(' ', '_'))}'
         : wikipediaUrlFor(seed);
     if (url == null) {
-      failures.add(ScrapeFailure(
-        slug: seed.slug,
-        reason: 'no wikipedia URL in the seed sources list',
-      ));
+      failures.add(
+        ScrapeFailure(
+          slug: seed.slug,
+          reason: 'no wikipedia URL in the seed sources list',
+        ),
+      );
       continue;
     }
     // Guard, extract, and write for one slug.
@@ -233,13 +288,14 @@ Future<ScrapeOutcome> runScrape({
         if (row is Map<String, dynamic>) row['slug'] as String: row,
     };
     final File groundingFile = File('$outDir/${seed.slug}.txt');
-    final bool hasFile = groundingFile.existsSync() &&
-        groundingFile.lengthSync() > 0;
+    final bool hasFile =
+        groundingFile.existsSync() && groundingFile.lengthSync() > 0;
     if (hasFile && prior[seed.slug] != null) {
       continue; // resume: grounded + manifest row present
     }
-    final String title =
-        titleOverrides.containsKey(seed.slug) ? titleOverrides[seed.slug]! : titleFromUrl(url);
+    final String title = titleOverrides.containsKey(seed.slug)
+        ? titleOverrides[seed.slug]!
+        : titleFromUrl(url);
     if (hasFile) {
       // The file survived a previous run but its manifest row is missing
       // (a crash between write and manifest) — rebuild the row locally,
@@ -266,57 +322,55 @@ Future<ScrapeOutcome> runScrape({
     String body;
     // Two attempts per URL; a 429/5xx honors Retry-After (default 10 s)
     // before the single retry (Global Constraints politeness).
-      http.Response? response;
-      Object? transportError;
-      int status = 0;
-      for (int attempt = 1; attempt <= 2; attempt++) {
-        transportError = null;
-        status = 0;
-        try {
-          response = await client
-              .get(
-                Uri.parse(apiUrlFor(title)),
-                headers: <String, String>{
-                  'user-agent': 'sancta-via-grounding/1.0',
-                },
-              )
-              .timeout(const Duration(seconds: 120));
-        } catch (e) {
-          transportError = e;
-          if (attempt == 2) {
-            break;
-          }
-          await Future<void>.delayed(const Duration(seconds: 10));
-          continue;
+    http.Response? response;
+    Object? transportError;
+    int status = 0;
+    for (int attempt = 1; attempt <= 2; attempt++) {
+      transportError = null;
+      status = 0;
+      try {
+        response = await client
+            .get(
+              Uri.parse(apiUrlFor(title)),
+              headers: <String, String>{
+                'user-agent': 'sancta-via-grounding/1.0',
+              },
+            )
+            .timeout(const Duration(seconds: 120));
+      } catch (e) {
+        transportError = e;
+        if (attempt == 2) {
+          break;
         }
-        status = response.statusCode;
-        if (status == 429 || status >= 500) {
-          if (attempt == 2) {
-            break;
-          }
-          final int retryAfter =
-              int.tryParse(response.headers['retry-after'] ?? '') ?? 10;
-          log('[${seed.slug}] HTTP $status; retrying in ${retryAfter}s');
-          await Future<void>.delayed(Duration(seconds: retryAfter));
-          continue;
-        }
-        break;
-      }
-      if (transportError != null) {
-        failures.add(ScrapeFailure(
-          slug: seed.slug,
-          reason: 'HTTP error: $transportError',
-        ));
+        await Future<void>.delayed(const Duration(seconds: 10));
         continue;
       }
-      if (status != 200) {
-        failures.add(ScrapeFailure(
-          slug: seed.slug,
-          reason: 'HTTP $status for "$title"',
-        ));
+      status = response.statusCode;
+      if (status == 429 || status >= 500) {
+        if (attempt == 2) {
+          break;
+        }
+        final int retryAfter =
+            int.tryParse(response.headers['retry-after'] ?? '') ?? 10;
+        log('[${seed.slug}] HTTP $status; retrying in ${retryAfter}s');
+        await Future<void>.delayed(Duration(seconds: retryAfter));
         continue;
       }
-      body = response!.body;
+      break;
+    }
+    if (transportError != null) {
+      failures.add(
+        ScrapeFailure(slug: seed.slug, reason: 'HTTP error: $transportError'),
+      );
+      continue;
+    }
+    if (status != 200) {
+      failures.add(
+        ScrapeFailure(slug: seed.slug, reason: 'HTTP $status for "$title"'),
+      );
+      continue;
+    }
+    body = response!.body;
     String text;
     try {
       text = extract(body);
@@ -324,34 +378,48 @@ Future<ScrapeOutcome> runScrape({
       failures.add(ScrapeFailure(slug: seed.slug, reason: 'extract error: $e'));
       continue;
     }
+    if (text.length < 2000) {
+      failures.add(
+        ScrapeFailure(
+          slug: seed.slug,
+          reason:
+              'extract too short (${text.length} chars < 2000) for "$title" — '
+              'modern-saint honesty: record the failure, never force it',
+        ),
+      );
+      continue;
+    }
     if (!headlineMatches(text, seed.name, title)) {
-      failures.add(ScrapeFailure(
-        slug: seed.slug,
-        reason: 'disambiguation guard: opening does not name '
-            '"${seed.name}" (title "$title")',
-      ));
+      failures.add(
+        ScrapeFailure(
+          slug: seed.slug,
+          reason:
+              'disambiguation guard: opening does not name '
+              '"${seed.name}" (title "$title")',
+        ),
+      );
       continue;
     }
     final DateTime now = DateTime.now().toUtc();
-    groundingFile.writeAsStringSync('$text\n');
-    final String sha = crypto.sha256.convert(utf8.encode(text)).toString();
+    const String newline = '\n';
+    groundingFile.writeAsStringSync('$text$newline');
+    final Map<String, dynamic> row = <String, dynamic>{
+      'slug': seed.slug,
+      'url': url,
+      'file': '${seed.slug}.txt',
+      'chars': text.length + newline.length,
+      'sha256': crypto.sha256.convert(utf8.encode('$text$newline')).toString(),
+      'fetchedAt': now.toIso8601String(),
+      'title': title,
+    };
     articles
       ..removeWhere(
         (Object? row) =>
             row is Map<String, dynamic> && row['slug'] == seed.slug,
       )
-      ..add(<String, dynamic>{
-        'slug': seed.slug,
-        'url': url,
-        'file': '${seed.slug}.txt',
-        'chars': text.length,
-        'sha256': sha,
-        'fetchedAt': now.toIso8601String(),
-        'title': title,
-      });
+      ..add(row);
     written.add(seed.slug);
-    log('[${seed.slug}] grounded ($title, ${text.length} chars)');
-    await Future<void>.delayed(const Duration(milliseconds: 1100));
+    log('[${seed.slug}] grounded ($title, ${row['chars']} chars)');
   }
 
   manifest['articles'] = articles;
@@ -361,6 +429,7 @@ Future<ScrapeOutcome> runScrape({
       '${const JsonEncoder.withIndent('  ').convert(manifest)}\n',
     );
   }
+  client.close();
   return ScrapeOutcome(written: written, failures: failures);
 }
 
@@ -369,7 +438,7 @@ List<SaintSeedRow> loadSeedRows(String saintsSourcePath) {
   final Object? decoded = jsonDecode(File(saintsSourcePath).readAsStringSync());
   final List<dynamic> saints =
       ((decoded as Map<String, dynamic>)['saints'] as List<dynamic>? ??
-          const <dynamic>[]);
+      const <dynamic>[]);
   return <SaintSeedRow>[
     for (final Object? row in saints)
       if (row is Map<String, dynamic>)
@@ -377,7 +446,8 @@ List<SaintSeedRow> loadSeedRows(String saintsSourcePath) {
           slug: (row['slug'] ?? '').toString(),
           name: (row['name'] ?? '').toString(),
           sources: <String>[
-            for (final Object? s in (row['sources'] as List<dynamic>? ?? const <dynamic>[]))
+            for (final Object? s
+                in (row['sources'] as List<dynamic>? ?? const <dynamic>[]))
               s.toString(),
           ],
         ),
@@ -430,8 +500,10 @@ Future<void> main(List<String> args) async {
   }
 
   final List<SaintSeedRow> seeds = loadSeedRows('data/saints_source.json');
-  print('seeds: ${seeds.length} (slugs filter: '
-      '${slugs.isEmpty ? "<none>" : slugs.join(", ")})');
+  print(
+    'seeds: ${seeds.length} (slugs filter: '
+    '${slugs.isEmpty ? "<none>" : slugs.join(", ")})',
+  );
   final ScrapeOutcome outcome = await runScrape(
     packageRootForTest: '.',
     seeds: seeds,
@@ -440,8 +512,10 @@ Future<void> main(List<String> args) async {
     onlySlugs: titleOverrides.isNotEmpty ? titleOverrides.keys.toList() : slugs,
     titleOverrides: titleOverrides,
   );
-  print('written: ${outcome.written.length}, failures: '
-      '${outcome.failures.length}');
+  print(
+    'written: ${outcome.written.length}, failures: '
+    '${outcome.failures.length}',
+  );
   for (final ScrapeFailure failure in outcome.failures) {
     stderr.writeln('  ${failure.slug}: ${failure.reason}');
   }

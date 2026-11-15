@@ -19,6 +19,13 @@ const Map<String, String> sourceClasses = <String, String>{
   'wikipedia': 'Adapted from Wikipedia (CC BY-SA 4.0)',
 };
 
+/// Source class → short article-text label used inside authoring and
+/// cross-check prompts (NOT the screen attribution copy).
+const Map<String, String> sourceTextLabels = <String, String>{
+  'catholic-encyclopedia-1907': 'Catholic Encyclopedia, 1907–12',
+  'wikipedia': 'Wikipedia article (CC BY-SA 4.0)',
+};
+
 /// Per-class URL shape restricting the URL part after the class prefix.
 const Map<String, String> _sourceUrlPatterns = <String, String>{
   'catholic-encyclopedia-1907': r'https?://www\.newadvent\.org/cathen/\S+',

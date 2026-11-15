@@ -298,7 +298,7 @@ void main() {
       // Dates must be prose to prevent day-first/month-first ambiguity
       // (the 2026-11-15 batch lost 9 entries to numeric date drift).
       expect(prompt, contains('never use numeric'));
-      expect(prompt, contains('Catholic Encyclopedia, 1907-12'));
+      expect(prompt, contains('Catholic Encyclopedia, 1907–12'));
     });
 
     test('author prompt labels the article text by the source class', () {
@@ -313,7 +313,7 @@ void main() {
         sourceClass: 'wikipedia',
       );
       expect(wikiPrompt, contains('Wikipedia article'));
-      expect(wikiPrompt, isNot(contains('Catholic Encyclopedia, 1907-12')));
+      expect(wikiPrompt, isNot(contains('Catholic Encyclopedia, 1907–12')));
     });
 
     test('repair prompt carries the previous draft and the checker issues', () {
@@ -579,44 +579,124 @@ void main() {
   });
 
   group('source classes (modern-saint-histories Task 1)', () {
-    test('wikipedia class builds wikipedia provenance from the manifest URL',
-        () async {
-      final GroundingText wikipediaGrounding = GroundingText(
-        slug: 'francis-of-assisi',
-        ceCode: '06221a',
-        url: 'https://en.wikipedia.org/wiki/Francis_of_Assisi',
-        text: kFrancisGrounding,
-      );
-      final AuthoringJob job = AuthoringJob(
-        seed: kFrancisSeed,
-        grounding: wikipediaGrounding,
-      );
-      final String history = validFrancisHistory();
-      final ScriptedRunner scripted = ScriptedRunner(<String>[
-        authorEnvelope(history),
-        verdictEnvelope('pass'),
-      ]);
-      final List<EntryOutcome> outcomes = await orchestratorFor(
-        scripted.runner,
-      ).runJobs(<AuthoringJob>[job], sourceClass: 'wikipedia');
+    test(
+      'wikipedia class builds wikipedia provenance from the manifest URL',
+      () async {
+        final GroundingText wikipediaGrounding = const GroundingText(
+          slug: 'francis-of-assisi',
+          ceCode: '',
+          url: 'https://en.wikipedia.org/wiki/Francis_of_Assisi',
+          text: kFrancisGrounding,
+        );
+        final AuthoringJob job = AuthoringJob(
+          seed: kFrancisSeed,
+          grounding: wikipediaGrounding,
+        );
+        final String history = validFrancisHistory();
+        final ScriptedRunner scripted = ScriptedRunner(<String>[
+          authorEnvelope(history),
+          verdictEnvelope('pass'),
+        ]);
+        final List<EntryOutcome> outcomes = await orchestratorFor(
+          scripted.runner,
+        ).runJobs(<AuthoringJob>[job], sourceClass: 'wikipedia');
 
-      expect(outcomes.single.status, EntryStatus.accepted);
+        expect(outcomes.single.status, EntryStatus.accepted);
+        expect(
+          outcomes.single.entry!.historySource,
+          'wikipedia https://en.wikipedia.org/wiki/Francis_of_Assisi',
+        );
+        expect(
+          outcomes.single.entry!.toJson().containsKey('ceCode'),
+          isFalse,
+          reason: 'a wikipedia entry carries no CE code',
+        );
+      },
+    );
+
+    test(
+      'unknown source class is rejected loudly before any model call',
+      () async {
+        final HistoryOrchestrator orchestrator = orchestratorFor(
+          ScriptedRunner(<String>[]).runner,
+        );
+        await expectLater(
+          orchestrator.runJobs(francisJobs(), sourceClass: 'random-site'),
+          throwsArgumentError,
+        );
+      },
+    );
+  });
+
+  group('grounding honesty gates (final-review fix pass)', () {
+    test('another saint feast of Our Lady near a date does not contradict '
+        'the seed (Claret false positive)', () {
+      const String withOtherFeast =
+          'Anthony Mary Claret was born at Sallent in 1807 and died in the '
+          'monastery of La Salceda in 1870; he founded the Claretians on '
+          '16 July 1849, the Feast of Our Lady of Mount Carmel, and the '
+          'congregation went on to send missionaries to Cuba and Chile, '
+          'educating whole families while he also wrote and printed '
+          'hundreds of devout books, preached continuously across Catalonia '
+          'and the Canary Islands, and served as archbishop of Santiago de '
+          'Cuba, where he reformed prisons and colleges before returning to '
+          'Spain in time for the revolution that followed.';
+      final List<String> issues = validateDraft(
+        history: withOtherFeast,
+        seed: const SaintSeed(
+          slug: 'anthony-mary-claret',
+          name: 'St. Anthony Mary Claret',
+          feastDay: '10-24',
+          canonized: '1950',
+          bio: 'Archbishop and founder of the Claretians.',
+          patronages: <String>['weavers'],
+        ),
+      );
       expect(
-        outcomes.single.entry!.historySource,
-        'wikipedia https://en.wikipedia.org/wiki/Francis_of_Assisi',
+        issues.where((String i) => i.contains('feast')),
+        isEmpty,
+        reason: 'a nearby Feast OF OTHERS is not the saint feast day',
       );
     });
 
-    test('unknown source class is rejected loudly before any model call',
-        () async {
-      final HistoryOrchestrator orchestrator = orchestratorFor(
-        ScriptedRunner(<String>[]).runner,
+    test('a year absent from the grounding or the seed is unsupported', () {
+      final List<String> issues = validateDraft(
+        history: validFrancisHistory(),
+        seed: kFrancisSeed,
+        groundingText:
+            'Francis founded the order in 1210, died in 1226, and the '
+            'order was approved by Pope Innocent III in 1210; his rule '
+            'received final approval in 1223, and Clare founded the Poor '
+            'Clares at San Damiano in 1212 after hearing him preach in '
+            'Lent, the year his preaching turned the whole city around.',
       );
-      await expectLater(
-        orchestrator.runJobs(francisJobs(), sourceClass: 'random-site'),
-        throwsArgumentError,
+      expect(
+        issues,
+        isNot(contains(contains('2027'))),
+        reason: 'baseline history years (1226/1228) are all supported',
+      );
+      final List<String> bad = validateDraft(
+        history:
+            'Francis of Assisi founded the Franciscan Order and travelled '
+            'to India in 2027, dying in1226 at the Portiuncula after a '
+            'lifetime of poverty, prayer, and a rule approved in 1210; '
+            'his friars grew across Europe, his Canticle of the Sun '
+            'praises God through creation, and his early biographers '
+            'record the stigmata two years before his death at the '
+            'hilltop town, his order spreading to the courts and towns. ',
+        seed: kFrancisSeed,
+        groundingText:
+            'Francis founded the order in 1210, died in 1226, and the '
+            'rule received final approval in 1223; his early life was '
+            'spent in Assisi, and his followers gathered at the '
+            'Portiuncula after his preaching in Lent impressed the '
+            'whole town of Assisi during that season of the year.',
+      );
+      expect(
+        bad.any((String i) => i.contains('2027')),
+        isTrue,
+        reason: 'a grounding-foreign year must be flagged outright',
       );
     });
   });
 }
-

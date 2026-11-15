@@ -510,37 +510,35 @@ void main() {
     },
   );
 
-    testWidgets(
-    'wikipedia-class history renders its own attribution line',
-    (WidgetTester tester) async {
-      // sqflite FFI futures must resolve outside the fake-async zone
-      // (see the pumpSaintDetail prewarm comment) — the in-test seeding
-      // rides `runAsync` like the prewarm does.
-      await tester.runAsync(
-        () => seedSaint(
-          db,
-          slug: 'modern-saint',
-          name: 'St. A Modern Saint',
-          feastDay: '05-01',
-          bio: 'A modern-era saint for the attribution test.',
-          prayerText: 'Pray for us.',
-          history: 'A grounded modern-era summary written in 2026.',
-          historySource:
-              'wikipedia https://en.wikipedia.org/wiki/A_Modern_Saint',
-        ),
-      );
+  testWidgets('wikipedia-class history renders its own attribution line', (
+    WidgetTester tester,
+  ) async {
+    // sqflite FFI futures must resolve outside the fake-async zone
+    // (see the pumpSaintDetail prewarm comment) — the in-test seeding
+    // rides `runAsync` like the prewarm does.
+    await tester.runAsync(
+      () => seedSaint(
+        db,
+        slug: 'modern-saint',
+        name: 'St. A Modern Saint',
+        feastDay: '05-01',
+        bio: 'A modern-era saint for the attribution test.',
+        prayerText: 'Pray for us.',
+        history: 'A grounded modern-era summary written in 2026.',
+        historySource: 'wikipedia https://en.wikipedia.org/wiki/A_Modern_Saint',
+      ),
+    );
 
-      await pumpSaintDetail(tester, slug: 'modern-saint');
+    await pumpSaintDetail(tester, slug: 'modern-saint');
 
-      expect(
-        find.text('Adapted from Wikipedia (CC BY-SA 4.0)'),
-        findsOneWidget,
-        reason: 'the wikipedia class renders its pinned attribution line',
-      );
-      // The CE line must NOT appear for a wikipedia-sourced saint.
-      expect(find.text(_historyAttribution), findsNothing);
-    },
-  );
+    expect(
+      find.text('Adapted from Wikipedia (CC BY-SA 4.0)'),
+      findsOneWidget,
+      reason: 'the wikipedia class renders its pinned attribution line',
+    );
+    // The CE line must NOT appear for a wikipedia-sourced saint.
+    expect(find.text(_historyAttribution), findsNothing);
+  });
 
   testWidgets(
     'unknown history source class falls back to a generic attribution',

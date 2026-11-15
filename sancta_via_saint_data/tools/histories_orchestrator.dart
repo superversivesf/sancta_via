@@ -95,9 +95,7 @@ const String _historySourcePrefix = 'catholic-encyclopedia-1907';
 /// Regex pinning `historySource` across every contract source class
 /// (`catholic-encyclopedia-1907`, `wikipedia`) — see
 /// `lib/src/utils/history_source.dart`.
-final RegExp historySourcePattern = historySourcePatternFor(
-  sourceClasses.keys,
-);
+final RegExp historySourcePattern = historySourcePatternFor(sourceClasses.keys);
 
 // ---------------------------------------------------------------------------
 // Exceptions
@@ -253,11 +251,13 @@ class HistoryEntry {
 
   /// Serializes the pinned key set, in the plan's order.
   Map<String, dynamic> toJson() {
+    // `ceCode` is a Catholic-Encyclopedia concept; wikipedia-class entries
+    // omit it rather than shipping an empty string keyed as a CE code.
     return <String, dynamic>{
       'slug': slug,
       'history': history,
       'historySource': historySource,
-      'ceCode': ceCode,
+      if (ceCode.isNotEmpty) 'ceCode': ceCode,
       'authoredAt': authoredAt,
       'checkedBy': checkedBy,
       'roundsUsed': roundsUsed,
@@ -618,19 +618,24 @@ int _monthIndex(String raw) {
 /// Only dates asserted *near* the word "feast" are compared: a history may
 /// legitimately mention the death date (3 October) alongside the feast
 /// (4 October), so the death date must not be treated as a contradiction.
-String? _feastDayIssue(String history, String feastDay) {
+/// A window that describes ANOTHER saint's feast ("the Feast of Our Lady of
+/// Mount Carmel") is skipped: its date is not the subject saint's feast day.
+String? _feastDayIssue(String history, String feastDay, String seedName) {
   final ({int month, int day})? seedDate = _parseSeedDate(feastDay);
   if (seedDate == null) {
     return null;
   }
+  final Set<String> seedTokens = _distinctiveNameTokens(seedName);
   for (final RegExpMatch match in _feastPattern.allMatches(history)) {
     final int start = match.start - 80 < 0 ? 0 : match.start - 80;
     final int end = match.end + 140 > history.length
         ? history.length
         : match.end + 140;
-    final ({int month, int day})? stated = _firstDateIn(
-      history.substring(start, end),
-    );
+    final String window = history.substring(start, end);
+    if (_windowIsAnotherFeast(window, seedTokens)) {
+      continue;
+    }
+    final ({int month, int day})? stated = _firstDateIn(window);
     if (stated == null) {
       continue;
     }
@@ -643,9 +648,48 @@ String? _feastDayIssue(String history, String feastDay) {
   return null;
 }
 
+/// True when the only feast named in the window is another entity's
+/// ("the Feast of Our Lady of Mount Carmel"): the named feast's tokens
+/// share nothing with the subject saint's own name tokens.
+final RegExp _otherFeastPattern = RegExp(
+  r'[Ff]east [Oo]f ([A-Z][^\d;.,]{2,60})',
+);
+
+bool _windowIsAnotherFeast(String window, Set<String> seedTokens) {
+  final RegExpMatch? other = _otherFeastPattern.firstMatch(window);
+  if (other == null) {
+    return false;
+  }
+  final Set<String> otherTokens = _distinctiveNameTokens(other.group(1)!);
+  return otherTokens.isNotEmpty && !otherTokens.any(seedTokens.contains);
+}
+
+/// Name tokens distinctive enough for ownership comparison (honorifics,
+/// glue words, and short roman numerals dropped).
+Set<String> _distinctiveNameTokens(String input) {
+  const Set<String> stopwords = <String>{
+    'saint',
+    'the',
+    'of',
+    'our',
+    'lady',
+    'ii',
+    'iii',
+    'iv',
+  };
+  return _foldAccents(input.toLowerCase())
+      .split(RegExp(r'[^a-z0-9]+'))
+      .where((String token) => token.length >= 4 && !stopwords.contains(token))
+      .toSet();
+}
+
 /// Deterministic checks that must pass BEFORE any model spend and again on
 /// every drafted history. Returns an empty list when the text is acceptable.
-List<String> validateDraft({required String history, required SaintSeed seed}) {
+List<String> validateDraft({
+  required String history,
+  required SaintSeed seed,
+  String? groundingText,
+}) {
   final List<String> issues = <String>[];
   final String trimmed = history.trim();
   final int length = trimmed.length;
@@ -666,9 +710,28 @@ List<String> validateDraft({required String history, required SaintSeed seed}) {
   if (token != null && !_foldAccents(trimmed.toLowerCase()).contains(token)) {
     issues.add('history does not name the saint (expected "${seed.name}")');
   }
-  final String? feastIssue = _feastDayIssue(trimmed, seed.feastDay);
+  final String? feastIssue = _feastDayIssue(trimmed, seed.feastDay, seed.name);
   if (feastIssue != null) {
     issues.add(feastIssue);
+  }
+  // Grounding honesty: every 4-digit year in the history must appear in the
+  // grounding text or the seed record (final-review #9 — the cross-check
+  // alone let 3 invented years ship in the 2026-11-15 batch).
+  if (groundingText != null) {
+    final Set<String> supported = _distinctiveNameTokens(
+      '$groundingText '
+      '${seed.canonized} ${seed.bio} ${seed.feastDay}',
+    );
+    for (final RegExpMatch match in RegExp(
+      r'\b(1[0-9]{3}|20[0-9]{2})\b',
+    ).allMatches(trimmed)) {
+      if (!supported.contains(match.group(0))) {
+        issues.add(
+          'history mentions year ${match.group(0)}, unsupported by the '
+          'grounding text or the seed record',
+        );
+      }
+    }
   }
   return issues;
 }
@@ -703,10 +766,7 @@ const String _styleRules = '''
   no second-person address, no headings, no markdown, no citation markers.
 - Plain prose paragraphs separated by blank lines.''';
 
-const Map<String, String> _sourceLabel = <String, String>{
-  'catholic-encyclopedia-1907': 'Catholic Encyclopedia, 1907-12',
-  'wikipedia': 'Wikipedia article (CC BY-SA 4.0)',
-};
+const Map<String, String> _sourceLabel = sourceTextLabels;
 
 /// The first-pass authoring prompt: grounding text + seed facts + target.
 String buildAuthorPrompt({
@@ -1223,6 +1283,7 @@ class HistoryOrchestrator {
       final List<String> deterministic = validateDraft(
         history: candidate,
         seed: job.seed,
+        groundingText: job.grounding.text,
       );
       if (deterministic.isNotEmpty) {
         pendingIssues = deterministic;
@@ -1510,8 +1571,7 @@ Future<OrchestratorRun> run({
       'unknown source class; expected one of ${sourceClasses.keys.toList()}',
     );
   }
-  final String groundingDir =
-      '$packageRoot/${groundingDirFor(sourceClass)}';
+  final String groundingDir = '$packageRoot/${groundingDirFor(sourceClass)}';
   final String seedsPath = '$packageRoot/data/saints_source.json';
   final String historiesPath = '$packageRoot/data/histories.json';
   final String reportPath = '$packageRoot/data/histories_run_report.json';
@@ -1702,6 +1762,10 @@ Future<void> main(List<String> args) async {
       exitCode = 1;
     }
   } on OrchestratorException catch (error) {
+    stderr.writeln('histories_orchestrator: $error');
+    exitCode = 1;
+  } on ArgumentError catch (error) {
+    // Unknown --source-class (final-review #8): exit 1, not a stack trace.
     stderr.writeln('histories_orchestrator: $error');
     exitCode = 1;
   }

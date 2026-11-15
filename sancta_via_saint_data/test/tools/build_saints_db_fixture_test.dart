@@ -314,6 +314,32 @@ void main() {
       expect(result.stderr, contains('random-site'));
     }, timeout: const Timeout(Duration(minutes: 3)));
 
+    test('exits 1 when a historySource URL is not in the seed sources', () async {
+      writeHistories(<String, Object>{
+        'fixture-saint-a': <String, Object>{
+          'slug': 'fixture-saint-a',
+          'history': _fixtureHistory,
+          'historySource': _foreignWikipediaSource,
+          'ceCode': '06221a',
+          'authoredAt': '2026-11-14T00:00:00.000Z',
+          'checkedBy': 'fixture-checker',
+          'roundsUsed': 1,
+        },
+      });
+
+      final ProcessResult result = await Process.run(
+        _dartExecutable(),
+        <String>['run', 'tools/build_saints_db.dart'],
+        workingDirectory: fixture.path,
+      );
+      expect(
+        result.exitCode,
+        1,
+        reason: 'a historySource foreign to the seed sources must abort',
+      );
+      expect(result.stderr, contains('provenance completeness'));
+    }, timeout: const Timeout(Duration(minutes: 3)));
+
     test('exits 1 when a history is shorter than 400 chars', () async {
       final String shortHistory = 'x' * 399;
       writeHistories(<String, Object>{
@@ -461,7 +487,13 @@ const String _fixtureHistory =
     'Fixture grounded history sentence for the merge test. '
     'Fixture grounded history sentence for the merge test. ';
 
-/// A wikipedia-class (modern-saint-histories) historySource that must merge.
+/// A wikipedia-class (modern-saint-histories) historySource that must merge
+/// (the URL IS in the fixture seed's sources list).
 const String _wikipediaSource =
+    'wikipedia https://en.wikipedia.org/wiki/Fixture_A';
+
+/// A wikipedia-URL that matches the pattern but is NOT in the seed sources
+/// (provenance-completeness violation, final-review #2).
+const String _foreignWikipediaSource =
     'wikipedia https://en.wikipedia.org/wiki/Francis_of_Assisi';
 

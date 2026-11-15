@@ -183,9 +183,31 @@ Future<void> _run() async {
     for (final Map<String, Object?> record in recordsToInsert)
       record['slug']! as String,
   };
+  final Map<String, List<String>> seedSources = <String, List<String>>{
+    for (final Map<String, Object?> record in recordsToInsert)
+      record['slug']! as String: <String>[
+        for (final Object? source
+            in (record['sources'] as List<dynamic>?) ?? const <dynamic>[])
+          source.toString(),
+      ],
+  };
+  // Provenance registries: the grounding manifests are the pipeline's own
+  // record of which URL was scraped per slug (CE selection + wikipedia
+  // batch). A historySource may cite either; anything else is foreign.
+  final Map<String, List<String>> groundingUrls = _loadGroundingUrls(
+    Directory.current.path,
+  );
+  final Map<String, List<String>> allowedSources = <String, List<String>>{
+    for (final String slug in seedSources.keys)
+      slug: <String>[
+        ...seedSources[slug]!,
+        ...groundingUrls[slug] ?? const <String>[],
+      ],
+  };
   final List<String> historiesViolations = _validateHistories(
     histories,
     insertedSlugs,
+    allowedSources,
   );
   if (historiesViolations.isNotEmpty) {
     for (final String violation in historiesViolations) {
@@ -421,12 +443,15 @@ Object? _readJson(File file) {
 /// Validates the slug-keyed accepted-histories map (schema v2).
 ///
 /// Each entry merges into the built database only when the keyed slug is
-/// among the inserted seeds, the body is a string of 400-4000 chars, and
-/// `historySource` matches the pinned provenance pattern. Returns one
-/// violation line per failed check, each prefixed with the entry's key.
+/// among the inserted seeds, the body is a string of 400-4000 chars,
+/// `historySource` matches the pinned provenance pattern, AND the
+/// historySource URL is present in that seed's own `sources` list
+/// (provenance completeness — final-review #2). Returns one violation line
+/// per failed check, each prefixed with the entry's key.
 List<String> _validateHistories(
   Map<String, Object?> histories,
   Set<String> insertedSlugs,
+  Map<String, List<String>> seedSources,
 ) {
   final List<String> violations = <String>[];
   for (final MapEntry<String, Object?> entry in histories.entries) {
@@ -452,13 +477,56 @@ List<String> _validateHistories(
       add('history length ${rawHistory.length} outside 400..4000');
     }
     final Object? rawSource = rawEntry['historySource'];
-    if (rawSource is! String) {
+    final String source = rawSource is String ? rawSource : '';
+    if (source.isEmpty) {
       add('historySource is not a string: $rawSource');
-    } else if (!_historySourcePattern.hasMatch(rawSource)) {
+    } else if (!_historySourcePattern.hasMatch(source)) {
       add('historySource does not match the pinned pattern: $rawSource');
+    } else if (!(seedSources[key] ?? const <String>[])
+        .contains(source.split(' ').skip(1).join(' '))) {
+      add(
+        'historySource "$source" is not in the seed sources list '
+        '(provenance completeness)',
+      );
     }
   }
   return violations;
+}
+
+/// The slug→URL list from the two grounding manifests (CE + wikipedia),
+/// tolerated as absent (fixtures have no grounding corpora).
+Map<String, List<String>> _loadGroundingUrls(String packageRoot) {
+  final Map<String, List<String>> urls = <String, List<String>>{};
+  for (final String dir in <String>[
+    'data/grounding',
+    'data/grounding_wikipedia',
+  ]) {
+    final File manifest = File('$packageRoot/$dir/manifest.json');
+    if (!manifest.existsSync()) {
+      continue;
+    }
+    try {
+      final Object? decoded = jsonDecode(manifest.readAsStringSync());
+      final List<dynamic> articles =
+          ((decoded as Map<String, dynamic>)['articles'] as List<dynamic>?) ??
+              const <dynamic>[];
+      for (final Object? row in articles) {
+        if (row is! Map<String, dynamic>) {
+          continue;
+        }
+        final String slug = (row['slug'] ?? '').toString();
+        final String url = (row['url'] ?? '').toString();
+        if (slug.isEmpty || url.isEmpty) {
+          continue;
+        }
+        (urls[slug] ??= <String>[]).add(url);
+      }
+    } on FormatException {
+      // A corrupt grounding manifest must not crash the build here; the
+      // histories validation simply loses that registry's URLs.
+    }
+  }
+  return urls;
 }
 
 /// Runs the Task 2 record checks against one raw record.
