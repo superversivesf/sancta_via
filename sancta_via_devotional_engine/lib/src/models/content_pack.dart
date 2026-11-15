@@ -105,6 +105,10 @@ class ContentPack {
   /// The broad category of the program.
   final PackFamily family;
 
+  /// An optional human-readable description of the devotion, shown as a
+  /// subtitle in discovery surfaces such as onboarding.
+  final String? description;
+
   /// The primary (first) schedule rule deciding when the session is due.
   ///
   /// Alias for [schedules].first: every pack has at least one schedule,
@@ -150,6 +154,7 @@ class ContentPack {
     required this.id,
     required this.title,
     required this.family,
+    this.description,
     required this.session,
     Map<String, PrayerText> content = const <String, PrayerText>{},
     Map<String, dynamic> reminders = const <String, dynamic>{},
@@ -198,6 +203,14 @@ class ContentPack {
       problems.add("'family' must be a string");
     } else {
       family = _familyByName(familyValue, problems);
+    }
+
+    String? description;
+    if (json.containsKey('description')) {
+      final String? parsed = _optionalString(json, 'description', problems, 'pack');
+      if (parsed != null && parsed.trim().isNotEmpty) {
+        description = parsed;
+      }
     }
 
     ScheduleSpec? schedule;
@@ -282,6 +295,7 @@ class ContentPack {
         id: idText!, // non-null and non-empty: guaranteed by the problems check
         title: titleText!,
         family: family!,
+        description: description,
         schedule: schedule,
         session: session!,
         content: content,
@@ -295,6 +309,7 @@ class ContentPack {
       id: idText!, // non-null and non-empty: guaranteed by the problems check
       title: titleText!,
       family: family!,
+      description: description,
       schedules: schedules,
       session: session!,
       content: content,
@@ -320,6 +335,7 @@ class ContentPack {
       'id': id,
       'title': title,
       'family': family.name,
+      if (description != null) 'description': description,
       ...(_serializedAsList
           ? <String, dynamic>{
               'schedules': <Map<String, dynamic>>[

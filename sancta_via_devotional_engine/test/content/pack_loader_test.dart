@@ -609,6 +609,75 @@ void main() {
       expect(pack.reminders['daily'], '09:00');
       expect(pack.variants.single['language'], 'latin');
     });
+
+    group('description', () {
+      test('parses optional description string', () {
+        final Map<String, dynamic> json = validPackJson()
+          ..['description'] = 'Three daily pauses — 6am, noon, 6pm · ~3 min';
+        final ContentPack pack = PackLoader.load(json);
+        expect(
+          pack.description,
+          'Three daily pauses — 6am, noon, 6pm · ~3 min',
+        );
+      });
+
+      test('missing description is null', () {
+        final ContentPack pack = PackLoader.load(validPackJson());
+        expect(pack.description, isNull);
+      });
+
+      test('empty description is treated as absent (null)', () {
+        final Map<String, dynamic> json = validPackJson()..['description'] = '';
+        final ContentPack pack = PackLoader.load(json);
+        expect(pack.description, isNull);
+      });
+
+      test('whitespace-only description is treated as absent (null)', () {
+        final Map<String, dynamic> json = validPackJson()
+          ..['description'] = '   ';
+        final ContentPack pack = PackLoader.load(json);
+        expect(pack.description, isNull);
+      });
+
+      test('non-string description adds a validation problem', () {
+        final Map<String, dynamic> json = validPackJson()..['description'] = 42;
+        expect(
+          () => PackLoader.load(json),
+          throwsA(
+            isA<ContentValidationException>().having(
+              (e) => e.problems,
+              'problems',
+              anyElement(contains('description')),
+            ),
+          ),
+        );
+      });
+
+      test('round-trips description through toJson', () {
+        final ContentPack pack = ContentPack(
+          id: 'round-trip-pack',
+          title: 'Round Trip',
+          family: PackFamily.routine,
+          schedule: FixedDateSpec(11, 2),
+          description: 'Round-trip fidelity check',
+          session: SessionScript(
+            id: 'rt-session',
+            steps: <SessionStep>[
+              IntercessionStep(id: 's-1', prompt: 'Offer intentions.'),
+            ],
+          ),
+        );
+        final ContentPack repacked = PackLoader.load(pack.toJson());
+        expect(repacked.description, 'Round-trip fidelity check');
+        expect(pack.toJson()['description'], 'Round-trip fidelity check');
+      });
+
+      test('toJson omits description when null', () {
+        final ContentPack pack = PackLoader.load(validPackJson());
+        expect(pack.toJson(), isNot(containsPair('description', anyOf(isNull, ''))));
+        expect(pack.description, isNull);
+      });
+    });
   });
 
   group('schedule type dispatch', () {
