@@ -1,0 +1,89 @@
+# Sancta Via release automation — fill in .env, see fastlane/README.md.
+opt_out_usage
+
+# The seven apps in the monorepo (dir name → lane argument).
+APP_NAMES = %w[
+  bible_reading_app
+  confession_companion
+  devotionals
+  liturgical_calendar_app
+  novena_companion
+  prayer_companion
+  saint_companion
+].freeze
+
+def build_and_testflight(app)
+  UI.user_error!('ASC API key env vars missing — see fastlane/README.md') unless
+    ENV['ASC_KEY_ID'] && ENV['ASC_ISSUER_ID'] && ENV['ASC_KEY_PATH']
+
+  app_dir = "sancta_via_#{app}"
+  build_app(
+    project: "#{app_dir}/ios/Runner.xcodeproj",
+    scheme: 'Runner',
+    configuration: 'Release',
+    export_method: 'app_store',
+    export_options: {
+      SigningStyle: 'automatic',
+      provisioningProfiles: {}
+    }
+  )
+  upload_to_testflight(
+    api_key_path: ENV['ASC_KEY_PATH'],
+    issuer_id: nil,
+    key_id: nil,
+    skip_waiting_for_build_processing: true,
+    distribute_external: false,
+    changelog: ENV['RELEASE_NOTES'] || 'Routine refresh of prayers and data.'
+  )
+end
+
+def build_and_play(app)
+  UI.user_error!('Play service-account env var missing — see fastlane/README.md') unless
+    ENV['PLAY_JSON_KEY_PATH']
+
+  app_dir = "sancta_via_#{app}"
+  Dir.chdir("#{app_dir}/android") do
+    sh('flutter', 'build', 'appbundle', '--release')
+  end
+  upload_to_play_store(
+    json_key: ENV['PLAY_JSON_KEY_PATH'],
+    track: 'internal',
+    aab: "#{app_dir}/android/app/build/outputs/bundle/release/app-release.aab",
+    release_status: 'draft',
+    skip_upload_images: true,
+    skip_upload_screenshots: true
+  )
+end
+
+lane :asc_key_check do
+  UI.message('Checking App Store Connect API key…')
+  api_key = app_store_connect_api_key(
+    key_id: ENV['ASC_KEY_ID'],
+    issuer_id: ENV['ASC_ISSUER_ID'],
+    key_filepath: ENV['ASC_KEY_PATH'],
+    duration: 1200,
+    in_house: false
+  )
+  UI.success("API key OK (token obtained for team #{api_key[:team_id]})")
+end
+
+lane :ship_ios do
+  app = ENV['APP_NAME']
+  UI.user_error!('Set APP_NAME (e.g. saint_companion)') if app.nil?
+  build_and_testflight(app)
+end
+
+lane :ship_android do
+  app = ENV['APP_NAME']
+  UI.user_error!('Set APP_NAME (e.g. saint_companion)') if app.nil?
+  build_and_play(app)
+end
+
+lane :ship_all do
+  # All seven apps, iOS only: TestFlight builds in one command. Android
+  # ships per app until every Play listing is API-verified.
+  APP_NAMES.each do |app|
+    UI.important("Shipping iOS: #{app}")
+    build_and_testflight(app)
+  end
+end
