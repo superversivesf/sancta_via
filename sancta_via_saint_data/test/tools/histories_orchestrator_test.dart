@@ -295,6 +295,25 @@ void main() {
       expect(prompt, contains('250'));
       expect(prompt, contains('St. Francis of Assisi'));
       expect(prompt, contains('tradition holds'));
+      // Dates must be prose to prevent day-first/month-first ambiguity
+      // (the 2026-11-15 batch lost 9 entries to numeric date drift).
+      expect(prompt, contains('never use numeric'));
+      expect(prompt, contains('Catholic Encyclopedia, 1907-12'));
+    });
+
+    test('author prompt labels the article text by the source class', () {
+      final String wikiPrompt = buildAuthorPrompt(
+        seed: kFrancisSeed,
+        grounding: const GroundingText(
+          slug: 'francis-of-assisi',
+          ceCode: '06221a',
+          url: 'https://en.wikipedia.org/wiki/Francis_of_Assisi',
+          text: kFrancisGrounding,
+        ),
+        sourceClass: 'wikipedia',
+      );
+      expect(wikiPrompt, contains('Wikipedia article'));
+      expect(wikiPrompt, isNot(contains('Catholic Encyclopedia, 1907-12')));
     });
 
     test('repair prompt carries the previous draft and the checker issues', () {

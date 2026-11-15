@@ -1,25 +1,502 @@
 {
-  "generatedAt": "2026-11-14T23:30:51.931808Z",
+  "generatedAt": "2026-11-15T07:38:40.103845Z",
   "authorModel": "ollama/glm-5.3-flash:cloud",
   "crossCheckModels": [
     "ollama/deepseek-v4.1-flash:cloud",
     "ollama/minimax-m3.1-flash:cloud"
   ],
   "counts": {
-    "selected": 1,
-    "accepted": 1,
-    "dropped": 0,
-    "skipped": 0,
+    "selected": 52,
+    "accepted": 30,
+    "dropped": 9,
+    "skipped": 13,
     "error": 0
   },
   "entries": [
     {
-      "slug": "therese-of-lisieux",
-      "ceCode": "17721a",
+      "slug": "albert-the-great",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "andrew-kim-taegon",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3004,
+      "issues": []
+    },
+    {
+      "slug": "anthony-mary-claret",
+      "ceCode": "",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 7/5 but the seed record pins 10-24 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "bernadette-soubirous",
+      "ceCode": "",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 14/6 but the seed record pins 04-16 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "bona-of-pisa",
+      "ceCode": "",
       "status": "accepted",
       "roundsUsed": 1,
       "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
-      "chars": 2977,
+      "chars": 3009,
+      "issues": []
+    },
+    {
+      "slug": "carlo-acutis",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3655,
+      "issues": []
+    },
+    {
+      "slug": "charles-lwanga",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3691,
+      "issues": []
+    },
+    {
+      "slug": "damien-of-molokai",
+      "ceCode": "",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 11/10 but the seed record pins 05-10 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "dominic-savio",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3804,
+      "issues": []
+    },
+    {
+      "slug": "edith-stein",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3956,
+      "issues": []
+    },
+    {
+      "slug": "edmund-campion",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "frances-xavier-cabrini",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3541,
+      "issues": []
+    },
+    {
+      "slug": "gabriel-possenti",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3941,
+      "issues": []
+    },
+    {
+      "slug": "gianna-beretta-molla",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3863,
+      "issues": []
+    },
+    {
+      "slug": "hildegard-of-bingen",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3699,
+      "issues": []
+    },
+    {
+      "slug": "joan-of-arc",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "john-eudes",
+      "ceCode": "",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 8/2 but the seed record pins 08-19 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "john-of-avila",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "john-paul-ii",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3949,
+      "issues": []
+    },
+    {
+      "slug": "john-vianney",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3964,
+      "issues": []
+    },
+    {
+      "slug": "john-xxiii",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3603,
+      "issues": []
+    },
+    {
+      "slug": "kateri-tekakwitha",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "katharine-drexel",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3422,
+      "issues": []
+    },
+    {
+      "slug": "kinga",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3050,
+      "issues": []
+    },
+    {
+      "slug": "lorenzo-ruiz",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3427,
+      "issues": []
+    },
+    {
+      "slug": "louise-de-marillac",
+      "ceCode": "",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 9/5 but the seed record pins 03-15 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "margaret-clitherow",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "margaret-mary-alacoque",
+      "ceCode": "",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 16/6 but the seed record pins 10-16 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "marianne-cope",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3958,
+      "issues": []
+    },
+    {
+      "slug": "peter-canisius",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "peter-faber",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "pius-x",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "robert-bellarmine",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "teresa-benedicta",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3608,
+      "issues": []
+    },
+    {
+      "slug": "teresa-of-calcutta",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3798,
+      "issues": []
+    },
+    {
+      "slug": "thomas-more",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "catherine-laboure",
+      "ceCode": "",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 28/5 but the seed record pins 11-28 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "elizabeth-ann-seton",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "faustina",
+      "ceCode": "",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 30/4 but the seed record pins 10-05 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "gemma-galgani",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3417,
+      "issues": []
+    },
+    {
+      "slug": "john-bosco",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3916,
+      "issues": []
+    },
+    {
+      "slug": "john-neumann",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3312,
+      "issues": []
+    },
+    {
+      "slug": "josemaria-escriva",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3764,
+      "issues": []
+    },
+    {
+      "slug": "josephine-bakhita",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3746,
+      "issues": []
+    },
+    {
+      "slug": "louis-de-montfort",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3679,
+      "issues": []
+    },
+    {
+      "slug": "louis-martin",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3892,
+      "issues": []
+    },
+    {
+      "slug": "maria-goretti",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3222,
+      "issues": []
+    },
+    {
+      "slug": "maximilian-kolbe",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3898,
+      "issues": []
+    },
+    {
+      "slug": "oscar-romero",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3905,
+      "issues": []
+    },
+    {
+      "slug": "therese-of-lisieux",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "toribio-romo",
+      "ceCode": "",
+      "status": "dropped",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": null,
+      "issues": [
+        "history states a feast day of 21/5 but the seed record pins 02-25 (MM-DD)"
+      ]
+    },
+    {
+      "slug": "zelie-martin",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/minimax-m3.1-flash:cloud",
+      "chars": 3685,
       "issues": []
     }
   ]

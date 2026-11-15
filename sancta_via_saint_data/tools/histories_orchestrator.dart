@@ -696,14 +696,23 @@ const String _styleRules = '''
 - Never invent miracles, dates, names, or quotations. Where a detail rests on
   later legend rather than the article, hedge with "tradition holds".
 - Stay consistent with the SAINT RECORD (feast day, canonization, patronages).
+- Write every date as prose ("10 October 1886"); never use numeric month/day
+  forms ("5/10", "05-10") — they are ambiguous and the feast-day check
+  rejects them.
 - Reverent, neutral, encyclopedic tone: no marketing language, no prayers,
   no second-person address, no headings, no markdown, no citation markers.
 - Plain prose paragraphs separated by blank lines.''';
+
+const Map<String, String> _sourceLabel = <String, String>{
+  'catholic-encyclopedia-1907': 'Catholic Encyclopedia, 1907-12',
+  'wikipedia': 'Wikipedia article (CC BY-SA 4.0)',
+};
 
 /// The first-pass authoring prompt: grounding text + seed facts + target.
 String buildAuthorPrompt({
   required SaintSeed seed,
   required GroundingText grounding,
+  String sourceClass = 'catholic-encyclopedia-1907',
 }) {
   final int target = targetWordCount(anchorWords: wordCount(grounding.text));
   return '''
@@ -718,7 +727,7 @@ $_styleRules
 SAINT RECORD:
 ${_seedBlock(seed)}
 
-ARTICLE TEXT (Catholic Encyclopedia, 1907-12):
+ARTICLE TEXT (${_sourceLabel[sourceClass]}):
 ${clipGrounding(grounding.text)}
 
 Return ONLY a JSON object with this exact shape, no prose and no code fences:
@@ -732,6 +741,7 @@ String buildRepairPrompt({
   required GroundingText grounding,
   required String previousHistory,
   required List<String> issues,
+  String sourceClass = 'catholic-encyclopedia-1907',
 }) {
   final int target = targetWordCount(anchorWords: wordCount(grounding.text));
   final String issueList = issues.map((String issue) => '- $issue').join('\n');
@@ -751,7 +761,7 @@ $issueList
 SAINT RECORD:
 ${_seedBlock(seed)}
 
-ARTICLE TEXT (Catholic Encyclopedia, 1907-12):
+ARTICLE TEXT (${_sourceLabel[sourceClass]}):
 ${clipGrounding(grounding.text)}
 
 PREVIOUS DRAFT:
@@ -768,10 +778,11 @@ String buildCrossCheckPrompt({
   required SaintSeed seed,
   required GroundingText grounding,
   required String history,
+  String sourceClass = 'catholic-encyclopedia-1907',
 }) {
   return '''
 You are a careful fact-checker. Decide whether the HISTORY below is fully
-supported by the ARTICLE TEXT (a 1907-12 Catholic Encyclopedia article) and
+supported by the ARTICLE TEXT (${_sourceLabel[sourceClass]}) and
 consistent with the SAINT RECORD.
 
 Flag as issues:
@@ -787,7 +798,7 @@ Do not flag stylistic preferences or details the article states plainly.
 SAINT RECORD:
 ${_seedBlock(seed)}
 
-ARTICLE TEXT (Catholic Encyclopedia, 1907-12):
+ARTICLE TEXT (${_sourceLabel[sourceClass]}):
 ${clipGrounding(grounding.text)}
 
 HISTORY:
@@ -1175,12 +1186,17 @@ class HistoryOrchestrator {
 
     for (int round = 1; round <= maxRounds; round++) {
       final String prompt = draft == null
-          ? buildAuthorPrompt(seed: job.seed, grounding: job.grounding)
+          ? buildAuthorPrompt(
+              seed: job.seed,
+              grounding: job.grounding,
+              sourceClass: sourceClass,
+            )
           : buildRepairPrompt(
               seed: job.seed,
               grounding: job.grounding,
               previousHistory: draft,
               issues: pendingIssues,
+              sourceClass: sourceClass,
             );
 
       final String reply;
@@ -1227,6 +1243,7 @@ class HistoryOrchestrator {
             seed: job.seed,
             grounding: job.grounding,
             history: candidate,
+            sourceClass: sourceClass,
           ),
         );
       } on ModelRunnerException catch (modelError) {
