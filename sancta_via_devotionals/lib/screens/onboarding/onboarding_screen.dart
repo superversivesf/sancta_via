@@ -809,6 +809,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             key: Key('routine_toggle_${pack.id}'),
             value: _routineOn[pack.id] ?? false,
             title: Text(pack.title),
+            subtitle: pack.description != null ? Text(pack.description!) : null,
             onChanged: (bool value) {
               setState(() => _routineOn[pack.id] = value);
               unawaited(_toggleRoutine(pack, value));

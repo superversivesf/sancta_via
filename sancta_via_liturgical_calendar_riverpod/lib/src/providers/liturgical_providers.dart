@@ -3,7 +3,15 @@ import 'package:sancta_via_liturgical_calendar/sancta_via_liturgical_calendar.da
 
 /// Current date provider that updates at midnight
 final currentDateProvider = StreamProvider<DateTime>((ref) {
-  return Stream.periodic(const Duration(minutes: 1), (_) => DateTime.now())
+  // Emit immediately so `await ref.watch(currentDateProvider.future)` does
+  // not hang for the first period; still ticks each minute thereafter so
+  // midnight rolls over without a restart.
+  Stream<DateTime> dates() async* {
+    yield DateTime.now();
+    yield* Stream.periodic(const Duration(minutes: 1), (_) => DateTime.now());
+  }
+
+  return dates()
       .distinct(
         (previous, next) =>
             previous.year == next.year &&
