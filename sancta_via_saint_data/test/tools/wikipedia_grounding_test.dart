@@ -93,6 +93,32 @@ void main() {
         isFalse,
       );
     });
+
+    test("tolerates a middle name in the opening ('Maria Teresa Goretti')",
+        () {
+      expect(
+        headlineMatches(
+          'Maria Teresa Goretti was an Italian virgin martyrorum of the '
+          'Roman Catholic Church, canonized in 1950.',
+          'St. Maria Goretti',
+          'Maria Goretti',
+        ),
+        isTrue,
+      );
+    });
+
+    test("tolerates a canonization-style opening for 'Maximilian Kolbe'", () {
+      expect(
+        headlineMatches(
+          'Raymond Kolbe, venerated as Saint Maximilian Maria Kolbe, was a '
+          'Polish Catholic priest who volunteered to die in place of a '
+          'stranger at Auschwitz.',
+          'St. Maximilian Kolbe',
+          'Maximilian Kolbe',
+        ),
+        isTrue,
+      );
+    });
   });
 
   group('titleFromUrl', () {
@@ -196,6 +222,39 @@ void main() {
         ).existsSync(),
         isFalse,
         reason: 'a disambiguation-guard failure must not write a manifest row',
+      );
+    });
+
+    test('retries once on HTTP 429 and succeeds (Retry-After honored)',
+        () async {
+      int calls = 0;
+      final ScrapeOutcome outcome = await runScrape(
+        packageRootForTest: temp.path,
+        seeds: <SaintSeedRow>[seedRow()],
+        clientFactory: () => MockClient(
+          (http.Request request) async {
+            calls++;
+            if (calls == 1) {
+              return http.Response('slow down', 429,
+                  headers: {'retry-after': '0'});
+            }
+            return http.Response(
+              kJohnPaulExtractJson,
+              200,
+              headers: {'content-type': 'application/json'},
+            );
+          },
+        ),
+        log: (_) {},
+      );
+
+      expect(outcome.failures, isEmpty, reason: 'the retry must clear the 429');
+      expect(calls, 2, reason: 'exactly one retry after the 429');
+      expect(
+        File(
+          '${temp.path}/data/grounding_wikipedia/john-paul-ii.txt',
+        ).existsSync(),
+        isTrue,
       );
     });
 

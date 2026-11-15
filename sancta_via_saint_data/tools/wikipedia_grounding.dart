@@ -140,21 +140,34 @@ String dedupeSectionHeaders(String text) {
   return kept.join('\n\n');
 }
 
-/// The disambiguation guard: the article's FIRST LINE must contain the
-/// seed name or the article title (both accent-folded, "St." stripped,
-/// case-insensitive).
+/// The disambiguation guard: the article's OPENING TEXT (first ~400 chars)
+/// must contain every distinctive token of the seed name or of the article
+/// title (accent-folded, honorifics ignored). Token-set matching tolerates
+/// openings like "Maria Teresa Goretti" (seed "St. Maria Goretti") or
+/// "Raymond Kolbe … canonized as Saint Maximilian Kolbe", while a page
+/// about a different person shares no name tokens.
 bool headlineMatches(String text, String seedName, String articleTitle) {
-  final String firstLine = text
-      .split('\n')
-      .map((String l) => l.trim())
-      .firstWhere((String l) => l.isNotEmpty, orElse: () => '');
-  final String opening = comparableName(firstLine);
-  final String needle = comparableName(seedName);
-  final String title = comparableName(articleTitle);
-  if (needle.length >= 4 && opening.contains(needle)) {
-    return true;
+  final String opening = comparableName(
+    text.length <= 400 ? text : text.substring(0, 400),
+  );
+  final Set<String> openingTokens = distinctiveTokens(opening);
+  for (final String candidate in <String>[seedName, articleTitle]) {
+    final Set<String> tokens = distinctiveTokens(comparableName(candidate));
+    if (tokens.isNotEmpty && openingTokens.containsAll(tokens)) {
+      return true;
+    }
   }
-  return title.length >= 4 && opening.contains(title);
+  return false;
+}
+
+/// Name tokens long enough and distinctive enough to identify a person
+/// (honorifics and glue words dropped).
+Set<String> distinctiveTokens(String comparableNameInput) {
+  const Set<String> stopwords = <String>{'st', 'saint', 'the', 'of', 'ii', 'iii'};
+  return comparableNameInput
+      .split(RegExp(r'[^a-z0-9]+'))
+      .where((String t) => t.length >= 4 && !stopwords.contains(t))
+      .toSet();
 }
 
 /// The wikipedia article URL in the seed's `sources` list, if any.
@@ -251,23 +264,59 @@ Future<ScrapeOutcome> runScrape({
       continue;
     }
     String body;
-    try {
-      final http.Response response = await client.get(
-        Uri.parse(apiUrlFor(title)),
-        headers: {'user-agent': 'sancta-via-grounding/1.0'},
-      );
-      if (response.statusCode != 200) {
+    // Two attempts per URL; a 429/5xx honors Retry-After (default 10 s)
+    // before the single retry (Global Constraints politeness).
+      http.Response? response;
+      Object? transportError;
+      int status = 0;
+      for (int attempt = 1; attempt <= 2; attempt++) {
+        transportError = null;
+        status = 0;
+        try {
+          response = await client
+              .get(
+                Uri.parse(apiUrlFor(title)),
+                headers: <String, String>{
+                  'user-agent': 'sancta-via-grounding/1.0',
+                },
+              )
+              .timeout(const Duration(seconds: 120));
+        } catch (e) {
+          transportError = e;
+          if (attempt == 2) {
+            break;
+          }
+          await Future<void>.delayed(const Duration(seconds: 10));
+          continue;
+        }
+        status = response.statusCode;
+        if (status == 429 || status >= 500) {
+          if (attempt == 2) {
+            break;
+          }
+          final int retryAfter =
+              int.tryParse(response.headers['retry-after'] ?? '') ?? 10;
+          log('[${seed.slug}] HTTP $status; retrying in ${retryAfter}s');
+          await Future<void>.delayed(Duration(seconds: retryAfter));
+          continue;
+        }
+        break;
+      }
+      if (transportError != null) {
         failures.add(ScrapeFailure(
           slug: seed.slug,
-          reason: 'HTTP ${response.statusCode} for "$title"',
+          reason: 'HTTP error: $transportError',
         ));
         continue;
       }
-      body = response.body;
-    } catch (e) {
-      failures.add(ScrapeFailure(slug: seed.slug, reason: 'HTTP error: $e'));
-      continue;
-    }
+      if (status != 200) {
+        failures.add(ScrapeFailure(
+          slug: seed.slug,
+          reason: 'HTTP $status for "$title"',
+        ));
+        continue;
+      }
+      body = response!.body;
     String text;
     try {
       text = extract(body);
@@ -388,7 +437,7 @@ Future<void> main(List<String> args) async {
     seeds: seeds,
     clientFactory: http.Client.new,
     log: print,
-    onlySlugs: slugs,
+    onlySlugs: titleOverrides.isNotEmpty ? titleOverrides.keys.toList() : slugs,
     titleOverrides: titleOverrides,
   );
   print('written: ${outcome.written.length}, failures: '

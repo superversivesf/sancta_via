@@ -1,0 +1,473 @@
+{
+  "generatedAt": "2026-11-15T07:25:11.441982Z",
+  "articles": [
+    {
+      "slug": "albert-the-great",
+      "url": "https://en.wikipedia.org/wiki/Albertus_Magnus",
+      "file": "albert-the-great.txt",
+      "chars": 27206,
+      "sha256": "6a2bdb89ff1581dc4610b80a275b64881bc65558fadbfacf2a43215e96a67d37",
+      "fetchedAt": "2026-11-15T07:17:11.876098Z",
+      "title": "Albertus Magnus"
+    },
+    {
+      "slug": "andrew-kim-taegon",
+      "url": "https://en.wikipedia.org/wiki/Andrew_Kim_Taegon",
+      "file": "andrew-kim-taegon.txt",
+      "chars": 2930,
+      "sha256": "ba3068d0c1dc61dc708dc589807565dd6db2b090b9d0c67c88a8dad984e5dea2",
+      "fetchedAt": "2026-11-15T07:17:13.384004Z",
+      "title": "Andrew Kim Taegon"
+    },
+    {
+      "slug": "anthony-mary-claret",
+      "url": "https://en.wikipedia.org/wiki/Anthony_Mary_Claret",
+      "file": "anthony-mary-claret.txt",
+      "chars": 9763,
+      "sha256": "22d4baec6de5a25c1d36a6658b8555d364059a70e6cf0a984a4b79ad3e49c50e",
+      "fetchedAt": "2026-11-15T07:17:14.912448Z",
+      "title": "Anthony Mary Claret"
+    },
+    {
+      "slug": "bernadette-soubirous",
+      "url": "https://en.wikipedia.org/wiki/Bernadette_Soubirous",
+      "file": "bernadette-soubirous.txt",
+      "chars": 23278,
+      "sha256": "96764cf51994de52d9806d84bb25a90e3b2438589e8b72722d0f1dc36e816d13",
+      "fetchedAt": "2026-11-15T07:17:16.652505Z",
+      "title": "Bernadette Soubirous"
+    },
+    {
+      "slug": "bona-of-pisa",
+      "url": "https://en.wikipedia.org/wiki/Bona_of_Pisa",
+      "file": "bona-of-pisa.txt",
+      "chars": 3077,
+      "sha256": "034730326634a3fd45ca91df91fe8e03bfa6e9e3946c9f13766c17146ef119ad",
+      "fetchedAt": "2026-11-15T07:17:18.160493Z",
+      "title": "Bona of Pisa"
+    },
+    {
+      "slug": "carlo-acutis",
+      "url": "https://en.wikipedia.org/wiki/Carlo_Acutis",
+      "file": "carlo-acutis.txt",
+      "chars": 19109,
+      "sha256": "1f6cb1cec7686b2fa4c1967067e5e721be436f27e9868991373d8349e9b0c6f7",
+      "fetchedAt": "2026-11-15T07:17:19.903072Z",
+      "title": "Carlo Acutis"
+    },
+    {
+      "slug": "charles-lwanga",
+      "url": "https://en.wikipedia.org/wiki/Charles_Lwanga",
+      "file": "charles-lwanga.txt",
+      "chars": 4813,
+      "sha256": "3152b3f901380315eb51373d64ae587f8334143586786bc6afaa747ccc2fe56e",
+      "fetchedAt": "2026-11-15T07:17:21.872170Z",
+      "title": "Charles Lwanga"
+    },
+    {
+      "slug": "damien-of-molokai",
+      "url": "https://en.wikipedia.org/wiki/Father_Damien",
+      "file": "damien-of-molokai.txt",
+      "chars": 21776,
+      "sha256": "695e28cfc53ce5822ec47e57f4c869f08967bec87a71bd203778387e4fc80ebd",
+      "fetchedAt": "2026-11-15T07:17:23.709582Z",
+      "title": "Father Damien"
+    },
+    {
+      "slug": "dominic-savio",
+      "url": "https://en.wikipedia.org/wiki/Dominic_Savio",
+      "file": "dominic-savio.txt",
+      "chars": 26123,
+      "sha256": "ae8a01f78ff5fcfc726fa66b2c9e2715f18e9086baadb3457880d5f3e603f800",
+      "fetchedAt": "2026-11-15T07:17:26.152660Z",
+      "title": "Dominic Savio"
+    },
+    {
+      "slug": "edith-stein",
+      "url": "https://en.wikipedia.org/wiki/Edith_Stein",
+      "file": "edith-stein.txt",
+      "chars": 39076,
+      "sha256": "4c9b84326e18568548a58ee6cd6ed9d0f7372332311c786eb3ea51e349b1995e",
+      "fetchedAt": "2026-11-15T07:18:01.716887Z",
+      "title": "Edith Stein"
+    },
+    {
+      "slug": "edmund-campion",
+      "url": "https://en.wikipedia.org/wiki/Edmund_Campion",
+      "file": "edmund-campion.txt",
+      "chars": 13797,
+      "sha256": "16222c5b3724fdd0c7b13d6a0a17ae85bbbd3c4ce0d6944b0d0db7ef62ece478",
+      "fetchedAt": "2026-11-15T07:18:03.434997Z",
+      "title": "Edmund Campion"
+    },
+    {
+      "slug": "frances-xavier-cabrini",
+      "url": "https://en.wikipedia.org/wiki/Frances_Xavier_Cabrini",
+      "file": "frances-xavier-cabrini.txt",
+      "chars": 36490,
+      "sha256": "59fe55ce003de0d125e4de9d95f1191f0227ac04cc78f6ee9237f0aeb3ecd5a8",
+      "fetchedAt": "2026-11-15T07:18:06.541906Z",
+      "title": "Frances Xavier Cabrini"
+    },
+    {
+      "slug": "gabriel-possenti",
+      "url": "https://en.wikipedia.org/wiki/Gabriel_of_Our_Lady_of_Sorrows",
+      "file": "gabriel-possenti.txt",
+      "chars": 10579,
+      "sha256": "01e74f0b24183393c60951d5bcd60e376187fa94478997dca73d2b6427507f9e",
+      "fetchedAt": "2026-11-15T07:18:08.542801Z",
+      "title": "Gabriel of Our Lady of Sorrows"
+    },
+    {
+      "slug": "gianna-beretta-molla",
+      "url": "https://en.wikipedia.org/wiki/Gianna_Beretta_Molla",
+      "file": "gianna-beretta-molla.txt",
+      "chars": 9827,
+      "sha256": "95f95111c13e658772b3a0eef10747873da1a17eac28b11b386ce98fa18fd0db",
+      "fetchedAt": "2026-11-15T07:18:10.440658Z",
+      "title": "Gianna Beretta Molla"
+    },
+    {
+      "slug": "hildegard-of-bingen",
+      "url": "https://en.wikipedia.org/wiki/Hildegard_of_Bingen",
+      "file": "hildegard-of-bingen.txt",
+      "chars": 48262,
+      "sha256": "970f91c0d85fa8d09c14ac0f8fd2a2c5b9aa0f54dfd701a3266970702a900fae",
+      "fetchedAt": "2026-11-15T07:18:12.401405Z",
+      "title": "Hildegard of Bingen"
+    },
+    {
+      "slug": "joan-of-arc",
+      "url": "https://en.wikipedia.org/wiki/Joan_of_Arc",
+      "file": "joan-of-arc.txt",
+      "chars": 45568,
+      "sha256": "0fc6ff12c546e8fb20b8d11432119b297d9b3ca0e26d7f4a7dfa49c3daf88a57",
+      "fetchedAt": "2026-11-15T07:18:14.144212Z",
+      "title": "Joan of Arc"
+    },
+    {
+      "slug": "john-eudes",
+      "url": "https://en.wikipedia.org/wiki/John_Eudes",
+      "file": "john-eudes.txt",
+      "chars": 10972,
+      "sha256": "62e66c53ecfa39505857e0187162f68deb4cc75908a9cd61a678efa484abe27b",
+      "fetchedAt": "2026-11-15T07:19:01.998956Z",
+      "title": "John Eudes"
+    },
+    {
+      "slug": "john-of-avila",
+      "url": "https://en.wikipedia.org/wiki/John_of_Avila",
+      "file": "john-of-avila.txt",
+      "chars": 10050,
+      "sha256": "b146d39bdfd10c6adf664344cc2d7f04cb779bbd7e83a4ffc40f5008413a149e",
+      "fetchedAt": "2026-11-15T07:19:05.673013Z",
+      "title": "John of Avila"
+    },
+    {
+      "slug": "john-paul-ii",
+      "url": "https://en.wikipedia.org/wiki/Pope_John_Paul_II",
+      "file": "john-paul-ii.txt",
+      "chars": 89819,
+      "sha256": "57df951435eae1115259cf0f4f7890411e0da809e243105ea032e440fef8f57f",
+      "fetchedAt": "2026-11-15T07:19:07.651911Z",
+      "title": "Pope John Paul II"
+    },
+    {
+      "slug": "john-vianney",
+      "url": "https://en.wikipedia.org/wiki/John_Vianney",
+      "file": "john-vianney.txt",
+      "chars": 14783,
+      "sha256": "f2a797b7bca4e4853e68afe744470a898e298a5fe6a8589639a6b189f6094dcf",
+      "fetchedAt": "2026-11-15T07:19:09.486955Z",
+      "title": "John Vianney"
+    },
+    {
+      "slug": "john-xxiii",
+      "url": "https://en.wikipedia.org/wiki/Pope_John_XXIII",
+      "file": "john-xxiii.txt",
+      "chars": 47894,
+      "sha256": "13791c537f5fa31883ae302ea99f8f1167ac9f36a19de4327c1f64edf837aaac",
+      "fetchedAt": "2026-11-15T07:19:11.699783Z",
+      "title": "Pope John XXIII"
+    },
+    {
+      "slug": "kateri-tekakwitha",
+      "url": "https://en.wikipedia.org/wiki/Kateri_Tekakwitha",
+      "file": "kateri-tekakwitha.txt",
+      "chars": 27620,
+      "sha256": "780db5441ec60bd29987fee8b278c4cdf8321a7c18f8d287dfcc4fa5134d32ef",
+      "fetchedAt": "2026-11-15T07:19:15.271683Z",
+      "title": "Kateri Tekakwitha"
+    },
+    {
+      "slug": "katharine-drexel",
+      "url": "https://en.wikipedia.org/wiki/Katharine_Drexel",
+      "file": "katharine-drexel.txt",
+      "chars": 16209,
+      "sha256": "fdd4894278dfcc2033ad648bb8375440ef2fd5a0506a1231d4ca6fab6683075e",
+      "fetchedAt": "2026-11-15T07:20:01.655423Z",
+      "title": "Katharine Drexel"
+    },
+    {
+      "slug": "kinga",
+      "url": "https://en.wikipedia.org/wiki/Kinga_of_Poland",
+      "file": "kinga.txt",
+      "chars": 3794,
+      "sha256": "a87ad561ab5a84f6b795879d874c0822ffdba777a3bfff85fed4dbe788167e17",
+      "fetchedAt": "2026-11-15T07:20:03.133720Z",
+      "title": "Kinga of Poland"
+    },
+    {
+      "slug": "lorenzo-ruiz",
+      "url": "https://en.wikipedia.org/wiki/Lorenzo_Ruiz",
+      "file": "lorenzo-ruiz.txt",
+      "chars": 7943,
+      "sha256": "28a5e7877c9bcce873d74f0633b60274ad4b2db336afb5918fc58772fb5c52e6",
+      "fetchedAt": "2026-11-15T07:20:04.687116Z",
+      "title": "Lorenzo Ruiz"
+    },
+    {
+      "slug": "louise-de-marillac",
+      "url": "https://en.wikipedia.org/wiki/Louise_de_Marillac",
+      "file": "louise-de-marillac.txt",
+      "chars": 12649,
+      "sha256": "bbbae93efb76dcabe8a3acd7ec84a4f6b32d25b5135c25712393dbdd61706088",
+      "fetchedAt": "2026-11-15T07:20:07.781032Z",
+      "title": "Louise de Marillac"
+    },
+    {
+      "slug": "margaret-clitherow",
+      "url": "https://en.wikipedia.org/wiki/Margaret_Clitherow",
+      "file": "margaret-clitherow.txt",
+      "chars": 7122,
+      "sha256": "8b9745aa0a1dd0b749538acfee755ec54f48a2d6a2288ab437b15820eafb548d",
+      "fetchedAt": "2026-11-15T07:20:09.769355Z",
+      "title": "Margaret Clitherow"
+    },
+    {
+      "slug": "margaret-mary-alacoque",
+      "url": "https://en.wikipedia.org/wiki/Margaret_Mary_Alacoque",
+      "file": "margaret-mary-alacoque.txt",
+      "chars": 15220,
+      "sha256": "3e0292b2cc62facf4693216b641782962c4c904817b2ad2438e2b4673e985e81",
+      "fetchedAt": "2026-11-15T07:20:11.575445Z",
+      "title": "Margaret Mary Alacoque"
+    },
+    {
+      "slug": "marianne-cope",
+      "url": "https://en.wikipedia.org/wiki/Marianne_Cope",
+      "file": "marianne-cope.txt",
+      "chars": 12913,
+      "sha256": "5b9e13c6ce49978bceb4995f78d06b635743af1a99930571d796f725f8c03c9a",
+      "fetchedAt": "2026-11-15T07:20:13.573024Z",
+      "title": "Marianne Cope"
+    },
+    {
+      "slug": "peter-canisius",
+      "url": "https://en.wikipedia.org/wiki/Peter_Canisius",
+      "file": "peter-canisius.txt",
+      "chars": 11122,
+      "sha256": "33207a08b03e787351fb6c358ca870dc4048d4e9e747882f923736850a68aacc",
+      "fetchedAt": "2026-11-15T07:21:03.021481Z",
+      "title": "Peter Canisius"
+    },
+    {
+      "slug": "peter-faber",
+      "url": "https://en.wikipedia.org/wiki/Peter_Faber",
+      "file": "peter-faber.txt",
+      "chars": 11571,
+      "sha256": "16bafa0bc2762362ce4d24f89948e2f2ed3f545ddfd21b0810f75adf52deb3be",
+      "fetchedAt": "2026-11-15T07:21:04.571846Z",
+      "title": "Peter Faber"
+    },
+    {
+      "slug": "pius-x",
+      "url": "https://en.wikipedia.org/wiki/Pope_Pius_X",
+      "file": "pius-x.txt",
+      "chars": 53739,
+      "sha256": "4ccb99fd2bf3e8fef648a295117253ee4e0537192394c30195307e89a4ac0735",
+      "fetchedAt": "2026-11-15T07:21:06.716271Z",
+      "title": "Pope Pius X"
+    },
+    {
+      "slug": "robert-bellarmine",
+      "url": "https://en.wikipedia.org/wiki/Robert_Bellarmine",
+      "file": "robert-bellarmine.txt",
+      "chars": 16895,
+      "sha256": "b17be6d0f29a626c0d6109344753fe3924469c57453eb479a3a535a6d609341c",
+      "fetchedAt": "2026-11-15T07:21:08.495595Z",
+      "title": "Robert Bellarmine"
+    },
+    {
+      "slug": "teresa-benedicta",
+      "url": "https://en.wikipedia.org/wiki/Edith_Stein",
+      "file": "teresa-benedicta.txt",
+      "chars": 39076,
+      "sha256": "4c9b84326e18568548a58ee6cd6ed9d0f7372332311c786eb3ea51e349b1995e",
+      "fetchedAt": "2026-11-15T07:21:10.308526Z",
+      "title": "Edith Stein"
+    },
+    {
+      "slug": "teresa-of-calcutta",
+      "url": "https://en.wikipedia.org/wiki/Mother_Teresa",
+      "file": "teresa-of-calcutta.txt",
+      "chars": 41240,
+      "sha256": "028d87b2fd7e7a53eb42b5e7085563c2a446385364ba2bcd26e33dbd0f5ebf6e",
+      "fetchedAt": "2026-11-15T07:21:12.209776Z",
+      "title": "Mother Teresa"
+    },
+    {
+      "slug": "thomas-more",
+      "url": "https://en.wikipedia.org/wiki/Thomas_More",
+      "file": "thomas-more.txt",
+      "chars": 73754,
+      "sha256": "dbe0f90c6204f0a7f15ee18c9b33f000f020dc54ddb7b9e2b4732ab78e121b71",
+      "fetchedAt": "2026-11-15T07:21:14.557280Z",
+      "title": "Thomas More"
+    },
+    {
+      "slug": "catherine-laboure",
+      "url": "https://en.wikipedia.org/wiki/Catherine_Labour%C3%A9",
+      "file": "catherine-laboure.txt",
+      "chars": 6882,
+      "sha256": "25b7f246c6c844489e2687f701938dfa99054931b1d6847e6a78266eb33ffa80",
+      "fetchedAt": "2026-11-15T07:24:02.576987Z",
+      "title": "Catherine Labouré"
+    },
+    {
+      "slug": "elizabeth-ann-seton",
+      "url": "https://en.wikipedia.org/wiki/Elizabeth_Ann_Seton",
+      "file": "elizabeth-ann-seton.txt",
+      "chars": 19189,
+      "sha256": "435384ef7a0beb039053b14161761ee69bf8ba38609609321eded54a1a165efb",
+      "fetchedAt": "2026-11-15T07:24:04.280972Z",
+      "title": "Elizabeth Ann Seton"
+    },
+    {
+      "slug": "faustina",
+      "url": "https://en.wikipedia.org/wiki/Faustina_Kowalska",
+      "file": "faustina.txt",
+      "chars": 20469,
+      "sha256": "9352c13c5f5d0e519ce50199c8d517dd72eb71cba6114ffd1b19bd4b8a17e451",
+      "fetchedAt": "2026-11-15T07:24:06.016930Z",
+      "title": "Faustina Kowalska"
+    },
+    {
+      "slug": "gemma-galgani",
+      "url": "https://en.wikipedia.org/wiki/Gemma_Galgani",
+      "file": "gemma-galgani.txt",
+      "chars": 9331,
+      "sha256": "1a010486d2b66df2797e467eea37b92d2bee7f45a0591ff3187f1a2dc4b896a9",
+      "fetchedAt": "2026-11-15T07:24:07.527043Z",
+      "title": "Gemma Galgani"
+    },
+    {
+      "slug": "john-bosco",
+      "url": "https://en.wikipedia.org/wiki/John_Bosco",
+      "file": "john-bosco.txt",
+      "chars": 24855,
+      "sha256": "602728fa82fedb05d58d359eb3e9daf14354cd748b103abd7586e01419db7e23",
+      "fetchedAt": "2026-11-15T07:24:09.307550Z",
+      "title": "John Bosco"
+    },
+    {
+      "slug": "john-neumann",
+      "url": "https://en.wikipedia.org/wiki/John_Neumann",
+      "file": "john-neumann.txt",
+      "chars": 48132,
+      "sha256": "751c51f9ac77a3852b883fcb006db151de1c3491d276efdae161d937b51e5b70",
+      "fetchedAt": "2026-11-15T07:24:11.270404Z",
+      "title": "John Neumann"
+    },
+    {
+      "slug": "josemaria-escriva",
+      "url": "https://en.wikipedia.org/wiki/Josemar%C3%ADa_Escriv%C3%A1",
+      "file": "josemaria-escriva.txt",
+      "chars": 66324,
+      "sha256": "fd2767e1da449ec8bd1f593250aed4de367e3af333c2e5d00853ddd24ef7767d",
+      "fetchedAt": "2026-11-15T07:24:14.323974Z",
+      "title": "Josemaría Escrivá"
+    },
+    {
+      "slug": "josephine-bakhita",
+      "url": "https://en.wikipedia.org/wiki/Josephine_Bakhita",
+      "file": "josephine-bakhita.txt",
+      "chars": 13876,
+      "sha256": "73613bd065168733d3f395e0a2a430ecdbba84fcc1d495c151fd0116883b4a09",
+      "fetchedAt": "2026-11-15T07:24:16.160606Z",
+      "title": "Josephine Bakhita"
+    },
+    {
+      "slug": "louis-de-montfort",
+      "url": "https://en.wikipedia.org/wiki/Louis_de_Montfort",
+      "file": "louis-de-montfort.txt",
+      "chars": 19682,
+      "sha256": "f03f264a1aff56dfe2312e57d22b1a6479c904db72d2adbf37cda64241291d95",
+      "fetchedAt": "2026-11-15T07:24:17.920291Z",
+      "title": "Louis de Montfort"
+    },
+    {
+      "slug": "louis-martin",
+      "url": "https://en.wikipedia.org/wiki/Louis_Martin_(blessed)",
+      "file": "louis-martin.txt",
+      "chars": 7843,
+      "sha256": "fb53639bff1285f9bab7226bee147c172507cfc34e8a828222b5a4a165c17c47",
+      "fetchedAt": "2026-11-15T07:24:19.392040Z",
+      "title": "Louis Martin (blessed)"
+    },
+    {
+      "slug": "maria-goretti",
+      "url": "https://en.wikipedia.org/wiki/Maria_Goretti",
+      "file": "maria-goretti.txt",
+      "chars": 11341,
+      "sha256": "cacc0671028f9f1b217c07f1022f3624d8db79971dd8f70d49b37cd482177765",
+      "fetchedAt": "2026-11-15T07:25:01.552551Z",
+      "title": "Maria Goretti"
+    },
+    {
+      "slug": "maximilian-kolbe",
+      "url": "https://en.wikipedia.org/wiki/Maximilian_Kolbe",
+      "file": "maximilian-kolbe.txt",
+      "chars": 17778,
+      "sha256": "8c32f218b09d01d4aaa45979c99cdcbe654cbf8e33308883a435bad6af1c7846",
+      "fetchedAt": "2026-11-15T07:25:03.262796Z",
+      "title": "Maximilian Kolbe"
+    },
+    {
+      "slug": "oscar-romero",
+      "url": "https://en.wikipedia.org/wiki/%C3%93scar_Romero",
+      "file": "oscar-romero.txt",
+      "chars": 46482,
+      "sha256": "4afb344f61e83919623a2a5074f72f9e168861e2f156faff01619dbb3a03baec",
+      "fetchedAt": "2026-11-15T07:25:05.244218Z",
+      "title": "Óscar Romero"
+    },
+    {
+      "slug": "therese-of-lisieux",
+      "url": "https://en.wikipedia.org/wiki/Th%C3%A9r%C3%A8se_of_Lisieux",
+      "file": "therese-of-lisieux.txt",
+      "chars": 83003,
+      "sha256": "d900075b4cf89f92e325f89fde4fc37aea1623d589f471c2c7daba27c7898979",
+      "fetchedAt": "2026-11-15T07:25:07.316594Z",
+      "title": "Thérèse of Lisieux"
+    },
+    {
+      "slug": "toribio-romo",
+      "url": "https://en.wikipedia.org/wiki/Toribio_Romo_Gonz%C3%A1lez",
+      "file": "toribio-romo.txt",
+      "chars": 4546,
+      "sha256": "e566c885332eb876db31b47d6a89d3f6c7b69b3708a78f20cefd19900c583734",
+      "fetchedAt": "2026-11-15T07:25:08.819713Z",
+      "title": "Toribio Romo González"
+    },
+    {
+      "slug": "zelie-martin",
+      "url": "https://en.wikipedia.org/wiki/Z%C3%A9lie_Martin",
+      "file": "zelie-martin.txt",
+      "chars": 7843,
+      "sha256": "fb53639bff1285f9bab7226bee147c172507cfc34e8a828222b5a4a165c17c47",
+      "fetchedAt": "2026-11-15T07:25:10.338229Z",
+      "title": "Zélie Martin"
+    }
+  ]
+}
