@@ -1,0 +1,6 @@
+{
+  "casimir": "HttpException: HTTP 404 for https://upload.wikimedia.org/wikipedia/commons/f/f5/%C5%A0ventasis_Kazimieras%2C_1594.jpg",
+  "isaac-the-syrian": "HttpException: HTTP 404 for https://upload.wikimedia.org/wikipedia/commons/2/2b/ISAAK_64729.jpg",
+  "moses-the-black": "HttpException: HTTP 404 for https://upload.wikimedia.org/wikipedia/commons/b/bc/San_Moises_el_Negro.jpg",
+  "perpetuus": "HttpException: HTTP 404 for https://upload.wikimedia.org/wikipedia/commons/c/c9/Saintperpetuus.jpg"
+}

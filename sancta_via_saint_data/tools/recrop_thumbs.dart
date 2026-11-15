@@ -218,9 +218,16 @@ Future<void> main(List<String> args) async {
     paced = true;
 
     try {
-      final String sourceUrl =
-          wikimediaThumbUrl((image['url'] ?? '').toString(), width: 512);
-      final Uint8List bytes = await _download(client, sourceUrl);
+      final String originalUrl = (image['url'] ?? '').toString();
+      final String sourceUrl = wikimediaThumbUrl(originalUrl, width: 512);
+      Uint8List bytes;
+      try {
+        bytes = await _download(client, sourceUrl);
+      } on HttpException {
+        // A 400 thumb request usually means the original is smaller than
+        // the requested width: fall back to the source itself.
+        bytes = await _download(client, originalUrl);
+      }
       final img.Image? decoded = img.decodeImage(bytes, frame: 0);
       if (decoded == null) {
         failures[slug] = 'image decode failed';
