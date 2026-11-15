@@ -82,7 +82,7 @@ void main() {
     }
 
     // Francis of Assisi's detail through the production route table.
-    appRouter.go('/saints/john-paul-ii');
+    appRouter.go('/saints/padre-pio');
     await _pumpUntil(
       tester,
       () => find.text('History').evaluate().isNotEmpty,
