@@ -48,16 +48,20 @@ def draw_saints(big):
 
 
 def draw_devotionals(big):
+    """Pastes the white kneeling-prayer badge (the in-app glyph).
+
+    The kneeler raster comes from assets/icons/kneeling_prayer.svg via
+    tool/facedetect's sibling: tool/svg2png.swift (rendered at 4x). The
+    committed intermediate is sancta_via_devotionals/tool/
+    badge_kneeler_white.png; it is recolored house-white here so a single
+    palette constant drives every icon.
+    """
     d = ImageDraw.Draw(big)
-    cx, cy = 812*4, 640*4
-    w2, h2 = 150*4, 200*4
-    left = [(cx-w2, cy), (cx, cy+34), (cx, cy+h2-20), (cx-w2, cy+h2-10)]
-    right = [(cx, cy+34), (cx+w2, cy), (cx+w2, cy+h2-10), (cx, cy+h2-20)]
-    d.polygon(left, fill=(235, 234, 230))
-    d.polygon(right, fill=(235, 234, 230))
-    d.polygon([(cx+18*4, cy+40), (cx+34*4, cy+46), (cx+34*4, cy+100),
-               (cx+18*4, cy+94)], fill=(209, 170, 87))
-    d.rectangle([cx-w2, cy+h2-4, cx+w2, cy+h2-4+16], fill=(209, 170, 87))
+    path = 'sancta_via_devotionals/tool/badge_kneeler_white.png'
+    kneeler = Image.open(path).convert('RGBA').resize((920, 1052), Image.LANCZOS)
+    white = Image.new('RGBA', kneeler.size, (235, 234, 230) + (0,))
+    white.putalpha(kneeler.split()[3].point(lambda a: a))
+    big.paste(white, (2800, 2300), white)
 
 
 if __name__ == '__main__':
