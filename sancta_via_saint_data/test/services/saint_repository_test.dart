@@ -779,8 +779,9 @@ void main() {
             allNeeds.add(need);
           }
         }
-        // The shipped dataset carries 183 distinct patronage needs.
-        expect(allNeeds.length, 183);
+        // The shipped dataset carries 193 distinct patronage needs
+        // (183 at Task 4 + the 6 curated moderns' needs, Task 7).
+        expect(allNeeds.length, 193);
       },
     );
   });

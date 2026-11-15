@@ -194,8 +194,9 @@ void main() {
         manifestSaintCount,
         reason: 'saints rows must equal manifest saintCount',
       );
-      // The Task 4 manifest pins 2174 saints.
-      expect(manifestSaintCount, 2174);
+      // The Task 4 manifest pinned 2174 saints; Task 7 curation grew the
+      // snapshot to 2180 (6 curated moderns, partner-approved 2026-11-16).
+      expect(manifestSaintCount, 2180);
     });
 
     test('has every manifest patronage row across the 10 categories', () async {
@@ -211,7 +212,7 @@ void main() {
       );
       // The plan estimated "> 8000", but the committed (sha-pinned) manifest
       // says the verified total is below; the manifest is the authority.
-      expect(manifestPatronageCount, 4843);
+      expect(manifestPatronageCount, 4854);
 
       final List<Map<String, Object?>> categories = await db.rawQuery(
         'SELECT DISTINCT category FROM patronages ORDER BY category',

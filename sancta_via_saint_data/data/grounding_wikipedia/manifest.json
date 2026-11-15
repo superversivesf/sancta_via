@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T07:25:11.441982Z",
+  "generatedAt": "2026-11-15T10:01:02.235735Z",
   "articles": [
     {
       "slug": "albert-the-great",
@@ -332,7 +332,7 @@
       "chars": 6911,
       "sha256": "53a6da87ff0d252b12c4c5a5abcc8be9baa60a358e1131c272df425839e1bcb9",
       "fetchedAt": "2026-11-15T07:24:02.576987Z",
-      "title": "Catherine Labour\u00e9"
+      "title": "Catherine Labouré"
     },
     {
       "slug": "elizabeth-ann-seton",
@@ -386,7 +386,7 @@
       "chars": 66715,
       "sha256": "cba1bf096fbc44635a7f866ee49338f491fcefe3fcd3b8002fd4f68ef81d2590",
       "fetchedAt": "2026-11-15T07:24:14.323974Z",
-      "title": "Josemar\u00eda Escriv\u00e1"
+      "title": "Josemaría Escrivá"
     },
     {
       "slug": "josephine-bakhita",
@@ -440,7 +440,7 @@
       "chars": 46568,
       "sha256": "f1fece5124f4c0a11c756ebb503949a63df3c5bbadbc1839f6e4a5a0f94b7630",
       "fetchedAt": "2026-11-15T07:25:05.244218Z",
-      "title": "\u00d3scar Romero"
+      "title": "Óscar Romero"
     },
     {
       "slug": "therese-of-lisieux",
@@ -449,7 +449,7 @@
       "chars": 83402,
       "sha256": "29b8d7038df78c26d9a7a7709bb824b65723ddafb622ca4cb954b46c54185a78",
       "fetchedAt": "2026-11-15T07:25:07.316594Z",
-      "title": "Th\u00e9r\u00e8se of Lisieux"
+      "title": "Thérèse of Lisieux"
     },
     {
       "slug": "toribio-romo",
@@ -458,7 +458,7 @@
       "chars": 4567,
       "sha256": "09562f070d16e7528f44555809206530fb74996d9a6162e2661bb5abfaa16f92",
       "fetchedAt": "2026-11-15T07:25:08.819713Z",
-      "title": "Toribio Romo Gonz\u00e1lez"
+      "title": "Toribio Romo González"
     },
     {
       "slug": "zelie-martin",
@@ -467,7 +467,61 @@
       "chars": 7938,
       "sha256": "48d2b31754e9a000267664ac99d86e67d964ae193bd17b2c316159f5efc739b0",
       "fetchedAt": "2026-11-15T07:25:10.338229Z",
-      "title": "Z\u00e9lie Martin"
+      "title": "Zélie Martin"
+    },
+    {
+      "slug": "padre-pio",
+      "url": "https://en.wikipedia.org/wiki/Padre_Pio",
+      "file": "padre-pio.txt",
+      "chars": 54139,
+      "sha256": "9f6efc5a0cd4d80e57d9b0b66ffbc68860d3ea076270545bebca687fbbb6524c",
+      "fetchedAt": "2026-11-15T10:00:52.752208Z",
+      "title": "Padre Pio"
+    },
+    {
+      "slug": "john-fisher",
+      "url": "https://en.wikipedia.org/wiki/John_Fisher",
+      "file": "john-fisher.txt",
+      "chars": 25857,
+      "sha256": "29829bf12c94eea97e8d3388f034eea660c8f902329b86ba81e4266a0b9161c3",
+      "fetchedAt": "2026-11-15T10:00:54.629376Z",
+      "title": "John Fisher"
+    },
+    {
+      "slug": "junipero-serra",
+      "url": "https://en.wikipedia.org/wiki/Jun%C3%ADpero_Serra",
+      "file": "junipero-serra.txt",
+      "chars": 75385,
+      "sha256": "4e49bb50b9b6b7edb4d2b0f179dc8be79297b7b5cb3a37e7c1433712aa56d430",
+      "fetchedAt": "2026-11-15T10:00:56.692579Z",
+      "title": "Junípero Serra"
+    },
+    {
+      "slug": "charbel-makhlouf",
+      "url": "https://en.wikipedia.org/wiki/Charbel_Makhlouf",
+      "file": "charbel-makhlouf.txt",
+      "chars": 10657,
+      "sha256": "af71d85f703e4857dbe2866e713c59d843477f1d26064afe421b1f44a0818ca5",
+      "fetchedAt": "2026-11-15T10:00:58.204741Z",
+      "title": "Charbel Makhlouf"
+    },
+    {
+      "slug": "john-henry-newman",
+      "url": "https://en.wikipedia.org/wiki/John_Henry_Newman",
+      "file": "john-henry-newman.txt",
+      "chars": 71930,
+      "sha256": "14149acd29f1232cbeb1696fba467699e909018f15bdb447e8a08f496f79d1c2",
+      "fetchedAt": "2026-11-15T10:01:00.245076Z",
+      "title": "John Henry Newman"
+    },
+    {
+      "slug": "paul-vi",
+      "url": "https://en.wikipedia.org/wiki/Pope_Paul_VI",
+      "file": "paul-vi.txt",
+      "chars": 73212,
+      "sha256": "dc994600e65276ffac71d0741ee9b0d776651187932ece909378ba14ed2018cb",
+      "fetchedAt": "2026-11-15T10:01:02.232525Z",
+      "title": "Pope Paul VI"
     }
   ]
 }

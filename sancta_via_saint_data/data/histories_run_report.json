@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T08:40:41.477657Z",
+  "generatedAt": "2026-11-15T10:03:01.738566Z",
   "authorModel": "ollama/glm-5.3-flash:cloud",
   "crossCheckModels": [
     "ollama/deepseek-v4.1-flash:cloud",
@@ -7,78 +7,73 @@
   ],
   "counts": {
     "selected": 7,
-    "accepted": 5,
-    "dropped": 2,
-    "skipped": 0,
+    "accepted": 6,
+    "dropped": 0,
+    "skipped": 1,
     "error": 0
   },
   "entries": [
     {
-      "slug": "andrew-kim-taegon",
+      "slug": "thomas-more",
+      "ceCode": "",
+      "status": "skipped",
+      "roundsUsed": 0,
+      "checkedBy": null,
+      "chars": null,
+      "issues": []
+    },
+    {
+      "slug": "padre-pio",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 2,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3330,
+      "issues": []
+    },
+    {
+      "slug": "john-fisher",
       "ceCode": "",
       "status": "accepted",
       "roundsUsed": 1,
       "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
-      "chars": 3030,
+      "chars": 3841,
       "issues": []
     },
     {
-      "slug": "anthony-mary-claret",
-      "ceCode": "",
-      "status": "accepted",
-      "roundsUsed": 2,
-      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
-      "chars": 3909,
-      "issues": []
-    },
-    {
-      "slug": "damien-of-molokai",
-      "ceCode": "",
-      "status": "dropped",
-      "roundsUsed": 2,
-      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
-      "chars": null,
-      "issues": [
-        "history states a feast day of 11/10 but the seed record pins 05-10 (MM-DD)"
-      ]
-    },
-    {
-      "slug": "john-eudes",
-      "ceCode": "",
-      "status": "accepted",
-      "roundsUsed": 2,
-      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
-      "chars": 3982,
-      "issues": []
-    },
-    {
-      "slug": "louise-de-marillac",
-      "ceCode": "",
-      "status": "dropped",
-      "roundsUsed": 2,
-      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
-      "chars": null,
-      "issues": [
-        "Feast day is stated as \"kept on 15 March\", but the article says her feast day is May 9 (March 15 until 2015); the history omits the 2015 change and presents the older date as current (note: the SAINT RECORD's 03-15 matches the pre-2015 date, so reconcile with the article's current May 9).",
-        "\"she is also honored as a patroness of the sick\" is not stated anywhere in the article text (the article mentions only the 1960 declaration as patroness of Christian social workers); either cite support or drop the added patronage."
-      ]
-    },
-    {
-      "slug": "marianne-cope",
-      "ceCode": "",
-      "status": "accepted",
-      "roundsUsed": 2,
-      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
-      "chars": 3624,
-      "issues": []
-    },
-    {
-      "slug": "louis-de-montfort",
+      "slug": "junipero-serra",
       "ceCode": "",
       "status": "accepted",
       "roundsUsed": 1,
       "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
-      "chars": 3677,
+      "chars": 3973,
+      "issues": []
+    },
+    {
+      "slug": "charbel-makhlouf",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3498,
+      "issues": []
+    },
+    {
+      "slug": "john-henry-newman",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3297,
+      "issues": []
+    },
+    {
+      "slug": "paul-vi",
+      "ceCode": "",
+      "status": "accepted",
+      "roundsUsed": 1,
+      "checkedBy": "ollama/deepseek-v4.1-flash:cloud",
+      "chars": 3314,
       "issues": []
     }
   ]

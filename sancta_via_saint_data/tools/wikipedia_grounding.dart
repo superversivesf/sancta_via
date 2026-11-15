@@ -257,15 +257,13 @@ Future<ScrapeOutcome> runScrape({
   // The production body extraction (used via fetchText's default).
   String Function(String) extract = extractPlainText;
 
-  // Pre-request pacing for EVERY slug after the first — success, failure,
-  // and resume all take the polite path (final-review #13).
+  // Pre-request pacing for EVERY scraped slug after the first — success,
+  // failure, and resume all take the polite path (final-review #13). The
+  // pace fires only where a request could actually be made: slugs filtered
+  // out or fully resumed cost less than a request and skip the wait.
   bool paced = false;
 
   for (final SaintSeedRow seed in seeds) {
-    if (paced) {
-      await Future<void>.delayed(const Duration(milliseconds: 1100));
-    }
-    paced = true;
     if (onlySlugs.isNotEmpty && !onlySlugs.contains(seed.slug)) {
       continue;
     }
@@ -320,6 +318,12 @@ Future<ScrapeOutcome> runScrape({
       continue;
     }
     String body;
+    // Politeness pacing: >=1.1 s between actual HTTP requests, including
+    // after a resume-skip or a logged failure.
+    if (paced) {
+      await Future<void>.delayed(const Duration(milliseconds: 1100));
+    }
+    paced = true;
     // Two attempts per URL; a 429/5xx honors Retry-After (default 10 s)
     // before the single retry (Global Constraints politeness).
     http.Response? response;

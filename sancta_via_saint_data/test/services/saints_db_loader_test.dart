@@ -284,7 +284,7 @@ void main() {
         final List<Map<String, Object?>> counts = await db.rawQuery(
           'SELECT COUNT(*) AS n FROM saints',
         );
-        expect(counts.single['n'], 2174);
+        expect(counts.single['n'], 2180);
 
         // Pinned surface: opens WRITABLE (sqlite needs metadata writes).
         await db.execute('CREATE TABLE _writability_probe (id INTEGER)');
@@ -309,7 +309,7 @@ void main() {
         final List<Map<String, Object?>> counts = await second.rawQuery(
           'SELECT COUNT(*) AS n FROM saints',
         );
-        expect(counts.single['n'], 2174);
+        expect(counts.single['n'], 2180);
       },
     );
 

@@ -13361,6 +13361,32 @@
       }
     },
     {
+      "slug": "charbel-makhlouf",
+      "name": "St. Charbel Makhlouf",
+      "feastDay": "07-24",
+      "canonized": "1977",
+      "bio": "A Maronite monk and hermit of the Lebanese Mountains, he lived the Rule of Saint Anthony in silence for twenty-three years, dying in 1898 after a stroke during the Holy Mysteries. Light was reported around his tomb for years afterward, and Pope Paul VI canonized him in 1977.",
+      "patronages": [
+        {
+          "need": "lebanon",
+          "category": "special"
+        },
+        {
+          "need": "the sick",
+          "category": "illness"
+        }
+      ],
+      "prayer": {
+        "text": "O God, who drew Saint Charbel Makhlouf to live alone with you in silence and sacrifice, and who glorified him with wonders after his death, grant through his intercession that our hidden faithfulness may shine before you, and that the sick who seek his help may find healing of body and soul. Through Christ our Lord. Amen.",
+        "source": "original"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Charbel_Makhlouf"
+      ],
+      "draft": false,
+      "featured": false
+    },
+    {
       "slug": "chariton-the-confessor",
       "name": "St. Chariton the Confessor",
       "feastDay": "09-28",
@@ -32657,6 +32683,32 @@
       }
     },
     {
+      "slug": "john-fisher",
+      "name": "St. John Fisher",
+      "feastDay": "06-22",
+      "canonized": "1935",
+      "bio": "Bishop of Rochester and Chancellor of the University of Cambridge, he was the only English bishop to resist the Oath of Supremacy and was beheaded on Tower Hill in June 1535, days before Saint Thomas More. Pope Pius XI canonized both in 1935.",
+      "patronages": [
+        {
+          "need": "diocesan clergy",
+          "category": "jobs"
+        },
+        {
+          "need": "university of cambridge",
+          "category": "special"
+        }
+      ],
+      "prayer": {
+        "text": "O God, who made Saint John Fisher faithful unto death in defense of the unity of your Church, grant through his intercession that all who teach and shepherd may hold to the truth in humility, and that those who instruct others may themselves ever learn from you. Through Christ our Lord. Amen.",
+        "source": "original"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/John_Fisher"
+      ],
+      "draft": false,
+      "featured": false
+    },
+    {
       "slug": "john-gualbert",
       "name": "St. John Gualbert",
       "feastDay": "07-12",
@@ -32693,6 +32745,32 @@
         "attribution": "Wikimedia Commons",
         "altText": "Portrait of St. John Gualbert"
       }
+    },
+    {
+      "slug": "john-henry-newman",
+      "name": "St. John Henry Newman",
+      "feastDay": "10-09",
+      "canonized": "2019",
+      "bio": "An Oxford scholar, Anglican divine, and leader of the Oxford Movement, he was received into the Catholic Church in 1845 and became a cardinal, shaping Catholic thought on conscience, education, and the development of doctrine. Pope Francis canonized him in 2019.",
+      "patronages": [
+        {
+          "need": "the ordinariates",
+          "category": "spiritual"
+        },
+        {
+          "need": "education of the laity",
+          "category": "spiritual"
+        }
+      ],
+      "prayer": {
+        "text": "O God, who led Saint John Henry Newman through many nights to the fullness of your truth, grant through his intercession that kind light which guides every seeking heart though fear should whisper otherwise, and make of our consciences honest homes for your grace. Through Christ our Lord. Amen.",
+        "source": "original"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/John_Henry_Newman"
+      ],
+      "draft": false,
+      "featured": false
     },
     {
       "slug": "john-ii-archbishop-of-novgorod",
@@ -34464,6 +34542,32 @@
         "attribution": "Wikimedia Commons",
         "altText": "Portrait of St. Julius of Novara"
       }
+    },
+    {
+      "slug": "junipero-serra",
+      "name": "St. Junípero Serra",
+      "feastDay": "07-01",
+      "canonized": "2015",
+      "bio": "A Franciscan missionary from Mallorca, he walked thousands of miles through Alta California to found the mission chain from San Diego to San Francisco, teaching and Baptizing thousands of native peoples. Pope Francis canonized him in 2015 at the first Mass on United States soil.",
+      "patronages": [
+        {
+          "need": "california",
+          "category": "travel"
+        },
+        {
+          "need": "hispanic americans",
+          "category": "family"
+        }
+      ],
+      "prayer": {
+        "text": "O God, who filled Saint Junípero Serra with zeal to preach the Gospel to the peoples of the new world, grant through his intercession that the seeds of faith may bear fruit in every culture they touch, and that we may build up your Church with the same tireless footsteps. Through Christ our Lord. Amen.",
+        "source": "original"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Jun%C3%ADpero_Serra"
+      ],
+      "draft": false,
+      "featured": false
     },
     {
       "slug": "justa-justina-and-henedina",
@@ -44643,6 +44747,32 @@
       }
     },
     {
+      "slug": "padre-pio",
+      "name": "St. Pio of Pietrelcina",
+      "feastDay": "09-23",
+      "canonized": "2002",
+      "bio": "Born Francesco Forgione in Pietrelcina, Italy in 1887, he joined the Capuchin Franciscans as Brother Pio. He bore the wounds of Christ for fifty years and heard confessions for hours on end, founded the Casa Sollievo della Sofferenza hospital, and died in 1968. Pope John Paul II canonized him in 2002.",
+      "patronages": [
+        {
+          "need": "civil defense volunteers",
+          "category": "military"
+        },
+        {
+          "need": "stress relief",
+          "category": "illness"
+        }
+      ],
+      "prayer": {
+        "text": "O God, who gave Saint Pio of Pietrelcina a share in the sufferings of your Son and made him a tireless confessor of your mercy, grant through his intercession peace to every anxious heart, healing for all who carry invisible wounds, and the grace to confess often and worthily. Through Christ our Lord. Amen.",
+        "source": "original"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Padre_Pio"
+      ],
+      "draft": false,
+      "featured": false
+    },
+    {
       "slug": "palladius-bishop-of-ireland",
       "name": "St. Palladius",
       "feastDay": "unknown",
@@ -45771,6 +45901,28 @@
         "attribution": "Wikimedia Commons",
         "altText": "Portrait of St. Paul the Simple"
       }
+    },
+    {
+      "slug": "paul-vi",
+      "name": "St. Paul VI",
+      "feastDay": "09-29",
+      "canonized": "2018",
+      "bio": "Giovanni Battista Montini of Brescia carried the Secretariat of State through the war years and was elected pope in 1963, guiding the Second Vatican Council to its completion and defending the dignity of human life through Humanae Vitae. He died in 1978 and Pope Francis canonized him in 2018.",
+      "patronages": [
+        {
+          "need": "world meeting of families",
+          "category": "family"
+        }
+      ],
+      "prayer": {
+        "text": "O God, who gave your Church Saint Paul VI as a shepherd of the modern world and an untiring herald of the family, grant through his intercession that Christian homes may be schools of love, that the truth he taught may be received with open hearts, and that young people may follow Christ with courage. Through Christ our Lord. Amen.",
+        "source": "original"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Pope_Paul_VI"
+      ],
+      "draft": false,
+      "featured": false
     },
     {
       "slug": "paula-of-rome",
