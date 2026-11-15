@@ -223,10 +223,12 @@ class _SaintDetailScreenState extends ConsumerState<SaintDetailScreen> {
             Text(saint.history!, style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 4),
             // Provenance honesty: the body is a grounded summary of the
-            // Encyclopedia article, so the line says "Adapted from" —
-            // never presented as the Encyclopedia's own prose.
+            // source article, so the line says "Adapted from" — never
+            // presented as the source's own prose. The line varies by
+            // source class (CE vs Wikipedia, CC BY-SA 4.0); an unknown
+            // class never claims the CE attribution.
             Text(
-              'Adapted from the Catholic Encyclopedia (1907–12)',
+              _historyAttribution(saint.historySource),
               key: const Key('history_attribution'),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -317,8 +319,21 @@ class _SaintDetailScreenState extends ConsumerState<SaintDetailScreen> {
 
 /// The AppBar favorite toggle: filled heart when the saint is favorited,
 /// outline otherwise, writing through [saintAppSettingsProvider].
-class _FavoriteToggle extends ConsumerWidget {
-  const _FavoriteToggle({required this.saint});
+/// The pinned attribution line for the history's source class: CE and
+/// Wikipedia carry their registry-attributions; an unknown class (or a
+/// null source) falls back to a generic line and never claims CE provenance.
+String _historyAttribution(String? historySource) {
+  if (historySource == null) {
+    return 'Adapted from a Catholic source';
+  }
+  try {
+    return attributionFor(historySource);
+  } on ArgumentError {
+    return 'Adapted from a Catholic source';
+  }
+}
+
+class _FavoriteToggle extends ConsumerWidget {  const _FavoriteToggle({required this.saint});
 
   final Saint saint;
 
