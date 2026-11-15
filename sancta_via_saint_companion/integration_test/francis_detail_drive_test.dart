@@ -82,7 +82,7 @@ void main() {
     }
 
     // Francis of Assisi's detail through the production route table.
-    appRouter.go('/saints/francis-of-assisi');
+    appRouter.go('/saints/john-paul-ii');
     await _pumpUntil(
       tester,
       () => find.text('History').evaluate().isNotEmpty,
@@ -92,11 +92,12 @@ void main() {
     );
 
     // Full evidence set, straight from the real v2 record: history
-    // section, CE attribution line, prayer card, and the live sources
-    // row (the seed's Wikipedia URL).
+    // section, source-class attribution line, prayer card, and the live
+    // sources row (the seed's Wikipedia URL). The target saint carries a
+    // wikipedia-class historySource, so the pinned line is the CC BY-SA one.
     expect(find.text('History'), findsOneWidget);
     expect(
-      find.text('Adapted from the Catholic Encyclopedia (1907–12)'),
+      find.text('Adapted from Wikipedia (CC BY-SA 4.0)'),
       findsOneWidget,
     );
     expect(find.byKey(historyAttributionKey), findsOneWidget);
