@@ -172,8 +172,14 @@ class _SaintDetailScreenState extends ConsumerState<SaintDetailScreen> {
           SaintImage(
             saint: saint,
             width: double.infinity,
-            height: 220,
+            // About twice the Task-11 hero height, per partner request: the
+            // tall frame shows the full artwork with faces in frame.
+            height: 440,
             borderRadius: BorderRadius.circular(12),
+            // No bundled thumb → no hero box at all (the list rows went the
+            // same way; the gray placeholder stays only on error states in
+            // list rows).
+            showPlaceholderIfMissing: false,
           ),
           // Attribution renders only when the record ships one (spec §12:
           // Wikimedia attribution is a license obligation, so it is never

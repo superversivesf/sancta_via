@@ -177,7 +177,7 @@ void main() {
   }
 
   testWidgets(
-    'renders name, bio, feast day, all patronage chips, and the placeholder for a thumbless saint',
+    'renders name, bio, feast day, all patronage chips, and no hero box for a thumbless saint',
     (WidgetTester tester) async {
       await pumpSaintDetail(tester, slug: 'anthony-of-padua');
 
@@ -199,9 +199,10 @@ void main() {
       );
       expect(find.byKey(const Key('patronage_chip_housework')), findsOneWidget);
 
-      // Thumbless saint: the gray placeholder renders with no image widget at
-      // all — saint imagery is never fetched over the network.
-      expect(find.byKey(_placeholderKey), findsOneWidget);
+      // Thumbless saint: NO hero box at all (partner ruling 2026-11-16 —
+      // "leave the box out if there is no image"); imagery is still never
+      // fetched over the network.
+      expect(find.byKey(_placeholderKey), findsNothing);
       expect(find.byType(Image), findsNothing);
       expect(
         find.byWidgetPredicate(
@@ -234,9 +235,11 @@ void main() {
       expect(find.byKey(const Key('prayer_card')), findsOneWidget);
       expect(find.text('O loving Bernard, intercede for us.'), findsOneWidget);
 
-      // Declared thumb whose file is missing from the bundle: the placeholder
-      // surfaces through SaintImage's errorBuilder, still no network imagery.
-      expect(find.byKey(_placeholderKey), findsOneWidget);
+      // Declared thumb whose file is missing from the bundle: with the
+      // hero box out when there's no image (partner ruling 2026-11-16),
+      // the gray placeholder no longer appears here either — still no
+      // network imagery.
+      expect(find.byKey(_placeholderKey), findsNothing);
       expect(
         find.byWidgetPredicate(
           (Widget widget) => widget is Image && widget.image is NetworkImage,

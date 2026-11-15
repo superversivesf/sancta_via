@@ -18,6 +18,7 @@
 // live Sources tiles. Every evidence assertion is real-db backed: the
 // History section, attribution, prayer, and the sources-table URL must all
 // render, or the drive fails loudly.
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,6 +29,13 @@ import 'package:saint_companion/config/routes.dart';
 const String stopTarget = String.fromEnvironment(
   'STOP_TARGET',
   defaultValue: 'detailHistory',
+);
+
+/// The source-class attribution line the target saint is expected to
+/// carry (passed per drive run; the pinned default is the CC BY-SA line).
+const String expectedAttribution = String.fromEnvironment(
+  'ATTRIBUTION',
+  defaultValue: 'Adapted from Wikipedia (CC BY-SA 4.0)',
 );
 
 /// The evidence keys/text the Task 6 detail screen pins (see
@@ -82,7 +90,7 @@ void main() {
     }
 
     // Francis of Assisi's detail through the production route table.
-    appRouter.go('/saints/padre-pio');
+    appRouter.go('/saints/thomas-more');
     await _pumpUntil(
       tester,
       () => find.text('History').evaluate().isNotEmpty,
@@ -92,17 +100,29 @@ void main() {
     );
 
     // Full evidence set, straight from the real v2 record: history
-    // section, source-class attribution line, prayer card, and the live
-    // sources row (the seed's Wikipedia URL). The target saint carries a
-    // wikipedia-class historySource, so the pinned line is the CC BY-SA one.
+    // section, the source-class attribution line (per ATTRIBUTION define),
+    // prayer card, and the live sources row.
     expect(find.text('History'), findsOneWidget);
-    expect(
-      find.text('Adapted from Wikipedia (CC BY-SA 4.0)'),
-      findsOneWidget,
-    );
+    expect(find.text(expectedAttribution), findsOneWidget);
     expect(find.byKey(historyAttributionKey), findsOneWidget);
     expect(find.byKey(prayerCardKey), findsOneWidget);
     expect(find.textContaining('wikipedia.org'), findsOneWidget);
+
+    if (stopTarget == 'detailHero') {
+      // Park at the very top of the scroll view: the doubled hero image,
+      // captured from inside the running test (post-drive simctl captures
+      // race the async image decode and show a blank hero).
+      final List<int> bytes = await IntegrationTestWidgetsFlutterBinding.instance
+          .takeScreenshot('detailHero');
+      final List<int> raw = bytes;
+      final File out = File(
+        '${Directory.systemTemp.path}/drive_detailHero.png',
+      );
+      out.writeAsBytesSync(raw);
+      // ignore: avoid_print
+      print('HERO_SHOT ${out.path} ${raw.length} bytes');
+      return;
+    }
 
     if (stopTarget == 'detailTop') {
       // Park with the History heading itself on screen, right after the
