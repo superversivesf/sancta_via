@@ -642,6 +642,49 @@ void main() {
       expect(find.byKey(const Key('prayer_card')), findsNothing);
     },
   );
+
+  testWidgets(
+    'deep-linked detail with an empty stack offers a home affordance',
+    (WidgetTester tester) async {
+      // The evidence-drive/deep-link case: the detail route REPLACES the
+      // stack, so Navigator.canPop is false and Material renders no back
+      // arrow. The screen must still hand the user a way home.
+      final ProviderContainer container = ProviderContainer(
+        overrides: <Override>[
+          saintRepositoryProvider.overrideWithValue(_FakeSaintRepository(
+            () async => const Saint(
+              slug: 'padre-pio',
+              name: 'St. Pio of Pietrelcina',
+              feastDay: '09-23',
+              bio: 'Capuchin stigmatic and confessor of San Giovanni Rotondo.',
+            ),
+          )),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(home: SaintDetailScreen(slug: 'padre-pio')),
+        ),
+      );
+      await tester.pump();
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byTooltip('Back to home'),
+        findsOneWidget,
+        reason: 'an empty navigation stack needs an explicit exit affordance',
+      );
+      // The affordance navigates home via context.go('/') — assert the
+      // handler is wired (the routerless harness cannot push the home
+      // route; app-surface navigation is driven by the real router).
+      final IconButton button = tester
+          .widget<IconButton>(find.byKey(const Key('history_home_button')));
+      expect(button.onPressed, isNotNull);
+    },
+  );
 }
 
 /// Plain text of every [Text] inside the detail screen's scroll view, in

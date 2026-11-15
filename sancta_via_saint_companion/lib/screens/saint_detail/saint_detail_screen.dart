@@ -108,6 +108,18 @@ class _SaintDetailScreenState extends ConsumerState<SaintDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(saint?.name ?? 'Saint Detail'),
+        // Deep links and the evidence drive can land here with an EMPTY
+        // stack: Navigator.canPop is false, Material renders no back arrow,
+        // and without this the screen is a dead end. When the stack is
+        // empty, hand the user an explicit way home instead.
+        leading: Navigator.of(context).canPop()
+            ? null
+            : IconButton(
+                key: const Key('history_home_button'),
+                tooltip: 'Back to home',
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => context.go('/'),
+              ),
         actions: saint == null ? null : <Widget>[_FavoriteToggle(saint: saint)],
       ),
       body: SafeArea(
