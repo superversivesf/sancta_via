@@ -59,6 +59,10 @@ class SaintImage extends StatelessWidget {
       thumbAsset,
       package: 'saint_data',
       fit: BoxFit.cover,
+      // Tall portrait paintings are the dominant thumb geometry; a plain
+      // center-crop removes the face. Anchoring to the TOP keeps heads in
+      // frame (the saint-for-that site's June fix, mirrored here).
+      alignment: Alignment.topCenter,
       width: width,
       height: height,
       errorBuilder:

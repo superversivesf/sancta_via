@@ -103,4 +103,28 @@ void main() {
       expect(_networkImageFinder(), findsNothing);
     },
   );
+
+  testWidgets(
+    'a cover-cropped thumb anchors to the top so portrait faces survive',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SaintImage(
+              saint: _saint(thumbAsset: 'assets/thumbs/sample-saint.jpg'),
+              width: 80,
+              height: 80,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final Image image = tester.widget<Image>(find.byType(Image));
+      expect(image.fit, BoxFit.cover);
+      expect(image.alignment, Alignment.topCenter,
+          reason: 'center-crop of tall portraits cuts the head off — the '
+              'crop must anchor to the top of the frame');
+    },
+  );
 }
