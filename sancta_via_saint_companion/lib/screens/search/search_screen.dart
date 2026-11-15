@@ -189,8 +189,9 @@ class _SearchResultCard extends StatelessWidget {
               SaintImage(
                 saint: saint,
                 width: 56,
-                height: 56,
+                height: 112,
                 borderRadius: BorderRadius.circular(8),
+                showPlaceholderIfMissing: false,
               ),
               const SizedBox(width: 12),
               Expanded(

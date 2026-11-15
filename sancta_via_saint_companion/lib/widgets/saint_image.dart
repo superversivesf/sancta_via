@@ -14,6 +14,7 @@ class SaintImage extends StatelessWidget {
     this.width,
     this.height,
     this.borderRadius,
+    this.showPlaceholderIfMissing = true,
     super.key,
   });
 
@@ -29,9 +30,17 @@ class SaintImage extends StatelessWidget {
   /// Rounded corners applied to both the image and the placeholder.
   final BorderRadius? borderRadius;
 
+  /// When true (the default), a saint with no bundled thumb — or a thumb
+  /// that fails to load — shows the gray person-icon placeholder. List rows
+  /// pass false: the box is simply left OUT when there is no image.
+  final bool showPlaceholderIfMissing;
+
   /// Gray person-icon placeholder shown when no thumb is bundled or the
   /// bundled file fails to load.
   Widget _buildPlaceholder() {
+    if (!showPlaceholderIfMissing) {
+      return const SizedBox.shrink();
+    }
     return Container(
       key: const Key('saint_image_placeholder'),
       width: width,

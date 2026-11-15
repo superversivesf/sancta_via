@@ -127,4 +127,27 @@ void main() {
               'crop must anchor to the top of the frame');
     },
   );
+
+  testWidgets(
+    'list-mode: no thumb renders no box at all (opt out of the placeholder)',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SaintImage(
+              saint: _saint(), // no thumbAsset
+              width: 56,
+              height: 112,
+              showPlaceholderIfMissing: false,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(_placeholderKey), findsNothing,
+          reason: 'list rows leave the box out when there is no image');
+      expect(find.byIcon(Icons.person_outline), findsNothing);
+    },
+  );
 }
