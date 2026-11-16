@@ -1,4 +1,4 @@
-package net.sanctavia.sancta_via_devotionals
+package net.superversive.sancta_via.devotionals
 
 import io.flutter.embedding.android.FlutterActivity
 
