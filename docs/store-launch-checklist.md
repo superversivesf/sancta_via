@@ -12,6 +12,17 @@ F-Droid $0.
 
 ## 0. Shared prerequisites (one-time, before any store)
 
+- [x] **(done)** Website pages written: `<site>/apps/` (pitch + support
+      link) and `<site>/privacy/` (one-paragraph offline-first policy) —
+      the local test build is at the home-server docker stack.
+- [ ] **(manual)** **Deploy the site to a proper domain** — store-submission
+      blocker (both Apple and Play require a live privacy-policy URL).
+      Options: GitHub/Cloudflare Pages ($0, static Astro build), home
+      server + Cloudflare Tunnel (keeps hosting in-house), or a small VPS
+      + Caddy. Domain suggestion: `sancta-via.net` (already referenced in
+      the Wikimedia fetch User-Agent).
+- [ ] **(manual)** Replace the placeholder Buy-me-a-coffee link in
+      `site/src/pages/apps.astro` once your page exists.
 - [ ] **(automated-ready)** Restore Android release signing: enroll existing
       store apps in **Play App Signing → reset upload key**, generate a new
       keystore locally, recreate `android/key.properties` per app
