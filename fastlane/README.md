@@ -49,11 +49,19 @@ TestFlight (iOS) or the Play internal track (Android).
 |---|---|---|
 | sancta_via_bible_reading_app | net.superversive.sancta_via.bible_reading_app | net.superversive.sancta_via.bible_reading_app |
 | sancta_via_confession_companion | net.superversive.sancta_via.confession_companion | net.superversive.sancta_via.confession_companion |
-| sancta_via_devotionals | net.sancta-via.sanctaViaDevotionals | net.sanctavia.sancta_via_devotionals |
+| sancta_via_devotionals | net.superversive.sancta_via.devotionals | net.superversive.sancta_via.devotionals |
 | sancta_via_liturgical_calendar_app | net.superversive.sancta_via.liturgical_calendar_app | net.superversive.sancta_via.liturgical_calendar_app |
 | sancta_via_novena_companion | net.superversive.sancta_via.novena_companion | net.superversive.sancta_via.novena_companion |
 | sancta_via_prayer_companion | net.superversive.sancta_via.prayer_companion | net.superversive.sancta_via.prayer_companion |
-| sancta_via_saint_companion | net.superversive.sanctavia.saintCompanion | net.superversive.sancta_via.saint_companion |
+| sancta_via_saint_companion | net.superversive.sancta_via.saint_companion | net.superversive.sancta_via.saint_companion |
+
+## Release version order
+
+Every upload needs a new build number. Before any release:
+1. `melos run version:bump:build` — increments the `+N` build number
+   in all app pubspecs (`tool/bump_build_numbers.dart`; cider never manages `+N`).
+2. Bump `X.Y.Z` if the release warrants it (`melos run version:bump:patch` etc.),
+   commit both, then ship the lanes below.
 
 ## Daily use
 
@@ -66,9 +74,10 @@ fastlane release_notes app:saint_companion       # prompts for release notes
 
 - iOS signing uses the same **Development Team `U2267GC4DS`** plus the ASC
   API key (no cert-repo / match needed — Xcode-managed automatic signing).
-- Android release signing needs `android/key.properties` restored (lost on
-  the crash restore) — a store upload without it falls back to debug
-  signing, which the Console rejects.
+- Android release signing: `android/key.properties` (gitignored) + per-app
+  keystores under `android/keystores/`, generated with
+  `tool/generate_keystores.sh` if missing. A store upload without
+  `key.properties` falls back to debug signing, which the Console rejects.
 
 ## Renewal decision helper
 

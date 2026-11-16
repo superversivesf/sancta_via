@@ -196,10 +196,15 @@ build_flutter_app() {
         if xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release archive -archivePath "$project_release_dir/ios/${project_name}.xcarchive" >> "$RELEASE_DIR/build.log" 2>&1; then
             # Export IPA (this requires an export options plist)
             if [[ -f "ios/ExportOptions.plist" ]]; then
-                xcodebuild -exportArchive -archivePath "$project_release_dir/ios/${project_name}.xcarchive" -exportPath "$project_release_dir/ios/" -exportOptionsPlist "ios/ExportOptions.plist" >> "$RELEASE_DIR/build.log" 2>&1
-                log "SUCCESS" "iOS IPA built successfully for $project_name"
+                if xcodebuild -exportArchive -archivePath "$project_release_dir/ios/${project_name}.xcarchive" -exportPath "$project_release_dir/ios/" -exportOptionsPlist "ios/ExportOptions.plist" >> "$RELEASE_DIR/build.log" 2>&1; then
+                    log "SUCCESS" "iOS IPA built successfully for $project_name"
+                else
+                    log "ERROR" "Failed to export IPA for $project_name (signing, provisioning, or ExportOptions.plist problem — see build.log)"
+                    return 1
+                fi
             else
                 log "WARNING" "No ExportOptions.plist found for $project_name. Archive created but IPA not exported."
+                return 1
             fi
         else
             log "ERROR" "Failed to create iOS archive for $project_name"

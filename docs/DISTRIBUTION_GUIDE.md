@@ -24,6 +24,12 @@
 
 ### Bundle ID / package name
 
+> **RESOLVED 2026-11-17** (commit "chore: standardize bundle IDs…"): every app now
+> uses `net.superversive.sancta_via.<snake_name>` on Android **and** iOS —
+> `devotionals` was moved off `net.sanctavia.*`/`net.sancta-via.*` and
+> `saint_companion`'s iOS camelCase ID was corrected. Nothing below needs action;
+> the original advice (pick one prefix before first submission) is kept for the record:
+
 The 6 older apps share a prefix; `devotionals` breaks it:
 
 ```
@@ -86,7 +92,9 @@ flutter build appbundle --release   # → build/app/outputs/bundle/release/app-r
 # Upload via Play Console web UI, or automate with fastlane supply / Google Play Developer API
 ```
 
-Add to CI (GitHub Actions already exists at `.github/workflows/flutter.yml` — extend it):
+Add to CI (GitHub Actions; note: no workflow exists yet — this guide's earlier
+claim of a `.github/workflows/flutter.yml` was stale. CI is a non-goal for the
+2026-11-17 release-readiness pass; fastlane local runs are the pipeline):
 
 - Build AABs on tag push.
 - Upload to the **internal testing** track first (instant, no review).

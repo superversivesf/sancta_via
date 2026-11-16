@@ -23,11 +23,13 @@ F-Droid $0.
       the Wikimedia fetch User-Agent).
 - [ ] **(manual)** Replace the placeholder Buy-me-a-coffee link in
       `site/src/pages/apps.astro` once your page exists.
-- [ ] **(automated-ready)** Restore Android release signing: enroll existing
-      store apps in **Play App Signing → reset upload key**, generate a new
-      keystore locally, recreate `android/key.properties` per app
-      (storePassword / keyPassword / keyAlias / storeFile). Console session,
-      ~10 min once (the reset applies to all apps that share the key).
+- [ ] **(automated-ready)** Restore Android release signing — UPDATED
+      2026-11-17: nothing was ever published, so there is no "reset upload
+      key" step. Instead: `android/key.properties` + per-app keystores were
+      lost with the crash restore; regenerate them with
+      `SV_KEYSTORE_PASS=<secret> ./tool/generate_keystores.sh generate`
+      then create each app's `android/key.properties` from its
+      `key.properties.template`. Play App Signing is granted on first upload.
 - [ ] **(manual)** Create the App Store Connect **API key** (App Manager role):
       ASC → Users and Access → Integrations → App Store Connect API.
       Save `.p8` outside the repo; copy Key ID + Issuer ID.
@@ -71,9 +73,11 @@ F-Droid $0.
       Note: the very first AAB of each NEW app version has the
       must-publish-first-time-in-Console rule only for brand-new listings.
 - [ ] **(manual)** Runtime smoke on a device BEFORE any production push:
-      R8 minification was turned ON for the five older apps during the
-      Gradle upgrade; production R8 builds should be exercised once
-      (install from the internal track).
+      CORRECTION 2026-11-17: R8/minification is currently OFF in every app's
+      `android/app/build.gradle.kts` (the earlier claim that it was turned ON
+      was wrong — re-check `isMinifyEnabled` before relying on it). Exercise
+      a release build from the internal track anyway; if R8 gets enabled
+      later, that smoke becomes mandatory.
 
 ## 3. IzzyOnDroid (fastlane-compatible metadata, developer-signed APKs)
 
