@@ -140,11 +140,17 @@ Logger methods:
 
 `pubspec.yaml` versions are `major.minor.patch+build`. On every release, in this order:
 
-1. `melos run version:bump:build` — increments the `+N` build number in all app
-   pubspecs (cider does NOT manage `+N`). Every store upload needs a new `+N`;
-   repeated uploads with the same build number are rejected.
-2. `melos run version:bump:patch|minor|major` — cider-managed `X.Y.Z` bump.
-3. Commit the bumped pubspecs, then build/ship via `fastlane/`.
+1. `melos run version:bump:patch|minor|major` — cider bumps `X.Y.Z`.
+   **Always pass `--bump-build` when scripting cider**: a plain cider bump ERASES the
+   `+N` build number (cider 0.2.8 default), which makes the next upload ship
+   `versionCode=1` and get rejected by Play. The workspace scripts below already
+   pass `--bump-build` for apps.
+2. `melos run version:bump:build` — increments only the `+N` build number in all app
+   pubspecs, without touching `X.Y.Z` (for store-only republishes).
+3. Commit the bumped app pubspecs, then build/ship via `fastlane/`.
+
+`version:bump:build` is the only command that may be run standalone; the
+`version:bump:patch|minor|major` scripts already include the build bump.
 
 ## Testing
 

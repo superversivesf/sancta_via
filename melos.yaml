@@ -29,17 +29,17 @@ scripts:
     description: Clean all packages.
 
   version:bump:patch:
-    run: melos exec --depends-on=cider -- flutter pub run cider bump patch
-    description: Bump patch version in all packages using Cider.
+    run: melos exec --file-exists=lib/main.dart --depends-on=cider -- flutter pub run cider bump patch --bump-build
+    description: Bump patch version (and build number) in all app packages.
 
   version:bump:build:
     run: dart run tool/bump_build_numbers.dart
     description: Increment the build number (+N) in all app pubspecs (apps only).
 
   version:bump:minor:
-    run: melos exec --depends-on=cider -- flutter pub run cider bump minor
-    description: Bump minor version in all packages using Cider.
+    run: melos exec --file-exists=lib/main.dart --depends-on=cider -- flutter pub run cider bump minor --bump-build
+    description: Bump minor version (and build number) in all app packages.
 
   version:bump:major:
-    run: melos exec --depends-on=cider -- flutter pub run cider bump major
-    description: Bump major version in all packages using Cider.
+    run: melos exec --file-exists=lib/main.dart --depends-on=cider -- flutter pub run cider bump major --bump-build
+    description: Bump major version (and build number) in all app packages.

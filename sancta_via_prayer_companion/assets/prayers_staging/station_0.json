@@ -1,0 +1,19 @@
+{
+  "id": "station_0",
+  "title": "Stations of the Cross: Opening Prayer",
+  "text": "O most merciful Jesus, with a contrite heart and penitent spirit, I bow down in profound humility before Thy divine majesty. I adore Thee, I hope in Thee, I love Thee above all things. I am heartily sorry for having offended Thee, my Supreme and Only God. I resolve to amend my life, and although I am unworthy to obtain mercy, yet the sight of Thy cross, on which Thou didst die, inspires me with hope and consolation. I will, therefore, meditate on Thy Passion in company with Thy sorrowful Mother and my guardian angel, with the intention of promoting Thy honor and saving my soul.\nI desire to gain all the indulgences granted for for this holy exercise for myself and for the Poor Souls in Purgatory. O merciful Redeemer, who has said, And I, if I be lifted from the earth, will draw all things to Myself, draw my heart and my love to Thee, that I may perform this devotion as perfectly as possible, and that I may live and die in union with Thee.\nAmen.",
+  "attribution": "Traditional (St. Alphonsus Liguori format)",
+  "notes": "Text as distributed in the 'Catholic Prayers' Android app (richarddean.angeles.catholicprayers).",
+  "categories": [
+    "stations",
+    "lent"
+  ],
+  "tags": [
+    "stations_of_the_cross",
+    "lent"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

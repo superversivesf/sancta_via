@@ -138,7 +138,7 @@ bump_version() {
         flutter pub get > /dev/null 2>&1
         
         # Bump version with cider
-        if flutter pub run cider bump "$bump_type" >> "$RELEASE_DIR/build.log" 2>&1; then
+        if flutter pub run cider bump "$bump_type" --bump-build >> "$RELEASE_DIR/build.log" 2>&1; then
             log "SUCCESS" "Version bumped successfully with cider"
             return 0
         else
@@ -268,67 +268,25 @@ EOF
     log "SUCCESS" "Created Android install script at $install_script"
 }
 
-# Create iOS TestFlight script (placeholder for now)
-create_ios_testflight_script() {
-    local ios_dir="$RELEASE_DIR/ios"
-    local testflight_script="$ios_dir/upload-testflight.sh"
-
-    cat > "$testflight_script" << 'EOF'
-#!/bin/bash
-
-# iOS TestFlight Upload Script
-# Uploads IPA files to TestFlight using altool
-
-echo "🍎 iOS TestFlight Uploader"
-echo "=========================="
-
-# Check if altool is available
-if ! command -v xcrun altool &> /dev/null; then
-    echo "❌ Error: altool not found. Please install Xcode Command Line Tools."
-    exit 1
-fi
-
-# TODO: Add your Apple ID and app-specific password
-APPLE_ID=""
-APP_PASSWORD=""
-
-if [ -z "$APPLE_ID" ] || [ -z "$APP_PASSWORD" ]; then
-    echo "❌ Error: Please set APPLE_ID and APP_PASSWORD in this script"
-    echo "You can generate an app-specific password at: https://appleid.apple.com"
-    exit 1
-fi
-
-# Upload all IPA files
-for ipa in *.ipa; do
-    if [ -f "$ipa" ]; then
-        echo "📦 Uploading $ipa to TestFlight..."
-        xcrun altool --upload-app -f "$ipa" -t ios -u "$APPLE_ID" -p "$APP_PASSWORD"
-        echo ""
-    fi
-done
-
-echo "🎉 Upload complete!"
-EOF
-
-    chmod +x "$testflight_script"
-    log "SUCCESS" "Created iOS TestFlight script at $testflight_script (requires configuration)"
-}
-
 # Function to commit and push version changes
 commit_and_push_changes() {
     log "INFO" "Committing and pushing version changes..."
 
     cd "$BASE_DIR" || return 1
 
-    # Check if there are any changes to pubspec.yaml files
-    if ! git diff --quiet pubspec.yaml pubspec.lock 2>/dev/null; then
-        log "INFO" "Found pubspec.yaml changes to commit"
+    # Check if any APP pubspec.yaml carries a version bump (cider/bump_build
+    # only touch app pubspecs; the root pubspec is workspace-only)
+    if ! git diff --quiet -- 'sancta_via_*/pubspec.yaml' 2>/dev/null; then
+        log "INFO" "Found app pubspec.yaml changes to commit"
 
-        # Stage all pubspec.yaml and pubspec.lock files
-        git add -A pubspec.yaml pubspec.lock >> "$RELEASE_DIR/build.log" 2>&1
+        # Stage every app pubspec.yaml (the version is the release payload)
+        if ! git add -A 'sancta_via_*/pubspec.yaml' >> "$RELEASE_DIR/build.log" 2>&1; then
+            log "ERROR" "Failed to stage version changes"
+            return 1
+        fi
 
         # Commit changes
-        if git commit -m "Release Build" >> "$RELEASE_DIR/build.log" 2>&1; then
+        if git commit -m "Release Build (version bumps)" >> "$RELEASE_DIR/build.log" 2>&1; then
             log "SUCCESS" "Committed version changes"
 
             # Push changes
@@ -459,7 +417,6 @@ main() {
     if [[ $DRY_RUN == false ]]; then
         # Create helper scripts
         create_android_install_script
-        create_ios_testflight_script
 
         # Commit and push version changes
         commit_and_push_changes
@@ -469,6 +426,9 @@ main() {
         log "INFO" "  Total projects: ${#flutter_projects[@]}"
         log "INFO" "  Successful builds: $success_count"
         log "INFO" "  Failed builds: $((${#flutter_projects[@]} - success_count))"
+        if [ "$success_count" -ne "${#flutter_projects[@]}" ]; then
+            log "ERROR" "One or more builds failed - see $RELEASE_DIR/build.log"
+        fi
         log "INFO" "Release artifacts saved to: $RELEASE_DIR"
 
         echo ""
@@ -483,3 +443,8 @@ main() {
 
 # Run main function
 main "$@"
+
+# Exit non-zero if any app failed to build (CI/scripts must know).
+if [ "$success_count" -ne "${#flutter_projects[@]}" ]; then
+    exit 1
+fi

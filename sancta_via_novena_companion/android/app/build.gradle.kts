@@ -51,7 +51,25 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName(if (hasReleaseKey) "release" else "debug")
+            // Signing with the release key requires android/app/key.properties
+            // (gitignored, see key.properties.template). Signing with the DEBUG
+            // key is an explicit opt-out for local release-run testing only -
+            // never silent, and store uploads must never use it.
+            signingConfig = run {
+                val allowDebug = project.findProperty("allowDebugSigning") == "true" ||
+                    System.getenv("SV_ALLOW_DEBUG_SIGNING") == "1"
+                if (hasReleaseKey) {
+                    signingConfigs.getByName("release")
+                } else if (allowDebug) {
+                    logger.warn("WARNING: release build signed with the DEBUG key (explicit opt-out) - never use for store uploads")
+                    signingConfigs.getByName("debug")
+                } else {
+                    throw org.gradle.api.GradleException(
+                        "Release build is unsigned: android/app/key.properties is missing. " +
+                        "Generate keystores with tool/generate_keystores.sh (see fastlane/README.md). " +
+                        "For a local release test only, set SV_ALLOW_DEBUG_SIGNING=1 or -PallowDebugSigning=true.")
+                }
+            }
         }
     }
 }

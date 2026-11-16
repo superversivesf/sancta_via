@@ -1,0 +1,19 @@
+{
+  "id": "prayer_to_indwelling_trinity",
+  "title": "O Most Holy Trinity, I Adore You",
+  "text": "O most Holy Trinity,\nI adore you\nwho dwell by your grace in my soul.\nSanctify me more and more,\nmake me love you more and more,\nabide with me evermore\nand be my true joy.\nAmen",
+  "attribution": "Traditional (public domain)",
+  "notes": "App-1 title was 'O Sanctissima' but the text is this Trinity prayer; renamed to avoid clashing with the Marian hymn. Text as distributed in the 'Catholic Prayers' Android app (richarddean.angeles.catholicprayers).",
+  "categories": [
+    "trinity",
+    "praise"
+  ],
+  "tags": [
+    "trinity",
+    "praise"
+  ],
+  "isLiturgical": false,
+  "liturgicalPriority": null,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime"
+}

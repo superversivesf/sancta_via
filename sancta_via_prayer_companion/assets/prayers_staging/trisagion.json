@@ -1,0 +1,22 @@
+{
+  "id": "trisagion",
+  "title": "Trisagion",
+  "text": "Holy God,\nHoly Mighty One,\nHoly Immortal One,\nhave mercy on us and on the whole world.",
+  "attribution": "Chaplet of Divine Mercy (St. Faustina Kowalska)",
+  "notes": "Text as distributed in the 'Catholic Prayers' Android app (richarddean.angeles.catholicprayers).",
+  "categories": [
+    "mercy",
+    "petition"
+  ],
+  "tags": [
+    "divine_mercy",
+    "mercy"
+  ],
+  "isLiturgical": false,
+  "liturgicalPriority": null,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime",
+  "translation": {
+    "latin": "Sanctus Deus, Sanctus Fortis, Sanctus Immortalis, miserere nobis et totius mundi."
+  }
+}

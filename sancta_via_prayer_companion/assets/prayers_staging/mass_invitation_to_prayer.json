@@ -1,0 +1,22 @@
+{
+  "id": "mass_invitation_to_prayer",
+  "title": "Mass Invitation to Prayer",
+  "text": "PRIEST: Pray, brothers and Sisters,\nthat my sacrifice and yours\nmay be acceptable to God,\nthe almighty Father.\n\nPEOPLE: May the Lord accept the sacrifice at your hands\nfor the praise and glory of his name,\nfor our good\nand the good of all his holy Church.",
+  "attribution": "Roman Missal",
+  "notes": "Text as distributed in the 'Catholic Prayers' Android app (richarddean.angeles.catholicprayers).",
+  "categories": [
+    "mass",
+    "liturgical"
+  ],
+  "tags": [
+    "mass",
+    "liturgical"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime",
+  "translation": {
+    "latin": "Oremus."
+  }
+}

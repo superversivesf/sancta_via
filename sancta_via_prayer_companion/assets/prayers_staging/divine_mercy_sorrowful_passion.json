@@ -1,0 +1,22 @@
+{
+  "id": "divine_mercy_sorrowful_passion",
+  "title": "Divine Mercy: For the Sake of His Sorrowful Passion",
+  "text": "For the sake of His sorrowful Passion,\nhave mercy on us and on the whole world.",
+  "attribution": "Chaplet of Divine Mercy (St. Faustina Kowalska)",
+  "notes": "Text as distributed in the 'Catholic Prayers' Android app (richarddean.angeles.catholicprayers).",
+  "categories": [
+    "mercy",
+    "petition"
+  ],
+  "tags": [
+    "divine_mercy",
+    "mercy"
+  ],
+  "isLiturgical": false,
+  "liturgicalPriority": null,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime",
+  "translation": {
+    "latin": "Pro dolorosa Eius Passione, miserere nobis et totius mundi."
+  }
+}

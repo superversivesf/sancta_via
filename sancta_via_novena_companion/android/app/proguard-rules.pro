@@ -47,3 +47,8 @@
 # app does not depend on. The io.flutter.** keeps above keep the referencing
 # classes alive, so R8 reports them as fatal missing classes.
 -dontwarn com.google.android.play.core.**
+
+# flutter_local_notifications serialises notification details through Gson
+# for the boot receiver; renaming/obfuscating those classes breaks alarm
+# rescheduling after a device reboot (R8 is on by default in Flutter release builds).
+-keep class com.dexterous.flutterlocalnotifications.** { *; }

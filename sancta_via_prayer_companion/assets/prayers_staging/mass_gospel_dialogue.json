@@ -1,0 +1,22 @@
+{
+  "id": "mass_gospel_dialogue",
+  "title": "Mass Gospel Dialogue",
+  "text": "PRIEST: The Lord be with you.\nPEOPLE: And with your spirit.\n\nPRIEST: A reading from the\nholy Gospel according to _____.\nPEOPLE: Glory to you, O Lord.\n(while making a Sign of the Cross with our thumb on our forehead, lips and heart)",
+  "attribution": "Roman Missal",
+  "notes": "Text as distributed in the 'Catholic Prayers' Android app (richarddean.angeles.catholicprayers).",
+  "categories": [
+    "mass",
+    "liturgical"
+  ],
+  "tags": [
+    "mass",
+    "liturgical"
+  ],
+  "isLiturgical": true,
+  "liturgicalPriority": 5,
+  "liturgicalSeason": null,
+  "timeOfDay": "anytime",
+  "translation": {
+    "latin": "Dominus vobiscum. / Et cum spiritu tuo. / Sequentia sancti Evangelii secundum N. / Gloria tibi, Domine."
+  }
+}
