@@ -9,7 +9,7 @@
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.reference</string>
 	<key>CFBundleDisplayName</key>
-	<string>Saints SV</string>
+	<string>Saints</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

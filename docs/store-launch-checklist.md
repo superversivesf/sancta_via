@@ -47,9 +47,11 @@ F-Droid $0.
 - [ ] **(automated)** Then the rest:
       `fastlane ship_all` (all seven apps → TestFlight; uploads are
       skipped-fast because we don't wait for processing).
-- [ ] **(manual)** In ASC, rename the two new listings to match the on-device
-      names: **Devotions SV** and **Saints SV** (TestFlight shows the bundle
-      display name already; store listing metadata is separate).
+- [ ] **(manual)** In ASC, review the two new listings' title/display-name
+      fields (store names are separate from on-device labels). On-device
+      labels no longer carry the "SV" suffix (2026-11-17: Examen, Bible
+      Reader, Devotions, Calendar, Novena, Prayer, Saints); store titles
+      remain the longer "Sancta Via …" names.
 - [ ] **(manual)** Invite yourself + any beta testers to the TestFlight build
       (TestFlight → app → internal testers).
 - [ ] **(manual)** Submit the first store update: ASC → app → iOS App →
