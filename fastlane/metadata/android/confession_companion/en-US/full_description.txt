@@ -1,0 +1,15 @@
+Sancta Via Confession Companion helps Catholics prepare for the Sacrament of Reconciliation through a structured examination of conscience.
+KEY FEATURES
+- Comprehensive Examination of Conscience: Browse examinations organized by the Ten Commandments and by vocation (lay faithful, religious, etc.), helping you examine your life thoroughly before confession.
+- Detailed Guidance: Each examination provides thoughtful questions and reflections rooted in Catholic moral teaching to help you identify sins and areas for spiritual growth.
+- Favorites: Bookmark examinations you return to frequently for quick access before each confession.
+- Recently Viewed: Pick up where you left off with a list of recently viewed examinations.
+- Liturgical Calendar Integration: The app's theme follows the Catholic liturgical seasons — purple during Advent and Lent, white for Christmas and Easter, and green for Ordinary Time.
+- Beautiful Interface: Clean, distraction-free design with adjustable font size and light/dark themes.
+- Offline and Private: All content is stored locally. No internet connection needed. Your examination history never leaves your device. No accounts, no tracking, no data collection.
+PRIVACY
+Sancta Via apps collect no personal data. Everything is stored locally on your device. No analytics, no ads, no tracking. See our privacy policy for details.
+**Keywords (100 chars):**
+Catholic,confession,examination,conscience,reconciliation,sin,penance,sacrament,faith,prayer
+**App Store Categories:** Lifestyle
+**Google Play Category:** Lifestyle

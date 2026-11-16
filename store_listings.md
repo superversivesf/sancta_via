@@ -249,4 +249,76 @@ Catholic,prayer,rosary,litany,Mary,saints,devotion,liturgical,traditional,faith
 
 **Screenshots:** See /screenshots/ directory — 22 screenshots (light + dark, home + detail for each app)
 
+## 6. Sancta Via Saints (DRAFT for review — 2026-11-17)
+
+**Subtitle:** Catholic saint profiles, categories, and search
+
+**Promotional Text (170 chars):**
+Searchable profiles of the communion of saints - lives, patronages, feast days, and a traditional prayer for each. Browse by category, save favorites. Fully offline.
+
+**Description (4000 chars):**
+Sancta Via Saints is a Catholic saints companion app that helps you stay connected to the communion of saints. Searchable saint profiles, category browsing, feast-day information, and liturgical theming that follows the Church year.
+
+KEY FEATURES
+
+- Searchable Saint Profiles: Look up hundreds of saints by name, patronage, or feast day, each with a concise life summary and associated prayer.
+
+- Category Browsing: Browse saints by category - martyrs, doctors of the Church, founders, patrons and more.
+
+- Feast Days: Find which saints the Church memorializes today and throughout the year.
+
+- Favorites: Save the saints you pray with most for quick access.
+
+- Liturgical Theming: The app's colors follow the Church year - purple for Advent and Lent, white for Christmas and Easter, red for Pentecost and martyrs, green for Ordinary Time.
+
+- Traditional Prayers: Each saint profile pairs with a traditional prayer for private devotion.
+
+FULLY OFFLINE. NO ADS. NO TRACKING.
+
+All data is bundled with the app and stays on your device. Free, with no advertisements and no in-app purchases. Part of the Sancta Via suite of Catholic apps.
+
+**Keywords (100 chars):**
+catholic,saints,feast days,church,patron saints,holy men,holy women,hagiography,liturgical,reference
+
+**App Store Categories:** Lifestyle, Reference
+**Google Play Category:** Books & Reference
+
+---
+
+## 7. Sancta Via Devotionals (DRAFT for review — 2026-11-17)
+
+**Subtitle:** Offline Catholic devotionals: Today, guided prayer, commitment tracks
+
+**Promotional Text (170 chars):**
+A daily devotional companion: the Today pipeline, guided prayer sessions, and 54-day novena-style commitment trackers, all liturgically aware. Offline.
+
+**Description (4000 chars):**
+Sancta Via Devotionals is an offline-first Catholic devotional app: one daily surface that brings together the Church's tradition of prayer and structured devotional programs, guided by the liturgical calendar.
+
+KEY FEATURES
+
+- Today Pipeline: A single daily view assembling the devotional content for your day-of-program, curated in harmony with the liturgical calendar.
+
+- Guided Prayer Sessions: Step-by-step guided sessions driven by devotional programs, with progress tracking, restart policies, and substitution rules so a missed day never breaks your journey.
+
+- Commitment Trackers: 54-day novena-style devotional commitments with per-anchor completion checkpoints - a modern companion for the Rosary novena tradition and similar consecrations.
+
+- Liturgical Awareness: Content and theming adapt to the Church year - Advent, Lent, Easter, Ordinary Time, and the feasts in between.
+
+- Offline First: Everything you need is on your device. No account, no sign-in, no server.
+
+FULLY OFFLINE. NO ADS. NO TRACKING.
+
+Free, with no advertisements and no in-app purchases. Part of the Sancta Via suite of Catholic apps.
+
+**Keywords (100 chars):**
+catholic,devotional,daily prayer,novena,rosary,rosary novena,consecration,guided prayer,liturgical,offline
+
+**App Store Categories:** Lifestyle, Reference
+**Google Play Category:** Books & Reference
+
+---
+
+**App Icons:** 1024x1024 PNG available in each app's ios/Runner/Assets.xcassets/AppIcon.appiconset/
+
 **App Icons:** 1024x1024 PNG available in each app's ios/Runner/Assets.xcassets/AppIcon.appiconset/

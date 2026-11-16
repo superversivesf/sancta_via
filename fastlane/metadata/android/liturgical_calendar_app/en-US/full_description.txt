@@ -1,0 +1,16 @@
+Sancta Via Liturgical Calendar is a focused, beautiful Catholic calendar app that helps you live the Church year through every season.
+KEY FEATURES
+- Full Liturgical Calendar: View the complete Catholic liturgical calendar, including all feast days, memorials, optional memorials, and ferias. Navigate month by month with ease.
+- Daily Liturgical Information: Tap any day to see the liturgical celebration, rank (solemnity, feast, memorial), liturgical color, and relevant saint or feast information.
+- Liturgical Seasons: The app's theme automatically changes with the liturgical seasons — purple for Advent and Lent, white for Christmas and Easter, red for Pentecost and martyrs, green for Ordinary Time, rose for Gaudete and Laetare Sundays.
+- Vibrant and Muted Color Intensities: Choose between vibrant liturgical colors or a more muted palette for a calmer aesthetic. Both options respect the Church's color traditions.
+- Today View: Instantly see today's liturgical celebration, color, and season when you open the app.
+- Go to Today: One tap returns you to the current date from anywhere in the calendar.
+- Beautiful Interface: Clean, contemplative design with smooth month navigation, light and dark themes, and adjustable font size.
+- Offline: All calendar data is bundled with the app. No internet connection required. No accounts, no tracking, no data collection.
+PRIVACY
+Sancta Via apps collect no personal data. Everything is stored locally on your device. No analytics, no ads, no tracking. See our privacy policy for details.
+**Keywords (100 chars):**
+Catholic,liturgical,calendar,feast,saints,ordinary time,advent,lent,easter,church year
+**App Store Categories:** Lifestyle, Reference
+**Google Play Category:** Lifestyle

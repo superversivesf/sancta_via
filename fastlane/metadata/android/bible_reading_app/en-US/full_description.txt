@@ -1,0 +1,17 @@
+Sancta Via Bible Reading is a Catholic Bible app designed to help you engage with Sacred Scripture in harmony with the liturgical life of the Church.
+KEY FEATURES
+- Multiple Bible Translations: Read from the Catholic Public Domain Version (CPDV) and other Catholic-approved translations, with easy switching between them.
+- Liturgical Calendar Integration: The app's theme changes throughout the Church year — purple for Advent and Lent, white for Christmas and Easter, red for Pentecost and martyrs, green for Ordinary Time, and rose for Gaudete and Laetare Sundays.
+- Reading Plans: Follow structured reading plans to read through the Bible systematically, with progress tracking and daily reminders.
+- Book and Chapter Navigation: Browse all 73 books of the Catholic Bible, including the deuterocanonical books (Tobit, Judith, Wisdom, Sirach, Baruch, 1 & 2 Maccabees). Jump to any chapter with a tap.
+- Verse Selection: Select and highlight individual verses for deeper meditation and easy sharing.
+- Quick Lookup: Search by book name or reference (e.g., "John 3:16") to instantly find any passage.
+- Continue Reading: Pick up exactly where you left off. The app remembers your last position in every translation.
+- Beautiful Reading Experience: Adjustable font size, readable typography, and smooth scrolling optimized for extended reading sessions. Light and dark themes.
+- Offline: All Bible text is bundled with the app. No internet connection required. No accounts, no tracking, no data collection.
+PRIVACY
+Sancta Via apps collect no personal data. Everything is stored locally on your device. No analytics, no ads, no tracking. See our privacy policy for details.
+**Keywords (100 chars):**
+Catholic,Bible,Scripture,liturgical,reading,CPDV,prayer,faith,Christian,deuterocanonical
+**App Store Categories:** Lifestyle, Books
+**Google Play Category:** Books & Reference

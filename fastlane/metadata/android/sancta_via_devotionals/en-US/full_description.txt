@@ -1,0 +1,17 @@
+Sancta Via Devotionals is an offline-first Catholic devotional app: one daily surface that brings together the Church's tradition of prayer and structured devotional programs, guided by the liturgical calendar.
+
+KEY FEATURES
+
+- Today Pipeline: A single daily view assembling the devotional content for your day-of-program, curated in harmony with the liturgical calendar.
+
+- Guided Prayer Sessions: Step-by-step guided sessions driven by devotional programs, with progress tracking, restart policies, and substitution rules so a missed day never breaks your journey.
+
+- Commitment Trackers: 54-day novena-style devotional commitments with per-anchor completion checkpoints - a modern companion for the Rosary novena tradition and similar consecrations.
+
+- Liturgical Awareness: Content and theming adapt to the Church year - Advent, Lent, Easter, Ordinary Time, and the feasts in between.
+
+- Offline First: Everything you need is on your device. No account, no sign-in, no server.
+
+FULLY OFFLINE. NO ADS. NO TRACKING.
+
+Free, with no advertisements and no in-app purchases. Part of the Sancta Via suite of Catholic apps.

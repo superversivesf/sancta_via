@@ -1,0 +1,23 @@
+Sancta Via Prayer Companion is your daily companion for Catholic prayer, offering a rich collection of traditional prayers and devotions.
+KEY FEATURES
+- Extensive Prayer Library: Browse hundreds of traditional Catholic prayers, including:
+  - Traditional prayers (Our Father, Hail Mary, Glory Be, Apostles' Creed, Act of Contrition, Morning/Evening prayers)
+  - Litanies (Sacred Heart, Loreto, St. Joseph, Holy Spirit)
+  - Marian antiphons (Salve Regina, Alma Redemptoris Mater, Ave Regina Caelorum, Regina Caeli)
+  - Devotional prayers (Divine Praises, Daily Examen, Anima Christi)
+  - Liturgical prayers (Kyrie, Asperges, Vidi Aquam, Benedicite)
+  - Seasonal prayers (O Antiphons, Christmas Proclamation, Veni Sancte Spiritus)
+  - Communion and confession prayers
+- Favorites: Bookmark your most-loved prayers for instant access.
+- Recently Viewed: Quickly return to prayers you've read recently.
+- Search: Find prayers by name or keyword.
+- Liturgical Calendar Integration: The app's theme follows the Catholic liturgical seasons — purple for Advent and Lent, white for Christmas and Easter, red for Pentecost and martyrs, and green for Ordinary Time. Rose for Gaudete and Laetare Sundays.
+- Copy and Share: Copy any prayer to clipboard or share with friends and family.
+- Beautiful Interface: Clean, contemplative design with adjustable font size and light/dark themes.
+- Offline and Private: All prayer content is stored locally. No internet connection needed. No accounts, no tracking, no data collection.
+PRIVACY
+Sancta Via apps collect no personal data. Everything is stored locally on your device. No analytics, no ads, no tracking. See our privacy policy for details.
+**Keywords (100 chars):**
+Catholic,prayer,rosary,litany,Mary,saints,devotion,liturgical,traditional,faith
+**App Store Categories:** Lifestyle, Reference
+**Google Play Category:** Lifestyle
