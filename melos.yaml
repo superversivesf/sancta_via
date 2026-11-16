@@ -32,6 +32,10 @@ scripts:
     run: melos exec --depends-on=cider -- flutter pub run cider bump patch
     description: Bump patch version in all packages using Cider.
 
+  version:bump:build:
+    run: dart run tool/bump_build_numbers.dart
+    description: Increment the build number (+N) in all app pubspecs (apps only).
+
   version:bump:minor:
     run: melos exec --depends-on=cider -- flutter pub run cider bump minor
     description: Bump minor version in all packages using Cider.

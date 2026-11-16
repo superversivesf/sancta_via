@@ -15,7 +15,7 @@ app_store:
   age_rating: "4+"
 
 # Version: major.minor.patch+build
-version: 1.0.6
+version: 1.0.6+2
 repository: https://github.com/superversivesf/sancta_via_saint_companion
 homepage: https://sancta-via.net
 

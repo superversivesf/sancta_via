@@ -136,6 +136,16 @@ Logger methods:
 - `AppLogger.warning(message, tag)` - Warnings
 - `AppLogger.error(message, error, stackTrace, tag)` - Errors
 
+## Release Versioning
+
+`pubspec.yaml` versions are `major.minor.patch+build`. On every release, in this order:
+
+1. `melos run version:bump:build` — increments the `+N` build number in all app
+   pubspecs (cider does NOT manage `+N`). Every store upload needs a new `+N`;
+   repeated uploads with the same build number are rejected.
+2. `melos run version:bump:patch|minor|major` — cider-managed `X.Y.Z` bump.
+3. Commit the bumped pubspecs, then build/ship via `fastlane/`.
+
 ## Testing
 
 ### Test Organization
