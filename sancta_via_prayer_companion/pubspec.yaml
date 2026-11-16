@@ -51,6 +51,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^5.4.4
+  # FFI-backed SQLite for tests: the home screen's prayer database needs a
+  # real (test-safe) sqlite implementation.
+  sqflite_common_ffi: ^2.3.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
