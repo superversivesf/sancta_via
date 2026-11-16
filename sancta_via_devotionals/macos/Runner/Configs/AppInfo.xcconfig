@@ -8,7 +8,7 @@
 PRODUCT_NAME = sancta_via_devotionals
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = net.sancta-via.sanctaViaDevotionals
+PRODUCT_BUNDLE_IDENTIFIER = net.superversive.sancta_via.devotionals
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 net.sancta-via. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 net.superversive. All rights reserved.
