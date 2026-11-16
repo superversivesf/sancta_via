@@ -1,0 +1,15 @@
+# Android Keystore Configuration Template
+# Copy this file to key.properties and fill in your keystore details
+# DO NOT commit key.properties to version control!
+
+storePassword=your_store_password_here
+keyPassword=your_key_password_here
+keyAlias=sancta_via_devotionals
+storeFile=../keystores/sancta_via_devotionals.jks
+
+# Instructions:
+# 1. Copy this file to key.properties (remove .template)
+# 2. Create the keystore (all seven at once) using:
+#    SV_KEYSTORE_PASS=<secret> ./tool/generate_keystores.sh generate
+# 3. Fill in the actual values above (storePassword/keyPassword = SV_KEYSTORE_PASS)
+# 4. key.properties and keystores/ are gitignored at root and per-app

@@ -23,3 +23,10 @@ package-lock.json
 local.properties
 releases/
 .env
+
+# Release signing secrets (defense in depth: per-app android/.gitignore already
+# covers these inside each app; these rules catch stray copies elsewhere)
+**/key.properties
+**/keystores/
+*.jks
+*.keystore
