@@ -18,6 +18,28 @@ MODE="${1:-dry-run}"
 ROOT="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
 cd "$ROOT"
 
+# keytool needs a Java runtime; plain shells on macOS often have only the
+# /usr/bin/stub. Fall back to the JDK bundled with Android Studio (the one
+# Gradle already uses via the Flutter tool).
+if [ -z "${JAVA_HOME:-}" ]; then
+  for candidate in \
+    "/Applications/Android Studio.app/Contents/jbr/Contents/Home" \
+    "/Applications/Android Studio Preview.app/Contents/jbr/Contents/Home" \
+    "$HOME/Library/Java/JavaVirtualMachines/"*/Contents/Home; do
+    if [ -x "$candidate/bin/keytool" ]; then
+      JAVA_HOME="$candidate"
+      export JAVA_HOME
+      export PATH="$JAVA_HOME/bin:$PATH"
+      break
+    fi
+  done
+fi
+
+if ! command -v keytool >/dev/null 2>&1; then
+  echo "error: keytool not found and no JAVA_HOME/JBR detected — install a JDK or set JAVA_HOME" >&2
+  exit 1
+fi
+
 APPS="bible_reading_app confession_companion devotionals liturgical_calendar_app novena_companion prayer_companion saint_companion"
 
 # Default storeFile/alias per app (used only when the app has no key.properties
