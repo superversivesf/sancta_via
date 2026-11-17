@@ -434,8 +434,15 @@ main() {
         # Create helper scripts
         create_android_install_script
 
-        # Commit and push version changes
-        commit_and_push_changes
+        # Commit and push version changes — only on a FULLY successful run:
+        # version numbers must never be recorded for a release whose builds
+        # failed (the artifacts don't exist, and the next run would bump
+        # again, skipping a versionCode for nothing).
+        if [ "$success_count" -ne "${#flutter_projects[@]}" ]; then
+            log "WARNING" "Skipping version-bump commit: not all builds succeeded"
+        else
+            commit_and_push_changes
+        fi
 
         # Final summary
         log "INFO" "Build Summary:"
