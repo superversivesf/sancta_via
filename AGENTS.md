@@ -154,6 +154,23 @@ Logger methods:
 
 ## Testing
 
+### Regression Bar & Release Gate
+
+`build-release.sh` refuses to build anything until **every workspace package's
+test suite and `flutter analyze` are green** (`melos run analyze && melos run
+test` run before the first build; any failure aborts the release non-zero).
+
+Per-app regression bar (keep it when adding screens or features):
+
+1. **Boot smoke** — the app renders, principal routes are reachable (widget
+   test pumping the real app widget with liturgical-provider overrides).
+2. **Screen tests** — the app's main flow screens.
+3. **Unit tests** — services/repos with logic (scheduling, search, persistence
+   round-trips). Database-backed tests run through `sqflite_common_ffi` (see
+   each app's `test/flutter_test_config.dart`); platform-channel-backed
+   plugins (path_provider, secure storage) get mock handlers in
+   `test/helpers/platform_mocks.dart` where a screen needs them.
+
 ### Test Organization
 - Test files in `test/` directory at app root
 - Mirror `lib/` structure in `test/`

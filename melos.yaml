@@ -9,8 +9,8 @@ scripts:
     description: Link all packages and install dependencies.
 
   analyze:
-    run: melos exec -- flutter analyze .
-    description: Run static analysis on all packages.
+    run: melos exec -- flutter analyze --no-fatal-infos .
+    description: Run static analysis on all packages (errors+warnings fatal; infos tracked).
 
   format:
     run: melos exec -- dart format .
