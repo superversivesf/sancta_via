@@ -113,6 +113,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
+           customArchiveName = "Examen"
       buildConfiguration = "Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>

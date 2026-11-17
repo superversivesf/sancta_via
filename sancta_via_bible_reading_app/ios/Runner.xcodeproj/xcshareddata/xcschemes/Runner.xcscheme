@@ -113,6 +113,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
+           customArchiveName = "Bible Reader"
       buildConfiguration = "Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
