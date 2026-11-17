@@ -377,6 +377,22 @@ main() {
     
     # Process each project
     success_count=0
+
+    # Release gate: static analysis + the workspace test suite must pass
+    # before anything is built (a red suite aborts the release).
+    if [[ $DRY_RUN == false ]]; then
+        log "INFO" "Release gate: running workspace analysis + full test suite"
+        if ! (cd "$BASE_DIR" && melos run analyze >> "$RELEASE_DIR/build.log" 2>&1) ; then
+            log "ERROR" "flutter analyze failed - release aborted (see build.log)"
+            exit 1
+        fi
+        log "SUCCESS" "Analysis clean across the workspace"
+        if ! (cd "$BASE_DIR" && melos run test >> "$RELEASE_DIR/build.log" 2>&1) ; then
+            log "ERROR" "The workspace test suite failed - release aborted (see build.log)"
+            exit 1
+        fi
+        log "SUCCESS" "Full test suite passing - release can proceed"
+    fi
     for project_dir in "${flutter_projects[@]}"; do
         project_name=$(basename "$project_dir")
         
@@ -435,7 +451,6 @@ main() {
         echo -e "${GREEN}🎉 Release build complete!${NC}"
         echo -e "${BLUE}Release directory: $RELEASE_DIR${NC}"
         echo -e "${BLUE}Android installs: $RELEASE_DIR/android/install-all.sh${NC}"
-        echo -e "${BLUE}iOS TestFlight: $RELEASE_DIR/ios/upload-testflight.sh${NC}"
     else
         echo -e "${YELLOW}Dry run complete. Use without --dry-run to execute builds.${NC}"
     fi
@@ -445,6 +460,6 @@ main() {
 main "$@"
 
 # Exit non-zero if any app failed to build (CI/scripts must know).
-if [ "$success_count" -ne "${#flutter_projects[@]}" ]; then
+if [[ $DRY_RUN == false && "$success_count" -ne "${#flutter_projects[@]}" ]]; then
     exit 1
 fi

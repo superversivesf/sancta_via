@@ -14,11 +14,6 @@ class MockLiturgicalCalendarService extends Mock
 
 void main() {
   group('CalendarScreen', () {
-    late MockLiturgicalCalendarService mockLiturgicalCalendarService;
-
-    setUp(() {
-      mockLiturgicalCalendarService = MockLiturgicalCalendarService();
-    });
 
     testWidgets('renders correctly and shows current month',
         (WidgetTester tester) async {

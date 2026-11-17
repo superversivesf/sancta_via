@@ -36,7 +36,7 @@ void main() {
         ..currentItemId = 'item_2';
 
       final restored = ExaminationSession.fromJson(
-        (session.toJson() as Map<String, dynamic>).map(
+        session.toJson().map(
           (k, v) => MapEntry(k, v),
         ),
       );

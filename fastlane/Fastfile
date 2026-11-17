@@ -1,7 +1,6 @@
 # Sancta Via release automation — fill in .env, see fastlane/README.md.
 opt_out_usage
 
-# The seven apps in the monorepo (dir name → lane argument).
 APP_NAMES = %w[
   bible_reading_app
   confession_companion
@@ -12,44 +11,80 @@ APP_NAMES = %w[
   saint_companion
 ].freeze
 
-def build_and_testflight(app)
+# fastlane chdirs into ./fastlane/ for every lane (FastlaneFolder.path), so all
+# repo-relative paths must be built from this file's location, never from cwd.
+REPO_ROOT = File.expand_path('..', __dir__)
+
+# The seven store identifiers, one per app (bundle ID standardisation, 2026-11-17).
+def package_name(app)
+  "net.superversive.sancta_via.#{app}"
+end
+
+# Lanes accept `fastlane ship_ios app:saint_companion` (options hash) and fall
+# back to APP_NAME=<app> in the environment.
+def app_from(options)
+  app = options[:app] || ENV['APP_NAME']
+  UI.user_error!("Set the app: `fastlane ship_ios app:saint_companion` (one of #{APP_NAMES.join(', ')})") if app.nil?
+  UI.user_error!("Unknown app '#{app}'. Valid: #{APP_NAMES.join(', ')}") unless APP_NAMES.include?(app)
+  app
+end
+
+def asc_api_key
   UI.user_error!('ASC API key env vars missing — see fastlane/README.md') unless
     ENV['ASC_KEY_ID'] && ENV['ASC_ISSUER_ID'] && ENV['ASC_KEY_PATH']
 
-  app_dir = "sancta_via_#{app}"
+  app_store_connect_api_key(
+    key_id: ENV['ASC_KEY_ID'],
+    issuer_id: ENV['ASC_ISSUER_ID'],
+    key_filepath: ENV['ASC_KEY_PATH'],
+    duration: 1200,
+    in_house: false
+  )
+end
+
+def build_and_testflight(options)
+  app = app_from(options)
+  app_dir = File.join(REPO_ROOT, "sancta_via_#{app}")
+  UI.user_error!("App dir not found: #{app_dir}") unless Dir.exist?(app_dir)
+
   build_app(
-    project: "#{app_dir}/ios/Runner.xcodeproj",
+    project: File.join(app_dir, 'ios', 'Runner.xcodeproj'),
     scheme: 'Runner',
     configuration: 'Release',
-    export_method: 'app_store',
+    export_method: 'app-store',
     export_options: {
-      SigningStyle: 'automatic',
+      signingStyle: 'automatic',
       provisioningProfiles: {}
     }
   )
   upload_to_testflight(
-    api_key_path: ENV['ASC_KEY_PATH'],
-    issuer_id: nil,
-    key_id: nil,
+    api_key: asc_api_key,
     skip_waiting_for_build_processing: true,
     distribute_external: false,
     changelog: ENV['RELEASE_NOTES'] || 'Routine refresh of prayers and data.'
   )
 end
 
-def build_and_play(app)
+def build_and_play(options)
+  app = app_from(options)
+  app_dir = File.join(REPO_ROOT, "sancta_via_#{app}")
+  UI.user_error!("App dir not found: #{app_dir}") unless Dir.exist?(app_dir)
   UI.user_error!('Play service-account env var missing — see fastlane/README.md') unless
     ENV['PLAY_JSON_KEY_PATH']
 
-  app_dir = "sancta_via_#{app}"
-  Dir.chdir("#{app_dir}/android") do
-    sh('flutter', 'build', 'appbundle', '--release')
-  end
+  aab = File.join(app_dir, 'android', 'app', 'build', 'outputs', 'bundle', 'release', 'app-release.aab')
+  UI.user_error!("No release AAB at #{aab} — build it first (flutter build appbundle in #{app_dir})") unless File.exist?(aab)
+
+  # Store listing text/screenshots are entered by hand in the Play Console for
+  # first submission; the fastlane metadata trees are reserved for F-Droid.
   upload_to_play_store(
+    package_name: package_name(app),
     json_key: ENV['PLAY_JSON_KEY_PATH'],
     track: 'internal',
-    aab: "#{app_dir}/android/app/build/outputs/bundle/release/app-release.aab",
+    aab: aab,
     release_status: 'draft',
+    skip_upload_metadata: true,
+    skip_upload_changelogs: true,
     skip_upload_images: true,
     skip_upload_screenshots: true
   )
@@ -57,33 +92,23 @@ end
 
 lane :asc_key_check do
   UI.message('Checking App Store Connect API key…')
-  api_key = app_store_connect_api_key(
-    key_id: ENV['ASC_KEY_ID'],
-    issuer_id: ENV['ASC_ISSUER_ID'],
-    key_filepath: ENV['ASC_KEY_PATH'],
-    duration: 1200,
-    in_house: false
-  )
+  api_key = asc_api_key
   UI.success("API key OK (token obtained for team #{api_key[:team_id]})")
 end
 
-lane :ship_ios do
-  app = ENV['APP_NAME']
-  UI.user_error!('Set APP_NAME (e.g. saint_companion)') if app.nil?
-  build_and_testflight(app)
+lane :ship_ios do |options|
+  build_and_testflight(options)
 end
 
-lane :ship_android do
-  app = ENV['APP_NAME']
-  UI.user_error!('Set APP_NAME (e.g. saint_companion)') if app.nil?
-  build_and_play(app)
+lane :ship_android do |options|
+  build_and_play(options)
 end
 
 lane :ship_all do
   # All seven apps, iOS only: TestFlight builds in one command. Android
-  # ships per app until every Play listing is API-verified.
+  # ships per app (first publish per listing happens in the Console).
   APP_NAMES.each do |app|
     UI.important("Shipping iOS: #{app}")
-    build_and_testflight(app)
+    build_and_testflight({ app: app })
   end
 end

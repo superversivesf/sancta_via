@@ -33,7 +33,7 @@ void main() {
       final christmas = DateTime(2025, 12, 25);
       final color = container.read(liturgicalColorByDateProvider(christmas));
       final day = container.read(liturgicalDayProvider(christmas));
-      expect(day?.celebration.color?.toUpperCase(), equals('WHITE'));
+      expect(day?.celebration.color.toUpperCase(), equals('WHITE'));
       // WHITE color uses vibrant blue (0xFF2196F3) for visibility
       expect(color, equals(LiturgicalColor.white.toFlutterColor()));
     });

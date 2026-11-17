@@ -3,7 +3,6 @@
 // real database initialization works in the test zone.
 import 'dart:async';
 
-import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 /// flutter_test discovers `testExecutable` in this file and wraps every

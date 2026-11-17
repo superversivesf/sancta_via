@@ -1,4 +1,6 @@
 name: sancta_via_shared_ui
+publish_to: 'none'  # path deps: workspace-only
+
 description: Shared UI components for Sancta Via ecosystem with liturgical theming and responsive design
 version: 1.0.0
 repository: https://github.com/superversivesf/sancta_via_shared_ui

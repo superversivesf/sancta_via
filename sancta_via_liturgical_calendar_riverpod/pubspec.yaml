@@ -1,4 +1,6 @@
 name: sancta_via_liturgical_calendar_riverpod
+publish_to: 'none'  # path deps: workspace-only
+
 description: Riverpod providers for sancta_via_liturgical_calendar with reactive state management, automatic date updates, and Flutter integration.
 version: 2.0.0
 repository: https://github.com/superversivesf/sancta_via_liturgical_calendar_riverpod

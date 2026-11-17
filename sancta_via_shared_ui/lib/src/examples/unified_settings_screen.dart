@@ -4,12 +4,12 @@ import '../widgets/settings_section_header.dart';
 import '../widgets/theme_mode_selector.dart';
 import '../widgets/color_intensity_selector.dart';
 import '../widgets/liturgical_color_preview.dart';
-import '../widgets/font_size_selector.dart';
+
 import '../widgets/language_selector.dart';
 import '../widgets/accessibility_settings.dart';
 import '../widgets/notifications_settings.dart';
 import '../widgets/app_info_section.dart';
-import '../models/base_settings_model.dart';
+
 
 /// Example unified settings screen showing how to use all standardized components
 ///
