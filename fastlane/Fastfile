@@ -90,6 +90,46 @@ def build_and_play(options)
   )
 end
 
+# The seven store display names for App Store Connect record creation
+# (ASC names can be edited later; bundle IDs are permanent).
+APP_META = {
+  'bible_reading_app' => 'Sancta Via Bible',
+  'confession_companion' => 'Sancta Via Examen',
+  'devotionals' => 'Sancta Via Devotionals',
+  'liturgical_calendar_app' => 'Sancta Via Calendar',
+  'novena_companion' => 'Sancta Via Novena',
+  'prayer_companion' => 'Sancta Via Prayer',
+  'saint_companion' => 'Sancta Via Saints',
+}.freeze
+
+lane :install_profiles do
+  api_key = asc_api_key
+  APP_NAMES.each do |app|
+    UI.important("Ensuring App Store profile for #{app}")
+    sigh(
+      api_key: api_key,
+      app_identifier: package_name(app),
+      provisioning_name: "#{APP_META[app]} App Store",
+      skip_certificate_verification: false
+    )
+  end
+end
+
+lane :register_apps do
+  APP_NAMES.each do |app|
+    UI.important("Registering #{app} (#{package_name(app)}) as '#{APP_META[app]}'")
+    produce(
+      app_identifier: package_name(app),
+      app_name: APP_META[app],
+      sku: package_name(app),
+      team_id: 'U2267GC4DS',
+      company_name: 'Superversive',
+      api_key_path: ENV['ASC_KEY_PATH'],
+      skip_itc: false
+    )
+  end
+end
+
 lane :asc_key_check do
   UI.message('Checking App Store Connect API key…')
   api_key = asc_api_key
