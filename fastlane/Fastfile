@@ -51,11 +51,11 @@ def build_and_testflight(options)
     project: File.join(app_dir, 'ios', 'Runner.xcodeproj'),
     scheme: 'Runner',
     configuration: 'Release',
-    export_method: 'app-store',
-    export_options: {
-      signingStyle: 'automatic',
-      provisioningProfiles: {}
-    }
+    # Manual export: the seven App Store profiles are IsXcodeManaged=false,
+    # so automatic signing can never find them (and gym never passes
+    # -allowProvisioningUpdates). Each app's ExportOptions.plist carries
+    # method=app-store-connect, signingStyle=manual and the profile UUID map.
+    export_options: File.join(app_dir, 'ios', 'ExportOptions.plist')
   )
   upload_to_testflight(
     api_key: asc_api_key,
@@ -115,20 +115,12 @@ lane :install_profiles do
   end
 end
 
-lane :register_apps do
-  APP_NAMES.each do |app|
-    UI.important("Registering #{app} (#{package_name(app)}) as '#{APP_META[app]}'")
-    produce(
-      app_identifier: package_name(app),
-      app_name: APP_META[app],
-      sku: package_name(app),
-      team_id: 'U2267GC4DS',
-      company_name: 'Superversive',
-      api_key_path: ENV['ASC_KEY_PATH'],
-      skip_itc: false
-    )
-  end
-end
+# NOTE: there is intentionally NO `register_apps` lane. `produce` authenticates
+# with an Apple ID (it has no api_key_path option), and the ASC API does not
+# allow API keys to create app records on personal accounts. App Store Connect
+# app records are created by hand in ASC → My Apps → + (7 records: names +
+# bundle IDs see docs/store-launch-checklist.md). Bundle IDs + App Store
+# provisioning profiles are registered headlessly via tool/register_asc.rb.
 
 lane :asc_key_check do
   UI.message('Checking App Store Connect API key…')

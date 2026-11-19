@@ -3,14 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>method</key>
-	<string>app-store</string>
-	<key>compileBitcode</key>
-	<false/>
-	<key>uploadSymbols</key>
-	<true/>
+	<string>app-store-connect</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>net.superversive.sancta_via.bible_reading_app</key>
+		<string>dac2a7de-ffd0-4a95-b7d4-4908492b08e6</string>
+	</dict>
+	<key>signingCertificate</key>
+	<string>Apple Distribution</string>
 	<key>signingStyle</key>
-	<string>automatic</string>
+	<string>manual</string>
+	<key>stripSwiftSymbols</key>
+	<true/>
 	<key>teamID</key>
 	<string>U2267GC4DS</string>
+	<key>uploadSymbols</key>
+	<true/>
 </dict>
 </plist>
