@@ -3,6 +3,8 @@ import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_ca
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import 'config/routes.dart';
+import 'providers/prayer_providers.dart';
+import 'providers/prayer_app_settings_provider.dart';
 
 void main() {
   runApp(const ProviderScope(child: PrayerCompanionApp()));
@@ -19,6 +21,7 @@ class PrayerCompanionApp extends ConsumerWidget {
     // Watch user preferences
     final themeMode = ref.watch(themeModeProvider);
     final colorIntensity = ref.watch(colorIntensityProvider);
+    final effectiveTextScale = ref.watch(prayerAppSettingsProvider).effectiveTextScaleFactor;
 
     // Parse liturgical color from string
     final liturgicalColor = currentLiturgicalColor != null
@@ -32,6 +35,8 @@ class PrayerCompanionApp extends ConsumerWidget {
       darkTheme: AppTheme.darkTheme(liturgicalColor, colorIntensity),
       themeMode: themeMode,
       routerConfig: appRouter,
+      builder: (BuildContext context, Widget? child) =>
+          textScaleClampedBuilder(effectiveTextScale, context, child),
     );
   }
 }

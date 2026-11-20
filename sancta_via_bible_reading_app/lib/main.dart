@@ -4,6 +4,7 @@ import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_ca
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart' hide AppLogger;
 
 import 'config/routes.dart';
+import 'providers/app_providers.dart';
 import 'services/user_message_service.dart';
 import 'utils/logger.dart';
 
@@ -84,6 +85,7 @@ class _BibleReadingAppState extends ConsumerState<BibleReadingApp>
     // Watch user preferences
     final themeMode = ref.watch(themeModeProvider);
     final colorIntensity = ref.watch(colorIntensityProvider);
+    final effectiveTextScale = ref.watch(effectiveBibleTextScaleProvider);
 
     // Parse liturgical color from string
     final liturgicalColor = currentLiturgicalColor != null
@@ -97,6 +99,8 @@ class _BibleReadingAppState extends ConsumerState<BibleReadingApp>
       darkTheme: AppTheme.darkTheme(liturgicalColor, colorIntensity),
       themeMode: themeMode,
       routerConfig: appRouter,
+      builder: (BuildContext context, Widget? child) =>
+          textScaleClampedBuilder(effectiveTextScale, context, child),
     );
   }
 }

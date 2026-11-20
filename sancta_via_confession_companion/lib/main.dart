@@ -4,6 +4,7 @@ import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_ca
 
 import 'config/routes.dart';
 import 'config/constants.dart';
+import 'providers/confession_app_settings_provider.dart';
 
 void main() {
   runApp(const ProviderScope(child: ConfessionCompanionApp()));
@@ -17,6 +18,7 @@ class ConfessionCompanionApp extends ConsumerWidget {
     final liturgicalData = ref.watch(currentLiturgicalDayProvider);
     final themeMode = ref.watch(themeModeProvider);
     final colorIntensity = ref.watch(colorIntensityProvider);
+    final effectiveTextScale = ref.watch(confessionEffectiveTextScaleProvider);
 
     return MaterialApp.router(
       title: AppConstants.appName,
@@ -35,6 +37,8 @@ class ConfessionCompanionApp extends ConsumerWidget {
           : AppTheme.darkTheme(null, colorIntensity),
       themeMode: themeMode,
       routerConfig: appRouter,
+      builder: (BuildContext context, Widget? child) =>
+          textScaleClampedBuilder(effectiveTextScale, context, child),
     );
   }
 }

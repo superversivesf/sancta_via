@@ -15,6 +15,7 @@ export 'src/widgets/liturgical_color_preview.dart';
 
 // Shared UI components - Settings
 export 'src/widgets/settings_section_header.dart';
+export 'src/widgets/text_scale_builder.dart';
 export 'src/widgets/font_size_selector.dart';
 export 'src/widgets/language_selector.dart';
 export 'src/widgets/accessibility_settings.dart';
