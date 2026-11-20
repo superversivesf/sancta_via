@@ -10,8 +10,8 @@
 library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_calendar_riverpod.dart';
 import 'package:saint_data/saint_data.dart';
-
 /// The saint data repository every saint data provider reads through.
 ///
 /// Production resolves the process-wide [SaintRepository.instance]; tests
@@ -37,16 +37,17 @@ Future<SaintRepository> _loadedRepository(Ref ref) async {
 /// (final-review ruling: in non-leap years the '02-28' lookup unions the
 /// '02-29' saints).
 ///
-/// Staleness: `DateTime.now()` is captured at first provider use, so the
-/// result refreshes on app restart or an `invalidate()` of this provider;
-/// the house `currentDateProvider` pattern could drive live rollover later.
+/// Staleness: `DateTime.now()` used to be captured at first provider use,
+/// freezing "today" for the whole session. It is now driven by the shared
+/// `currentDateProvider` stream: the result recomputes whenever the date
+/// rolls over (and still supports manual `invalidate()`).
 final FutureProvider<List<Saint>> saintsTodayProvider =
     FutureProvider<List<Saint>>((Ref ref) async {
       final SaintRepository repository = await _loadedRepository(ref);
-      final DateTime now = DateTime.now();
+      final DateTime today = await ref.watch(currentDateProvider.future);
       return repository.getSaintsForFeastDay(
-        SaintFeastService.feastKeyForDate(now),
-        year: now.year,
+        SaintFeastService.feastKeyForDate(today),
+        year: today.year,
       );
     });
 

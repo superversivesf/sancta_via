@@ -252,6 +252,12 @@ void main() {
           SaintRepository.forDatabase(db),
         ),
         currentLiturgicalDayProvider.overrideWith((Ref ref) => liturgicalDay),
+        // saintsTodayProvider watches the shared date stream for rollover;
+        // pin it to a single-value stream so the periodic timer stays out
+        // of the fake-async test zone.
+        currentDateProvider.overrideWith(
+          (Ref ref) => Stream.value(DateTime.now()),
+        ),
         ...extraOverrides,
       ],
     );
