@@ -148,7 +148,7 @@ flutter build ios --release          # produces Runner.xcarchive
 # then export IPA (needs ExportOptions.plist) or use fastlane pilot/deliver
 ```
 
-Or let `fastlane` / `xcodebuild -exportArchive` handle it. Upload via **Transporter** app, `altool`, or `fastlane deliver` / App Store Connect API.
+Or let `fastlane` / `xcodebuild -exportArchive` handle it. Upload via **Transporter** app or `fastlane pilot` / App Store Connect API (`altool` is retired).
 
 Add to CI:
 
@@ -254,7 +254,7 @@ Users add your repo URL in the F-Droid app. Good as a stopgap while waiting for 
 Your current state:
 
 - ✅ `melos.yaml` with `version:bump:*` scripts and `build:android`.
-- ✅ `build-release.sh` that bumps versions and builds APK/AAB/IPA (but uses deprecated `altool`, no CI integration, no signing config).
+- ✅ `build-release.sh` that bumps versions and builds APK/AAB/IPA (signing gate added 2026-11-17; iOS export fixed 2026-11-20 via manual profile maps).
 - ✅ `.github/workflows/flutter.yml` with `analyze` + `test` (no build, no deploy).
 - ❌ No signing keystore / provisioning in CI.
 - ❌ No store upload automation.

@@ -21,13 +21,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 
 
-### register_apps
-
-```sh
-[bundle exec] fastlane register_apps
-```
-
-
 
 ### asc_key_check
 

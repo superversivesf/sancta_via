@@ -74,11 +74,14 @@ F-Droid $0.
       Note: the very first AAB of each NEW app version has the
       must-publish-first-time-in-Console rule only for brand-new listings.
 - [ ] **(manual)** Runtime smoke on a device BEFORE any production push:
-      CORRECTION 2026-11-17: R8/minification is currently OFF in every app's
-      `android/app/build.gradle.kts` (the earlier claim that it was turned ON
-      was wrong — re-check `isMinifyEnabled` before relying on it). Exercise
-      a release build from the internal track anyway; if R8 gets enabled
-      later, that smoke becomes mandatory.
+      CORRECTION 2026-11-20: R8 **runs** in every release build (Flutter's
+      gradle plugin enables it; `mapping.txt` is present for all 7 in the
+      Nov-17 run). Obfuscation is effectively off (no app/plugin/AndroidX
+      class renamed in the shipped dex — only `j$.time.*` desugars), so the
+      smoke target is **shrinking** (dropped classes) and the notification
+      alarm path — especially novena's reminders, which were dead code until
+      the Nov-20 wiring fix. Device-exercise a release build from the
+      internal track before production.
 
 ## 3. IzzyOnDroid (fastlane-compatible metadata, developer-signed APKs)
 
