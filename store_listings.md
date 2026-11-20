@@ -3,7 +3,7 @@
 Ready-to-use text for App Store Connect and Google Play Console listings.
 Copy-paste from here when creating store entries for each app.
 
-**Privacy Policy URL:** https://github.com/superversivesf/sancta_via/blob/main/privacy_policy.html
+**Privacy Policy URL:** https://superversivesf.github.io/sancta-via-site/privacy/
 (or host via GitHub Pages for a cleaner URL)
 
 **Support URL:** https://github.com/superversivesf/sancta_via/issues
@@ -225,7 +225,7 @@ Catholic,prayer,rosary,litany,Mary,saints,devotion,liturgical,traditional,faith
 
 **Developer Name:** Superversive
 **Support Email:** (set up a GitHub issue link instead — https://github.com/superversivesf/sancta_via/issues)
-**Privacy Policy:** https://github.com/superversivesf/sancta_via/blob/main/privacy_policy.html
+**Privacy Policy:** https://superversivesf.github.io/sancta-via-site/privacy/
 **Terms of Service:** N/A (free, no accounts, no services)
 
 **App Store Age Rating:**

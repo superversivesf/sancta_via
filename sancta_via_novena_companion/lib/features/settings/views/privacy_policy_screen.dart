@@ -314,7 +314,8 @@ For full details, please view the complete privacy policy in the app.
 
   Future<void> _openOnlinePolicy(BuildContext context) async {
     const url =
-        'https://yourusername.github.io/sancta-via-privacy/'; // Update this with your actual URL
+        // Live privacy policy (GitHub Pages, same page the store listings link to).
+        'https://superversivesf.github.io/sancta-via-site/privacy/';
     try {
       final uri = Uri.parse(url);
       // Using url_launcher which is already in pubspec.yaml
@@ -356,7 +357,7 @@ For full details, please view the complete privacy policy in the app.
         content: const Text(
           'Our app keeps all your spiritual data completely private and local to your device. '
           'No data is ever transmitted or shared. Download Sancta Via for a truly private Catholic spiritual experience.\n\n'
-          'Full privacy policy: https://yourusername.github.io/sancta-via-privacy/',
+          'Full privacy policy: https://superversivesf.github.io/sancta-via-site/privacy/',
         ),
         actions: [
           TextButton(

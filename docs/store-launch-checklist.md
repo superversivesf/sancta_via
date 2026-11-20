@@ -12,15 +12,14 @@ F-Droid $0.
 
 ## 0. Shared prerequisites (one-time, before any store)
 
-- [x] **(done)** Website pages written: `<site>/apps/` (pitch + support
-      link) and `<site>/privacy/` (one-paragraph offline-first policy) —
-      the local test build is at the home-server docker stack.
-- [ ] **(manual)** **Deploy the site to a proper domain** — store-submission
-      blocker (both Apple and Play require a live privacy-policy URL).
-      Options: GitHub/Cloudflare Pages ($0, static Astro build), home
-      server + Cloudflare Tunnel (keeps hosting in-house), or a small VPS
-      + Caddy. Domain suggestion: `sancta-via.net` (already referenced in
-      the Wikimedia fetch User-Agent).
+- [x] **(done 2026-11-20)** Privacy/support pages **deployed** at
+      https://superversivesf.github.io/sancta-via-site/ (GitHub Pages,
+      repo `superversivesf/sancta-via-site`) — `privacy/` is the live
+      policy page (all 7 apps, "collects nothing" statement, Nov-20
+      date) that the listings and the in-app link now use. Optional
+      later step: a pretty domain — `superversive.net` is hosted on a
+      separate Apache origin (needs creds/DNS changes); `sancta-via.net`
+      is not owned.
 - [ ] **(manual)** Replace the placeholder Buy-me-a-coffee link in
       `site/src/pages/apps.astro` once your page exists.
 - [ ] **(automated-ready)** Restore Android release signing — UPDATED

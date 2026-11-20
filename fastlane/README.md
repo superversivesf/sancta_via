@@ -1,86 +1,70 @@
-# Sancta Via — release automation (fastlane)
+fastlane documentation
+----
 
-One `fastlane` invocation ships a build for any of the seven apps to
-TestFlight (iOS) or the Play internal track (Android).
+# Installation
 
-## What requires money vs. what is free
+Make sure you have the latest version of the Xcode command line tools installed:
 
-- **fastlane** — free, open source, already installed (`/opt/homebrew/bin/fastlane`).
-- **Apple Developer Program** — the $99–$100 fee itself. Letting it lapse
-  freezes all seven store listings (no updates, TestFlight builds expire
-  within 90 days, installed apps keep running but drift). The fee is due
-  regardless of automation — fastlane only makes paying for it worthwhile.
-- **Play Console** — one-time $25 fee, already paid.
-
-## One-time setup (the only manual steps)
-
-### Apple (≈15 minutes)
-
-1. Generate an **App Store Connect API key**:
-   <https://appstoreconnect.apple.com> → Users and Access → Integrations →
-   App Store Connect API key → generate with **App Manager** role.
-2. Save the `.p8` file OUTSIDE this repo (e.g. `~/.fastlane/AuthKey_<KEYID>.p8`)
-   and copy the **Key ID** and **Issuer ID** from the same page.
-3. Copy `.env.example` to `.env` and fill:
-   ```text
-   ASC_KEY_ID=...
-   ASC_ISSUER_ID=...
-   ASC_KEY_PATH=/Users/jason/.fastlane/AuthKey_<KEYID>.p8
-   ```
-4. `bundle exec fastlane` / `fastlane` picks up `.env` automatically; the key
-   file itself is never committed.
-
-### Google Play (≈15 minutes, only when first shipping an Android build)
-
-1. Play Console → Setup → API access → create a **service account** and link
-   it; download the JSON.
-2. Save it outside the repo (e.g. `~/.fastlane/play-service-account.json`)
-   and set in `.env`;
-   ```text
-   PLAY_JSON_KEY_PATH=/Users/jason/.fastlane/play-service-account.json
-   ```
-3. The first `ship_android` upload must be manual through the Console UI
-   (Google's rule: the first AAB of a new app version can't go through the
-   API); after that fastlane uploads work.
-
-## Apps + identifiers
-
-| App | Apple bundle id | Android application id |
-|---|---|---|
-| sancta_via_bible_reading_app | net.superversive.sancta_via.bible_reading_app | net.superversive.sancta_via.bible_reading_app |
-| sancta_via_confession_companion | net.superversive.sancta_via.confession_companion | net.superversive.sancta_via.confession_companion |
-| sancta_via_devotionals | net.superversive.sancta_via.devotionals | net.superversive.sancta_via.devotionals |
-| sancta_via_liturgical_calendar_app | net.superversive.sancta_via.liturgical_calendar_app | net.superversive.sancta_via.liturgical_calendar_app |
-| sancta_via_novena_companion | net.superversive.sancta_via.novena_companion | net.superversive.sancta_via.novena_companion |
-| sancta_via_prayer_companion | net.superversive.sancta_via.prayer_companion | net.superversive.sancta_via.prayer_companion |
-| sancta_via_saint_companion | net.superversive.sancta_via.saint_companion | net.superversive.sancta_via.saint_companion |
-
-## Release version order
-
-Every upload needs a new build number. Before any release:
-1. `melos run version:bump:build` — increments the `+N` build number
-   in all app pubspecs (`tool/bump_build_numbers.dart`; cider never manages `+N`).
-2. Bump `X.Y.Z` if the release warrants it (`melos run version:bump:patch` etc.),
-   commit both, then ship the lanes below.
-
-## Daily use
-
-```bash
-fastlane ship_ios app:saint_companion            # build + TestFlight
-fastlane ship_android app:saint_companion        # signed AAB + Play internal
-fastlane ship_all                                # every app, both platforms
-fastlane release_notes app:saint_companion       # prompts for release notes
+```sh
+xcode-select --install
 ```
 
-- iOS signing uses the same **Development Team `U2267GC4DS`** plus the ASC
-  API key (no cert-repo / match needed — Xcode-managed automatic signing).
-- Android release signing: `android/key.properties` (gitignored) + per-app
-  keystores under `android/keystores/`, generated with
-  `tool/generate_keystores.sh` if missing. A store upload without
-  `key.properties` falls back to debug signing, which the Console rejects.
+For _fastlane_ installation instructions, see [Installing _fastlane_](https://docs.fastlane.tools/#installing-fastlane)
 
-## Renewal decision helper
+# Available Actions
 
-If the membership is NOT renewed: the Play builds keep shipping (the
-Console is unaffected), iOS TestFlight dies in ≤90 days and the 7 store
-listings freeze. The apps stay installed on user devices.
+### install_profiles
+
+```sh
+[bundle exec] fastlane install_profiles
+```
+
+
+
+### register_apps
+
+```sh
+[bundle exec] fastlane register_apps
+```
+
+
+
+### asc_key_check
+
+```sh
+[bundle exec] fastlane asc_key_check
+```
+
+
+
+### ship_ios
+
+```sh
+[bundle exec] fastlane ship_ios
+```
+
+
+
+### ship_android
+
+```sh
+[bundle exec] fastlane ship_android
+```
+
+
+
+### ship_all
+
+```sh
+[bundle exec] fastlane ship_all
+```
+
+
+
+----
+
+This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
+
+More information about _fastlane_ can be found on [fastlane.tools](https://fastlane.tools).
+
+The documentation of _fastlane_ can be found on [docs.fastlane.tools](https://docs.fastlane.tools).
