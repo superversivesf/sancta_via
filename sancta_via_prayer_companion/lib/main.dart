@@ -3,7 +3,6 @@ import 'package:sancta_via_liturgical_calendar_riverpod/sancta_via_liturgical_ca
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 
 import 'config/routes.dart';
-import 'providers/prayer_providers.dart';
 import 'providers/prayer_app_settings_provider.dart';
 
 void main() {
