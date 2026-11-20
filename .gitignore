@@ -1,6 +1,7 @@
 # Melos
 .melos_tool/
 pubspec.lock
+!sancta_via_*/pubspec.lock
 
 # Build artifacts
 build/
@@ -30,3 +31,8 @@ releases/
 **/keystores/
 *.jks
 *.keystore
+
+# Signing profiles + fastlane reports (credential-shaped artifacts)
+*.mobileprovision
+*.p12
+fastlane/report.xml
