@@ -7,9 +7,28 @@ import '../screens/calendar/calendar_screen.dart';
 import '../screens/day_detail/day_detail_screen.dart';
 import '../screens/search/search_screen.dart';
 
+/// Strict YYYY-MM-DD parsing: rejects values that `DateTime.parse`
+/// silently normalises (e.g. 2026-13-05 becomes 2027-01-05, 2026-02-30
+/// becomes 2026-03-02) by checking that the parsed date round-trips to
+/// the same components. Mirrors the parser sancta_via_devotionals
+/// documents for its /day/:date deep links.
+DateTime? _parseStrictDate(String input) {
+  final match = RegExp(r'^(\d{4})-(\d{2})-(\d{2})$').firstMatch(input);
+  if (match == null) return null;
+  final year = int.parse(match.group(1)!);
+  final month = int.parse(match.group(2)!);
+  final day = int.parse(match.group(3)!);
+  final date = DateTime(year, month, day);
+  if (date.year != year || date.month != month || date.day != day) {
+    return null;
+  }
+  return date;
+}
+
 final appRouter = GoRouter(
   initialLocation: '/',
   debugLogDiagnostics: false,
+
 
   // Redirect invalid dates to home
   redirect: (context, state) {
@@ -18,11 +37,8 @@ final appRouter = GoRouter(
     if (pathSegments.isNotEmpty &&
         pathSegments.first == 'day' &&
         pathSegments.length >= 2) {
-      final dateString = pathSegments[1];
-      try {
-        DateTime.parse(dateString);
-      } catch (e) {
-        // Invalid date format - redirect to home
+      if (_parseStrictDate(pathSegments[1]) == null) {
+        // Invalid date format or rolled-over date - redirect to home
         return '/';
       }
     }
@@ -50,7 +66,7 @@ final appRouter = GoRouter(
         final dateString = state.pathParameters['date']!;
         // Defensive parsing - redirect should catch invalid dates,
         // but this provides a safety net
-        final date = DateTime.tryParse(dateString) ?? DateTime.now();
+        final date = _parseStrictDate(dateString) ?? DateTime.now();
         return DayDetailScreen(date: date);
       },
     ),

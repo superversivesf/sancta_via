@@ -82,4 +82,20 @@ void main() {
     expect(container.read(local_providers.selectedDateProvider),
         DateTime(2026, 3, 24));
   });
+
+  testWidgets('day-detail routes reject rollover/malformed dates', (tester) async {
+    await tester.pumpWidget(appUnderTest());
+    await tester.pumpAndSettle();
+
+    // DateTime.parse silently normalises 2026-13-05 -> 2027-01-05 and
+    // 2026-02-30 -> 2026-03-02 (consult codex #2). The router must redirect
+    // to home instead of showing the rolled-over day.
+    appRouter.go('/day/2026-13-05');
+    await tester.pumpAndSettle();
+    expect(find.byType(MaterialApp), findsOneWidget);
+
+    appRouter.go('/day/not-a-date');
+    await tester.pumpAndSettle();
+    expect(find.byType(MaterialApp), findsOneWidget);
+  });
 }

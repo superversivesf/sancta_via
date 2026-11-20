@@ -15,11 +15,15 @@ class LiturgicalCalendarApp extends ConsumerStatefulWidget {
 
 class _LiturgicalCalendarAppState extends ConsumerState<LiturgicalCalendarApp>
     with WidgetsBindingObserver {
+  /// The "today" this app-open began with; resume auto-rolls the selection
+  /// to the new today only when the user has not picked a different date.
+  DateTime _appOpenedToday = DateTime.now();
   @override
   void initState() {
     super.initState();
     // Add app lifecycle observer
     WidgetsBinding.instance.addObserver(this);
+    _appOpenedToday = DateTime.now();
   }
 
   @override
@@ -43,14 +47,16 @@ class _LiturgicalCalendarAppState extends ConsumerState<LiturgicalCalendarApp>
     final now = DateTime.now();
     final selectedDate = ref.read(local_providers.selectedDateProvider);
 
-    // Check if the selected date is no longer today
-    final isSelectedDateToday =
-        selectedDate.year == now.year &&
-        selectedDate.month == now.month &&
-        selectedDate.day == now.day;
+    // The date this app-open started on. A resume only auto-rolls to today
+    // when the selection is STILL the app-open "today" — a date the user
+    // deliberately picked (a future feast, a past season) is preserved.
+    final isSelectedAutoDate =
+        selectedDate.year == _appOpenedToday.year &&
+        selectedDate.month == _appOpenedToday.month &&
+        selectedDate.day == _appOpenedToday.day;
 
     // If the app was backgrounded overnight or longer, update to today
-    if (!isSelectedDateToday) {
+    if (isSelectedAutoDate) {
       // Update selected date to today
       ref.read(local_providers.selectedDateProvider.notifier).state = now;
 
@@ -63,6 +69,7 @@ class _LiturgicalCalendarAppState extends ConsumerState<LiturgicalCalendarApp>
         ref.read(local_providers.displayedMonthProvider.notifier).state =
             DateTime(now.year, now.month, 1);
       }
+      _appOpenedToday = now;
     }
   }
 
