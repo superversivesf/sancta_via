@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sancta_via_shared_ui/sancta_via_shared_ui.dart';
 import 'package:bible_data/bible_data.dart';
+import 'package:bible_data_riverpod/bible_data_riverpod.dart' hide AppLogger;
 
 import '../models/bible_app_settings.dart';
 
@@ -78,6 +79,14 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
       // If there's an error, use defaults
       state = BibleAppSettings.defaults();
     }
+
+    // Sync the shared package's translation provider with the persisted
+    // setting (search + any shared consumer follow the app's choice rather
+    // than the CPDV default). See setBibleTranslation.
+    if (mounted) {
+      _ref.read(selectedBibleTranslationProvider.notifier).state =
+          state.selectedBibleTranslation;
+    }
   }
 
   /// Migrate from old individual preference keys
@@ -148,6 +157,11 @@ class BibleAppSettingsNotifier extends StateNotifier<BibleAppSettings> {
     state = state.copyWith(selectedBibleTranslation: translation);
     await _saveSettings();
     _logDebug('Bible translation updated to: ${translation.name}');
+
+    // Keep the shared package's translation provider in sync — the search
+    // state machine reads it, and a diverged default made the search screen
+    // display the user's chosen translation while actually searching CPDV.
+    _ref.read(selectedBibleTranslationProvider.notifier).state = translation;
   }
 
   /// Update verse numbers visibility
