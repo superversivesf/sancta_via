@@ -8,19 +8,30 @@ IssueTracker: https://github.com/superversivesf/sancta_via/issues
 AutoName: Sancta Via Bible Reading
 Summary: Catholic Bible with liturgical calendar integration, CPDV and more, offline
 Description: |-
-    See the app listing on F-Droid's rendered metadata once merged; source copy lives in
-    sancta_via_bible_reading_app/fastlane/metadata/android/en-US/full_description.txt
+    Sancta Via Bible Reading is a Catholic Bible app designed to help you engage with Sacred Scripture in harmony with the liturgical life of the Church.
+    KEY FEATURES
+    - Multiple Bible Translations: Read from the Catholic Public Domain Version (CPDV) and other Catholic-approved translations, with easy switching between them.
+    - Liturgical Calendar Integration: The app's theme changes throughout the Church year — purple for Advent and Lent, white for Christmas and Easter, red for Pentecost and martyrs, green for Ordinary Time, and rose for Gaudete and Laetare Sundays.
+    - Reading Plans: Follow structured reading plans to read through the Bible systematically, with progress tracking and daily reminders.
+    - Book and Chapter Navigation: Browse all 73 books of the Catholic Bible, including the deuterocanonical books (Tobit, Judith, Wisdom, Sirach, Baruch, 1 & 2 Maccabees). Jump to any chapter with a tap.
+    - Verse Selection: Select and highlight individual verses for deeper meditation and easy sharing.
+    - Quick Lookup: Search by book name or reference (e.g., "John 3:16") to instantly find any passage.
+    - Continue Reading: Pick up exactly where you left off. The app remembers your last position in every translation.
+    - Beautiful Reading Experience: Adjustable font size, readable typography, and smooth scrolling optimized for extended reading sessions. Light and dark themes.
+    - Offline: All Bible text is bundled with the app. No internet connection required. No accounts, no tracking, no data collection.
+    PRIVACY
+    Sancta Via apps collect no personal data. Everything is stored locally on your device. No analytics, no ads, no tracking. See our privacy policy for details.
 
 RepoType: git
 Repo: https://github.com/superversivesf/sancta_via
 
 Builds:
-  - versionName: 1.1.57
-    versionCode: 2
-    commit: releases/bible_reading_app/v1.1.57+2
+  - versionName: 1.1.59
+    versionCode: 4
+    commit: releases/bible_reading_app/v1.1.59+4
     subdir: sancta_via_bible_reading_app
     sudo: |
-      apt-get update || apt-get install -y openjdk-17-jdk
+      apt-get update && apt-get install -y openjdk-17-jdk
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.47.8
@@ -29,10 +40,14 @@ Builds:
       - .dart_tool
     build:
       - $$flutter$$/bin/flutter config --no-analytics
+      # F-Droid signs with its own key; the repo's release-build signing gate
+      # (which fails without key.properties) must be turned off for this build.
       - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
+      # F-Droid signs with its own key; the repo's signing gate must be
+      # turned off for this build (no gitrolled key.properties on the server).
+      - SV_ALLOW_DEBUG_SIGNING=1 $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 1.1.57
-CurrentVersionCode: 2
+CurrentVersion: 1.1.59
+CurrentVersionCode: 4

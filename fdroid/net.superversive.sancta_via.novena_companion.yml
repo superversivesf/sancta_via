@@ -8,19 +8,28 @@ IssueTracker: https://github.com/superversivesf/sancta_via/issues
 AutoName: Sancta Via Novena
 Summary: Traditional Catholic novena prayers with day-by-day guidance
 Description: |-
-    See the app listing on F-Droid's rendered metadata once merged; source copy lives in
-    sancta_via_novena_companion/fastlane/metadata/android/en-US/full_description.txt
+    Sancta Via Novena Companion guides you through traditional Catholic novenas — nine days of prayer for a particular intention, rooted in centuries of devotion.
+    KEY FEATURES
+    - Traditional Novenas: A curated collection of classic Catholic novenas, including Marian novenas (Our Lady of Lourdes, Fatima, Immaculate Conception, Perpetual Help), saint novenas (St. Monica, St. Rita, St. Padre Pio, St. Francis), the Holy Spirit novena, and novenas for All Souls and the dead.
+    - Day-by-Day Guidance: Each novena is broken into nine daily prayers with clear day indicators so you always know where you are in the novena.
+    - Prayer Reminders: Set daily notifications to remind you to pray your novena at your chosen time. Never miss a day.
+    - Favorites: Save your favorite novenas for quick access. Start a novena anytime.
+    - Liturgical Calendar Integration: The app's theme follows the Catholic liturgical seasons — purple for Advent and Lent, white for Christmas and Easter, and green for Ordinary Time.
+    - Beautiful Interface: Clean, prayerful design with adjustable font size and light/dark themes.
+    - Offline and Private: All prayer content is stored locally. No internet connection needed. No accounts, no tracking, no data collection.
+    PRIVACY
+    Sancta Via apps collect no personal data. Everything is stored locally on your device. No analytics, no ads, no tracking. See our privacy policy for details.
 
 RepoType: git
 Repo: https://github.com/superversivesf/sancta_via
 
 Builds:
-  - versionName: 1.1.49
-    versionCode: 2
-    commit: releases/novena_companion/v1.1.49+2
+  - versionName: 1.1.51
+    versionCode: 4
+    commit: releases/novena_companion/v1.1.51+4
     subdir: sancta_via_novena_companion
     sudo: |
-      apt-get update || apt-get install -y openjdk-17-jdk
+      apt-get update && apt-get install -y openjdk-17-jdk
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.47.8
@@ -29,10 +38,14 @@ Builds:
       - .dart_tool
     build:
       - $$flutter$$/bin/flutter config --no-analytics
+      # F-Droid signs with its own key; the repo's release-build signing gate
+      # (which fails without key.properties) must be turned off for this build.
       - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
+      # F-Droid signs with its own key; the repo's signing gate must be
+      # turned off for this build (no gitrolled key.properties on the server).
+      - SV_ALLOW_DEBUG_SIGNING=1 $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 1.1.49
-CurrentVersionCode: 2
+CurrentVersion: 1.1.51
+CurrentVersionCode: 4
