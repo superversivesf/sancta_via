@@ -51,14 +51,6 @@
       "file_name": "ten-commandments.json"
     },
     {
-      "id": "test-examination",
-      "title": "Test Examination of Conscience",
-      "description": "A simplified examination for testing purposes with just 3 sections and 2 questions each.",
-      "source": "Testing Purposes",
-      "target_audience": "Developers",
-      "file_name": "test-examination.json"
-    },
-    {
       "id": "virtues-and-vices",
       "title": "Examination Based on Seven Virtues and Vices",
       "description": "A thorough examination of conscience structured around the seven virtues (theological and cardinal) and the seven deadly sins, helping you reflect on your internal dispositions.",

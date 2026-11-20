@@ -41,9 +41,9 @@ class AppInfoSection extends ConsumerWidget {
     this.showHeader = true,
     this.showVersion = true,
     this.showAbout = true,
-    this.showFeedback = true,
+    this.showFeedback = false,
     this.showPrivacyPolicy = false,
-    this.showSupport = true,
+    this.showSupport = false,
   });
 
   @override
