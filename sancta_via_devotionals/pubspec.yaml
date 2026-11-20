@@ -3,7 +3,7 @@ description: 'Offline Catholic devotionals: Today pipeline, guided prayer sessio
 publish_to: 'none'
 
 # Version: major.minor.patch+build
-version: 1.0.12+4
+version: 1.0.13+5
 
 environment:
   sdk: ^3.9.2
