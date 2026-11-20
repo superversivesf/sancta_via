@@ -9,9 +9,12 @@ import 'package:novena_companion/features/novenas/models/novena.dart';
 import 'package:novena_companion/features/novenas/providers/novena_state_provider.dart';
 
 ActiveNovena freshNovena() {
+  // Relative to today: a fixture pinned to a fixed calendar date would
+  // silently cross the 9-day expiry horizon and turn the raced-load clear
+  // (see NovenaStateNotifier._initialLoad) into a spurious test failure.
   return ActiveNovena(
     novenaId: 'novena_of_rosary',
-    startDate: DateTime(2026, 11, 10),
+    startDate: DateTime.now().subtract(const Duration(hours: 1)),
     reminderTime: const TimeOfDay(hour: 18, minute: 0),
     reminderFrequency: ReminderInterval.threeHours,
     completedDays: List<bool>.filled(9, false),

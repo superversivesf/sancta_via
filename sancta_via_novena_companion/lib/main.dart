@@ -67,8 +67,10 @@ void main() async {
     // Continue with app startup even if database fails
   }
 
-  // Notification service temporarily disabled
-  AppLogger.info('Notification service disabled', 'MAIN');
+  // The notification service initializes on demand — watching
+  // notificationsReadyProvider fires initialize() (and the permission prompt)
+  // when the user opens the Configure Novena screen, i.e. the point of value.
+  AppLogger.info('Notification service initializes on first novena configuration', 'MAIN');
 
   runApp(const ProviderScope(child: NovenaCompanionApp()));
 }

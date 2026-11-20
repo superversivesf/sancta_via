@@ -14,8 +14,13 @@ final notificationServiceStatusProvider = FutureProvider<bool>((ref) async {
   return await service.initialize();
 });
 
-/// Provider to check if notifications are ready
-final notificationsReadyProvider = Provider<bool>((ref) {
-  final service = ref.read(novenaNotificationServiceProvider);
-  return service.isReady;
+/// Provider to check if notifications are ready.
+///
+/// Watches `notificationServiceStatusProvider` so the service's `initialize()`
+/// (and therefore the system permission prompt) runs when the Configure Novena
+/// screen renders — the point of value, not app startup. Once initialization
+/// completes, `isReady` reflects the actual state.
+final notificationsReadyProvider = FutureProvider<bool>((ref) async {
+  await ref.watch(notificationServiceStatusProvider.future);
+  return ref.read(novenaNotificationServiceProvider).isReady;
 });

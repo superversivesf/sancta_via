@@ -6,6 +6,7 @@ import '../providers/novena_providers.dart';
 import '../providers/novena_notification_provider.dart';
 import '../../../config/route_names.dart';
 import '../providers/novena_state_provider.dart';
+import '../../../utils/logger.dart';
 
 class NovenaConfigurationScreen extends ConsumerStatefulWidget {
   final String novenaId;
@@ -34,7 +35,7 @@ class _NovenaConfigurationScreenState
   @override
   Widget build(BuildContext context) {
     final novenaAsync = ref.watch(novenaByIdProvider(widget.novenaId));
-    final notificationsReady = ref.watch(notificationsReadyProvider);
+    final notificationsReadyAsync = ref.watch(notificationsReadyProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Configure Novena')),
@@ -198,7 +199,10 @@ class _NovenaConfigurationScreenState
                 ),
 
                 // Notification status section
-                _buildNotificationStatusSection(context, notificationsReady),
+                _buildNotificationStatusSection(
+                  context,
+                  notificationsReadyAsync.value ?? false,
+                ),
 
                 const SizedBox(height: 32),
 
@@ -354,6 +358,22 @@ class _NovenaConfigurationScreenState
       await ref
           .read(novenaStateProvider.notifier)
           .startNovena(activeNovena, novenaTitle);
+
+      // Schedule the reminders (requires the service initialized — awaiting
+      // the status provider also surfaces the permission prompt at the point
+      // of value). The novena itself starts regardless; scheduling failure is
+      // reported but not fatal.
+      try {
+        await ref.watch(notificationServiceStatusProvider.future);
+        final schedule = await ref.read(novenaNotificationServiceProvider)
+            .scheduleNovenaNotifications(activeNovena, novenaTitle);
+        AppLogger.info(
+          'Reminder scheduling: ${schedule.success ? 'ok' : schedule.error ?? 'not ready'}',
+          'NOTIFICATION',
+        );
+      } catch (e) {
+        AppLogger.error('Reminder scheduling failed: $e', null, null, 'NOTIFICATION');
+      }
 
       if (mounted) {
         // Navigate to active novena dashboard

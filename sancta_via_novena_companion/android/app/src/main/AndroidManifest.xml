@@ -3,7 +3,12 @@
     
     <!-- Permissions -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- SCHEDULE_EXACT_ALARM is deliberately NOT declared: reminders schedule
+         with AndroidScheduleMode.inexactAllowWhileIdle (see
+         novena_notification_service.dart), which needs no exact-alarm
+         permission and no Play alarm/clock declaration. Mirrors
+         sancta_via_devotionals. -->
     
     <application
         android:label="Novena"
@@ -41,6 +46,16 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- flutter_local_notifications: since plugin v16 the app must declare
+             the receivers itself or scheduled alarms never fire (after reboot,
+             and the alarm -> delivery path). Mirrors sancta_via_devotionals. -->
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

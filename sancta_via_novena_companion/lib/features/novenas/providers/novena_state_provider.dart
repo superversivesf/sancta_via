@@ -12,8 +12,14 @@ const String _activeNovenaKey = 'active_novena_v1';
 
 // State notifier for managing active novena
 class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
+  /// The constructor's storage load, so state-mutating calls start only after
+  /// it completes: a raced load that finds an expired novena in storage would
+  /// otherwise set state = null AFTER a startNovena() call, silently dropping
+  /// the user's freshly started novena.
+  Future<void>? _initialLoad;
+
   NovenaStateNotifier() : super(null) {
-    _loadActiveNovena();
+    _initialLoad = _loadActiveNovena();
   }
 
   /// Helper method to format TimeOfDay for logging
@@ -90,6 +96,8 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
     ActiveNovena activeNovena,
     String novenaTitle,
   ) async {
+    // Serialize with the constructor's storage load (see _initialLoad).
+    await _initialLoad;
     AppLogger.info('🚀 Starting novena: $novenaTitle', 'NOVENA_STATE');
     AppLogger.debug('📅 Start Date: ${activeNovena.startDate}', 'NOVENA_STATE');
     AppLogger.debug(
@@ -102,6 +110,7 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
 
   // Update state without scheduling new notifications (for debug/reset)
   Future<void> updateState(ActiveNovena activeNovena) async {
+    await _initialLoad;
     AppLogger.debug(
       'Updating state without rescheduling notifications',
       'NOVENA_STATE',
@@ -112,6 +121,7 @@ class NovenaStateNotifier extends StateNotifier<ActiveNovena?> {
 
   // Mark a specific day as complete
   Future<void> markDayComplete(int dayNumber) async {
+    await _initialLoad;
     AppLogger.debug('🎯 Marking day $dayNumber complete', 'NOVENA_STATE');
     final current = state;
     if (current == null) {

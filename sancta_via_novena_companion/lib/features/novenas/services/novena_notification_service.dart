@@ -198,27 +198,11 @@ class NovenaNotificationService {
           return false;
         }
 
-        // For Android 12+ (API 31+), also request exact alarm permission
-        try {
-          AppLogger.debug(
-            'Requesting exact alarm permission for Android...',
-            'NOTIFICATION',
-          );
-          final exactAlarmPermission = await Permission.scheduleExactAlarm
-              .request();
-          AppLogger.debug(
-            'Exact alarm permission request result: ${exactAlarmPermission.name}',
-            'NOTIFICATION',
-          );
-          return exactAlarmPermission.isGranted;
-        } catch (e) {
-          // If exact alarm permission is not available, continue with basic permission
-          AppLogger.debug(
-            'Exact alarm permission not available: $e',
-            'NOTIFICATION',
-          );
-          return permission.isGranted;
-        }
+        // Exact-alarm permission deliberately not requested: reminders use
+        // AndroidScheduleMode.inexactAllowWhileIdle (see the zonedSchedule
+        // call), which needs no SCHEDULE_EXACT_ALARM grant and no Play
+        // alarm/clock declaration.
+        return permission.isGranted;
       }
     } catch (e) {
       AppLogger.error('Permission request failed', e, null, 'NOTIFICATION');
@@ -654,6 +638,11 @@ class NovenaNotificationService {
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         payload: smartPayload,
+        // Inexact on purpose: needs no SCHEDULE_EXACT_ALARM permission (denied
+        // by default on Android 13+, Play-restricted for prayer apps), and a
+        // minutes-level delay for a daily prayer reminder is fine. Mirrors
+        // sancta_via_devotionals.
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       );
 
       AppLogger.debug(
