@@ -95,10 +95,12 @@ void main() {
     expect(find.byType(AccessibilitySettings), findsOneWidget);
     expect(find.byType(LanguageSelector), findsOneWidget);
     expect(find.byType(AppInfoSection), findsOneWidget);
-    // AppInfo composition lands as the section's about/version/support tiles.
+    // AppInfo composition lands as the section's about/version tiles. The
+    // feedback/support tiles default OFF (no real destination wired yet —
+    // the "Coming Soon" snackbars were a review flag; consult copilot #4).
     expect(find.text('Version'), findsOneWidget);
-    expect(find.text('Send Feedback'), findsOneWidget);
-    expect(find.text('Support Development'), findsOneWidget);
+    expect(find.text('Send Feedback'), findsNothing);
+    expect(find.text('Support Development'), findsNothing);
 
     // The app data section and the dataset credit section render too.
     expect(find.byKey(_appDataSectionKey), findsOneWidget);
