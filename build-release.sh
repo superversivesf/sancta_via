@@ -191,7 +191,11 @@ build_flutter_app() {
     log "INFO" "Building iOS IPA for $project_name"
     mkdir -p "$project_release_dir/ios"
     
-    if flutter build ios --release >> "$RELEASE_DIR/build.log" 2>&1; then
+    # NOTE: no separate `flutter build ios` — xcodebuild archive runs the
+    # same Flutter script phases, and the extra step codesigns the .app with
+    # an automatic-signing profile, which fails headless. Manual signing
+    # happens at export time.
+    if true; then
         # Build archive and export IPA
         if xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release archive -archivePath "$project_release_dir/ios/${project_name}.xcarchive" >> "$RELEASE_DIR/build.log" 2>&1; then
             # Export IPA (this requires an export options plist)
