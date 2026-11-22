@@ -34,9 +34,9 @@ RepoType: git
 Repo: https://github.com/superversivesf/sancta_via
 
 Builds:
-  - versionName: 1.0.8
-    versionCode: 4
-    commit: releases/saint_companion/v1.0.8+4
+  - versionName: 1.0.12
+    versionCode: 8
+    commit: releases/saint_companion/v1.0.12+8
     subdir: sancta_via_saint_companion
     sudo: |
       apt-get update && apt-get install -y openjdk-17-jdk
@@ -57,5 +57,5 @@ Builds:
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 1.0.8
-CurrentVersionCode: 4
+CurrentVersion: 1.0.12
+CurrentVersionCode: 8

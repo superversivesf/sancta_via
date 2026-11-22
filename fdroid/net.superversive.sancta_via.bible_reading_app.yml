@@ -26,9 +26,9 @@ RepoType: git
 Repo: https://github.com/superversivesf/sancta_via
 
 Builds:
-  - versionName: 1.1.59
-    versionCode: 4
-    commit: releases/bible_reading_app/v1.1.59+4
+  - versionName: 1.1.63
+    versionCode: 8
+    commit: releases/bible_reading_app/v1.1.63+8
     subdir: sancta_via_bible_reading_app
     sudo: |
       apt-get update && apt-get install -y openjdk-17-jdk
@@ -49,5 +49,5 @@ Builds:
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 1.1.59
-CurrentVersionCode: 4
+CurrentVersion: 1.1.63
+CurrentVersionCode: 8

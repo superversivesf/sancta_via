@@ -24,9 +24,9 @@ RepoType: git
 Repo: https://github.com/superversivesf/sancta_via
 
 Builds:
-  - versionName: 1.1.53
-    versionCode: 4
-    commit: releases/confession_companion/v1.1.53+4
+  - versionName: 1.1.57
+    versionCode: 8
+    commit: releases/confession_companion/v1.1.57+8
     subdir: sancta_via_confession_companion
     sudo: |
       apt-get update && apt-get install -y openjdk-17-jdk
@@ -47,5 +47,5 @@ Builds:
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 1.1.53
-CurrentVersionCode: 4
+CurrentVersion: 1.1.57
+CurrentVersionCode: 8
