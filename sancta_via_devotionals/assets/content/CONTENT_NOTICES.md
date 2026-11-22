@@ -12,7 +12,7 @@ distribution via channels that police content licensing — see
 | The Angelus (Regina Caeli in Eastertide) | public-domain | Traditional Marian devotion (Angelus text 17th c.; Regina Caeli antiphon medieval) |
 | The Christmas Novena | public-domain | Traditional pre-Christmas novena formula |
 | Daily Examen | public-domain | Method of prayer from St Ignatius of Loyola (1548) |
-| The Divine Mercy Novena | PERMISSION PENDING | English translation © the Marians of the Immaculate Conception (Diary translations) — permission to be requested or text replaced |
+| The Divine Mercy Novena | original text (2026) | Fresh Sancta Via composition faithful to the traditional nine-day structure; no Diary translation reproduced. Scripture from public-domain renderings (WEB/DRC). |
 | Five First Saturdays of Our Lady | public-domain | Traditional devotional framework |
 | Fixed Morning Prayers / Fixed Night Prayers | public-domain | Composed from traditional formulae |
 | The Franciscan Crown (Seven Joys) | public-domain | Traditional Franciscan rosary (15th c.) |
@@ -25,7 +25,7 @@ distribution via channels that police content licensing — see
 | The Litany of the Sacred Heart of Jesus | public-domain | Approved litany (1899, PD text) |
 | The Litany of Saint Joseph | public-domain | Approved litany (1909, PD text) |
 | Meal and Night Prayers | public-domain | Traditional table and night formulae |
-| The Hour of Mercy | PERMISSION PENDING | Divine Mercy text © the Marians — permission to be requested or text replaced |
+| The Hour of Mercy | original text (2026) | Fresh Sancta Via petition for the hour of mercy; no Diary translation reproduced. |
 | The Novena to Our Lady of the Miraculous Medal | public-domain | Traditional Miraculous Medal novena |
 | Morning Offering | public-domain | Traditional formula (19th c. or earlier) |
 | Nine First Fridays of the Sacred Heart | public-domain | Devotion from St Margaret Mary's revelations (d. 1690) |
