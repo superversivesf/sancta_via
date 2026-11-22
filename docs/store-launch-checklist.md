@@ -39,6 +39,15 @@ F-Droid $0.
 
 ## 1. Apple / TestFlight (fastlane automated after step 0)
 
+> **Bundle IDs for record creation (CORRECTED 2026-11-22):** ASC rejects
+> underscores — the Apple-side ids are the HYPHENATED
+> `net.superversive.sancta-via.<app>` forms (Android keeps its own
+> underscored applicationIds; each store's identity is permanent and
+> independent). Pairings: Bible=`bible-reading-app`, Examen=`confession-companion`,
+> Devotionals=`devotionals`, Calendar=`liturgical-calendar-app`, Novena=`novena-companion`,
+> Prayer=`prayer-companion`, Saints=`saint-companion` (full id =
+> `net.superversive.sancta-via.` + suffix).
+
 - [ ] **(manual)** Renew the Apple Developer Program **before Nov 24**
       (auto-renewal setting or manual payment in ASC).
 - [ ] **(automated)** Proof run on one app:
