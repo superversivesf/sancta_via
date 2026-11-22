@@ -20,6 +20,13 @@ def package_name(app)
   "net.superversive.sancta_via.#{app}"
 end
 
+# Apple bundle IDs carry hyphens (ASC rejects underscores); the Android
+# applicationId keeps its underscores. Each store tracks its own identity
+# permanently.
+def ios_bundle_id(app)
+  "net.superversive.sancta_via.#{app}".tr('_', '-')
+end
+
 # Lanes accept `fastlane ship_ios app:saint_companion` (options hash) and fall
 # back to APP_NAME=<app> in the environment.
 def app_from(options)
@@ -108,7 +115,7 @@ lane :install_profiles do
     UI.important("Ensuring App Store profile for #{app}")
     sigh(
       api_key: api_key,
-      app_identifier: package_name(app),
+      app_identifier: ios_bundle_id(app),
       provisioning_name: "#{APP_META[app]} App Store",
       skip_certificate_verification: false
     )

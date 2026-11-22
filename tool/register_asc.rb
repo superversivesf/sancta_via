@@ -15,14 +15,18 @@ KEY_PATH = ENV.fetch('ASC_KEY_PATH')
 KEY_ID = ENV.fetch('ASC_KEY_ID')
 ISSUER_ID = ENV.fetch('ASC_ISSUER_ID')
 
+# Apple bundle IDs: alphanumeric + hyphens + periods only (no underscores —
+# the ASC New App form rejects them). Hyphenated iOS ids differ from the
+# Android applicationIds, which keep underscores (Google allows them; each
+# store tracks its own identity permanently).
 APPS = {
-  'net.superversive.sancta_via.bible_reading_app' => 'Sancta Via Bible',
-  'net.superversive.sancta_via.confession_companion' => 'Sancta Via Examen',
-  'net.superversive.sancta_via.devotionals' => 'Sancta Via Devotionals',
-  'net.superversive.sancta_via.liturgical_calendar_app' => 'Sancta Via Calendar',
-  'net.superversive.sancta_via.novena_companion' => 'Sancta Via Novena',
-  'net.superversive.sancta_via.prayer_companion' => 'Sancta Via Prayer',
-  'net.superversive.sancta_via.saint_companion' => 'Sancta Via Saints',
+  'net.superversive.sancta-via.bible-reading-app' => 'Sancta Via Bible',
+  'net.superversive.sancta-via.confession-companion' => 'Sancta Via Examen',
+  'net.superversive.sancta-via.devotionals' => 'Sancta Via Devotionals',
+  'net.superversive.sancta-via.liturgical-calendar-app' => 'Sancta Via Calendar',
+  'net.superversive.sancta-via.novena-companion' => 'Sancta Via Novena',
+  'net.superversive.sancta-via.prayer-companion' => 'Sancta Via Prayer',
+  'net.superversive.sancta-via.saint-companion' => 'Sancta Via Saints',
 }
 
 Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(
@@ -35,6 +39,23 @@ client = Spaceship::ConnectAPI
 
 # The distribution certificate must exist on the portal (minted via Xcode's
 # GUI "Manage Certificates") - fetch its id for profile creation.
+# Retire profiles bound to the invalid underscore bundle ids.
+valid_ids = APPS.keys
+legacy = client.get_profiles(includes: 'bundleId').to_a.select do |p|
+  bundle = p.bundle_id
+  bundle.is_a?(Spaceship::ConnectAPI::BundleId) &&
+    p.profile_type == 'IOS_APP_STORE' &&
+    !valid_ids.include?(bundle.identifier)
+end
+legacy.each do |p|
+  begin
+    client.delete_profiles(profile_id: p.id)
+    puts "  deleted legacy profile #{p.name}"
+  rescue StandardError => e
+    puts "  (could not delete old profile #{p.name}: #{e.message})"
+  end
+end
+
 certs = client.get_certificates(filter: { certificateType: 'DISTRIBUTION' })
 raise 'no DISTRIBUTION certificate on the portal — mint it in Xcode' if certs.to_a.empty?
 cert_ids = certs.to_a.map(&:id)

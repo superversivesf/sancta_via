@@ -6,8 +6,8 @@
 	<string>app-store-connect</string>
 	<key>provisioningProfiles</key>
 	<dict>
-		<key>net.superversive.sancta_via.liturgical_calendar_app</key>
-		<string>34a699cc-2597-48b7-9565-842930a47c32</string>
+		<key>net.superversive.sancta-via.liturgical-calendar-app</key>
+		<string>c04e1c9b-2cf0-4e3e-be5b-445bc6284da5</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>

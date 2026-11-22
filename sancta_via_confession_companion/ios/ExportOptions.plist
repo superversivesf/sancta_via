@@ -6,8 +6,8 @@
 	<string>app-store-connect</string>
 	<key>provisioningProfiles</key>
 	<dict>
-		<key>net.superversive.sancta_via.confession_companion</key>
-		<string>422c652c-1744-40de-b1a8-c0fc226720b7</string>
+		<key>net.superversive.sancta-via.confession-companion</key>
+		<string>ded8f5cb-a689-49be-af21-9ffc0012377a</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>

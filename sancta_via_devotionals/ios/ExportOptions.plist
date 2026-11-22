@@ -6,8 +6,8 @@
 	<string>app-store-connect</string>
 	<key>provisioningProfiles</key>
 	<dict>
-		<key>net.superversive.sancta_via.devotionals</key>
-		<string>2620055a-bfb3-45d4-b242-0c8f51d042d0</string>
+		<key>net.superversive.sancta-via.devotionals</key>
+		<string>75acbfcd-d741-450e-b4d7-4689be7fdbfb</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>
