@@ -28,13 +28,6 @@
     java.lang.Object readResolve();
 }
 
-# Keep Gson/JSON serialization if used
--keepattributes Signature
--keepattributes *Annotation*
--keep class com.google.gson.** { *; }
--keep class * {
-    @com.google.gson.annotations.SerializedName <fields>;
-}
 
 # App-specific rules
 -keep class net.superversive.liturgical_calendar_app.** { *; }
