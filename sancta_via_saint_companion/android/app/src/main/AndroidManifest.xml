@@ -4,7 +4,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:label="Saints"
-        android:name="${applicationName}"
+        android:name="android.app.Application"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
