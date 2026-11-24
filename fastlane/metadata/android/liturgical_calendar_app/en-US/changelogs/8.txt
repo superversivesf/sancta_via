@@ -1,0 +1,1 @@
+Initial F-Droid release: full liturgical year, seasons and feast days, colour-coded month views.

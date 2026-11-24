@@ -1,0 +1,1 @@
+Initial F-Droid release: traditional novenas with day-by-day prayers and progress tracking.

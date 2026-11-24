@@ -1,0 +1,1 @@
+Initial F-Droid release: complete Catholic canon (CPDV/WEB-C), liturgical theming, reading plans, offline.

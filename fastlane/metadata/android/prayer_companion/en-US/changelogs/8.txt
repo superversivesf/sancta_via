@@ -1,0 +1,1 @@
+Initial F-Droid release: traditional Catholic prayer library with English/Latin texts, offline.
