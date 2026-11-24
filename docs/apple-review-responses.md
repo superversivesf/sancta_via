@@ -46,6 +46,13 @@ recording from a physical device is attached to this reply.
 No account, no login, no configuration. The app is fully usable offline at first launch;
 all features are available immediately.
 
+> Note on the family of apps: the Sancta Via suite is deliberately seven single-purpose
+> apps following the "do one thing well" Unix design philosophy — each has a distinct
+> feature set, audience, workflows, and icon (Bible reading, confession preparation,
+> devotionals, calendar reference, novenas, prayer library, saint reference). The only
+> shared elements are a small internal design system and a public-domain content
+> pipeline; no two apps do the same job.
+
 **4. External services / tools / platforms**
 None. The app makes zero network requests. All content is bundled with the binary
 (public-domain Bible translations, open-source liturgical data (romcal, MIT), public-domain
