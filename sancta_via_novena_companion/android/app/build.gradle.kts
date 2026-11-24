@@ -87,3 +87,9 @@ flutter {
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 }
+
+// F-Droid: exclude Google Play Core (Flutter pulls it in transitively for deferred
+// components the app never uses; F-Droid prohibits those classes in shipped APKs).
+configurations.configureEach {
+    exclude(group = "com.google.android.play", module = "core")
+}

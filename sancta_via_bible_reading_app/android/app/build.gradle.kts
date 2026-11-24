@@ -81,3 +81,9 @@ kotlin {
 flutter {
     source = "../.."
 }
+
+// F-Droid: exclude Google Play Core (Flutter pulls it in transitively for deferred
+// components the app never uses; F-Droid prohibits those classes in shipped APKs).
+configurations.configureEach {
+    exclude(group = "com.google.android.play", module = "core")
+}
