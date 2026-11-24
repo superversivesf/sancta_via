@@ -61,6 +61,14 @@ and CC-licensed texts and artwork with in-app attribution).
 **5. Regional differences**
 None — behavior is identical in all regions.
 
+**Design note (liturgical colours)**
+Every app in the suite themes its interface according to the liturgical colours the Church
+assigns to the day — green (Ordinary Time), purple (Advent/Lent), white (Christmas/Easter
+and saints), red (Pentecost/martyrs), rose (Gaudete/Laetare), gold (major feasts). The
+recording shows the colour of the day it was recorded; the palette changes automatically
+with the calendar (this is the suite's core visual identity, driven by the bundled
+liturgical-calendar data — no network involved).
+
 **6. Regulated industry / protected material**
 Not regulated. All third-party material is public domain or freely licensed with
 attribution; the full license list is in THIRD_PARTY_NOTICES.md in the public repository
