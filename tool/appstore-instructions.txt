@@ -1,0 +1,55 @@
+SANCTA VIA DAILY METRICS DIGEST — setup for Hermes / cron
+=========================================================
+
+WHAT IT DOES
+  Runs tool/appstore-daily.py (in /Users/jason/Repos/sancta_via) and prints:
+    - App Store installs per app (from Apple's App Analytics pipeline; the
+      daily dataset started generating on 2026-11-27, expect real numbers
+      from Nov 27/28 onward)
+    - Store indexing status (US storefront) for all 7 apps
+    - F-Droid MR state for all 7 apps (CI pipeline status)
+  Optionally sends the same text to a Telegram chat when the environment
+  variables TG_BOT_TOKEN and TG_CHAT_ID are set.
+
+HOW TO RUN (one-off)
+  /Users/jason/Repos/sancta_via/tool/appstore-daily.py
+  (it is executable; run as: /Users/jason/Repos/sancta_via/tool/appstore-daily.py)
+
+HERMES INSTRUCTIONS (paste as a task)
+  Run the script /Users/jason/Repos/sancta_via/tool/appstore-daily.py once
+  per day and relay its full text output to me (in the Sancta Via Telegram
+  chat / or as configured). If the output contains "INDEXED" for all seven
+  apps, also fetch the seven product-page URLs by running:
+      for b in bible-reading-app confession-companion devotionals
+            liturgical-calendar-app novena-companion prayer-companion
+            saint-companion; do
+        curl -s "https://itunes.apple.com/lookup?bundleId=
+              net.superversive.sancta-via.$b&country=us"
+      done
+  and include each result's trackViewUrl in the relay.
+
+CRON (if you prefer the system scheduler)
+  crontab entry (daily 08:00, output to a dated file for Hermes pickup):
+    0 8 * * * /Users/jason/Repos/sancta_via/tool/appstore-daily.py
+              > /Users/jason/Dropbox/sancta_via/digest-$(date +\%Y\%m\%d).txt
+
+TELEGRAM (optional)
+  Set these two env vars when invoking (Hermes can inject them):
+    TG_BOT_TOKEN=123456:ABC...   (from @BotFather)
+    TG_CHAT_ID=-1001234567890    (the chat to receive the digest)
+  The script then posts the digest itself — no further wiring needed.
+
+HOOKING OPENCODE INTO HERMES
+  From any script (or Hermes directly), task the OpenCode session in this
+  repo headlessly:
+    cd /Users/jason/Repos/sancta_via && opencode run "<your prompt>"
+  The run returns the assistant's final text — Hermes can forward that to
+  Telegram, email, or anywhere else. Long-running jobs work the same way;
+  `opencode run` waits for completion.
+
+DATA TIMELINE
+  - Apple's daily downloads dataset: first entries expected Nov 27-28, 2026.
+  - Search indexing: Calendar/Novena/Prayer were in the US catalog on Nov 25;
+    the remaining four follow as Apple indexes them.
+  - F-Droid: 7 MRs green in CI (verified in this digest daily); the waiting
+    period is human review by the fdroiddata maintainers.
